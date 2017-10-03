@@ -1,0 +1,36 @@
+/* Header Styles */
+
+header { 
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-between; 
+    margin: 1vw 2vh;
+    max-height: 200px; 
+    border: solid 2px pink;   
+}
+
+ul {
+    padding: 0; 
+}
+
+.global-header-nav { 
+    height: 50%; 
+    flex-direction: row;
+    border: solid 2px red;  
+}
+
+.global-header-menu { 
+    border: solid 2px green; 
+    height: 50%;
+    padding: 1.5em 0;   
+}
+
+.icon, li { 
+    display: inline;
+    padding: 1.5em; 
+}
+
+
+
+
+
