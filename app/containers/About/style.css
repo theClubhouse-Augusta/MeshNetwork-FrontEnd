@@ -1,0 +1,101 @@
+/* About Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.mainProfile {
+  width:100%;
+  max-width:1000px;
+  margin:0 auto;
+}
+
+.aboutColumns {
+  min-height:100vh;
+  width:100%;
+  display:flex;
+  flex-direction:row;
+  background:#EEEEEE;
+}
+
+.aboutLeft {
+  background:#DDDDDD;
+  width:50%;
+  min-height:100vh;
+}
+
+.aboutRight {
+  width:50%;
+  min-height:100vh;
+}
+
+.aboutTextHeader {
+  background:#CCCCCC;
+  display:flex;
+  height:40px;
+  margin:15px;
+}
+
+.aboutContent {
+  background:#CCCCCC;
+  display:flex;
+  height:400px;
+  margin:15px;
+}
+
+.aboutFaq {
+  background:#CCCCCC;
+  display:flex;
+  height:400px;
+  margin:15px;
+}
+
+.aboutImages {
+  display:flex;
+  flex-direction:column;
+  padding:15px;
+}
+
+.aboutImageRow {
+  width:100%;
+  height:200px;
+  background:#BBBBBB;
+  flex-direction:row;
+}
+
+.aboutImageLeft {
+  height:200px;
+  width:200px;
+  background:#AAAAAA;
+}
+
+.aboutImageRight {
+  height:200px;
+  width:200px;
+  background:#AAAAAA;
+  float:right;
+}
+
+.aboutButtons {
+  min-height:100px;
+  display:flex;
+  flex-direction:column;
+  padding:30px;
+}
+
+.aboutSignUp {
+  background:#999999;
+  width:100%;
+  height:50px;
+  border-radius:5px;
+}
+
+.aboutContact {
+  background:#999999;
+  width:100%;
+  height:50px;
+  border-radius:5px;
+  margin-top:15px;
+}
