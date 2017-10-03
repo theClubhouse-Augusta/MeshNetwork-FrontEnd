@@ -1,0 +1,160 @@
+/* SpaceProfile Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.mainProfile {
+  width:100%;
+  max-width:1000px;
+  margin:0 auto;
+}
+
+.profileHeader {
+  min-height:200px;
+  background:#EEEEEE;
+  width:100%;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+}
+
+.profileAvatar {
+  height:200px;
+  width:200px;
+  background:#DDDDDD;
+}
+
+.profileInfo {
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+}
+
+.profileName {
+  font-size:3em;
+  background:#DDDDDD;
+  min-width:400px;
+  min-height:50px;
+}
+
+.profileTitle {
+  min-width:500px;
+  min-height:30px;
+  background:#DDDDDD;
+  margin-top:10px;
+}
+
+.profileSpace {
+  min-width:500px;
+  min-height:30px;
+  background:#DDDDDD;
+  margin-top:10px;
+}
+
+.profileSocial {
+  min-width:500px;
+  min-height:40px;
+  background:#DDDDDD;
+  margin-top:10px;
+}
+
+.profileColumns {
+  background:#CCCCCC;
+  min-height:100vh;
+  display:flex;
+  flex-direction:row;
+}
+
+.profileColumnLeft {
+  width:30%;
+  min-height:100vh;
+  background:#BBBBBB;
+  border-right: 1px solid #DDDDDD;
+}
+
+.profileTagCloud {
+  width:100%;
+  background:#AAAAAA;
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}
+
+.profileTag {
+  height:30px;
+  width:70px;
+  background:#111111;
+  margin:10px;
+  border-radius:5px;
+}
+
+.profileMentorship {
+  min-height:200px;
+  width:100%;
+  background:#999999;
+}
+
+.profileEvents {
+  min-height:300px;
+  width:100%;
+  background:#888888;
+}
+
+.profileColumnRight {
+  display:flex;
+  flex-direction:column;
+  width:70%;
+}
+
+.profileBio {
+  width:100%;
+  min-height:500px;
+  background:#777777;
+}
+
+.profileBioHeader {
+  display:flex;
+  min-height:40px;
+  background:#666666;
+  margin:15px;
+}
+
+.profileBioContent {
+  display:flex;
+  min-height:600px;
+  background:#666666;
+  margin:15px;
+}
+
+.profileTeam {
+  display:flex;
+  flex-direction:column;
+  min-height:300px;
+  background:#555555;
+}
+
+.profileTeamHeader {
+  display:flex;
+  min-height:40px;
+  background:#444444;
+  margin:15px;
+}
+
+.profileTeamContent {
+  display:flex;
+  flex-direction:row;
+  min-height:200px;
+  background:#444444;
+  margin:15px;
+  flex-wrap:wrap;
+}
+
+.profileTeamItem {
+  width:47%;
+  min-height:40px;
+  background:#333333;
+  margin:10px;
+}
