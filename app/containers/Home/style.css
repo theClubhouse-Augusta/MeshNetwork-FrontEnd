@@ -1,7 +1,27 @@
-/* Home Styles */
+/* Home Styles 
+
+This boilerplate lacks css encapsulation & therefore all variables are global. This home container style sheet also serves as a global stylesheet. Please avoid tag selectors in other css files unless the tag itself is encapsulted ex. header & footer tag selectors in their corresponding styles. 
+*/
 
 .container {
   display:flex;
   flex-direction:column;
   min-height:100vh;
+}
+
+h1, h2, h3, h4, h5 { 
+  font-family: 'Encode Sans Condensed', sans-serif; 
+}
+
+body { 
+  font-family: 'Open Sans', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 500; 
+}
+
+li { 
+  display: inline;  
 }

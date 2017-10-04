@@ -18,36 +18,22 @@ export default class Header extends React.PureComponent {
           <img src="https://placeholdit.co//i/125x125" alt="mesh network logo" />
         </div>
 
-        <div className="global-header-nav"> 
-          <nav>
-            <ul> 
-              <li>community
+        <div className="global-header-center"> 
+          <nav className="global-header-nav">
+            <ul className="global-header-nav-links"> 
+              <li className="nav-item">community
                  { /* <ul> 
                     <li><a href="/locations"> tech spaces </a></li>
                     <li><a href="/member-search"> members</a></li>
                   </ul> */ } 
               </li>
-              <li><a href="">events</a></li>
+              <li className="nav-item"><a href="">events</a></li>
               { /*  <li>jobs</li> */ } 
             </ul>           
           </nav>        
+
         </div>
-
-        <div className="global-header-menu">
-
-          <div className="global-header-login icon">
-            <a href="/">
-            🙂
-            </a>
-          </div>
-
-          <div className="global-header-search icon">
-            <a href="">
-            🔎
-            </a>
-          </div>
-        </div>
-
+       
       </header>     
     );
   }

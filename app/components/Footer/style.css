@@ -1,18 +1,33 @@
 /* Footer Styles */
-footer { 
-    border: 2px solid purple; 
+footer {  
+    border-top: 2px solid black; 
     padding: 1vw 2vh;
 }
 
-.global-footer-menu { 
+.global-footer-nav { 
     display: flex; 
     flex-direction: row;
-    justify-content: space-around; 
-    margin: 0 auto; 
-    border: 2px solid goldenrod;
-    padding: .5em;  
+    justify-content: space-around;
+    flex-wrap: wrap;  
 }
 
-.global-footer-brand-block {  
-    border: 2px solid lightgreen; 
+
+.social-media-icon-row {
+    margin: 0 auto .5em auto; 
+}
+
+.social-icon { 
+    margin: .25em; 
+    font-size: 1.5em; 
+}
+
+img.footer-logo  { 
+    margin: 0 auto;  
+    padding: .5em 0; 
+}
+
+.copyright {
+    text-align: center; 
+    width: 100%; 
+    font-size: .75em; 
 }
