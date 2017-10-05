@@ -4,7 +4,7 @@ footer {
     border-top: solid 2px black; 
 }
 
-.global-footer-nav { 
+.globalFooterNav { 
     display: flex; 
     flex-direction: row;
     justify-content: space-between;
@@ -14,7 +14,7 @@ footer {
 }
 
 
-.social-media-icon-row {
+.socialIconRow {
     display: flex; 
     flex-direction: row;
     justify-content: space-between;
@@ -23,16 +23,11 @@ footer {
     margin: 0 auto; 
 }
 
-.social-icon { 
+.socialIcon { 
     margin: .25em; 
     padding: .5em; 
     font-size: 1.5em;
     justify-content: space-around;  
-}
-
-img.footer-logo  { 
-    margin: 0 auto;  
-    padding: .5em 0; 
 }
 
 .copyright {

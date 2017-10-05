@@ -17,24 +17,24 @@ export default class Footer extends React.PureComponent {
     return (
      <footer> 
        { /*      
-       <div className="global-footer-nav-bar">
-          <ul className="global-footer-nav">
-            <li className="nav-item"><a href="/">home</a></li>
-            <li className="nav-item"><a href="">community</a></li>
-            <li className="nav-item"><a href="/Events">events</a></li>
-            { /*<li><a href="http://">jobs</a></li>   
-            <li className="nav-item"><a href="/About">about</a></li>
-            <li className="nav-item"><a href="/Contact">contact</a></li>
+       <div className="globalFooterNavBar">
+          <ul className="globalFooterNav">
+            <li className="navItem"><a href="/">home</a></li>
+            <li className="navItem"><a href="">community</a></li>
+            <li className="navItem"><a href="/Events">events</a></li>
+            <li><a href="http://">jobs</a></li>   
+            <li className="navItem"><a href="/About">about</a></li>
+            <li className="navItem"><a href="/Contact">contact</a></li>
           </ul>
        </div>
         */ }
       
                 
-        <div className="social-media-icon-row">
-          <TiSocialAtCircular className="social-icon"/>
-          <TiSocialFacebookCircular className="social-icon" />
-          <TiSocialInstagramCircular className="social-icon"/>
-          <TiSocialTwitterCircular className="social-icon"/>   
+        <div className="socialIconRow">
+          <TiSocialAtCircular className="socialIcon"/>
+          <TiSocialFacebookCircular className="socialIcon" />
+          <TiSocialInstagramCircular className="socialIcon"/>
+          <TiSocialTwitterCircular className="socialIcon"/>   
         </div>
         
         <p className="copyright"> a copyright my guy </p>

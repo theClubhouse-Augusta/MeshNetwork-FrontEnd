@@ -1,6 +1,6 @@
 /**
 *
-* HomeRibbonOne
+* HomeBodyThree
 *
 */
 
@@ -9,16 +9,16 @@ import React from 'react';
 import './style.css';
 import './styleM.css';
 
-export default class HomeRibbonOne extends React.PureComponent {
+export default class HomeBodyThree extends React.PureComponent {
   render() {
     return (
-      <div>
+      <div className="homeSection" id="homeThree">
 
       </div>
     );
   }
 }
 
-HomeRibbonOne.contextTypes = {
+HomeBodyThree.contextTypes = {
   router: React.PropTypes.object
 };

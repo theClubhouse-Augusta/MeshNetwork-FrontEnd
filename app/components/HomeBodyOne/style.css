@@ -1,0 +1,9 @@
+/* HomeBodyOne Styles */
+.homeSection { 
+    height: 85vh; 
+    width: 100vw;     
+}
+
+#homeOne { 
+    background: #EEEEEE; 
+}
