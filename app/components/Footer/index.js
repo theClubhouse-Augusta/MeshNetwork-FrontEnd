@@ -15,18 +15,19 @@ import './styleM.css';
 export default class Footer extends React.PureComponent {
   render() {
     return (
-     <footer>       
+     <footer> 
+       { /*      
        <div className="global-footer-nav-bar">
           <ul className="global-footer-nav">
-            <li className="nav-item"><a href="http://">home</a></li>
-            <li className="nav-item"><a href="http://">community</a></li>
-            <li className="nav-item"><a href="http://">events</a></li>
-            { /*<li><a href="http://">jobs</a></li> */ }  
-            <li className="nav-item"><a href="http://">about</a></li>
-            <li className="nav-item"><a href="http://">contact</a></li>
+            <li className="nav-item"><a href="/">home</a></li>
+            <li className="nav-item"><a href="">community</a></li>
+            <li className="nav-item"><a href="/Events">events</a></li>
+            { /*<li><a href="http://">jobs</a></li>   
+            <li className="nav-item"><a href="/About">about</a></li>
+            <li className="nav-item"><a href="/Contact">contact</a></li>
           </ul>
        </div>
-
+        */ }
       
                 
         <div className="social-media-icon-row">

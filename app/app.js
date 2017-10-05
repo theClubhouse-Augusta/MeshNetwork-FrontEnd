@@ -12,11 +12,13 @@ import BusinessSearch from 'containers/BusinessSearch';
 import Contact from 'containers/Contact';
 import EventDetail from 'containers/EventDetail';
 import Events from 'containers/Events';
+import LogInSignUp from 'containers/LogInSignUp';
 import MemberSearch from 'containers/MemberSearch';
 import NewEvent from 'containers/NewEvent';
 import SpaceProfile from 'containers/SpaceProfile';
 import UserProfile from 'containers/UserProfile';
 import NotFound from 'containers/NotFound';
+ 
 
 ReactDOM.render((
   <BrowserRouter>
@@ -28,6 +30,7 @@ ReactDOM.render((
       <Route path='/Contact' component={Contact}/>
       <Route path='/EventDetail' component={EventDetail}/>
       <Route path='/Events' component={Events}/>
+      <Route path='/LogInSignUp' component={LogInSignUp}/>
       <Route path='/MemberSearch' component={MemberSearch}/>
       <Route path='/NewEvent' component={NewEvent}/>
       <Route path='/SpaceProfile' component={SpaceProfile}/>

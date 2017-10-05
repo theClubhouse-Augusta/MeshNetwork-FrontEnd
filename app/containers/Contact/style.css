@@ -5,3 +5,46 @@
   flex-direction:column;
   min-height:100vh;
 }
+
+.randomMediaDiv { 
+  height: 50vh; 
+  width: 100vw; 
+  background: #EEEEEE;
+}
+
+.contactForm { 
+  margin: 4vh auto;
+  padding: 6vh 8vw; 
+  background:#EEEEEE; 
+}
+
+.contactInputBlock {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-between; 
+  background: #DDDDDD; 
+  height: 1.5em;  
+  margin: .5em 0;  
+}
+
+.contactFormLabel {
+  margin-right: 2em; 
+}
+
+.messageBlock { 
+  display: flex; 
+  flex-direction: column; 
+  background: #CCCCCC; 
+}
+
+.contactFormMessage {
+  margin: 0 0 1.5em 0;
+  width: 100%;  
+}
+
+.formButton { 
+  width: 20%; 
+  margin: 0 auto; 
+}
+
+
