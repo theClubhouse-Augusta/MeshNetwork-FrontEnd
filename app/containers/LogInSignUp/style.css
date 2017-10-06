@@ -5,3 +5,24 @@
   flex-direction:column;
   min-height:100vh;
 }
+
+.authBody { 
+  height: 73vh;  
+  width: 100vw; 
+  background: #EEEEEE; 
+}
+
+.tabsContainer { 
+  width: 600px; 
+  height: 600px; 
+  margin: 0 auto; 
+  border: 2px solid black; 
+}
+
+.tabsNav {
+  border: 2px solid blue; 
+}
+
+.activeTabContent { 
+  border: 2px solid red; 
+}
