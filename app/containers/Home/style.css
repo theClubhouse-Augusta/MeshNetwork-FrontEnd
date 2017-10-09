@@ -9,6 +9,7 @@ In the case of multiple components of the same type the first component ex HomeB
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  position: relative; 
 }
 
 h1, h2, h3, h4, h5 { 

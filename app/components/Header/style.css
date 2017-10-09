@@ -4,7 +4,18 @@ header {
     display: flex; 
     flex-direction: row;
     justify-content: space-between; 
-    height: 15vh;    
+    height: 15vh;  
+    width: 100vw;  
+    position: fixed;  
+    z-index: 9999; 
+    background: #fff;
+}
+
+.bodyWrapper { 
+    position: relative; 
+    margin-top: 15vh; 
+    transition: all 1.2s ease-in-out; 
+    overflow: hidden;
 }
 
 ul {
