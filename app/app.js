@@ -12,6 +12,9 @@ import BusinessSearch from 'containers/BusinessSearch';
 import Contact from 'containers/Contact';
 import EventDetail from 'containers/EventDetail';
 import Events from 'containers/Events';
+import Spaces from 'containers/Spaces';
+import Sponsors from 'containers/Sponsors';
+import LearningHome from  'containers/LearningHome';
 import LogInSignUp from 'containers/LogInSignUp';
 import MemberSearch from 'containers/MemberSearch';
 import NewEvent from 'containers/NewEvent';
@@ -30,6 +33,9 @@ ReactDOM.render((
       <Route path='/Contact' component={Contact}/>
       <Route path='/EventDetail' component={EventDetail}/>
       <Route path='/Events' component={Events}/>
+      <Route path='/Sponsors' component={Sponsors}/>
+      <Route path='/Spaces' component={Spaces}/>
+      <Route path='/Learning' component={LearningHome}/>
       <Route path='/Auth' component={LogInSignUp}/>
       <Route path='/MemberSearch' component={MemberSearch}/>
       <Route path='/NewEvent' component={NewEvent}/>

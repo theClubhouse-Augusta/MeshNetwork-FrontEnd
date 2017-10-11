@@ -29,6 +29,12 @@ export default class About extends React.PureComponent {
               <div className="aboutButtons">
               <div className="aboutSignUp"></div>
               <div className="aboutContact"></div>
+              <div className="aboutLocationList">
+                <div className="aboutLocation"> 
+                  <div className="locationName"></div>
+                  <div className="locationDetail"></div>
+                </div>
+              </div>
             </div>                      
           </div>
         </main>

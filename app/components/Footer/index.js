@@ -7,7 +7,7 @@
 import React from 'react';
 import {TiSocialAtCircular,   TiSocialFacebookCircular,
 TiSocialInstagramCircular,
-TiSocialTwitterCircular} from 'react-icons/lib/ti'
+TiSocialTwitterCircular} from 'react-icons/lib/ti';
 
 import './style.css';
 import './styleM.css';

@@ -9,6 +9,7 @@ header {
     position: fixed;  
     z-index: 9999; 
     background: #fff;
+    border-bottom: 2px solid red; 
 }
 
 .bodyWrapper { 
