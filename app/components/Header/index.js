@@ -15,7 +15,7 @@ export default class Header extends React.PureComponent {
       <header className="headerBlock">
         
         <div id="logo" className="globalHeaderLogo"> <a href="/">
-          <img src="https://placeholdit.co//i/125x125" alt="mesh network logo" />
+          <img src="https://placeholdit.co//i/125x125" alt="mesh network logo" height="100%" />
           </a></div>
 
         <div className="globalHeaderCenter"> 

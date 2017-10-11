@@ -30,7 +30,7 @@ ReactDOM.render((
       <Route path='/Contact' component={Contact}/>
       <Route path='/EventDetail' component={EventDetail}/>
       <Route path='/Events' component={Events}/>
-      <Route path='/LogInSignUp' component={LogInSignUp}/>
+      <Route path='/Auth' component={LogInSignUp}/>
       <Route path='/MemberSearch' component={MemberSearch}/>
       <Route path='/NewEvent' component={NewEvent}/>
       <Route path='/SpaceProfile' component={SpaceProfile}/>

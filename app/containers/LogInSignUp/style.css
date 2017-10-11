@@ -1,7 +1,84 @@
-/* LogInSignUp Styles */
+/* LogInSignUp Styles 
+
+on hovers & other animation goodies when colors are decided7.*/
 
 .container {
   display:flex;
   flex-direction:column;
   min-height:100vh;
 }
+
+.authBody { 
+  height: 73vh;  
+  width: 100vw; 
+  background: #EEEEEE; 
+}
+
+.tabsContainer { 
+  width: 600px; 
+  height: 600px; 
+  margin: 4vh auto; 
+  background: #DDDDDD;  
+}
+
+  .tabList {
+    width: 70%; 
+    margin: 2vh auto; 
+    display: flex; 
+    justify-content: space-around; 
+    background: #CCCCCC; 
+
+  }
+
+  .tabContent { 
+    width: 80%; 
+    margin: 2vh auto; 
+    background: #CCCCCC; 
+  }
+
+    #loginForm { 
+      margin: 25% 0 0 0; 
+      background: #BBBBBB; 
+    }
+
+      #rememberMe { 
+        width: 40%; 
+      }
+
+      .forgotInfo { 
+        display: flex; 
+        justify-content: space-around; 
+        background: #bbbbbb;
+      }
+        .userInfoLink {
+          margin: 0 1em; 
+          background: #aaaaaa;
+        }
+
+    #signUpForm { 
+      margin-top: 15%; 
+    }
+
+  .tabLink { 
+    border-left: solid 2px #000;
+    border-right: solid 2px #000;  
+    width: 50%; 
+    text-align: center; 
+    margin: 1em;
+    background: #bbbbbb; 
+  }
+
+  .userFormItem {
+    display: flex; 
+    justify-content: space-between;
+    margin: 2em; 
+    background: #aaaaaa; 
+  }
+
+    .userFormSubmit {       
+      display: flex; 
+      margin: 10% auto;  
+      background: #aaaaaa; 
+    }
+
+

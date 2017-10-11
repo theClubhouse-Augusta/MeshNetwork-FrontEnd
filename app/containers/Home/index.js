@@ -20,10 +20,13 @@ export default class Home extends React.PureComponent {
     return (
       <div className="container">
         <Helmet title="Home" meta={[ { name: 'description', content: 'Description of Home' }]}/>
-          <Header></Header>
-          <HomeBodyOne />
-          <HomeBodyTwo />
-          <HomeBodyThree /> 
+          <Header/>
+
+          <div className="bodyWrapper"> 
+            <HomeBodyOne />
+            <HomeBodyTwo />
+            <HomeBodyThree /> 
+          </div>
       </div>
     );
   }

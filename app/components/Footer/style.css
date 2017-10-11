@@ -1,7 +1,7 @@
 /* Footer Styles */
 footer {  
-    margin: 4vh 0 0 0; 
     border-top: solid 2px black; 
+    height: 10vh; 
 }
 
 .globalFooterNav { 
