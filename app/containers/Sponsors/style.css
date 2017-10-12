@@ -5,3 +5,54 @@
   flex-direction:column;
   min-height:100vh;
 }
+
+.sponsorsBodyContainer {
+  background: #EEEEEE;
+  min-height: 90vh; 
+  width: 100vw; 
+  margin: 0 auto;
+  padding: 15vh 0 0 0; 
+}
+
+  .titleList { 
+    margin: 0 auto; 
+    width: 50vw; 
+    padding: 6vh;
+    text-align: center;  
+  }
+
+  .aboutSponsorsText {
+    margin: 6vh 0 4vh 0;
+  }
+
+  .sponsorList { 
+    background: #DDDDDD; 
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: wrap; 
+    justify-content: space-around;
+    margin-bottom: 10vh; 
+   
+  }
+
+    .sponsorListing { 
+      border: 1px solid #CCCCCC;
+      width: 25vw; 
+      padding: 1em; 
+      margin: 4vh 0;      
+    }
+
+    .sponsorLogo {  
+      display: flex;
+      flex-direction: column;  
+      justify-content: center;
+      margin: 2vh;             
+    }
+
+    .sponsorTextBlock {  
+      text-align: center; 
+                
+    }
+      
+
+  
