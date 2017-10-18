@@ -1,0 +1,60 @@
+/* LearningDetail Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.detailBody { 
+  height: 100vh; 
+  padding-bottom: 40vh; 
+  background: #EEEEEE; 
+}
+
+.classLocation { 
+  background: #ffffff; 
+  height: 15avh;
+  text-align: center; 
+}
+
+.classTitle {  
+  text-align: center;  
+  background: #BBBBBB;  
+  padding-top: 25vh;
+}
+
+.spaceName { 
+  text-align: center; 
+  padding: 1em; 
+}
+
+.className { 
+  margin: 6vh auto; 
+  text-align: center; 
+  background: #DDDDDD; 
+}
+.classDetail { 
+  margin: 10vh 4vh; 
+  padding: 1em; 
+  background: #DDDDDD; 
+}
+
+.registerBlock { 
+  background: #CCCCCC;
+  margin: 5vh;
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-around; 
+  align-content: center; 
+  flex-wrap: wrap; 
+}
+
+.registerButton { 
+  background: #ffffff; 
+  padding: .5em 0; 
+}
+
+.classPrice {
+  padding: .5em; 
+}
