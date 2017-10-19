@@ -22,8 +22,7 @@ export default class LearningDetail extends React.PureComponent {
           <div className="detailBody"> 
             <div className="headingMediaBlock"> 
               <div className="headingImage"> 
-                { /* global css classes from 'parent' container */ }
-                
+                { /* global css classes from 'parent' container */ }               
                 <h1 className="classTitle"> Startup Bootcamp</h1>
               
                 
