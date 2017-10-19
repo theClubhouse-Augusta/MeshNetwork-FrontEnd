@@ -15,6 +15,7 @@ import Events from 'containers/Events';
 import Spaces from 'containers/Spaces';
 import Sponsors from 'containers/Sponsors';
 import LearningHome from  'containers/LearningHome';
+import LearningDetail from  'containers/LearningDetail';
 import LogInSignUp from 'containers/LogInSignUp';
 import MemberSearch from 'containers/MemberSearch';
 import NewEvent from 'containers/NewEvent';
@@ -36,6 +37,7 @@ ReactDOM.render((
       <Route path='/Sponsors' component={Sponsors}/>
       <Route path='/Spaces' component={Spaces}/>
       <Route path='/Learning' component={LearningHome}/>
+      <Route path='/detail' component={LearningDetail}/>
       <Route path='/Auth' component={LogInSignUp}/>
       <Route path='/MemberSearch' component={MemberSearch}/>
       <Route path='/NewEvent' component={NewEvent}/>

@@ -7,13 +7,13 @@
 }
 
 .randomMediaDiv { 
-  height: 50vh; 
+  height: 45vh; 
   width: 100vw; 
   background: #EEEEEE;
 }
 
 .contactForm { 
-  margin: 4vh auto;
+  margin: 4vh auto 10vh auto;
   padding: 6vh 8vw; 
   background:#EEEEEE; 
 }

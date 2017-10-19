@@ -5,9 +5,7 @@ header {
     flex-direction: row;
     justify-content: space-between; 
     height: 15vh;  
-    width: 100vw;  
-    position: fixed;  
-    z-index: 9999; 
+    width: 100vw; 
     background: #fff;
     border-bottom: 2px solid red; 
 }

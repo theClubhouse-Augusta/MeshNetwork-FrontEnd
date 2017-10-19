@@ -30,9 +30,9 @@ export default class Spaces extends React.PureComponent {
           <div className="spacesList">
             <div className="spaceListing">
               <h3> the Clubhou.se</h3>
-              <h4> 540 Telfair St <br />
+              <h4 className="spaceLocation"> 540 Telfair St <br />
                Augusta, GA</h4>
-              <p> here is a v cool & short description of the clubhou.se</p>
+              <p className="spaceDescription"> here is a v cool & short description of the clubhou.se</p>
               <div className="spaceListingSocial"> 
                 <TiSocialAtCircular className="socialIcon"/>
                 <TiSocialFacebookCircular className="socialIcon" />
@@ -43,9 +43,9 @@ export default class Spaces extends React.PureComponent {
 
             <div className="spaceListing">
               <h3> Four Athens</h3>
-              <h4> 540 Telfair St <br />
+              <h4 className="spaceLocation"> 540 Telfair St <br />
               Augusta, GA</h4>
-              <p> here is a v cool & short description of the four athens</p>
+              <p className="spaceDescription"> here is a v cool & short description of the four athens</p>
               <div className="spaceListingSocial"> 
                 <TiSocialAtCircular className="socialIcon"/>
                 <TiSocialFacebookCircular className="socialIcon" />
@@ -56,9 +56,9 @@ export default class Spaces extends React.PureComponent {
 
             <div className="spaceListing">
                   <h3> Super Cool Space</h3>
-                  <h4> 789 Granger St <br />
+                  <h4 className="spaceLocation"> 789 Granger St <br />
                   Rando, GA</h4>
-                  <p> here is a v cool & short description of the space</p>
+                  <p className="spaceDescription"> here is a v cool & short description of the space</p>
                   <div className="spaceListingSocial"> 
                     <TiSocialAtCircular className="socialIcon"/>
                     <TiSocialFacebookCircular className="socialIcon" />
@@ -70,7 +70,7 @@ export default class Spaces extends React.PureComponent {
 
           <div className="spaceJoinInterest"> 
             <h3> Interested in joining mesh?</h3>
-            <p> partnership opps are available for space organizers, researchers & individuals</p>
+            <p className="spaceDescription"> partnership opps are available for space organizers, researchers & individuals</p>
             <button className="joinInterestButton"> Contact </button>
           </div>
         </div> 
