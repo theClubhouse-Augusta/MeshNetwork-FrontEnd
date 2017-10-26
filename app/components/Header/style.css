@@ -43,10 +43,21 @@ ul {
 
 
 
+
 .navItem { 
     display: inline;
     padding: 1.5em; 
     /* controls nav bar's horizontal padding*/ 
+}
+
+.tempNavLinks { 
+    display: flex; 
+    flex-wrap: wrap; 
+}
+
+.tempNavItem {
+    font-size: 14px; 
+    padding: .5em; 
 }
 
 
