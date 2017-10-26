@@ -67,15 +67,20 @@ export default class Header extends React.PureComponent {
           </nav>
 
           <Bars className="menuIcon" onClick={this.handleMenu}/>
-
+    
         </div>
 
         {this.renderMenu()}
-      </div>
+      </div>      
+      
+      </header>     
     );
   }
 }
 
+
 Header.contextTypes = {
   router: React.PropTypes.object
 };
+
+
