@@ -1,37 +1,32 @@
 /* Footer Styles */
-footer {  
-    border-top: solid 2px black; 
-    height: 10vh; 
+
+.footerContent {
+  height:50px;
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center;
+  padding-left:15px;
+  padding-right:15px;
+  border-top:1px solid #CCCCCC;
 }
 
-.globalFooterNav { 
-    display: flex; 
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    width: 60vw;  
-    margin: 0 auto; 
+.copyrightText {
+  width:50%;
+  font-size:0.9em;
+  color:#444444;
 }
-
 
 .socialIconRow {
-    display: flex; 
+    width:50%;
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;   
-    width: 375px; 
-    margin: 0 auto; 
+    justify-content:flex-end;
 }
 
-.socialIcon { 
-    margin: .25em; 
-    padding: .5em; 
+.socialIcon {
+    margin: .25em;
+    padding: .5em;
     font-size: 1.5em;
-    justify-content: space-around;  
-}
-
-.copyright {
-    text-align: center; 
-    width: 100%; 
-    font-size: .75em; 
+    justify-content: space-around;
 }

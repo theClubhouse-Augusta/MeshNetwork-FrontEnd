@@ -6,67 +6,58 @@
   min-height:100vh;
 }
 
-.spacesBodyWrapper { 
-  min-height: 90vh; 
-  width: 100vw; 
+.spacesHeader {
+  width: 100%;
   margin: 0 auto;
-  padding: 4vh 0 10vh 0; 
-  background: #EEEEEE;    
+  background:#222222;
+  height:300px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+  font-family: 'Anton', sans-serif;
+  font-size:3em;
+  text-align:center;
+  color:#FFFFFF;
 }
 
 .spacesTitle {
-  width: 80%; 
-  margin: 0 auto; 
-  padding: 6vh 0; 
-  text-align: center; 
-  background: #DDDDDD; 
+  border-bottom:1px solid #FFFFFF;
 }
 
-.spacesMap {
-  width: 100vw; 
-  height: 55vh; 
-  background: #CCCCCC; 
-  margin-bottom: 4vh; 
-}
-
-.spacesList { 
+.spacesList {
   justify-content: space-around;
   display: flex;
-  flex-wrap: wrap; 
-  background: #DDDDDD; 
+  flex-wrap: wrap;
+  max-width:1500px;
+  margin:0 auto;
+  padding:15px;
 }
 
-  .spaceListing { 
-    margin: 2vh 2vw;
-    padding: 4vh 2vw;  
-    text-align: center; 
-    max-width: 25vw; 
-    background: #CCCCCC; 
-  }     
-  
-    .spaceLocation { 
-      margin: 4vh 0 0 0; 
+  .spaceListing {
+    max-width: 30%;
+    padding:1%;
+  }
+
+    .spaceLocation {
+      margin: 4vh 0 0 0;
     }
 
     .spaceDescription {
-        margin: 2em 0; 
+        margin: 2em 0;
       }
 
-.spaceJoinInterest { 
-  margin: 10vh auto; 
+.spaceJoinInterest {
+  margin: 10vh auto;
   text-align: center;
-  display: flex; 
-  align-content: center; 
-  flex-direction: column;  
+  display: flex;
+  align-content: center;
+  flex-direction: column;
   max-width: 90vw;
-  background: #DDDDDD; 
+  background: #DDDDDD;
 }
 
   .joinInterestButton {
-    width: 20%; 
+    width: 20%;
     margin: 2vh auto;
   }
-
-
-  
-

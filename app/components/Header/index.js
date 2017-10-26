@@ -5,55 +5,73 @@
 */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './style.css';
 import './styleM.css';
 
+import Bars from 'react-icons/lib/fa/bars';
+
 export default class Header extends React.PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      menuOpen:false
+    }
+  }
+
+  handleMenu = () => {
+    if(this.state.menuOpen === true)
+    {
+      this.setState({
+        menuOpen:false
+      })
+    }
+    else if(this.state.menuOpen === false)
+    {
+      this.setState({
+        menuOpen:true
+      })
+    }
+  }
+
+  renderMenu() {
+    if(this.state.menuOpen === true) {
+      return(
+        <nav className="navMobile">
+          <Link to="/" className="navButton">Home</Link>
+          <Link to="/contact" className="navButton">Contact</Link>
+          <a href="https://github.com/Technpoathic" className="navButton">Github</a>
+        </nav>
+      )
+    }
+  }
+
   render() {
-    return (      
-      <header className="headerBlock">
-        
-        <div id="logo" className="globalHeaderLogo"> <a href="/">
-          <img src="https://placeholdit.co//i/125x125" alt="mesh network logo" height="100%" />
-          </a></div>
+    return (
+      <div className="headerComponent">
+        <div className="navBar">
+          <div className="siteName">
+            MESH NETWORK <br/>
+            OF INNOVATION
+          </div>
 
-        <div className="globalHeaderCenter"> 
-          <nav className="globalHeaderNav">
-            <ul className="globalHeaderNavLinks"> 
-              <li className="navItem">community
-                 { /* <ul> 
-                    <li><a href="/locations"> tech spaces </a></li>
-                    <li><a href="/member-search"> members</a></li>
-                  </ul> */ } 
-              </li>
-              <li className="navItem"><a href="">events</a></li>
-              { /*  <li>jobs</li> */ } 
-            </ul>           
-          </nav>             
-          <div>  
+          <nav className="nav">
+            <Link to="/" className="navButton">Home</Link>
+            <Link to="/about" className="navButton">About</Link>
+            <Link to="/contact" className="navButton">Contact</Link>
+            <Link to="/sponsors" className="navButton">Sponsors</Link>
+            <Link to="/spaces" className="navButton">Spaces</Link>
+            <Link to="/learning" className="navButton">Education</Link>
+            <Link to="/auth" className="navButton">Login / SignUp</Link>
+          </nav>
 
-          </div>      
+          <Bars className="menuIcon" onClick={this.handleMenu}/>
+    
         </div>
 
-         <div> 
-          <ul className="tempNavLinks"> 
-              <li className="tempNavItem"><a href="/About">About</a></li>
-              <li className="tempNavItem"><a href="/Booking">Booking</a></li>
-              <li className="tempNavItem"><a href="/BusinessSearch">BusinessSearch</a></li>
-              <li className="tempNavItem"><a href="/Contact">Contact</a></li>
-              <li className="tempNavItem"><a href="/EventDetail">EventDetail</a></li>
-              <li className="tempNavItem"><a href="/Events">Events</a></li>
-              <li className="tempNavItem"><a href="/Sponsors">Sponsors</a></li>
-              <li className="tempNavItem"><a href="/Spaces">Spaces</a></li>
-              <li className="tempNavItem"><a href="/Learning">Learning</a></li>
-              <li className="tempNavItem"><a href="/detail">LearningDetail</a></li>
-              <li className="tempNavItem"><a href="/Auth">Login/SignUp</a></li>
-              <li className="tempNavItem"><a href="/NewEvent">NewEvent</a></li>
-              <li className="tempNavItem"><a href="/SpaceProfile">SpaceProfile</a></li>
-              <li className="tempNavItem"><a href="/UserProfile">UserProfile</a></li>                
-            </ul> 
-        </div>         
+        {this.renderMenu()}
+      </div>      
       
       </header>     
     );

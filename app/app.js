@@ -22,7 +22,6 @@ import NewEvent from 'containers/NewEvent';
 import SpaceProfile from 'containers/SpaceProfile';
 import UserProfile from 'containers/UserProfile';
 import NotFound from 'containers/NotFound';
- 
 
 ReactDOM.render((
   <BrowserRouter>
