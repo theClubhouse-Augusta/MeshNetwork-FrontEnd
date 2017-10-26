@@ -30,15 +30,39 @@ export default class Header extends React.PureComponent {
               <li className="navItem"><a href="">events</a></li>
               { /*  <li>jobs</li> */ } 
             </ul>           
-          </nav>        
+          </nav>             
+          <div>  
 
+          </div>      
         </div>
-       
+
+         <div> 
+          <ul className="tempNavLinks"> 
+              <li className="tempNavItem"><a href="/About">About</a></li>
+              <li className="tempNavItem"><a href="/Booking">Booking</a></li>
+              <li className="tempNavItem"><a href="/BusinessSearch">BusinessSearch</a></li>
+              <li className="tempNavItem"><a href="/Contact">Contact</a></li>
+              <li className="tempNavItem"><a href="/EventDetail">EventDetail</a></li>
+              <li className="tempNavItem"><a href="/Events">Events</a></li>
+              <li className="tempNavItem"><a href="/Sponsors">Sponsors</a></li>
+              <li className="tempNavItem"><a href="/Spaces">Spaces</a></li>
+              <li className="tempNavItem"><a href="/Learning">Learning</a></li>
+              <li className="tempNavItem"><a href="/detail">LearningDetail</a></li>
+              <li className="tempNavItem"><a href="/Auth">Login/SignUp</a></li>
+              <li className="tempNavItem"><a href="/NewEvent">NewEvent</a></li>
+              <li className="tempNavItem"><a href="/SpaceProfile">SpaceProfile</a></li>
+              <li className="tempNavItem"><a href="/UserProfile">UserProfile</a></li>                
+            </ul> 
+        </div>         
+      
       </header>     
     );
   }
 }
 
+
 Header.contextTypes = {
   router: React.PropTypes.object
 };
+
+
