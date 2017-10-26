@@ -1,55 +1,51 @@
-/* Header Styles */
+/* NavBar Styles */
 
-header { 
-    display: flex; 
-    flex-direction: row;
-    justify-content: space-between; 
-    height: 15vh;  
-    width: 100vw; 
-    background: #fff;
-    border-bottom: 2px solid red; 
+.headerComponent {
+  position:absolute;
+  width:100%;
 }
 
-.bodyWrapper { 
-    position: relative; 
-    margin-top: 15vh; 
-    transition: all 1.2s ease-in-out; 
-    overflow: hidden;
+.navBar {
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  max-width:1000px;
+  height:50px;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 auto;
+  border-bottom:2px solid #FFFFFF;
 }
 
-ul {
-    padding: 0; 
+.siteName {
+  font-size:1.5em;
+  line-height:24px;
+  margin-left:10px;
+  font-family:'Anton';
+  text-align:center;
+  color:#FFFFFF;
 }
 
-.globalHeaderLogo { 
-    max-width: 20%; 
+.nav {
+  width:70%;
+  display:flex;
+  flex-direction:row;
+  justify-content:flex-end;
+  margin-right:15px;
 }
 
-.globalHeaderCenter { 
-    width: 80%;   
-    max-height: 200px;  
+.navButton {
+  color:#FFFFFF;
+  text-decoration:none;
+  margin-right:15px;
+  font-weight:bold;
+  font-variant:small-caps;
 }
 
-.globalHeaderNav { 
-    flex-direction: row; 
-    padding: 1.5em; 
-    /* controls nav bar's vertical padding*/
+.navButton:hover {
+  color:#000000;
 }
 
-.globalHeaderNavLinks {  
-    /* change to 50% if another item added*/
-    margin: 0 auto;
+.menuIcon {
+  display:none;
 }
-
-
-
-.navItem { 
-    display: inline;
-    padding: 1.5em; 
-    /* controls nav bar's horizontal padding*/ 
-}
-
-
-
-
-

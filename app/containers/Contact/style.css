@@ -1,50 +1,119 @@
 /* Contact Styles */
 
-.container {
+
+.contact_container {
   display:flex;
   flex-direction:column;
   min-height:100vh;
 }
 
-.randomMediaDiv { 
-  height: 45vh; 
-  width: 100vw; 
-  background: #EEEEEE;
+.contact_headerContactStyle {
+  height:400px;
+  width:100%;
+  background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('http://h4z.it/Image/191ccf_odebootcamp3.jpg');
+  background-size:cover;
+  background-position:center center;
+  font-family: 'Anton', sans-serif;
+  font-size:4em;
+  line-height:120px;
+  text-align:center;
+  color:#FFFFFF;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 }
 
-.contactForm { 
-  margin: 4vh auto 10vh auto;
-  padding: 6vh 8vw; 
-  background:#EEEEEE; 
+.contact_headerMain {
+  display:flex;
+  flex-direction:column;
+  flex-grow:1;
+  align-self:center;
+  justify-content:center;
 }
 
-.contactInputBlock {
-  display: flex; 
-  flex-direction: row; 
-  justify-content: space-between; 
-  background: #DDDDDD; 
-  height: 1.5em;  
-  margin: .5em 0;  
+.contact_headerSubtitle {
+  font-family:Lato;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  max-width:900px;
+  text-align:center;
+  font-size:1em;
+  line-height:30px;
+  color:#BBBBBB;
 }
 
-.contactFormLabel {
-  margin-right: 2em; 
+.contact_mainTitle {
+  font-family:Montserrat;
+  font-size:3em;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  font-variant:small-caps;
+  font-weight:bold;
+  color:#555555;
+  padding:15px;
 }
 
-.messageBlock { 
-  display: flex; 
-  flex-direction: column; 
-  background: #CCCCCC; 
+.contact_mainSubtitle {
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  color:#888888;
+  line-height:30px;
 }
 
-.contactFormMessage {
-  margin: 0 0 1.5em 0;
-  width: 100%;  
+.contact_sectionContainer {
+  min-height:100px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:15px;
 }
 
-.formButton { 
-  width: 20%; 
-  margin: 0 auto; 
+.contact_contactRow {
+  display:flex;
+  flex-direction:row;
+  max-width:1200px;
+  margin:0 auto;
+  justify-content:space-between;
+}
+
+.contact_mainStyle {
+  padding:30px;
+}
+
+.contact_contactContainer {
+  width:50%;
+  background:#FFFFFF;
+  box-shadow:0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+}
+
+.contact_contactInfo {
+  display:flex;
+  flex-direction:column;
+  width:40%;
+}
+
+.contact_contactBlock {
+  padding:30px;
+}
+
+.contact_skillTitle {
+  font-family:Montserrat;
+  font-size:1em;
+  text-transform:uppercase;
+  font-weight:bold;
 }
 
 
+.contact_inputLabel {
+  font-family:Montserrat;
+  font-size:0.8em;
+  font-weight:bold;
+}

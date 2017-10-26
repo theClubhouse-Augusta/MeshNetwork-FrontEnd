@@ -1,5 +1,20 @@
 /* HomeBodyThree Styles */
 
 #homeThree {
-    background: #CCCCCC; 
+  background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('../../images/panel2.jpg');
+  background-size:cover;
+  background-position: center center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.homeBodyHeader {
+  font-family: 'Open Sans', sans-serif;
+  font-size:5em;
+  font-weight:800;
+  font-variant:small-caps;
+  color:#FFFFFF;
+  border-bottom:5px solid #FFFFFF;
 }

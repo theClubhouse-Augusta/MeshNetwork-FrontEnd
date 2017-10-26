@@ -6,32 +6,52 @@
   min-height:100vh;
 }
 
+.aboutBanner {
+  height:400px;
+  width:100%;
+  background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('https://hackaugusta.net/wp-content/uploads/2014/10/Academy-Front.png');
+  background-size:cover;
+  background-position:center center;
+  font-family: 'Anton', sans-serif;
+  font-size:4em;
+  line-height:120px;
+  text-align:center;
+  color:#FFFFFF;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
 .mainProfile {
   width:100%;
-  max-width:1000px;
   margin:0 auto;
 }
 
 .aboutBlock {
-  background:#DDDDDD;
   min-height:100vh;
-  max-width: 90vw; 
-  margin: 0 auto; 
+  width:100%;
+  max-width:1000px;
+  margin: 0 auto;
+  padding:15px;
 }
 
 
 .aboutTextHeader {
-  background:#CCCCCC;
-  display:flex;
-  height:8vh;
-  margin: 4vh 0 10vh 0;
+  font-family: 'Open Sans', sans-serif;
+  font-size:2em;
+  font-weight:800;
+  font-variant:small-caps;
+  color:#222222;
+  border-bottom:1px solid #888888;
 }
 
 .aboutContent {
-  background:#CCCCCC;
+  font-family: 'Open Sans', sans-serif;
   display:flex;
-  height:400px;
+  flex-direction:column;
   margin:15px;
+  margin-bottom:30px;
 }
 
 .aboutFaq {
@@ -44,24 +64,19 @@
 
 .aboutButtons {
   min-height:100px;
-  width: 40%; 
-  margin: 0 auto; 
   display:flex;
-  flex-direction:column;
-  padding:30px;
+  align-items:center;
+  flex-direction:row;
+  justify-content:space-between;
+  padding:15px;
+  background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('https://hackaugusta.net/wp-content/uploads/2014/10/Academy-Front.png');
+  background-size:cover;
 }
 
-.aboutSignUp {
-  background:#999999;
-  width:100%;
-  height:50px;
-  border-radius:5px;
-}
-
-.aboutContact {
-  background:#999999;
-  width:100%;
-  height:50px;
-  border-radius:5px;
-  margin-top:15px;
+.aboutButtonText {
+  font-family: 'Open Sans', sans-serif;
+  font-size:2em;
+  font-weight:800;
+  font-variant:small-caps;
+  color:#FFFFFF;
 }
