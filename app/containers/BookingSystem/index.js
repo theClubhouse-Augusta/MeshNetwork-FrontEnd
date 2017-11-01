@@ -7,6 +7,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/header'; 
+import Footer from 'components/footer';
 import LocationSelect from 'components/LocationSelect'; 
 import DateTimeSelect from 'components/DateTimeSelect'; 
 
@@ -17,33 +18,22 @@ import './styleM.css';
 export default class BookingSystem extends React.PureComponent {
   render() {
     return (
-      <div className="container">
+      <div className="booking_container">
         <Helmet title="BookingSystem" meta={[ { name: 'description', content: 'Description of BookingSystem' }]}/> 
-        <Header />
-        <div className="booking_main"> 
-          <h2 className="booking_headerMain">
-            mesh booking system
-          </h2>
-
-          <div className="booking_locationSelect">
-            <p> to get started select your location</p>
-            <LocationSelect />
+        <Header/>
+        <header className="booking_headerBookingStyle">
+          <div className="booking_headerMain">
+            <div className="booking_headerTitle">Booking System</div>
           </div>
-
-          <div className="booking_flowWrap">
-            <div className="booking_typeSelect">
-
-            </div>
-
-            <div className="booking_flowTwo">
-
-            </div>
-
-            <div className="booking_dateTime">
-              <DateTimeSelect /> 
+        </header>
+        <main className="booking_mainStyle">
+          <div className="booking_sectionContainer">
+            <div className="booking_mainTitle">
+              Let’s Mesh Together
             </div>
           </div>
-        </div>
+        </main>
+        <Footer />
       </div>
     );
   }
