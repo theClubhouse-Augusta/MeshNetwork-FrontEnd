@@ -31,28 +31,8 @@
   justify-content:center;
 }
 
-.booking_headerSubtitle {
-  font-family:Lato;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  max-width:900px;
-  text-align:center;
-  font-size:1em;
-  line-height:30px;
-  color:#BBBBBB;
-}
-
-.booking_mainTitle {
-  font-family:Montserrat;
-  font-size:3em;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  font-variant:small-caps;
-  font-weight:bold;
-  color:#555555;
-  padding:15px;
+.booking_mainStyle {
+  padding:30px;
 }
 
 .booking_sectionContainer {
@@ -63,7 +43,52 @@
   padding:15px;
 }
 
-
-.booking_mainStyle {
-  padding:30px;
+.booking_mainTitle {
+  font-family:Montserrat;
+  font-size: 2em;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  font-weight:bold;
+  color:#555555;
+  padding:15px;
 }
+
+.booking_locationSelect { 
+  margin: 30px auto; 
+}
+
+.booking_flowContainer { 
+  height: 80vh; 
+  border: 2px solid green; 
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-between;
+}
+
+.booking_selectType { 
+  width: 30%; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-around; 
+  text-align: center; 
+  align-items: center; 
+}
+
+.booking_flowTwo { 
+  width: 30%; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-around; 
+  text-align: center; 
+  align-items: center; 
+}
+
+.booking_card {
+   
+}
+
+.booking_selectDateTime { 
+  width: 30%; 
+}
+
