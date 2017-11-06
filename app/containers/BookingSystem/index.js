@@ -37,7 +37,7 @@ export default class BookingSystem extends React.PureComponent {
   
   addActiveClass() {
     this.setState({
-      isActive: true
+      isActive: true 
     }); 
     console.log('clicketh'); 
   }

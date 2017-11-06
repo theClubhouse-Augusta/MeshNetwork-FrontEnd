@@ -1,0 +1,14 @@
+/* CalenderTimeWrapper Styles */
+
+.dateTimeWrapper { 
+    display: flex; 
+    align-content: space-around; 
+    flex-direction: column; 
+    height: 100%; 
+    margin: 25% 0; 
+}
+
+.dateTimeInput { 
+    margin: 0 auto;  
+    
+}
