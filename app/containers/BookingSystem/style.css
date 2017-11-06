@@ -1,12 +1,12 @@
 /* BookingSystem Styles */
 
-.booking_container {
+.bookingContainer {
   display:flex;
   flex-direction:column;
   min-height:100vh;
 }
 
-.booking_headerBookingStyle {
+.bookingHeaderBookingStyle {
   height:400px;
   width:100%;
   background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('http://h4z.it/Image/191ccf_odebootcamp3.jpg');
@@ -23,7 +23,7 @@
   align-items:center;
 }
 
-.booking_headerMain {
+.bookingHeaderMain {
   display:flex;
   flex-direction:column;
   flex-grow:1;
@@ -31,11 +31,11 @@
   justify-content:center;
 }
 
-.booking_mainStyle {
+.bookingMainStyle {
   padding:30px;
 }
 
-.booking_sectionContainer {
+.bookingSectionContainer {
   min-height:100px;
   display:flex;
   flex-direction:column;
@@ -43,7 +43,7 @@
   padding:15px;
 }
 
-.booking_mainTitle {
+.bookingMainTitle {
   font-family:Montserrat;
   font-size: 2em;
   display:flex;
@@ -54,11 +54,11 @@
   padding:15px;
 }
 
-.booking_locationSelect { 
+.bookingLocationSelect { 
   margin: 30px auto; 
 }
 
-.booking_flowContainer { 
+.bookingFlowContainer { 
   height: 80vh; 
   border: 2px solid green; 
   display: flex; 
@@ -66,7 +66,7 @@
   justify-content: space-between;
 }
 
-.booking_selectType { 
+.bookingSelectType { 
   width: 30%; 
   display: flex; 
   flex-direction: column; 
@@ -75,7 +75,7 @@
   align-items: center; 
 }
 
-.booking_flowTwo { 
+.bookingFlowTwo { 
   width: 30%; 
   display: flex; 
   flex-direction: column; 
@@ -84,11 +84,11 @@
   align-items: center; 
 }
 
-.booking_card {
+.bookingCard {
    
 }
 
-.booking_selectDateTime { 
+.bookingSelectDateTime { 
   width: 30%; 
 }
 
