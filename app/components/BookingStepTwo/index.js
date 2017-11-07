@@ -6,6 +6,8 @@
 
 import React from 'react';
 import BookingCardBlock from 'components/BookingCardBlock'; 
+import BookingTourForm from 'components/BookingTourForm'; 
+import BookingMentorForm from 'components/BookingMentorForm'; 
 
 import './style.css';
 import './styleM.css';
@@ -31,8 +33,11 @@ export default class BookingStepTwo extends React.PureComponent {
   
   render() {
     return (
-      <div>
-          <BookingCardBlock  rooms={this.state.rooms} />  
+      <div className="stepTwoContainer">
+         { /*  <BookingTourForm />*/ }  
+         { /* <BookingMentorForm /> */} 
+         <BookingCardBlock  rooms={this.state.rooms} />
+         
       </div>
     );
   }

@@ -10,7 +10,9 @@ import Header from 'components/header';
 import Footer from 'components/footer';
 import LocationSelect from 'components/LocationSelect';
 import DateTimeSelect from 'components/DateTimeSelect'; 
-import BookingStepTwo from 'components/BookingStepTwo'; 
+import BookingStepTwo from 'components/BookingStepTwo';
+import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -31,7 +33,8 @@ export default class BookingSystem extends React.PureComponent {
   
     this.addActiveClass= this.addActiveClass.bind(this);
     this.state = {
-      isActive: false
+      isActive: false,
+      open: false,
     }
   }
   
@@ -41,6 +44,18 @@ export default class BookingSystem extends React.PureComponent {
     }); 
     console.log('clicketh'); 
   }
+
+  handleTouchTap = () => {
+    this.setState({
+      open: true,
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
 
   render() {
     return (
@@ -84,6 +99,15 @@ export default class BookingSystem extends React.PureComponent {
 
               <div className="bookingSelectDateTime">
                 <DateTimeSelect />
+                <div className="bookingSubmit"> 
+                  <RaisedButton label="Submit" primary={true}   onClick={this.handleTouchTap}/>
+                  <Snackbar
+                    open={this.state.open}
+                    message="Got it! Please check your email for confirmation"
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleRequestClose}
+                    />
+                </div>
               </div>
             </div>
           </div>

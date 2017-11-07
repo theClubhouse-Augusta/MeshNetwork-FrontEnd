@@ -41,6 +41,7 @@
   flex-direction:column;
   justify-content:center;
   padding:15px;
+  
 }
 
 .bookingMainTitle {
@@ -55,12 +56,12 @@
 }
 
 .bookingLocationSelect { 
-  margin: 30px auto; 
+  margin: 10vh auto; 
 }
 
 .bookingFlowContainer { 
-  height: 80vh; 
-  border: 2px solid green; 
+  min-height: 80vh; 
+  max-height: 90vh; 
   display: flex; 
   flex-direction: row; 
   justify-content: space-between;
@@ -73,6 +74,7 @@
   justify-content: space-around; 
   text-align: center; 
   align-items: center; 
+
 }
 
 .bookingFlowTwo { 
@@ -84,11 +86,20 @@
   align-items: center; 
 }
 
-.bookingCard {
-   
+.bookingCardBlock {
+  height: 80%; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-around;
+  align-content: center;    
 }
 
 .bookingSelectDateTime { 
   width: 30%; 
+}
+
+.bookingSubmit { 
+  text-align: center;
+  margin-top: 15vh;
 }
 

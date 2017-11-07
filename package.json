@@ -116,7 +116,6 @@
     "lodash": "4.17.4",
     "material-ui": "^0.19.4",
     "minimist": "1.2.0",
-    "moment": "^2.19.1",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-helmet": "5.0.0",
