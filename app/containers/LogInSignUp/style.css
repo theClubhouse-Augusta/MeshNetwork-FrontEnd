@@ -38,21 +38,23 @@ on hovers & other animation goodies when colors are decided7.*/
 
   .tabContent { 
     width: 80%; 
-    margin: 0 auto; 
-    background: #CCCCCC; 
+    margin: 0 auto;  
   }
 
     #loginForm { 
-      margin: 8vh 0 0 0; 
+      margin: 120px 0 0 0; 
     }
 
       #rememberMe { 
-        width: 40%; 
+        width: 70%; 
+        margin: 0 auto; 
       }
 
       .forgotInfo { 
         display: flex; 
         justify-content: space-around; 
+        margin: 20px 0 0 0; 
+        font-size: .75em;
       }
         .userInfoLink {
           margin: 0 1em; 
@@ -77,9 +79,15 @@ on hovers & other animation goodies when colors are decided7.*/
     margin: 2em; 
   }
 
+  .spacesDropdown { 
+    width: 50%; 
+  }
+
     .userFormSubmit {       
       display: flex; 
+      width: 20%; 
       margin: 10% auto;  
+      align-items: center; 
     }
 
 

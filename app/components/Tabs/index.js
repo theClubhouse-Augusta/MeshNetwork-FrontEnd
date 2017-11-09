@@ -39,7 +39,7 @@ export default class ExampleTabs extends React.PureComponent {
               </p>
 
               <p className="userFormItem"> 
-                <label htmlFor="">confirm password</label>
+                <label htmlFor="">password</label>
                 <input type="password" name="" id=""/>
               </p>
 
@@ -47,10 +47,13 @@ export default class ExampleTabs extends React.PureComponent {
                   <RadioButton
                     value="not_light"
                     label="Remember me"
+                    labelPosition="left"
                   />             
               </p>
 
-              <RaisedButton type="submit" className="userFormSubmit">Submit </RaisedButton>
+              <div className="userFormSubmit">
+                <RaisedButton type="submit" >Submit </RaisedButton>
+              </div> 
             </form>
 
             <div className="forgotInfo"> 
@@ -72,7 +75,7 @@ export default class ExampleTabs extends React.PureComponent {
             
               <p className="userFormItem"> 
                 <label htmlFor="" className="userFormLabel"> your home space</label>
-                <DropDownMenu>
+                <DropDownMenu className="spacesDropdown" autoWidth={false}>
                   <MenuItem selected disabled hidden> choose a space</MenuItem>
                   <MenuItem> the Clubhou.se</MenuItem>
                   <MenuItem> Macon </MenuItem>
@@ -94,7 +97,9 @@ export default class ExampleTabs extends React.PureComponent {
                 <input type="password" name="" id=""/>
               </p>
 
-                <RaisedButton type="submit" className="userFormSubmit">Submit </RaisedButton>
+              <div className="userFormSubmit">
+                <RaisedButton type="submit" >Submit </RaisedButton>
+              </div> 
             </form>
           </div>
         </Tab>

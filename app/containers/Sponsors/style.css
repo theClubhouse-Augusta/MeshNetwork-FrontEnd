@@ -6,12 +6,27 @@
   min-height:100vh;
 }
 
+.sponsorBanner { 
+  height:400px;
+  width:100%;
+  background: #CCCCCC; 
+  font-family: 'Anton', sans-serif;
+  font-size: 2em;
+  line-height:120px;
+  text-align:center;
+  color:#FFFFFF;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
 .sponsorsBodyContainer {
-  background: #EEEEEE;
-  min-height: 90vh; 
-  width: 100vw; 
+  min-height:100vh;
+  width:100%;
+  max-width:1000px;
   margin: 0 auto;
-  padding: 4vh 0 0 0; 
+  padding:15px;
 }
 
   .titleList { 
@@ -26,7 +41,6 @@
   }
 
   .sponsorList { 
-    background: #DDDDDD; 
     display: flex; 
     flex-direction: row;
     flex-wrap: wrap; 
@@ -36,7 +50,7 @@
 
     .sponsorListing { 
       border: 1px solid #CCCCCC;
-      width: 25vw; 
+      width: 250px; 
       padding: 1em; 
       margin: 4vh 0;      
     }
