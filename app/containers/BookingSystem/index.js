@@ -11,8 +11,7 @@ import Footer from 'components/footer';
 import LocationSelect from 'components/LocationSelect';
 import DateTimeSelect from 'components/DateTimeSelect'; 
 import BookingStepTwo from 'components/BookingStepTwo';
-import RaisedButton from 'material-ui/RaisedButton';
-import Snackbar from 'material-ui/Snackbar';
+import SubmitButton from 'components/SubmitButton'; 
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -28,36 +27,26 @@ export default class BookingSystem extends React.PureComponent {
   static childContextTypes = { muiTheme: React.PropTypes.object };
   getChildContext() {var theme = getMuiTheme(); return { muiTheme: theme }};
 
+
   constructor(props) {
-    super(props);
-  
+    super(props);  
     this.addActiveClass= this.addActiveClass.bind(this);
     this.state = {
-      isActive: false,
-      open: false,
-    }
+      active: false,
+      bgColor: '#ffffff', 
   }
-  
+}; 
+
   addActiveClass() {
     this.setState({
-      isActive: true 
+      active: true,
+      bgColor: '#37B1E3', 
     }); 
     console.log('clicketh'); 
   }
 
-  handleTouchTap = () => {
-    this.setState({
-      open: true,
-    });
-  };
-
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
-
   render() {
+
     return (
       <div className="bookingContainer">
         <Helmet title="BookingSystem" meta={[ { name: 'description', content: 'Description of BookingSystem' }]}/> 
@@ -79,17 +68,19 @@ export default class BookingSystem extends React.PureComponent {
             {/* booking types are hard coded bc no additions anticipated, but booking card mechanism comps could be adapted 😉 */}
             <div className="bookingFlowContainer">
               <div className="bookingSelectType">
-              <div className="bookingCardBlock">
-                 <Card>
-                    <CardTitle title="Room Reservation" 
+              <div className="bookingTypeCardBlock">
+                 <Card  onClick={this.addActiveClass} style={{ backgroundColor: this.state.bgColor }}>
+                    <CardTitle title="Room Reservation"             ></CardTitle>
+                  </Card>
+                  <Card onClick={this.addActiveClass} style={{ backgroundColor: this.state.bgColor }}>
+                    <CardTitle title="Mentor Meeting" 
+                    onClick={this.addActiveClass} ></CardTitle>
+                  </Card>
+                  <Card onClick={this.addActiveClass} style={{ backgroundColor: this.state.bgColor }}>
+                    <CardTitle title="Space Tour" 
                     onClick={this.addActiveClass}></CardTitle>
-                  </Card>
-                  <Card>
-                    <CardTitle title="Mentor Meeting"></CardTitle>
-                  </Card>
-                  <Card>
-                    <CardTitle title="Space Tour"></CardTitle>
-                  </Card>            
+                  </Card>    
+                  {/* make these cards iterative array so that one at a time will be active - later disable others that are not selected aka pass disabled to other 2*/ }        
                   </div> 
               </div>
 
@@ -100,13 +91,7 @@ export default class BookingSystem extends React.PureComponent {
               <div className="bookingSelectDateTime">
                 <DateTimeSelect />
                 <div className="bookingSubmit"> 
-                  <RaisedButton label="Submit" primary={true}   onClick={this.handleTouchTap}/>
-                  <Snackbar
-                    open={this.state.open}
-                    message="Got it! Please check your email for confirmation"
-                    autoHideDuration={4000}
-                    onRequestClose={this.handleRequestClose}
-                    />
+                  <SubmitButton />
                 </div>
               </div>
             </div>

@@ -5,6 +5,14 @@
 */
 
 import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
+import RadioButton from 'material-ui/RadioButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import './style.css';
 import './styleM.css';
@@ -36,11 +44,13 @@ export default class ExampleTabs extends React.PureComponent {
               </p>
 
               <p id="rememberMe" className="userFormItem">                
-                <input type="checkbox" name="" id=""/> 
-                <label htmlFor="">remember me</label>                
+                  <RadioButton
+                    value="not_light"
+                    label="Remember me"
+                  />             
               </p>
 
-              <button type="submit" className="userFormSubmit">Submit</button>
+              <RaisedButton type="submit" className="userFormSubmit">Submit </RaisedButton>
             </form>
 
             <div className="forgotInfo"> 
@@ -62,11 +72,11 @@ export default class ExampleTabs extends React.PureComponent {
             
               <p className="userFormItem"> 
                 <label htmlFor="" className="userFormLabel"> your home space</label>
-                <select>
-                  <option selected disabled hidden> choose a space</option>
-                  <option> the Clubhou.se</option>
-                  <option> Macon </option>
-                </select>
+                <DropDownMenu>
+                  <MenuItem selected disabled hidden> choose a space</MenuItem>
+                  <MenuItem> the Clubhou.se</MenuItem>
+                  <MenuItem> Macon </MenuItem>
+                </DropDownMenu>
               </p>
 
               <p className="userFormItem">  
@@ -84,8 +94,7 @@ export default class ExampleTabs extends React.PureComponent {
                 <input type="password" name="" id=""/>
               </p>
 
-                <button type="submit" className="userFormSubmit">Submit</button>
-              
+                <RaisedButton type="submit" className="userFormSubmit">Submit </RaisedButton>
             </form>
           </div>
         </Tab>
