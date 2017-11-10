@@ -1,0 +1,20 @@
+/* UserSelect Styles */
+.userSelectContainer {     
+    padding: 1em; 
+}
+
+.userSearch { 
+    border-radius: 10px; 
+    padding: 5px; 
+    width: 80%; 
+}
+
+.userResults { 
+    border: 1px dotted lightslategray; 
+    height: 15vh; 
+    margin: 1em; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-around; 
+}
+

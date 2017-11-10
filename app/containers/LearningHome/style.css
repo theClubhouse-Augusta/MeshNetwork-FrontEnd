@@ -7,15 +7,21 @@
 }
 
 .headingMediaBlock {
-  position: absolute;
+  height:600px;
+  width:100%;
+  background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4));
+  background-size:cover;
+  background-position:center center;
+  font-family: 'Anton', sans-serif;
+  font-size:2em;
+  line-height:120px;
+  text-align:center;
+  color:#FFFFFF;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 }
-
-.headingImage { 
-  height: 45vh; 
-  width: 100vw; 
-  background: #DDDDDD; 
-  
-  }
 
   .headingTextBlock { 
     z-index: 2; 
@@ -24,33 +30,29 @@
 
 
 .learningBodyContainer {
-  background: #EEEEEE;
   min-height: 90vh; 
   width: 100vw; 
   margin: 0 auto;
 }
   
   .availableClasses { 
-    text-align: center;
-    margin-top: 56vh;  
+    text-align: center; 
+    margin: 40px 0; 
   }
 
   .classesList { 
-    background: #DDDDDD; 
     display: flex; 
     flex-direction: row;
     flex-wrap: wrap; 
     justify-content: space-around;
-    margin:0 2vw 10vh 2vw; 
-   
+    padding: 50px 15px; 
+    
   }
 
     .classesListing { 
       border: 1px solid #CCCCCC; 
-      margin: 4vh 0; 
       width: 30vw;  
-      min-width: 250px;  
-          
+      min-width: 250px;            
     }
 
     .classesImage {  
@@ -77,7 +79,7 @@
       }
 
         .classesName {
-          margin: 1em 0 .5em 0; 
+         
         }
 
         .classesBlurb { 
@@ -103,12 +105,14 @@
         }
 
   .allClasses { 
-    margin: 0 auto; 
+    margin: 50px auto 0 auto; 
   }
 
-    .fullClassesList { 
-      background: #ffffff; 
-      padding: 1.5em 2.5em;   
+    .fullClassesLink { 
+      background: #DDDDDD; 
+      padding: 1em 2em;  
+      border-radius:  25px; 
+
     }
 
   .infoBlock { 

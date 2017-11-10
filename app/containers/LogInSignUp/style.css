@@ -2,58 +2,62 @@
 
 on hovers & other animation goodies when colors are decided7.*/
 
-.container {
+.authContainer {
   display:flex;
   flex-direction:column;
   min-height:100vh;
 }
 
+.authBanner { 
+  height:100px;
+  width:100%;
+  background-color: #66c3ea;
+}
+
 .authBody { 
-  height: 73vh;  
-  width: 100vw; 
-  background: #EEEEEE; 
-  margin: 4vh 0 10vh 0; 
+  min-height:70vh;
+  width:100%;
+  max-width:1000px;
+  margin: 0 auto;
+  padding: 15px;
+  padding-top: 25px;
 }
 
 .tabsContainer { 
-  width: 600px; 
   height: 600px; 
-  margin: 4vh auto; 
-  background: #DDDDDD;  
+  width: 600px;  
+  margin: 0 auto; 
 }
 
   .tabList {
     width: 70%; 
     margin: 4vh auto 0 auto; 
     display: flex; 
-    justify-content: space-around; 
-    background: #CCCCCC; 
-
+    justify-content: space-around;   
   }
 
   .tabContent { 
     width: 80%; 
-    margin: 2vh auto; 
-    background: #CCCCCC; 
+    margin: 0 auto;  
   }
 
     #loginForm { 
-      margin: 8vh 0 0 0; 
-      background: #BBBBBB; 
+      margin: 120px 0 0 0; 
     }
 
       #rememberMe { 
-        width: 40%; 
+        width: 70%; 
+        margin: 0 auto; 
       }
 
       .forgotInfo { 
         display: flex; 
         justify-content: space-around; 
-        background: #bbbbbb;
+        margin: 20px 0 0 0; 
+        font-size: .75em;
       }
         .userInfoLink {
           margin: 0 1em; 
-          background: #aaaaaa;
         }
 
     #signUpForm { 
@@ -66,20 +70,24 @@ on hovers & other animation goodies when colors are decided7.*/
     width: 50%; 
     text-align: center; 
     margin: 1em;
-    background: #bbbbbb; 
+    padding: 5px; 
   }
 
   .userFormItem {
     display: flex; 
     justify-content: space-between;
     margin: 2em; 
-    background: #aaaaaa; 
+  }
+
+  .spacesDropdown { 
+    width: 50%; 
   }
 
     .userFormSubmit {       
       display: flex; 
+      width: 20%; 
       margin: 10% auto;  
-      background: #aaaaaa; 
+      align-items: center; 
     }
 
 

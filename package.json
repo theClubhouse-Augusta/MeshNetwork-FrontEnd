@@ -120,6 +120,7 @@
     "react-dom": "15.6.1",
     "react-helmet": "5.0.0",
     "react-router-dom": "^4.2.2",
+    "react-times": "^2.2.5",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {

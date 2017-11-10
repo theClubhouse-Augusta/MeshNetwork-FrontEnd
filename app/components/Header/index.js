@@ -73,7 +73,7 @@ export default class Header extends React.PureComponent {
         {this.renderMenu()}
       </div>      
       
-      </header>     
+       
     );
   }
 }

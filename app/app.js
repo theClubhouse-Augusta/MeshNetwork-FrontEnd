@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import '!file-loader?name=[name].[ext]!./favicon.ico';
 import '!file-loader?name=[name].[ext]!./manifest.json';
@@ -25,6 +26,7 @@ import NotFound from 'containers/NotFound';
 
 ReactDOM.render((
   <BrowserRouter>
+  <MuiThemeProvider>
     <Switch>
       <Route exact path='/' component={Home}/>
       <Route path='/About' component={About}/>
@@ -44,6 +46,7 @@ ReactDOM.render((
       <Route path='/UserProfile' component={UserProfile}/>
       <Route path='*' component={NotFound}/>
     </Switch>
+    </MuiThemeProvider>
   </BrowserRouter>
 ), document.getElementById('app'));
 

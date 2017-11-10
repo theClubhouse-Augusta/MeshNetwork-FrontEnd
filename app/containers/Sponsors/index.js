@@ -8,6 +8,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
+import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 
 import './style.css';
 import './styleM.css';
@@ -18,14 +19,15 @@ export default class Sponsors extends React.PureComponent {
       <div className="container">
         <Helmet title="Sponsors" meta={[ { name: 'description', content: 'Description of Sponsors' }]}/>
         <Header />
-        <div className="sponsorsBodyContainer"> 
 
-        <div className="titleList"> 
+        <div className="sponsorBanner"> 
           <h2>Our Sponsors</h2>
-          <p className="aboutSponsorsText"> How much we love our sponsors </p>
+          <p> How much we love our sponsors </p>
         </div>
 
-          <div className="sponsorList">
+
+        <div className="sponsorsBodyContainer">       
+             <div className="sponsorList">
               <div className="sponsorListing">
                 <div className="sponsorLogo"> 
                   <img src="https://placeholdit.co//i/150x150" />

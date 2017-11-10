@@ -1,0 +1,15 @@
+/* BookingTourForm Styles */
+.bookingFormLine { 
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-around;   
+    margin: 1em 0; 
+}
+
+.bookingForm { 
+    display: flex; 
+    flex-direction: column; 
+    align-content: center; 
+    margin-top: 10%; 
+    width: 100%; 
+}
