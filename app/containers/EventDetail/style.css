@@ -5,3 +5,151 @@
   flex-direction:column;
   min-height:100vh;
 }
+
+.eventBanner {
+  height:400px;
+  width:100%;
+  background: #555555 ;
+  background-size:cover;
+  background-position:center center;
+  font-family: 'Anton', sans-serif;
+  font-size:2em;
+  line-height:120px;
+  color:#FFFFFF;
+  display:flex; 
+  flex-direction:column;
+  justify-content:center;
+}
+  .eventName {
+    margin-left: 60px; 
+    margin-top: 100px;
+  }
+
+  .eventDateTime { 
+    font-size: .75em; 
+    margin-left: 60px; 
+  }
+
+.eventBody { 
+  display:flex;
+  flex-direction:row;
+  max-width:1200px;
+  margin:0 auto;
+  justify-content:space-between;
+  padding: 15px; 
+}
+  .eventDescription { 
+    width:50%;
+    background:#FFFFFF;
+    box-shadow:0 0 10px 0 rgba(0, 0, 0, 0.1);
+    padding:30px; 
+  }
+
+    .eventQuickInfo {
+      display: flex; 
+      flex-direction: row; 
+      justify-content: space-between;  
+      margin: 40px 20px; 
+    }
+
+      .eventNotices { 
+        display: flex; 
+        flex-direction: row;
+        flex-wrap: wrap;  
+        align-content: center;
+      }
+        .eventNotice { 
+          color: #37B1E3; 
+          display: flex; 
+          flex-direction: row;
+          align-content: center;
+          justify-content: space-between; 
+        }
+
+      .eventTags { 
+        display: flex; 
+        flex-direction: row; 
+        flex-wrap: wrap;
+        align-content: center;  
+      }
+  
+  .eventPeopleBlock { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-around; 
+    align-content: center; 
+  }
+    .eventAvatarsBlock { 
+      margin: 75px auto;
+      max-width: 275px;
+      padding: 5px;   
+    }
+      .eventOrganizers { 
+        display: flex; 
+        flex-direction: row; 
+        justify-content: space-between; 
+        flex-wrap: wrap;
+        padding-bottom: 20px;  
+     }
+
+      .eventAttendees { 
+        display: flex; 
+        flex-direction: row; 
+        justify-content: space-between; 
+        align-content: space-between;
+        flex-wrap: wrap;  
+        height: 175px;
+        border-top: 1px solid black;  
+        padding-top: 20px; 
+      }
+  
+  .eventLocationInfo { 
+    display:flex;
+    flex-direction:column;
+    width:40%;
+    text-align: center; 
+  }
+
+    .eventMap { 
+      margin-top: -250px; 
+    }
+
+    .eventSpace { 
+      background: #37B1E3;
+      width: 100%; 
+      margin: 0 auto; 
+      margin-top: -10px; 
+      padding: 10px 0; 
+      font-size: 1.25em; 
+
+    }
+
+    .eventAddress { 
+      margin: 20px auto; 
+
+    }
+    
+    .eventRegistration { 
+      text-align: center;
+           
+    }
+
+    .eventUpcomingEvents { 
+        margin: 40px 0;
+        height: 40%;  
+        display: flex; 
+        flex-direction: column;
+        justify-content: flex-end; 
+        align-content: flex-end; 
+    }
+      .eventUpcomingTitle { 
+        border-bottom: 1px solid black; 
+        width: 400px;
+        margin: 0 auto; 
+        font-size: 1.25em; 
+      }
+      .eventUpcomingList { 
+        display: flex; 
+        flex-direction: column; 
+        margin: 10px; 
+      }

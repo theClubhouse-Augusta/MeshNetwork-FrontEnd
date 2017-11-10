@@ -35,12 +35,12 @@
   margin: 0 auto;
 }
   
-  .availableClasses { 
+  .learningClassesTitle { 
     text-align: center; 
     margin: 40px 0; 
   }
 
-  .classesList { 
+  .learningClassesList { 
     display: flex; 
     flex-direction: row;
     flex-wrap: wrap; 
@@ -49,44 +49,40 @@
     
   }
 
-    .classesListing { 
+    .learningClassListing { 
       border: 1px solid #CCCCCC; 
       width: 30vw;  
       min-width: 250px;            
     }
 
-    .classesImage {  
-      width: 100%;
-      height: 150px;  
-      background: #BBBBBB; 
-    }
+      .learningClassImage {  
+        width: 100%;
+        height: 150px;  
+        background: #BBBBBB; 
+      }
 
-    .classesLocation { 
-      height: 50px; 
-      width: 100%; 
-      background: #ffffff;  
-    }
+      .learningClassLocation { 
+        height: 50px; 
+        width: 100%; 
+        background: #ffffff;  
+      }
 
-    .classesDescription {  
+    .learningClassDescription {  
       padding: .5em;
       display: flex; 
       flex-direction: column; 
       justify-content: space-between;    
     }
 
-      .classesInfo {
+      .learningClassContent {
         margin: 0 auto 1em auto; 
       }
 
-        .classesName {
-         
-        }
-
-        .classesBlurb { 
+        .learningClassBlurb { 
           font-size: .85em; 
         }
 
-      .classesCostBlock {
+      .learningClassCostBlock {
         border-top: 1px solid black; 
         padding: .5em 1em; 
         text-align: center;
@@ -95,39 +91,21 @@
         justify-content: space-between;    
       }
 
-        .classesCost { 
+        .learningClassCost { 
           margin: .5em 0; 
           width: 40%; 
         }
 
-        .registerButton { 
+        .learningRegisterButton { 
           width: 50%; 
         }
 
-  .allClasses { 
+  .learningAllClassesBlock { 
     margin: 50px auto 0 auto; 
   }
 
-    .fullClassesLink { 
+    .learningAllClassesLink { 
       background: #DDDDDD; 
       padding: 1em 2em;  
       border-radius:  25px; 
-
-    }
-
-  .infoBlock { 
-    height: 45vh; 
-    background: #DDDDDD;
-    margin: 0 20vw 10vh 20vw; 
-  }
-
-    .infoTitle {
-      margin: 10vh 5vw;
-      padding: 10vh 0;
-    }
-
-    .infoBenefitsList { 
-      display: flex;
-      flex-direction: column; 
-      margin: 0 0 0 20vw;  
     }

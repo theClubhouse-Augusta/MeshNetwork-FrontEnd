@@ -1,6 +1,6 @@
 /*
  *
- * NewEvent
+ * AddEvent
  *
  */
 
@@ -10,11 +10,11 @@ import Helmet from 'react-helmet';
 import './style.css';
 import './styleM.css';
 
-export default class NewEvent extends React.PureComponent {
+export default class AddEvent extends React.PureComponent {
   render() {
     return (
       <div className="container">
-        <Helmet title="NewEvent" meta={[ { name: 'description', content: 'Description of NewEvent' }]}/>
+        <Helmet title="AddEvent" meta={[ { name: 'description', content: 'Description of AddEvent' }]}/>
 
         //Remove this line and you can start writing your code here.
       </div>
@@ -22,6 +22,6 @@ export default class NewEvent extends React.PureComponent {
   }
 }
 
-NewEvent.contextTypes = {
+AddEvent.contextTypes = {
   router: React.PropTypes.object
 };
