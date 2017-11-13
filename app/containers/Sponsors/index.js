@@ -8,7 +8,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
-import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import {Card, CardMedia, CardTitle, CardText} from 'material-ui/Card'; 
 
 import './style.css';
 import './styleM.css';
@@ -20,88 +20,85 @@ export default class Sponsors extends React.PureComponent {
         <Helmet title="Sponsors" meta={[ { name: 'description', content: 'Description of Sponsors' }]}/>
         <Header />
 
+        <main> 
         <div className="sponsorBanner"> 
           <h2>Our Sponsors</h2>
           <p> How much we love our sponsors </p>
         </div>
 
 
-        <div className="sponsorsBodyContainer">       
-             <div className="sponsorList">
-              <div className="sponsorListing">
-                <div className="sponsorLogo"> 
-                  <img src="https://placeholdit.co//i/150x150" />
-                </div>
+        <div className="sponsorBody">       
+          <div className="sponsorList">
 
-                <div className="sponsorTextBlock"> 
-                  <h3> A company</h3>          
-                  <p>what they do</p>   
-                </div> 
-
-              </div> 
-
-              <div className="sponsorListing">
-              <div className="sponsorLogo"> 
+            <Card className="sponsorListing">
+              <CardMedia className="sponsorLogo"> 
                 <img src="https://placeholdit.co//i/150x150" />
-              </div>
+              </CardMedia>
 
               <div className="sponsorTextBlock"> 
-                <h3> A company</h3>          
-                <p>what they do</p>   
+                <CardTitle> A company</CardTitle>          
+                <CardText>what they do</CardText>   
               </div> 
+            </Card> 
 
-            </div>
+            <Card className="sponsorListing">
+              <CardMedia className="sponsorLogo"> 
+                <img src="https://placeholdit.co//i/150x150" />
+              </CardMedia>
 
-            <div className="sponsorListing">
-            <div className="sponsorLogo"> 
+              <div className="sponsorTextBlock"> 
+                <CardTitle> A company</CardTitle>          
+                <CardText>what they do</CardText>   
+              </div> 
+            </Card>
+
+            <Card className="sponsorListing">
+              <CardMedia className="sponsorLogo"> 
+                <img src="https://placeholdit.co//i/150x150" />
+              </CardMedia>
+
+              <div className="sponsorTextBlock"> 
+                <CardTitle> A company</CardTitle>          
+                <CardText> what they do </CardText>   
+              </div> 
+            </Card>
+
+            <Card className="sponsorListing">
+              <CardMedia className="sponsorLogo"> 
+                <img src="https://placeholdit.co//i/150x150" />
+              </CardMedia>
+
+              <div className="sponsorTextBlock"> 
+                <CardTitle> A company</CardTitle>          
+                <CardText>what they do</CardText>   
+              </div> 
+          </Card>
+              
+          <Card className="sponsorListing">
+            <CardMedia className="sponsorLogo"> 
               <img src="https://placeholdit.co//i/150x150" />
-            </div>
+            </CardMedia>
 
             <div className="sponsorTextBlock"> 
-              <h3> A company</h3>          
-              <p>what they do</p>   
+              <CardTitle> A company</CardTitle>          
+              <CardText>what they do</CardText>   
             </div> 
+        </Card> 
 
-          </div>
+        <Card className="sponsorListing">
+          <CardMedia className="sponsorLogo"> 
+            <img src="https://placeholdit.co//i/150x150" />
+          </CardMedia>
 
-               <div className="sponsorListing">
-                <div className="sponsorLogo"> 
-                  <img src="https://placeholdit.co//i/150x150" />
-                </div>
+          <div className="sponsorTextBlock"> 
+            <CardTitle> A company</CardTitle>          
+            <CardText>what they do</CardText>   
+          </div> 
+        </Card>   
+      </div>
+    </div>
+  </main>
 
-                <div className="sponsorTextBlock"> 
-                  <h3> A company</h3>          
-                  <p>what they do</p>   
-                </div> 
-
-              </div>
-              
-              <div className="sponsorListing">
-              <div className="sponsorLogo"> 
-                <img src="https://placeholdit.co//i/150x150" />
-              </div>
-
-              <div className="sponsorTextBlock"> 
-                <h3> A company</h3>          
-                <p>what they do</p>   
-              </div> 
-
-            </div> 
-
-            <div className="sponsorListing">
-                <div className="sponsorLogo"> 
-                  <img src="https://placeholdit.co//i/150x150" />
-                </div>
-
-                <div className="sponsorTextBlock"> 
-                  <h3> A company</h3>          
-                  <p>what they do</p>   
-                </div> 
-
-              </div>    
-
-          </div>
-        </div>
         <Footer />
       </div>
     );

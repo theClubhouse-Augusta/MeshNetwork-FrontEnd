@@ -21,7 +21,7 @@
   align-items:center;
 }
 
-.sponsorsBodyContainer {
+.sponsorBody {
   min-height:100vh;
   width:100%;
   max-width:1000px;
@@ -29,18 +29,7 @@
   padding:15px;
 }
 
-  .titleList { 
-    margin: 0 auto; 
-    width: 50vw; 
-    padding: 6vh;
-    text-align: center;  
-  }
-
-  .aboutSponsorsText {
-    margin: 6vh 0 4vh 0;
-  }
-
-  .sponsorList { 
+ .sponsorList { 
     display: flex; 
     flex-direction: row;
     flex-wrap: wrap; 
@@ -50,7 +39,7 @@
 
     .sponsorListing { 
       border: 1px solid #CCCCCC;
-      width: 250px; 
+      
       padding: 1em; 
       margin: 4vh 0;      
     }
