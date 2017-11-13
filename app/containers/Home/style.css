@@ -27,3 +27,19 @@ a {
 li {
   display: inline;
 }
+
+ol,
+ul {
+    /* no bullets in lists */
+    list-style: none;
+}
+
+button, input {
+  border: 0;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+}
