@@ -20,7 +20,6 @@ export default class MemberSearch extends React.PureComponent {
     this.state = {
        skills: [],
        results: [],
-       postSearch: false,
     };
   }
 
@@ -40,25 +39,12 @@ export default class MemberSearch extends React.PureComponent {
     });
   }
 
-  goBack = (e) => {
-    e.preventDefault;
-    this.setState({	postSearch: !this.state.postSearch });
-  }
-
-  Show = () => {
-    if (!this.state.postSearch) {
+  ShowSearchResults = () => {
+    if (!this.state.results) {
       return '';
     } else {
       return (
         <div id="MS-postSearchContainer">
-        {/* Go back button and header */}
-          <section>
-            <button onClick={this.goBack}>
-              Back to Search
-            </button>
-            <h2> Results </h2> 
-          </section> 
-
           {/* User Cards */}
           <ul>
             {this.state.results.map((user, index) => 
@@ -108,13 +94,16 @@ export default class MemberSearch extends React.PureComponent {
 
   tagClick = (e,tag) => {
     e.preventDefault;
-    fetch('http://localhost:8000/api/getusers'
+    /** 
+     * this api endpoint will change
+     * and <tag> will be sent as a url
+     * parameter
+     */
+    fetch('http://localhost:8000/api/getusers' 
     ).then(response => 
       response.json()
     ).then(json => {
-      this.setState({	results: json }, () => {
-        this.setState({postSearch: !this.state.postSearch});
-      });            
+      this.setState({	results: json });            
     })
     .catch(error => {
       alert(`error in fetching data from server: ${error}`);
@@ -122,12 +111,7 @@ export default class MemberSearch extends React.PureComponent {
   }
 
   render() {
-    const results = this.Show();
-
-    const hideAfterSearch = { // hide search bar and tags
-      display: this.state.postSearch ? 'none' : 'inherit' 
-    };
-
+    const results = this.ShowSearchResults();
     return (
       <div className="MS-Container">
         <Helmet title="MemberSearch" meta={[ { name: 'description', content: 'Description of MemberSearch' }]} />
@@ -139,28 +123,27 @@ export default class MemberSearch extends React.PureComponent {
           <h1> Make Connections </h1>
 
           {/* Search Form */}
-          <form id="MS-preSearchForm" style={hideAfterSearch}>
+          <form id="MS-SearchForm">
             <MdPerson className="MS-MdIcon" />
             <input type="search" placeholder="Member Search" />
           </form> 
 
-          {/* Search Results */}
-          {results}
-
-          <h2 style={hideAfterSearch}> 
+          <h2> 
             Popular Tags 
           </h2>
 
           {/* Tag Row 1 */}
-          <section id="MS-preSearchTagRowOne" style={hideAfterSearch}>
+          <section id="MS-TagRowOne">
             <div>
               {this.state.skills.map((skill, index) => {
                 while (index < 3) {
                   return (
                     <button
-                      id="tags" 
+                      id="MS-tags" 
                       key={`skill${skill.id}`}
-                      onClick={ (e) => { this.tagClick(e,skill.name)}}
+                      onClick={ (e) => { 
+                        this.tagClick(e,skill.name)}
+                      }
                     >
                       {skill.name}
                     </button>
@@ -171,15 +154,17 @@ export default class MemberSearch extends React.PureComponent {
           </section>
 
           {/* Tag Row 2 */}
-          <section id="MS-preSearchTagRowTwo" style={hideAfterSearch}>
+          <section id="MS-TagRowTwo">
             <div>
               {this.state.skills.map((skill, index) => {
                 while (index >= 3) {
                   return (
                     <button
-                      id="tags" 
+                      id="MS-tags" 
                       key={`skill${skill.id}`}
-                      onClick={ (e) => {this.onClick(e,skill.name)}}
+                      onClick={ (e) => {
+                        this.tagClick(e,skill.name)}
+                      }
                     >
                       {skill.name}
                     </button>
@@ -188,6 +173,10 @@ export default class MemberSearch extends React.PureComponent {
               })}
             </div>
           </section>
+
+          {/* Search Results */}
+          {results}
+
         </main>
         <Footer />
       </div>

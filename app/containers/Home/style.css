@@ -36,6 +36,7 @@ ul {
 
 button, input {
   border: 0;
+  /* inherit font from body */
   font: inherit;
 }
 

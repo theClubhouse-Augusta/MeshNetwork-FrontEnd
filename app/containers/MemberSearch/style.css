@@ -1,9 +1,5 @@
 /**
 * MemberSearch Styles 
-*
-* #pre-Search* will hide after search
-* #postSeach * will show after search
-*
 */
 
 .MS-Container {
@@ -15,13 +11,13 @@
   min-height:100vh;
 }
 
-div.MS-Container > main {
+div.MS-Container main {
   display: flex;
   flex-direction: column;
 }
 
 /* banner */
-div.MS-Container > main > h1 {
+div.MS-Container h1 {
   /* flex */
   display:flex;
   flex-direction:column;
@@ -47,7 +43,7 @@ div.MS-Container > main > h1 {
 }
 
 /* search bar */
-h1 ~ form#MS-preSearchForm {
+form#MS-SearchForm {
   /* flex */
   display: flex;
   align-self: center;
@@ -62,50 +58,15 @@ h1 ~ form#MS-preSearchForm {
   margin-bottom: .30em;
 }
 
-/* post-search header/button container */
-div#MS-postSearchContainer > section {
-  /* flex */
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  align-content: center;
-  /* width,height */
-  height: 5em;
-/* formmatting */
-  padding-top: 1em;
-}
-
-/* go back button */
-div#MS-postSearchContainer > section > button {
-  text-align: center;
-  box-sizing: content-box;  
-  height: 2.8em;
-  width: 7.8em;
-  background: #464646;
-  border-radius: 6px;
-  color: whitesmoke;
-}
-
 /* search results container */
-div#MS-postSearchContainer > section + ul {
+div#MS-postSearchContainer ul {
   display: flex;
   flex-direction: column;
+  margin-top: 3vh;
 }
 
-/* search result workspace name */
-div#MS-postSearchContainer h2 {
-  width: 100%;
-  text-align: center;
-  /* text */
-  font-size:2.5em;
-  font-variant:small-caps;
-  font-weight:bold;
-  color:#555555;
-}
-
-/* User Card */
-div#MS-postSearchContainer > section + ul > li {
+/* User Cards */
+div#MS-postSearchContainer li {
   display: flex;
   flex-direction: row;
   border: .5px solid silver;
@@ -139,18 +100,18 @@ dl#MS-userInfo div {
 }
 
 /* make all <dt> bold */
-dl#MS-userInfo > div > dt {
+dl#MS-userInfo dt {
   font-weight:700; 
 }
 
 /* search input */
-form#MS-preSearchForm input {
+form#MS-SearchForm input {
   padding-left: 1.5em;
   width: 100%;
 }
 
 /* mozzilla - position/style cursor in searchbar */
-form#MS-preSearchForm > input:placeholder-shown {
+form#MS-SearchForm > input:placeholder-shown {
   padding-left: 1.5em;
    /* text */
   color: black;
@@ -158,7 +119,7 @@ form#MS-preSearchForm > input:placeholder-shown {
 }
 
 /* safari - position/style cursor in searchbar */
-form#MS-preSearchForm  > input::-webkit-input-placeholder {
+form#MS-SearchForm  > input::-webkit-input-placeholder {
   padding-left: .30em;
    /* text */
   color: black;
@@ -171,7 +132,6 @@ form#MS-preSearchForm  > input::-webkit-input-placeholder {
   align-self: center;
 }
 
-/* will apply to post and pre-search subheader */
 div.MS-Container > main > h2 {
   /* flex */
   display:flex;
@@ -187,7 +147,7 @@ div.MS-Container > main > h2 {
   margin-bottom: 1em;
 }
 
-/* style skill tag rows */
+/* skill tag row container */
 main#MS-main > section {
   display: flex;
   justify-content: center;
@@ -196,22 +156,23 @@ main#MS-main > section {
   margin-right: auto;
 }
 
-/* add margin to first skill tag row */
-h2 ~ section#MS-preSearchTagRowOne {
-  display: flex;
-  justify-content: center;
-  margin-bottom: .75em;
-} 
-
-/* tag container */
+/* put tag buttons in row */
 main#MS-main > section > div {
   display: flex;
   justify-content: space-between;  
   width: 30%;
 }
 
+/* add margin to first tag row */
+section#MS-TagRowOne {
+  display: flex;
+  justify-content: center;
+  margin-bottom: .75em;
+} 
+
+
 /* skill tag buttons */
-main#MS-main > section > div button#tags {
+button#MS-tags {
   /* text */
   text-align: center;
   color: whitesmoke;
