@@ -39,7 +39,7 @@ ReactDOM.render((
       <Route path='/Sponsors' component={Sponsors}/>
       <Route path='/Spaces' component={Spaces}/>
       <Route path='/Learning' component={LearningHome}/>
-      <Route path='/detail' component={LearningDetail}/>
+      <Route path='/LearningDetail' component={LearningDetail}/>
       <Route path='/Auth' component={LogInSignUp}/>
       <Route path='/MemberSearch' component={MemberSearch}/>
       <Route path='/SpaceProfile' component={SpaceProfile}/>
