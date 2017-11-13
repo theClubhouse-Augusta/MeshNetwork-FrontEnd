@@ -94,7 +94,7 @@ export default class EventDetail extends React.PureComponent {
 
             <div className="eventLocationInfo">
               <div className="eventMap">
-                  <img src={require("../../images/map.jpg")} width=" 100%"/> 
+                  <img src={require("../../images/mapa.jpg")} width=" 100%"/> 
               <div className="eventLocation">
                
                   <div className="eventSpace"> the Clubhou.se</div>

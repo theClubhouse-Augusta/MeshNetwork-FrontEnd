@@ -1,7 +1,187 @@
-/* MemberSearch Styles */
+/**
+* MemberSearch Styles 
+*/
 
-.container {
+.MS-Container {
+  /* flex  */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* height */
+  min-height:100vh;
+}
+
+div.MS-Container main {
+  display: flex;
+  flex-direction: column;
+}
+
+/* banner */
+div.MS-Container h1 {
+  /* flex */
   display:flex;
   flex-direction:column;
-  min-height:100vh;
+  justify-content:center;
+  align-items:center;
+  /* height, width */
+  height:45vh;
+  width:100%;
+  /* background */
+  background:linear-gradient(
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.4)),
+    url('../../images/002.jpg'
+  );
+  background-size:cover;
+  background-position:center center;
+  /* text */
+  font-family: 'Anton', sans-serif;
+  font-size:4em;
+  line-height:120px;
+  text-align:center;
+  color:#FFFFFF;
+}
+
+/* search bar */
+form#MS-SearchForm {
+  /* flex */
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  /* height, width  */
+  height: 2em;
+  width: 25%;
+  /* border */
+  border: 1px solid black;
+  /* formatting */
+  margin-top: 1.5em;
+  margin-bottom: .30em;
+}
+
+/* search results container */
+div#MS-postSearchContainer ul {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3vh;
+}
+
+/* User Cards */
+div#MS-postSearchContainer li {
+  display: flex;
+  flex-direction: row;
+  border: .5px solid silver;
+  padding: 1em;
+  width: 100%;
+}
+
+/* User Avatar */
+div#MS-postSearchContainer img {
+  border-radius: 50%;
+}
+
+/* User Description List */
+dl#MS-userInfo {
+  display: flex;
+  /* flex-direction: row; */
+  flex-direction: column;
+  justify-content: space-between;
+  /* align-items: center; */
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  font-family: 'Encode Sans Condensed';
+  margin-left: 3em;
+}
+
+/* put all <dt> <dd> pairs in row */
+dl#MS-userInfo div {
+  display: flex;
+}
+
+/* make all <dt> bold */
+dl#MS-userInfo dt {
+  font-weight:700; 
+}
+
+/* search input */
+form#MS-SearchForm input {
+  padding-left: 1.5em;
+  width: 100%;
+}
+
+/* mozzilla - position/style cursor in searchbar */
+form#MS-SearchForm > input:placeholder-shown {
+  padding-left: 1.5em;
+   /* text */
+  color: black;
+  font-weight: 200;
+}
+
+/* safari - position/style cursor in searchbar */
+form#MS-SearchForm  > input::-webkit-input-placeholder {
+  padding-left: .30em;
+   /* text */
+  color: black;
+  font-weight: 200;
+}
+
+/* icon in search bar */
+.MS-MdIcon {
+  display: inline-block;
+  align-self: center;
+}
+
+div.MS-Container > main > h2 {
+  /* flex */
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  /* text */
+  font-size:2.5em;
+  font-variant:small-caps;
+  font-weight:bold;
+  color:#555555;
+  /* formatting  */
+  margin-top: .5em;
+  margin-bottom: 1em;
+}
+
+/* skill tag row container */
+main#MS-main > section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* put tag buttons in row */
+main#MS-main > section > div {
+  display: flex;
+  justify-content: space-between;  
+  width: 30%;
+}
+
+/* add margin to first tag row */
+section#MS-TagRowOne {
+  display: flex;
+  justify-content: center;
+  margin-bottom: .75em;
+} 
+
+
+/* skill tag buttons */
+button#MS-tags {
+  /* text */
+  text-align: center;
+  color: whitesmoke;
+  box-sizing: content-box;  
+  /* height,width */
+  height: 2.8em;
+  width: 7.8em;
+  /* background  */
+  background: #464646;
+  /* border */
+  border-radius: 6px;
 }
