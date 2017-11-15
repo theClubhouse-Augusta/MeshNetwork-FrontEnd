@@ -1,0 +1,15 @@
+/* TagSearch Styles */
+.tagSearchContainer {
+    margin: 1em;
+    max-width: 50%; 
+} 
+    .tagSearch { 
+        padding: 5px;  
+        min-width: 250px;  
+    }
+
+    .tagSearchAutoComp { 
+        border: 1px dotted lightslategray; 
+        height: 10vh; 
+   
+    }    

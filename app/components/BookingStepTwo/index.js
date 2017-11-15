@@ -35,8 +35,8 @@ export default class BookingStepTwo extends React.PureComponent {
     return (
       <div className="stepTwoContainer">
          { /*  <BookingTourForm />*/ }  
-         { /* <BookingMentorForm /> */} 
-         <BookingCardBlock  rooms={this.state.rooms} />
+         { /* <BookingCardBlock  rooms={this.state.rooms} />*/} 
+         <BookingMentorForm /> 
          
       </div>
     );

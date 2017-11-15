@@ -17,9 +17,9 @@ export default class CalendarTimeWrapper extends React.PureComponent {
   render() {
     return (
       <div className="dateTimeWrapper">
-        <DatePicker style={{padding: '80px 20px'}}  
+        <DatePicker  
         textFieldStyle={{fontSize: '1.5em'}} hintText="choose a date" className="dateTimeInput" />
-        <div className="dateTimeInput">     <TimePicker  style={{padding: '20px'}}textFieldStyle={{fontSize: '1.5em'}} hintText= "choose a time"  />
+        <div className="dateTimeInput">     <TimePicker textFieldStyle={{fontSize: '1.5em'}} hintText= "choose a time"  />
         </div>
         
       </div>

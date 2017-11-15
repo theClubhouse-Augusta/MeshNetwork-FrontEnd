@@ -104,10 +104,13 @@
 
 .bookingSelectDateTime { 
   width: 30%; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: space-around; 
 }
 
 .bookingSubmit { 
   text-align: center;
-  margin-top: 15vh;
+  margin-top: 60px;
 }
 

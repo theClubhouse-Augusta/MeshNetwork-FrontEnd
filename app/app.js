@@ -14,6 +14,7 @@ import Contact from 'containers/Contact';
 import EventDetail from 'containers/EventDetail';
 import Events from 'containers/Events';
 import AddEvent from 'containers/AddEvent'; 
+import AddCompEvent from 'containers/AddCompEvent'; 
 import Spaces from 'containers/Spaces';
 import Sponsors from 'containers/Sponsors';
 import LearningHome from  'containers/LearningHome';
@@ -36,6 +37,7 @@ ReactDOM.render((
       <Route path='/EventDetail' component={EventDetail}/>
       <Route path='/Events' component={Events}/>
       <Route path='/AddEvent' component={AddEvent}/>
+      <Route path='/AddCompEvent' component={AddCompEvent}/>
       <Route path='/Sponsors' component={Sponsors}/>
       <Route path='/Spaces' component={Spaces}/>
       <Route path='/Learning' component={LearningHome}/>

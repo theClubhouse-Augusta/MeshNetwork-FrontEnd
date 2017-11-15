@@ -12,7 +12,7 @@ import './styleM.css';
 
 const styles = {
   chip: {
-    margin: '10px 5px',
+    margin: '12.5px 5px',
     padding: '10px',
     width: '80px', 
 

@@ -19,7 +19,7 @@ export default class RichTextEd extends React.PureComponent {
 
   render() {
     return (
-      <div style={{border: '1px solid black', height: '200px', margin: '0 auto', width: '70%'}}>
+      <div style={{border: '1px solid black', height: '200px', margin: '0 auto', width: '100%'}}>
         <Editor  editorState={this.state.editorState} onChange={this.onChange} />
       </div>
     );
