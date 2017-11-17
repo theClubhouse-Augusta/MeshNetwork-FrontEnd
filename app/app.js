@@ -21,6 +21,7 @@ import LearningHome from  'containers/LearningHome';
 import LearningDetail from  'containers/LearningDetail';
 import LogInSignUp from 'containers/LogInSignUp';
 import MemberSearch from 'containers/MemberSearch';
+import MemberAcct from 'containers/MemberAcct';
 import SpaceProfile from 'containers/SpaceProfile';
 import UserProfile from 'containers/UserProfile';
 import NotFound from 'containers/NotFound';
@@ -43,6 +44,7 @@ ReactDOM.render((
       <Route path='/Learning' component={LearningHome}/>
       <Route path='/LearningDetail' component={LearningDetail}/>
       <Route path='/Auth' component={LogInSignUp}/>
+      <Route path='/Account' component={MemberAcct}/>
       <Route path='/MemberSearch' component={MemberSearch}/>
       <Route path='/SpaceProfile' component={SpaceProfile}/>
       <Route path='/UserProfile' component={UserProfile}/>

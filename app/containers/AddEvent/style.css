@@ -25,7 +25,7 @@
   min-height:100vh;
   width:100%;
   max-width:1000px;
-  margin: 0 auto;
+  margin: 30px auto;
   padding:15px;
 }
   .addEventContent { 
@@ -111,7 +111,7 @@
 
   .addEventSubmit { 
     text-align: center;
-    margin: 30px auto; 
-    width: 100px;
+    margin: 8% auto 0 auto; 
+    width: 200px;
   }
   

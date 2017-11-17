@@ -38,9 +38,10 @@ export default class UserSelect extends React.PureComponent {
           hintText="User search"
           dataSource={this.state.dataSource}
           onUpdateInput={this.handleUpdateInput}
+          textFieldStyle={{maxWidth: '250px'}}
         />
           
-          <div className="userSelectAutoComp"></div>
+          
         </div>
 
 

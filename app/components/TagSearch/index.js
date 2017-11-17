@@ -32,12 +32,13 @@ export default class TagSearch extends React.PureComponent {
         <label for="tagSearch"></label>  
         
         <AutoComplete
-        className="tagSearch"
+          className="tagSearch"
           hintText="Tag search"
           dataSource={this.state.dataSource}
           onUpdateInput={this.handleUpdateInput}
-        />
-        <div className="tagSearchAutoComp"></div>
+          textFieldStyle={{maxWidth: '250px'}}
+          />
+        
       </div>
     );
   }
