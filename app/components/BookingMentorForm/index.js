@@ -42,7 +42,3 @@ export default class BookingMentorForm extends React.PureComponent {
     );
   }
 }
-
-BookingMentorForm.contextTypes = {
-  router: React.PropTypes.object
-};

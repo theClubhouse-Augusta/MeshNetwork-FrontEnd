@@ -32,7 +32,3 @@ export default class LocationSelect extends React.PureComponent {
     );
   }
 }
-
-LocationSelect.contextTypes = {
-  router: React.PropTypes.object
-};

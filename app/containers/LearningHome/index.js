@@ -6,10 +6,10 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Header from 'components/Header'; 
-import Footer from 'components/Footer'; 
 import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';  
+import Header from 'components/Header'; 
+import Footer from 'components/Footer'; 
 
 import './style.css';
 import './styleM.css';
@@ -103,7 +103,3 @@ export default class LearningHome extends React.PureComponent {
     );
   }
 }
-
-LearningHome.contextTypes = {
-  router: React.PropTypes.object
-};

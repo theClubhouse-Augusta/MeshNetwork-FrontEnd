@@ -30,6 +30,3 @@ export default class BookingCardBlock extends React.PureComponent {
   }
 }
 
-BookingCardBlock.contextTypes = {
-  router: React.PropTypes.object
-};

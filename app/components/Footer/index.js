@@ -5,9 +5,12 @@
 */
 
 import React from 'react';
-import {TiSocialAtCircular,   TiSocialFacebookCircular,
-TiSocialInstagramCircular,
-TiSocialTwitterCircular} from 'react-icons/lib/ti';
+import {
+  TiSocialAtCircular,   
+  TiSocialFacebookCircular,
+  TiSocialInstagramCircular,
+  TiSocialTwitterCircular
+} from 'react-icons/lib/ti';
 
 import './style.css';
 import './styleM.css';
@@ -29,7 +32,3 @@ export default class Footer extends React.PureComponent {
     );
   }
 }
-
-Footer.contextTypes = {
-  router: React.PropTypes.object
-};

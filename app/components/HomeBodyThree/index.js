@@ -22,7 +22,3 @@ export default class HomeBodyThree extends React.PureComponent {
     );
   }
 }
-
-HomeBodyThree.contextTypes = {
-  router: React.PropTypes.object
-};

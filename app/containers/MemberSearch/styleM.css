@@ -1,1 +1,79 @@
 /* MemberSearch Mobile Styles */
+@media (max-width: 500px) {
+  div.MS-Container h1 {
+    /* flex */
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    /* height, width */
+    height:35vh;
+    width:100%;
+    /* background */
+    background:linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)),
+      url('../../images/002.jpg'
+    );
+    background-size:cover;
+    background-position:center center;
+    /* text */
+    font-family: 'Anton', sans-serif;
+    font-size:2.1em;
+    line-height:120px;
+    text-align:center;
+    color:#FFFFFF;
+    /* position: relative; */
+  }
+
+  div#MS-SearchForm {
+    /* flex */
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    /* height, width  */
+    height: 2em;
+    width: 75%;
+    /* border */
+    border: 1px solid black;
+    /* formatting */
+    margin-top: 1.5em;
+    margin-bottom: .30em;
+    margin-left: 13%;
+  }
+
+  div.MS-Container > main > h2 {
+    /* flex */
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    /* text */
+    font-size:1.5em;
+    font-variant:small-caps;
+    font-weight:bold;
+    color:#555555;
+    /* formatting  */
+    margin-top: 1.5em;
+    margin-bottom: 2em;
+  }
+
+  main#MS-main > section > div {
+    display: flex;
+    justify-content: space-between;  
+    width: 80%;
+  }
+
+  button#MS-tags {
+    /* text */
+    text-align: center;
+    color: whitesmoke;
+    box-sizing: content-box;  
+    /* height,width */
+    height: 2.8em;
+    width: 30%;
+    /* background  */
+    background: #464646;
+    /* border */
+    border-radius: 6px;
+  }
+}

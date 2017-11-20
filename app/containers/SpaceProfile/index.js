@@ -3,7 +3,6 @@
  * SpaceProfile
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 
@@ -88,13 +87,9 @@ export default class SpaceProfile extends React.PureComponent {
         </main>
 
         <footer>
-
+        
         </footer>
       </div>
     );
   }
 }
-
-SpaceProfile.contextTypes = {
-  router: React.PropTypes.object
-};

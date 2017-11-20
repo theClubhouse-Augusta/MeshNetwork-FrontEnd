@@ -3,24 +3,19 @@
  * About
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+// import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import './style.css';
 import './styleM.css';
 
 export default class About extends React.PureComponent {
-
-  static propTypes = { children: React.PropTypes.node,};
-  static childContextTypes = { muiTheme: React.PropTypes.object };
-  getChildContext() {var theme = getMuiTheme(); return { muiTheme: theme }};
 
   render() {
     return (
@@ -88,7 +83,3 @@ export default class About extends React.PureComponent {
     );
   }
 }
-
-About.contextTypes = {
-  router: React.PropTypes.object
-};

@@ -6,17 +6,13 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
+import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import Header from 'components/header';
 import Footer from 'components/footer';
 import LocationSelect from 'components/LocationSelect';
 import DateTimeSelect from 'components/DateTimeSelect'; 
 import BookingStepTwo from 'components/BookingStepTwo';
 import SubmitButton from 'components/SubmitButton'; 
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {Card, CardActions, CardTitle} from 'material-ui/Card';
-
 
 import './style.css';
 import './styleM.css';
@@ -102,7 +98,3 @@ export default class BookingSystem extends React.PureComponent {
     );
   }
 }
-
-BookingSystem.contextTypes = {
-  router: React.PropTypes.object
-};

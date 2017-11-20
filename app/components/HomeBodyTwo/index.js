@@ -23,6 +23,3 @@ export default class HomeBodyTwo extends React.PureComponent {
   }
 }
 
-HomeBodyTwo.contextTypes = {
-  router: React.PropTypes.object
-};

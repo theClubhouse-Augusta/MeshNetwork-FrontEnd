@@ -6,28 +6,22 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Header from 'components/Header';
-import {TiSocialAtCircular,   TiSocialFacebookCircular,
+import {
+  TiSocialAtCircular,   
+  TiSocialFacebookCircular,
   TiSocialInstagramCircular,
-  TiSocialTwitterCircular} from 'react-icons/lib/ti';
-import Footer from 'components/Footer';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+  TiSocialTwitterCircular
+} from 'react-icons/lib/ti';
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import Header from 'components/Header';
+import Footer from 'components/Footer';
 import './style.css';
 import './styleM.css';
 
 export default class Spaces extends React.PureComponent {
-
-  static propTypes = { children: React.PropTypes.node,};
-  static childContextTypes = { muiTheme: React.PropTypes.object };
-  getChildContext() {var theme = getMuiTheme(); return { muiTheme: theme }};
-
   render() {
     return (
       <div className="container">
@@ -143,6 +137,3 @@ export default class Spaces extends React.PureComponent {
   }
 }
 
-Spaces.contextTypes = {
-  router: React.PropTypes.object
-};

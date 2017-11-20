@@ -47,7 +47,3 @@ export default class SubmitButton extends React.PureComponent {
     );
   }
 }
-
-SubmitButton.contextTypes = {
-  router: React.PropTypes.object
-};

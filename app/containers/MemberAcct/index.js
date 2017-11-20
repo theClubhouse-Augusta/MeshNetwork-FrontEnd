@@ -22,7 +22,3 @@ export default class MemberAcct extends React.PureComponent {
     );
   }
 }
-
-MemberAcct.contextTypes = {
-  router: React.PropTypes.object
-};

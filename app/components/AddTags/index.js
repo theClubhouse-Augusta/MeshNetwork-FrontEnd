@@ -19,6 +19,3 @@ export default class AddTags extends React.PureComponent {
   }
 }
 
-AddTags.contextTypes = {
-  router: React.PropTypes.object
-};

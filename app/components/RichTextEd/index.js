@@ -26,6 +26,3 @@ export default class RichTextEd extends React.PureComponent {
   }
 }
 
-RichTextEd.contextTypes = {
-  router: React.PropTypes.object
-};
