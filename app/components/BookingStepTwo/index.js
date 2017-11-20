@@ -43,6 +43,3 @@ export default class BookingStepTwo extends React.PureComponent {
   }
 }
 
-BookingStepTwo.contextTypes = {
-  router: React.PropTypes.object
-};

@@ -129,7 +129,3 @@ export default class AddEvent extends React.PureComponent {
     );
   }
 }
-
-AddEvent.contextTypes = {
-  router: React.PropTypes.object
-};

@@ -22,7 +22,3 @@ export default class MemDash extends React.PureComponent {
     );
   }
 }
-
-MemDash.contextTypes = {
-  router: React.PropTypes.object
-};

@@ -3,127 +3,170 @@
 * Tabs
 *
 */
-
 import React from 'react';
+import PropTypes from 'prop-types'; // ES6
 import RaisedButton from 'material-ui/RaisedButton';
 import RadioButton from 'material-ui/RadioButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import './style.css';
 import './styleM.css';
 
 export default class ExampleTabs extends React.PureComponent {
 
-  constructor(props, context) {
-    super(props, context)
-    this.state = {}
+  constructor() {
+    super();
+    this.state = {
+      selectedTab: {},
+      email: '',
+      password: '',
+    };
   }
-  
+
+  handlePassword = (e) => {
+    this.setState({ password: e.target.value });
+  }
+  handleEmail = (e) => {
+    this.setState({ email: e.target.value });
+  }
+
   render() {
+    const login = this.props.login;
+    const email = this.state.email;
+    const password = this.state.password;
     return (
-      <Tabs 
-        selectedTab={this.state.selectedTab}
-        onChangeTab={selectedTab => this.setState({ selectedTab })}
+      <Tabs
+        selectedTab={
+          (Object.keys(this.state.selectedTab).length === 0)
+            ? undefined
+            : this.state.selectedTab
+        }
+        onChangeTab={(selected) => this.setState({ selectedTab: selected })}
       >
+        {this.props.redirect}
         <Tab name="first" title="Log in" className="tabTitle">
-          <div className="tabContentWrapper"> 
+
+          <div className="tabContentWrapper">
+
             <form id="loginForm">
-              <p className="userFormItem"> 
-                <label htmlFor="">email</label>
-                <input type="email" name="" id=""/>
+
+              <p className="userFormItem">
+                <label htmlFor="email">email</label>
+                <input
+                  onChange={this.handleEmail}
+                  type="email"
+                  name=""
+                  id="email"
+                />
               </p>
 
-              <p className="userFormItem"> 
-                <label htmlFor="">password</label>
-                <input type="password" name="" id=""/>
+              <p className="userFormItem">
+                <label htmlFor="password">password</label>
+                <input
+                  onChange={this.handlePassword}
+                  type="password"
+                  name=""
+                  id="password"
+                />
               </p>
 
-              <p id="rememberMe" className="userFormItem">                
-                  <RadioButton
-                    value="not_light"
-                    label="Remember me"
-                    labelPosition="left"
-                  />             
-              </p>
+              <div id="rememberMe" className="userFormItem">
+                <RadioButton
+                  value="not_light"
+                  label="Remember me"
+                  labelPosition="left"
+                />
+              </div>
 
               <div className="userFormSubmit">
-                <RaisedButton type="submit" >Submit </RaisedButton>
-              </div> 
+                <RaisedButton
+                  onClick={() => { login(email, password); }}
+                >
+                  Submit
+                </RaisedButton>
+              </div>
             </form>
 
-            <div className="forgotInfo"> 
-              <a href="" className="userInfoLink">forgot email</a> 
-              <a href="" className="userInfoLink">forgot password </a>  
+            <div className="forgotInfo">
+              <a href="" className="userInfoLink">forgot email</a>
+              <a href="" className="userInfoLink">forgot password </a>
             </div>
           </div>
         </Tab>
 
-
-
-      <Tab name="second" title="Sign up">
-        <div className="tabContentWrapper"> 
-          <form id="signUpForm">  
-              <p className="userFormItem"> 
-                <label htmlFor="" className="userFormLabel">name</label>
-                <input type="text" name="" id=""/>
+        <Tab name="second" title="Sign up">
+          <div className="tabContentWrapper">
+            <form id="signUpForm">
+              <p className="userFormItem">
+                <label htmlFor="name" className="userFormLabel">name</label>
+                <input type="text" name="" id="name" />
               </p>
-            
-              <p className="userFormItem"> 
-                <label htmlFor="" className="userFormLabel"> your home space</label>
-                <DropDownMenu className="spacesDropdown" autoWidth={false}>
+
+              <div className="userFormItem">
+                <label htmlFor="homespace" className="userFormLabel"> your home space</label>
+                <DropDownMenu id="homespace" className="spacesDropdown" autoWidth={false}>
                   <MenuItem selected disabled hidden> choose a space</MenuItem>
                   <MenuItem> the Clubhou.se</MenuItem>
                   <MenuItem> Macon </MenuItem>
                 </DropDownMenu>
+              </div>
+
+              <p className="userFormItem">
+                <label
+                  htmlFor="email"
+                  className="userFormLabel"
+                >
+                  email
+                </label>
+                <input type="email" name="" id="email" />
               </p>
 
-              <p className="userFormItem">  
-                <label htmlFor="" className="userFormLabel">email</label>
-                <input type="email" name="" id=""/>
+              <p className="userFormItem">
+                <label htmlFor="password" className="userFormLabel">password</label>
+                <input type="password" name="" id="password" />
               </p>
 
-              <p className="userFormItem"> 
-                <label htmlFor="" className="userFormLabel">password</label>
-                <input type="password" name="" id=""/>
-              </p>
-
-              <p className="userFormItem"> 
-                <label htmlFor="" className="userFormLabel">confirm password</label>
-                <input type="password" name="" id=""/>
+              <p className="userFormItem">
+                <label htmlFor="confirmPassword" className="userFormLabel">confirm password</label>
+                <input type="password" name="" id="confirmPassword" />
               </p>
 
               <div className="userFormSubmit">
                 <RaisedButton type="submit" >Submit </RaisedButton>
-              </div> 
+              </div>
             </form>
           </div>
         </Tab>
       </Tabs>
-    )
+    );
   }
 }
 
+ExampleTabs.propTypes = {
+  login: PropTypes.func.isRequired,
+  redirect: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+};
+
 function Tabs({ children, selectedTab, onChangeTab }) {
-  let tabProps = []
+  const tabProps = [];
   const content = React.Children.map(children, (child) => {
     if (child.type === Tab) {
-      const { title, name } = child.props
-      tabProps.push({ title, name })
+      const { title, name } = child.props;
+      tabProps.push({ title, name });
       // first tab default
       if (selectedTab ? (selectedTab !== child.props.name) : (tabProps.length !== 1)) {
-        return null
+        return null;
       }
     }
-    return child
-  })
+    return child;
+  });
 
-  const finalSelectedTab = selectedTab || 
-        (tabProps.length > 0 && tabProps[0].name)
+  const finalSelectedTab = selectedTab ||
+        (tabProps.length > 0 && tabProps[0].name);
 
   return (
     <div className="tabsContainer">
@@ -136,41 +179,54 @@ function Tabs({ children, selectedTab, onChangeTab }) {
         {content}
       </div>
     </div>
-  )
+  );
 }
 
+Tabs.propTypes = {
+  children: PropTypes.array.isRequired,
+  selectedTab: PropTypes.string,
+  onChangeTab: PropTypes.func,
+};
+
 function Tablist({ tabs, selectedTab, onChangeTab }) {
-  const linkClass = selected => {
-    const c = 'tablistLink'
-    return selected ? `${c} ${c}Selected` : c
-  }
-  
+  const linkClass = (selected) => {
+    const c = 'tablistLink';
+    return selected ? `${c} ${c}Selected` : c;
+  };
+
   return (
     <nav >
       <ul className="tabList">
-        {tabs.map(({ name, title }) => 
+        {tabs.map(({ name, title }) => (
           <li aria-selected={name === selectedTab} role="tab" key={name} className="tabLink">
             <a
+              role="presentation"
               className={linkClass(name === selectedTab)}
               onClick={() => onChangeTab(name)}
-             >
+            >
               {title}
-             </a>
+            </a>
           </li>
-        )}
+        ))}
       </ul>
     </nav>
-  )
+  );
 }
 
-function Tab({ name, children }) {
+Tablist.propTypes = {
+  tabs: PropTypes.array.isRequired,
+  selectedTab: PropTypes.string,
+  onChangeTab: PropTypes.func,
+};
+
+function Tab({ children }) {
   return (
-    <div className="tabContent">
+    <div name="tabContent">
       {children}
     </div>
-  )
+  );
 }
 
-Tabs.contextTypes = {
-  router: React.PropTypes.object
+Tab.propTypes = {
+  children: PropTypes.object,
 };

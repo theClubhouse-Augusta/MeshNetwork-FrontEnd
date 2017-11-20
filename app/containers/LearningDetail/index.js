@@ -51,7 +51,3 @@ export default class LearningDetail extends React.PureComponent {
     );
   }
 }
-
-LearningDetail.contextTypes = {
-  router: React.PropTypes.object
-};

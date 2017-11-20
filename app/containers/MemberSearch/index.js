@@ -4,12 +4,12 @@
  *
  */
 import React from 'react';
+/* Icons */
+import MdPerson from 'react-icons/lib/md/person';
 /* Components */
 import Helmet from 'react-helmet';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-/* Icons */
-import MdPerson from 'react-icons/lib/md/person';
 /* css */
 import './style.css';
 import './styleM.css';
@@ -183,7 +183,3 @@ export default class MemberSearch extends React.PureComponent {
     );
   }
 }
-
-MemberSearch.contextTypes = {
-  router: React.PropTypes.object
-};

@@ -6,13 +6,13 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
+import { TiGroup } from 'react-icons/lib/ti'; 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar'; 
-import { TiGroup } from 'react-icons/lib/ti'; 
 import RaisedButton from 'material-ui/RaisedButton';  
+import Header from 'components/Header';
+import Footer from 'components/Footer';
 
 import './style.css';
 import './styleM.css';
@@ -59,6 +59,7 @@ export default class EventDetail extends React.PureComponent {
                   <div className="eventNotices">
                     <div className="eventNotice"> <TiGroup style={{fontSize: '32px'}}/> <label style={{marginLeft: '10px', lineHeight: '32px'}}>Public Welcome</label>  </div>
                   </div>
+
                   <div className="eventTags">
                     <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
                     <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
@@ -135,7 +136,3 @@ export default class EventDetail extends React.PureComponent {
     );
   }
 }
-
-EventDetail.contextTypes = {
-  router: React.PropTypes.object
-};

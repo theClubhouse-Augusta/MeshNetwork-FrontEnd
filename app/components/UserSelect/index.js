@@ -50,13 +50,7 @@ export default class UserSelect extends React.PureComponent {
             <Avatar size={75}/>
             <Avatar size={75}/>
         </div> 
-
-        
       </div>
     );
   }
 }
-
-UserSelect.contextTypes = {
-  router: React.PropTypes.object
-};

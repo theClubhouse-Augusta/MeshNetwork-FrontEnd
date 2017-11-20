@@ -8,10 +8,8 @@ import React from 'react';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 
-
 import './style.css';
 import './styleM.css';
-
 
 export default class CalendarTimeWrapper extends React.PureComponent {
   render() {
@@ -26,7 +24,3 @@ export default class CalendarTimeWrapper extends React.PureComponent {
     );
   }
 }
-
-CalendarTimeWrapper.contextTypes = {
-  router: React.PropTypes.object
-};

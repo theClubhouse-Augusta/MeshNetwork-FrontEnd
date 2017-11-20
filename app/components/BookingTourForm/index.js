@@ -42,6 +42,3 @@ export default class BookingTourForm extends React.PureComponent {
   }
 }
 
-BookingTourForm.contextTypes = {
-  router: React.PropTypes.object
-};
