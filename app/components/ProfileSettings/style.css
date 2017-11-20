@@ -8,28 +8,23 @@ input {
     padding: 15px; 
 }
 
-.profileFormItem {
-    display: flex; 
-    justify-content: space-between; 
-    margin: 1em 0; 
-}
-
 .profileMainInfo {
     display: flex; 
     flex-direction: column; 
-    margin: 0 0 60px 0;  
+    margin: 0 0 120px 0;  
 }
    .profileMainInfoForm {
      display: flex; 
      flex-direction: row;
-     justify-content: space-around;   
-     margin: 0 0 30px 0;     
+     justify-content: space-between;   
+     margin: 0 0 2em 0;     
    }
         .profileInformationForm {
           display: flex; 
           flex-direction: column;
+          flex-wrap: wrap; 
           justify-content: space-between; 
-          width: 45%; 
+          width: 55%; 
         }
 
         .profilePictureForm { 
@@ -37,20 +32,20 @@ input {
             display: flex; 
             flex-direction: column;  
             justify-content: space-around;
+            margin: 1em; 
         }
 
             .profilePicturePreview { 
                 border: 2px dotted #DDDDDD; 
                 border-radius: 50%; 
                 margin-bottom: 2em; 
-                height: 150px; 
-                width: 150px; 
+                height: 200px; 
+                width: 200px; 
                 align-self: center;                 
             }
 
-    .profileWorkInfo {
-     width: 80%; 
-     margin: 60px auto; 
+    .profileWorkInfo {  
+     margin: 120px auto; 
     }
 
         .profileWorkForm {
@@ -66,8 +61,7 @@ input {
         }
 
     .profileTagSelection { 
-      width: 80%; 
-      margin: 60px auto; 
+      margin: 120px auto; 
     }
 
         .profileTagWrapper { 

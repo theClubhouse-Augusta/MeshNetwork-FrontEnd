@@ -21,23 +21,23 @@ export default class ProfileSettings extends React.PureComponent {
 
           <div className="profileMainInfoForm"> 
             <div className="profileInformationForm">
-              <p className="profileFormItem"> 
+              <p className="acctFormItem"> 
                   <label htmlFor="">Name</label>
                   <input type="text" name="" id="event name" />
                 </p>
-                <p className="profileFormItem">
+                <p className="acctFormItem">
                   <label htmlFor="">Email</label>
                   <input type="email" />
                 </p>
-                <p className="profileFormItem">
+                <p className="acctFormItem">
                   <label htmlFor="">Title</label>
                   <input type="text" />
                 </p>
-                <p className="profileFormItem">
+                <p className="acctFormItem">
                   <label htmlFor="">Website</label>
                   <input type="text" />
                 </p>
-                <p className="profileFormItem">
+                <p className="acctFormItem">
                   <label htmlFor="">Home mesh space</label>
                   <select>
                       <option value="">the Clubhou.se</option>
@@ -53,8 +53,8 @@ export default class ProfileSettings extends React.PureComponent {
                 <div className="profilePicturePreview">
 
                 </div>                
-                  <label htmlFor="" style={{display: 'block'}}>upload</label>
-                  <input type="file" style={{maxWidth: '200px'}}/>    
+                  <label htmlFor="" style={{display: 'block', margin: '0 15%'}}>upload</label>
+                  <input type="file" style={{margin: ' 1em 15%'}}/>    
                 </div> 
               </div>        
                 
@@ -64,14 +64,14 @@ export default class ProfileSettings extends React.PureComponent {
         <div className="profileWorkInfo">
           <h3> Work </h3>
           <div className="profileWorkForm"> 
-            <p className="profileFormItem" style={{width: '45%'}}>
+            <p className="acctFormItem" style={{width: '45%'}}>
               <label htmlFor="">Company</label>
-              <input type="text"/>
+              <input type="text" style={{marginLeft: '1em'}}/>
             </p>
 
-            <p className="profileFormItem" style={{width: '45%'}}>
+            <p className="acctFormItem" style={{width: '45%'}}>
               <label htmlFor="">Position</label>
-              <input type="text"/>
+              <input type="text" style={{marginLeft: '1em'}}/>
             </p>
           </div>
 
@@ -97,42 +97,42 @@ export default class ProfileSettings extends React.PureComponent {
           <h3> Social Media</h3>
 
           <div className="profileSocialForm">
-            <p className="profileFormItem">
+            <p className="acctFormItem">
               <label htmlFor="">Facebook</label>
               <input type="text" style={{border: '1px solid black'}} />
             </p>
 
-            <p className="profileFormItem">
+            <p className="acctFormItem">
               <label htmlFor="">Twitter</label>
               <input type="text" style={{border: '1px solid black'}} />
             </p>
 
-            <p className="profileFormItem">
+            <p className="acctFormItem">
               <label htmlFor="">Instagram</label>
               <input type="text" style={{border: '1px solid black'}} />
             </p>
 
-            <p className="profileFormItem"> 
+            <p className="acctFormItem"> 
             <label htmlFor="">LinkedIn</label> 
             <input type="text" style={{border: '1px solid black'}} /> 
             </p>
 
-            <p className="profileFormItem">
+            <p className="acctFormItem">
               <label htmlFor="">Github</label>
             <input type="text" style={{border: '1px solid black'}} />
             </p>
 
-            <p className="profileFormItem">
+            <p className="acctFormItem">
               <label htmlFor="">dribble</label>
             <input type="text" style={{border: '1px solid black'}} />
             </p>
 
-            <p className="profileFormItem">
+            <p className="acctFormItem">
               <label htmlFor="">Behance</label>
             <input type="text" style={{border: '1px solid black'}} />
             </p>
 
-            <p className="profileFormItem">
+            <p className="acctFormItem">
               <label htmlFor="">Angellist</label>
             <input type="text" style={{border: '1px solid black'}} />
             </p>
