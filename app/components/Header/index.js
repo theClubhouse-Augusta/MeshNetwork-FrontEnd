@@ -6,11 +6,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Bars from 'react-icons/lib/fa/bars';
 
 import './style.css';
 import './styleM.css';
-
-import Bars from 'react-icons/lib/fa/bars';
 
 export default class Header extends React.PureComponent {
   constructor() {
@@ -77,10 +76,3 @@ export default class Header extends React.PureComponent {
     );
   }
 }
-
-
-Header.contextTypes = {
-  router: React.PropTypes.object
-};
-
-

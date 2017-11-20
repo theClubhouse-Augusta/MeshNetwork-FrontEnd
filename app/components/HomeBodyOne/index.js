@@ -21,7 +21,3 @@ export default class HomeBodyOne extends React.PureComponent {
     );
   }
 }
-
-HomeBodyOne.contextTypes = {
-  router: React.PropTypes.object
-};

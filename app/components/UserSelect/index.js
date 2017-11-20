@@ -24,13 +24,7 @@ export default class UserSelect extends React.PureComponent {
             <Avatar />
             <Avatar />
         </div> 
-
-        
       </div>
     );
   }
 }
-
-UserSelect.contextTypes = {
-  router: React.PropTypes.object
-};

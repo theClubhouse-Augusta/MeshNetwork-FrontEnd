@@ -5,84 +5,97 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Helmet from 'react-helmet';
+// relative imports
+import Header from '../../components/Header';
 
 import './style.css';
 import './styleM.css';
 
-export default class UserProfile extends React.PureComponent {
-  constructor() {
-    super();
+export default class UserProfile extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      token:sessionStorage.getItem("token"),
-      profile:""
+      user: this.props.user,
+      redirect: '',
+    };
+  }
+
+  // this is to ensure
+  componentWillMount() {
+    this.props.checkToken(localStorage.getItem('token'));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.user) {
+      this.setState({ redirect: <Redirect to="/" /> });
     }
-  }
-
-  componetWillMount() {
-    //this.getProfile();
-  }
-
-  getProfile = () => {
-    fetch("", {
-      method:'GET'
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      this.setState({
-        profile:json.profile
-      })
-    }.bind(this))
   }
 
   render() {
     return (
-      <div className="container">
-        <Helmet title="UserProfile" meta={[ { name: 'description', content: 'Description of UserProfile' }]}/>
-        <header>
+      <div className="UP-container">
+        {this.state.redirect}
+        <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
+        <Header />
 
-        </header>
+        <div className="mainProfile">
+          <section className="profileHeader">
+            <img
+              src="https://cdn-images-1.medium.com/fit/c/80/80/0*GCZdPPcsr8kr0q8x.png"
+              alt="avatar"
+            />
 
-        <main className="mainProfile">
-          <div className="profileHeader">
-            <div className="profileAvatar"></div>
-            <div className="profileInfo">
-              <div className="profileName"></div>
-              <div className="profileTitle"></div>
-              <div className="profileSpace"></div>
-              <div className="profileSocial"></div>
-            </div>
-          </div>
+            <ul className="profileInfo">
+              <li className="profileName">name</li>
+              <li className="profileTitle">title</li>
+              <li className="profileSpace">space</li>
+              <li className="profileSocial">social</li>
+            </ul>
+          </section>
+
           <div className="profileColumns">
-            <div className="profileColumnLeft">
-              <div className="profileTagCloud">
-                <div className="profileTag"></div>
-                <div className="profileTag"></div>
-                <div className="profileTag"></div>
-                <div className="profileTag"></div>
+
+            <aside className="profileColumnLeft">
+              <ul className="profileTagCloud">
+                <li className="profileTag">one</li>
+                <li className="profileTag">to</li>
+                <li className="profileTag">three</li>
+                <li className="profileTag">four</li>
+              </ul>
+
+              <div className="profileMentorship">
               </div>
-              <div className="profileMentorship"></div>
-              <div className="profileEvents"></div>
-            </div>
+
+              <div className="profileEvents">
+                upcoming events
+              </div>
+
+            </aside>
+
             <div className="profileColumnRight">
+
               <div className="profileBio">
-                <div className="profileBioHeader"></div>
-                <div className="profileBioContent"></div>
-              </div>
-              <div className="profileAttending">
-                <div className="profileAttendingHeader"></div>
-                <div className="profileAttendingContent">
-                  <div className="profileAttendingItem"></div>
-                  <div className="profileAttendingItem"></div>
-                  <div className="profileAttendingItem"></div>
+                <h1>About name</h1>
+                <div className="profileBioContent">
+                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa delectus maiores doloribus, odio ullam explicabo aliquam totam voluptatem velit aperiam. Totam corrupti eaque architecto tempora impedit in excepturi sit debitis.</p>
                 </div>
               </div>
-            </div>
 
+              <aside className="profileAttending">
+                <h2>Attending</h2>
+                <ul className="profileAttendingContent">
+                  <li className="profileAttendingItem">one</li>
+                  <li className="profileAttendingItem">two</li>
+                  <li className="profileAttendingItem">three</li>
+                </ul>
+              </aside>
+
+            </div>
           </div>
-        </main>
+        </div>
 
         <footer>
 
@@ -92,6 +105,10 @@ export default class UserProfile extends React.PureComponent {
   }
 }
 
-UserProfile.contextTypes = {
-  router: React.PropTypes.object
+UserProfile.propTypes = {
+  user: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+  checkToken: PropTypes.func.isRequired,
 };

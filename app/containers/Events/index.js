@@ -56,6 +56,3 @@ export default class Events extends React.PureComponent {
   }
 }
 
-Events.contextTypes = {
-  router: React.PropTypes.object
-};
