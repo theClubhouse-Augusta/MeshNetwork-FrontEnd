@@ -14,8 +14,10 @@ import Sponsors from 'containers/Sponsors';
 import LearningHome from 'containers/LearningHome';
 import LearningDetail from 'containers/LearningDetail';
 import LogInSignUp from 'containers/LogInSignUp';
+import MemberAcct from 'containers/MemberAcct'; 
 import MemberSearch from 'containers/MemberSearch';
 import AddEvent from 'containers/AddEvent';
+import AddCompEvent from 'containers/AddCompEvent';
 import SpaceProfile from 'containers/SpaceProfile';
 import UserProfile from 'containers/UserProfile';
 import NotFound from 'containers/NotFound';
@@ -142,7 +144,7 @@ export default class App extends Component {
             path="/detail"
             render={() => <LearningDetail />}
           />
-
+          
           <Route
             path="/Auth"
             render={() => (
@@ -151,6 +153,11 @@ export default class App extends Component {
                 redirect={this.state.redirect}
               />
             )}
+          />
+
+          <Route
+            path="/account"
+            component={MemberAcct}
           />
 
           <Route
@@ -163,6 +170,11 @@ export default class App extends Component {
           <Route
             path="/AddEvent"
             render={() => <AddEvent />}
+          />
+
+          <Route
+            path="/AddCompEvent"
+            render={() => <AddCompEvent />}
           />
 
           <Route

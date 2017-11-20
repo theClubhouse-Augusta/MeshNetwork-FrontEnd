@@ -1,17 +1,16 @@
 /**
 *
-* UserSelect
+* TagSearch
 *
 */
 
 import React from 'react';
-import Avatar from 'material-ui/Avatar';
 import AutoComplete from 'material-ui/AutoComplete';
 
 import './style.css';
 import './styleM.css';
 
-export default class UserSelect extends React.PureComponent {
+export default class TagSearch extends React.PureComponent {
   state = {
     dataSource: ['Audora', 
   'Austin', 'Nadeem', 'Ivy', 'David'],
@@ -27,30 +26,24 @@ export default class UserSelect extends React.PureComponent {
     });
   };
 
-  render() {    
+  render() {
     return (
-      <div className="userSelectContainer">
-      
-        <div className="userSearchContainer"> 
-          <label for="userSearch"></label>  
-          <AutoComplete
-          className="userSearch"
-          hintText="User search"
+      <div  className="tagSearchContainer"> 
+        <label for="tagSearch"></label>  
+        
+        <AutoComplete
+          className="tagSearch"
+          hintText="Tag search"
           dataSource={this.state.dataSource}
           onUpdateInput={this.handleUpdateInput}
           textFieldStyle={{maxWidth: '250px'}}
-        />
-          
-          
-        </div>
-
-
-        <div className="userResults">
-            <Avatar size={75}/>
-            <Avatar size={75}/>
-            <Avatar size={75}/>
-        </div> 
+          />
+        
       </div>
     );
   }
 }
+
+TagSearch.contextTypes = {
+  router: React.PropTypes.object
+};

@@ -1,13 +1,15 @@
 /* TagSelect Styles */
 .tagSelectContainer { 
     height: 10vh; 
-    padding: 1em; 
+    padding: 2em 1em; 
     display: flex; 
     align-items: center;  
+    max-width: 400px; 
 }
 
 .tagWrapper { 
-    width: 100%; 
+    width: 100%;   
+    max-width: 375px; 
     padding: 5px; 
     display: flex; 
     flex-direction: row;   

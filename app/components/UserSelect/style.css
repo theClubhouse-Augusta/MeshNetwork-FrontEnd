@@ -1,20 +1,28 @@
 /* UserSelect Styles */
 .userSelectContainer {     
-    padding: 1em; 
-}
-
-.userSearch { 
-    border-radius: 10px; 
-    padding: 5px; 
-    width: 80%; 
-}
-
-.userResults { 
-    border: 1px dotted lightslategray; 
-    height: 15vh; 
-    margin: 1em; 
     display: flex; 
-    align-items: center; 
+    flex-direction: row;
+    flex-wrap: wrap; 
     justify-content: space-around; 
+    width: 100%; 
 }
+
+    .userSearchContainer {
+        margin: 0 1em;
+        max-width: 50%; 
+    }
+        .userSearch { 
+            border: 1px dotted lightslategray;  
+        }
+
+    .userResults { 
+        border: 1px dotted lightslategray; 
+        height: 100px;  
+        width: 250px;
+        margin: 1em; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-around; 
+        flex-wrap: wrap; 
+    }
 

@@ -1,0 +1,40 @@
+/* AccountSettings Styles */
+
+.acctSettingsContainer {
+    max-width:1000px;
+    margin: 30px auto;
+    padding: 15px; 
+}
+
+    .acctPasswordInfo {
+        margin: 0 auto 120px auto; 
+        max-width: 75%; 
+    }
+
+        .acctChangePasswordForm { 
+            margin: 2em 0; 
+        }
+
+    .acctEmailInfo {
+        margin: 120px auto; 
+        width: 75%;
+    }
+
+        .acctChangeEmailForm {
+            margin: 2em 0; 
+        }
+
+    .acctManageSpaces {
+        margin: 120px auto; 
+        max-width: 75%;
+    }
+
+        .acctLocationSelect { 
+            margin: 2em 0; 
+        }
+
+    
+    .acctDeleteAcct { 
+        margin: 120px auto 0 auto; 
+        max-width: 75%; 
+    }
