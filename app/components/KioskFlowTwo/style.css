@@ -1,0 +1,9 @@
+/* KioskFlowTwo Styles */
+
+.kioskVisitReasonBlock { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-around; 
+    align-items: space-between; 
+    height: 400px; 
+}
