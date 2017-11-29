@@ -16,6 +16,7 @@ import LearningDetail from 'containers/LearningDetail';
 import LogInSignUp from 'containers/LogInSignUp';
 import MemberAcct from 'containers/MemberAcct'; 
 import MemberSearch from 'containers/MemberSearch';
+import MemberDash from 'containers/MemberDash'; 
 import AddEvent from 'containers/AddEvent';
 import AddCompEvent from 'containers/AddCompEvent';
 import SpaceProfile from 'containers/SpaceProfile';
@@ -158,6 +159,11 @@ export default class App extends Component {
           <Route
             path="/account"
             component={MemberAcct}
+          />
+
+          <Route
+            path="/dashboard"
+            component={MemberDash}
           />
 
           <Route

@@ -14,6 +14,9 @@ import DateTimeSelect from 'components/DateTimeSelect';
 import BookingStepTwo from 'components/BookingStepTwo';
 import SubmitButton from 'components/SubmitButton'; 
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 import './style.css';
 import './styleM.css';
 

@@ -56,7 +56,8 @@
 }
 
 .bookingLocationSelect { 
-  margin: 10vh auto; 
+  margin: 10vh auto;
+  height: 10vh;  
 }
 
 .bookingFlowContainer { 

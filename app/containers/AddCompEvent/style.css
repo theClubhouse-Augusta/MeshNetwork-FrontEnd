@@ -68,8 +68,8 @@
   }
 
     .compEventFormItem { 
-      width: 50%; 
-      margin: 30px 10%; 
+      width: 60%; 
+      margin: 30px 5%; 
       align-self: flex-start; 
       display: flex; 
       justify-content: space-between;  
@@ -79,6 +79,20 @@
       display: block; 
       margin-bottom: 20px;
     }
+
+    .compEventLogo {
+      display: flex; 
+      flex-direction: row; 
+      width: 100%; 
+      
+    }
+
+      .compEventLogoPreview {
+        background: #CCCCCC; 
+        height: 200px; 
+        width: 250px;
+        margin-top: 30px; 
+      }
 
     .compEventLocationSelect { 
       width: 80%; 

@@ -1,50 +1,67 @@
-/**
-*
-* LocationSelect
-*
-*/
-
 import React from 'react';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import createClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import Select from 'react-select'; 
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+const LOCATIONS = [
+	{ label: 'the Clubhou.se', value: 'the Clubhou.se' },
+	{ label: 'FourAthens', value: 'FourAthens' },
+	{ label: 'SparkMacon', value: 'SparkMacon' },
+];
 
-import './style.css';
-import './styleM.css';
+const WHY_WOULD_YOU = [
+	{ label: 'Chocolate (are you crazy?)', value: 'chocolate', disabled: true },
+].concat(LOCATIONS.slice(1));
 
-export default class LocationSelect extends React.PureComponent {
-  static propTypes = { children: React.PropTypes.node,};
-  static childContextTypes = { muiTheme: React.PropTypes.object };
-  getChildContext() {
-    var theme = getMuiTheme(); 
-    return { muiTheme: theme }
-  };
+var LocationSelectField = createClass({
+	displayName: 'LocationSelectField',
+	propTypes: {
+		label: PropTypes.string,
+	},
+	getInitialState () {
+		return {
+			removeSelected: false,
+			disabled: false,
+			crazy: false,
+			stayOpen: true,
+			value: [],
+		};
+	},
+	handleSelectChange (value) {
+		console.log('You\'ve selected:', value);
+		this.setState({ value });
+	},
+	toggleCheckbox (e) {
+		this.setState({
+			[e.target.name]: e.target.checked,
+		});
+	},
 
-  constructor(props) {
-    super(props);
-    this.state = {value: [0]};
-  }
+	render () {
+		const { crazy, disabled, stayOpen, value } = this.state;
+		const options = crazy ? WHY_WOULD_YOU : LOCATIONS;
+		return (
+			<div className="section">
+				
+				<Select
+					closeOnSelect={!stayOpen}
+					disabled={disabled}
+					multi
+					onChange={this.handleSelectChange}
+					options={options}
+					placeholder="Select a location"
+          			removeSelected={this.state.removeSelected}
+					simpleValue
+          			value={value}
+         			menuStyle= {{border: '1px solid black'}}
+					  wrapperStyle={{ border: '1px solid black', borderRadius: '4px'}}
+					autosize
+				/>
 
-  handleChange = (event, index, value) => this.setState({value});
-  
-  render() {
-    return (
-      <div>
-           <DropDownMenu value={this.state.value} openImmediately multiple onChange={this.handleChange} maxHeight={200} autoWidth={false} style={{width: '100%'}} >
-           <MenuItem value={0} primaryText="Locations" disabled />
-           <MenuItem value={1} primaryText="The Clubhou.se - Augusta, GA" />
-           <MenuItem value={2} primaryText="FourAthens - Athens, GA" />       
-           <MenuItem value={3} primaryText="FourAthens - Athens, GA" />  
-           <MenuItem value={4} primaryText="FourAthens - Athens, GA" />  
-           <MenuItem value={5} primaryText="FourAthens - Athens, GA" />  
-           <MenuItem value={6} primaryText="FourAthens - Athens, GA" />  
-           <MenuItem value={7} primaryText="FourAthens - Athens, GA" />  
-           <MenuItem value={8} primaryText="FourAthens - Athens, GA" />  
-           <MenuItem value={9} primaryText="FourAthens - Athens, GA" />  
-         </DropDownMenu>
-      </div>
-    );
-  }
-}
+			
+			</div>
+		);
+	}
+});
+
+module.exports = LocationSelectField;

@@ -71,7 +71,7 @@ export default class AddCompEvent extends React.PureComponent {
               </div> 
               </div> 
 
-          </div> 
+          </div> .
 
             <div className="compEventForm"> 
               <p className="compEventFormItem"> 
@@ -79,7 +79,23 @@ export default class AddCompEvent extends React.PureComponent {
                 <input type="text" name="" id="event name" style={{border: '1px solid black', width: '65%' }}/>
               </p>
 
-              <p className="addEventFormItem"  style={{flexDirection: 'column'}}> 
+              <p className="compEventFormItem">
+                <label htmlFor=""> Header Image </label>
+                <input type="file" value=""/>
+              </p>
+
+              <div className="compEventLogo">
+              <p className="compEventFormItem">
+                <label htmlFor=""> Event Logo </label>
+                <input type="file" value=""/>
+              </p>
+
+                <div className="compEventLogoPreview">
+                  
+                </div>
+              </div>
+
+              <p className="compEventFormItem"  style={{flexDirection: 'column'}}> 
                 <label htmlFor="" style={{textAlign: 'justify', width: '60%'}}> Add any relevant outside URL </label>
                 <p style={{marginBottom: '1em'}}><small>(such as Github repo or official challenge page)</small></p> 
                 <input type="text" name="" id="event outside url" style={{border: '1px solid black', width: '70%' }}/>
