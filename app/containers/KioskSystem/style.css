@@ -1,7 +1,42 @@
 /* KioskSystem Styles */
 
-.container {
+.kioskContainer {
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  background: #26AAE1; 
 }
+
+.kioskBody {
+  
+}
+
+  .kioskLogoBlock {
+    border: 1px solid black; 
+    height: 200px; 
+    padding: 15px; 
+    float: right;
+  }
+
+    .kioskLogoWrapper {
+      background: #DDDDDD; 
+      height: 200px;
+      width: 200px; 
+      border-radius: 50%; 
+    }
+
+  .kioskFormContainer {
+    border: 1px solid red;
+    padding: 15px; 
+    height: auto; 
+    background: #ffffff; 
+    margin: 30px auto; 
+    width: 50%; 
+  }
+
+  .kioskRedirectNav {
+    color: #ffffff;
+    text-align: center;
+    border: 1px solid white;
+    padding: 15px;  
+  }

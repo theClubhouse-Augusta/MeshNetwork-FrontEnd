@@ -21,6 +21,7 @@ import AddEvent from 'containers/AddEvent';
 import AddCompEvent from 'containers/AddCompEvent';
 import SpaceProfile from 'containers/SpaceProfile';
 import UserProfile from 'containers/UserProfile';
+import KioskSystem from 'containers/KioskSystem'; 
 import NotFound from 'containers/NotFound';
 export default class App extends Component {
   constructor() {
@@ -197,6 +198,11 @@ export default class App extends Component {
               />
             )}
           />
+
+          <Route path="/kiosk" 
+            render={() => <KioskSystem />} 
+          />
+
 
           <Route
             path="/clubhouse"

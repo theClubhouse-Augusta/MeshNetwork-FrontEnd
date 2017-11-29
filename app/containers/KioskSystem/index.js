@@ -6,6 +6,8 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
+import UserSelect from 'components/UserSelect';
+import KioskFlowTwo from 'components/KioskFlowTwo'; 
 
 import './style.css';
 import './styleM.css';
@@ -13,10 +15,26 @@ import './styleM.css';
 export default class KioskSystem extends React.PureComponent {
   render() {
     return (
-      <div className="container">
+      <div className="kioskContainer">
         <Helmet title="KioskSystem" meta={[ { name: 'description', content: 'Description of KioskSystem' }]}/>
 
-        //Remove this line and you can start writing your code here.
+        <main> 
+          <div className="kioskBody">
+            <div className="kioskLogoBlock">
+              <div className="kioskLogoWrapper"></div>
+            </div>
+
+            <div className="kioskFormContainer">
+              <UserSelect />
+              <KioskFlowTwo />
+            </div>
+
+            <div className="kioskRedirectNav">
+              <small> <a href="/home"> mesh network home </a></small>
+            </div>
+
+          </div>          
+        </main>
       </div>
     );
   }
