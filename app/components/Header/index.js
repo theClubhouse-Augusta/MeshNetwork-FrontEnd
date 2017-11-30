@@ -62,7 +62,7 @@ export default class Header extends React.PureComponent {
             <Link to="/sponsors" className="navButton">Sponsors</Link>
             <Link to="/spaces" className="navButton">Spaces</Link>
             <Link to="/learning" className="navButton">Education</Link>
-            <Link to="/auth" className="navButton">Login / SignUp</Link>
+            <a href="/auth" className="navButton">Login / SignUp</a>
           </nav>
 
           <Bars className="menuIcon" onClick={this.handleMenu}/>

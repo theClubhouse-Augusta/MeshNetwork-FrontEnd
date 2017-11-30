@@ -3,7 +3,8 @@
  * UserProfile
  *
  */
-import React from 'react';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 // relative imports
@@ -12,104 +13,122 @@ import Header from 'components/Header';
 import './style.css';
 import './styleM.css';
 
-export default class UserProfile extends React.Component {
+export default class LoggedInUserProfile extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      skills: '',
-      space: '',
-      events: '',
-      upcoming: '',
-      loading: true,
+      user: this.props.user['user'], // eslint-disable-line
+      skills: this.props.user['skills'],
+      space: this.props.user['space'],
+      events: this.props.user['events'],
+      upcoming: this.props.user['upcoming'],
+      redirect: this.props.redirect,
+      loading: this.props.loading,
     };
-    
     this.path = this.props.location.pathname;
     this.userIdIndex = this.props.location.pathname.length - 1;
     this.userID = this.path[this.userIdIndex];
+
+    this.token = localStorage.getItem('token');
+    this.checkToken = this.props.checkToken;
   }
 
   componentWillMount() {
-    if (isNaN(this.userID)) {
+    /**
+     * url path must end with numeric character
+     * invalid: /User/Profile/me/
+     * valid: /UserProfile/me/  
+    */
+    if ((isNaN(this.userID) && !this.state.user)) {
+      this.props.history.push('/');
+    }
+
+    if (this.token === null) {
       this.props.history.push('/');
     } 
-    else {
-      this.loadUser(localStorage.getItem('token'));
+    else if (typeof this.props.user !== 'object') {
+      this.checkToken(this.token, { getLoggedInUser: true });
     }
   }
 
-  loadUser = (token) => {
-    if (!token) {
-      return;
+  componentWillReceiveProps(nextProps) {
+    // url/path/id must match loggedInUser.id
+    if (!nextProps.user) {
+      this.props.history.push('/');
+    } else if (nextProps.user.user.id != this.userID) { // eslint-disable-line
+      this.props.history.push('/');
+    } else {
+      this.setState({ 
+        user: nextProps.user.user, 
+        skills: nextProps.user.skills,
+        space: nextProps.user.space,
+        events: nextProps.user.events,
+        upcoming: nextProps.user.upcoming,
+      }, () => {
+        this.setState({	loading: false });
+      });
     }
-    fetch(`http://localhost:8000/api/user/${this.userID}`, {
-        headers: { Authorization: `Bearer ${token}` },
-    })
-    .then(response => 
-      response.json()
-    )
-    .then(getUser => {
-      if (!getUser.error) {
-        this.setState({	
-          user: getUser.user,
-          skills: getUser.skills,
-          space: getUser.space,
-          events: getUser.events,
-          upcoming: getUser.upcoming,
-          loading: false,
-       });
-      } 
-      else if (getUser.error) {
-        this.props.history.push('/');
-      }
-    })
-    .catch(error => {
-      alert(`error!: ${error.message}`);
-    })
   }
 
-  loadEvents = (spaceId) => {
-    fetch(`http://localhost:8000/api/events`, {
-        headers: { Authorization: `Bearer ${token}` },
-    })
+  // prevent profile from partiallally rendering
+  // for non-authenticated users
+  loading = () => {
+    if (this.state.loading) {
+      return true;
+    } else {
+      return  false;
+    }
   }
-
-  loading = () => this.state.loading;
 
   render() {
     const user = this.state.user;
     const skills = this.state.skills;
-    const space = this.state.space;
-    const events = this.state.events;
+    const space = this.state.space; 
+    const events = this.state.events; 
     const upcoming = this.state.upcoming;
 
     return (
       this.loading()
         ?
-          <h1>spinner here!</h1>
+          <h1>
+            spinner here!
+          </h1>
         :
-          <div className={"UP-container"}>
+          <div className='UP-container'>
             <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
             <Header />
             <div className="mainProfile">
+
               <section className="profileHeader">
                 <img
                   src="https://cdn-images-1.medium.com/fit/c/80/80/0*GCZdPPcsr8kr0q8x.png"
                   alt="avatar"
                 />
+
                 <ul className="profileInfo">
-                  <li className="profileName">{user.name}</li>
-                  <li className="profileTitle">title</li>
-                  <li className="profileSpace">{space.name}</li>
-                  <li className="profileSocial">social</li>
+
+                  <li className="profileName">
+                    {user.name}
+                  </li>
+
+                  <li className="profileTitle">
+                    title
+                  </li>
+
+                  <li className="profileSpace">
+                    {space.name}
+                  </li>
+
+                  <li className="profileSocial">
+                    social
+                  </li>
                 </ul>
               </section>
 
               <div className="profileColumns">
 
                 <aside className="profileColumnLeft">
-
                   <h3 style={{textAlign:'center'}}>Skills</h3>
                   {this.state.skills && <Skills skills={skills} />}
 
@@ -128,7 +147,9 @@ export default class UserProfile extends React.Component {
                   <div className="profileBio">
                     <h1>About name</h1>
                     <div className="profileBioContent">
-                      <p>{user.bio}</p>
+                      <p>
+                        {user.bio}
+                      </p>
                     </div>
                   </div>
 
@@ -150,14 +171,27 @@ export default class UserProfile extends React.Component {
   }
 }
 
-UserProfile.propTypes = {
+LoggedInUserProfile.propTypes = {
+  user: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+  redirect: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+  checkToken: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const Skills = (props) => {
   const tags = props.skills.map((skill, index) => (
-    <li key={`${skill.name}${index}`} className="profileTag">
+    <li 
+      key={`${skill.name}${index}`} 
+      className="profileTag"
+    >
       {skill.name}
     </li>
   ))
@@ -172,6 +206,7 @@ Skills.propTypes = {
   skills: PropTypes.array.isRequired,
 };
 
+
 const Events = (props) => {
   const events = props.events.map((event, index) => (
     <li 
@@ -181,7 +216,7 @@ const Events = (props) => {
     >
       {event.title}
     </li>
-  ));
+  ))
   return ( 
     <ul className="profileTagCloud">
       {events}

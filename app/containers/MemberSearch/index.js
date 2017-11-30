@@ -4,34 +4,56 @@
  *
  */
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import PropTypes, { oneOfType } from 'prop-types';
 /* Icons */
 import MdPerson from 'react-icons/lib/md/person';
+            
 /* Components */
 import Helmet from 'react-helmet';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from 'components/Header';
+import Footer from 'components/Footer';
 /* css */
 import './style.css';
 import './styleM.css';
 
-export default class MemberSearch extends React.PureComponent {
-  constructor() {
-    super();
+export default class MemberSearch extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
        skills: [],
        results: [],
+       query: '',
+       redirect: this.props.redirect,
     };
+    this.token = localStorage.getItem('token');
+    this.checkToken = this.props.checkToken;
   }
 
-  componentDidMount() {
-    this.loadSkills();
+  /**
+   * If the user is logged in 
+   * this.state.loggedIn = true />
+   */
+  componentWillMount() {
+    this.checkToken(this.token, {checkAuth:true});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.redirect) {
+      this.props.history.push('/');
+    } else {
+      this.loadSkills();
+    }
   }
 
   loadSkills = () => {
-    fetch('http://localhost:8000/api/skills'
-    ).then(response =>
+    fetch('http://localhost:8000/api/skills', {
+      headers: { Authorization: `Bearer ${this.token}` },
+    })
+    .then(response =>
       response.json()
-    ).then(json => {
+    )
+    .then(json => {
       this.setState({ skills:json });
     })
     .catch(error => {
@@ -39,16 +61,49 @@ export default class MemberSearch extends React.PureComponent {
     });
   }
 
+  searchQuery = (e) => {
+    const reg = /^\S*$/;
+    if (reg.exec(e.target.value) !== null) { // true if input has no space
+      this.setState({ query: e.target.value });
+    }
+  }
+
+  // submit form if 'enter' is pressed
+  checkKey = (e) => {
+    if (e.keyCode === 13 && this.state.query) {
+      fetch(`http://localhost:8000/api/search/?query=${encodeURIComponent(this.state.query)}`, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
+      .then(response =>
+        response.json())
+      .then(json => {
+        if (!json.error) {
+          this.setState({ results: json });
+        } else {
+          alert(json.error); // eslint-disable-line
+        }
+      })
+      .catch(error => {
+        alert(`error in fetching data from server: ${error}`); // eslint-disable-line
+      });
+    }
+  }
+
   ShowSearchResults = () => {
-    if (!this.state.results) {
-      return '';
+    if (this.state.results.error) {
+      alert(this.state.results.error)
     } else {
       return (
         <div id="MS-postSearchContainer">
           {/* User Cards */}
           <ul>
             {this.state.results.map((user, index) => 
-              <li key={`userAvatar${user.id}`}>
+              <li
+                onClick={() => {
+                  this.props.history.push(`/UserProfile/${user.id}`);
+                }} 
+                key={`userAvatar${user.id}`}
+              >
                 <img 
                   src={user.avatar} 
                   width="100px" 
@@ -67,13 +122,6 @@ export default class MemberSearch extends React.PureComponent {
                     <dt>company:</dt>
                     <dd> 
                       &nbsp;&nbsp;&nbsp;{user.company}
-                    </dd>
-                  </div>
-
-                  <div>  
-                    <dt>Skills:</dt>
-                    <dd>
-                      &nbsp;&nbsp;&nbsp;skills
                     </dd>
                   </div>
 
@@ -99,10 +147,13 @@ export default class MemberSearch extends React.PureComponent {
      * and <tag> will be sent as a url
      * parameter
      */
-    fetch('http://localhost:8000/api/getusers' 
-    ).then(response => 
+    fetch(`http://localhost:8000/api/search/?tag=${encodeURIComponent(tag)}`, {
+      headers: { Authorization: `Bearer ${this.token}` },
+    })
+    .then(response => 
       response.json()
-    ).then(json => {
+    )
+    .then(json => {
       this.setState({	results: json });            
     })
     .catch(error => {
@@ -114,6 +165,7 @@ export default class MemberSearch extends React.PureComponent {
     const results = this.ShowSearchResults();
     return (
       <div className="MS-Container">
+        {this.state.redirect}
         <Helmet title="MemberSearch" meta={[ { name: 'description', content: 'Description of MemberSearch' }]} />
 
         {/* Header */}
@@ -123,10 +175,16 @@ export default class MemberSearch extends React.PureComponent {
           <h1> Make Connections </h1>
 
           {/* Search Form */}
-          <form id="MS-SearchForm">
+          <div id="MS-SearchForm">
             <MdPerson className="MS-MdIcon" />
-            <input type="search" placeholder="Member Search" />
-          </form> 
+            <input 
+              onChange={this.searchQuery}
+              onKeyDown={(e) => { this.checkKey(e); }}
+              type="search" 
+              placeholder="Member Search" 
+              value={this.state.query}
+            />
+          </div> 
 
           <h2> 
             Popular Tags 
@@ -176,10 +234,17 @@ export default class MemberSearch extends React.PureComponent {
 
           {/* Search Results */}
           {results}
-
         </main>
         <Footer />
       </div>
     );
   }
 }
+MemberSearch.propTypes = {
+  redirect: PropTypes.oneOfType([ 
+    PropTypes.object.isRequired,
+    PropTypes.string.isRequired,
+  ]),
+  checkToken: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+};
