@@ -5,3 +5,44 @@
   flex-direction:column;
   min-height:100vh;
 }
+
+.eventBanner { 
+  height:200px;
+  width:100%;
+  background: #CCCCCC;
+  background-size:cover;
+  background-position:center center;
+  font-family: 'Anton', sans-serif;
+  font-size:4em;
+  line-height:120px;
+  text-align:center;
+  color:#FFFFFF;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.eventBody {
+  padding: 15px; 
+  width: 100%; 
+  max-width: 1200px; 
+}
+
+  .eventSearchSort {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-around; 
+    align-content: center; 
+  }
+    .eventSearch {
+      border: 1px solid black; 
+    }
+
+    .eventTagSort {
+
+    }
+
+  .eventCalender {
+
+  }

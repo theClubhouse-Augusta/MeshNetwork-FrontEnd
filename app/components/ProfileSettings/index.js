@@ -47,6 +47,10 @@ export default class ProfileSettings extends React.PureComponent {
                       <option value=""> Columbus Makes IT </option>
                   </select>    
                 </p> 
+                <p className="acctFormItem">
+                  <label> Bio </label>
+                  <textarea  style={{minWidth: '300px'}} rows="8" /> 
+                </p>
               </div> 
 
               <div className="profilePictureForm">
