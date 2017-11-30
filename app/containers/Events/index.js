@@ -10,6 +10,7 @@ import Header from 'components/Header';
 import Footer from 'components/Footer'; 
 import LocationSelect from 'components/LocationSelect';
 import TagSelect from 'components/TagSelect'; 
+import RaisedButton from 'material-ui/RaisedButton';
 
 import './style.css';
 import './styleM.css';
@@ -36,7 +37,11 @@ export default class Events extends React.PureComponent {
           </div>
           
 
-          <div className="eventSearch"></div>
+          <div className="eventSearchWrapper">
+            <label> Search </label>
+            <input type="text" className="eventSearch"/>'
+            <RaisedButton type="submit"> Submit</RaisedButton>
+          </div>
 
           <div className="eventTagSort">
             <TagSelect />
