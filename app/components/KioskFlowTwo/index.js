@@ -29,7 +29,7 @@ export default class KioskFlowTwo extends React.PureComponent {
     return (
       <div className="kioskFlowTwoContainer">
           <div className="kioskVisitReasonBlock">
-          {reasonCards}
+          {reasonCards} 
           </div>
 
           <KioskSuggestedEvents />

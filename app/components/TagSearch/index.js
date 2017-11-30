@@ -5,45 +5,49 @@
 */
 
 import React from 'react';
-import AutoComplete from 'material-ui/AutoComplete';
+import createClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import Select from 'react-select';
 
-import './style.css';
-import './styleM.css';
+var CreatableDemo = createClass({
+	displayName: 'CreatableDemo',
+	propTypes: {
+		hint: PropTypes.string,
+		label: PropTypes.string
+	},
+	getInitialState () {
+		return {
+			multi: true,
+			multiValue: [],
+			options: [
+				{ value: 'R', label: 'Red' },
+				{ value: 'G', label: 'Green' },
+				{ value: 'B', label: 'Blue' }
+			],
+			value: undefined
+		};
+	},
+	handleOnChange (value) {
+		const { multi } = this.state;
+		if (multi) {
+			this.setState({ multiValue: value });
+		} else {
+			this.setState({ value });
+		}
+	},
+	render () {
+		const { multi, multiValue, options, value } = this.state;
+		return (
+			<div className="section">
+				<Select.Creatable
+					multi={multi}
+					options={options}
+					onChange={this.handleOnChange}
+					value={multi ? multiValue : value}
+				/>
+			</div>
+		);
+	}
+});
 
-export default class TagSearch extends React.PureComponent {
-  state = {
-    dataSource: ['Audora', 
-  'Austin', 'Nadeem', 'Ivy', 'David'],
-  };
-
-  handleUpdateInput = (value) => {
-    this.setState({
-      dataSource: [
-        value,
-        value + value,
-        value + value + value,
-      ],
-    });
-  };
-
-  render() {
-    return (
-      <div  className="tagSearchContainer"> 
-        <label for="tagSearch"></label>  
-        
-        <AutoComplete
-          className="tagSearch"
-          hintText="Tag search"
-          dataSource={this.state.dataSource}
-          onUpdateInput={this.handleUpdateInput}
-          textFieldStyle={{maxWidth: '250px'}}
-          />
-        
-      </div>
-    );
-  }
-}
-
-TagSearch.contextTypes = {
-  router: React.PropTypes.object
-};
+module.exports = CreatableDemo;
