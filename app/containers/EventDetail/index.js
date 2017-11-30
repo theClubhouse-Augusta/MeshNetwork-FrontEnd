@@ -13,6 +13,7 @@ import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';  
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import moment from 'moment';
 
 import './style.css';
 import './styleM.css';
@@ -22,7 +23,32 @@ export default class EventDetail extends React.PureComponent {
     super(props);
     this.state = {
       open: false,
+      event: '',
     };
+    this.path = this.props.location.pathname;
+    this.eventIdIndex = this.props.location.pathname.length - 1;
+    this.eventID = this.path[this.eventIdIndex];
+  }
+
+  componentDidMount() {
+    this.getEvent(this.eventID, localStorage.getItem('token'));
+  }
+
+  getEvent = (eventID, token) => {
+    fetch(`http://localhost:8000/api/showEvent/${eventID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    .then(reponse => 
+      reponse.json()
+    )
+    .then(Event => {
+      this.setState({	event: Event }, () => {
+        console.log(JSON.stringify(this.state.event))
+      });
+    })
+    .catch(error => {
+      alert(`error: ${error}`)
+    });
   }
 
   handleTouchTap = () => {
@@ -38,7 +64,8 @@ export default class EventDetail extends React.PureComponent {
   };
 
 
-  render() {   
+  render() {  
+    const event = this.state.event; 
     return (
       <div className="container">
         <Helmet title="EventDetail" meta={[ { name: 'description', content: 'Description of EventDetail' }]}/>
@@ -46,9 +73,16 @@ export default class EventDetail extends React.PureComponent {
         
         <main>
           <div className="eventBanner">
-            <h1 className="eventName"> Javascript Meetup</h1>
-            <h2 className="eventDateTime"> October 26, 2017 &nbsp;
-              <time>6:30-8:00pm </time> </h2>
+            <h1 className="eventName">{event.title}</h1>
+            <h2 className="eventDateTime"> 
+              {
+                moment(event.start).format('Do') === moment(event.end).format('Do')
+                  ?
+                    `${moment(event.start).format('MMMM Do')}, ${moment(event.end).format('YYYY')}`
+                  :
+                    `${moment(event.start).format('MMMM Do')} - ${moment(event.end).format('Do')}, ${moment(event.end).format('YYYY')}`
+              }
+            </h2>
           </div>
 
           <div className="eventBody">
@@ -69,7 +103,7 @@ export default class EventDetail extends React.PureComponent {
                 </div>
 
                 <div className="eventDescriptionContent">
-                  <p>Cat ipsum dolor sit amet, dead stare with ears cocked friends are not food so use lap as chair but stand in front of the computer screen. Scratch at the door then walk away thug cat yet claw drapes. Meow mew so i cry and cry and cry unless you pet me, and then maybe i cry just for fun spill litter box, scratch at owner, destroy all furniture, especially couch but vommit food and eat it again, roll on the floor purring your whiskers off or meowwww. Paw at beetle and eat it before it gets away unwrap toilet paper catch mouse and gave it as a present.</p>
+                  <p>{event.description}</p>
                 </div>
 
                 <div className="eventPeopleBlock">
@@ -108,7 +142,13 @@ export default class EventDetail extends React.PureComponent {
               </div>
 
               <div className="eventRegistration">
-                  <RaisedButton onClick={this.handleTouchTap}  style={{ marginTop: '40px'}} backgroundColor="#e36937"  > register  </RaisedButton>
+                  <RaisedButton 
+                    onClick={this.handleTouchTap}  
+                    style={{ marginTop: '40px'}} 
+                    backgroundColor="#e36937"  
+                  > 
+                    register  
+                  </RaisedButton>
                   
                   <Snackbar
                     open={this.state.open}

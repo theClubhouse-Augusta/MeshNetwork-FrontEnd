@@ -16,48 +16,77 @@ import LearningDetail from 'containers/LearningDetail';
 import LogInSignUp from 'containers/LogInSignUp';
 import MemberAcct from 'containers/MemberAcct'; 
 import MemberSearch from 'containers/MemberSearch';
-import MemberDash from 'containers/MemberDash'; 
+import MemberDash from 'containers/MemberDash';
 import AddEvent from 'containers/AddEvent';
 import AddCompEvent from 'containers/AddCompEvent';
 import SpaceProfile from 'containers/SpaceProfile';
 import UserProfile from 'containers/UserProfile';
-import KioskSystem from 'containers/KioskSystem'; 
+import KioskSystem from 'containers/KioskSystem';
+import LoggedInUserProfile from 'containers/LoggedInUserProfile';
 import NotFound from 'containers/NotFound';
 export default class App extends Component {
+
+  static propTypes = { children: React.PropTypes.node };
+  static childContextTypes = { muiTheme: React.PropTypes.object };
+
   constructor() {
     super();
     this.state = {
       user: '',
       redirect: '',
+      loading: true,
     };
   }
+  getChildContext() { const theme = getMuiTheme(); return { muiTheme: theme }; }
 
-  static propTypes = { children: React.PropTypes.node,};
-  static childContextTypes = { muiTheme: React.PropTypes.object };
-  getChildContext() {var theme = getMuiTheme(); return { muiTheme: theme }};
-  
+  /**
+   * @param {string} jwt 
+   * @param {Object} [getLoggedInUser] - optional, get logged in user
+   * @param {Object} [checkAuth] - optional, ensure user credentials
+   */
+  checkToken = (token, { getLoggedInUser, checkAuth } ) => {
 
-  checkToken = (token) => {
-    if (token) {
+    if (!token) {
+      this.setState({ redirect: <Redirect to='/' /> });
+    } else if (token && getLoggedInUser) {
       fetch('http://localhost:8000/api/showuser', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response) =>
+      .then(response => 
         response.json()
       )
-      .then((authUser) => {
+      .then(authUser => {
         if (!authUser.error) {
           this.setState({ user: authUser });
         } else {
-          this.setState({ user: '' });
+          this.setState({ 
+            user: '',
+            redirect: <Redirect to='/' />
+          });
         }
       })
-      .catch((error) => {
-        alert(`error: ${error}`); // eslint-disable-line
+      .catch(error => {
+        alert(`in checkToken: ${error}`); // eslint-disable-line
       });
-    } else {
-      this.setState({ user: '' });
-    }
+
+    } else if (token && checkAuth) {
+      fetch('http://localhost:8000/api/checkAuth', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(response =>
+        response.json()
+      )
+      .then(loggedIn => {
+        if (loggedIn) {
+          this.setState({ loggedIn: true});
+        } else {
+          this.setState({ redirect: <Redirect to='/' /> });
+        }
+      })
+      .catch(error => {
+        alert(`in checkToken: ${error}`); // eslint-disable-line
+      });
+    } 
   }
 
   login = (email, password) => {
@@ -69,23 +98,31 @@ export default class App extends Component {
       method: 'post',
       body: data,
     })
-    .then((response) =>
+    .then(response =>
       response.json()
     )
-    .then((json) => {
-      if (json.error) {
-        alert(json.error); // eslint-disable-line
-      } else if (json.token === false) {
+    .then(json => {
+      if (json.token === false) {
         alert('invalid credentials'); // eslint-disable-line
       } else if (json.token !== false) {
         alert('Welcome Back!'); // eslint-disable-line
         localStorage.setItem('token', json.token);
         this.setState({
-          user: json.user,
-          redirect: <Redirect to="/UserProfile" />,
+          user: {
+            user: json.user, 
+            skills: json.skills,
+            space: json.space,
+            events: json.events,
+            upcoming: json.upcoming,
+          },
+          redirect: <Redirect to={`/UserProfile/me/${json.user.id}`} />,
+          loading: false,
         });
       }
-    });
+    })
+    .catch(error => {
+      alert(`in login: ${error}`); // eslint-disable-line
+    })
   }
 
   render() {
@@ -109,7 +146,11 @@ export default class App extends Component {
 
           <Route
             path="/BusinessSearch"
-            render={() => <BusinessSearch />}
+            render={(props) => 
+              <BusinessSearch 
+                {...props} 
+              />
+            }
           />
 
           <Route
@@ -119,7 +160,7 @@ export default class App extends Component {
 
           <Route
             path="/EventDetail"
-            render={() => <EventDetail />}
+            render={(props) => <EventDetail {...props} />}
           />
 
           <Route
@@ -146,7 +187,7 @@ export default class App extends Component {
             path="/detail"
             render={() => <LearningDetail />}
           />
-          
+
           <Route
             path="/Auth"
             render={() => (
@@ -163,46 +204,70 @@ export default class App extends Component {
           />
 
           <Route
-            path="/dashboard"
-            component={MemberDash}
+          path="/dashboard"
+          component={MemberDash}
           />
 
           <Route
             path="/MemberSearch"
-            render={() => (
-              <MemberSearch checkToken={this.checkToken} />
-            )}
+            render={(props) => 
+              <MemberSearch
+                {...props}
+                checkToken={this.checkToken} 
+                redirect={this.state.redirect}
+              />
+            }
           />
 
           <Route
             path="/AddEvent"
-            render={() => <AddEvent />}
+            render={(props) => 
+              <AddEvent 
+                {...props}
+              />
+            }
           />
 
           <Route
             path="/AddCompEvent"
-            render={() => <AddCompEvent />}
+            render={(props) => 
+              <AddCompEvent 
+                {...props}
+              />
+          }
           />
 
           <Route
             path="/SpaceProfile"
-            render={() => <SpaceProfile />}
+            render={(props) => <SpaceProfile {...props} />}
           />
 
           <Route
-            path="/UserProfile"
-            render={() => (
-              <UserProfile
+            path="/UserProfile/me"
+            render={(props) => (
+              <LoggedInUserProfile
+                {...props}
                 user={this.state.user}
                 checkToken={this.checkToken}
+                loading={this.state.loading}
               />
             )}
           />
 
-          <Route path="/kiosk" 
-            render={() => <KioskSystem />} 
+          <Route
+            path="/UserProfile"
+            render={(props) => (
+              <UserProfile
+                {...props}
+                checkToken={this.checkToken}
+                //user={this.state.user}
+              />
+            )}
           />
-
+          <Route path="/kiosk"
+            render={() => <KioskSystem />}
+          />
+          
 
           <Route
             path="/clubhouse"

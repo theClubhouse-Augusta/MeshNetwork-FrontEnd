@@ -4,16 +4,16 @@
  *
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import MyMapComponent from './MyMapComponent';
 import './style.css';
 import './styleM.css';
-
 export default class BusinessSearch extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       spaces: [],
       spaceID: {},
@@ -21,8 +21,9 @@ export default class BusinessSearch extends React.Component {
     };
   }
 
+
   componentDidMount() {
-    this.loadSpaces();
+      this.loadSpaces();
   }
 
   loadSpaces = () => {
@@ -39,76 +40,11 @@ export default class BusinessSearch extends React.Component {
     });
   }
 
-  ShowSearchResults = (spaceID) => {
-    const showSpace = [];
-
-    if (this.state.markerClicked) {
-      const spaces = this.state.spaces;
-      const selected = spaceID + 1;
-      showSpace.push(
-        <div
-          key={`div${spaces[selected].id}`}
-          id="BS-postSearchContainer"
-        >
-          <ul>
-            <li key={`workspace${spaces[selected].id}`}>
-              <img
-                src={spaces[selected].logo}
-                width="100px"
-                height="100px"
-                alt="logo"
-              />
-              <dl id="BS-workSpaceInfo">
-                <div>
-                  <dt>name:</dt>
-                  <dd>
-                    &nbsp;&nbsp;&nbsp;{spaces[selected].name}
-                  </dd>
-                </div>
-
-                <div>
-                  <dt>description:</dt>
-                  <dd>
-                    &nbsp;&nbsp;&nbsp;{spaces[selected].description}
-                  </dd>
-                </div>
-
-                <div>
-                  <dt>Email:</dt>
-                  <dd>
-                    &nbsp;&nbsp;&nbsp;{spaces[selected].email}
-                  </dd>
-                </div>
-
-                <div>
-                  <dt>Website:</dt>
-                  <dd>
-                    &nbsp;&nbsp;&nbsp;{spaces[selected].website}
-                  </dd>
-                </div>
-
-              </dl>
-            </li>
-          </ul>
-        </div>
-      );
-    }
-    return showSpace;
-  }
-
   clickMarker = (spaceId) => {
-    if (this.state.markerClicked) {
-      this.setState({ spaceID: spaceId });
-    } else {
-      this.setState({
-        markerClicked: true,
-        spaceID: spaceId,
-      });
-    }
+    this.props.history.push(`/SpaceProfile/${spaceId}`);
   }
 
   render() {
-    const workSpace = this.ShowSearchResults(this.state.spaceID);
     return (
       <div className="BS-Container">
         <Helmet title="BusinessSearch" meta={[{ name: 'description', content: 'Description of BusinessSearch' }]} />
@@ -117,7 +53,6 @@ export default class BusinessSearch extends React.Component {
         <Header />
 
         <main id="BS-main">
-
           {/* Banner */}
           <h1> Find your space </h1>
 
@@ -135,9 +70,6 @@ export default class BusinessSearch extends React.Component {
             clickMarker={this.clickMarker}
             spaces={this.state.spaces}
           />
-
-          {/* workSpace */}
-          {workSpace}
         </main>
         <Footer />
       </div>
