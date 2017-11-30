@@ -1,23 +1,12 @@
 /* UserProfile Styles */
-.UP-container {
+.LP-container {
   display:flex;
   flex-direction:column;
   min-height:100vh;
   background-color: black;
 }
 
-
-.UP-loading {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  background-image:url(https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwj34pTYzs7XAhWLS98KHbdRDSoQjRwIBw&url=https%3A%2F%2Fgithub.com%2Fadenix%2FSpinnerCSS&psig=AOvVaw0frLMXgzptOb5G9LfzMRzT&ust=1511317504693128);
-  background-size: cover;
-  background-position: center center;
-  opacity: 1;
-}
-
-.mainProfile {
+.LP-mainProfile {
   width:100%;
   max-width:1000px;
   margin:0 auto;
@@ -98,6 +87,17 @@ section.profileHeader img:first-child {
   /* box-sizing: border-box; */
 }
 
+.profileTag {
+  height:30px;
+  width:70px;
+  background-color:#111111;
+  margin:10px;
+  border-radius:5px;
+  color: white;
+  text-align: center;
+  width: fit-content;
+}
+
 .EventTag {
   cursor: pointer;
   height:30px;
@@ -107,16 +107,7 @@ section.profileHeader img:first-child {
   border-radius:5px;
   color: white;
   text-align: center;
-}
-
-.profileTag {
-  height:30px;
-  width:70px;
-  background-color:#111111;
-  margin:10px;
-  border-radius:5px;
-  color: white;
-  text-align: center;
+  width: fit-content;
 }
 
 .profileMentorship {

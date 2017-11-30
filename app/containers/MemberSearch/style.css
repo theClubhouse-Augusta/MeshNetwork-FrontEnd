@@ -43,7 +43,7 @@ div.MS-Container h1 {
 }
 
 /* search bar */
-form#MS-SearchForm {
+div#MS-SearchForm {
   /* flex */
   display: flex;
   align-self: center;
@@ -72,6 +72,10 @@ div#MS-postSearchContainer li {
   border: .5px solid silver;
   padding: 1em;
   width: 100%;
+}
+
+div#MS-postSearchContainer li:hover {
+  cursor: pointer;
 }
 
 /* User Avatar */
@@ -105,13 +109,14 @@ dl#MS-userInfo dt {
 }
 
 /* search input */
-form#MS-SearchForm input {
+div#MS-SearchForm input {
   padding-left: 1.5em;
   width: 100%;
+  border: none;
 }
 
 /* mozzilla - position/style cursor in searchbar */
-form#MS-SearchForm > input:placeholder-shown {
+div#MS-SearchForm > input:placeholder-shown {
   padding-left: 1.5em;
    /* text */
   color: black;
@@ -119,7 +124,7 @@ form#MS-SearchForm > input:placeholder-shown {
 }
 
 /* safari - position/style cursor in searchbar */
-form#MS-SearchForm  > input::-webkit-input-placeholder {
+div#MS-SearchForm  > input::-webkit-input-placeholder {
   padding-left: .30em;
    /* text */
   color: black;
