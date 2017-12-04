@@ -4,11 +4,8 @@
 *
 */
 import React from 'react';
-import PropTypes from 'prop-types'; // ES6
-import RaisedButton from 'material-ui/RaisedButton';
-import RadioButton from 'material-ui/RadioButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import PropTypes from 'prop-types';
+import Select from 'react-select'; 
 
 import './style.css';
 import './styleM.css';
@@ -72,19 +69,11 @@ export default class ExampleTabs extends React.PureComponent {
               </p>
 
               <div id="rememberMe" className="userFormItem">
-                <RadioButton
-                  value="not_light"
-                  label="Remember me"
-                  labelPosition="left"
-                />
+                { /* radio doot */ }
               </div>
 
               <div className="userFormSubmit">
-                <RaisedButton
-                  onClick={() => { login(email, password); }}
-                >
-                  Submit
-                </RaisedButton>
+                <button>Submit </button> 
               </div>
             </form>
 
@@ -105,11 +94,13 @@ export default class ExampleTabs extends React.PureComponent {
 
               <div className="userFormItem">
                 <label htmlFor="homespace" className="userFormLabel"> your home space</label>
-                <DropDownMenu id="homespace" className="spacesDropdown" autoWidth={false}>
-                  <MenuItem selected disabled hidden> choose a space</MenuItem>
-                  <MenuItem> the Clubhou.se</MenuItem>
-                  <MenuItem> Macon </MenuItem>
-                </DropDownMenu>
+                <select>
+                      <option value="">the Clubhou.se</option>
+                      <option value=""> Spark Macon </option>
+                      <option value=""> MakerVillage</option>
+                      <option value=""> FourAthens</option>
+                      <option value=""> Columbus Makes IT </option>
+                  </select>   
               </div>
 
               <p className="userFormItem">
@@ -133,7 +124,7 @@ export default class ExampleTabs extends React.PureComponent {
               </p>
 
               <div className="userFormSubmit">
-                <RaisedButton type="submit" >Submit </RaisedButton>
+                <button type="submit" >Submit </button>
               </div>
             </form>
           </div>

@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 
 import './style.css';
@@ -36,7 +35,7 @@ export default class SubmitButton extends React.PureComponent {
   render() {
     return (
       <div>
-        <RaisedButton label="Submit" primary={true}   onClick={this.handleTouchTap}/>
+        <button label="Submit" />
                   <Snackbar
                     open={this.state.open}
                     message="Got it! Please check your email for confirmation"

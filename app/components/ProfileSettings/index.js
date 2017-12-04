@@ -5,14 +5,23 @@
 */
 
 import React from 'react';
+import Select from 'react-select'; 
 import TagSearch from 'components/TagSearch'; 
 import TagSelect from 'components/TagSelect';
-import RaisedButton from 'material-ui/RaisedButton';  
 
 import './style.css';
 import './styleM.css';
 
 export default class ProfileSettings extends React.PureComponent {
+  state = {
+    selectedOption: '',
+  }
+
+  handleChange = (selectedOption) => {
+    this.setState({ selectedOption });
+    console.log(`Selected: ${selectedOption.label}`);
+  }
+
   render() {
     return (
       <div className="profileSettingsContainer">
@@ -39,7 +48,8 @@ export default class ProfileSettings extends React.PureComponent {
                 </p>
                 <p className="acctFormItem">
                   <label htmlFor="">Home mesh space</label>
-                  <select>
+    
+      <select>
                       <option value="">the Clubhou.se</option>
                       <option value=""> Spark Macon </option>
                       <option value=""> MakerVillage</option>
@@ -62,7 +72,7 @@ export default class ProfileSettings extends React.PureComponent {
                 </div> 
               </div>        
                 
-          <RaisedButton className="acctSubmitButton">Submit</RaisedButton>        
+          <button className="acctSubmitButton">Submit</button>        
         </div>        
 
         <div className="profileWorkInfo">
@@ -85,7 +95,7 @@ export default class ProfileSettings extends React.PureComponent {
           </p>
 
           <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-            <RaisedButton className="acctSubmitButton" >Submit</RaisedButton>      
+            <button className="acctSubmitButton" >Submit</button>      
           </div> 
         </div>
 
@@ -142,7 +152,7 @@ export default class ProfileSettings extends React.PureComponent {
             </p>
           </div>          
 
-          <RaisedButton className="acctSubmitButton"> Submit</RaisedButton>  
+          <button className="acctSubmitButton"> Submit</button>  
         </div>
 
       </div>

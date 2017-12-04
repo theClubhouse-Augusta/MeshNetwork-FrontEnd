@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+
 
 import './style.css';
 import './styleM.css';
@@ -35,7 +35,7 @@ export default class BookingTourForm extends React.PureComponent {
              <label htmlFor="" style={{maxWidth: '60%'}}> Would you like to recieve an email reminder? </label>
            <input type="radio"/>
            </p>
-           <RaisedButton label="Submit" primary={true} style={{margin: '1em auto'}}/>
+           <button label="Submit" primary={true} style={{margin: '1em auto'}}/>
           </form>
       </div>
     );

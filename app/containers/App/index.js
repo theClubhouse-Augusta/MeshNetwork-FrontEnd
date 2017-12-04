@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from 'containers/Home';
 import About from 'containers/About';
@@ -11,23 +9,23 @@ import EventDetail from 'containers/EventDetail';
 import Events from 'containers/Events';
 import Spaces from 'containers/Spaces';
 import Sponsors from 'containers/Sponsors';
-import LearningHome from 'containers/LearningHome';
-import LearningDetail from 'containers/LearningDetail';
+/* import LearningHome from 'containers/LearningHome';
+   import LearningDetail from 'containers/LearningDetail'; */
 import LogInSignUp from 'containers/LogInSignUp';
 import MemberAcct from 'containers/MemberAcct'; 
 import MemberSearch from 'containers/MemberSearch';
 import MemberDash from 'containers/MemberDash';
 import AddEvent from 'containers/AddEvent';
-import AddCompEvent from 'containers/AddCompEvent';
 import SpaceProfile from 'containers/SpaceProfile';
 import UserProfile from 'containers/UserProfile';
 import KioskSystem from 'containers/KioskSystem';
 import LoggedInUserProfile from 'containers/LoggedInUserProfile';
 import NotFound from 'containers/NotFound';
+
+
 export default class App extends Component {
 
-  static propTypes = { children: React.PropTypes.node };
-  static childContextTypes = { muiTheme: React.PropTypes.object };
+static propTypes = { children: React.PropTypes.node };
 
   constructor() {
     super();
@@ -37,7 +35,6 @@ export default class App extends Component {
       loading: true,
     };
   }
-  getChildContext() { const theme = getMuiTheme(); return { muiTheme: theme }; }
 
   /**
    * @param {string} jwt 
@@ -127,7 +124,6 @@ export default class App extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
         <Switch>
           <Route
             exact path="/" // eslint-disable-line
@@ -177,11 +173,14 @@ export default class App extends Component {
             path="/Spaces"
             component={Spaces}
           />
-
+        
+        { /*
           <Route
             path="/Learning"
             component={LearningHome}
           />
+        */ } 
+
 
           <Route
             path="/detail"
@@ -229,15 +228,6 @@ export default class App extends Component {
           />
 
           <Route
-            path="/AddCompEvent"
-            render={(props) => 
-              <AddCompEvent 
-                {...props}
-              />
-          }
-          />
-
-          <Route
             path="/SpaceProfile"
             render={(props) => <SpaceProfile {...props} />}
           />
@@ -276,7 +266,6 @@ export default class App extends Component {
 
           <Route component={NotFound} />
         </Switch>
-      </MuiThemeProvider>
     );
   }
 }

@@ -6,7 +6,7 @@
   min-height:100vh;
 }
 
-.eventBanner { 
+.eventHomeBanner { 
   height:200px;
   width:100%;
   background: #CCCCCC;
@@ -23,31 +23,50 @@
   align-items:center;
 }
 
-.eventBody {
-  padding: 15px; 
+.eventHomeBody {
   width: 100%; 
-  max-width: 1200px; 
+  padding: 30px;  
 }
 
-  .eventSearchSort {
+  .eventHomeSearchSort {
     display: flex; 
     flex-direction: row; 
-    justify-content: space-around; 
-    align-content: center;
-    width: 100%;  
-    padding: 15px; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%;
+    margin: 15px auto; 
+    border: 1px solid red; 
+    max-width: 1200px;
   }
-    .eventSearch {
-      border: 1px solid black; 
-      width: 20%; 
-      min-width: 100px; 
-      height: 1.5em;
+    .eventHomeSearchWrapper { 
+      display: flex; 
+      flex-direction: row; 
+      align-content: center; 
+      justify-content: space-between; 
+      align-self: center; 
+      margin: 15px; 
+      max-width: 300px;
+     }
+
+      .eventHomeSearch {
+        border: 1px solid black; 
+        min-width: 100px; 
+        height: 1.5em;             
+      }
+
+    .eventHomeLocationSelect {
+      width: 300px;
     }
 
-    .eventTagSort {
+    .eventHomeTagSort {
 
     }
 
-  .eventCalender {
-
+  .eventHomeCalenderWrapper {
+    margin: 30px auto;
+    padding: 15px;  
+    max-width: 1200px;
+    height: 120vh; 
+    border: 1px solid green;  
   }

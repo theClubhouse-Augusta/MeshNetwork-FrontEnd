@@ -10,7 +10,6 @@ import { TiGroup } from 'react-icons/lib/ti';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar'; 
-import RaisedButton from 'material-ui/RaisedButton';  
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import moment from 'moment';
@@ -142,13 +141,12 @@ export default class EventDetail extends React.PureComponent {
               </div>
 
               <div className="eventRegistration">
-                  <RaisedButton 
+                  <button 
                     onClick={this.handleTouchTap}  
                     style={{ marginTop: '40px'}} 
-                    backgroundColor="#e36937"  
                   > 
                     register  
-                  </RaisedButton>
+                  </button>
                   
                   <Snackbar
                     open={this.state.open}

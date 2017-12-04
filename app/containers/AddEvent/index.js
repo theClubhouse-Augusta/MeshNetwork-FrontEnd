@@ -13,7 +13,6 @@ import DateTimeSelect from 'components/DateTimeSelect';
 import RichTextEd from 'components/RichTextEd'; 
 import TagSearch from 'components/TagSearch'; 
 import TagSelect from 'components/TagSelect'; 
-import RaisedButton from 'material-ui/RaisedButton'; 
 import Snackbar from 'material-ui/Snackbar'; 
 
 import './style.css';
@@ -110,7 +109,7 @@ export default class AddEvent extends React.PureComponent {
               </div> 
               
               <div className="addEventSubmit">
-              <RaisedButton label="Submit" className="addEventSubmitButton" onClick={this.handleTouchTap} /> 
+              <button label="Submit" className="addEventSubmitButton" onClick={this.handleTouchTap} /> 
               <Snackbar
                 open={this.state.open}
                 message="Thanks, your event has been submitted for approval"

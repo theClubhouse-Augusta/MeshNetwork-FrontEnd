@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import './style.css';
 import './styleM.css';
@@ -38,7 +37,7 @@ export default class SecurityNotifSettings extends React.PureComponent {
             </p>
          </div>
          <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-            <RaisedButton className="acctSubmitButton" >Submit</RaisedButton>      
+            <button className="acctSubmitButton" >Submit</button>      
           </div> 
         </div>
 
@@ -63,7 +62,7 @@ export default class SecurityNotifSettings extends React.PureComponent {
               <input type="checkbox" name="" id=""/>
             </p>
             <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-            <RaisedButton className="acctSubmitButton" >Submit</RaisedButton>      
+            <button className="acctSubmitButton" >Submit</button>      
           </div>
           </div>
            

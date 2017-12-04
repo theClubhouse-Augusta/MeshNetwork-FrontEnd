@@ -8,23 +8,12 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 
 import './style.css';
 import './styleM.css';
 
 export default class Contact extends React.PureComponent {
-
-  static propTypes = { children: React.PropTypes.node,};
-  static childContextTypes = { muiTheme: React.PropTypes.object };
-  getChildContext() {var theme = getMuiTheme(); return { muiTheme: theme }};
-
   render() {
 
     const buttonContainer = {
@@ -62,17 +51,17 @@ export default class Contact extends React.PureComponent {
             <div className="contact_contactContainer">
               <div className="contact_inputBox">
                 <div className="contact_inputLabel">WHAT’S YOUR NAME?*</div>
-                <TextField hintText="Full Name (First & Last)" fullWidth={true} onChange={this.handleName}/>
+                <input type="text" />
               </div>
               <div className="contact_inputBox">
                 <div className="contact_inputLabel">WHAT EMAIL CAN WE REACH YOU AT?*</div>
-                <TextField hintText="i.e. hello@meshnetwork.com" fullWidth={true} onChange={this.handleEmail}/>
+                <input type="text" />
               </div>
               <div className="contact_inputBox">
                 <div className="contact_inputLabel">TELL US A BIT ABOUT YOUR ORGANIZTION</div>
-                <TextField hintText="What are you looking to build? What is the deadline? Do you have a specific budget range?" multiLine={true} fullWidth={true} onChange={this.handleContent}/>
+                <input type="text" />
               </div>
-              <FlatButton style={buttonContainer} >Send My Message</FlatButton>
+              <button style={buttonContainer} >Send My Message</button>
             </div>
             <div className="contact_contactInfo">
               <div className="contact_contactBlock">

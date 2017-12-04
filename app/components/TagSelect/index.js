@@ -14,8 +14,7 @@ const styles = {
   chip: {
     margin: '10px 5px',
     padding: '10px',
-    width: '80px', 
-
+    width: '80px',
   }
 };
 

@@ -8,9 +8,6 @@ import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
-// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-// import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import './style.css';
 import './styleM.css';
@@ -71,8 +68,8 @@ export default class About extends React.PureComponent {
           <div className="aboutButtons">
             <div className="aboutButtonText">Ready to Discover the Mesh Network?</div>
             <div className="aboutButtonsContainer">
-              <RaisedButton label="Sign Up" backgroundColor="#26aae1" labelColor="#FFFFFF" style={{ marginLeft:'15px', width:'200px'}}/>
-              <RaisedButton label="Contact Us" backgroundColor="#26aae1" labelColor="#FFFFFF" style={{ marginLeft:'15px', width:'200px'}}/>
+              <button label="Sign Up"  style={{ marginLeft:'15px', width:'200px'}}/>
+              <button label="Contact Us" style={{ marginLeft:'15px', width:'200px'}}/>
             </div>
           </div>
         </main>
