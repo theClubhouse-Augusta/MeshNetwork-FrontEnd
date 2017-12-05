@@ -27,13 +27,12 @@ export default class KioskSystem extends React.PureComponent {
             <div className="kioskFormContainer">
               <UserSelect />
               <KioskFlowTwo />
-            </div>
+            </div>          
+          </div> 
 
-            <div className="kioskRedirectNav">
+          <div className="kioskRedirectNav">
               <small> <a href="/home"> mesh network home </a></small>
-            </div>
-
-          </div>          
+            </div>         
         </main>
       </div>
     );

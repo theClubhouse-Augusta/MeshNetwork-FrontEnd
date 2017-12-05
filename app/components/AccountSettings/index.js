@@ -5,8 +5,7 @@
 */
 
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import LocationSelect from 'components/LocationSelect';  
+import MultiLocationSelect from 'components/MultiLocationSelect';  
 
 import './style.css';
 import './styleM.css';
@@ -31,7 +30,7 @@ export default class AccountSettings extends React.PureComponent {
               <input type="text"/>
             </p>
             <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-            <RaisedButton className="acctSubmitButton" >Submit</RaisedButton>      
+            <button className="acctSubmitButton" >Submit</button>      
           </div> 
           </div>
           
@@ -49,7 +48,7 @@ export default class AccountSettings extends React.PureComponent {
             <input type="text"/>
             </p>
             <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-            <RaisedButton className="acctSubmitButton" >Submit</RaisedButton>      
+            <button className="acctSubmitButton" >Submit</button>      
           </div> 
           </div>
           
@@ -58,9 +57,9 @@ export default class AccountSettings extends React.PureComponent {
         <div className="acctManageSpaces">
           <h3> Manage Space Affiliation </h3>
           <div className="acctLocationSelect">
-            <LocationSelect />
-            <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-            <RaisedButton className="acctSubmitButton" >Submit</RaisedButton>      
+            <MultiLocationSelect />
+            <div style={{ margin: '2em auto', textAlign: 'center'}} > 
+            <button className="acctSubmitButton" >Submit</button>      
           </div> 
           </div>
          
@@ -70,7 +69,7 @@ export default class AccountSettings extends React.PureComponent {
           <h3>Delete Account</h3>
           <p style={{margin: '2em 0'}}> some warnings about deleting accounts </p>
           <div style={{ margin: '2em auto', textAlign: 'right' }}> 
-            <RaisedButton>Delete Account</RaisedButton>      
+            <button>Delete Account</button>      
           </div> 
         </div>
       </div>

@@ -8,7 +8,8 @@
 }
 
 .kioskBody {
-  
+  display: flex; 
+  flex-direction: row-reverse; 
 }
 
   .kioskLogoBlock {
@@ -34,6 +35,7 @@
     background: #ffffff; 
     margin: 30px auto; 
     width: 50%; 
+    max-width: 1200px;
   }
 
   .kioskRedirectNav {

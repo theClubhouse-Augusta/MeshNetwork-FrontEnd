@@ -13,7 +13,7 @@ const WHY_WOULD_YOU = [
 	{ label: 'Chocolate (are you crazy?)', value: 'chocolate', disabled: true },
 ].concat(LOCATIONS.slice(1));
 
-var LocationSelectField = createClass({
+var MultiLocationSelectField = createClass({
 	displayName: 'LocationSelectField',
 	propTypes: {
 		label: PropTypes.string,
@@ -64,4 +64,4 @@ var LocationSelectField = createClass({
 	}
 });
 
-module.exports = LocationSelectField;
+module.exports = MultiLocationSelectField;

@@ -8,8 +8,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
-import { Tabs, Tab } from 'material-ui/Tabs';
-import Slider from 'material-ui/Slider';
+import Tabs, { Tab } from 'material-ui/Tabs'; 
 import ProfileSettings from 'components/ProfileSettings'; 
 import AccountSettings from 'components/AccountSettings';
 import SecurityNotifSettings from 'components/SecurityNotifSettings'; 
@@ -18,7 +17,16 @@ import './style.css';
 import './styleM.css';
 
 export default class MemberAcct extends React.PureComponent {
-  render() {
+  state= {
+    value: 0, 
+  }; 
+
+  handleChange = (event, value) => {
+    this.setState({ value }); 
+  }; 
+
+ render() {
+   const { value } = this.state; 
     return (
       <div className="container">
         <Helmet title="MemberAcct" meta={[ { name: 'description', content: 'Description of MemberAcct' }]}/>
@@ -30,11 +38,19 @@ export default class MemberAcct extends React.PureComponent {
           </div>
 
           <div className="acctBody"> 
-            <Tabs style={{maxWidth: '1000px', margin: '0 auto'}}> 
-              <Tab label="Profile"> <ProfileSettings /> </Tab>
-              <Tab label="Account"> <AccountSettings /> </Tab>
-              <Tab label="Security & Notifications"> <SecurityNotifSettings /> </Tab> 
+            <Tabs 
+            value={value} 
+            style={{maxWidth: '1000px', margin: '0 auto'}} onChange={this.handleChange}
+            centered > 
+              <Tab label="Profile"> </Tab>
+              <Tab label="Account"> </Tab>
+              <Tab label="Security & Notifications"> </Tab> 
             </Tabs>
+
+          {value === 0 && <ProfileSettings />}  
+          {value === 1 &&  <AccountSettings /> }       
+          {value === 2 &&   <SecurityNotifSettings /> }      
+
           </div>   
         </main> 
 

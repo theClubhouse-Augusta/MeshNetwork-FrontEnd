@@ -8,9 +8,9 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
-import LocationSelect from 'components/LocationSelect';
+import MultiLocationSelect from 'components/MultiLocationSelect';
 import TagSelect from 'components/TagSelect'; 
-import RaisedButton from 'material-ui/RaisedButton';
+ 
 
 import './style.css';
 import './styleM.css';
@@ -26,35 +26,34 @@ export default class Events extends React.PureComponent {
         <Header />
 
         <main>
-        <div className="eventBanner">
+        <div className="eventHomeBanner">
         </div>
       
-      <div className="eventBody">
-        <div className="eventSearchSort">
+      <div className="eventHomeBody">
+        <div className="eventHomeSearchSort">
           
-          <div className="eventLocationSelect">
-             <LocationSelect />
+          <div className="eventHomeLocationSelect">
+             <MultiLocationSelect />
           </div>
           
 
-          <div className="eventSearchWrapper">
+          <div className="eventHomeSearchWrapper">
             <label> Search </label>
-            <input type="text" className="eventSearch"/>'
-            <RaisedButton type="submit"> Submit</RaisedButton>
+            <input type="text" className="eventSearch" style={{margin: '0 1em'}}/> 
+            
           </div>
 
-          <div className="eventTagSort">
+          <div className="eventHomeTagSort">
             <TagSelect />
           </div>
         </div>
 
-        <div className="eventCalender">
-
+        <div className="eventHomeCalenderWrapper">
+        
         </div>
-      </div>
-       
+      </div>      
           
-        </main>
+      </main>
 
        <Footer />
       </div>
