@@ -109,7 +109,7 @@ export default class AddEvent extends React.PureComponent {
               </div> 
               
               <div className="addEventSubmit">
-              <button label="Submit" className="addEventSubmitButton" onClick={this.handleTouchTap} /> 
+              <button label="Submit" className="addEventSubmitButton" onClick={this.handleTouchTap} > Submit </button> 
               <Snackbar
                 open={this.state.open}
                 message="Thanks, your event has been submitted for approval"
