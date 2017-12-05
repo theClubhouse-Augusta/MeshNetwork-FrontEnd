@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'; // ES6
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Tabs from 'components/Tabs';
+import AuthTabs from 'components/AuthTabs';
 
 import './style.css';
 import './styleM.css';
@@ -22,7 +22,7 @@ export default class LogInSignUp extends React.PureComponent {
         <div className="authBanner" />
 
         <main className="authBody">
-          <Tabs
+          <AuthTabs
             login={this.props.login}
             redirect={this.props.redirect}
           />

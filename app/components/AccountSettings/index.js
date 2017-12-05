@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import LocationSelect from 'components/LocationSelect';  
+import MultiLocationSelect from 'components/MultiLocationSelect';  
 
 import './style.css';
 import './styleM.css';
@@ -57,7 +57,7 @@ export default class AccountSettings extends React.PureComponent {
         <div className="acctManageSpaces">
           <h3> Manage Space Affiliation </h3>
           <div className="acctLocationSelect">
-            <LocationSelect />
+            <MultiLocationSelect />
             <div style={{ margin: '2em auto', textAlign: 'center'}} > 
             <button className="acctSubmitButton" >Submit</button>      
           </div> 

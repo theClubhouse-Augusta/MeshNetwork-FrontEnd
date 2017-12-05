@@ -1,16 +1,25 @@
 /**
 *
-* Tabs
+* AuthTabs
 *
 */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select'; 
+import Select from 'react-select';
+import Tabs, { Tab } from 'material-ui/Tabs';  
 
 import './style.css';
 import './styleM.css';
 
-export default class ExampleTabs extends React.PureComponent {
+function TabContainer(props) {
+  return <div className="divContentWrapper">{props.children}</div> 
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default class AuthTabs extends React.PureComponent {
 
   constructor() {
     super();
@@ -18,12 +27,18 @@ export default class ExampleTabs extends React.PureComponent {
       selectedTab: {},
       email: '',
       password: '',
+      value: 0, 
     };
   }
+
+  handleChange = (event, value) => (
+    this.setState({ value })
+  )
 
   handlePassword = (e) => {
     this.setState({ password: e.target.value });
   }
+
   handleEmail = (e) => {
     this.setState({ email: e.target.value });
   }
@@ -32,21 +47,16 @@ export default class ExampleTabs extends React.PureComponent {
     const login = this.props.login;
     const email = this.state.email;
     const password = this.state.password;
+    const value = this.state.value; 
     return (
-      <Tabs
-        selectedTab={
-          (Object.keys(this.state.selectedTab).length === 0)
-            ? undefined
-            : this.state.selectedTab
-        }
-        onChangeTab={(selected) => this.setState({ selectedTab: selected })}
-      >
+      <div className="authTabsContainer"> 
+      <Tabs value={value} onChange={this.handleChange} centered>
         {this.props.redirect}
-        <Tab name="first" title="Log in" className="tabTitle">
+        <Tab label ="Login" className="tabTitle" />                <Tab label="Sign up" className="tabTitle"/>   
+      </Tabs>
 
-          <div className="tabContentWrapper">
-
-            <form id="loginForm">
+      {value === 0 && <TabContainer> 
+        <form id="loginForm">
 
               <p className="userFormItem">
                 <label htmlFor="email">email</label>
@@ -80,13 +90,9 @@ export default class ExampleTabs extends React.PureComponent {
             <div className="forgotInfo">
               <a href="" className="userInfoLink">forgot email</a>
               <a href="" className="userInfoLink">forgot password </a>
-            </div>
-          </div>
-        </Tab>
-
-        <Tab name="second" title="Sign up">
-          <div className="tabContentWrapper">
-            <form id="signUpForm">
+            </div>   
+      </TabContainer>  }
+        {value === 1 && <TabContainer> <form id="signUpForm">
               <p className="userFormItem">
                 <label htmlFor="name" className="userFormLabel">name</label>
                 <input type="text" name="" id="name" />
@@ -127,14 +133,13 @@ export default class ExampleTabs extends React.PureComponent {
                 <button type="submit" >Submit </button>
               </div>
             </form>
-          </div>
-        </Tab>
-      </Tabs>
+            </TabContainer>}
+    </div>   
     );
   }
 }
 
-ExampleTabs.propTypes = {
+AuthTabs.propTypes = {
   login: PropTypes.func.isRequired,
   redirect: PropTypes.oneOfType([
     PropTypes.string,
@@ -142,82 +147,3 @@ ExampleTabs.propTypes = {
   ]),
 };
 
-function Tabs({ children, selectedTab, onChangeTab }) {
-  const tabProps = [];
-  const content = React.Children.map(children, (child) => {
-    if (child.type === Tab) {
-      const { title, name } = child.props;
-      tabProps.push({ title, name });
-      // first tab default
-      if (selectedTab ? (selectedTab !== child.props.name) : (tabProps.length !== 1)) {
-        return null;
-      }
-    }
-    return child;
-  });
-
-  const finalSelectedTab = selectedTab ||
-        (tabProps.length > 0 && tabProps[0].name);
-
-  return (
-    <div className="tabsContainer">
-      <Tablist
-        selectedTab={finalSelectedTab}
-        onChangeTab={onChangeTab}
-        tabs={tabProps}
-      />
-      <div className="tabsContent">
-        {content}
-      </div>
-    </div>
-  );
-}
-
-Tabs.propTypes = {
-  children: PropTypes.array.isRequired,
-  selectedTab: PropTypes.string,
-  onChangeTab: PropTypes.func,
-};
-
-function Tablist({ tabs, selectedTab, onChangeTab }) {
-  const linkClass = (selected) => {
-    const c = 'tablistLink';
-    return selected ? `${c} ${c}Selected` : c;
-  };
-
-  return (
-    <nav >
-      <ul className="tabList">
-        {tabs.map(({ name, title }) => (
-          <li aria-selected={name === selectedTab} role="tab" key={name} className="tabLink">
-            <a
-              role="presentation"
-              className={linkClass(name === selectedTab)}
-              onClick={() => onChangeTab(name)}
-            >
-              {title}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-}
-
-Tablist.propTypes = {
-  tabs: PropTypes.array.isRequired,
-  selectedTab: PropTypes.string,
-  onChangeTab: PropTypes.func,
-};
-
-function Tab({ children }) {
-  return (
-    <div name="tabContent">
-      {children}
-    </div>
-  );
-}
-
-Tab.propTypes = {
-  children: PropTypes.object,
-};
