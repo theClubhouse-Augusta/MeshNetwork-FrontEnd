@@ -1,6 +1,6 @@
 /**
 *
-* CompEventSponsorBlock
+* Mbutton
 *
 */
 
@@ -9,7 +9,7 @@ import React from 'react';
 import './style.css';
 import './styleM.css';
 
-export default class CompEventSponsorBlock extends React.PureComponent {
+export default class Mbutton extends React.PureComponent {
   render() {
     return (
       <div>
@@ -19,6 +19,6 @@ export default class CompEventSponsorBlock extends React.PureComponent {
   }
 }
 
-CompEventSponsorBlock.contextTypes = {
+Mbutton.contextTypes = {
   router: React.PropTypes.object
 };

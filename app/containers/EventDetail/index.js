@@ -10,14 +10,20 @@ import { TiGroup } from 'react-icons/lib/ti';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar'; 
+import Card, { CardMedia } from 'material-ui/Card';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+
 import moment from 'moment';
 
 import './style.css';
 import './styleM.css';
 
+
+
 export default class EventDetail extends React.PureComponent {
+ 
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -62,9 +68,10 @@ export default class EventDetail extends React.PureComponent {
     });
   };
 
-
+  
   render() {  
-    const event = this.state.event; 
+    const event = this.state.event;
+
     return (
       <div className="container">
         <Helmet title="EventDetail" meta={[ { name: 'description', content: 'Description of EventDetail' }]}/>
@@ -94,10 +101,10 @@ export default class EventDetail extends React.PureComponent {
                   </div>
 
                   <div className="eventTags">
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
+                    <Chip label="a tag" />
+                    <Chip label="a tag" />
+                    <Chip label="a tag" />
+                    <Chip label="a tag" />
                   </div>
                 </div>
 
@@ -106,6 +113,7 @@ export default class EventDetail extends React.PureComponent {
                 </div>
 
                 <div className="eventPeopleBlock">
+
                   <div className="eventAvatarsBlock"> 
                   
                     <div className="eventOrganizers">
@@ -122,6 +130,23 @@ export default class EventDetail extends React.PureComponent {
                       <Avatar size={75}/>
                       <Avatar size={75}/> 
                     </div>
+                  </div>
+
+                  <div className="eventSponsorsBlock">
+                      <Card className="eventSponsorCard"> 
+                      <h2 className="eventCardHeader"> A Company</h2>
+                        <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
+                      </Card>
+
+                    <Card className="eventSponsorCard"> 
+                    <h2 className="eventCardHeader"> A Company</h2>             
+                      <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
+                    </Card>
+
+                    <Card className="eventSponsorCard"> 
+                      <h2 className="eventCardHeader"> A Company</h2>
+                      <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
+                  </Card>
                   </div>
                 </div> 
               </div>
@@ -154,6 +179,10 @@ export default class EventDetail extends React.PureComponent {
                     autoHideDuration={4000}
                     onRequestClose={this.handleRequestClose}
                   />
+              </div>
+
+              <div className="eventSponsors">
+                
               </div>
 
               <div className="eventUpcomingEvents">
