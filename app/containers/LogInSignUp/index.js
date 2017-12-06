@@ -13,27 +13,24 @@ import AuthTabs from 'components/AuthTabs';
 import './style.css';
 import './styleM.css';
 
-export default class LogInSignUp extends React.PureComponent {
-  render() {
-    return (
-      <div className="authContainer">
-        <Helmet title="LogInSignUp" meta={[{ name: 'description', content: 'Description of LogInSignUp' }]} />
-        <Header />
-        <div className="authBanner" />
+const LogInSignUp = (props) => (
+  <div className="authContainer">
+    <Helmet title="LogInSignUp" meta={[{ name: 'description', content: 'Description of LogInSignUp' }]} />
+    <Header />
+    <div className="authBanner" />
 
-        <main className="authBody">
-          <AuthTabs
-            login={this.props.login}
-            redirect={this.props.redirect}
-          />
-        </main>
+    <main className="authBody">
+      <AuthTabs
+        login={props.login}
+        redirect={props.redirect}
+      />
+    </main>
 
-        <Footer />
+    <Footer />
 
-      </div>
-    );
-  }
-}
+  </div>
+);
+export default LogInSignUp;
 
 LogInSignUp.propTypes = {
   login: PropTypes.func.isRequired,

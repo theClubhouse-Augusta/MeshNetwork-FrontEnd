@@ -9,10 +9,9 @@ import EventDetail from 'containers/EventDetail';
 import Events from 'containers/Events';
 import Spaces from 'containers/Spaces';
 import Sponsors from 'containers/Sponsors';
-/* import LearningHome from 'containers/LearningHome';
-   import LearningDetail from 'containers/LearningDetail'; */
+import LearningDetail from 'containers/LearningDetail';
 import LogInSignUp from 'containers/LogInSignUp';
-import MemberAcct from 'containers/MemberAcct'; 
+import MemberAcct from 'containers/MemberAcct';
 import MemberSearch from 'containers/MemberSearch';
 import MemberDash from 'containers/MemberDash';
 import AddEvent from 'containers/AddEvent';
@@ -22,71 +21,46 @@ import KioskSystem from 'containers/KioskSystem';
 import LoggedInUserProfile from 'containers/LoggedInUserProfile';
 import NotFound from 'containers/NotFound';
 
-
 export default class App extends Component {
 
-static propTypes = { children: React.PropTypes.node };
-
-  constructor() {
-    super();
-    this.state = {
-      user: '',
-      redirect: '',
-      loading: true,
-    };
-  }
+  state = {
+    user: '',
+    redirect: '',
+    loading: true,
+  };
 
   /**
-   * @param {string} jwt 
-   * @param {Object} [getLoggedInUser] - optional, get logged in user
-   * @param {Object} [checkAuth] - optional, ensure user credentials
+   * @param {string} jwt
    */
-  checkToken = (token, { getLoggedInUser, checkAuth } ) => {
-
+  getLoggedInUser = (token) => {
     if (!token) {
       this.setState({ redirect: <Redirect to='/' /> });
-    } else if (token && getLoggedInUser) {
+    } else {
       fetch('http://localhost:8000/api/showuser', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then(response => 
+      .then(response =>
         response.json()
       )
       .then(authUser => {
         if (!authUser.error) {
           this.setState({ user: authUser });
         } else {
-          this.setState({ 
+          this.setState({
             user: '',
             redirect: <Redirect to='/' />
           });
         }
       })
       .catch(error => {
-        alert(`in checkToken: ${error}`); // eslint-disable-line
+        alert(`in getLoggedInUSer: ${error}`); // eslint-disable-line
       });
-
-    } else if (token && checkAuth) {
-      fetch('http://localhost:8000/api/checkAuth', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(response =>
-        response.json()
-      )
-      .then(loggedIn => {
-        if (loggedIn) {
-          this.setState({ loggedIn: true});
-        } else {
-          this.setState({ redirect: <Redirect to='/' /> });
-        }
-      })
-      .catch(error => {
-        alert(`in checkToken: ${error}`); // eslint-disable-line
-      });
-    } 
+    }
   }
 
-  login = (email, password) => {
+
+  login = (e, email, password) => {
+    e.preventDefault();
     const data = new FormData();
     data.append('email', email);
     data.append('password', password);
@@ -98,23 +72,17 @@ static propTypes = { children: React.PropTypes.node };
     .then(response =>
       response.json()
     )
-    .then(json => {
-      if (json.token === false) {
+    .then(loggedInUser => {
+      if (loggedInUser.token === false) {
         alert('invalid credentials'); // eslint-disable-line
-      } else if (json.token !== false) {
-        alert('Welcome Back!'); // eslint-disable-line
-        localStorage.setItem('token', json.token);
+      } else if (loggedInUser.token !== false) {
+        localStorage.setItem('token', loggedInUser.token);
         this.setState({
-          user: {
-            user: json.user, 
-            skills: json.skills,
-            space: json.space,
-            events: json.events,
-            upcoming: json.upcoming,
-          },
-          redirect: <Redirect to={`/UserProfile/me/${json.user.id}`} />,
+          user: loggedInUser,
           loading: false,
+          redirect: <Redirect to={`/UserProfile/me/${loggedInUser['user'].id}`} />
         });
+        alert('welcom back');
       }
     })
     .catch(error => {
@@ -142,9 +110,9 @@ static propTypes = { children: React.PropTypes.node };
 
           <Route
             path="/BusinessSearch"
-            render={(props) => 
-              <BusinessSearch 
-                {...props} 
+            render={(props) =>
+              <BusinessSearch
+                {...props}
               />
             }
           />
@@ -173,14 +141,6 @@ static propTypes = { children: React.PropTypes.node };
             path="/Spaces"
             component={Spaces}
           />
-        
-        { /*
-          <Route
-            path="/Learning"
-            component={LearningHome}
-          />
-        */ } 
-
 
           <Route
             path="/detail"
@@ -203,25 +163,23 @@ static propTypes = { children: React.PropTypes.node };
           />
 
           <Route
-          path="/dashboard"
-          component={MemberDash}
+            path="/dashboard"
+            component={MemberDash}
           />
 
           <Route
             path="/MemberSearch"
-            render={(props) => 
+            render={(props) =>
               <MemberSearch
                 {...props}
-                checkToken={this.checkToken} 
-                redirect={this.state.redirect}
               />
             }
           />
 
           <Route
             path="/AddEvent"
-            render={(props) => 
-              <AddEvent 
+            render={(props) =>
+              <AddEvent
                 {...props}
               />
             }
@@ -238,7 +196,7 @@ static propTypes = { children: React.PropTypes.node };
               <LoggedInUserProfile
                 {...props}
                 user={this.state.user}
-                checkToken={this.checkToken}
+                getLoggedInUser={this.getLoggedInUser}
                 loading={this.state.loading}
               />
             )}
@@ -249,7 +207,6 @@ static propTypes = { children: React.PropTypes.node };
             render={(props) => (
               <UserProfile
                 {...props}
-                checkToken={this.checkToken}
                 //user={this.state.user}
               />
             )}
@@ -257,7 +214,7 @@ static propTypes = { children: React.PropTypes.node };
           <Route path="/kiosk"
             render={() => <KioskSystem />}
           />
-          
+
 
           <Route
             path="/clubhouse"

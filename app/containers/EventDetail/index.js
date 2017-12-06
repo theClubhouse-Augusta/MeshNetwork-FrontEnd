@@ -3,56 +3,96 @@
  * EventDetail
  *
  */
-
 import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 import Helmet from 'react-helmet';
 import { TiGroup } from 'react-icons/lib/ti'; 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar'; 
+
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import moment from 'moment';
+import { MapLocal } from "./MapLocal";
+import { MapNonLocal } from "./MapNonLocal";
 
 import './style.css';
 import './styleM.css';
 
 export default class EventDetail extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-      event: '',
-    };
-    this.path = this.props.location.pathname;
-    this.eventIdIndex = this.props.location.pathname.length - 1;
-    this.eventID = this.path[this.eventIdIndex];
-  }
+
+  state = {
+    open: false,
+    event: '',
+    hostSpace: '',
+    workSpace: '',
+    workSpaces: '',
+    upcomingEvents: '',
+  };
+
+  token = localStorage['token'];
+  path = this.props.location.pathname.split('/');
+  eventID = this.path[this.path.length - 1];
 
   componentDidMount() {
-    this.getEvent(this.eventID, localStorage.getItem('token'));
+    if ( isNaN(parseInt(this.eventID)) || this.eventID === '0') {
+      this.props.history.push('/');
+    } else {
+      this.getEvent(this.eventID);
+    }
   }
 
-  getEvent = (eventID, token) => {
-    fetch(`http://localhost:8000/api/showEvent/${eventID}`, {
-        headers: { Authorization: `Bearer ${token}` },
-    })
+  clickMapMarker = (spaceId) => {
+    this.props.history.push(`/SpaceProfile/${spaceId}`);
+  }
+
+  getEvent = (eventID) => {
+    fetch(`http://localhost:8000/api/event/${eventID}`
+    )
     .then(reponse => 
       reponse.json()
     )
     .then(Event => {
-      this.setState({	event: Event }, () => {
-        console.log(JSON.stringify(this.state.event))
-      });
+      if (Event.local) {
+        this.setState({	
+          event: Event.event,
+          workSpace: Event.local,
+          upcomingEvents: Event.upcomingEvents,
+        });
+      } else if (Event.nonLocal) {
+        this.setState({	
+          event: Event.event,
+          hostSpace: Event.hostSpace,
+          workSpaces: Event.nonLocal,
+          upcomingEvents: Event.upcomingEvents
+        });
+      }
     })
     .catch(error => {
-      alert(`error: ${error}`)
+      alert(`error getEvent(): ${error}`)
     });
   }
 
-  handleTouchTap = () => {
-    this.setState({
-      open: true,
+  handleTouchTap = (e, eventID) => {
+    e.preventDefault();
+    fetch(`http://localhost:8000/api/event/join/${eventID}`, {
+      headers: { Authorization: `Bearer ${this.token}` }
+    },
+    )
+    .then(response => response.json()
+    )
+    .then(signedUp => {
+      if (signedUp.success) {
+        alert(signedUp.success)
+      } else if (signedUp.duplicate) {
+        alert(signedUp.duplicate);
+      } else if (signedUp.error) {
+        this.props.history.push('/auth');
+      }
+    })
+    .catch(error => {
+      alert(`handleTouchTap error: ${error}`)
     });
   };
 
@@ -62,9 +102,90 @@ export default class EventDetail extends React.PureComponent {
     });
   };
 
+  /**
+   * Event tags
+   */
+  Tag = (tag, key) => <Chip key={`chip${key}`} label={tag} style={{margin: '10px'}} />;
+
+  showTags = (tags) => {
+    const tagList = tags.split(',').map((tag, index) => (
+      this.Tag(tag, index))
+    );
+      return (
+        <div className="eventTags">
+          {tagList}
+        </div>
+      );
+  };
+
+  /**
+   * Upcoming Events
+   */
+  UpcomingEvent = (eventID, title, startDate) => (
+    <a href={`/EventDetail/${eventID}`}>
+      <li style={{lineHeight: '2em'}}>
+        {`${moment(startDate).format('MMMM D')} ${title} @`}
+      </li>
+    </a> 
+  );
+  
+  showUpcomingEvents = (events) => {
+    const eventList = events.map((event) => (
+      this.UpcomingEvent(event.id, event.title, event.start))
+    );
+    return (
+      <ul className="eventUpcomingList"> 
+        {eventList}
+      </ul> 
+    );
+  };
+
+  handleDates = (start, end) => {
+    // hour:min:sec
+    const startHourMinSec = moment(start).format('hms'); 
+    const endHourMinSec = moment(end).format('hms');
+
+    // day of month
+    const startDay = moment(start).format('Do'); 
+    const endDay = moment(end).format('Do');
+
+    let timeFormat;
+    if ( startHourMinSec !== endHourMinSec && startDay !== endDay ) {
+        if (startDay === endDay) {
+          timeFormat = ( 
+            <time>
+              {`${moment(start).format('MMMM Do h:mm')} - ${moment(end).format('h:mm')}`}
+            </time>
+          );
+        } else {
+          timeFormat = ( 
+            <div>
+              <time> 
+                starts:&nbsp;&nbsp;&nbsp;{`${moment(start).format(`MMMM D, h:mm A`)}`}
+              </time> 
+
+              <br/> 
+
+              <time> 
+                ends:&nbsp;&nbsp;&nbsp;{`${moment(end).format('MMMM D, h:mm A')}`}
+              </time>
+            </div>
+          );
+        }
+    }
+    return timeFormat;
+  }
+
 
   render() {  
     const event = this.state.event; 
+    const start = event.start;
+    const end = event.end;
+
+    const workSpace = this.state.workSpace;
+    const hostSpace = this.state.hostSpace;
+    const workSpaces = this.state.workSpaces;
+    const upcomingEvents = this.state.upcomingEvents;
     return (
       <div className="container">
         <Helmet title="EventDetail" meta={[ { name: 'description', content: 'Description of EventDetail' }]}/>
@@ -74,31 +195,23 @@ export default class EventDetail extends React.PureComponent {
           <div className="eventBanner">
             <h1 className="eventName">{event.title}</h1>
             <h2 className="eventDateTime"> 
-              {
-                moment(event.start).format('Do') === moment(event.end).format('Do')
-                  ?
-                    `${moment(event.start).format('MMMM Do')}, ${moment(event.end).format('YYYY')}`
-                  :
-                    `${moment(event.start).format('MMMM Do')} - ${moment(event.end).format('Do')}, ${moment(event.end).format('YYYY')}`
-              }
+              {this.handleDates(start,end)}
             </h2>
           </div>
 
           <div className="eventBody">
-
             <div className="eventDescription">
-
               <div className="eventQuickInfo">
                   <div className="eventNotices">
-                    <div className="eventNotice"> <TiGroup style={{fontSize: '32px'}}/> <label style={{marginLeft: '10px', lineHeight: '32px'}}>Public Welcome</label>  </div>
+                    <div className="eventNotice"> 
+                      <TiGroup style={{fontSize: '32px'}} /> 
+                        <label style={{marginLeft: '10px', lineHeight: '32px'}}>
+                          Public Welcome
+                        </label>  
+                    </div>
+                    {event.tags && this.showTags(event.tags)}
                   </div>
 
-                  <div className="eventTags">
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
-                    <Chip style={{width: '60px', margin: '5px'}}> TAG </Chip>
-                  </div>
                 </div>
 
                 <div className="eventDescriptionContent">
@@ -128,41 +241,86 @@ export default class EventDetail extends React.PureComponent {
 
             <div className="eventLocationInfo">
               <div className="eventMap">
-                  <img src={require("../../images/mapa.jpg")} width=" 100%"/> 
+                {/* local event */}
+                {workSpace &&
+                  <MapLocal
+                    isMarkerShown
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div style={{ height: '100%' }} />}
+                    containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
+                    mapElement={<div style={{ height: '23em' }} />}
+                    lat={workSpace.lat}
+                    lon={workSpace.lon}
+                    clickMapMarker={this.clickMapMarker}
+                    workSpace={workSpace}
+                  />
+                }
+
+                {/* non-local event */}
+                {workSpaces &&
+                  <MapNonLocal
+                    isMarkerShown
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div style={{ height: '100%' }} />}
+                    containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
+                    mapElement={<div style={{ height: '23em' }} />}
+                    lat={33.5105746}
+                    lon={-82.08560469999999}
+                    clickMarker={this.clickMapMarker}
+                    spaces={workSpaces}
+                  />
+                }
               <div className="eventLocation">
-               
-                  <div className="eventSpace"> the Clubhou.se</div>
-                </div>               
-                <div className="eventAddress">
-                  <address>540 Telfair St, <br />
-                    Augusta, GA 30902 <br />
-                  </address> 
+                {/* local event */}
+                {workSpace && <div className="eventSpace">{workSpace.name}</div>}
+
+                {/* non-local event */}
+                {hostSpace && <div className="eventSpace">{hostSpace.name}</div>}
+              </div>               
+              <div className="eventAddress">
+
+                {/* local event */}
+                  {workSpace &&
+                    <address>
+                      {workSpace.address}, <br />
+                      {`${workSpace.city}, ${workSpace.state} ${workSpace.zipcode}`}  <br />
+                    </address> 
+                  }
+
+                  {/* non-local event */}
+                  {hostSpace &&
+                    <address>
+                      {hostSpace.address}, <br />
+                      {`${hostSpace.city}, ${hostSpace.state} ${hostSpace.zipcode}`}  <br />
+                    </address> 
+                  }
+
+
                 </div>
               </div>
 
               <div className="eventRegistration">
-                  <button 
-                    onClick={this.handleTouchTap}  
-                    style={{ marginTop: '40px'}} 
-                  > 
-                    register  
-                  </button>
+                <button 
+                  onClick={(e) => { this.handleTouchTap(e, event.id) }}  
+                  style={{ marginTop: '40px'}} 
+                  backgroundColor="#e36937"  
+                > 
+                  register  
+                </button>
                   
-                  <Snackbar
-                    open={this.state.open}
-                    message="You're signed up!"
-                    autoHideDuration={4000}
-                    onRequestClose={this.handleRequestClose}
-                  />
+                <Snackbar
+                  open={this.state.open}
+                  message="You're signed up!"
+                  autoHideDuration={4000}
+                  onRequestClose={this.handleRequestClose}
+                />
               </div>
 
               <div className="eventUpcomingEvents">
-                  <h4 className="eventUpcomingTitle"> Upcoming events @ the Clubhou.se </h4> 
-                  <ul className="eventUpcomingList"> 
-                    <li style={{lineHeight: '2em'}} >Nov 8  - Beer & Bytes</li>
-                    <li style={{lineHeight: '2em'}} >Nov 17 - Growler Gardening</li>
-                    <li style={{lineHeight: '2em'}} >Nov 21 - Holiday Pop-up Shop</li>
-                  </ul> 
+                <h4 className="eventUpcomingTitle"> 
+                  Upcoming events
+                </h4> 
+                { upcomingEvents ? this.showUpcomingEvents(upcomingEvents) : null}
               </div>
               
             </div>
@@ -174,3 +332,8 @@ export default class EventDetail extends React.PureComponent {
     );
   }
 }
+
+EventDetail.propTypes = {
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
