@@ -4,54 +4,49 @@
  *
  */
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, {oneOfType} from 'prop-types';
 import Helmet from 'react-helmet';
 // relative imports
 import Header from 'components/Header';
+import { Skills, Events, Attending } from 'components/UserProfileAssets'
 
 import './style.css';
 import './styleM.css';
 
 export default class UserProfile extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: '',
-      skills: '',
-      space: '',
-      events: '',
-      upcoming: '',
-      loading: true,
-    };
-    
-    this.path = this.props.location.pathname;
-    this.userIdIndex = this.props.location.pathname.length - 1;
-    this.userID = this.path[this.userIdIndex];
-  }
+  state = {
+    user: '',
+    skills: '',
+    space: '',
+    events: '',
+    upcoming: '',
+    loading: true,
+  };
+  path = this.props.location.pathname.split('/');
+  userID = this.path[this.path.length - 1];
 
   componentWillMount() {
     if (isNaN(this.userID)) {
+      console.log((typeof this.userID));
       this.props.history.push('/');
     } 
     else {
-      this.loadUser(localStorage.getItem('token'));
+      this.loadUser(localStorage['token']);
     }
   }
 
   loadUser = (token) => {
     if (!token) {
-      return;
+      this.props.history.push('/');
     }
     fetch(`http://localhost:8000/api/user/${this.userID}`, {
         headers: { Authorization: `Bearer ${token}` },
     })
-    .then(response => 
-      response.json()
+    .then(response => response.json()
     )
     .then(getUser => {
       if (!getUser.error) {
-        this.setState({	
+        this.setState({
           user: getUser.user,
           skills: getUser.skills,
           space: getUser.space,
@@ -66,14 +61,9 @@ export default class UserProfile extends React.Component {
     })
     .catch(error => {
       alert(`error!: ${error.message}`);
-    })
+    });
   }
 
-  loadEvents = (spaceId) => {
-    fetch(`http://localhost:8000/api/events`, {
-        headers: { Authorization: `Bearer ${token}` },
-    })
-  }
 
   loading = () => this.state.loading;
 
@@ -151,65 +141,11 @@ export default class UserProfile extends React.Component {
 }
 
 UserProfile.propTypes = {
+  user: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.object.isRequired
+  ]),
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
-
-const Skills = (props) => {
-  const tags = props.skills.map((skill, index) => (
-    <li key={`${skill.name}${index}`} className="profileTag">
-      {skill.name}
-    </li>
-  ))
-  return ( 
-    <ul className="profileTagCloud">
-      {tags}
-    </ul>
-  );
-};
-
-Skills.propTypes = {
-  skills: PropTypes.array.isRequired,
-};
-
-const Events = (props) => {
-  const events = props.events.map((event, index) => (
-    <li 
-      onClick={() => {props.history.push(`/EventDetail/${event.id}`)}}
-      key={`${event.title}${index}`} 
-      className="EventTag"
-    >
-      {event.title}
-    </li>
-  ));
-  return ( 
-    <ul className="profileTagCloud">
-      {events}
-    </ul>
-  );
-};
-
-Events.propTypes = {
-  events: PropTypes.array.isRequired,
-};
-
-const Attending = (props) => {
-  const attendingEvent = props.attending.map((attend, index) => (
-    <li 
-      onClick={() => {props.history.push(`/EventDetail/${attend.id}`)}}
-      key={`${attend.title}${index}`} 
-      className="profileAttendingItem"
-    >
-      {attend.title}
-    </li>
-  ))
-  return ( 
-    <ul className="profileAttendingContent">
-      {attendingEvent}
-    </ul>
-  );
-};
-
-Attending.propTypes = {
-  attending: PropTypes.array.isRequired,
-};
+  

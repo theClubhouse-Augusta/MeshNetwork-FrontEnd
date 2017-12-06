@@ -4,6 +4,7 @@
 *
 */
 import React from 'react';
+import { Redirect } from 'react-router-dom';  
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import Tabs, { Tab } from 'material-ui/Tabs';  
@@ -50,13 +51,14 @@ export default class AuthTabs extends React.PureComponent {
     const value = this.state.value; 
     return (
       <div className="authTabsContainer"> 
-      <Tabs value={value} onChange={this.handleChange} centered>
         {this.props.redirect}
-        <Tab label ="Login" className="tabTitle" />                <Tab label="Sign up" className="tabTitle"/>   
+      <Tabs value={value} onChange={this.handleChange} centered>
+        <Tab label ="Login" className="tabTitle" />                
+        <Tab label="Sign up" className="tabTitle"/>   
       </Tabs>
 
       {value === 0 && <TabContainer> 
-        <form id="loginForm">
+        <div id="loginForm">
 
               <p className="userFormItem">
                 <label htmlFor="email">email</label>
@@ -83,9 +85,9 @@ export default class AuthTabs extends React.PureComponent {
               </div>
 
               <div className="userFormSubmit">
-                <button>Submit </button> 
+                <button onClick={(e) => {this.props.login(e, email, password)}}>Submit </button> 
               </div>
-            </form>
+            </div>
 
             <div className="forgotInfo">
               <a href="" className="userInfoLink">forgot email</a>

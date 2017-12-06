@@ -8,33 +8,28 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 // relative imports
+import { Skills, Events, Attending } from 'components/UserProfileAssets';
 import Header from 'components/Header';
 
 import './style.css';
 import './styleM.css';
 
 export default class LoggedInUserProfile extends Component {
+  state = {
+    user: this.props.user['user'], // eslint-disable-line
+    skills: this.props.user['skills'],
+    space: this.props.user['space'],
+    events: this.props.user['events'],
+    upcoming: this.props.user['upcoming'],
+    loading: this.props.loading,
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: this.props.user['user'], // eslint-disable-line
-      skills: this.props.user['skills'],
-      space: this.props.user['space'],
-      events: this.props.user['events'],
-      upcoming: this.props.user['upcoming'],
-      redirect: this.props.redirect,
-      loading: this.props.loading,
-    };
-    this.path = this.props.location.pathname;
-    this.userIdIndex = this.props.location.pathname.length - 1;
-    this.userID = this.path[this.userIdIndex];
+  path = this.props.location.pathname.split('/');
+  userID = this.path[this.path.length - 1];
 
-    this.token = localStorage.getItem('token');
-    this.checkToken = this.props.checkToken;
-  }
+  token = localStorage.getItem('token');
 
-  componentWillMount() {
+  componentDidMount() {
     /**
      * url path must end with numeric character
      * invalid: /User/Profile/me/
@@ -47,8 +42,9 @@ export default class LoggedInUserProfile extends Component {
     if (this.token === null) {
       this.props.history.push('/');
     } 
-    else if (typeof this.props.user !== 'object') {
-      this.checkToken(this.token, { getLoggedInUser: true });
+    else if (typeof this.props.user['user'] !== 'object') {
+      console.log(JSON.stringify(this.props.user));
+      this.props.getLoggedInUser(localStorage['token']);
     }
   }
 
@@ -113,7 +109,7 @@ export default class LoggedInUserProfile extends Component {
                   </li>
 
                   <li className="profileTitle">
-                    title
+                    {user.title}
                   </li>
 
                   <li className="profileSpace">
@@ -176,75 +172,8 @@ LoggedInUserProfile.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]),
-  redirect: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-  ]),
-  checkToken: PropTypes.func.isRequired,
+  getLoggedInUser: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
-};
-
-const Skills = (props) => {
-  const tags = props.skills.map((skill, index) => (
-    <li 
-      key={`${skill.name}${index}`} 
-      className="profileTag"
-    >
-      {skill.name}
-    </li>
-  ))
-  return ( 
-    <ul className="profileTagCloud">
-      {tags}
-    </ul>
-  );
-};
-
-Skills.propTypes = {
-  skills: PropTypes.array.isRequired,
-};
-
-
-const Events = (props) => {
-  const events = props.events.map((event, index) => (
-    <li 
-      onClick={() => {props.history.push(`/EventDetail/${event.id}`)}}
-      key={`${event.title}${index}`} 
-      className="EventTag"
-    >
-      {event.title}
-    </li>
-  ))
-  return ( 
-    <ul className="profileTagCloud">
-      {events}
-    </ul>
-  );
-};
-
-Events.propTypes = {
-  events: PropTypes.array.isRequired,
-};
-
-const Attending = (props) => {
-  const attendingEvent = props.attending.map((attend, index) => (
-    <li 
-      onClick={() => {props.history.push(`/EventDetail/${attend.id}`)}}
-      key={`${attend.title}${index}`} 
-      className="profileAttendingItem"
-    >
-      {attend.title}
-    </li>
-  ))
-  return ( 
-    <ul className="profileAttendingContent">
-      {attendingEvent}
-    </ul>
-  );
-};
-
-Attending.propTypes = {
-  attending: PropTypes.array.isRequired,
 };
