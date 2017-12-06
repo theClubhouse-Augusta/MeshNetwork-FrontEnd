@@ -16,12 +16,14 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import { MapLocal } from "./MapLocal";
 import { MapNonLocal } from "./MapNonLocal";
+import Card, { CardMedia } from 'material-ui/Card';
+
+import moment from 'moment';
 
 import './style.css';
 import './styleM.css';
 
 export default class EventDetail extends React.PureComponent {
-
   state = {
     open: false,
     event: '',
@@ -219,6 +221,7 @@ export default class EventDetail extends React.PureComponent {
                 </div>
 
                 <div className="eventPeopleBlock">
+
                   <div className="eventAvatarsBlock"> 
                   
                     <div className="eventOrganizers">
@@ -235,6 +238,23 @@ export default class EventDetail extends React.PureComponent {
                       <Avatar size={75}/>
                       <Avatar size={75}/> 
                     </div>
+                  </div>
+
+                  <div className="eventSponsorsBlock">
+                      <Card className="eventSponsorCard"> 
+                      <h2 className="eventCardHeader"> A Company</h2>
+                        <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
+                      </Card>
+
+                    <Card className="eventSponsorCard"> 
+                    <h2 className="eventCardHeader"> A Company</h2>             
+                      <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
+                    </Card>
+
+                    <Card className="eventSponsorCard"> 
+                      <h2 className="eventCardHeader"> A Company</h2>
+                      <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
+                  </Card>
                   </div>
                 </div> 
               </div>
@@ -314,6 +334,10 @@ export default class EventDetail extends React.PureComponent {
                   autoHideDuration={4000}
                   onRequestClose={this.handleRequestClose}
                 />
+              </div>
+
+              <div className="eventSponsors">
+                
               </div>
 
               <div className="eventUpcomingEvents">

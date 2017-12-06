@@ -1,6 +1,6 @@
 /**
 *
-* CompEventFaq
+* MtextField
 *
 */
 
@@ -9,7 +9,7 @@ import React from 'react';
 import './style.css';
 import './styleM.css';
 
-export default class CompEventFaq extends React.PureComponent {
+export default class MtextField extends React.PureComponent {
   render() {
     return (
       <div>
@@ -19,6 +19,6 @@ export default class CompEventFaq extends React.PureComponent {
   }
 }
 
-CompEventFaq.contextTypes = {
+MtextField.contextTypes = {
   router: React.PropTypes.object
 };
