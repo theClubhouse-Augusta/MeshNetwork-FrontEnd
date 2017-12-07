@@ -240,7 +240,8 @@ export default class EventDetail extends React.PureComponent {
                 </div>
 
                 <div className="eventDescriptionContent">
-                  <p>{event.description}</p>
+                  <p>{event && event.description}</p>
+                  {event.url && <a href={event.url}> Find out more </a>}
                 </div>
 
                 <div className="eventPeopleBlock">
