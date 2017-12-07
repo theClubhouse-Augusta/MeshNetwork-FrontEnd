@@ -18,7 +18,6 @@ import { MapLocal } from "./MapLocal";
 import { MapNonLocal } from "./MapNonLocal";
 import Card, { CardMedia } from 'material-ui/Card';
 
-import moment from 'moment';
 
 import './style.css';
 import './styleM.css';
@@ -31,6 +30,7 @@ export default class EventDetail extends React.PureComponent {
     workSpace: '',
     workSpaces: '',
     upcomingEvents: '',
+    sponsors: '',
   };
 
   token = localStorage['token'];
@@ -61,13 +61,20 @@ export default class EventDetail extends React.PureComponent {
           event: Event.event,
           workSpace: Event.local,
           upcomingEvents: Event.upcomingEvents,
+          sponsors: Event.sponsors,
+        }, () => {
+          console.log(JSON.stringify(this.state.sponsors[0]))
+          console.log(this.state.sponsors[0].name);
         });
       } else if (Event.nonLocal) {
         this.setState({	
           event: Event.event,
           hostSpace: Event.hostSpace,
           workSpaces: Event.nonLocal,
-          upcomingEvents: Event.upcomingEvents
+          upcomingEvents: Event.upcomingEvents,
+          sponsors: Event.sponsors,
+        }, () => {
+          console.log(`${JSON.stringify(this.state.sponsors[0])}`);
         });
       }
     })
@@ -107,11 +114,10 @@ export default class EventDetail extends React.PureComponent {
   /**
    * Event tags
    */
-  Tag = (tag, key) => <Chip key={`chip${key}`} label={tag} style={{margin: '10px'}} />;
 
   showTags = (tags) => {
-    const tagList = tags.split(',').map((tag, index) => (
-      this.Tag(tag, index))
+    const tagList = tags.split(',').map((tag, key) =>
+      <Chip key={`chip${key}`} label={tag} style={{margin: '10px'}} />
     );
       return (
         <div className="eventTags">
@@ -141,6 +147,22 @@ export default class EventDetail extends React.PureComponent {
       </ul> 
     );
   };
+
+
+  /**
+   * Sponsors
+   */
+    Sponsers = (sponsors) => {
+      const sponsorList = sponsors.map((sponser,key) => (
+        <Card key={`eventSponsorCard${key}`} className="eventSponsorCard"> 
+          <CardMedia title="a company logo"> 
+            <h2 className="eventCardHeader">{sponser.name}</h2>
+            <img src={`${sponser.logo}`} className="eventSponsorLogo"/> 
+          </CardMedia> 
+        </Card>
+      ));
+      return sponsorList;
+    };
 
   handleDates = (start, end) => {
     // hour:min:sec
@@ -188,6 +210,7 @@ export default class EventDetail extends React.PureComponent {
     const hostSpace = this.state.hostSpace;
     const workSpaces = this.state.workSpaces;
     const upcomingEvents = this.state.upcomingEvents;
+    const sponsors = this.state.sponsors;
     return (
       <div className="container">
         <Helmet title="EventDetail" meta={[ { name: 'description', content: 'Description of EventDetail' }]}/>
@@ -241,20 +264,7 @@ export default class EventDetail extends React.PureComponent {
                   </div>
 
                   <div className="eventSponsorsBlock">
-                      <Card className="eventSponsorCard"> 
-                      <h2 className="eventCardHeader"> A Company</h2>
-                        <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
-                      </Card>
-
-                    <Card className="eventSponsorCard"> 
-                    <h2 className="eventCardHeader"> A Company</h2>             
-                      <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
-                    </Card>
-
-                    <Card className="eventSponsorCard"> 
-                      <h2 className="eventCardHeader"> A Company</h2>
-                      <CardMedia title="a company logo"> <img src={require("../../images/theclubhouselogo-1.png")} className="eventSponsorLogo"/> </CardMedia> 
-                  </Card>
+                    {sponsors && this.Sponsers(sponsors)}
                   </div>
                 </div> 
               </div>
@@ -346,6 +356,7 @@ export default class EventDetail extends React.PureComponent {
                 </h4> 
                 { upcomingEvents ? this.showUpcomingEvents(upcomingEvents) : null}
               </div>
+              <img src="htto://localhost" alt=""/>
               
             </div>
           </div>        
