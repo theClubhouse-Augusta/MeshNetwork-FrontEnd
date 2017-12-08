@@ -3,6 +3,9 @@
 .eventCard { 
  padding: 15px;
  margin: 30px auto; 
+ display: flex; 
+ flex-direction: row;
+ justify-content: space-between; 
 }
 
 /* Material UI inserts a div between eventCard and CardImage + CardContent - has to be handled thru inline prop */
@@ -17,7 +20,7 @@
      border: 1px solid blueviolet; 
      margin: 0 0 0 5%; 
      padding: 15px; 
-     width: 70%;  
+     width: 65%;  
   }   
 
         .eventCardDetails { 

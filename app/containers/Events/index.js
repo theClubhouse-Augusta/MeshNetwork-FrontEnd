@@ -10,6 +10,7 @@ import Header from 'components/Header';
 import Footer from 'components/Footer'; 
 import MultiLocationSelect from 'components/MultiLocationSelect';
 import TagSelect from 'components/TagSelect'; 
+import EventHomeCalender from 'components/EventHomeCalender'; 
  
 
 import './style.css';
@@ -49,7 +50,7 @@ export default class Events extends React.PureComponent {
         </div>
 
         <div className="eventHomeCalenderWrapper">
-        
+        <EventHomeCalender />
         </div>
       </div>      
           

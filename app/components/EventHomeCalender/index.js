@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import { Card, CardTitle, CardMedia } from 'material-ui/Card'; 
+import Card, { CardMedia, CardContent, CardHeader } from 'material-ui/Card'; 
 
 import './style.css';
 import './styleM.css';
@@ -36,7 +36,7 @@ export default class EventHomeCalender extends React.PureComponent {
         </CardMedia>
 
         <div className="eventCardContent">
-          <CardTitle title={event.name} style={{padding: '0'}} />
+          <CardHeader title={event.name} style={{padding: '0'}} />
           <div className="eventCardDetails">
             <span className="eventCardDate" style={{margin: '1em 0'}}> {event.date} </span>
             <span className="eventCardTime" style={{margin: '1em'}}>

@@ -8,8 +8,13 @@
     height: 400px; 
 }
 
-.reasonCard { 
+.kioskReasonCard { 
     align-self: center; 
     align-content: center; 
     width: 400px;
+}
+
+.kioskCardHeader { 
+    text-align: center; 
+    padding: 30px;
 }

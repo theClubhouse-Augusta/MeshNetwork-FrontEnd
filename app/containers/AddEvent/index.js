@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
 import UserSelect from 'components/UserSelect'; 
+import SponsorSelect from 'components/SponsorSelect'; 
 import DateTimeSelect from 'components/DateTimeSelect'; 
 import RichTextEd from 'components/RichTextEd'; 
 import TagSearch from 'components/TagSearch'; 
@@ -82,6 +83,10 @@ export default class AddEvent extends React.PureComponent {
                 
                 <div className="addEventUserContainer">
                   <UserSelect /> 
+                </div>
+
+                <div className="addEventSponsorContainer">
+                  <SponsorSelect />
                 </div>
               </div> 
 
