@@ -20,12 +20,9 @@ import './style.css';
 import './styleM.css';
 
 export default class AddEvent extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-    };
-  }
+  state = {
+    open: false,
+  };
 
   handleTouchTap = () => {
     this.setState({
@@ -72,13 +69,13 @@ export default class AddEvent extends React.PureComponent {
             <div className="addEventForm"> 
               <p className="addEventFormItem"> 
                 <label htmlFor="">Event name</label>
-                <input type="text" name="" id="event name" style={{border: '1px solid black', width: '65%' }}/>
+                <input onChange={this.eventName} type="text" name="" id="event name" style={{border: '1px solid black', width: '65%' }} />
               </p>
 
               <p className="addEventFormItem"  style={{flexDirection: 'column'}}> 
                 <label htmlFor="" style={{textAlign: 'justify', width: '60%'}}> Add any relevant outside URL </label>
                 <p style={{marginBottom: '1em'}}><small>(such as Github repo or official challenge page)</small></p> 
-                <input type="text" name="" id="event outside url" style={{border: '1px solid black', width: '70%' }}/>
+                <input type="text" name="" id="event outside url" style={{border: '1px solid black', width: '70%' }}  />
               </p>
               
               <div className="addEventUserSelect"> 
@@ -118,8 +115,8 @@ export default class AddEvent extends React.PureComponent {
               <Snackbar
                 open={this.state.open}
                 message="Thanks, your event has been submitted for approval"
-               autoHideDuration={4000}
-              onRequestClose={this.handleRequestClose}
+                autoHideDuration={4000}
+                onRequestClose={this.handleRequestClose}
               />
               </div>
              
