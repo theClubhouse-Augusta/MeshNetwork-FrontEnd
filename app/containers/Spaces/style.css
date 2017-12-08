@@ -36,8 +36,13 @@
 
   .spaceListing {
     max-width: 30%;
-    padding:1%;
+    padding: 15px; 
+    margin: 60px auto; 
   }
+
+    .spaceNameHeader {
+      padding: 16px;
+    }
 
     .spaceLocation {
       margin: 4vh 0 0 0;

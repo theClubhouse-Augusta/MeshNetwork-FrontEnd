@@ -7,7 +7,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
-import {Card, CardMedia, CardTitle, CardText} from 'material-ui/Card'; 
+import Card, { CardMedia, CardContent } from 'material-ui/Card'; 
 
 import './style.css';
 import './styleM.css';
@@ -35,65 +35,11 @@ export default class Sponsors extends React.PureComponent {
               </CardMedia>
 
               <div className="sponsorTextBlock"> 
-                <CardTitle> A company</CardTitle>          
-                <CardText>what they do</CardText>   
+                <h2> A company</h2>          
+                <CardContent>what they do</CardContent>   
               </div> 
             </Card> 
 
-            <Card className="sponsorListing">
-              <CardMedia className="sponsorLogo"> 
-                <img src="https://placeholdit.co//i/150x150" />
-              </CardMedia>
-
-              <div className="sponsorTextBlock"> 
-                <CardTitle> A company</CardTitle>          
-                <CardText>what they do</CardText>   
-              </div> 
-            </Card>
-
-            <Card className="sponsorListing">
-              <CardMedia className="sponsorLogo"> 
-                <img src="https://placeholdit.co//i/150x150" />
-              </CardMedia>
-
-              <div className="sponsorTextBlock"> 
-                <CardTitle> A company</CardTitle>          
-                <CardText> what they do </CardText>   
-              </div> 
-            </Card>
-
-            <Card className="sponsorListing">
-              <CardMedia className="sponsorLogo"> 
-                <img src="https://placeholdit.co//i/150x150" />
-              </CardMedia>
-
-              <div className="sponsorTextBlock"> 
-                <CardTitle> A company</CardTitle>          
-                <CardText>what they do</CardText>   
-              </div> 
-          </Card>
-              
-          <Card className="sponsorListing">
-            <CardMedia className="sponsorLogo"> 
-              <img src="https://placeholdit.co//i/150x150" />
-            </CardMedia>
-
-            <div className="sponsorTextBlock"> 
-              <CardTitle> A company</CardTitle>          
-              <CardText>what they do</CardText>   
-            </div> 
-        </Card> 
-
-        <Card className="sponsorListing">
-          <CardMedia className="sponsorLogo"> 
-            <img src="https://placeholdit.co//i/150x150" />
-          </CardMedia>
-
-          <div className="sponsorTextBlock"> 
-            <CardTitle> A company</CardTitle>          
-            <CardText>what they do</CardText>   
-          </div> 
-        </Card>   
       </div>
     </div>
   </main>

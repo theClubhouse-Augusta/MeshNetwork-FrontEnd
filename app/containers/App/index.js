@@ -9,7 +9,6 @@ import EventDetail from 'containers/EventDetail';
 import Events from 'containers/Events';
 import Spaces from 'containers/Spaces';
 import Sponsors from 'containers/Sponsors';
-import LearningDetail from 'containers/LearningDetail';
 import LogInSignUp from 'containers/LogInSignUp';
 import MemberAcct from 'containers/MemberAcct';
 import MemberSearch from 'containers/MemberSearch';
@@ -142,10 +141,6 @@ export default class App extends Component {
             component={Spaces}
           />
 
-          <Route
-            path="/detail"
-            render={() => <LearningDetail />}
-          />
 
           <Route
             path="/Auth"

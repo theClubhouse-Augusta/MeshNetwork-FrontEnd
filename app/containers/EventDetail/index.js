@@ -18,7 +18,6 @@ import { MapLocal } from "./MapLocal";
 import { MapNonLocal } from "./MapNonLocal";
 import Card, { CardMedia } from 'material-ui/Card';
 
-import moment from 'moment';
 
 import './style.css';
 import './styleM.css';

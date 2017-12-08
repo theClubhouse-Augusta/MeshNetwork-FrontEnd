@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import { Card, CardTitle } from 'material-ui/Card';
+import  Card  from 'material-ui/Card';
 import KioskSuggestedEvents from 'components/KioskSuggestedEvents'; 
 
 import './style.css';
@@ -21,15 +21,14 @@ export default class KioskFlowTwo extends React.PureComponent {
   }
   render() {
     const reasonCards = this.state.reasons.map((reason) => (
-          <Card className="reasonCard">
-            <CardTitle 
-              title={reason.name} />
+          <Card className="kioskReasonCard">
+            <h2 className="kioskCardHeader">{reason.name} </h2> 
           </Card> 
     )); 
     return (
       <div className="kioskFlowTwoContainer">
           <div className="kioskVisitReasonBlock">
-          {reasonCards} 
+            {reasonCards} 
           </div>
 
           <KioskSuggestedEvents />

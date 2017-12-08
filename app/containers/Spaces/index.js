@@ -13,7 +13,7 @@ import {
   TiSocialTwitterCircular
 } from 'react-icons/lib/ti';
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Card, { CardMedia, CardContent, CardActions } from 'material-ui/Card';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import './style.css';
@@ -32,11 +32,12 @@ export default class Spaces extends React.PureComponent {
 
           <div className="spacesList">
             <div className="spaceListing">
-              <Card>>
+              <Card>
                 <CardMedia>
-                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" />
+                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" width="100%"/>
                 </CardMedia>
-                <CardTitle title="theClubhou.se" subtitle="540 Telfair Street, Augusta GA 30901" />
+                <h2 className="spaceNameHeader">theClubhou.se</h2>
+                <CardContent className="spaceAddress"> 540 Telfair Street, Augusta GA 30901</CardContent>
                 {/*<CardActions>
                   <FlatButton icon={<TiSocialAtCircular className="socialIcon"/>} />
                   <FlatButton icon={<TiSocialFacebookCircular className="socialIcon" />} />
@@ -46,26 +47,12 @@ export default class Spaces extends React.PureComponent {
               </Card>
             </div>
             <div className="spaceListing">
-              <Card>>
+              <Card>
                 <CardMedia>
-                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" />
+                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" width="100%"/>
                 </CardMedia>
-                <CardTitle title="theClubhou.se" subtitle="540 Telfair Street, Augusta GA 30901" />
-                {/*<CardActions>
-                  <FlatButton icon={<TiSocialAtCircular className="socialIcon"/>} />
-                  <FlatButton icon={<TiSocialFacebookCircular className="socialIcon" />} />
-                  <FlatButton icon={<TiSocialInstagramCircular className="socialIcon"/>} />
-                  <FlatButton icon={<TiSocialTwitterCircular className="socialIcon"/>} />
-                </CardActions>*/}
-              </Card>
-            </div>
-
-            <div className="spaceListing">
-              <Card>>
-                <CardMedia>
-                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" />
-                </CardMedia>
-                <CardTitle title="theClubhou.se" subtitle="540 Telfair Street, Augusta GA 30901" />
+                <h2 className="spaceNameHeader">theClubhou.se</h2>
+                <CardContent className="spaceAddress"> 540 Telfair Street, Augusta GA 30901</CardContent>
                 {/*<CardActions>
                   <FlatButton icon={<TiSocialAtCircular className="socialIcon"/>} />
                   <FlatButton icon={<TiSocialFacebookCircular className="socialIcon" />} />
@@ -76,11 +63,12 @@ export default class Spaces extends React.PureComponent {
             </div>
 
             <div className="spaceListing">
-              <Card>>
+              <Card>
                 <CardMedia>
-                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" />
+                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" width="100%"/>
                 </CardMedia>
-                <CardTitle title="theClubhou.se" subtitle="540 Telfair Street, Augusta GA 30901" />
+                <h2 className="spaceNameHeader">theClubhou.se</h2>
+                <CardContent className="spaceAddress"> 540 Telfair Street, Augusta GA 30901</CardContent>
                 {/*<CardActions>
                   <FlatButton icon={<TiSocialAtCircular className="socialIcon"/>} />
                   <FlatButton icon={<TiSocialFacebookCircular className="socialIcon" />} />
@@ -91,11 +79,12 @@ export default class Spaces extends React.PureComponent {
             </div>
 
             <div className="spaceListing">
-              <Card>>
+              <Card>
                 <CardMedia>
-                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" />
+                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" width="100%"/>
                 </CardMedia>
-                <CardTitle title="theClubhou.se" subtitle="540 Telfair Street, Augusta GA 30901" />
+                <h2 className="spaceNameHeader">theClubhou.se</h2>
+                <CardContent className="spaceAddress"> 540 Telfair Street, Augusta GA 30901</CardContent>
                 {/*<CardActions>
                   <FlatButton icon={<TiSocialAtCircular className="socialIcon"/>} />
                   <FlatButton icon={<TiSocialFacebookCircular className="socialIcon" />} />
@@ -106,11 +95,28 @@ export default class Spaces extends React.PureComponent {
             </div>
 
             <div className="spaceListing">
-              <Card>>
+              <Card>
                 <CardMedia>
-                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" />
+                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" width="100%"/>
                 </CardMedia>
-                <CardTitle title="theClubhou.se" subtitle="540 Telfair Street, Augusta GA 30901" />
+                <h2 className="spaceNameHeader">theClubhou.se</h2>
+                <CardContent className="spaceAddress"> 540 Telfair Street, Augusta GA 30901</CardContent>
+                {/*<CardActions>
+                  <FlatButton icon={<TiSocialAtCircular className="socialIcon"/>} />
+                  <FlatButton icon={<TiSocialFacebookCircular className="socialIcon" />} />
+                  <FlatButton icon={<TiSocialInstagramCircular className="socialIcon"/>} />
+                  <FlatButton icon={<TiSocialTwitterCircular className="socialIcon"/>} />
+                </CardActions>*/}
+              </Card>
+            </div>
+
+            <div className="spaceListing">
+              <Card>
+                <CardMedia>
+                  <img src={require('../../images/theClubhousePanel.jpg')} alt="" width="100%"/>
+                </CardMedia>
+                <h2 className="spaceNameHeader">theClubhou.se</h2>
+                <CardContent className="spaceAddress"> 540 Telfair Street, Augusta GA 30901</CardContent>
                 {/*<CardActions>
                   <FlatButton icon={<TiSocialAtCircular className="socialIcon"/>} />
                   <FlatButton icon={<TiSocialFacebookCircular className="socialIcon" />} />
