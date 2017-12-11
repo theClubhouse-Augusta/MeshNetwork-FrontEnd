@@ -104,7 +104,7 @@ const SponsorField = createClass ({
 
     return (
       <div className="sponsorSelectField"> 
-        <h3> Sponsors </h3>
+        <label> Sponsors </label>
         <Select.Creatable
        
           arrowRenderer={arrowRenderer}

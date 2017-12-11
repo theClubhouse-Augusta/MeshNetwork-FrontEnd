@@ -141,10 +141,6 @@ export default class App extends Component {
             component={Spaces}
           />
 
-<<<<<<< HEAD
-
-=======
->>>>>>> fb5ddbb11cbbf16f92357d8198c9d21f87d44f73
           <Route
             path="/Auth"
             render={() => (
