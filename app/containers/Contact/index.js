@@ -22,9 +22,10 @@ export default class Contact extends React.PureComponent {
       fontSize:'1.4em',
       height:'60px',
       alignSelf:'center',
-      textTransform:'uppercase',
+      fontFamily: 'Encode Sans', 
       fontWeight:'bold',
       color:'#FFFFFF',
+      textTransform: 'small-caps', 
       backgroundColor:'#26aae1'
     };
 
@@ -52,17 +53,17 @@ export default class Contact extends React.PureComponent {
             <div className="contactFormContainer">
 
               <p className="contactInputItem">
-                <label className="contactInputLabel">WHAT’S YOUR NAME?*</label>
+                <label className="contactInputLabel">What's Your Name?*</label>
                 <input type="text"  className="contactInputField"/>
              </p> 
 
               <p className="contactInputItem">
-                  <label className="contactInputLabel">WHAT EMAIL CAN WE REACH YOU AT?*</label>
+                  <label className="contactInputLabel">What Email Can We Reach You At? *</label>
                   <input type="email"  className="contactInputField"/>
               </p> 
              
               <p className="contactInputItem">
-                <label className="contactInputLabel">TELL US A BIT ABOUT YOUR ORGANIZATION*</label>
+                <label className="contactInputLabel">Tell Us a Bit About Your Organization*</label>
                 <textarea   style={{margin: '1em 0 0 0'}}/>
               </p> 
 
@@ -73,14 +74,14 @@ export default class Contact extends React.PureComponent {
             <div className="contactInfo">
 
               <div className="contactInfoBlock">
-                <h4 className="contactInfoTitle">EVERY SPACE IS UNIQUE</h4>
+                <h4 className="contactInfoTitle">Every Space Is Unique</h4>
                 <p className="contactInfoDescription">
                   We know that no two communities are alike. They come in all different shapes and sizes, so we work to find the best solution.
                 </p>
               </div>
 
               <div className="contactInfoBlock">
-                <h4 className="contactInfoTitle">TALK WITH AN ADVISOR</h4>
+                <h4 className="contactInfoTitle">Talk With An Advisor</h4>
                 <p className="contactInfoDescription">
                 You won’t find cheesy salesmen here. Initial contact and advice is always with an experienced organizer with years of experience.
 
@@ -89,7 +90,7 @@ export default class Contact extends React.PureComponent {
 
               <div className="contactInfoBlock">
                 <h4 className="contactInfoTitle">
-                  LOCATION DOESN’T MATTER </h4>
+                  Location Doesn't Matter </h4>
                 <p className="contactInfoDescription">
                 The Network is here to bridge the gap between cities to provide a country-wide community platform.
                 </p>

@@ -21,7 +21,7 @@
   font-size:1.5em;
   line-height:24px;
   margin-left:10px;
-  font-family:'Anton';
+  font-family:'Encode Sans', sans-serif;
   text-align:center;
   color:#FFFFFF;
 }
@@ -32,6 +32,7 @@
   flex-direction:row;
   justify-content:flex-end;
   margin-right:15px;
+  font-family: "Encode Sans", sans-serif; 
 }
 
 .navButton {
@@ -39,7 +40,6 @@
   text-decoration:none;
   margin-right:15px;
   font-weight:bold;
-  font-variant:small-caps;
 }
 
 .navButton:hover {

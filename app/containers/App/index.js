@@ -20,6 +20,7 @@ import KioskSystem from 'containers/KioskSystem';
 import LoggedInUserProfile from 'containers/LoggedInUserProfile';
 import NotFound from 'containers/NotFound';
 
+
 export default class App extends Component {
 
   state = {
@@ -106,6 +107,7 @@ export default class App extends Component {
             path="/Booking"
             render={() => <BookingSystem />}
           />
+
 
           <Route
             path="/BusinessSearch"

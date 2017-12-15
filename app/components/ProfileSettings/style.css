@@ -1,7 +1,5 @@
 /* ProfileSettings Styles */
-input {
-    border: 1px solid black;
-}
+
 .profileSettingsContainer { 
     max-width:1000px;
     margin: 30px auto;

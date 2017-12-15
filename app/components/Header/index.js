@@ -51,8 +51,8 @@ export default class Header extends React.PureComponent {
       <div className="headerComponent">
         <div className="navBar">
           <div className="siteName">
-            MESH NETWORK <br/>
-            OF INNOVATION
+            Mesh Network <br/>
+            Of Innovation
           </div>
 
           <nav className="nav">
@@ -61,7 +61,6 @@ export default class Header extends React.PureComponent {
             <Link to="/contact" className="navButton">Contact</Link>
             <Link to="/sponsors" className="navButton">Sponsors</Link>
             <Link to="/spaces" className="navButton">Spaces</Link>
-            <Link to="/learning" className="navButton">Education</Link>
             <a href="/auth" className="navButton">Login / SignUp</a>
           </nav>
 

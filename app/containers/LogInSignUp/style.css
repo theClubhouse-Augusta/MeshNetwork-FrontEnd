@@ -9,9 +9,9 @@ on hovers & other animation goodies when colors are decided7.*/
 }
 
 .authBanner { 
-  height:200px;
+  height:150px;
   width:100%;
-  background-color: #66c3ea;
+  background-color: #555555;
 }
 
 .authBody { 
@@ -24,7 +24,6 @@ on hovers & other animation goodies when colors are decided7.*/
 }
 
 .authTabsContainer { 
-  height: 600px; 
   width: 600px;  
   margin: 0 auto; 
 }
@@ -42,7 +41,8 @@ on hovers & other animation goodies when colors are decided7.*/
   }
 
     #loginForm { 
-      margin: 120px 0 0 0; 
+      margin: 0 auto;
+      padding-top: 10%; 
     }
 
       #rememberMe { 
@@ -52,8 +52,8 @@ on hovers & other animation goodies when colors are decided7.*/
 
       .forgotInfo { 
         display: flex; 
-        justify-content: space-around; 
-        margin: 20px 0 0 0; 
+        justify-content: space-between; 
+        margin: 0 auto; 
         font-size: .75em;
       }
         .userInfoLink {
@@ -76,7 +76,10 @@ on hovers & other animation goodies when colors are decided7.*/
   .userFormItem {
     display: flex; 
     justify-content: space-between;
-    margin: 2em; 
+    align-items: center; 
+    margin: 0 auto; 
+    width: 70%; 
+    padding: 1.5em; 
   }
 
   .spacesDropdown { 
