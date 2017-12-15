@@ -1,6 +1,6 @@
 /**
 *
-* KioskSuggestedEvents
+* FlowButton
 *
 */
 
@@ -9,7 +9,7 @@ import React from 'react';
 import './style.css';
 import './styleM.css';
 
-export default class KioskSuggestedEvents extends React.PureComponent {
+export default class FlowButton extends React.PureComponent {
   render() {
     return (
       <div>
@@ -19,6 +19,6 @@ export default class KioskSuggestedEvents extends React.PureComponent {
   }
 }
 
-KioskSuggestedEvents.contextTypes = {
+FlowButton.contextTypes = {
   router: React.PropTypes.object
 };

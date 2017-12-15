@@ -255,7 +255,7 @@ export default class EventDetail extends React.PureComponent {
                     </div>
                   
                     <div className="eventAttendees">
-                      <Avatar size={75}/>
+                      <Avatar sizes={75}/>
                       <Avatar size={75}/>
                       <Avatar size={75}/> 
                       <Avatar size={75}/>

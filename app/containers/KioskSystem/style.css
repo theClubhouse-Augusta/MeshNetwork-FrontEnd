@@ -5,11 +5,13 @@
   flex-direction:column;
   min-height:100vh;
   background: #26AAE1; 
+  font-family: 'Encode Sans', sans-serif; 
 }
 
 .kioskBody {
   display: flex; 
   flex-direction: row-reverse; 
+  min-height: 95vh; 
 }
 
   .kioskLogoBlock {
@@ -31,16 +33,25 @@
   .kioskFormContainer {
     border: 1px solid red;
     padding: 15px; 
-    height: auto; 
     background: #ffffff; 
     margin: 30px auto; 
     width: 50%; 
     max-width: 1200px;
   }
+    .kioskUserName {
+      font-size: 1.5em; 
+      text-align: center; 
+      padding: 30px; 
+    }
+    .kioskAutoWrapper { 
+      padding: 30px 15px; 
+      margin: 0 10%; 
+      
+    }
 
   .kioskRedirectNav {
     color: #ffffff;
-    text-align: center;
-    border: 1px solid white;
-    padding: 15px;  
+    text-align: center; 
   }
+
+ 

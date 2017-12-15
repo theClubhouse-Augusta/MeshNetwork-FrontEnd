@@ -12,7 +12,7 @@
   background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('https://hackaugusta.net/wp-content/uploads/2014/10/Academy-Front.png');
   background-size:cover;
   background-position:center center;
-  font-family: 'Anton', sans-serif;
+  font-family: 'Encode Sans', sans-serif;
   font-size:4em;
   line-height:120px;
   text-align:center;
@@ -38,16 +38,15 @@
 
 
 .aboutTextHeader {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Encode Sans', sans-serif;
   font-size:2em;
   font-weight:800;
-  font-variant:small-caps;
   color:#222222;
   border-bottom:1px solid #888888;
 }
 
 .aboutContent {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Spectral', serif;
   display:flex;
   flex-direction:column;
   margin:15px;
@@ -74,9 +73,9 @@
 }
 
 .aboutButtonText {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Encode Sans', sans-serif;
   font-size:2em;
   font-weight:800;
-  font-variant:small-caps;
+  
   color:#FFFFFF;
 }

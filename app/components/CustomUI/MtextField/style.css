@@ -1,0 +1,15 @@
+/* MtextField Styles */
+
+.MeshTextField {    
+    padding: .25em; 
+    
+    background: #ffffff; 
+    border-bottom: 2px solid #555555; 
+   
+}
+
+.MeshTextField:focus {
+    background: #eeefee; 
+    border-bottom: 2px solid #ffcd33; 
+    
+}

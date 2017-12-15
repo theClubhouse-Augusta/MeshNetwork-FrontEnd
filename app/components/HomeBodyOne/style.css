@@ -4,7 +4,7 @@
 }
 
 #homeOne {
-  background:rgba(38, 170, 225, 0.7);
+  background: #555555;
   display:flex;
   flex-direction:row;
   justify-content:center;
@@ -12,10 +12,9 @@
 }
 
 .homeBodyHeaderSlant {
-  font-family: 'Anton', sans-serif;
-  font-size:7em;
+  font-family: 'Spectral', serif;
+  font-size: 5em;
   line-height:120px;
   text-align:center;
-  font-variant:small-caps;
   color:#FFFFFF;
 }

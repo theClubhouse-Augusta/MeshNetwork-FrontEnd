@@ -1,19 +1,19 @@
 /* Contact Styles */
 
 
-.contact_container {
+.contactContainer {
   display:flex;
   flex-direction:column;
   min-height:100vh;
 }
 
-.contact_headerContactStyle {
+.contactHeader {
   height:400px;
   width:100%;
   background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('http://h4z.it/Image/191ccf_odebootcamp3.jpg');
   background-size:cover;
   background-position:center center;
-  font-family: 'Anton', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size:4em;
   line-height:120px;
   text-align:center;
@@ -24,7 +24,7 @@
   align-items:center;
 }
 
-.contact_headerMain {
+.contactHeaderMain {
   display:flex;
   flex-direction:column;
   flex-grow:1;
@@ -32,7 +32,7 @@
   justify-content:center;
 }
 
-.contact_headerSubtitle {
+.contactHeaderSubtitle {
   font-family:Lato;
   display:flex;
   flex-direction:row;
@@ -44,27 +44,11 @@
   color:#BBBBBB;
 }
 
-.contact_mainTitle {
-  font-family:Montserrat;
-  font-size:3em;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  font-variant:small-caps;
-  font-weight:bold;
-  color:#555555;
-  padding:15px;
+.contactMainStyle {
+  padding:30px;
 }
 
-.contact_mainSubtitle {
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  color:#888888;
-  line-height:30px;
-}
-
-.contact_sectionContainer {
+.contactMainSectionContainer {
   min-height:100px;
   display:flex;
   flex-direction:column;
@@ -72,19 +56,37 @@
   padding:15px;
 }
 
-.contact_contactRow {
+.contactMainTitle {
+  font-family: "Open Sans", sans-serif;
+  font-size:3em;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  font-weight:bold;
+  color:#555555;
+  padding:15px;
+}
+
+.contactMainSubtitle {
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  color:#888888;
+  line-height:30px;
+}
+
+
+.contactBody {
   display:flex;
   flex-direction:row;
   max-width:1200px;
-  margin:0 auto;
+  margin: 0 auto;
+  padding: 30px; 
   justify-content:space-between;
 }
 
-.contact_mainStyle {
-  padding:30px;
-}
 
-.contact_contactContainer {
+.contactFormContainer {
   width:50%;
   background:#FFFFFF;
   box-shadow:0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -94,26 +96,39 @@
   justify-content:space-around;
 }
 
-.contact_contactInfo {
+.contactInputLabel {
+  font-family: "Open Sans", sans-serif;
+  font-size:0.8em;
+  font-weight:bold;
+
+}  
+
+.contactInputItem { 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-around; 
+}
+
+.contactInputField { 
+  max-width: 80%; 
+  margin: 1em 0 0 0; 
+}
+
+.contactInfo {
   display:flex;
   flex-direction:column;
   width:40%;
 }
 
-.contact_contactBlock {
+.contactInfoBlock {
   padding:30px;
 }
 
-.contact_skillTitle {
-  font-family:Montserrat;
+.contactInfoTitle {
+  font-family: "Open Sans", sans-serif;
   font-size:1em;
-  text-transform:uppercase;
   font-weight:bold;
 }
 
 
-.contact_inputLabel {
-  font-family:Montserrat;
-  font-size:0.8em;
-  font-weight:bold;
-}
+

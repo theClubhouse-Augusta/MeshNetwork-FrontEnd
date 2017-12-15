@@ -7,7 +7,10 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';  
 import PropTypes from 'prop-types';
 import Select from 'react-select';
-import Tabs, { Tab } from 'material-ui/Tabs';  
+import Tabs, { Tab } from 'material-ui/Tabs'; 
+import MtextField from 'components/CustomUi/MtextField'; 
+import DefaultButton from 'components/CustomUi/DefaultButton'; 
+
 
 import './style.css';
 import './styleM.css';
@@ -52,7 +55,7 @@ export default class AuthTabs extends React.PureComponent {
     return (
       <div className="authTabsContainer"> 
         {this.props.redirect}
-      <Tabs value={value} onChange={this.handleChange} centered>
+      <Tabs value={value} onChange={this.handleChange} centered indicatorColor="#cccc31">
         <Tab label ="Login" className="tabTitle" />                
         <Tab label="Sign up" className="tabTitle"/>   
       </Tabs>
@@ -62,7 +65,7 @@ export default class AuthTabs extends React.PureComponent {
 
               <p className="userFormItem">
                 <label htmlFor="email">email</label>
-                <input
+                <MtextField 
                   onChange={this.handleEmail}
                   type="email"
                   name=""
@@ -72,7 +75,7 @@ export default class AuthTabs extends React.PureComponent {
 
               <p className="userFormItem">
                 <label htmlFor="password">password</label>
-                <input
+                <MtextField 
                   onChange={this.handlePassword}
                   type="password"
                   name=""
@@ -85,7 +88,7 @@ export default class AuthTabs extends React.PureComponent {
               </div>
 
               <div className="userFormSubmit">
-                <button onClick={(e) => {this.props.login(e, email, password)}}>Submit </button> 
+                <DefaultButton onClick={(e) => {this.props.login(e, email, password)}}>Submit </DefaultButton> 
               </div>
             </div>
 
@@ -97,7 +100,7 @@ export default class AuthTabs extends React.PureComponent {
         {value === 1 && <TabContainer> <form id="signUpForm">
               <p className="userFormItem">
                 <label htmlFor="name" className="userFormLabel">name</label>
-                <input type="text" name="" id="name" />
+                <MtextField type="text" name="" id="name" />
               </p>
 
               <div className="userFormItem">
@@ -118,21 +121,21 @@ export default class AuthTabs extends React.PureComponent {
                 >
                   email
                 </label>
-                <input type="email" name="" id="email" />
+                <MtextField type="email" name="" id="email" />
               </p>
 
               <p className="userFormItem">
                 <label htmlFor="password" className="userFormLabel">password</label>
-                <input type="password" name="" id="password" />
+                <MtextField type="password" name="" id="password" />
               </p>
 
               <p className="userFormItem">
                 <label htmlFor="confirmPassword" className="userFormLabel">confirm password</label>
-                <input type="password" name="" id="confirmPassword" />
+                <MtextField type="password" name="" id="confirmPassword" />
               </p>
 
               <div className="userFormSubmit">
-                <button type="submit" >Submit </button>
+                <button type="submit"> submit </button>
               </div>
             </form>
             </TabContainer>}

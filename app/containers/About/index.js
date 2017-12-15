@@ -23,7 +23,7 @@ export default class About extends React.PureComponent {
 
         <main>
           <div className="aboutBanner">
-            ABOUT
+            About
           </div>
 
           <div className="aboutBlock">

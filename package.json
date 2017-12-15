@@ -109,6 +109,7 @@
   "dependencies": {
     "compression": "1.6.2",
     "cross-env": "4.0.0",
+    "downshift": "^1.22.3",
     "draft-js": "^0.10.4",
     "express": "4.15.2",
     "immutable": "4.0.0-rc.2",
