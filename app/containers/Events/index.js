@@ -9,14 +9,19 @@ import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
 import MultiLocationSelect from 'components/MultiLocationSelect';
-import TagSelect from 'components/TagSelect'; 
 import EventHomeCalender from 'components/EventHomeCalender'; 
  
 
 import './style.css';
 import './styleM.css';
 
+//SEARCH? 
+
 export default class Events extends React.PureComponent {
+  state = {
+    
+  }
+
   
 
   render() {
@@ -45,12 +50,17 @@ export default class Events extends React.PureComponent {
           </div>
 
           <div className="eventHomeTagSort">
-            <TagSelect />
+         
           </div>
         </div>
 
         <div className="eventHomeCalenderWrapper">
         <EventHomeCalender />
+        {/* 
+
+          location={this.location}
+          tags={this.selectedSkills}
+        */}
         </div>
       </div>      
           

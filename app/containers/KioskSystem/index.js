@@ -11,27 +11,60 @@ import KioskFlowTwo from 'components/KioskFlowTwo';
 import KioskUpcomingEvents from 'components/KioskUpcomingEvents'; 
 
 import './style.css';
-import './styleM.css'
-import 'react-select/dist/react-select.css';;
+import './styleM.css';
+import 'react-select/dist/react-select.css';
+
+//LOCATION NEEDS TO BE DEAFULT OVERALL STATE FOR FETCHING REASONS & EVENTS 
+
 
 const menuWrapperStyle = {
   margin: '0 auto',
-}
+}; 
 
 
+// fetch location from kiosk db
+
+/* fetch user table datag 
+
+make user obj to pass as prop 
+
+ for the select input 
+  reassign email=>value 
+   separate name @ first space = firstName
+   name=> label 
+*/ 
+
+const testUserData = [
+  { value: 'audoralc@gmail.com', label: 'Audora'},
+  { value: 'ivy@theclubhou.se', label: 'Ivy'},
+  { value: 'nadeem@theclubhou.se', label: 'Nadeem'}
+] 
+
+const userInputPlaceholder = "Find yourself ☮"; 
+// {var from kiosk db}
+
+const testLocation = 'the Clubhouse'; 
 
 export default class KioskSystem extends React.PureComponent {
-  state= {
-    selectedOption: '', 
+ state= {
+    location: testLocation, 
+    selectedUser: '', 
   }
 
-  handleNameInputChange = (selectedOption) => {
-    this.setState({ selectedOption }); 
-    // handleFlowTwo(userObject)
-  }
+  handleNameInputChange = (selectedUser) => {
+    this.setState({selectedUser});
+    console.log(`Selected: ${selectedUser.label}`);
+  } 
+
+ 
+
 
   handleFlowTwo = () => {
     //render FlowTwo on page
+ }
+
+  dudeWhatsMyState= () => {
+   console.log(this.state); 
  }
  
  
@@ -52,32 +85,33 @@ export default class KioskSystem extends React.PureComponent {
              
                <div className="kioskAutoWrapper">
                  <Select 
-                  name="form-field-name"
-                  value={this.state.selectedOption.value}
-                  placeholder="Find yourself ☮"
+                  name="kioskUserLogin"
+                  value={this.state.selectedUser.value}
+                  placeholder={userInputPlaceholder} 
                   arrowRenderer={null} 
-                  clearable={true}           
+                  clearable      
                   openOnClick={false}
                   onChange={this.handleNameInputChange} 
-                  options={[
-                    { value: '1', label: 'Audora'},
-                    { value: '2', label: 'Ivy'},
-                    { value: '3', label: 'Nadeem'}
-                  ]}
-                  
-                  wrapperStyle={menuWrapperStyle}
-                  
+                  options={testUserData}
+                  wrapperStyle={menuWrapperStyle}               
                 />
               </div>     
 
-                {/* <KioskFlowTwo />*/}
-              
+                  {/* user={selectedUser}
+                      reasonLabel={}
+                      reasons={location.reasons}
+                  */}
+                <KioskFlowTwo 
+                 
+                />
                 
                {/*
-               <div className="kioskUserName">
-              Thanks Name! 
-             </div>
-              <KioskUpcomingEvents />
+              <KioskUpcomingEvents 
+                location={location}                
+                afterLoginMsg={location.afterLoginMessage}
+                username={user.firstName}        
+                events={location.events}               
+              />
                
               Switch with just name really nice */}
               

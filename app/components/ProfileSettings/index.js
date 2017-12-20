@@ -6,8 +6,7 @@
 
 import React from 'react';
 import Select from 'react-select'; 
-import TagSearch from 'components/TagSearch'; 
-import TagSelect from 'components/TagSelect';
+
 
 import './style.css';
 import './styleM.css';
@@ -102,8 +101,7 @@ export default class ProfileSettings extends React.PureComponent {
         <div className="profileTagSelection">
         <h3 > Tags </h3> 
           <div className="profileTagWrapper">
-            <TagSearch />
-            <TagSelect />
+           
           </div>         
         </div>
 

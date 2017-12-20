@@ -6,28 +6,36 @@
 
 import React from 'react';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
-import KioskUpcomingEvents from 'components/KioskUpcomingEvents'; 
 
 import './style.css';
 import './styleM.css';
 
+/* const visitReasons = this.props.location.reasons; */ 
+
+const visitReasons = [
+  {name: 'Work', value: 'Work' },
+  {name: 'Event or Meeting', value: 'Events'},
+  {name: 'Tours', value: 'Tour' },
+]
+
+//fetched from kiosk db 
+
 export default class KioskFlowTwo extends React.PureComponent {
   state = {
-    reasons: [
-      {name: 'Work', value: 'Work' },
-      {name: 'Event or Meeting', value: 'Events'},
-      {name: 'Tour', value: 'Tour' },
-    ],     
+    reasons: visitReasons,
+    //user: {this.props.user}, 
   }
 
-  //grab user obj 
-  //add reason to user obj 
-  //pass user obj down to KioskThree 
+  handleReasonSelect = () => {
+    console.log("Clicky");  
+  }
+  
+//APPEARANCE APIs for metrics 
 
 
-  render() {
+  render() {   
     const reasonCards = this.state.reasons.map((reason) => (
-          <Card key={reason.value} className="kioskReasonCard">
+          <Card key={'reasonCard-' + reason.name} className="kioskReasonCard" onClick={this.handleReasonSelect}>
             <CardHeader className="kioskCardHeader" title={reason.name} />  
           </Card> 
     )); 
@@ -38,12 +46,16 @@ export default class KioskFlowTwo extends React.PureComponent {
             {reasonCards} 
           </div>
 
-         {/* <KioskUpcomingEvents /> */}
+     
       </div>
     );
   }
 }
 
 KioskFlowTwo.contextTypes = {
-  router: React.PropTypes.object
+  router: React.PropTypes.object,
+  user: React.PropTypes.object, 
+  events: React.PropTypes.object,  
+  reasonLabel: React.PropTypes.string, 
+  reasons: React.PropTypes.array, 
 };

@@ -8,12 +8,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
-import UserSelect from 'components/UserSelect'; 
-import SponsorSelect from 'components/SponsorSelect'; 
-import DateTimeSelect from 'components/DateTimeSelect'; 
-import RichTextEd from 'components/RichTextEd'; 
-import TagSearch from 'components/TagSearch'; 
-import TagSelect from 'components/TagSelect'; 
+{/* import SponsorSelect from 'components/SponsorSelect';  */}
 import Snackbar from 'material-ui/Snackbar'; 
 
 import './style.css';
@@ -82,22 +77,21 @@ export default class AddEvent extends React.PureComponent {
                 <label className="addEventFormLabel"> Select Organizers</label>
                 
                 <div className="addEventUserContainer">
-                  <UserSelect /> 
+                  
                 </div>
 
                 <div className="addEventSponsorContainer">
-                  <SponsorSelect />
+                
                 </div>
               </div> 
 
               <div className="addEventDateTime"> 
                 <label className="addEventFormLabel">Choose a date & time </label>
-                <DateTimeSelect style={{display: 'flex', flexDirection: 'column', alignItems: 'space-around'}}/> 
               </div>              
 
               <div className="addEventDesContainer">
                 <label className="addEventFormLabel"> Event Description</label>
-                <RichTextEd />
+                
               </div>
              
 
@@ -105,8 +99,7 @@ export default class AddEvent extends React.PureComponent {
                 <label className="addEventFormLabel"> Pick the topics that best describe your event </label>
 
                 <div className="addEventTagWrapper">
-                  <TagSearch />
-                  <TagSelect /> 
+                 
                 </div>
               </div> 
               
