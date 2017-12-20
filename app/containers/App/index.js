@@ -9,7 +9,7 @@ import EventDetail from 'containers/EventDetail';
 import Events from 'containers/Events';
 import Spaces from 'containers/Spaces';
 import Sponsors from 'containers/Sponsors';
-import LogInSignUp from 'containers/LogInSignUp';
+import LogInSignUp from '../../containers/LogInSignUp';
 import MemberAcct from 'containers/MemberAcct';
 import MemberSearch from 'containers/MemberSearch';
 import MemberDash from 'containers/MemberDash';
@@ -19,7 +19,6 @@ import UserProfile from 'containers/UserProfile';
 import KioskSystem from 'containers/KioskSystem';
 import LoggedInUserProfile from 'containers/LoggedInUserProfile';
 import NotFound from 'containers/NotFound';
-
 
 export default class App extends Component {
 
@@ -82,7 +81,7 @@ export default class App extends Component {
           loading: false,
           redirect: <Redirect to={`/UserProfile/me/${loggedInUser['user'].id}`} />
         });
-        alert('welcom back');
+       alert('welcom back');
       }
     })
     .catch(error => {
@@ -107,7 +106,6 @@ export default class App extends Component {
             path="/Booking"
             render={() => <BookingSystem />}
           />
-
 
           <Route
             path="/BusinessSearch"
@@ -145,8 +143,9 @@ export default class App extends Component {
 
           <Route
             path="/Auth"
-            render={() => (
+            render={(props) => (
               <LogInSignUp
+                {...props}
                 login={this.login}
                 redirect={this.state.redirect}
               />
@@ -168,6 +167,7 @@ export default class App extends Component {
             render={(props) =>
               <MemberSearch
                 {...props}
+                getLoggedInUser={this.getLoggedInUser}
               />
             }
           />

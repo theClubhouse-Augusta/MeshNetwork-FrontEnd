@@ -28,96 +28,255 @@
   margin: 30px auto;
   padding:15px;
 }
-  .addEventContent { 
-    display: flex; 
-    flex-direction: column; 
-    align-content: center;
-    margin: 0 auto;  
-  }
+.addEventContent { 
+  display: flex; 
+  flex-direction: column; 
+  align-content: center;
+  margin: 0 auto;  
+}
 
-    .addEventTitle { 
-      margin: 0 auto;      
-    }
+.addEventTitle { 
+  text-align: center;
+}
 
-    .addEventInstructions {
-      margin: 2em auto 0 auto;
-      width: 600px;  
-    }
+.addEventInstructions {
+  margin: 2em auto 0 auto;
+  width: 600px;  
+}
 
-    .addEventDesList { 
-      list-style: unset;
-      margin: 2em 0; 
-    }
+.addEventOrganizersContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 200px;
+}
 
-      .listItemReset { 
-        display: block;    
-        margin: 1em 0;       
-      }
+.addEventSelectedOrganizersContainer {
+  display: flex;
+  flex-direction: column;
+}
 
-  .addEventForm { 
-    max-width:1000px;   
-    margin: 0 auto;
-    padding: 15px;
-    border: 1px dashed #DDDDDD; 
-    margin: 30px; 
-    display: flex; 
-    flex-direction: column;
-    justify-content: space-around; 
-    align-items: center;  
-  }
+.addEventSponsorsContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 150px;
+}
 
-    .addEventFormItem { 
-      width: 50%; 
-      margin: 30px 10%; 
-      align-self: flex-start; 
-      display: flex; 
-      justify-content: space-between; 
-    }
+.addEventSelectedOrganizersContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2em;
+}
 
-    .addEventFormLabel { 
-      display: block; 
-      margin-bottom: 20px;
-    }
+.addEventOrganizersContainerHide {
+  display: none;
+}
 
-    .addEventUserSelect { 
-      width: 80%; 
-      margin: 30px 0; 
-    }
+.addEventOrganizerCard {
+  display: flex;
+  /* margin: 10px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
 
-    .addEventSponsorContainer { 
-      width: 80%; 
-      margin: 30px 0; 
-    }
-    
-    .addEventDateTime {
-      width: 80%;
-      margin: 30px 0; 
-    }
+}
 
-    .addEventTagContainer {
-      width: 80%;
-      margin-left: 10%; 
-      align-self: flex-start;
-      margin: 30px 10%; 
-    }
 
-      .addEventTagWrapper { 
-        display: flex; 
-        flex-direction: row; 
-        justify-content: space-between;
-        align-content: center;  
-        width: 100%; 
-      }
+dl#addEventUserInfo {
+  /* display: flex; */
+  /* flex-direction: column; */
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: 0;
+  font-family: 'Encode Sans Condensed';
+  margin-left: 1em;
+}
 
-    .addEventDesContainer { 
-      width: 80%;
-      margin: 30px 0; 
-    }
 
-  .addEventSubmit { 
-    text-align: center;
-    margin: 8% auto 0 auto; 
-    width: 200px;
-    background: grey; 
-  }
-  
+dl#addEventUserInfo div {
+  display: flex;
+}
+
+dl#addEventUserInfo div:first-child {
+  margin-top: .5em;
+}
+/* make all <dt> bold */
+dl#addEventUserInfo dt {
+  font-weight:700; 
+}
+
+.addEventRemoveOrg {
+  border: 1px solid black;
+  background: teal;
+  color: white;
+}
+
+.addEventRemoveOrg:hover {
+  cursor: pointer;
+}
+
+.addEventSearchOrganizerButton {
+  border: 1px solid black;
+  margin-left: .5em;
+  background: teal;
+  color: white;
+}
+
+.addEventHideOrganizerButton {
+  border: 1px solid black;
+  margin-top: 1em;
+  background: teal;
+  color: white;
+  /* align-self: flex-end; */
+  /* float: right; */
+}
+
+.addEventHideHideOrganizerButton {
+  display: none;
+}
+
+.addEventOrganizerBlock {
+  /* height: 100px; */
+  /* display: flex;
+  flex-direction: column; */
+}
+
+.addEventDesList { 
+  list-style: unset;
+  margin: 2em 0; 
+}
+
+.listItemReset { 
+  display: block;    
+  margin: 1em 0;       
+}
+
+.addEventForm { 
+  max-width:1000px;   
+  margin: 0 auto;
+  padding: 15px;
+  border: 1px dashed #DDDDDD; 
+  margin: 30px; 
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-around; 
+  align-items: center;  
+}
+
+.addEventFormItem { 
+  width: 50%; 
+  margin: 30px 10%; 
+  align-self: flex-start; 
+  display: flex; 
+  justify-content: space-between; 
+}
+
+.addEventFormItemNewSponsor { 
+  width: 50%; 
+  margin:0 0 0 8%; 
+  align-self: flex-start; 
+  display: flex; 
+  justify-content: space-between; 
+}
+.fakeUserPic {
+  height: 75px; 
+  width: 75px; 
+  border-radius: 50%; 
+  background: #DDDDDD;
+}
+
+.addEventFormLabel { 
+  display: block; 
+  margin-bottom: 20px;
+}
+
+.addEventUserSelect { 
+  width: 80%; 
+  margin: 30px 0; 
+}
+
+.addEventSponsorContainer { 
+  width: 80%; 
+  margin: 30px 0; 
+  /* margin-top: 100px; */
+}
+
+.addEventDateTime {
+  width: 80%;
+  margin: 30px 0; 
+}
+
+.addEventDateTimeHide {
+  display: none;
+}
+
+.addEventNameInput {
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 45px;
+  /* margin: 30px 0;  */
+}
+
+.addEventTagContainer {
+  width: 80%;
+  margin-left: 10%; 
+  /* font-weight: bold; */
+  align-self: flex-start;
+  /* margin: 30px 10%;  */
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.addEventTagWrapper { 
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-between;
+  align-content: center;  
+  width: 100%; 
+}
+
+.addEventDesContainer { 
+  width: 85%;
+  margin: 70px 0 0 0; 
+}
+
+.addEventSubmit { 
+  text-align: center;
+  margin: 8% auto 0 auto; 
+  width: 200px;
+  background: grey; 
+}
+
+/* text editor */
+.home-toolbar {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #DDDDDD;
+  display: flex;
+  width: 100%;
+}
+
+.home-wrapper {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.rdw-editor-main {
+  height: 150px;
+  overflow: auto;
+  font-family: 'Lato';
+  font-weight: 400;
+  font-size: 1.1em;
+  color: #333333;
+  line-height: 30px;
+  letter-spacing: 1px;
+}
+
+.rdw-editor-wrapper { 
+  box-sizing: content-box; 
+  height: inherit; 
+}
+.toolbarHidden {
+  display: none;
+}

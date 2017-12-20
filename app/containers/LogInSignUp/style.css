@@ -82,6 +82,24 @@ on hovers & other animation goodies when colors are decided7.*/
     padding: 1.5em; 
   }
 
+  .userFormItemCheckBox {
+    display: flex; 
+    /* justify-content: space-between; */
+    align-items: center; 
+    margin: 0 auto; 
+    width: 70%; 
+    padding: 1.5em; 
+  }
+
+  .userFormItemAvatar {
+    display: flex; 
+    /* justify-content: space-between; */
+    align-items: center; 
+    margin: 0 auto; 
+    width: 70%; 
+    padding: 1.5em; 
+  }
+
   .spacesDropdown { 
     width: 50%; 
   }
@@ -93,4 +111,36 @@ on hovers & other animation goodies when colors are decided7.*/
       align-items: center; 
     }
 
+.userFormTagContainer {
+  width: 70%;
+  margin-left: 14%; 
+  /* font-weight: bold; */
+  align-self: flex-start;
+  /* margin: 30px 10%;  */
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
 
+.inputfile {
+  align-self: flex-end;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  /* font-size: 1.25em; */
+  font-weight: 700;
+  color: black;
+  background-color: white;
+  display: inline-block; 
+  cursor: pointer;
+}
+
+inputfile:focus + label, 
+.inputfile + label:hover {
+  background-color: rgb(245,245,245);
+}

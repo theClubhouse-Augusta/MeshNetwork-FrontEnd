@@ -3,7 +3,7 @@
  * MemberSearch
  *
  */
-import React from 'react';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes, { oneOfType } from 'prop-types';
 /* Icons */
@@ -17,42 +17,40 @@ import Footer from 'components/Footer';
 import './style.css';
 import './styleM.css';
 
-export default class MemberSearch extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-       skills: [],
-       results: [],
-       query: '',
-       redirect: this.props.redirect,
-    };
-    this.token = localStorage.getItem('token');
-    this.checkToken = this.props.checkToken;
-  }
+export default class MemberSearch extends Component {
+  state = {
+      skills: [],
+      results: [],
+      query: '',
+      redirect: this.props.redirect,
+  };
+  token = localStorage['token'];
 
   /**
    * If the user is logged in 
    * this.state.loggedIn = true />
    */
   componentWillMount() {
-    this.checkToken(this.token, {checkAuth:true});
+    console.log(this.token);
+    // this.props.getLoggedInUser(this.token);
+  }
+  componentDidMount() {
+    this.loadSkills();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.redirect) {
-      this.props.history.push('/');
-    } else {
-      this.loadSkills();
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+    // if (nextProps.redirect) {
+      // this.props.history.push('/');
+    // } else {
+      // this.loadSkills();
+    // }
+  // }
 
   loadSkills = () => {
     fetch('http://localhost:8000/api/skills', {
       headers: { Authorization: `Bearer ${this.token}` },
     })
-    .then(response =>
-      response.json()
-    )
+    .then(response => response.json())
     .then(json => {
       this.setState({ skills:json });
     })
@@ -62,10 +60,7 @@ export default class MemberSearch extends React.Component {
   }
 
   searchQuery = (e) => {
-    const reg = /^\S*$/;
-    if (reg.exec(e.target.value) !== null) { // true if input has no space
-      this.setState({ query: e.target.value });
-    }
+      this.setState({ query: e.target.value.trim() });
   }
 
   // submit form if 'enter' is pressed
@@ -99,9 +94,7 @@ export default class MemberSearch extends React.Component {
           <ul>
             {this.state.results.map((user, index) => 
               <li
-                onClick={() => {
-                  this.props.history.push(`/UserProfile/${user.id}`);
-                }} 
+                onClick={() => {this.props.history.push(`/UserProfile/${user.id}`);}} 
                 key={`userAvatar${user.id}`}
               >
                 <img 
@@ -113,23 +106,17 @@ export default class MemberSearch extends React.Component {
                 <dl id="MS-userInfo">
                   <div>  
                     <dt>name:</dt>
-                    <dd>
-                      &nbsp;&nbsp;&nbsp;{user.name}
-                    </dd>
+                    <dd> &nbsp;&nbsp;&nbsp;{user.name} </dd>
                   </div>
 
                   <div>  
                     <dt>company:</dt>
-                    <dd> 
-                      &nbsp;&nbsp;&nbsp;{user.company}
-                    </dd>
+                    <dd> &nbsp;&nbsp;&nbsp;{user.company} </dd>
                   </div>
 
                   <div>  
                     <dt>Email:</dt>
-                    <dd>
-                      &nbsp;&nbsp;&nbsp;{user.email}
-                     </dd>
+                    <dd> &nbsp;&nbsp;&nbsp;{user.email} </dd>
                   </div>
                 </dl>
               </li>
@@ -214,7 +201,7 @@ export default class MemberSearch extends React.Component {
           {/* Tag Row 2 */}
           <section id="MS-TagRowTwo">
             <div>
-              {this.state.skills.map((skill, index) => {
+              {this.state.skills && this.state.skills.map((skill, index) => {
                 while (index >= 3) {
                   return (
                     <button
@@ -240,11 +227,12 @@ export default class MemberSearch extends React.Component {
     );
   }
 }
+
 MemberSearch.propTypes = {
   redirect: PropTypes.oneOfType([ 
     PropTypes.object.isRequired,
     PropTypes.string.isRequired,
   ]),
-  checkToken: PropTypes.func.isRequired,
+  getLoggedInUser: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };

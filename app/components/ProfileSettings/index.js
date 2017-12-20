@@ -6,8 +6,8 @@
 
 import React from 'react';
 import Select from 'react-select'; 
-import TagSearch from 'components/TagSearch'; 
-import TagSelect from 'components/TagSelect';
+// import TagSearch from 'components/TagSearch'; 
+// import TagSelect from 'components/TagSelect';
 
 import './style.css';
 import './styleM.css';
