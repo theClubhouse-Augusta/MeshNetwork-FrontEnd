@@ -163,6 +163,7 @@ export default class AuthTabs extends React.PureComponent {
     data.append('website', this.state.website);
     data.append('phonenumber', this.state.phonenumber);
     data.append('searchOpt', this.state.searchOpt ? 1 : 0);
+    data.append('avatar', this.state.avatar);
 
     fetch(`http://localhost:8000/api/signUp`, {
       method: 'post',
@@ -171,7 +172,7 @@ export default class AuthTabs extends React.PureComponent {
     .then(response => response.json())
     .then(json => {
       if (json.success) {
-        this.props.history.push('/');
+        this.props.login(e, this.state.email, this.state.password);
       } else {
         this.toggleSnackBar(json.error);
       }
@@ -360,9 +361,28 @@ export default class AuthTabs extends React.PureComponent {
             </div>
 
             <div className="userFormTagContainer">                 
-              <label> Skills and interests </label>
-              {/* event tags */}
-              { loadedTags && <Select.Creatable multi={true} options={loadedTags} onChange={this.selectTag} value={selectedTags} />}
+              {/* tags */}
+              { !!loadedTags.length && [
+              <label key="skillLabel"> Skills and interests </label>,
+              <Select.Creatable 
+                key="skillSelect" 
+                multi={true} 
+                options={loadedTags} 
+                onChange={this.selectTag} 
+                value={selectedTags} 
+              />
+              ]}
+
+              { !!!loadedTags.length && [
+              <label key="skillLabel2"> Skills and interests </label>,
+              <Select.Creatable 
+                key="skillSelect2" 
+                multi={true} 
+                options={loadedTags} 
+                onChange={this.selectTag} 
+                value={selectedTags} 
+              />
+              ]}
             </div> 
 
             <p className="userFormItemAvatar">

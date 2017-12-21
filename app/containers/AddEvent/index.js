@@ -440,6 +440,7 @@ export default class AddEvent extends Component {
       reader.readAsDataURL(logo);
     }
   }
+
   Submit = () => {
     // this.toggleSnackBar("Thanks, your event has been submitted for approval");
     const { 
@@ -487,8 +488,8 @@ export default class AddEvent extends Component {
       body: data,
     })
     .then(response => response.json())
-    .then(json => {
-      this.setState({	snackBarMessage: {json} });
+    .then(eventID => {
+      this.props.history.push(`/eventDetail/${eventID}`)
     })
   }
 

@@ -31,6 +31,11 @@ export default class EventDetail extends React.PureComponent {
     workSpaces: '',
     upcomingEvents: '',
     sponsors: '',
+    organizers: [],
+    attendees: [],
+    snackBarMessage: '',
+    snackBar: false,
+    tags: [],
   };
 
   token = localStorage['token'];
@@ -61,9 +66,9 @@ export default class EventDetail extends React.PureComponent {
           workSpace: Event.local,
           upcomingEvents: Event.upcomingEvents,
           sponsors: Event.sponsors,
-        }, () => {
-          console.log(JSON.stringify(this.state.sponsors[0]))
-          console.log(this.state.sponsors[0].name);
+          organizers: Event.organizers,
+          attendees: Event.attendees,
+          tags: Event.tags
         });
       } else if (Event.nonLocal) {
         this.setState({	
@@ -72,9 +77,10 @@ export default class EventDetail extends React.PureComponent {
           workSpaces: Event.nonLocal,
           upcomingEvents: Event.upcomingEvents,
           sponsors: Event.sponsors,
-        }, () => {
-          console.log(`${JSON.stringify(this.state.sponsors[0])}`);
-        });
+          organizers: Event.organizers,
+          attendees: Event.attendees,
+          tags: Event.tags
+        })
       }
     })
     .catch(error => {
@@ -82,7 +88,7 @@ export default class EventDetail extends React.PureComponent {
     });
   }
 
-  handleTouchTap = (e, eventID) => {
+  registerForEvent = (e, eventID) => {
     e.preventDefault();
     fetch(`http://localhost:8000/api/event/join/${eventID}`, {
       headers: { Authorization: `Bearer ${this.token}` }
@@ -92,9 +98,9 @@ export default class EventDetail extends React.PureComponent {
     )
     .then(signedUp => {
       if (signedUp.success) {
-        alert(signedUp.success)
+        this.toggleSnackBar(signedUp.success);
       } else if (signedUp.duplicate) {
-        alert(signedUp.duplicate);
+        this.toggleSnackBar(signedUp.duplicate);
       } else if (signedUp.error) {
         this.props.history.push('/auth');
       }
@@ -104,64 +110,11 @@ export default class EventDetail extends React.PureComponent {
     });
   };
 
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
+  toggleSnackBar = (message) => 
+    this.setState({	
+      snackBar: !this.state.snackBar, 
+      snackBarMessage: message
     });
-  };
-
-  /**
-   * Event tags
-   */
-
-  showTags = (tags) => {
-    const tagList = tags.split(',').map((tag, key) =>
-      <Chip key={`chip${key}`} label={tag} style={{margin: '10px'}} />
-    );
-      return (
-        <div className="eventTags">
-          {tagList}
-        </div>
-      );
-  };
-
-  /**
-   * Upcoming Events
-   */
-  UpcomingEvent = (eventID, title, startDate) => (
-    <a href={`/EventDetail/${eventID}`}>
-      <li style={{lineHeight: '2em'}}>
-        {`${moment(startDate).format('MMMM D')} ${title} @`}
-      </li>
-    </a> 
-  );
-  
-  showUpcomingEvents = (events) => {
-    const eventList = events.map((event) => (
-      this.UpcomingEvent(event.id, event.title, event.start))
-    );
-    return (
-      <ul className="eventUpcomingList"> 
-        {eventList}
-      </ul> 
-    );
-  };
-
-
-  /**
-   * Sponsors
-   */
-    Sponsers = (sponsors) => {
-      const sponsorList = sponsors.map((sponser,key) => (
-        <Card key={`eventSponsorCard${key}`} className="eventSponsorCard"> 
-          <CardMedia title="a company logo"> 
-            <h2 className="eventCardHeader">{sponser.name}</h2>
-            <img src={`${sponser.logo}`} className="eventSponsorLogo"/> 
-          </CardMedia> 
-        </Card>
-      ));
-      return sponsorList;
-    };
 
   handleDates = (start, end) => {
     // hour:min:sec
@@ -201,15 +154,23 @@ export default class EventDetail extends React.PureComponent {
 
 
   render() {  
-    const event = this.state.event; 
+    const {
+      event,
+      workSpace,
+      hostSpace,
+      workSpaces,
+      upcomingEvents,
+      sponsors,
+      organizers,
+      attendees,
+      snackBar,
+      snackBarMessage,
+      tags
+    } = this.state;
+    // organizers.forEach(organizer => attendees.push(organizer))
     const start = event.start;
     const end = event.end;
 
-    const workSpace = this.state.workSpace;
-    const hostSpace = this.state.hostSpace;
-    const workSpaces = this.state.workSpaces;
-    const upcomingEvents = this.state.upcomingEvents;
-    const sponsors = this.state.sponsors;
     return (
       <div className="container">
         <Helmet title="EventDetail" meta={[ { name: 'description', content: 'Description of EventDetail' }]}/>
@@ -233,38 +194,62 @@ export default class EventDetail extends React.PureComponent {
                           Public Welcome
                         </label>  
                     </div>
-                    {event.tags && this.showTags(event.tags)}
+
+                    {!!tags.length && 
+                    <div className="eventTags">
+                      {tags.map((tag, key) =>
+                        <Chip key={`chip${key}`} label={tag} style={{margin: '10px'}} />
+                      )}
+                    </div>}
+
                   </div>
 
                 </div>
 
-                <div className="eventDescriptionContent">
-                  <p>{event && event.description}</p>
-                  {event.url && <a href={event.url}> Find out more </a>}
-                </div>
+                {event && 
+                <div                 
+                  className="eventDescriptionContent"
+                  dangerouslySetInnerHTML={{__html: event.description}}
+                >
+                </div>}
+                
+                {event && <a key="foo" href={event.url}> Find out more </a>}
 
                 <div className="eventPeopleBlock">
 
                   <div className="eventAvatarsBlock"> 
-                  
                     <div className="eventOrganizers">
-                      <Avatar size={75}/>
-                      <Avatar size={75}/>
-                      <Avatar size={75}/> 
+                      <h3> organizers </h3>
+                      {organizers && organizers.map((organizer, key) =>
+                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/userprofile/${organizer.id}`))}>
+                          <Avatar key={`org${key}`} src={organizer.avatar} />
+                          {organizer.name}
+                        </div>
+                      )}
                     </div>
                   
                     <div className="eventAttendees">
-                      <Avatar sizes={75}/>
-                      <Avatar size={75}/>
-                      <Avatar size={75}/> 
-                      <Avatar size={75}/>
-                      <Avatar size={75}/>
-                      <Avatar size={75}/> 
+                      <h3> attendees </h3>
+                      {attendees &&
+                      attendees.map((attendee, key) =>
+                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/userprofile/${attendee.id}`))}>
+                          <Avatar key={`att${key}`} src={attendee.avatar} />
+                          {attendee.name}
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="eventSponsorsBlock">
-                    {sponsors && this.Sponsers(sponsors)}
+                    <h3> sponsors </h3>
+                    {sponsors && sponsors.map((sponser,key) => 
+                      <Card key={`eventSponsorCard${key}`} className="eventSponsorCard"> 
+                        <CardMedia title="a company logo"> 
+                          <h2 className="eventCardHeader">{sponser.name}</h2>
+                          <img src={`${sponser.logo}`} className="eventSponsorLogo"/> 
+                        </CardMedia> 
+                      </Card>
+                    )};
                   </div>
                 </div> 
               </div>
@@ -331,7 +316,7 @@ export default class EventDetail extends React.PureComponent {
 
               <div className="eventRegistration">
                 <button 
-                  onClick={(e) => { this.handleTouchTap(e, event.id) }}  
+                  onClick={(e) => { this.registerForEvent(e, event.id) }}  
                   style={{ marginTop: '40px'}} 
                   backgroundColor="#e36937"  
                 > 
@@ -342,7 +327,6 @@ export default class EventDetail extends React.PureComponent {
                   open={this.state.open}
                   message="You're signed up!"
                   autoHideDuration={4000}
-                  onRequestClose={this.handleRequestClose}
                 />
               </div>
 
@@ -351,10 +335,16 @@ export default class EventDetail extends React.PureComponent {
               </div>
 
               <div className="eventUpcomingEvents">
-                <h4 className="eventUpcomingTitle"> 
-                  Upcoming events
-                </h4> 
-                { upcomingEvents ? this.showUpcomingEvents(upcomingEvents) : null}
+                <h4 className="eventUpcomingTitle"> Upcoming events </h4> 
+                {(upcomingEvents && hostSpace) &&
+                <ul className="eventUpcomingList"> 
+                  {upcomingEvents.map((event, key) => 
+                  <a key={`a${key}`} href={`/EventDetail/${event.id}`}>
+                    <li style={{lineHeight: '2em'}}>
+                      {`${moment(event.start).format('MMMM D')} ${event.title} @${hostSpace.name}`}
+                    </li>
+                  </a>)} 
+                </ul>} 
               </div>
               <img src="htto://localhost" alt=""/>
               
@@ -363,6 +353,7 @@ export default class EventDetail extends React.PureComponent {
         </main>  
 
         <Footer />
+        <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
       </div>
     );
   }
