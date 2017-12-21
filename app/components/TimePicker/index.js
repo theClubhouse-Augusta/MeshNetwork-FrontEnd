@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { oneOfType } from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 
@@ -24,16 +24,15 @@ const styles = theme => ({
   },
 });
 
-function TimePickers(props) {
+const TimePickers = props => {
   const { classes } = props;
-
   return (
-    <form className={classes.container} noValidate>
+    <div className={classes.container} noValidate>
       <TextField
         id="time"
-        label="Pick a time"
+        onChange={(e) => {props.selector(e, props.index)}}
+        label={props.label}
         type="time"
-        defaultValue="07:30"
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
@@ -42,12 +41,19 @@ function TimePickers(props) {
           step: 300, // 5 min
         }}
       />
-    </form>
+    </div>
   );
 }
 
 TimePickers.propTypes = {
   classes: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
+  selector: PropTypes.func.isRequired,
+  multiday: PropTypes.bool.isRequired,
+  index: PropTypes.oneOfType([
+    PropTypes.number.isRequired,
+    PropTypes.bool.isRequired
+  ])
 };
 
 export default withStyles(styles)(TimePickers);

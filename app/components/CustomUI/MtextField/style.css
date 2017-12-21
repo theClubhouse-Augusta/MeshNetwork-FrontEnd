@@ -8,6 +8,14 @@
    
 }
 
+.MeshTextFieldError {    
+    padding: .25em; 
+    
+    background: #ffffff; 
+    border-bottom: 2px solid red; 
+   
+}
+
 .MeshTextField:focus {
     background: #eeefee; 
     border-bottom: 2px solid #ffcd33; 

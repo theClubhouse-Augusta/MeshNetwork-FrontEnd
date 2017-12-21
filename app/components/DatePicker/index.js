@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { oneOfType } from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 
@@ -21,27 +21,33 @@ const styles = theme => ({
   },
 });
 
-function DatePicker(props) {
+const DatePicker = props => {
   const { classes } = props;
-
   return (
-    <form className={classes.container} noValidate>
+    <div className={classes.container} noValidate>
       <TextField
         id="date"
-        label="Pick a date"
+        onChange={(e) => {props.selector(e, props.index)}}
+        label={props.label}
         type="date"
-        defaultValue=""
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
         }}
       />
-    </form>
+    </div>
   );
 }
 
 DatePicker.propTypes = {
   classes: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
+  selector: PropTypes.func.isRequired,
+  multiday: PropTypes.bool.isRequired,
+  index: PropTypes.oneOfType([
+    PropTypes.number.isRequired,
+    PropTypes.bool.isRequired
+  ])
 };
 
 export default withStyles(styles)(DatePicker);

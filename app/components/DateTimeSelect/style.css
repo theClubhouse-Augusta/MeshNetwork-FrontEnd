@@ -4,3 +4,9 @@
     width: 100%;
 }
 
+.dateTimeContainerMultiday { 
+    width: 100%;
+    display: flex;
+    padding: 20px;
+}
+

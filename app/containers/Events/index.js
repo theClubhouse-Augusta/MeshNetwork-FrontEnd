@@ -9,7 +9,7 @@ import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
 import MultiLocationSelect from 'components/MultiLocationSelect';
-import TagSelect from 'components/TagSelect'; 
+// import TagSelect from 'components/TagSelect'; 
 import EventHomeCalender from 'components/EventHomeCalender'; 
  
 

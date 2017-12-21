@@ -5,8 +5,8 @@
 */
 
 import React from 'react';
-import UserSelect from 'components/UserSelect'; 
-import TagSelect from 'components/TagSelect';
+//import UserSelect from 'components/UserSelect'; 
+//import TagSelect from 'components/TagSelect';
  
 
 import './style.css';
