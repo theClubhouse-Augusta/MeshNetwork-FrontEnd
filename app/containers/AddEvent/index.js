@@ -7,7 +7,6 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
-{/* import SponsorSelect from 'components/SponsorSelect';  */}
 import Snackbar from 'material-ui/Snackbar'; 
 import Select from 'react-select';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -18,8 +17,7 @@ import 'react-select/dist/react-select.css';
 
 // compononents,
 import OptionModal from '../../components/OptionModal';
-import Header from '../../components/Header'; 
-import Footer from '../../components/Footer'; 
+import { MdInsertDriveFile } from 'react-icons/lib/md'; 
 import DateTimeSelect from '../../components/DateTimeSelect'; 
 import { Organizers } from './Organizers';
 import { Sponsors } from './Sponsors';
@@ -705,7 +703,7 @@ export default class AddEvent extends Component {
                       {!!!eventFiles.length ? 
                         <ol style={{ height: '100%', display:'flex', flexDirection: 'column',  marginBottom: '60px', borderTop: '3px solid black', }}>
                           <li style={{height:'30px', borderBottom:'3px solid black', paddingBottom: 20, paddingTop: 20}}> 
-                            <MdInsertDriveFile size="40px" /> 
+                             <MdInsertDriveFile size="40px" />   
                             No files uploaded
                           </li>
                         </ol> : null}
@@ -722,52 +720,6 @@ export default class AddEvent extends Component {
                     <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
                   </div>
                 
-<<<<<<< HEAD
-                <div className="addEventUserContainer">
-                  
-                </div>
-
-                <div className="addEventSponsorContainer">
-                
-                </div>
-              </div> 
-
-              <div className="addEventDateTime"> 
-                <label className="addEventFormLabel">Choose a date & time </label>
-              </div>              
-
-              <div className="addEventDesContainer">
-                <label className="addEventFormLabel"> Event Description</label>
-                
-              </div>
-             
-
-              <div className="addEventTagContainer">                 
-                <label className="addEventFormLabel"> Pick the topics that best describe your event </label>
-
-                <div className="addEventTagWrapper">
-                 
-                </div>
-              </div> 
-              
-              <div className="addEventSubmit">
-              <button label="Submit" className="addEventSubmitButton" onClick={this.handleTouchTap} > Submit </button> 
-              <Snackbar
-                open={this.state.open}
-                message="Thanks, your event has been submitted for approval"
-                autoHideDuration={4000}
-                onRequestClose={this.handleRequestClose}
-              />
-              </div>
-             
-            </div> 
-          </div>          
-        </main>  
-
-        <Footer />
-
-      </div>
-=======
                 </div> 
               </div>          
             </div>  
@@ -775,7 +727,6 @@ export default class AddEvent extends Component {
             <Footer />
             <OptionModal message={modalMessage} closeModal={this.closeModal} />          
           </div>
->>>>>>> 5a5f3a616f3adca16dec13c3bc1af103e44d9cc1
     );
   }
 }
