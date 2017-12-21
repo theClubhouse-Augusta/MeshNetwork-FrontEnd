@@ -256,7 +256,7 @@ export default class AuthTabs extends React.PureComponent {
               <label htmlFor="name" className="userFormLabel">name</label>
               <MtextField onChange={this.name} type="text" name="" id="name" />
             </p>
-            {workspaces &&
+            {!!workspaces.length &&
             <div className="userFormItem">
               <label htmlFor="homespace" className="userFormLabel"> your home space</label>
               <select value={this.state.workspace} onChange={this.workspace}> 
