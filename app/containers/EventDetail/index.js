@@ -50,11 +50,10 @@ export default class EventDetail extends React.PureComponent {
   }
 
   getEvent = (eventID) => {
-    fetch(`http://localhost:8000/api/event/${eventID}`
-    )
-    .then(reponse => 
-      reponse.json()
-    )
+    fetch(`http://localhost:8000/api/event/${eventID}`, {
+      headers: { Authorization: `Bearer ${this.token}` }
+    })
+    .then(reponse => reponse.json())
     .then(Event => {
       if (Event.local) {
         this.setState({	

@@ -5,20 +5,20 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './style.css';
 import './styleM.css';
 
-export default class DefaultButton extends React.PureComponent {
-  render() {
-    return (
-      <button className="MeshDefaultButton left"> 
-        {this.props.children}
-      </button> 
-    );
-  }
-}
+const DefaultButton = props =>
+  <button onClick={(e) => {props.login(e, props.email, props.password)}} className="MeshDefaultButton left"> 
+    {props.children}
+  </button> 
 
-DefaultButton.contextTypes = {
-  router: React.PropTypes.object
+export default DefaultButton;
+
+DefaultButton.propTypes = {
+  login: PropTypes.func.isRequired,
+  password: PropTypes.string.isRequired,
+  email : PropTypes.string.isRequired,
 };
