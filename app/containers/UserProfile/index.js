@@ -107,7 +107,7 @@ export default class UserProfile extends React.Component {
                   {skills && 
                   <ul className="profileTagCloud">
                     {skills.map((skill, index) => 
-                    <li key={`${skill.name}${index}`} className="profileTag"> {skill.name} </li> 
+                      <li key={`${skill.name}${index}`} className="profileTag"> {skill.name} </li> 
                   )}
                   </ul>}
 
@@ -157,7 +157,7 @@ export default class UserProfile extends React.Component {
                         </li>
                       )}
                     </ul>}
-                    
+
                   </aside>
 
                 </div>

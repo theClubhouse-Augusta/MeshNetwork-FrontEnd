@@ -163,9 +163,7 @@ export default class LoggedInUserProfile extends Component {
                   <div className="profileBio">
                     <h1>About name</h1>
                     <div className="profileBioContent">
-                      <p>
-                        {user.bio}
-                      </p>
+                      <div dangerouslySetInnerHTML={{__html:user.bio}}></div>
                     </div>
                   </div>
 
@@ -184,7 +182,7 @@ export default class LoggedInUserProfile extends Component {
                         </li>
                       )}
                     </ul>}
-                    
+
                   </aside>
 
                 </div>
