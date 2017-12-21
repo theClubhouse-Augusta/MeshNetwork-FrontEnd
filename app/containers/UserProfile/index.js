@@ -6,9 +6,8 @@
 import React from 'react';
 import PropTypes, {oneOfType} from 'prop-types';
 import Helmet from 'react-helmet';
-// relative imports
+
 import Header from 'components/Header';
-import { Skills, Events, Attending } from 'components/UserProfileAssets'
 
 import './style.css';
 import './styleM.css';
@@ -68,11 +67,14 @@ export default class UserProfile extends React.Component {
   loading = () => this.state.loading;
 
   render() {
-    const user = this.state.user;
-    const skills = this.state.skills;
-    const space = this.state.space;
-    const events = this.state.events;
-    const upcoming = this.state.upcoming;
+
+    const {
+      user, 
+      skills, 
+      space,
+      events, 
+      upcoming, 
+    } = this.state;
 
     return (
       this.loading()
@@ -101,14 +103,32 @@ export default class UserProfile extends React.Component {
                 <aside className="profileColumnLeft">
 
                   <h3 style={{textAlign:'center'}}>Skills</h3>
-                  {this.state.skills && <Skills skills={skills} />}
+
+                  {skills && 
+                  <ul className="profileTagCloud">
+                    {skills.map((skill, index) => 
+                      <li key={`${skill.name}${index}`} className="profileTag"> {skill.name} </li> 
+                  )}
+                  </ul>}
 
                   <div className="profileMentorship">
                   </div>
 
                   <div className="profileEvents">
                     upcoming events
-                    {this.state.events && <Events history={this.props.history} events={events} />}
+
+                    {events && 
+                    <ul className="profileTagCloud">
+                      {events.map((event, index) => 
+                        <li 
+                          onClick={() => {this.props.history.push(`/EventDetail/${event.id}`)}}
+                          key={`${event.title}${index}`} 
+                          className="EventTag"
+                        >
+                          {event.title}
+                        </li>
+                      )}
+                    </ul>}
                   </div>
 
                 </aside>
@@ -124,7 +144,20 @@ export default class UserProfile extends React.Component {
 
                   <aside className="profileAttending">
                     <h2>Attending</h2>
-                    {this.state.upcoming && <Attending history={this.props.history} attending={upcoming} />}
+
+                    {upcoming && 
+                    <ul className="profileAttendingContent">
+                      {upcoming.map((attend, index) => 
+                        <li 
+                          onClick={() => {props.history.push(`/EventDetail/${attend.id}`)}}
+                          key={`${attend.title}${index}`} 
+                          className="profileAttendingItem"
+                        >
+                          {attend.title}
+                        </li>
+                      )}
+                    </ul>}
+
                   </aside>
 
                 </div>
