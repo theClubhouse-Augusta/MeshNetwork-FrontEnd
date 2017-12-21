@@ -12,31 +12,36 @@ import BookingMentorForm from 'components/BookingMentorForm';
 import './style.css';
 import './styleM.css';
 
+const rooms = [
+  {
+    name: 'Workshop', 
+    availability: true, 
+  }, 
+  {
+    name: 'Conference Room', 
+    availability: false, 
+  }, 
+  {
+    name: 'Computer Lab', 
+    availability: true, 
+  }
+]
+
 export default class BookingStepTwo extends React.PureComponent {
-   
-  state = {
-    rooms: [
-      {
-        name: 'Workshop', 
-        availability: true, 
-      }, 
-      {
-        name: 'Conference Room', 
-        availability: false, 
-      }, 
-      {
-        name: 'Computer Lab', 
-        availability: true, 
-      }
-    ],
-  }; 
+  
   
   render() {
+
+  
     return (
-      <div className="stepTwoContainer">
-         { /*  <BookingTourForm />*/ }  
-         { /* <BookingCardBlock  rooms={this.state.rooms} />*/} 
-         <BookingMentorForm /> 
+      <div className="bookingNextStepsContainer">
+        <div className="bookingStepTwo">
+          { /*  <BookingTourForm />*/ }  
+          { /* */} 
+          {/* <BookingMentorForm /> */}
+
+          <BookingCardBlock  rooms={rooms}/>
+        </div>      
          
       </div>
     );

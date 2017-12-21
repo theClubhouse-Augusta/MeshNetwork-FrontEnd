@@ -6,23 +6,42 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
 import Header from 'components/header';
 import Footer from 'components/footer';
 import Select from 'react-select'; 
-import DateTimeSelect from 'components/DateTimeSelect'; 
 import BookingStepTwo from 'components/BookingStepTwo';
 
 
 
 import './style.css';
 import './styleM.css';
+import 'react-select/dist/react-select.css';
+
+
+const locationData = [
+  {value: '1', label:'the Clubhou.se'}, 
+  {value: '2', label:'FourAthens'}, 
+  {value: '3', label:'MakerVillage'}, 
+]
 
 export default class BookingSystem extends React.PureComponent {
+  state = {
+    // maybe location: locationDefault? 
+    selectedLocation: '', 
+  }
 
+  handleLocationSelect = (selectedLocation) => {
+    this.setState( {selectedLocation}); 
+    console.log(selectedLocation)
+  }
 
 
   render() {
+    const locationWrapperStyle ={
+      width: '200px',
+      margin: '60px',
+    }
 
     return (
       <div className="bookingContainer">
@@ -36,47 +55,42 @@ export default class BookingSystem extends React.PureComponent {
         <main className="bookingMainStyle">
           <div className="bookingSectionContainer">
             <div className="bookingMainTitle">
-              select your mesh space
+              select a mesh space
             </div>
             <div className="bookingLocationSelect">
-            <select>
-                      <option value="">the Clubhou.se</option>
-                      <option value=""> Spark Macon </option>
-                      <option value=""> MakerVillage</option>
-                      <option value=""> FourAthens</option>
-                      <option value=""> Columbus Makes IT </option>
-                  </select>   
+            <Select 
+              value={this.state.selectedLocation}
+              placeholder="select a location"
+              clearable
+              onChange={this.handleLocationSelect}
+              options={locationData}
+              wrapperStyle={locationWrapperStyle}
+              autosize
+            />
             </div>
-            
-            {/* booking types are hard coded bc no additions anticipated, but booking card mechanism comps could be adapted 😉 */}
+            {/* which db we're sending shit to */ }
+
+            {/* Iterative catds?*/}
             <div className="bookingFlowContainer">
               <div className="bookingSelectType">
               <div className="bookingTypeCardBlock">
-                 <Card   >
-                    <h2 title="Room Reservation"             ></h2>
+                 <Card>
+                    <CardHeader title="Room Reservation" /> 
                   </Card>
-                  <Card >
-                    <h2 title="Mentor Meeting" 
-                  ></h2>
+                  <Card>
+                    <CardHeader title="Mentor Meeting"   /> 
                   </Card>
-                  <Card >
-                    <h2 title="Space Tour" 
-                    ></h2>
-                  </Card>    
-                  {/* make these cards iterative array so that one at a time will be active - later disable others that are not selected aka pass disabled to other 2*/ }        
+                  <Card>
+                    <CardHeader title="Space Tour"       />
+                  </Card>      
                   </div> 
               </div> 
 
-              <div className="bookingFlowTwo">
+              <div className="bookingNextFlow">
                   <BookingStepTwo />
+                  {/* type={this.state.type} */}
               </div>
-
-              <div className="bookingSelectDateTime">
-                <DateTimeSelect />
-                <div className="bookingSubmit"> 
-                  <button />
-                </div>
-              </div>
+        
             </div>
           </div>
         </main>

@@ -11,7 +11,8 @@
 .kioskReasonCard { 
     align-self: center; 
     align-content: center; 
-    width: 400px;
+    width: 90%;
+    max-width: 600px; 
 }
 
 .kioskCardHeader { 
