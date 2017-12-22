@@ -11,9 +11,6 @@ import Footer from 'components/footer';
 import Select from 'react-select'; 
 import DateTimeSelect from 'components/DateTimeSelect'; 
 import BookingStepTwo from '../../components/BookingStepTwo';
-import BookingStepTwo from 'components/BookingStepTwo';
-
-
 
 import './style.css';
 import './styleM.css';

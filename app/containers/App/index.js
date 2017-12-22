@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from 'containers/Home';
 import About from 'containers/About';
-import BookingSystem from 'containers/BookingSystem';
+import BookingSystem from '../BookingSystem';
 import BusinessSearch from 'containers/BusinessSearch';
 import Contact from 'containers/Contact';
 import EventDetail from 'containers/EventDetail';

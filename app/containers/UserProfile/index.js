@@ -23,14 +23,15 @@ export default class UserProfile extends React.Component {
   };
   path = this.props.location.pathname.split('/');
   userID = this.path[this.path.length - 1];
+  token = localStorage['token']
 
   componentWillMount() {
     if (isNaN(this.userID)) {
       console.log((typeof this.userID));
       this.props.history.push('/');
-    } 
-    else {
-      this.loadUser(localStorage['token']);
+    } else {
+      console.log(this.token);
+      this.loadUser(this.token);
     }
   }
 
@@ -41,8 +42,7 @@ export default class UserProfile extends React.Component {
     fetch(`http://localhost:8000/api/user/${this.userID}`, {
         headers: { Authorization: `Bearer ${token}` },
     })
-    .then(response => response.json()
-    )
+    .then(response => response.json())
     .then(getUser => {
       if (!getUser.error) {
         this.setState({
@@ -53,8 +53,7 @@ export default class UserProfile extends React.Component {
           upcoming: getUser.upcoming,
           loading: false,
        });
-      } 
-      else if (getUser.error) {
+      } else if (getUser.error) {
         this.props.history.push('/');
       }
     })
