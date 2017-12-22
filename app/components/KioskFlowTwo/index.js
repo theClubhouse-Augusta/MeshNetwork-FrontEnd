@@ -26,10 +26,11 @@ export default class KioskFlowTwo extends React.PureComponent {
 
 
   render() {
-    const reasonCards = this.state.reasons.map((reason) => (
-          <Card key={reason.value} className="kioskReasonCard">
-            <CardHeader className="kioskCardHeader" title={reason.name} />  
-          </Card> 
+    const { reasons, selectReason } = this.props
+    const reasonCards = reasons.map((reason, key) => (
+      <Card onClick={() => selectReason(reason)} key={`reason${key}`} className="kioskReasonCard">
+        <CardHeader className="kioskCardHeader" title={reason} />  
+      </Card> 
     )); 
     return (
       <div className="kioskFlowTwoContainer">
@@ -43,7 +44,3 @@ export default class KioskFlowTwo extends React.PureComponent {
     );
   }
 }
-
-KioskFlowTwo.contextTypes = {
-  router: React.PropTypes.object
-};

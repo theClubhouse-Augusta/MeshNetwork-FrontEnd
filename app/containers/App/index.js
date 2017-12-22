@@ -208,7 +208,7 @@ export default class App extends Component {
             )}
           />
           <Route path="/kiosk"
-            render={() => <KioskSystem />}
+            render={(props) => <KioskSystem {...props} />}
           />
 
 

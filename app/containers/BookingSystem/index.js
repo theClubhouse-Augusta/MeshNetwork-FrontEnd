@@ -3,7 +3,6 @@
  * BookingSystem
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
@@ -11,7 +10,7 @@ import Header from 'components/header';
 import Footer from 'components/footer';
 import Select from 'react-select'; 
 import DateTimeSelect from 'components/DateTimeSelect'; 
-import BookingStepTwo from 'components/BookingStepTwo';
+import BookingStepTwo from '../../components/BookingStepTwo';
 
 
 

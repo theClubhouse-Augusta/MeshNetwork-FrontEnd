@@ -5,9 +5,9 @@
 */
 
 import React from 'react';
-import BookingCardBlock from 'components/BookingCardBlock'; 
-import BookingTourForm from 'components/BookingTourForm'; 
-import BookingMentorForm from 'components/BookingMentorForm'; 
+import BookingCardBlock from '../BookingCardBlock'; 
+import BookingTourForm from '../BookingTourForm'; 
+import BookingMentorForm from '../BookingMentorForm';
 
 import './style.css';
 import './styleM.css';

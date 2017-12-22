@@ -7,13 +7,13 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-
 import Header from 'components/Header';
 
 import './style.css';
 import './styleM.css';
 
 export default class LoggedInUserProfile extends Component {
+
   state = {
     user: this.props.user['user'], // eslint-disable-line
     skills: this.props.user['skills'],
@@ -182,7 +182,6 @@ export default class LoggedInUserProfile extends Component {
                         </li>
                       )}
                     </ul>}
-
                   </aside>
 
                 </div>

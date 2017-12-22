@@ -1,11 +1,10 @@
-/**
+  /**
 *
 * BookingTourForm
 *
 */
 
 import React from 'react';
-
 
 import './style.css';
 import './styleM.css';
@@ -41,4 +40,3 @@ export default class BookingTourForm extends React.PureComponent {
     );
   }
 }
-
