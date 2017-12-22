@@ -33,11 +33,12 @@ export default class KioskFlowTwo extends React.PureComponent {
 //APPEARANCE APIs for metrics 
 
 
-  render() {   
-    const reasonCards = this.state.reasons.map((reason) => (
-          <Card key={'reasonCard-' + reason.name} className="kioskReasonCard" onClick={this.handleReasonSelect}>
-            <CardHeader className="kioskCardHeader" title={reason.name} />  
-          </Card> 
+  render() {
+    const { reasons, selectReason } = this.props
+    const reasonCards = reasons.map((reason, key) => (
+      <Card onClick={() => selectReason(reason)} key={`reason${key}`} className="kioskReasonCard">
+        <CardHeader className="kioskCardHeader" title={reason} />  
+      </Card> 
     )); 
     return (
       <div className="kioskFlowTwoContainer">
@@ -51,11 +52,3 @@ export default class KioskFlowTwo extends React.PureComponent {
     );
   }
 }
-
-KioskFlowTwo.contextTypes = {
-  router: React.PropTypes.object,
-  user: React.PropTypes.object, 
-  events: React.PropTypes.object,  
-  reasonLabel: React.PropTypes.string, 
-  reasons: React.PropTypes.array, 
-};

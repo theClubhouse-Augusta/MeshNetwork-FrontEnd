@@ -31,7 +31,7 @@ export default class MemberSearch extends Component {
    * this.state.loggedIn = true />
    */
   componentWillMount() {
-    console.log(this.token);
+    // console.log(this.token);
     // this.props.getLoggedInUser(this.token);
   }
   componentDidMount() {
@@ -129,11 +129,6 @@ export default class MemberSearch extends Component {
 
   tagClick = (e,tag) => {
     e.preventDefault;
-    /** 
-     * this api endpoint will change
-     * and <tag> will be sent as a url
-     * parameter
-     */
     fetch(`http://localhost:8000/api/search/?tag=${encodeURIComponent(tag)}`, {
       headers: { Authorization: `Bearer ${this.token}` },
     })

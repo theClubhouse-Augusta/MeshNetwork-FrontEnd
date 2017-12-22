@@ -9,9 +9,9 @@ import Helmet from 'react-helmet';
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
 import Tabs, { Tab } from 'material-ui/Tabs'; 
-import ProfileSettings from 'components/ProfileSettings'; 
-import AccountSettings from 'components/AccountSettings';
-import SecurityNotifSettings from 'components/SecurityNotifSettings'; 
+import ProfileSettings from '../../components/ProfileSettings'; 
+import AccountSettings from '../../components/AccountSettings';
+import SecurityNotifSettings from '../../components/SecurityNotifSettings'; 
 
 import './style.css';
 import './styleM.css';
