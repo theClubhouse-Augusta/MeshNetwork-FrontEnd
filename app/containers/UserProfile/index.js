@@ -4,7 +4,7 @@
  *
  */
 import React from 'react';
-import PropTypes, {oneOfType} from 'prop-types';
+import PropTypes, { oneOfType } from 'prop-types';
 import Helmet from 'react-helmet';
 
 import Header from 'components/Header';
