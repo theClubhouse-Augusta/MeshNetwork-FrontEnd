@@ -5,7 +5,8 @@
  */
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import MdInsertDriveFile from 'react-icons/lib/md/insert-drive-file';
+import Header from 'components/Header'; 
+import Footer from 'components/Footer'; 
 import Snackbar from 'material-ui/Snackbar'; 
 import Select from 'react-select';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -16,8 +17,7 @@ import 'react-select/dist/react-select.css';
 
 // compononents,
 import OptionModal from '../../components/OptionModal';
-import Header from '../../components/Header'; 
-import Footer from '../../components/Footer'; 
+import { MdInsertDriveFile } from 'react-icons/lib/md'; 
 import DateTimeSelect from '../../components/DateTimeSelect'; 
 import { Organizers } from './Organizers';
 import { Sponsors } from './Sponsors';
@@ -704,7 +704,7 @@ export default class AddEvent extends Component {
                       {!!!eventFiles.length ? 
                         <ol style={{ height: '100%', display:'flex', flexDirection: 'column',  marginBottom: '60px', borderTop: '3px solid black', }}>
                           <li style={{height:'30px', borderBottom:'3px solid black', paddingBottom: 20, paddingTop: 20}}> 
-                            <MdInsertDriveFile size="40px" /> 
+                             <MdInsertDriveFile size="40px" />   
                             No files uploaded
                           </li>
                         </ol> : null}

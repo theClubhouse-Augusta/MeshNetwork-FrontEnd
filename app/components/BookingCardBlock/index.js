@@ -5,26 +5,33 @@
 */
 
 import React from 'react';
-import BookingCard from 'components/BookingCard';
-import {Card, CardActions, CardTitle} from 'material-ui/Card'; 
+import Card, {CardActions, CardHeader} from 'material-ui/Card'; 
 
 import './style.css';
 import './styleM.css';
 
-export default class BookingCardBlock extends React.PureComponent {
 
+
+export default class BookingCardBlock extends React.PureComponent {  
   render() {
 
     const roomCards = this.props.rooms.map((room) => (
-      <Card className="bookingCard">
-      <CardTitle 
-      title={room.name}/>
+      <Card className="bookingCard" key={'bookRoom-' + room.name}>
+      <CardHeader
+      title={room.name} />
       </Card>
     )); 
 
-    return (
-      <div className="bookingCardBlock"> 
-        {roomCards}
+    return ( 
+      <div className="bookingRoomBooking">
+        <div className="bookingRoomsCardBlock">
+          {roomCards}
+        </div>
+
+
+        <div className="bookingRoomStepThree">
+        
+        </div>        
       </div>
     );
   }

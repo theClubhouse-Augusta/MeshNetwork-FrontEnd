@@ -11,12 +11,12 @@ import KioskFlowTwo from '../../components/KioskFlowTwo';
 import KioskUpcomingEvents from '../../components/KioskUpcomingEvents'; 
 
 import './style.css';
-import './styleM.css'
-import 'react-select/dist/react-select.css';;
+import './styleM.css';
+import 'react-select/dist/react-select.css';
 
 const menuWrapperStyle = {
   margin: '0 auto',
-}
+}; 
 
 export default class KioskSystem extends React.PureComponent {
   state = {

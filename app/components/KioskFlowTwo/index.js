@@ -6,23 +6,31 @@
 
 import React from 'react';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
-import KioskUpcomingEvents from 'components/KioskUpcomingEvents'; 
 
 import './style.css';
 import './styleM.css';
 
+/* const visitReasons = this.props.location.reasons; */ 
+
+const visitReasons = [
+  {name: 'Work', value: 'Work' },
+  {name: 'Event or Meeting', value: 'Events'},
+  {name: 'Tours', value: 'Tour' },
+]
+
+//fetched from kiosk db 
+
 export default class KioskFlowTwo extends React.PureComponent {
   state = {
-    reasons: [
-      {name: 'Work', value: 'Work' },
-      {name: 'Event or Meeting', value: 'Events'},
-      {name: 'Tour', value: 'Tour' },
-    ],     
+    reasons: visitReasons,
+    //user: {this.props.user}, 
   }
 
-  //grab user obj 
-  //add reason to user obj 
-  //pass user obj down to KioskThree 
+  handleReasonSelect = () => {
+    console.log("Clicky");  
+  }
+  
+//APPEARANCE APIs for metrics 
 
 
   render() {
@@ -39,7 +47,7 @@ export default class KioskFlowTwo extends React.PureComponent {
             {reasonCards} 
           </div>
 
-         {/* <KioskUpcomingEvents /> */}
+     
       </div>
     );
   }
