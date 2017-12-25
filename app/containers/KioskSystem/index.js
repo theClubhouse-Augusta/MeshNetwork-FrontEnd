@@ -7,69 +7,117 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Select from 'react-select';
-import KioskFlowTwo from 'components/KioskFlowTwo'; 
-import KioskUpcomingEvents from 'components/KioskUpcomingEvents'; 
+import KioskFlowTwo from '../../components/KioskFlowTwo'; 
+import KioskUpcomingEvents from '../../components/KioskUpcomingEvents'; 
 
 import './style.css';
 import './styleM.css';
 import 'react-select/dist/react-select.css';
 
-//LOCATION NEEDS TO BE DEAFULT OVERALL STATE FOR FETCHING REASONS & EVENTS 
-
-
 const menuWrapperStyle = {
   margin: '0 auto',
 }; 
 
-
-// fetch location from kiosk db
-
-/* fetch user table datag 
-
-make user obj to pass as prop 
-
- for the select input 
-  reassign email=>value 
-   separate name @ first space = firstName
-   name=> label 
-*/ 
-
-const testUserData = [
-  { value: 'audoralc@gmail.com', label: 'Audora'},
-  { value: 'ivy@theclubhou.se', label: 'Ivy'},
-  { value: 'nadeem@theclubhou.se', label: 'Nadeem'}
-] 
-
-const userInputPlaceholder = "Find yourself ☮"; 
-// {var from kiosk db}
-
-const testLocation = 'the Clubhouse'; 
-
 export default class KioskSystem extends React.PureComponent {
- state= {
-    location: testLocation, 
-    selectedUser: '', 
+  state = {
+    loggedInUser: '',
+    kioskStyles: '',
+    workspace: '',
+    events: [], 
+    users: [],
+    reasons: [],
+    selectedReason: '',
+  }
+  path = this.props.location.pathname.split('/');
+  spaceID = this.path[this.path.length - 1];
+
+  componentDidMount() {
+
+    if (isNaN(this.spaceID) || this.spaceID === "") {
+      this.props.history.push('/');
+    }
+
+    this.getUpcomingEvents();
+    this.getKioskStyles();
+    this.getUsers();
+    this.getReasons();
   }
 
-  handleNameInputChange = (selectedUser) => {
-    this.setState({selectedUser});
-    console.log(`Selected: ${selectedUser.label}`);
-  } 
+  getKioskStyles = () => {
+    fetch(`http://localhost:8000/api/kiosk/${this.spaceID}`)
+    .then(response => response.json())
+    .then(Kiosk => {
+      if (Kiosk) {
+        this.setState({	
+          kioskStyles: Kiosk.styles, 
+          workspace: Kiosk.workspace,
+        });
+      } else {
+        // redirect 404
+      }
+    })
+    .catch(error => {
+      // do something with error
+    })
+  }
 
- 
+  getUsers = () => {
+    fetch(`http://localhost:8000/api/users/space/${this.spaceID}`)
+    .then(response => response.json())
+    .then(Users => {
+      if (Users) {
+        this.setState({	users: Users });
+      }
+    })
+    .catch(error => {
+      // do something with error
+    })
+  }
 
+  getReasons = () => {
+    fetch(`http://localhost:8000/api/occasions`)
+    .then(response => response.json())
+    .then(Reasons => {
+      if (Reasons) {
+        this.setState({	reasons: Reasons });
+      }
+    })
+    .catch(error => {
+      // do something with error
+    })
+  }
 
-  handleFlowTwo = () => {
-    //render FlowTwo on page
- }
+  getUpcomingEvents = () => {
+    fetch(`http://localhost:8000/api/upcoming/${this.spaceID}`)
+    .then(response => response.json())
+    .then(Events => {
+      if (Events) {
+        this.setState({	events: Events });
+      }
+    })
+    .catch(error => {
+      // do something with error
+    })
+  }
 
-  dudeWhatsMyState= () => {
-   console.log(this.state); 
- }
- 
- 
+  handleNameInputChange = (loggedInUser) => {
+    this.setState({ loggedInUser }); 
+  }
+
+  selectReason = reason => this.setState({	selectedReason: reason });
 
   render() {
+
+    const { 
+      events, 
+      kioskStyles, 
+      users, 
+      loggedInUser, 
+      workspace, 
+      reasons,
+      selectedReason
+    } = this.state;
+
     return (
       <div className="kioskContainer">
         <Helmet title="KioskSystem" meta={[ { name: 'description', content: 'Description of KioskSystem' }]}/>
@@ -81,39 +129,38 @@ export default class KioskSystem extends React.PureComponent {
             </div>
 
             <div className="kioskFormContainer">
-             
-             
                <div className="kioskAutoWrapper">
-                 <Select 
-                  name="kioskUserLogin"
-                  value={this.state.selectedUser.value}
-                  placeholder={userInputPlaceholder} 
-                  arrowRenderer={null} 
-                  clearable      
-                  openOnClick={false}
-                  onChange={this.handleNameInputChange} 
-                  options={testUserData}
-                  wrapperStyle={menuWrapperStyle}               
-                />
+                 {(kioskStyles && !!users.length) && 
+                  <Select 
+                    name="form-field-name"
+                    value={loggedInUser.value}
+                    placeholder= {kioskStyles.inputPlaceholder}
+                    arrowRenderer={null} 
+                    clearable={true}           
+                    openOnClick={false}
+                    onChange={this.handleNameInputChange} 
+                    options={users}
+                    wrapperStyle={menuWrapperStyle}
+                  />}
               </div>     
 
-                  {/* user={selectedUser}
-                      reasonLabel={}
-                      reasons={location.reasons}
-                  */}
-                <KioskFlowTwo 
-                 
+              {(!!reasons.length && loggedInUser && !selectedReason) && 
+              <KioskFlowTwo 
+                reasons={reasons}
+                selectReason={this.selectReason}
+              />}
+              
+              {(kioskStyles && loggedInUser && selectedReason) && [
+                <div key="kioskevents" className="kioskUserName">
+                  Thanks {(loggedInUser.label.split('-')[0]).trim()}! 
+                </div>,
+                <KioskUpcomingEvents 
+                  key="kioskevents2"
+                  events={events} 
+                  thanks={`${kioskStyles.userThanks} ${workspace}`}
                 />
-                
-               {/*
-              <KioskUpcomingEvents 
-                location={location}                
-                afterLoginMsg={location.afterLoginMessage}
-                username={user.firstName}        
-                events={location.events}               
-              />
-               
-              Switch with just name really nice */}
+              ]}
+              {/*Switch with just name really nice */}
               
               
             </div>          
@@ -127,7 +174,3 @@ export default class KioskSystem extends React.PureComponent {
     );
   }
 }
-
-KioskSystem.contextTypes = {
-  router: React.PropTypes.object
-};
