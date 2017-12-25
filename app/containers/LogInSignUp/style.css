@@ -5,7 +5,7 @@ on hovers & other animation goodies when colors are decided7.*/
 .authContainer {
   display:flex;
   flex-direction:column;
-  min-height:100vh;
+  height:100vh;
 }
 
 .authBanner { 
@@ -15,7 +15,7 @@ on hovers & other animation goodies when colors are decided7.*/
 }
 
 .authBody { 
-  min-height:70vh;
+  min-height: 65vh;
   width:100%;
   max-width:1000px;
   margin: 0 auto;
@@ -52,8 +52,9 @@ on hovers & other animation goodies when colors are decided7.*/
 
       .forgotInfo { 
         display: flex; 
-        justify-content: space-between; 
+        justify-content: flex-end; 
         margin: 0 auto; 
+        width: 70%; 
         font-size: .75em;
       }
         .userInfoLink {
@@ -61,7 +62,7 @@ on hovers & other animation goodies when colors are decided7.*/
         }
 
     #signUpForm { 
-      margin-top: 15%; 
+      margin-top: 1em; 
     }
 
   .tabLink { 
@@ -79,7 +80,7 @@ on hovers & other animation goodies when colors are decided7.*/
     align-items: center; 
     margin: 0 auto; 
     width: 70%; 
-    padding: 1.5em; 
+    padding: 1.5em 1.5em 1em 1.5em; 
   }
 
   .userFormItemCheckBox {
@@ -107,40 +108,19 @@ on hovers & other animation goodies when colors are decided7.*/
     .userFormSubmit {       
       display: flex; 
       width: 20%; 
-      margin: 10% auto;  
+      margin: 2em auto;  
       align-items: center; 
     }
 
 .userFormTagContainer {
   width: 70%;
   margin-left: 14%; 
-  /* font-weight: bold; */
+ font-weight: bold; 
   align-self: flex-start;
   /* margin: 30px 10%;  */
   margin-top: 30px;
   margin-bottom: 30px;
 }
 
-.inputfile {
-  align-self: flex-end;
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
 
-.inputfile + label {
-  /* font-size: 1.25em; */
-  font-weight: 700;
-  color: black;
-  background-color: white;
-  display: inline-block; 
-  cursor: pointer;
-}
 
-inputfile:focus + label, 
-.inputfile + label:hover {
-  background-color: rgb(245,245,245);
-}

@@ -44,12 +44,12 @@ export default class MemberAcct extends React.PureComponent {
             centered > 
               <Tab label="Profile"> </Tab>
               <Tab label="Account"> </Tab>
-              <Tab label="Security & Notifications"> </Tab> 
+             {/* } <Tab label="Security & Notifications"> </Tab> */} 
             </Tabs>
 
           {value === 0 && <ProfileSettings />}  
           {value === 1 &&  <AccountSettings /> }       
-          {value === 2 &&   <SecurityNotifSettings /> }      
+         {/* {value === 2 &&   <SecurityNotifSettings /> }  */}    
 
           </div>   
         </main> 

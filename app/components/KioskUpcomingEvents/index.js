@@ -55,7 +55,7 @@ export default class KioskUpcomingEvents extends React.PureComponent {
     
     return (
       <div className="kioskFlowThreeContainer">
-         <div className="kioskWelcome">
+         <div className="kioskThanks">
             <h2>{this.props.afterLoginMsg}</h2>
           </div>
 

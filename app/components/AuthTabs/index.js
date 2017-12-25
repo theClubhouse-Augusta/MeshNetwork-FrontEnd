@@ -205,8 +205,8 @@ export default class AuthTabs extends React.PureComponent {
       <form autoComplete="off" className="authTabsContainer"> 
         {redirect}
         <Tabs value={value} onChange={this.handleChange} centered indicatorColor="#cccc31">
-          <Tab label ="Login" className="tabTitle" />                
-          <Tab label="Sign up" className="tabTitle"/>   
+          <Tab label ="Login" className="authTabTitle" />                
+          <Tab label="Sign up" className="authTabTitle"/>   
         </Tabs>
 
         {value === 0 && 
@@ -229,12 +229,12 @@ export default class AuthTabs extends React.PureComponent {
                 type="password"
                 name=""
                 id="password"
-              />
+              />           
             </p>
 
-            <div id="rememberMe" className="userFormItem">
-              { /* radio doot */ }
-            </div>
+            <div className="forgotInfo">
+              <a href="" className="userInfoLink">forgot password </a>
+            </div>  
 
             <div className="userFormSubmit">
               <DefaultButton login={login} email={email} password={password}>
@@ -243,10 +243,7 @@ export default class AuthTabs extends React.PureComponent {
             </div>
           </div>
 
-          <div className="forgotInfo">
-            <a href="" className="userInfoLink">forgot email</a>
-            <a href="" className="userInfoLink">forgot password </a>
-          </div>   
+           
         </TabContainer>}
 
         {value === 1 && 
@@ -295,116 +292,7 @@ export default class AuthTabs extends React.PureComponent {
             </p>
 
 
-            <p className="userFormItem">
-              <label htmlFor="company" className="userFormLabel">company</label>
-              <MtextField 
-                onChange={this.company} 
-                id="company" 
-                type="text"
-              />
-            </p>
-
-            <p className="userFormItem">
-              <label htmlFor="website" className="userFormLabel">website</label>
-              <MtextField 
-                onChange={this.website} 
-                id="company" 
-                name="website"
-                type="url"
-              />
-            </p>
-
-            <p className="userFormItem">
-              <label htmlFor="phone" className="userFormLabel">phone number</label>
-              <MtextField 
-                onChange={this.phone} 
-                id="phone" 
-                name="phone"
-                type="tel"
-              />
-            </p>
-
-            <p className="userFormItemCheckBox">
-              <input 
-                style={{marginRight: 10}}
-                type="checkBox" 
-                id="profile-private" 
-                onKeyDown={(e) => e.keyCode === 13 ? this.searchOpt() : null} 
-                onChange={this.searchOpt} 
-                checked={searchOpt} 
-              />
-            <label htmlFor="profile-private"> &nbsp;&nbsp;Make your profile private </label>
-            </p>
-
-            <div style={{width: '70%', margin: '0 auto'}}>
-              <div style={{ border: '1px solid black', height: 'auto', margin: '0 auto', width: '100%'}}>
-                <Editor 
-                  editorState={description}
-                  // toolbarClassName="home-toolbar"
-                  // wrapperClassName="home-wrapper"
-                  // editorClassName="rdw-editor-main"
-                  onEditorStateChange={this.description}
-                  placeholder="Describe yourself"
-                  toolbar={{
-                    inline: { inDropdown: true },
-                    fontSize: { className: 'toolbarHidden' },
-                    fontFamily: { className: 'toolbarHidden' },
-                    list: { className: 'toolbarHidden' },
-                    textAlign: { inDropdown: true, options: [ 'left', 'center', 'right' ] },
-                    link: { inDropdown: true },
-                    remove: { className: 'toolbarHidden' },
-                    emoji: { className: 'toolbarHidden' },
-                    history: { className: 'toolbarHidden' },
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="userFormTagContainer">                 
-              {/* tags */}
-              { !!loadedTags.length && [
-              <label key="skillLabel"> Skills and interests </label>,
-              <Select.Creatable 
-                key="skillSelect" 
-                multi={true} 
-                options={loadedTags} 
-                onChange={this.selectTag} 
-                value={selectedTags} 
-              />
-              ]}
-
-              { !!!loadedTags.length && [
-              <label key="skillLabel2"> Skills and interests </label>,
-              <Select.Creatable 
-                key="skillSelect2" 
-                multi={true} 
-                options={loadedTags} 
-                onChange={this.selectTag} 
-                value={selectedTags} 
-              />
-              ]}
-            </div> 
-
-            <p className="userFormItemAvatar">
-              <MtextField 
-                onChange={this.avatar} 
-                className="inputfile"
-                id="avatar" 
-                type="file"
-                accept="image/png, image/jpg, image/jpeg" 
-                name="avatar"
-              />
-              <label htmlFor="avatar" className="userFormLabel">
-                <MdFileUpload size="40px" /> 
-                profile picture
-              </label>
-            </p>
-            {imagePreviewUrl &&
-            <img 
-              style={{marginLeft: '15%', width: 100, height: 100}}
-              src={imagePreviewUrl} 
-            />}
-
+           
             <div className="userFormSubmit">
               <button type="submit" onClick={this.signUp}> submit </button>
             </div>

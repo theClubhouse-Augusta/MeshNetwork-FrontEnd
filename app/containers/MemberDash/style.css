@@ -90,4 +90,17 @@
             font-size: .8em;
           }
 
+  .dashDashboard { 
+    margin: auto 0;
+    padding: 30px 0; 
+  }
+
+  .dashboardItem { 
+    padding: 8px;
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+
+  }
+
   

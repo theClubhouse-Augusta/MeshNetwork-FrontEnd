@@ -46,7 +46,7 @@ export default class EventHomeCalender extends React.PureComponent {
           <p className="eventCardDescription"> {event.description} </p> 
         </div>
       </Card>
-    )); 
+    ));
 
     return (
       <div className="eventHomeCalendar">

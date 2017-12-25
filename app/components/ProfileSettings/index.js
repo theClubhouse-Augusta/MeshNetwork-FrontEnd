@@ -33,10 +33,6 @@ export default class ProfileSettings extends React.PureComponent {
                   <input type="text" name="" id="event name" />
                 </p>
                 <p className="acctFormItem">
-                  <label htmlFor="">Email</label>
-                  <input type="email" />
-                </p>
-                <p className="acctFormItem">
                   <label htmlFor="">Title</label>
                   <input type="text" />
                 </p>
@@ -44,17 +40,6 @@ export default class ProfileSettings extends React.PureComponent {
                   <label htmlFor="">Website</label>
                   <input type="text" />
                 </p>
-                <p className="acctFormItem">
-                  <label htmlFor="">Home mesh space</label>
-    
-      <select>
-                      <option value="">the Clubhou.se</option>
-                      <option value=""> Spark Macon </option>
-                      <option value=""> MakerVillage</option>
-                      <option value=""> FourAthens</option>
-                      <option value=""> Columbus Makes IT </option>
-                  </select>    
-                </p> 
                 <p className="acctFormItem">
                   <label> Bio </label>
                   <textarea  style={{minWidth: '300px'}} rows="8" /> 

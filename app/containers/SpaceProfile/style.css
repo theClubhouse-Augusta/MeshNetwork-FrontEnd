@@ -6,155 +6,187 @@
   min-height:100vh;
 }
 
-.mainProfile {
-  width:100%;
-  max-width:1000px;
-  margin:0 auto;
+.spaceProfileMain {
+
 }
 
-.profileHeader {
-  min-height:200px;
-  background:#EEEEEE;
-  width:100%;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-}
+  .spaceProfileBanner {
+    height: 500px; 
+    width: 100%; 
+    padding-top: 50px; 
+    display: flex; 
+    flex-direction: row;  
+    background: #EEEEEE; 
+  }
 
-.profileAvatar {
-  height:200px;
-  width:200px;
-  background:#DDDDDD;
-}
+    .spaceProfileBannerColumnLeft {
+      width: 60%;
+      min-width: 500px;
+      max-width: 800px;
+      padding: 30px 10% 0 30px;   
+      background: #DDDDDD; 
+    }
 
-.profileInfo {
-  padding:10px;
-  display:flex;
-  flex-direction:column;
-}
+      .spaceProfileHeader {
+        display: flex; 
+        flex-direction: row;
+        justify-content: space-between;  
+        align-items: center; 
+        line-height: 1.75em; 
+      }      
 
-.profileName {
-  font-size:3em;
-  background:#DDDDDD;
-  min-width:400px;
-  min-height:50px;
-}
+        .spaceProfileName {
+          font-size: 2.5em; 
+          margin: 30px 0 45px 0; 
+        }
 
-.profileTitle {
-  min-width:500px;
-  min-height:30px;
-  background:#DDDDDD;
-  margin-top:10px;
-}
+      .spaceProfileSocialMediaBlock { 
+        padding: 15px 0; 
 
-.profileSpace {
-  min-width:500px;
-  min-height:30px;
-  background:#DDDDDD;
-  margin-top:10px;
-}
+        }
 
-.profileSocial {
-  min-width:500px;
-  min-height:40px;
-  background:#DDDDDD;
-  margin-top:10px;
-}
+        .spaceProfileSocialIcon {
+          font-size: 1.75em; 
+        }
+      
+        .spaceProfileAmeneties { 
+          display: flex; 
+          flex-direction: row;
+          justify-content: space-between;  
+          width: 70%; 
+          padding: 45px 0; 
+        }
 
-.profileColumns {
-  background:#CCCCCC;
-  min-height:100vh;
-  display:flex;
-  flex-direction:row;
-}
+          .spaceProfileOfferings { 
+            display: flex; 
+            flex-direction: column; 
+          }
 
-.profileColumnLeft {
-  width:30%;
-  min-height:100vh;
-  background:#BBBBBB;
-  border-right: 1px solid #DDDDDD;
-}
+    .spaceProfileBannerColumnRight {
+      background: #DDDDDD;      
+    }
 
-.profileTagCloud {
-  width:100%;
-  background:#AAAAAA;
-  display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
-}
+      .spaceProfileMap { 
+        background: #CCCCCC;
+        height: 100%; 
+        width: 100%;  
+      }
 
-.profileTag {
-  height:30px;
-  width:70px;
-  background:#111111;
-  margin:10px;
-  border-radius:5px;
-}
+ 
+  .spaceProfileBody { 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    padding: 30px; 
+  }
 
-.profileMentorship {
-  min-height:200px;
-  width:100%;
-  background:#999999;
-}
+  .spaceProfileAbout {
+    margin: 30px 0; 
 
-.profileEvents {
-  min-height:300px;
-  width:100%;
-  background:#888888;
-}
+  }
 
-.profileColumnRight {
-  display:flex;
-  flex-direction:column;
-  width:70%;
-}
+  .spaceProfileMembership { 
+    margin: 0 auto; 
+    padding: 30px; 
+  
+  }
 
-.profileBio {
-  width:100%;
-  min-height:500px;
-  background:#777777;
-}
+    .spaceProfileMemberships {
+      display: flex; 
+      flex-direction: row; 
+      justify-content: space-between;       
+      max-width: 800px;
+      margin: 0 auto; 
+    }
+      
+      .spaceProfileMembAddContact {
+        max-width: 600px;
+        margin: 0 auto;     
+        
+      }
 
-.profileBioHeader {
-  display:flex;
-  min-height:40px;
-  background:#666666;
-  margin:15px;
-}
+        .spaceProfileMemConLinks {
+          display: flex; 
+          flex-direction: row; 
+          justify-content: space-between;
+        }
+    
+    .spaceProfileMembershipPerks { 
+      max-width: 800px;
+      margin: 0 auto; 
+      padding: 30px; 
+    }
 
-.profileBioContent {
-  display:flex;
-  min-height:600px;
-  background:#666666;
-  margin:15px;
-}
+    .spaceProfileMembershipContact {
+      padding: 15px; 
+      max-width: 600px; 
+      margin: 0 auto; 
+    }
 
-.profileTeam {
-  display:flex;
-  flex-direction:column;
-  min-height:300px;
-  background:#555555;
-}
+      .spaceProfileBookATour {
+        text-align: center; 
+        padding-bottom: 15px; 
+      }
 
-.profileTeamHeader {
-  display:flex;
-  min-height:40px;
-  background:#444444;
-  margin:15px;
-}
+  .spaceProfileUpcomingEvents {
+    margin: 30px 0; 
+  }
 
-.profileTeamContent {
-  display:flex;
-  flex-direction:row;
-  min-height:200px;
-  background:#444444;
-  margin:15px;
-  flex-wrap:wrap;
-}
+  .spaceEventCard { 
+    padding: 15px;
+    margin: 30px auto; 
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-between; 
+    max-width: 800px; 
+   }
+   
+   /* Material UI inserts a div between eventCard and CardImage + CardContent - has to be handled thru inline prop */
+   
+       .spaceEventImage {
+        background: orangered;
+        width: 250px;
+        height: 200px; 
+       }
+   
+       .spaceEventCardContent {  
+        margin: 0 0 0 30px; 
+        padding: 15px; 
+        width: 60%; 
+     }   
+   
+           .spaceEventCardDetails { 
+               display: flex; 
+               flex-direction: row; 
+              
+               justify-content: space-between;
+               flex-wrap: wrap; 
+           }
+           
+           .spaceEventCardDescription { 
+               font-size: 16px;
+               margin: 1em 0;  
+           }
 
-.profileTeamItem {
-  width:47%;
-  min-height:40px;
-  background:#333333;
-  margin:10px;
-}
+  .spaceProfileSpaceMembers {
+    margin: 0 auto;
+    padding: 30px; 
+    max-width: 600px; 
+  }
+
+    .spaceProfileMemberHeader {
+      text-align: center;
+    }
+
+    .spaceProfileAvatarBlock {
+      padding: 30px; 
+      display: flex;     
+      flex-direction: row; 
+      justify-content: space-between; 
+      align-content: space-between;
+      flex-wrap: wrap;  
+    }
+
+
+
+
+
