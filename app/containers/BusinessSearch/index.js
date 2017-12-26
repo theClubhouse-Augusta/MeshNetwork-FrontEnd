@@ -10,7 +10,6 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import MyMapComponent from './MyMapComponent';
 
-
 import './style.css';
 import './styleM.css';
 

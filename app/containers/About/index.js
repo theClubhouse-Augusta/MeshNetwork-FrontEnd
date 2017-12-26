@@ -8,7 +8,6 @@ import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
-
 import './style.css';
 import './styleM.css';
 
@@ -68,8 +67,8 @@ export default class About extends React.PureComponent {
           <div className="aboutButtons">
             <div className="aboutButtonText">Ready to Discover the Mesh Network?</div>
             <div className="aboutButtonsContainer">
-              <button label="Sign Up"  style={{ marginLeft:'15px', width:'200px'}}/>
-              <button label="Contact Us" style={{ marginLeft:'15px', width:'200px'}}/>
+              <button label="Sign Up"  style={{ marginLeft:'15px', width:'200px'}} /> {/* TODO */}
+              <button label="Contact Us" style={{ marginLeft:'15px', width:'200px'}} /> { /* TODO */ }
             </div>
           </div>
         </main>
