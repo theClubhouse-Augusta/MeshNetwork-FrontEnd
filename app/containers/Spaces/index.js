@@ -20,6 +20,30 @@ import './style.css';
 import './styleM.css';
 
 export default class Spaces extends React.PureComponent {
+
+  // state = {
+  //   workspaces: [],
+  // };
+
+  // componentDidMount() {
+  //   this.getSpaces();
+  // }
+
+  // getSpaces = () => {
+  //   fetch(`http://localhost:8000/api/workspaces`,)
+  //   .then(response => response.json())
+  //   .then(Workspaces => {
+  //     if (!Workspaces.error) {
+  //       this.setState({	
+  //         workspaces: Workspaces,
+  //       });
+  //     }
+  //   })
+  //   .catch(error => {
+  //     alert(`error in fetching data from server: ${error}`); // eslint-disable-line
+  //   });
+  // }
+
   render() {
     const cardHeaderStyle ={
       padding: '15px 15px 0 15px'

@@ -38,22 +38,22 @@ export default class AuthTabs extends React.PureComponent {
       email: '',
       password: '',
       password2: '',
-      website: '',
-      phoneNumber: '',
-      description: EditorState.createEmpty(),
+      // website: '',
+      // phoneNumber: '',
+      // description: EditorState.createEmpty(),
       selectedTag: '',
       selectedTags: [],
       loadedTags: '',
-      avatar: '',
-      imagePreviewUrl: '',
+      // avatar: '',
+      // imagePreviewUrl: '',
       value: 0, 
       // signup
       name: '',
       email: '',
-      website: '',
+      // website: '',
       workspace: '', 
       error: false,
-      searchOpt: '',
+      // searchOpt: '',
       snackBar: false,
     };
 
@@ -98,7 +98,7 @@ export default class AuthTabs extends React.PureComponent {
   )
 
   name = e => this.setState({	name: e.target.value.replace(/\s\s+/g, ' ').trim() }); 
-  workspace = e => this.setState({ workspace: e.target.value  });
+  // workspace = e => this.setState({ workspace: e.target.value  });
   email = e => this.setState({	email : e.target.value.trim() }); 
   password = e => this.setState({	password: e.target.value }); 
   password2 = e => this.setState({	password2: e.target.value });
@@ -109,11 +109,11 @@ export default class AuthTabs extends React.PureComponent {
        this.setState({	error: false }); 
      }
   }
-  company = e => this.setState({	company: e.target.value }); 
-  website = e => this.setState({	website: e.target.value }); 
-  phone = e => this.setState({	phoneNumber: e.target.value }); 
-  description = (editorState) => {this.setState({ description: editorState });}
-  searchOpt = () => this.setState({ searchOpt: !this.state.searchOpt });
+  // company = e => this.setState({	company: e.target.value }); 
+  // website = e => this.setState({	website: e.target.value }); 
+  // phone = e => this.setState({	phoneNumber: e.target.value }); 
+  // description = (editorState) => {this.setState({ description: editorState });}
+  // searchOpt = () => this.setState({ searchOpt: !this.state.searchOpt });
 
 	selectTag = selectedTag => {
     const copy = selectedTag.slice(-1)[0];
@@ -126,19 +126,19 @@ export default class AuthTabs extends React.PureComponent {
     }
   }
 
-  avatar = e => {
-    e.preventDefault();
-    let avatar = e.target.files[0];
-    let reader = new FileReader();
+  // avatar = e => {
+  //   e.preventDefault();
+  //   let avatar = e.target.files[0];
+  //   let reader = new FileReader();
 
-    reader.onload = () => {
-      this.setState({	
-        imagePreviewUrl: reader.result,
-        avatar: avatar
-       });
-    };
-    reader.readAsDataURL(avatar);
-  }
+  //   reader.onload = () => {
+  //     this.setState({	
+  //       imagePreviewUrl: reader.result,
+  //       avatar: avatar
+  //      });
+  //   };
+  //   reader.readAsDataURL(avatar);
+  // }
 
   toggleSnackBar = (message) => 
     this.setState({	
@@ -153,17 +153,17 @@ export default class AuthTabs extends React.PureComponent {
       return;
     }
     let data = new FormData();
-    data.append('description', JSON.stringify(draftToHtml(convertToRaw(this.state.description.getCurrentContent()))));
+    // data.append('description', JSON.stringify(draftToHtml(convertToRaw(this.state.description.getCurrentContent()))));
     data.append('tags', JSON.stringify(this.state.selectedTags));
     data.append('name', this.state.name);
-    data.append('workspace', this.state.workspace);
+    // data.append('workspace', this.state.workspace);
     data.append('email', this.state.email);
     data.append('password', this.state.password);
-    data.append('company', this.state.company);
-    data.append('website', this.state.website);
-    data.append('phonenumber', this.state.phonenumber);
-    data.append('searchOpt', this.state.searchOpt ? 1 : 0);
-    data.append('avatar', this.state.avatar);
+    // data.append('company', this.state.company);
+    // data.append('website', this.state.website);
+    // data.append('phonenumber', this.state.phonenumber);
+    // data.append('searchOpt', this.state.searchOpt ? 1 : 0);
+    // data.append('avatar', this.state.avatar);
 
     fetch(`http://localhost:8000/api/signUp`, {
       method: 'post',
