@@ -16,7 +16,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'react-select/dist/react-select.css';
 
 // compononents,
-import OptionModal from '../../components/OptionModal';
+import ErrorModal from '../../components/ErrorModal';
 import { MdInsertDriveFile } from 'react-icons/lib/md'; 
 import DateTimeSelect from '../../components/DateTimeSelect'; 
 import { Organizers } from './Organizers';
@@ -726,7 +726,7 @@ export default class AddEvent extends Component {
             </div>  
 
             <Footer />
-            <OptionModal message={modalMessage} closeModal={this.closeModal} />          
+            <ErrorModal message={modalMessage} closeModal={this.closeModal} />          
           </div>
     );
   }
