@@ -1,0 +1,29 @@
+.modal {
+  background: #26aae1;
+  color: white;
+  max-width: 30rem;
+  outline: none;
+  padding: 16px;
+  text-align: center;  
+}
+
+.modal__title {
+  margin: 0 0 12px 0;
+}
+
+.modal__body {
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0 0 8px 0;
+  word-break: break-all;
+}
+
+.modal__button {
+  background: #395d9c;
+  border: none;
+  border-bottom: .3rem solid #1f435f;
+  color: white;
+  font-weight: 500;
+  padding: 12px;
+}
+

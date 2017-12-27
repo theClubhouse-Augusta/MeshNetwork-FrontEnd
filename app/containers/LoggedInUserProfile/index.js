@@ -14,6 +14,7 @@ import './style.css';
 import './styleM.css';
 
 export default class LoggedInUserProfile extends Component {
+
   state = {
     user: this.props.user['user'], // eslint-disable-line
     skills: this.props.user['skills'],

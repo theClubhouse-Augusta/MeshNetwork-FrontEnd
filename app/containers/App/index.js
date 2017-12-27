@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Home from 'containers/Home';
-import About from 'containers/About';
-import BookingSystem from 'containers/BookingSystem';
-import BusinessSearch from 'containers/BusinessSearch';
-import Contact from 'containers/Contact';
-import EventDetail from 'containers/EventDetail';
-import Events from 'containers/Events';
-import Spaces from 'containers/Spaces';
-import Sponsors from 'containers/Sponsors';
-import LogInSignUp from '../../containers/LogInSignUp';
-import MemberAcct from 'containers/MemberAcct';
-import MemberSearch from 'containers/MemberSearch';
-import MemberDash from 'containers/MemberDash';
-import AddEvent from 'containers/AddEvent';
-import SpaceProfile from 'containers/SpaceProfile';
-import UserProfile from 'containers/UserProfile';
-import KioskSystem from 'containers/KioskSystem';
-import LoggedInUserProfile from 'containers/LoggedInUserProfile';
-import NotFound from 'containers/NotFound';
+import Home from '../Home';
+import About from '../About';
+import BookingSystem from '../BookingSystem';
+import BusinessSearch from '../BusinessSearch';
+import Contact from '../Contact';
+import EventDetail from '../EventDetail';
+import Events from '../Events';
+import Spaces from '../Spaces';
+import Sponsors from '../Sponsors';
+import LogInSignUp from '../LogInSignUp';
+import MemberAcct from '../MemberAcct';
+import MemberSearch from '../MemberSearch';
+import MemberDash from '../MemberDash';
+import AddEvent from '../AddEvent';
+import SpaceProfile from '../SpaceProfile';
+import UserProfile from '../UserProfile';
+import KioskSystem from '../KioskSystem';
+import LoggedInUserProfile from '../LoggedInUserProfile';
+import NotFound from '../NotFound';
 
 export default class App extends Component {
 
@@ -94,7 +94,7 @@ export default class App extends Component {
         <Switch>
           <Route
             exact path="/" // eslint-disable-line
-            render={() => <Home />}
+            render={props => <Home {...props} />}
           />
 
           <Route
@@ -208,7 +208,7 @@ export default class App extends Component {
             )}
           />
           <Route path="/kiosk"
-            render={() => <KioskSystem />}
+            render={(props) => <KioskSystem {...props} />}
           />
 
 

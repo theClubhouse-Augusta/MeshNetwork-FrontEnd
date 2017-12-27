@@ -16,6 +16,8 @@ export default class BookingMentorForm extends React.PureComponent {
     return (
       <div>
         <form action="" className="bookingForm">
+          {/*<UserSelect />*/}
+
           
           <p className="mentorDescription"> Julie is a developer mentor & can help with the following areas. </p>
           

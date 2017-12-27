@@ -38,22 +38,22 @@ export default class AuthTabs extends React.PureComponent {
       email: '',
       password: '',
       password2: '',
-      website: '',
-      phoneNumber: '',
-      description: EditorState.createEmpty(),
+      // website: '',
+      // phoneNumber: '',
+      // description: EditorState.createEmpty(),
       selectedTag: '',
       selectedTags: [],
       loadedTags: '',
-      avatar: '',
-      imagePreviewUrl: '',
+      // avatar: '',
+      // imagePreviewUrl: '',
       value: 0, 
       // signup
       name: '',
       email: '',
-      website: '',
+      // website: '',
       workspace: '', 
       error: false,
-      searchOpt: '',
+      // searchOpt: '',
       snackBar: false,
     };
 
@@ -98,7 +98,7 @@ export default class AuthTabs extends React.PureComponent {
   )
 
   name = e => this.setState({	name: e.target.value.replace(/\s\s+/g, ' ').trim() }); 
-  workspace = e => this.setState({ workspace: e.target.value  });
+  // workspace = e => this.setState({ workspace: e.target.value  });
   email = e => this.setState({	email : e.target.value.trim() }); 
   password = e => this.setState({	password: e.target.value }); 
   password2 = e => this.setState({	password2: e.target.value });
@@ -109,11 +109,11 @@ export default class AuthTabs extends React.PureComponent {
        this.setState({	error: false }); 
      }
   }
-  company = e => this.setState({	company: e.target.value }); 
-  website = e => this.setState({	website: e.target.value }); 
-  phone = e => this.setState({	phoneNumber: e.target.value }); 
-  description = (editorState) => {this.setState({ description: editorState });}
-  searchOpt = () => this.setState({ searchOpt: !this.state.searchOpt });
+  // company = e => this.setState({	company: e.target.value }); 
+  // website = e => this.setState({	website: e.target.value }); 
+  // phone = e => this.setState({	phoneNumber: e.target.value }); 
+  // description = (editorState) => {this.setState({ description: editorState });}
+  // searchOpt = () => this.setState({ searchOpt: !this.state.searchOpt });
 
 	selectTag = selectedTag => {
     const copy = selectedTag.slice(-1)[0];
@@ -126,19 +126,19 @@ export default class AuthTabs extends React.PureComponent {
     }
   }
 
-  avatar = e => {
-    e.preventDefault();
-    let avatar = e.target.files[0];
-    let reader = new FileReader();
+  // avatar = e => {
+  //   e.preventDefault();
+  //   let avatar = e.target.files[0];
+  //   let reader = new FileReader();
 
-    reader.onload = () => {
-      this.setState({	
-        imagePreviewUrl: reader.result,
-        avatar: avatar
-       });
-    };
-    reader.readAsDataURL(avatar);
-  }
+  //   reader.onload = () => {
+  //     this.setState({	
+  //       imagePreviewUrl: reader.result,
+  //       avatar: avatar
+  //      });
+  //   };
+  //   reader.readAsDataURL(avatar);
+  // }
 
   toggleSnackBar = (message) => 
     this.setState({	
@@ -153,17 +153,17 @@ export default class AuthTabs extends React.PureComponent {
       return;
     }
     let data = new FormData();
-    data.append('description', JSON.stringify(draftToHtml(convertToRaw(this.state.description.getCurrentContent()))));
+    // data.append('description', JSON.stringify(draftToHtml(convertToRaw(this.state.description.getCurrentContent()))));
     data.append('tags', JSON.stringify(this.state.selectedTags));
     data.append('name', this.state.name);
-    data.append('workspace', this.state.workspace);
+    // data.append('workspace', this.state.workspace);
     data.append('email', this.state.email);
     data.append('password', this.state.password);
-    data.append('company', this.state.company);
-    data.append('website', this.state.website);
-    data.append('phonenumber', this.state.phonenumber);
-    data.append('searchOpt', this.state.searchOpt ? 1 : 0);
-    data.append('avatar', this.state.avatar);
+    // data.append('company', this.state.company);
+    // data.append('website', this.state.website);
+    // data.append('phonenumber', this.state.phonenumber);
+    // data.append('searchOpt', this.state.searchOpt ? 1 : 0);
+    // data.append('avatar', this.state.avatar);
 
     fetch(`http://localhost:8000/api/signUp`, {
       method: 'post',
@@ -292,7 +292,116 @@ export default class AuthTabs extends React.PureComponent {
             </p>
 
 
-           
+            <p className="userFormItem">
+              <label htmlFor="company" className="userFormLabel">company</label>
+              <MtextField 
+                onChange={this.company} 
+                id="company" 
+                type="text"
+              />
+            </p>
+
+            <p className="userFormItem">
+              <label htmlFor="website" className="userFormLabel">website</label>
+              <MtextField 
+                onChange={this.website} 
+                id="company" 
+                name="website"
+                type="url"
+              />
+            </p>
+
+            <p className="userFormItem">
+              <label htmlFor="phone" className="userFormLabel">phone number</label>
+              <MtextField 
+                onChange={this.phone} 
+                id="phone" 
+                name="phone"
+                type="tel"
+              />
+            </p>
+
+            <p className="userFormItemCheckBox">
+              <input 
+                style={{marginRight: 10}}
+                type="checkBox" 
+                id="profile-private" 
+                onKeyDown={(e) => e.keyCode === 13 ? this.searchOpt() : null} 
+                onChange={this.searchOpt} 
+                checked={searchOpt} 
+              />
+            <label htmlFor="profile-private"> &nbsp;&nbsp;Make your profile private </label>
+            </p>
+
+            <div style={{width: '70%', margin: '0 auto'}}>
+              <div style={{ border: '1px solid black', height: 'auto', margin: '0 auto', width: '100%'}}>
+                <Editor 
+                  editorState={description}
+                  // toolbarClassName="home-toolbar"
+                  // wrapperClassName="home-wrapper"
+                  // editorClassName="rdw-editor-main"
+                  onEditorStateChange={this.description}
+                  placeholder="Describe yourself"
+                  toolbar={{
+                    inline: { inDropdown: true },
+                    fontSize: { className: 'toolbarHidden' },
+                    fontFamily: { className: 'toolbarHidden' },
+                    list: { className: 'toolbarHidden' },
+                    textAlign: { inDropdown: true, options: [ 'left', 'center', 'right' ] },
+                    link: { inDropdown: true },
+                    remove: { className: 'toolbarHidden' },
+                    emoji: { className: 'toolbarHidden' },
+                    history: { className: 'toolbarHidden' },
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="userFormTagContainer">                 
+              {/* tags */}
+              { !!loadedTags.length && [
+              <label key="skillLabel"> Skills and interests </label>,
+              <Select.Creatable 
+                key="skillSelect" 
+                multi={true} 
+                options={loadedTags} 
+                onChange={this.selectTag} 
+                value={selectedTags} 
+              />
+              ]}
+
+              { !!!loadedTags.length && [
+              <label key="skillLabel2"> Skills and interests </label>,
+              <Select.Creatable 
+                key="skillSelect2" 
+                multi={true} 
+                options={loadedTags} 
+                onChange={this.selectTag} 
+                value={selectedTags} 
+              />
+              ]}
+            </div> 
+
+            <p className="userFormItemAvatar">
+              <MtextField 
+                onChange={this.avatar} 
+                className="inputfile"
+                id="avatar" 
+                type="file"
+                accept="image/png, image/jpg, image/jpeg" 
+                name="avatar"
+              />
+              <label htmlFor="avatar" className="userFormLabel">
+                <MdFileUpload size="40px" /> 
+                profile picture
+              </label>
+            </p>
+            {imagePreviewUrl &&
+            <img 
+              style={{marginLeft: '15%', width: 100, height: 100}}
+              src={imagePreviewUrl} 
+            />}
+
             <div className="userFormSubmit">
               <button type="submit" onClick={this.signUp}> submit </button>
             </div>

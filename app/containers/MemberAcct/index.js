@@ -6,12 +6,13 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Header from 'components/Header'; 
-import Footer from 'components/Footer'; 
 import Tabs, { Tab } from 'material-ui/Tabs'; 
-import ProfileSettings from 'components/ProfileSettings'; 
-import AccountSettings from 'components/AccountSettings';
-import SecurityNotifSettings from 'components/SecurityNotifSettings'; 
+
+import Header from '../../components/Header'; 
+import Footer from '../../components/Footer'; 
+import ProfileSettings from '../../components/ProfileSettings'; 
+import AccountSettings from '../../components/AccountSettings';
+import SecurityNotifSettings from '../../components/SecurityNotifSettings'; 
 
 import './style.css';
 import './styleM.css';
@@ -39,9 +40,10 @@ export default class MemberAcct extends React.PureComponent {
 
           <div className="acctBody"> 
             <Tabs 
-            value={value} 
-            style={{maxWidth: '1000px', margin: '0 auto'}} onChange={this.handleChange}
-            centered > 
+              value={value} 
+              style={{maxWidth: '1000px', margin: '0 auto'}} onChange={this.handleChange}
+              centered 
+            > 
               <Tab label="Profile"> </Tab>
               <Tab label="Account"> </Tab>
              {/* } <Tab label="Security & Notifications"> </Tab> */} 

@@ -43,7 +43,7 @@ export default class EventDetail extends React.PureComponent {
   eventID = this.path[this.path.length - 1];
 
   componentDidMount() {
-    if ( isNaN(parseInt(this.eventID)) || this.eventID === '0') {
+    if ( isNaN(parseInt(this.eventID)) || this.eventID === '0' || this.eventID === '0') {
       this.props.history.push('/');
     } else {
       this.getEvent(this.eventID);

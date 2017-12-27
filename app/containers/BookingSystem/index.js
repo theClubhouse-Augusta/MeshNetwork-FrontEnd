@@ -3,33 +3,53 @@
  * BookingSystem
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
 import Header from 'components/header';
 import Footer from 'components/footer';
 import Select from 'react-select'; 
-import BookingStepTwo from 'components/BookingStepTwo';
-
-
+import DateTimeSelect from 'components/DateTimeSelect'; 
+import BookingStepTwo from '../../components/BookingStepTwo';
 
 import './style.css';
 import './styleM.css';
 import 'react-select/dist/react-select.css';
 
+/**
+ * Store booking
+ * http://localhost:8000/booking
+ * method: POST
+ * params: [
+ *  'name' => 'required|string',
+    'email' => 'required|string',
+    'spaceID' => 'required|string',
+    'type' => 'required|string',
+    'day' => 'required|string',
+    'start' => 'required|string',
+    'end' => 'required|string',
+ * ]
+ */
 
-const locationData = [
-  {value: '1', label:'the Clubhou.se'}, 
-  {value: '2', label:'FourAthens'}, 
-  {value: '3', label:'MakerVillage'}, 
-]
+ /**
+  * Approve booking
+  * http://localhost:8000/booking/approve
+  * method: GET
+  */
+
+ /**
+  * Deny booking
+  * http://localhost:8000/booking/deny
+  * method: GET
+  */
 
 export default class BookingSystem extends React.PureComponent {
   state = {
     // maybe location: locationDefault? 
     selectedLocation: '', 
   }
+
+  //         
 
   handleLocationSelect = (selectedLocation) => {
     this.setState( {selectedLocation}); 
