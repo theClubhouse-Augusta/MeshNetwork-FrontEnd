@@ -15,13 +15,35 @@ import './styleM.css';
 const API = ''; 
 
 export default class Sponsors extends React.PureComponent {
-  
+
+  // state = {
+  //   sponsors: '',
+  // };
+
+  // componentDidMount() {
+  //   this.getSponsors();
+  // }
+  // getSponsors = () => {
+  //   fetch(`http://localhost:8000/api/sponsors`, {
+  //     headers: { Authorization: `Bearer ${localStorage['token']}` }
+  //   })
+  //   .then(response => response.json())
+  //   .then(Sponsors => {
+  //     if (!Sponsors.error) {
+  //       this.setState({	sponsors: Sponsors });
+  //     }
+  //   })
+  //   .catch(error => {
+  //     alert(`error in fetching data from server: ${error}`); // eslint-disable-line
+  //   });
+  // }
 
   render() {
     const cardHeaderStyle = {
       textAlign: 'center', 
       padding: '15px'
     }
+
 
     return (
       <div className="container">
