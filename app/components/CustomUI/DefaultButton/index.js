@@ -11,7 +11,7 @@ import './style.css';
 import './styleM.css';
 
 const DefaultButton = props =>
-  <button onClick={(e) => {props.login(e, props.email, props.password)}} className="MeshDefaultButton left"> 
+  <button onClick={(e) => {props.login(e, props.email, props.password)}} className="MeshDefaultButton"> 
     {props.children}
   </button> 
 
