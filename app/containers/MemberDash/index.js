@@ -13,8 +13,49 @@ import Paper from 'material-ui/Paper';
 import './style.css';
 import './styleM.css';
 
+/* 
+  items= 
+    last 3 of events 
+    last 3 joined
+    new space 
+    new comp event 
+    comp event reminders
+
+*/ 
+
+const items = [
+{   
+    what: 'new member',
+    name: 'John H.', 
+    verb: 'joined', 
+    space: 'the Clubhou.se', 
+    time: '1/12/2018'    
+  }, 
+  {
+    what: 'Event', 
+    name: '1000 Cups',
+    verb: '@', 
+    space: 'the Clubhou.se', 
+    time: '8am 1/24/2018'
+  }
+]
+
 export default class MemberDash extends React.PureComponent {
   render() {
+    const dashItems = items.map((item) => (
+      <Paper> 
+        <div className="dashboardItem">
+          <span> {item.what} </span>
+          <div>
+            <span> {item.name} </span>
+            <span> {item.verb} </span>
+            <span> {item.space}</span>  
+          </div>           
+          <span> {item.time} </span>
+        </div>
+      </Paper>
+    ))
+
     return (
       <div className="container">
         <Helmet title="MemberDash" meta={[ { name: 'description', content: 'Description of MemberDash' }]}/>
@@ -57,11 +98,15 @@ export default class MemberDash extends React.PureComponent {
                 </div>
               </div>
             </div>
-            <div className="dashUserNetworkInfo">
-              
+
+            <div className="dashUserNetworkInfo">              
               <Paper><div className="dashSpaceNews">
               <p className="dashAnnouncement"> the Clubhou.se will be closed Nov 22 - 25 - Have a safe Thanksgiving!</p>
               </div></Paper>
+
+              <div className="dashDashboard">
+                {dashItems}
+              </div>           
               
             </div>
 
