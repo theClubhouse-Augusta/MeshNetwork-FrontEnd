@@ -3,7 +3,6 @@
  * KioskSystem
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import Select from 'react-select';
@@ -17,6 +16,18 @@ import 'react-select/dist/react-select.css';
 const menuWrapperStyle = {
   margin: '0 auto',
 }; 
+
+/** 
+ * http://localhost:8000/api/appearance/ 
+ * method: POST
+ * params: [ 
+ *  userID|required,
+ *  eventID|required,
+ *  spaceID|required,
+ *  occasion|required,
+ * ]
+ * 
+*/
 
 export default class KioskSystem extends React.PureComponent {
   state = {

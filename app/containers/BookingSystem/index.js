@@ -16,11 +16,40 @@ import './style.css';
 import './styleM.css';
 import 'react-select/dist/react-select.css';
 
+/**
+ * Store booking
+ * http://localhost:8000/booking
+ * method: POST
+ * params: [
+ *  'name' => 'required|string',
+    'email' => 'required|string',
+    'spaceID' => 'required|string',
+    'type' => 'required|string',
+    'day' => 'required|string',
+    'start' => 'required|string',
+    'end' => 'required|string',
+ * ]
+ */
+
+ /**
+  * Approve booking
+  * http://localhost:8000/booking/approve
+  * method: GET
+  */
+
+ /**
+  * Deny booking
+  * http://localhost:8000/booking/deny
+  * method: GET
+  */
+
 export default class BookingSystem extends React.PureComponent {
   state = {
     // maybe location: locationDefault? 
     selectedLocation: '', 
   }
+
+  //         
 
   handleLocationSelect = (selectedLocation) => {
     this.setState( {selectedLocation}); 
