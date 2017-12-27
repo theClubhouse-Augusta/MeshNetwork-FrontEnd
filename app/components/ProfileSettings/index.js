@@ -12,13 +12,15 @@ import './styleM.css';
 
 export default class ProfileSettings extends React.PureComponent {
   state = {
-    selectedOption: '',
-  }
-
-  handleChange = (selectedOption) => {
-    this.setState({ selectedOption });
-    console.log(`Selected: ${selectedOption.label}`);
-  }
+    title: '', 
+    tags: '',
+    workspace: '',
+    company: '',
+    forHire: '',
+    bio: '',
+    avatar: '',
+    website: '',
+  };
 
   render() {
     return (
