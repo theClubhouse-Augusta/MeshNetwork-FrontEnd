@@ -12,7 +12,11 @@ import Card, { CardMedia, CardContent, CardHeader } from 'material-ui/Card';
 import './style.css';
 import './styleM.css';
 
+const API = ''; 
+
 export default class Sponsors extends React.PureComponent {
+  
+
   render() {
     const cardHeaderStyle = {
       textAlign: 'center', 
