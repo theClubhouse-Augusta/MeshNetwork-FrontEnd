@@ -251,7 +251,7 @@ export default class AuthTabs extends React.PureComponent {
           <div id="signUpForm">
             <p className="userFormItem">
               <label htmlFor="name" className="userFormLabel">name</label>
-              <MtextField onChange={this.name} type="text" name="" id="name" />
+              <MtextField onChange={this.props.name} type="text" name="" id="name" />
             </p>
             {!!workspaces.length &&
             <div className="userFormItem">

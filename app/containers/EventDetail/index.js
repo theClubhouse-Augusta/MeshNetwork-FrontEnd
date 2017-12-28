@@ -336,14 +336,24 @@ export default class EventDetail extends React.PureComponent {
 
               <div className="eventUpcomingEvents">
                 <h4 className="eventUpcomingTitle"> Upcoming events </h4> 
-                {(upcomingEvents && hostSpace) &&
+                {(upcomingEvents && !hostSpace) &&
                 <ul className="eventUpcomingList"> 
                   {upcomingEvents.map((event, key) => 
                   <a key={`a${key}`} href={`/EventDetail/${event.id}`}>
                     <li style={{lineHeight: '2em'}}>
-                      {`${moment(event.start).format('MMMM D')} ${event.title} @${hostSpace.name}`}
+                      {`${moment(event.start).format('MMMM D')} ${event.title} @${event.name}`}
                     </li>
                   </a>)} 
+                </ul>} 
+
+                {(upcomingEvents && workSpaces) &&
+                <ul className="eventUpcomingList"> 
+                  {upcomingEvents.map((event, key) => 
+                  <a key={`a${key}`} href={`/EventDetail/${event.id}`}>
+                    <li style={{lineHeight: '2em'}}>
+                      {`${moment(event.start).format('MMMM D')} ${event.title} @` + `${workSpaces.map(space => space.name,)}`}
+                    </li>
+                  </a>)}
                 </ul>} 
               </div>
               <img src="htto://localhost" alt=""/>

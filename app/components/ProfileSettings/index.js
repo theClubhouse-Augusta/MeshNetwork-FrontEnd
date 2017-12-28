@@ -6,6 +6,7 @@
 
 import React from 'react';
 import Select from 'react-select'; 
+import MdFileUpload from 'react-icons/lib/md/file-upload';
 
 import './style.css';
 import './styleM.css';
@@ -32,19 +33,19 @@ export default class ProfileSettings extends React.PureComponent {
             <div className="profileInformationForm">
               <p className="acctFormItem"> 
                   <label htmlFor="">Name</label>
-                  <input type="text" name="" id="event name" />
+                  <input onChange={this.props.name} type="text" name="" id="event name" />
                 </p>
                 <p className="acctFormItem">
                   <label htmlFor="">Title</label>
-                  <input type="text" />
+                  <input type="text" onChange={this.props.title} />
                 </p>
                 <p className="acctFormItem">
                   <label htmlFor="">Website</label>
-                  <input type="text" />
+                  <input type="text" onChange={this.props.website} />
                 </p>
                 <p className="acctFormItem">
                   <label> Bio </label>
-                  <textarea  style={{minWidth: '300px'}} rows="8" /> 
+                  <textarea  onChange={this.props.bio} style={{minWidth: '300px'}} rows="8" /> 
                 </p>
               </div> 
 
@@ -52,10 +53,23 @@ export default class ProfileSettings extends React.PureComponent {
                 <div className="profilePicturePreview">
 
                 </div>                
-                  <label htmlFor="" style={{display: 'block', margin: '0 15%'}}>upload</label>
-                  <input type="file" style={{margin: ' 1em 15%'}}/>    
-                </div> 
-              </div>        
+                <p>
+                  <input 
+                    id="avatar"
+                    name="avatar"
+                    className="inputfile"
+                    type="file" 
+                    style={{margin: ' 1em 15%'}}
+                    accept=".png, .jpg, .jpeg"
+                    onChange={this.props.avatar} 
+                  />
+                  <label htmlFor="avatar" style={{display: 'block', margin: '0 15%'}}>
+                  <MdFileUpload size="40px" />
+                    upload
+                  </label>
+                </p>
+              </div> 
+            </div>        
                 
           <button className="acctSubmitButton">Submit</button>        
         </div>        

@@ -92,35 +92,39 @@ export default class MemberSearch extends Component {
         <div id="MS-postSearchContainer">
           {/* User Cards */}
           <ul>
-            {this.state.results.map((user, index) => 
-              <li
-                onClick={() => {this.props.history.push(`/UserProfile/${user.id}`);}} 
-                key={`userAvatar${user.id}`}
-              >
-                <img 
-                  src={user.avatar} 
-                  width="100px" 
-                  height="100px" 
-                  alt="avatar"
-                />
-                <dl id="MS-userInfo">
-                  <div>  
-                    <dt>name:</dt>
-                    <dd> &nbsp;&nbsp;&nbsp;{user.name} </dd>
-                  </div>
+            {this.state.results.map((user, index) => {
+              if (!!user.id) {
+                return (
+                  <li
+                    onClick={() => {this.props.history.push(`/UserProfile/${user.id}`);}} 
+                    key={`userAvatar${user.id}`}
+                  >
+                    <img 
+                      src={user.avatar} 
+                      width="100px" 
+                      height="100px" 
+                      alt="avatar"
+                    />
+                    <dl id="MS-userInfo">
+                      <div>  
+                        <dt>name:</dt>
+                        <dd> &nbsp;&nbsp;&nbsp;{user.name} </dd>
+                      </div>
 
-                  <div>  
-                    <dt>company:</dt>
-                    <dd> &nbsp;&nbsp;&nbsp;{user.company} </dd>
-                  </div>
+                      <div>  
+                        <dt>company:</dt>
+                        <dd> &nbsp;&nbsp;&nbsp;{user.company} </dd>
+                      </div>
 
-                  <div>  
-                    <dt>Email:</dt>
-                    <dd> &nbsp;&nbsp;&nbsp;{user.email} </dd>
-                  </div>
-                </dl>
-              </li>
-            )}
+                      <div>  
+                        <dt>Email:</dt>
+                        <dd> &nbsp;&nbsp;&nbsp;{user.email} </dd>
+                      </div>
+                    </dl>
+                  </li>
+                );
+              }
+            })}
           </ul>
         </div>
       );
