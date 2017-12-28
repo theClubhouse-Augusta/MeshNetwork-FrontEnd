@@ -18,6 +18,7 @@ import SpaceProfile from '../SpaceProfile';
 import UserProfile from '../UserProfile';
 import KioskSystem from '../KioskSystem';
 import NotFound from '../NotFound';
+import AdminDash from '../AdminDash'; 
 
 export default class App extends Component {
 
@@ -148,7 +149,7 @@ export default class App extends Component {
           />
 
           <Route
-            path="/SpaceProfile"
+            path="/SpaceProfile/:id"
             render={(props) => <SpaceProfile {...props} />}
           />
 
@@ -168,6 +169,11 @@ export default class App extends Component {
           <Route
             path="/clubhouse"
             component={() => { window.location = 'https://theclubhou.se'; }}
+          />
+
+          <Route
+            path="/admindash"
+            component={AdminDash}
           />
 
           <Route component={NotFound} />

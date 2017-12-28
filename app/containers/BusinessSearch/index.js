@@ -33,7 +33,7 @@ export default class BusinessSearch extends React.Component {
     fetch('http://localhost:8000/api/workspaces'
     )
     .then((response) =>
-      response.json()
+      response.json((resepo))
     )
     .then((json) => {
       this.setState({ spaces: json });

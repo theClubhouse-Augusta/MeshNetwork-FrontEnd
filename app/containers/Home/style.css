@@ -49,3 +49,9 @@ button {
   cursor: pointer;
   background-color: transparent;
 }
+
+textarea { 
+  font-family: 'Spectral', serif; 
+  padding: .25em; 
+  font-size: 18px; 
+}
