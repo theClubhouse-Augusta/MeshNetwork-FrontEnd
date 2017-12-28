@@ -4,7 +4,7 @@
  *
  */
 import React from 'react';
-import PropTypes, { oneOfType } from 'prop-types';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 import Header from 'components/Header';
@@ -26,22 +26,17 @@ export default class UserProfile extends React.Component {
   token = localStorage['token']
 
   componentWillMount() {
-    // console.log('dwjk');
-    // console.log(this.token);
     if (isNaN(this.userID)) {
       this.props.history.push('/');
     } else {
-        this.loadUser(this.token);
+      this.loadUser(this.token);
     }
   }
 
   componentDidMount() {
-    // console.log('dwjk');
-    // console.log(this.token);
-    // this.loadUser(this.token);
   }
 
-  loadUser = (token) => {
+  loadUser = token => {
     if (!token) {
       this.props.history.push('/');
     }
@@ -67,7 +62,6 @@ export default class UserProfile extends React.Component {
       alert(`error!: ${error.message}`);
     });
   }
-
 
   loading = () => this.state.loading;
 
@@ -143,7 +137,10 @@ export default class UserProfile extends React.Component {
                   <div className="profileBio">
                     <h1>About name</h1>
                     <div className="profileBioContent">
-                      <p>{user.bio}</p>
+                      <p
+                        dangerouslySetInnerHTML={{__html: user.bio}}
+                      >
+                      </p>
                     </div>
                   </div>
 
@@ -179,11 +176,7 @@ export default class UserProfile extends React.Component {
 }
 
 UserProfile.propTypes = {
-  user: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.object.isRequired
-  ]),
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
   
