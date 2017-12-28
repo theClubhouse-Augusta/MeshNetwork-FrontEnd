@@ -5,3 +5,50 @@
   flex-direction:column;
   min-height:100vh;
 }
+
+.spaceSignUpMain {
+  width:100%;
+  max-width:720px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  padding:30px;
+  background:#F8F8F8;
+  min-height:calc(100vh - 90px);
+}
+
+.spaceSignUpTitle {
+  font-size:2em;
+  border-bottom:1px solid #DDDDDD;
+}
+
+.spaceSignUpContainer {
+  display:flex;
+  flex-direction:column;
+}
+
+.spaceLogoMainImageRow {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  margin-top:15px;
+  margin-bottom:15px;
+}
+
+.spaceLogoMainImageBlock {
+  width:48%;
+  min-height:200px;
+  border:8px dashed #DDDDDD;
+  font-family:'Lato';
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+  font-size:1.5em;
+  color:#BBBBBB;
+}
+
+.spaceLogoImagePreview {
+  max-height:200px;
+  max-width:100%;
+}

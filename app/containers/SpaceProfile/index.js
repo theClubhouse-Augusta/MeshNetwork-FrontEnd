@@ -5,22 +5,23 @@
  */
 import React from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import Header from 'components/Header'; 
-import Footer from 'components/Footer'; 
-import MapComponent from 'components/MapComponent'; 
+import Header from 'components/Header';
+import Footer from 'components/Footer';
+import MapComponent from 'components/MapComponent';
 import {
-  TiSocialAtCircular,   
+  TiSocialAtCircular,
   TiSocialFacebookCircular,
   TiSocialInstagramCircular,
-  TiSocialTwitterCircular, 
-  TiInputChecked, 
+  TiSocialTwitterCircular,
+  TiInputChecked,
   TiArrowSync
 } from 'react-icons/lib/ti';
 import Divider from 'material-ui/Divider';
-import Avatar from 'material-ui/Avatar'; 
+import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import Card, { CardHeader, CardMedia } from 'material-ui/Card'; 
+import Card, { CardHeader, CardMedia } from 'material-ui/Card';
 
 
 import './style.css';
@@ -31,20 +32,20 @@ import DefaultButton from '../../components/CustomUI/DefaultButton/index';
 const styles = {
   avatar: {
     margin: 20,
-    background: '#AAAAAA', 
+    background: '#AAAAAA',
     width: 60,
     height: 60,
   },
   list: {
     listStyleType: 'disc',
-    columnCount: '2', 
+    columnCount: '2',
     padding: '15px',
 
   },
   listItem: {
     display: 'block',
     lineHeight: '2em',
-  }, 
+  },
 };
 
 export default class SpaceProfile extends React.PureComponent {
@@ -52,19 +53,19 @@ export default class SpaceProfile extends React.PureComponent {
     super();
     this.state = {
       token:sessionStorage.getItem("token"),
-      spaceProfile:'', 
-      profileEvents: '', 
+      spaceProfile:'',
+      profileEvents: '',
       }
   }
 
   componentWillMount() {
     this.getProfile();
-    //getSpaceEvents(); 
-    //getSpaceUsers(); 
+    //getSpaceEvents();
+    //getSpaceUsers();
   }
 
  getProfile = () => {
-    fetch('http://localhost:8000/api/workspace/'+ this.props.match.params.id, {
+    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -76,10 +77,10 @@ export default class SpaceProfile extends React.PureComponent {
       }, function() {
         console.log(this.state.spaceProfile);
       })
-    }.bind(this))    
+    }.bind(this))
 }
 
-  getSpaceEvents = () => { 
+  getSpaceEvents = () => {
     fetch(`http://localhost:8000/api/events/upcoming/${this.state.id}`, {
       method: 'GET'
     })
@@ -88,13 +89,13 @@ export default class SpaceProfile extends React.PureComponent {
     }).then(data => {
       let profileEvents = data.response.map((profileEvent) => {
         return (
-          <div  key={'profileCard' + profileCard.id}> 
+          <div  key={'profileCard' + profileCard.id}>
           <Card
-          className="spaceEventCard" containerStyle={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  justifyContent: 'space-between'}}> 
+          className="spaceEventCard" containerStyle={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  justifyContent: 'space-between'}}>
           <CardMedia className="spaceEventCardImage">
-           
+
           </CardMedia>
-  
+
           <div className="spaceEventCardContent">
             <CardHeader title={event.name} style={{padding: '0'}} />
             <div className="spaceEventCardDetails">
@@ -103,16 +104,16 @@ export default class SpaceProfile extends React.PureComponent {
                </span>
               <span className="spaceEventCardLocation" style={{margin: '1em 0 0 1em'}}> </span>
             </div>
-            <p className="spaceEventCardDescription">  </p> 
+            <p className="spaceEventCardDescription">  </p>
           </div>
         </Card>
-        </div> 
+        </div>
         )
       })
-      this.setState({profileEvents:profileEvents});  
+      this.setState({profileEvents:profileEvents});
     })
   }
-  
+
 
 /*
   getSpaceUsers = () => {
@@ -123,16 +124,16 @@ export default class SpaceProfile extends React.PureComponent {
     }).then(json => {
       let memberCards = json.response.map((memberCard) => {
         return (
-          <Avatar 
-            //alt={memberCard.name} 
+          <Avatar
+            //alt={memberCard.name}
             src={memberCard.avatar}
-            style={styles.avatar} 
-          />  
+            style={styles.avatar}
+          />
         )
       })
     })
   }
-*/ 
+*/
 
   render() {
 
@@ -140,13 +141,13 @@ export default class SpaceProfile extends React.PureComponent {
       <div className="container">
         <Helmet title="SpaceProfile" meta={[ { name: 'description', content: 'Description of SpaceProfile' }]}/>
         <Header />
-        
-        <main className="spaceProfileMain"> 
+
+        <main className="spaceProfileMain">
 
             <div className="spaceProfileBanner">
               <div className="spaceProfileBannerColumnLeft">
                 <div className="spaceProfileHeader">
-                <div> 
+                <div>
                   <h2 className="spaceProfileName">{this.state.spaceProfile.name}</h2>
                   <div className="spaceProfileContactLinks">
                     <div className="spaceProfileContact">
@@ -156,12 +157,11 @@ export default class SpaceProfile extends React.PureComponent {
                     <div className="spaceProfileSocialMediaBlock">
                       <span className="spaceProfileSocialIcon">
                         <a href='mailto:'>
-                          
-                          <span className="spaceProfileSocialLabel"></span> 
-                        </a> 
+                          <span className="spaceProfileSocialLabel"></span>
+                        </a>
                       </span>
-              
-                      <span className="spaceProfileSocialIcon"> 
+
+                      <span className="spaceProfileSocialIcon">
                         <a href="">
                           <TiSocialFacebookCircular  />
                           <span className="spaceProfileSocialLabel">  </span>
@@ -169,31 +169,22 @@ export default class SpaceProfile extends React.PureComponent {
                       </span>
 
                       <span className="spaceProfileSocialIcon">
-                        <a href=""> 
-                          <TiSocialInstagramCircular /> 
+                        <a href="">
+                          <TiSocialInstagramCircular />
                           <span className="spaceProfileSocialLabel">  </span>
-                        </a> 
+                        </a>
                       </span>
 
-                      <span className="spaceProfileSocialIcon"> 
-                        <a href=""> 
+                      <span className="spaceProfileSocialIcon">
+                        <a href="">
                           <TiSocialTwitterCircular />
                           <span className="spaceProfileSocialLabel"></span>
                         </a>
-                      </span> 
-                    </div>                  
+                      </span>
+                    </div>
                   </div>
-                </div> 
-                  <img src="https://theclubhou.se/wp-content/uploads/2017/04/theclubhouselogo-1.png" height="200px" width="200px" />
                 </div>
-                
-                <div className="spaceProfileAmeneties">
-                <p style={{fontSize: '1.5em', fontWeight: '600', color: '#4167b1' }}> Offering </p>
-                  <ul className="spaceProfileOfferings"> 
-                    <li style={{margin: '.25em'}}>Co-working Space</li>
-                    <li style={{margin: '.25em'}}>Maker Space</li>
-                    <li style={{margin: '.25em'}}> Startup Incubation/Acceleration</li>
-                  </ul>
+                <img src={this.state.spaceProfile.logo} height="auto" width="300px" />
               </div>
             </div>
 
@@ -212,15 +203,15 @@ export default class SpaceProfile extends React.PureComponent {
 
             </div>
 
-            
-             
+
+
            <div className="spaceProfileBody">
            <div className="spaceProfileActions">
-             <a href="booking/"> <DefaultButton>Booking System </DefaultButton></a>
-             <a href=""> <DefaultButton>Join This Space </DefaultButton>  </a>
+             <Link to={'/booking/' + this.state.spaceProfile.id}><DefaultButton>Booking System </DefaultButton></Link>
+             <Link to={'/join/' + this.state.spaceProfile.id}><DefaultButton>Join This Space </DefaultButton></Link>
            </div>
 
-           
+
            <div className="spaceProfileAbout"
            >
                 <div className="spaceProfileAboutContent">
@@ -233,7 +224,7 @@ export default class SpaceProfile extends React.PureComponent {
       <Divider />
 
             <div className="spaceProfileMembership">
-                
+
                 <div className="spaceProfileMemberships">
                   <h4>Memberships:</h4>
                   <p> starting at </p>
@@ -243,7 +234,7 @@ export default class SpaceProfile extends React.PureComponent {
                 <div className="spaceProfileMembershipPerks">
                   <h4> Space Perks </h4>
                   <div className="spaceProfilePerksWrapper">
-                    <ul style={styles.list}> 
+                    <ul style={styles.list}>
                      <li style={styles.listItem}>Semi private workspace and desks</li>
                      <li style={styles.listItem}>Secure Wifi</li>
                      <li style={styles.listItem}>Electronics and Prototyping Lab</li>
@@ -257,29 +248,26 @@ export default class SpaceProfile extends React.PureComponent {
                 </div>
 
                 <div className="spaceProfileMembershipContact">
-                  <div className="spaceProfileBookATour">
-                    <DefaultButton style={{border: '1px dashed peru'}}> Book A Tour </DefaultButton> 
-                  </div>
 
                   <div className="spaceProfileMembAddContact">
                     <p> For more information:</p>
                     <ul className="spaceProfileMemConLinks">
-                      <li> <a href="http://theclubhou.se/join">http://theclubhou.se/join</a> </li>
+                      <li> <a href={this.state.spaceProfile.website}>Website</a> </li>
                       <li>  <a href="mailto:heythere@theclubhou.se">
-                      {this.state.spaceProfile.email} </a></li>                      
+                      {this.state.spaceProfile.email} </a></li>
                     </ul>
                   </div>
                 </div>
             </div>
-    
-    <Divider />      
+
+    <Divider />
 
             <div className="spaceProfileUpcomingEvents">
                 <h4 style={{textAlign: 'center'}}> Upcoming Events </h4>
                 <div className="spaceProfileEventsWrapper">
-                 {this.state.profileEvents} 
+                 {this.state.profileEvents}
                 </div>
-                
+
             </div>
 
     <Divider />
@@ -287,16 +275,16 @@ export default class SpaceProfile extends React.PureComponent {
             <div className="spaceProfileSpaceMembers">
             <h4 className="spaceProfileMemberHeader">Members</h4>
             <div className="spaceProfileAvatarBlock">
-             {/* {memberCards} */} 
+             {/* {memberCards} */}
             </div>
-    
-            </div>
-           
-           </div>
-            
-         
 
-        
+            </div>
+
+           </div>
+
+
+
+
         </main>
 
        <Footer />
