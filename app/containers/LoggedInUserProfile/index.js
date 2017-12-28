@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+
 import Header from 'components/Header';
 
 import './style.css';
@@ -180,6 +181,7 @@ export default class LoggedInUserProfile extends Component {
                         </li>
                       )}
                     </ul>}
+
                   </aside>
 
                 </div>

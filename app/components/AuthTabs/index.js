@@ -205,8 +205,8 @@ export default class AuthTabs extends React.PureComponent {
       <form autoComplete="off" className="authTabsContainer"> 
         {redirect}
         <Tabs value={value} onChange={this.handleChange} centered indicatorColor="#cccc31">
-          <Tab label ="Login" className="tabTitle" />                
-          <Tab label="Sign up" className="tabTitle"/>   
+          <Tab label ="Login" className="authTabTitle" />                
+          <Tab label="Sign up" className="authTabTitle"/>   
         </Tabs>
 
         {value === 0 && 
@@ -229,12 +229,12 @@ export default class AuthTabs extends React.PureComponent {
                 type="password"
                 name=""
                 id="password"
-              />
+              />           
             </p>
 
-            <div id="rememberMe" className="userFormItem">
-              { /* radio doot */ }
-            </div>
+            <div className="forgotInfo">
+              <a href="" className="userInfoLink">forgot password </a>
+            </div>  
 
             <div className="userFormSubmit">
               <DefaultButton login={login} email={email} password={password}>
@@ -243,10 +243,7 @@ export default class AuthTabs extends React.PureComponent {
             </div>
           </div>
 
-          <div className="forgotInfo">
-            <a href="" className="userInfoLink">forgot email</a>
-            <a href="" className="userInfoLink">forgot password </a>
-          </div>   
+           
         </TabContainer>}
 
         {value === 1 && 
@@ -256,7 +253,7 @@ export default class AuthTabs extends React.PureComponent {
               <label htmlFor="name" className="userFormLabel">name</label>
               <MtextField onChange={this.name} type="text" name="" id="name" />
             </p>
-            {workspaces &&
+            {!!workspaces.length &&
             <div className="userFormItem">
               <label htmlFor="homespace" className="userFormLabel"> your home space</label>
               <select value={this.state.workspace} onChange={this.workspace}> 
