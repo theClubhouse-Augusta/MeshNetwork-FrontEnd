@@ -40,10 +40,8 @@ export default class LoggedInUserProfile extends Component {
 
     if (this.token === null) {
       this.props.history.push('/');
-    } 
-    else if (typeof this.props.user['user'] !== 'object') {
-      console.log(JSON.stringify(this.props.user));
-      this.props.getLoggedInUser(localStorage['token']);
+    } else if (typeof this.props.user['user'] !== 'object') {
+      this.props.getLoggedInUser(this.token);
     }
   }
 
