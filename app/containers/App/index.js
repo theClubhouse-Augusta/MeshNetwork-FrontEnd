@@ -18,7 +18,7 @@ import SpaceProfile from '../SpaceProfile';
 import UserProfile from '../UserProfile';
 import KioskSystem from '../KioskSystem';
 import NotFound from '../NotFound';
-import AdminDash from '../AdminDash'; 
+import SpaceDash from '../SpaceDash'; 
 
 export default class App extends Component {
 
@@ -172,8 +172,8 @@ export default class App extends Component {
           />
 
           <Route
-            path="/admindash"
-            component={AdminDash}
+            path="/spacedash"
+            component={SpaceDash}
           />
 
           <Route component={NotFound} />
