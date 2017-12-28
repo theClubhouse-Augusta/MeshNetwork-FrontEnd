@@ -20,7 +20,7 @@ import Footer from 'components/Footer';
 import './style.css';
 import './styleM.css';
 
-const API = ''; 
+const API = 'http://localhost:8000/workspace/{spaceID}'; 
 
 export default class Spaces extends React.PureComponent {
   state ={
@@ -41,7 +41,7 @@ export default class Spaces extends React.PureComponent {
         <div className="spaceListing">
           <Card key={'spaceCard' + spaceCard.spaceId}>
             <CardMedia>
-              <img src={require({spaceCard.img})} alt="" width="100%"/>
+              <img src={require()} alt="" width="100%"/>
             </CardMedia>
             <CardHeader className="spaceNameHeader" title={spaceCard.spaceName} style={cardHeaderStyle} /> 
             <CardContent className="spaceAddress"> {spaceCard.address} </CardContent>

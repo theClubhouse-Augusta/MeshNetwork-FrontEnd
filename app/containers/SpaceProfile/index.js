@@ -6,7 +6,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import classNames from 'classnames';
-
 import Header from 'components/Header'; 
 import Footer from 'components/Footer'; 
 import MapComponent from 'components/MapComponent'; 
@@ -26,19 +25,8 @@ import Card, { CardHeader, CardMedia } from 'material-ui/Card';
 
 import './style.css';
 import './styleM.css';
+import DefaultButton from '../../components/CustomUI/DefaultButton/index';
 
-
-const space = { 
-  name: 'the Clubhou.se', 
-  website: '/clubhouse', 
-  email: '', 
-  socialMedia : {
-      facebook: '', 
-      twitter: '', 
-      instagram: '', 
-  }, 
-  lowestTier: '$20', 
-}
 
 const styles = {
   avatar: {
@@ -64,16 +52,19 @@ export default class SpaceProfile extends React.PureComponent {
     super();
     this.state = {
       token:sessionStorage.getItem("token"),
-      profile:""
-    }
+      spaceProfile:'', 
+      profileEvents: '', 
+      }
   }
 
-  componetWillMount() {
-    //this.getProfile();
+  componentWillMount() {
+    this.getProfile();
+    //getSpaceEvents(); 
+    //getSpaceUsers(); 
   }
 
-  getProfile = () => {
-    fetch("", {
+ getProfile = () => {
+    fetch('http://localhost:8000/api/workspace/'+ this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -81,48 +72,69 @@ export default class SpaceProfile extends React.PureComponent {
     })
     .then(function(json) {
       this.setState({
-        profile:json.profile
+        spaceProfile:json
+      }, function() {
+        console.log(this.state.spaceProfile);
       })
-    }.bind(this))
+    }.bind(this))    
+}
+
+  getSpaceEvents = () => { 
+    fetch('http://localhost:8000/api/events?results=3', {
+      method: 'GET'
+    })
+    .then((response) => {
+      return response.json();
+    }).then(data => {
+      let profileEvents = data.response.map((profileEvent) => {
+        return (
+          <div  key={'profileCard' + profileCard.id}> 
+          <Card
+          className="spaceEventCard" containerStyle={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  justifyContent: 'space-between'}}> 
+          <CardMedia className="spaceEventCardImage">
+           
+          </CardMedia>
+  
+          <div className="spaceEventCardContent">
+            <CardHeader title={event.name} style={{padding: '0'}} />
+            <div className="spaceEventCardDetails">
+              <span className="spaceEventCardDate" style={{margin: '1em 0'}}>  </span>
+              <span className="spaceEventCardTime" style={{margin: '1em'}}>
+               </span>
+              <span className="spaceEventCardLocation" style={{margin: '1em 0 0 1em'}}> </span>
+            </div>
+            <p className="spaceEventCardDescription">  </p> 
+          </div>
+        </Card>
+        </div> 
+        )
+      })
+      this.setState({profileEvents:profileEvents});  
+    })
   }
+  
+
+/*
+  getSpaceUsers = () => {
+    fetch('http://localhost:8000/api/users/space/' + this.props.match.params.id, {
+      method: 'GET'
+    }).then((response) => {
+      return response.json();
+    }).then(json => {
+      let memberCards = json.response.map((memberCard) => {
+        return (
+          <Avatar 
+            //alt={memberCard.name} 
+            src={memberCard.avatar}
+            style={styles.avatar} 
+          />  
+        )
+      })
+    })
+  }
+*/ 
 
   render() {
-    
-    const events =[
-      { name: 'Javascript Meetup', 
-        time: '6:30-8pm',  
-        date: 'Thurs, November 30th', 
-        image: '', 
-        description: 'Object Modeling with Mongoose',
-        location: 'the Clubhou.se',
-      }, 
-      { name: 'One Million Cups', 
-        time: '8:30am', 
-        date: 'Wed, December 6th', 
-        image: '', 
-        description: 'Pitches, and coffee, and mingling',
-        location: 'the Clubhou.se',
-    }
-    ]; 
-
-    const eventCards = events.map((event) => (
-      <Card className="spaceEventCard" containerStyle={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  justifyContent: 'space-between'}}> 
-        <CardMedia className="spaceEventCardImage">
-         
-        </CardMedia>
-
-        <div className="spaceEventCardContent">
-          <CardHeader title={event.name} style={{padding: '0'}} />
-          <div className="spaceEventCardDetails">
-            <span className="spaceEventCardDate" style={{margin: '1em 0'}}> {event.date} </span>
-            <span className="spaceEventCardTime" style={{margin: '1em'}}>
-            {event.time} </span>
-            <span className="spaceEventCardLocation" style={{margin: '1em 0 0 1em'}}> {event.location} </span>
-          </div>
-          <p className="spaceEventCardDescription"> {event.description} </p> 
-        </div>
-      </Card>
-    ))
 
     return (
       <div className="container">
@@ -135,24 +147,24 @@ export default class SpaceProfile extends React.PureComponent {
               <div className="spaceProfileBannerColumnLeft">
                 <div className="spaceProfileHeader">
                 <div> 
-                  <h2 className="spaceProfileName">{space.name}</h2>
+                  <h2 className="spaceProfileName">{this.state.spaceProfile.name}</h2>
                   <div className="spaceProfileContactLinks">
                     <div className="spaceProfileContact">
-                      <p className="spaceProfileEmail"> <TiSocialAtCircular /> <a href="mailto:heythere@thecluhou.se" >heythere@theclubhou.se</a></p>
-                      <p className="spaceProfileWebsite"><a href="">http://theclubhou.se</a></p>
+                      <p className="spaceProfileEmail"> <TiSocialAtCircular /> <a href="mailto:" >{this.state.spaceProfile.email}</a></p>
+                      <p className="spaceProfileWebsite"><a href={this.state.spaceProfile.website}>{this.state.spaceProfile.website}</a></p>
                     </div>
                     <div className="spaceProfileSocialMediaBlock">
                       <span className="spaceProfileSocialIcon">
                         <a href='mailto:'>
                           
-                          <span className="spaceProfileSocialLabel">{space.email}</span> 
+                          <span className="spaceProfileSocialLabel"></span> 
                         </a> 
                       </span>
               
                       <span className="spaceProfileSocialIcon"> 
                         <a href="">
                           <TiSocialFacebookCircular  />
-                          <span className="spaceProfileSocialLabel">{space.facebook}  </span>
+                          <span className="spaceProfileSocialLabel">  </span>
                         </a>
                       </span>
 
@@ -166,7 +178,7 @@ export default class SpaceProfile extends React.PureComponent {
                       <span className="spaceProfileSocialIcon"> 
                         <a href=""> 
                           <TiSocialTwitterCircular />
-                          <span className="spaceProfileSocialLabel">{space.twitter}</span>
+                          <span className="spaceProfileSocialLabel"></span>
                         </a>
                       </span> 
                     </div>                  
@@ -203,10 +215,16 @@ export default class SpaceProfile extends React.PureComponent {
             
              
            <div className="spaceProfileBody">
+           <div className="spaceProfileActions">
+             <a href="booking/"> <DefaultButton>Booking System </DefaultButton></a>
+             <a href=""> <DefaultButton>Join This Space </DefaultButton>  </a>
+           </div>
+
+           
            <div className="spaceProfileAbout"
            >
                 <div className="spaceProfileAboutContent">
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p> {this.state.spaceProfile.description} </p>
                 </div>
 
                 <div className="spaceProfileStaff"></div>
@@ -218,8 +236,8 @@ export default class SpaceProfile extends React.PureComponent {
                 
                 <div className="spaceProfileMemberships">
                   <h4>Memberships:</h4>
-                  <p> starting at {space.lowestTier}</p>
-                  <button style={{border: '1px dashed peru'}}> Explore Memberships </button>
+                  <p> starting at </p>
+                  <DefaultButton> Explore Memberships </DefaultButton>
                 </div>
 
                 <div className="spaceProfileMembershipPerks">
@@ -240,7 +258,7 @@ export default class SpaceProfile extends React.PureComponent {
 
                 <div className="spaceProfileMembershipContact">
                   <div className="spaceProfileBookATour">
-                    <button style={{border: '1px dashed peru'}}> Book A Tour </button> 
+                    <DefaultButton style={{border: '1px dashed peru'}}> Book A Tour </DefaultButton> 
                   </div>
 
                   <div className="spaceProfileMembAddContact">
@@ -248,8 +266,7 @@ export default class SpaceProfile extends React.PureComponent {
                     <ul className="spaceProfileMemConLinks">
                       <li> <a href="http://theclubhou.se/join">http://theclubhou.se/join</a> </li>
                       <li>  <a href="mailto:heythere@theclubhou.se">
-                      heythere@theclubhou.se </a></li>
-                      
+                      {this.state.spaceProfile.email} </a></li>                      
                     </ul>
                   </div>
                 </div>
@@ -260,7 +277,7 @@ export default class SpaceProfile extends React.PureComponent {
             <div className="spaceProfileUpcomingEvents">
                 <h4 style={{textAlign: 'center'}}> Upcoming Events </h4>
                 <div className="spaceProfileEventsWrapper">
-                {eventCards}
+                 {this.state.profileEvents} 
                 </div>
                 
             </div>
@@ -270,14 +287,7 @@ export default class SpaceProfile extends React.PureComponent {
             <div className="spaceProfileSpaceMembers">
             <h4 className="spaceProfileMemberHeader">Members</h4>
             <div className="spaceProfileAvatarBlock">
-            <Avatar style={styles.avatar}> AB </Avatar> 
-          <Avatar style={styles.avatar}> AB </Avatar> 
-          <Avatar style={styles.avatar}> AB </Avatar> 
-          <Avatar style={styles.avatar}> AB </Avatar> 
-          <Avatar style={styles.avatar}> AB </Avatar> 
-          <Avatar style={styles.avatar}> AB </Avatar> 
-          <Avatar style={styles.avatar}>  AB </Avatar> 
-          <Avatar style={styles.avatar}> AB </Avatar> 
+             {/* {memberCards} */} 
             </div>
     
             </div>
