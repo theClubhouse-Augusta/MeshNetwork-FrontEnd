@@ -17,46 +17,14 @@ import AddEvent from '../AddEvent';
 import SpaceProfile from '../SpaceProfile';
 import UserProfile from '../UserProfile';
 import KioskSystem from '../KioskSystem';
-import LoggedInUserProfile from '../LoggedInUserProfile';
-import AdminDash from '../AdminDash'; 
 import NotFound from '../NotFound';
+import AdminDash from '../AdminDash'; 
 
 export default class App extends Component {
 
   state = {
     user: '',
-    redirect: '',
-    loading: true,
   };
-
-  /**
-   * @param {string} jwt
-   */
-  getLoggedInUser = (token) => {
-    if (!token) {
-      this.setState({ redirect: <Redirect to='/' /> });
-    } else {
-      fetch('http://localhost:8000/api/showuser', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(response =>
-        response.json()
-      )
-      .then(authUser => {
-        if (!authUser.error) {
-          this.setState({ user: authUser });
-        } else {
-          this.setState({
-            user: '',
-            redirect: <Redirect to='/' />
-          });
-        }
-      })
-      .catch(error => {
-        alert(`in getLoggedInUSer: ${error}`); // eslint-disable-line
-      });
-    }
-  }
 
 
   login = (e, email, password) => {
@@ -69,20 +37,18 @@ export default class App extends Component {
       method: 'post',
       body: data,
     })
-    .then(response =>
-      response.json()
-    )
+    .then(response => response.json() )
     .then(loggedInUser => {
-      if (loggedInUser.token === false) {
+      if (loggedInUser.token === false || loggedInUser.error) {
         alert('invalid credentials'); // eslint-disable-line
       } else if (loggedInUser.token !== false) {
-        localStorage.setItem('token', loggedInUser.token);
+        localStorage['token'] = loggedInUser.token;
+        localStorage['user'] = loggedInUser.user;
         this.setState({
           user: loggedInUser,
           loading: false,
-          redirect: <Redirect to={`/UserProfile/me/${loggedInUser['user'].id}`} />
+          redirect: <Redirect to={`/UserProfile/${loggedInUser['user'].id}`} />
         });
-       alert('welcom back');
       }
     })
     .catch(error => {
@@ -188,23 +154,10 @@ export default class App extends Component {
           />
 
           <Route
-            path="/UserProfile/me"
-            render={(props) => (
-              <LoggedInUserProfile
-                {...props}
-                user={this.state.user}
-                getLoggedInUser={this.getLoggedInUser}
-                loading={this.state.loading}
-              />
-            )}
-          />
-
-          <Route
             path="/UserProfile"
             render={(props) => (
               <UserProfile
                 {...props}
-                //user={this.state.user}
               />
             )}
           />
