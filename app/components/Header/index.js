@@ -61,7 +61,6 @@ export default class Header extends React.PureComponent {
             <Link to="/events" className="navButton">Events</Link>
             <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton">Challenges</a>
             <a href="http://lms.innovationmesh.com" target="_blank" className="navButton">Education</a>
-            <a href="/auth" className="navButton">Login / SignUp</a>
           </nav>
 
           <Bars className="menuIcon" onClick={this.handleMenu}/>

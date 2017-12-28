@@ -6,7 +6,8 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Header from 'components/header';
+import { Link } from 'react-router-dom';
+import Header from 'components/Header';
 
 import FlatButton from 'material-ui/Button';
 
@@ -30,8 +31,8 @@ export default class Home extends React.PureComponent {
                 OF INNOVATION
               </div>
               <div className="homeSignButtons">
-                <FlatButton style={{margin:'15px', width:'45%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign Up</FlatButton>
-                <FlatButton style={{margin:'15px', width:'45%', background:'#ee3868', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign In</FlatButton>
+                <Link to={'/newSpace'} style={{margin:'15px', width:'45%'}}><FlatButton style={{width:'100%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign Up</FlatButton></Link>
+                <Link to={'/signIn'} style={{margin:'15px', width:'45%'}}><FlatButton style={{width:'100%', background:'#ee3868', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign In</FlatButton></Link>
               </div>
             </div>
           </main>

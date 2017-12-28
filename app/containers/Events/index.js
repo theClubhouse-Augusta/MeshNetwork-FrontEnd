@@ -5,14 +5,20 @@
  */
 import React from 'react';
 import Helmet from 'react-helmet';
-import Header from '../../components/Header'; 
-import Footer from '../../components/Footer'; 
-import EventHomeCalender from '../../components/EventHomeCalender'; 
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import EventHomeCalender from '../../components/EventHomeCalender';
 
 import './style.css';
 import './styleM.css';
 
 export default class Events extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      events:[]
+    }
+  }
   // state = {
   //   workspaces: '',
   //   workspace: '',
@@ -28,9 +34,9 @@ export default class Events extends React.PureComponent {
   //   .then(response => response.json())
   //   .then(Workspaces => {
   //     if (!Workspaces.error) {
-  //       this.setState({	
+  //       this.setState({
   //         workspaces: Workspaces,
-  //         workspace: Workspaces[0].name, 
+  //         workspace: Workspaces[0].name,
   //       });
   //     }
   //   })
@@ -51,7 +57,7 @@ export default class Events extends React.PureComponent {
   //       // "id" ,
   //       // "start" ,
   //       // "end" ,
-  //       // "description" 
+  //       // "description"
   //     }
   //   })
   //   .catch(error => {
@@ -71,7 +77,7 @@ export default class Events extends React.PureComponent {
           <div className="eventHomeBanner"></div>
           <div className="eventHomeBody">
             <div className="eventHomeSearchSort">
-              
+
                 {/* spaces select */}
 
               <div className="eventHomeTagSort"></div>
@@ -81,8 +87,8 @@ export default class Events extends React.PureComponent {
               <EventHomeCalender events={events} />
               {/* location={this.location} tags={this.selectedSkills}  */}
             </div>
-          </div>      
-          
+          </div>
+
         </main>
 
         <Footer />
@@ -90,4 +96,3 @@ export default class Events extends React.PureComponent {
     );
   }
 }
-

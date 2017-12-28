@@ -121,7 +121,7 @@ export default class Booking extends React.PureComponent {
     })
     .then(function(json) {
       if(json.error) {
-        _this.showSnack(json.success);
+        _this.showSnack(json.error);
       }
       else if(json.success)
       {
