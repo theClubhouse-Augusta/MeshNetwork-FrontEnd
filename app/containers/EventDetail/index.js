@@ -249,7 +249,7 @@ export default class EventDetail extends React.PureComponent {
                           <img src={`${sponser.logo}`} className="eventSponsorLogo"/> 
                         </CardMedia> 
                       </Card>
-                    )};
+                    )}
                   </div>
                 </div> 
               </div>

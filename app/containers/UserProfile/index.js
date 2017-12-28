@@ -26,13 +26,19 @@ export default class UserProfile extends React.Component {
   token = localStorage['token']
 
   componentWillMount() {
+    // console.log('dwjk');
+    // console.log(this.token);
     if (isNaN(this.userID)) {
-      console.log((typeof this.userID));
       this.props.history.push('/');
     } else {
-      console.log(this.token);
-      this.loadUser(this.token);
+        this.loadUser(this.token);
     }
+  }
+
+  componentDidMount() {
+    // console.log('dwjk');
+    // console.log(this.token);
+    // this.loadUser(this.token);
   }
 
   loadUser = (token) => {
@@ -148,7 +154,7 @@ export default class UserProfile extends React.Component {
                     <ul className="profileAttendingContent">
                       {upcoming.map((attend, index) => 
                         <li 
-                          onClick={() => {props.history.push(`/EventDetail/${attend.id}`)}}
+                          onClick={() => {this.props.history.push(`/EventDetail/${attend.id}`)}}
                           key={`${attend.title}${index}`} 
                           className="profileAttendingItem"
                         >

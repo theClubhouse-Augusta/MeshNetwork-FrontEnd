@@ -31,7 +31,7 @@ export default class App extends Component {
   /**
    * @param {string} jwt
    */
-  getLoggedInUser = (token) => {
+  getLoggedInUser = token => {
     if (!token) {
       this.setState({ redirect: <Redirect to='/' /> });
     } else {
@@ -68,11 +68,9 @@ export default class App extends Component {
       method: 'post',
       body: data,
     })
-    .then(response =>
-      response.json()
-    )
+    .then(response => response.json() )
     .then(loggedInUser => {
-      if (loggedInUser.token === false) {
+      if (loggedInUser.token === false || loggedInUser.error) {
         alert('invalid credentials'); // eslint-disable-line
       } else if (loggedInUser.token !== false) {
         localStorage.setItem('token', loggedInUser.token);

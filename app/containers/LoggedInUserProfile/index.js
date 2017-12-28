@@ -25,7 +25,6 @@ export default class LoggedInUserProfile extends Component {
 
   path = this.props.location.pathname.split('/');
   userID = this.path[this.path.length - 1];
-
   token = localStorage.getItem('token');
 
   componentDidMount() {
@@ -34,6 +33,7 @@ export default class LoggedInUserProfile extends Component {
      * invalid: /User/Profile/me/
      * valid: /UserProfile/me/  
     */
+
     if ((isNaN(this.userID) && !this.state.user)) {
       this.props.history.push('/');
     }
@@ -48,8 +48,8 @@ export default class LoggedInUserProfile extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // url/path/id must match loggedInUser.id
     if (!nextProps.user) {
+      // url/path/id must match loggedInUser.id
       this.props.history.push('/');
     } else if (nextProps.user.user.id != this.userID) { // eslint-disable-line
       this.props.history.push('/');
