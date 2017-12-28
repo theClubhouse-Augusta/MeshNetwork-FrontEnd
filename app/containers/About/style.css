@@ -34,6 +34,7 @@
   max-width:1000px;
   margin: 0 auto;
   padding:15px;
+  background:#F8F8F8;
 }
 
 
@@ -76,6 +77,6 @@
   font-family: 'Encode Sans', sans-serif;
   font-size:2em;
   font-weight:800;
-  
+
   color:#FFFFFF;
 }

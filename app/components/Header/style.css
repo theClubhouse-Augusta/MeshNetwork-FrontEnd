@@ -1,29 +1,27 @@
 /* NavBar Styles */
 
 .headerComponent {
-  position:absolute;
   width:100%;
+  background:#333333;
 }
 
 .navBar {
   display:flex;
   flex-direction:row;
-  width:100%;
-  max-width:1000px;
-  height:50px;
+  height:55px;
   justify-content:space-between;
   align-items:center;
   margin:0 auto;
-  border-bottom:2px solid #FFFFFF;
 }
 
 .siteName {
-  font-size:1.5em;
+  font-size:2em;
   line-height:24px;
   margin-left:10px;
   font-family:'Encode Sans', sans-serif;
-  text-align:center;
   color:#FFFFFF;
+  width:30%;
+  font-variant:small-caps;
 }
 
 .nav {
@@ -32,7 +30,7 @@
   flex-direction:row;
   justify-content:flex-end;
   margin-right:15px;
-  font-family: "Encode Sans", sans-serif; 
+  font-family: "Encode Sans", sans-serif;
 }
 
 .navButton {
@@ -40,10 +38,12 @@
   text-decoration:none;
   margin-right:15px;
   font-weight:bold;
+  text-transform:uppercase;
+  font-size:0.9em;
 }
 
 .navButton:hover {
-  color:#000000;
+  color:#3399cc;
 }
 
 .menuIcon {

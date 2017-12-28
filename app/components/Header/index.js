@@ -51,27 +51,27 @@ export default class Header extends React.PureComponent {
       <div className="headerComponent">
         <div className="navBar">
           <div className="siteName">
-            Mesh Network <br/>
-            Of Innovation
+            Mesh Network
           </div>
 
           <nav className="nav">
             <Link to="/" className="navButton">Home</Link>
             <Link to="/about" className="navButton">About</Link>
-            <Link to="/contact" className="navButton">Contact</Link>
-            <Link to="/sponsors" className="navButton">Sponsors</Link>
             <Link to="/spaces" className="navButton">Spaces</Link>
+            <Link to="/events" className="navButton">Events</Link>
+            <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton">Challenges</a>
+            <a href="http://lms.innovationmesh.com" target="_blank" className="navButton">Education</a>
             <a href="/auth" className="navButton">Login / SignUp</a>
           </nav>
 
           <Bars className="menuIcon" onClick={this.handleMenu}/>
-    
+
         </div>
 
         {this.renderMenu()}
-      </div>      
-      
-       
+      </div>
+
+
     );
   }
 }

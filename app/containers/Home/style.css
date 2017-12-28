@@ -9,13 +9,14 @@ In the case of multiple components of the same type the first component ex HomeB
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  background:url('http://innovationmesh.com/assets/tiles.jpg');
 }
 
 h1, h2, h3, h4, h5 {
   font-family: 'Encode Sans', sans-serif;
 }
 
-body {  
+body {
   font-family: 'Spectral', serif;
 }
 
@@ -41,11 +42,36 @@ button, input {
   font: inherit;
 }
 
-label { 
+label {
   font-family: 'Encode Sans', sans-serif;
 }
 
 button {
   cursor: pointer;
   background-color: transparent;
+}
+
+.homeSection {
+    height:calc(100vh - 55px);
+    background: #555555;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.homeBodyHeaderSlant {
+  font-family: 'Spectral', serif;
+  font-size: 5em;
+  line-height:120px;
+  text-align:center;
+  color:#FFFFFF;
+}
+
+.homeSignButtons {
+  width:100%;
+  max-width:600px;
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
 }

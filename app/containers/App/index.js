@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../Home';
 import About from '../About';
-import BookingSystem from '../BookingSystem';
+import Booking from '../Booking';
 import BusinessSearch from '../BusinessSearch';
 import Contact from '../Contact';
 import EventDetail from '../EventDetail';
@@ -103,8 +103,8 @@ export default class App extends Component {
           />
 
           <Route
-            path="/Booking"
-            render={() => <BookingSystem />}
+            path="/Booking/:id"
+            render={(props) => <Booking {...props}/>}
           />
 
           <Route
@@ -182,7 +182,7 @@ export default class App extends Component {
           />
 
           <Route
-            path="/SpaceProfile"
+            path="/space/:id"
             render={(props) => <SpaceProfile {...props} />}
           />
 
