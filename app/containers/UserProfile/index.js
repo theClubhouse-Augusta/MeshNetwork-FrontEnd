@@ -4,7 +4,7 @@
  *
  */
 import React from 'react';
-import PropTypes, { oneOfType } from 'prop-types';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 import Header from 'components/Header';
@@ -27,15 +27,16 @@ export default class UserProfile extends React.Component {
 
   componentWillMount() {
     if (isNaN(this.userID)) {
-      console.log((typeof this.userID));
       this.props.history.push('/');
     } else {
-      console.log(this.token);
       this.loadUser(this.token);
     }
   }
 
-  loadUser = (token) => {
+  componentDidMount() {
+  }
+
+  loadUser = token => {
     if (!token) {
       this.props.history.push('/');
     }
@@ -61,7 +62,6 @@ export default class UserProfile extends React.Component {
       alert(`error!: ${error.message}`);
     });
   }
-
 
   loading = () => this.state.loading;
 
@@ -137,7 +137,10 @@ export default class UserProfile extends React.Component {
                   <div className="profileBio">
                     <h1>About name</h1>
                     <div className="profileBioContent">
-                      <p>{user.bio}</p>
+                      <p
+                        dangerouslySetInnerHTML={{__html: user.bio}}
+                      >
+                      </p>
                     </div>
                   </div>
 
@@ -148,7 +151,7 @@ export default class UserProfile extends React.Component {
                     <ul className="profileAttendingContent">
                       {upcoming.map((attend, index) => 
                         <li 
-                          onClick={() => {props.history.push(`/EventDetail/${attend.id}`)}}
+                          onClick={() => {this.props.history.push(`/EventDetail/${attend.id}`)}}
                           key={`${attend.title}${index}`} 
                           className="profileAttendingItem"
                         >
@@ -173,11 +176,7 @@ export default class UserProfile extends React.Component {
 }
 
 UserProfile.propTypes = {
-  user: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.object.isRequired
-  ]),
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
   
