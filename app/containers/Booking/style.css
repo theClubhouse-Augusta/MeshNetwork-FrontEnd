@@ -1,0 +1,76 @@
+/* Booking Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.bookingContainer {
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  margin-top:30px;
+}
+
+.bookingInfoContainer{
+  width:38%;
+  padding:1%;
+}
+
+.bookingTimeContainer {
+  width:58%;
+  padding:1%;
+}
+
+.bookingColumnTitle {
+  font-size:2em;
+  font-variant:small-caps;
+  font-family:"Noto Sans";
+  border-bottom:1px solid #E8E8E8;
+}
+
+.bookingPanelTitle {
+  font-family:'Noto Sans';
+  font-size:2em;
+  font-variant:small-caps;
+}
+
+.bookingTimeBlock {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items:center;
+  border-top:1px solid #E8E8E8;
+  width:100%;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.bookingTimeText {
+  font-size:1.5em;
+  font-family:'Noto Sans';
+}
+
+.bookingtTypeButton {
+  font-family:'Noto Sans';
+  font-size:1.2em;
+  border:2px solid #E8E8E8;
+  border-radius:3px;
+  padding:15px;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+.bookintActiveTypeButton {
+  font-family:'Noto Sans';
+  font-size:1.2em;
+  border:2px solid #E8E8E8;
+  border-radius:3px;
+  padding:15px;
+  margin-top:15px;
+  cursor:pointer;
+  background:#EEEEEE;
+}
