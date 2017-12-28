@@ -135,13 +135,14 @@ export default class UserProfile extends React.Component {
                 <div className="profileColumnRight">
 
                   <div className="profileBio">
-                    <h1>About name</h1>
-                    <div className="profileBioContent">
+                    {!!user.name && <h1>About {user.name}</h1>}
+                    {!!!user.name && <About />}
+                    {/*<div className="profileBioContent">
                       <p
                         dangerouslySetInnerHTML={{__html: user.bio}}
                       >
                       </p>
-                    </div>
+                    </div>*/}
                   </div>
 
                   <aside className="profileAttending">

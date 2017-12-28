@@ -156,7 +156,7 @@ export default class AuthTabs extends React.PureComponent {
     // data.append('description', JSON.stringify(draftToHtml(convertToRaw(this.state.description.getCurrentContent()))));
     data.append('tags', JSON.stringify(this.state.selectedTags));
     data.append('name', this.state.name);
-    // data.append('workspace', this.state.workspace);
+    data.append('workspace', this.state.workspace);
     data.append('email', this.state.email);
     data.append('password', this.state.password);
     // data.append('company', this.state.company);
