@@ -80,7 +80,7 @@ export default class SpaceProfile extends React.PureComponent {
 }
 
   getSpaceEvents = () => { 
-    fetch('http://localhost:8000/api/events?results=3', {
+    fetch(`http://localhost:8000/api/events/upcoming/${this.state.id}`, {
       method: 'GET'
     })
     .then((response) => {
