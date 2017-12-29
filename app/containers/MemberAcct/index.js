@@ -23,8 +23,8 @@ import './styleM.css';
 
 export default class MemberAcct extends React.Component {
   state = {
-    selectedTab: {},
-    email: '',
+    // selectedTab: {},
+    // email: '',
     password: '',
     password2: '',
     website: '',
@@ -37,7 +37,8 @@ export default class MemberAcct extends React.Component {
     imagePreviewUrl: '',
     value: 0, 
     name: '',
-    email: '',
+    title: '',
+    company: '',
     hireable: false,
     error: false,
     snackBar: false,
@@ -85,7 +86,7 @@ export default class MemberAcct extends React.Component {
 
 
   name = e => this.setState({	name: e.target.value.replace(/\s\s+/g, ' ').trim() }); 
-  title = e => this.setState({	name: e.target.value.replace(/\s\s+/g, ' ').trim() }); 
+  title = e => this.setState({	title: e.target.value.replace(/\s\s+/g, ' ').trim() }); 
   // workspace = e => this.setState({ workspace: e.target.value  });
   email = e => this.setState({	email : e.target.value.trim() }); 
   password = e => this.setState({	password: e.target.value }); 
@@ -151,7 +152,7 @@ export default class MemberAcct extends React.Component {
   github  = e => this.setState({ github: e.target.value });
   dribble  = e => this.setState({ dribble: e.target.value });
   behance  = e => this.setState({ behance: e.target.value });
-  angellist = e => this.setState({ angelist: e.target.value });
+  angellist = e => this.setState({ angellist: e.target.value });
 
   toggleSnackBar = (message) => 
     this.setState({	
@@ -160,30 +161,6 @@ export default class MemberAcct extends React.Component {
     });
 
  render() {
-
-    const { 
-      email, 
-      password, 
-      password2, 
-      value, 
-      error, 
-      bio,
-      loadedTags,
-      selectedTags,
-      imagePreviewUrl, 
-      hireable,
-      snackBar,
-      snackBarMessage,
-      facebook,
-      twitter,
-      instagram,
-      linkedin,
-      github,
-      dribble,
-      behance,
-      angellist
-    } = this.state; 
-
     return (
       <div className="container">
         <Helmet title="MemberAcct" meta={[ { name: 'description', content: 'Description of MemberAcct' }]}/>
@@ -196,7 +173,7 @@ export default class MemberAcct extends React.Component {
 
           <div className="acctBody"> 
             <Tabs 
-              value={value} 
+              value={this.state.value} 
               style={{maxWidth: '1000px', margin: '0 auto'}} onChange={this.handleChange}
               centered 
             > 
@@ -205,8 +182,9 @@ export default class MemberAcct extends React.Component {
              {/* } <Tab label="Security & Notifications"> </Tab> */} 
             </Tabs>
 
-          {value === 0 && 
+          {this.state.value === 0 && 
           <ProfileSettings 
+            // functions
             name={this.name} 
             title={this.title}
             website={this.website}
@@ -214,11 +192,7 @@ export default class MemberAcct extends React.Component {
             avatar={this.avatar}
             company={this.company}
             toggleHireable={this.toggleHireable}
-            hireable={hireable}
-            imagePreviewUrl={imagePreviewUrl}
             selectTag={this.selectTag}
-            selectedTags={selectedTags}
-            loadedTags={loadedTags}
             facebook={this.facebook}
             twitter={this.twitter}
             instagram={this.instagram}
@@ -227,16 +201,34 @@ export default class MemberAcct extends React.Component {
             dribble={this.dribble}
             behance={this.behance}
             angellist={this.angellist}
+            // form values
+            Name={this.state.name} 
+            Title={this.state.title}
+            Website={this.state.website}
+            //Bio={bio}
+            Company={this.state.company}
+            Facebook={this.state.facebook}
+            Twitter={this.state.twitter}
+            Instagram={this.state.instagram}
+            Linkedin={this.state.linkedin}
+            Github={this.state.github}
+            Dribble={this.state.dribble}
+            Behance={this.state.behance}
+            Angellist={this.state.angellist}
+            hireable={this.state.hireable}
+            imagePreviewUrl={this.state.imagePreviewUrl}
+            selectedTags={this.state.selectedTags}
+            loadedTags={this.state.loadedTags}
           />}  
-          {value === 1 &&  <AccountSettings />}       
+          {this.state.value === 1 &&  <AccountSettings />}       
          {/* {value === 2 &&   <SecurityNotifSettings /> }  */}    
           </div>   
         </main> 
 
         <Footer />         
         <Snackbar 
-          open={snackBar} 
-          message={snackBarMessage} 
+          open={this.state.snackBar} 
+          message={this.state.snackBarMessage} 
           autoHideDuration={4000} 
         />
       </div>
