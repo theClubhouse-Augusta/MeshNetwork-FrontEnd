@@ -173,8 +173,8 @@ export default class App extends Component {
           />
 
           <Route
-            path="/spacedash"
-            component={SpaceDash}
+            path="/spacedash/:id"
+            render={(props) => <SpaceDash {...props} />} 
           />
 
           <Route component={NotFound} />

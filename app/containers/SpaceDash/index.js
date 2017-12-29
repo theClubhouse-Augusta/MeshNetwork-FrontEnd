@@ -21,13 +21,15 @@ import './styleM.css';
 
 
 export default class SpaceDash extends React.PureComponent {
-  state = {
+  state ={
     value: 0,
-  };
+  }
 
-  handleChange = (event, value) => {
+
+  handleTabChange = (event, value) => {
     this.setState({ value });
   };
+
   
   render() {
     const { value } = this.state;
@@ -38,8 +40,8 @@ export default class SpaceDash extends React.PureComponent {
 
        <div className="spaceDashBody">
        <AppBar position="static">
-          <Tabs value={value} onChange={this.handleChange}>
-            <Tab label="Space Information" />
+          <Tabs value={value} onChange={this.handleTabChange}>
+            <Tab label="Space Information"  />
             <Tab label="Event Management" />
             <Tab label="Metrics" />
             <Tab label="User Management" />
@@ -48,7 +50,7 @@ export default class SpaceDash extends React.PureComponent {
           
 
         <div className="spaceDashMain">
-        {value === 0 && <SpaceInformation /> }
+        {value === 0 && <SpaceInformation id={this.props.match.params.id}/> }
         {value === 1 && <EventDash />}
         {value === 2 && <Metrics /> }
         {value === 3 && <UserDash /> }
