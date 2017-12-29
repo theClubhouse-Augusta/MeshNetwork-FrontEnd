@@ -41,9 +41,8 @@ export default class AuthTabs extends React.PureComponent {
       // website: '',
       // phoneNumber: '',
       // description: EditorState.createEmpty(),
-      selectedTag: '',
       selectedTags: [],
-      loadedTags: '',
+      loadedTags: [],
       // avatar: '',
       // imagePreviewUrl: '',
       value: 0, 
@@ -407,7 +406,11 @@ export default class AuthTabs extends React.PureComponent {
             </div>
           </div>
         </TabContainer>}
-        <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
+        <Snackbar 
+          open={snackBar} 
+          message={snackBarMessage} 
+          autoHideDuration={4000} 
+        />
       </form>   
     );
   }

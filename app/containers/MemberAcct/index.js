@@ -7,7 +7,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Tabs, { Tab } from 'material-ui/Tabs'; 
-import MdFileUpload from 'react-icons/lib/md/file-upload';
 import Snackbar from 'material-ui/Snackbar'; 
 import Select from 'react-select';
 
@@ -22,8 +21,8 @@ import SecurityNotifSettings from '../../components/SecurityNotifSettings';
 import './style.css';
 import './styleM.css';
 
-export default class MemberAcct extends React.PureComponent {
-  state= {
+export default class MemberAcct extends React.Component {
+  state = {
     selectedTab: {},
     email: '',
     password: '',
@@ -33,19 +32,29 @@ export default class MemberAcct extends React.PureComponent {
     bio: '',
     selectedTag: '',
     selectedTags: [],
-    loadedTags: '',
+    loadedTags: [],
     avatar: '',
     imagePreviewUrl: '',
     value: 0, 
     name: '',
     email: '',
+    hireable: false,
     error: false,
-    // searchOpt: '',
     snackBar: false,
+    snackBarMessage: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedin: '',
+    github: '',
+    dribble: '',
+    behance: '',
+    angellist: '',
   }; 
 
   componentDidMount() {
     this.loadSkills();
+    this.loadUserSkills();
   }
 
   loadSkills = () => {
@@ -53,7 +62,18 @@ export default class MemberAcct extends React.PureComponent {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedTags:json })})
+    .then(json => this.setState({ loadedTags:json }))
+    .catch(error => {
+      alert(`error in fetching data from server: ${error}`);
+    });
+  }
+
+  loadUserSkills = () => {
+    fetch('http://localhost:8000/api/userskills', {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+    })
+    .then(response => response.json())
+    .then(json => {this.setState({ selectedTags:json })})
     .catch(error => {
       alert(`error in fetching data from server: ${error}`);
     });
@@ -81,16 +101,32 @@ export default class MemberAcct extends React.PureComponent {
   website = e => this.setState({	website: e.target.value }); 
   phone = e => this.setState({	phoneNumber: e.target.value }); 
   bio = e => this.setState({ bio: e.target.value});
+  hireable = e => this.setState({	hireable: !this.state.hireable });
 
 	selectTag = selectedTag => {
-    const copy = selectedTag.slice(-1)[0];
-    if (copy !== undefined) {
-      copy.value = copy.value.replace(/\s\s+/g, ' ').trim();
-      copy.label = copy.label.replace(/\s\s+/g, ' ').trim();
+    const selectedTags = selectedTag.slice(0, (selectedTag.length - 1));
+    const selected = selectedTag.slice(-1)[0];
+
+    const loaded = this.state.loadedTags.slice(1);
+    const s = this.state.selectedTags.slice();
+
+    if (!!selected.id) {
       this.setState({ selectedTags: selectedTag });
     } else {
-      this.setState({ selectedTags: selectedTag });
+      selected.value = selected.value.replace(/\s\s+/g, ' ').trim();
+      selected.label = selected.label.replace(/\s\s+/g, ' ').trim();
+      const duplicateLoaded = loaded.findIndex(tag => tag.label === selected.label);
+      const duplicateSelected = s.findIndex(tag => tag.label === selected.label);
+      if (duplicateLoaded === -1 && duplicateSelected === -1) {
+        selectedTags.push(selected);
+        this.setState({	selectedTags: selectedTags });
+      } else {
+        this.setState({	selectedTags: selectedTags });
+      }
     }
+    // else {
+      // this.setState({ selectedTags: selectedTag });
+    // }
   }
 
   avatar = e => {
@@ -106,6 +142,16 @@ export default class MemberAcct extends React.PureComponent {
     };
     reader.readAsDataURL(avatar);
   }
+
+  toggleHireable =  () => this.setState({ hireable: !this.state.hireable});
+  facebook  = e => this.setState({ facebook: e.target.value });
+  twitter  = e => this.setState({ twitter:e.target.value });
+  instagram  = e => this.setState({ instagram: e.target.value });
+  linkedin = e => this.setState({ linkedin: e.target.value });
+  github  = e => this.setState({ github: e.target.value });
+  dribble  = e => this.setState({ dribble: e.target.value });
+  behance  = e => this.setState({ behance: e.target.value });
+  angellist = e => this.setState({ angelist: e.target.value });
 
   toggleSnackBar = (message) => 
     this.setState({	
@@ -124,9 +170,18 @@ export default class MemberAcct extends React.PureComponent {
       bio,
       loadedTags,
       selectedTags,
+      imagePreviewUrl, 
+      hireable,
       snackBar,
       snackBarMessage,
-      imagePreviewUrl
+      facebook,
+      twitter,
+      instagram,
+      linkedin,
+      github,
+      dribble,
+      behance,
+      angellist
     } = this.state; 
 
     return (
@@ -156,14 +211,34 @@ export default class MemberAcct extends React.PureComponent {
             title={this.title}
             website={this.website}
             bio={this.bio}
+            avatar={this.avatar}
+            company={this.company}
+            toggleHireable={this.toggleHireable}
+            hireable={hireable}
+            imagePreviewUrl={imagePreviewUrl}
+            selectTag={this.selectTag}
+            selectedTags={selectedTags}
+            loadedTags={loadedTags}
+            facebook={this.facebook}
+            twitter={this.twitter}
+            instagram={this.instagram}
+            linkedin={this.linkedin}
+            github={this.github}
+            dribble={this.dribble}
+            behance={this.behance}
+            angellist={this.angellist}
           />}  
-          {value === 1 &&  <AccountSettings /> }       
+          {value === 1 &&  <AccountSettings />}       
          {/* {value === 2 &&   <SecurityNotifSettings /> }  */}    
-
           </div>   
         </main> 
 
         <Footer />         
+        <Snackbar 
+          open={snackBar} 
+          message={snackBarMessage} 
+          autoHideDuration={4000} 
+        />
       </div>
     );
   }
