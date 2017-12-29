@@ -6,7 +6,7 @@
 
 import React from 'react';
 import Select from 'react-select'; 
-import PropTypes from 'prop-types';
+import PropTypes, { oneOfType } from 'prop-types';
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 
 import './style.css';
@@ -70,14 +70,14 @@ const ProfileSettings = props =>
                 onChange={props.avatar} 
               />
               <label htmlFor="avatar" style={{display: 'block', margin: '0 15%'}}>
-              <MdFileUpload size="40px" />
+                <MdFileUpload size="40px" />
                 profile picture 
               </label>
             </p>
           </div> 
         </div>        
             
-      <button className="acctSubmitButton">Submit</button>        
+      <button onClick={props.onUserInfoSubmit} className="acctSubmitButton">Submit</button>        
     </div>        
 
     <div className="profileWorkInfo">
@@ -108,7 +108,7 @@ const ProfileSettings = props =>
       </p>
 
       <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-        <button className="acctSubmitButton" >Submit</button>      
+        <button onClick={props.onWorkInfoSubmit} className="acctSubmitButton" >Submit</button>      
       </div> 
     </div>
 
@@ -126,6 +126,7 @@ const ProfileSettings = props =>
         />
         ]}
       </div>         
+      <button onClick={props.onTagsSubmit} className="acctSubmitButton" >Submit</button>      
     </div>
 
     <div className="profileSocialMedia">
@@ -221,18 +222,33 @@ const ProfileSettings = props =>
 export default ProfileSettings;
 
 ProfileSettings.propTypes = {
+  // userInfo functions
   name: PropTypes.func.isRequired,
   title: PropTypes.func.isRequired,
   website: PropTypes.func.isRequired,
-//  bio: PropTypes.func.isRequired,
   avatar: PropTypes.func.isRequired,
+  imagePreviewUrl: PropTypes.string.isRequired,
+  onUserInfoSubmit: PropTypes.func.isRequired,
+  // userInfo form values
+  Name: PropTypes.string.isRequired,
+  Title: PropTypes.string.isRequired,
+  Website: PropTypes.string.isRequired,
+  // workInfo
   company: PropTypes.func.isRequired,
   toggleHireable: PropTypes.func.isRequired,
+  onWorkInfoSubmit: PropTypes.func.isRequired,
+  // workInfo form values
   hireable: PropTypes.bool.isRequired,
-  imagePreviewUrl: PropTypes.string.isRequired,
+  Company: PropTypes.string.isRequired,
+  // tagForm
+  onTagsSubmit: PropTypes.func.isRequired,
   loadedTags: PropTypes.array.isRequired,
   selectTag: PropTypes.func.isRequired,
-  selectedTags: PropTypes.array.isRequired,
+  selectedTags: PropTypes.oneOfType([
+    PropTypes.object.isRequired,
+    PropTypes.array.isRequired,
+  ]),
+  //  bio: PropTypes.func.isRequired,
   facebook: PropTypes.func.isRequired,
   twitter: PropTypes.func.isRequired,
   instagram: PropTypes.func.isRequired,
@@ -242,11 +258,7 @@ ProfileSettings.propTypes = {
   behance: PropTypes.func.isRequired,
   angellist: PropTypes.func.isRequired,
   // form values
-  Name: PropTypes.string.isRequired,
-  Title: PropTypes.string.isRequired,
-  Website: PropTypes.string.isRequired,
   // Bio: PropTypes.string.isRequired,
-  Company: PropTypes.string.isRequired,
   Facebook: PropTypes.string.isRequired,
   Twitter: PropTypes.string.isRequired,
   Instagram: PropTypes.string.isRequired,

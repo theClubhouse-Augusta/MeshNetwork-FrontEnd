@@ -98,7 +98,3 @@
             cursor: pointer;
           }
           
-          inputfile:focus + label, 
-          .inputfile + label:hover {
-            background-color: rgb(245,245,245);
-          }

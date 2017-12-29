@@ -7,9 +7,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import MtextField from '../../components/CustomUI/MtextField';
+
 import './style.css';
 import './styleM.css';
-
 
 const AccountSettings = props => 
   <div className="acctSettingsContainer">
@@ -18,21 +19,36 @@ const AccountSettings = props =>
       <div className="acctChangePasswordForm">
         <p className="acctFormItem">
           <label htmlFor="">Current password</label>
-          <input
-            onChange={}
-            value={}
+          <MtextField
+            onChange={props.currentPassword}
+            value={props.CurrentPassword}
             type="password"
           />
         </p>
         <p className="acctFormItem">
           <label htmlFor="">New password</label>
-          <input
-            onChange={}
-            value={}
+          <MtextField
+            onChange={props.password}
+            value={props.Password}
             type="password"
           />
         </p>
+
         <p className="acctFormItem">
+          <label htmlFor="confirmPassword" className="userFormLabel">
+           confirm password
+          </label>
+          <MtextField 
+            onChange={props.password2} 
+            onBlur={props.confirmPassword} 
+            error={props.passwordError}
+            value={props.Password2}
+            type="password" 
+            id="confirmPassword" 
+          />
+         
+        </p>
+        {/*<p className="acctFormItem">
           <label htmlFor="">Confirm new password</label>
           <input
             onChange={this.password2} 
@@ -41,7 +57,7 @@ const AccountSettings = props =>
             type="password" 
             id="confirmPassword" 
           />
-        </p>
+        </p>*/}
         <div style={{ margin: '2em auto', textAlign: 'center' }}> 
         <button className="acctSubmitButton" >Submit</button>      
       </div> 
@@ -55,26 +71,22 @@ const AccountSettings = props =>
       <div className="acctChangeEmailForm">
         <p className="acctFormItem">
           <label htmlFor="">New email</label>
-          <input 
-            type="text"
+          <MtextField
+            onChange={props.email}
+            value={props.Email}
           />
         </p>
         <p className="acctFormItem">
           <label htmlFor="">Confirm new email</label>
-        <input type="text"/>
+          <MtextField 
+            onChange={props.email2} 
+            onBlur={props.confirmEmail} 
+            error={props.emailError}
+            value={props.Email2}
+            id="confirmPassword" 
+          />
         </p>
         <div style={{ margin: '2em auto', textAlign: 'center' }}> 
-        <button className="acctSubmitButton" >Submit</button>      
-      </div> 
-      </div>
-      
-    </div>
-
-    <div className="acctManageSpaces">
-      <h3> Manage Space Affiliation </h3>
-      <div className="acctLocationSelect">
-        {/*<MultiLocationSelect />*/}
-        <div style={{ margin: '2em auto', textAlign: 'center'}} > 
         <button className="acctSubmitButton" >Submit</button>      
       </div> 
       </div>
@@ -90,8 +102,22 @@ const AccountSettings = props =>
     </div>
   </div>;
 
-
 export default AccountSettings;
 
-// AccountSettings.propTypes = {
-// };
+AccountSettings.propTypes = {
+  // input functions
+  password: PropTypes.func.isRequired,
+  password2: PropTypes.func.isRequired,
+  email: PropTypes.func.isRequired,
+  email2: PropTypes.func.isRequired,
+  confirmPassword: PropTypes.func.isRequired,
+  confirmEmail: PropTypes.func.isRequired,
+  // form values
+  Password: PropTypes.string.isRequired,
+  Password2: PropTypes.string.isRequired,
+  Email: PropTypes.string.isRequired,
+  Email2: PropTypes.string.isRequired,
+  CurrentPassword: PropTypes.string.isRequired,
+  emailError: PropTypes.bool.isRequired,
+  passwordError: PropTypes.bool.isRequired
+};

@@ -21,26 +21,29 @@ import SecurityNotifSettings from '../../components/SecurityNotifSettings';
 import './style.css';
 import './styleM.css';
 
-export default class MemberAcct extends React.Component {
+export default class MemberAcct extends React.PureComponent {
   state = {
-    // selectedTab: {},
-    // email: '',
+    // ProfileSettings: userInfoForm
+    name: '',
+    website: '',
+    title: '',
+    avatar: '',
+    imagePreviewUrl: '',
+    email: '',
+    email2: '',
+    currentPassword: '',
     password: '',
     password2: '',
-    website: '',
     phoneNumber: '',
     bio: '',
     selectedTag: '',
     selectedTags: [],
     loadedTags: [],
-    avatar: '',
-    imagePreviewUrl: '',
     value: 0, 
-    name: '',
-    title: '',
     company: '',
     hireable: false,
-    error: false,
+    emailError: false,
+    passwordError: false,
     snackBar: false,
     snackBarMessage: '',
     facebook: '',
@@ -85,20 +88,32 @@ export default class MemberAcct extends React.Component {
   }; 
 
 
-  name = e => this.setState({	name: e.target.value.replace(/\s\s+/g, ' ').trim() }); 
-  title = e => this.setState({	title: e.target.value.replace(/\s\s+/g, ' ').trim() }); 
+  name = e => this.setState({	name: e.target.value.replace(/\s\s+/g, ' ') }); 
+  title = e => this.setState({	title: e.target.value.replace(/\s\s+/g, ' ') }); 
   // workspace = e => this.setState({ workspace: e.target.value  });
   email = e => this.setState({	email : e.target.value.trim() }); 
+  email2 = e => this.setState({	email2 : e.target.value.trim() }); 
+  currentPassword = e => this.setState({	currentPassword: e.target.value }); 
   password = e => this.setState({	password: e.target.value }); 
   password2 = e => this.setState({	password2: e.target.value });
+
   confirmPassword = () => {
      if (this.state.password !== this.state.password2) {
-      this.setState({	error: true }) 
+      this.setState({	passwordError: true }) 
      } else {
-       this.setState({	error: false }); 
+       this.setState({	passwordError: false }); 
      }
   }
-  company = e => this.setState({	company: e.target.value }); 
+
+  confirmEmail = () => {
+     if (this.state.email !== this.state.email2) {
+       this.setState({	emailError: true }) 
+     } else {
+       this.setState({	emailError: false }); 
+     }
+  }
+
+  company = e => this.setState({	company: e.target.value.replace(/\s\s+/g, ' ') }); 
   website = e => this.setState({	website: e.target.value }); 
   phone = e => this.setState({	phoneNumber: e.target.value }); 
   bio = e => this.setState({ bio: e.target.value});
@@ -154,6 +169,90 @@ export default class MemberAcct extends React.Component {
   behance  = e => this.setState({ behance: e.target.value });
   angellist = e => this.setState({ angellist: e.target.value });
 
+  onUserInfoSubmit = e => {
+    e.preventDefault();
+    // if (this.state.passwordError && !this.state.emailError) {
+    //   this.toggleSnackBar("Passwords do not match");
+    //   return;
+    // } else if (this.state.passwordError && this.state.emailError) {
+    //   this.togglesnackbar("passwords and emails do not match");
+    // } else if (!this.state.passwordError && this.state.emailError) {
+    //   this.togglesnackbar("Emails do not match");
+    // }
+    let data = new FormData();
+    let { title, name, website } = this.state;
+    data.append('title', title.trim());
+    data.append('name', name.trim());
+    data.append('website', website);
+    data.append('avatar', this.state.avatar);
+
+    fetch(`http://localhost:8000/api/updateUser`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+      method: 'post',
+      body: data,
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json.success) {
+        this.toggleSnackBar(json.success);
+      } else {
+        this.toggleSnackBar(json.error);
+      }
+    })
+    .catch(error => {
+      this.toggleSnackBar(JSON.stringify(error));
+    })
+  }
+
+  onWorkInfoSubmit = e => {
+    e.preventDefault();
+    let data = new FormData();
+    let { company, hireable } = this.state;
+    data.append('company', company.trim());
+    data.append('hireable', hireable);
+
+    fetch(`http://localhost:8000/api/updateUser`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+      method: 'post',
+      body: data,
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json.success) {
+        this.toggleSnackBar(json.success);
+      } else {
+        this.toggleSnackBar(json.error);
+      }
+    })
+    .catch(error => {
+      this.toggleSnackBar(JSON.stringify(error));
+    })
+  }
+
+  onTagsSubmit = e => {
+    e.preventDefault();
+    let data = new FormData();
+    let { selectedTags } = this.state;
+    data.append('tags', JSON.stringify(selectedTags));
+
+    fetch(`http://localhost:8000/api/updateUser`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+      method: 'post',
+      body: data,
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json.success) {
+        this.toggleSnackBar(json.success);
+      } else {
+        this.toggleSnackBar(json.error);
+      }
+    })
+    .catch(error => {
+      this.toggleSnackBar(JSON.stringify(error));
+    })
+  }
+
   toggleSnackBar = (message) => 
     this.setState({	
       snackBar: !this.state.snackBar, 
@@ -184,12 +283,15 @@ export default class MemberAcct extends React.Component {
 
           {this.state.value === 0 && 
           <ProfileSettings 
-            // functions
+            // userInfo form
             name={this.name} 
             title={this.title}
             website={this.website}
-            bio={this.bio}
             avatar={this.avatar}
+            onUserInfoSubmit={this.onUserInfoSubmit}
+            onWorkInfoSubmit={this.onWorkInfoSubmit}
+            onTagsSubmit={this.onTagsSubmit}
+            bio={this.bio}
             company={this.company}
             toggleHireable={this.toggleHireable}
             selectTag={this.selectTag}
@@ -220,7 +322,26 @@ export default class MemberAcct extends React.Component {
             selectedTags={this.state.selectedTags}
             loadedTags={this.state.loadedTags}
           />}  
-          {this.state.value === 1 &&  <AccountSettings />}       
+
+          {this.state.value === 1 &&  
+          <AccountSettings 
+            // functions
+            currentPassword={this.currentPassword}
+            password={this.password}
+            password2={this.password2}
+            email={this.email}
+            email2={this.email2}
+            confirmPassword={this.confirmPassword}
+            confirmEmail={this.confirmEmail}
+            // form values
+            CurrentPassword={this.state.currentPassword}
+            Password={this.state.password}
+            Password2={this.state.password2}
+            Email={this.state.email}
+            Email2={this.state.email2}
+            passwordError={this.state.passwordError}
+            emailError={this.state.emailError}
+          />}       
          {/* {value === 2 &&   <SecurityNotifSettings /> }  */}    
           </div>   
         </main> 

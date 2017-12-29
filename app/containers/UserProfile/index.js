@@ -85,13 +85,11 @@ export default class UserProfile extends React.Component {
             <Header />
             <div className="mainProfile">
               <section className="profileHeader">
-                <img
-                  src="https://cdn-images-1.medium.com/fit/c/80/80/0*GCZdPPcsr8kr0q8x.png"
-                  alt="avatar"
-                />
+                {user.avatar && <img src={user.avatar} alt="avatar" />}
+                {!user.avatar && <div className="profilePicturePreview" />}
                 <ul className="profileInfo">
                   <li className="profileName">{user.name}</li>
-                  <li className="profileTitle">title</li>
+                  <li className="profileTitle">{user.title ? user.title : 'title:'}</li>
                   <li className="profileSpace">{space.name}</li>
                   <li className="profileSocial">social</li>
                 </ul>
