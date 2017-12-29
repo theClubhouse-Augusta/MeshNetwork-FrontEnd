@@ -20,7 +20,7 @@ const MtextField = props =>
     type={!!props.type ? props.type : 'text' }
     accept={!!props.accept ? props.accept : ""}
     // autoComplete={!!props.autoComplete ? props.autoComplete : "on"}
-    autoComplete="off"
+    value={!!props.value ? props.value : ''}
   />
 
 export default MtextField;
