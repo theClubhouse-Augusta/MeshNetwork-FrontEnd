@@ -100,18 +100,20 @@
   font-family: "Open Sans", sans-serif;
   font-size:0.8em;
   font-weight:bold;
-
+  margin: 1em 0 .5em 1px;
+  /* 1px is slight adjustment to make label edge & field edge look a little better */
 }  
 
 .contactInputItem { 
   display: flex; 
   flex-direction: column; 
   justify-content: space-around; 
+  margin-bottom: 1em;
 }
 
 .contactInputField { 
   max-width: 80%; 
-  margin: 1em 0 0 0; 
+  margin: 1em 0; 
 }
 
 .contactInfo {

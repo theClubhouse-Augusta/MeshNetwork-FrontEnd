@@ -5,10 +5,14 @@
     background: #ab4c9d; 
     color: #ffffff; 
     font-family: "Encode Sans", sans-serif; 
-    font-variant: small-caps; 
- 
+    font-variant: small-caps;  
     padding: 8px 30px; 
     position: relative; 
+}
+
+.MeshDefaultButton:hover {
+    background: #555555; 
+    transition: 0.5s; 
 }
 
 

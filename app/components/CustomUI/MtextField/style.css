@@ -1,18 +1,15 @@
 /* MtextField Styles */
 
 .MeshTextField {    
-    padding: .25em; 
-    
+    padding: .25em;     
     background: #ffffff; 
-    border-bottom: 2px solid #555555; 
-   
+    border-bottom: 2px solid #555555;    
 }
 
-.MeshTextFieldError {    
-    padding: .25em; 
-    
+.MeshTextFieldError { 
+    padding: .25em;     
     background: #ffffff; 
-    border-bottom: 2px solid red; 
+    
    
 }
 

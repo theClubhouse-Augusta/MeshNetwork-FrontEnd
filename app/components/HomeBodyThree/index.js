@@ -5,6 +5,7 @@
 */
 
 import React from 'react';
+import DefaultButton from 'components/CustomUI/DefaultButton'; 
 
 import './style.css';
 import './styleM.css';
@@ -16,7 +17,7 @@ export default class HomeBodyThree extends React.PureComponent {
         <div className="homeBodyHeader">
           Grow Your Community
         </div>
-        <button label="Join Us" style={{marginTop:'15px', width:'200px'}}/>
+        <DefaultButton style={{marginTop:'15px', width:'200px'}}> Join Us </DefaultButton>
       </div>
     );
   }

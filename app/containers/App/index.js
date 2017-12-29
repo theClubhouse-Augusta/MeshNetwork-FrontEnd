@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../Home';
 import About from '../About';
-import BookingSystem from '../BookingSystem';
+import Booking from '../Booking';
 import BusinessSearch from '../BusinessSearch';
 import Contact from '../Contact';
 import EventDetail from '../EventDetail';
 import Events from '../Events';
 import Spaces from '../Spaces';
 import Sponsors from '../Sponsors';
-import LogInSignUp from '../LogInSignUp';
 import MemberAcct from '../MemberAcct';
 import MemberSearch from '../MemberSearch';
 import MemberDash from '../MemberDash';
@@ -18,6 +17,10 @@ import SpaceProfile from '../SpaceProfile';
 import UserProfile from '../UserProfile';
 import KioskSystem from '../KioskSystem';
 import NotFound from '../NotFound';
+import SpaceDash from '../SpaceDash';
+import SpaceSignUp from '../SpaceSignUp';
+import UserSignUp from '../UserSignUp';
+import UserSignIn from '../UserSignIn';
 
 export default class App extends Component {
 
@@ -69,8 +72,23 @@ export default class App extends Component {
           />
 
           <Route
-            path="/Booking"
-            render={() => <BookingSystem />}
+            path="/booking/:id"
+            render={(props) => <Booking {...props}/>}
+          />
+
+          <Route
+            path="/newSpace"
+            render={(props) => <SpaceSignUp {...props}/>}
+          />
+
+          <Route
+            path="/join/:id"
+            render={(props) => <UserSignUp {...props}/>}
+          />
+
+          <Route
+            path="/signIn"
+            render={(props) => <UserSignIn {...props}/>}
           />
 
           <Route
@@ -82,18 +100,19 @@ export default class App extends Component {
             }
           />
 
-          <Route
+          {/*<Route
             path="/Contact"
             render={() => <Contact />}
           />
+          */}
 
           <Route
-            path="/EventDetail"
+            path="/event/:id"
             render={(props) => <EventDetail {...props} />}
           />
 
           <Route
-            path="/Events"
+            path="/events"
             render={() => <Events />}
           />
 
@@ -105,17 +124,6 @@ export default class App extends Component {
           <Route
             path="/Spaces"
             component={Spaces}
-          />
-
-          <Route
-            path="/Auth"
-            render={(props) => (
-              <LogInSignUp
-                {...props}
-                login={this.login}
-                redirect={this.state.redirect}
-              />
-            )}
           />
 
           <Route
@@ -148,7 +156,7 @@ export default class App extends Component {
           />
 
           <Route
-            path="/SpaceProfile"
+            path="/space/:id"
             render={(props) => <SpaceProfile {...props} />}
           />
 
@@ -160,14 +168,13 @@ export default class App extends Component {
               />
             )}
           />
-          <Route path="/kiosk"
+          <Route path="/kiosk/:id"
             render={(props) => <KioskSystem {...props} />}
           />
 
-
           <Route
-            path="/clubhouse"
-            component={() => { window.location = 'https://theclubhou.se'; }}
+            path="/spacedash/:id"
+            render={(props) => <SpaceDash {...props} />} 
           />
 
           <Route component={NotFound} />

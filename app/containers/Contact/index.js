@@ -8,6 +8,8 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import MtextField from '../../components/CustomUi/MtextField'; 
+import DefaultButton from '../../components/CustomUi/DefaultButton';
 import Snackbar from 'material-ui/Snackbar';
 
 import './style.css';
@@ -17,18 +19,7 @@ import './styleM.css';
 export default class Contact extends React.PureComponent {
   render() {
 
-    const buttonContainer = {
-      marginTop:'10px',
-      width:'100%',
-      fontSize:'1.4em',
-      height:'60px',
-      alignSelf:'center',
-      fontFamily: 'Encode Sans', 
-      fontWeight:'bold',
-      color:'#FFFFFF',
-      textTransform: 'small-caps', 
-      backgroundColor:'#26aae1'
-    };
+
 
     return (
       <div className="contactContainer">
@@ -55,20 +46,28 @@ export default class Contact extends React.PureComponent {
 
               <p className="contactInputItem">
                 <label className="contactInputLabel">What's Your Name?*</label>
-                <input type="text"  className="contactInputField"/>
+                <MtextField               
+                  type="text"
+                  name=""
+                  id="contactName"
+                />
              </p> 
 
               <p className="contactInputItem">
                   <label className="contactInputLabel">What Email Can We Reach You At? *</label>
-                  <input type="email"  className="contactInputField"/>
+                  <MtextField               
+                    type="email"
+                    name=""
+                    id="contactEmail"
+                  />
               </p> 
              
               <p className="contactInputItem">
                 <label className="contactInputLabel">Tell Us a Bit About Your Organization*</label>
-                <textarea   style={{margin: '1em 0 0 0'}}/>
+                <textarea   style={{margin: '1em 0', border: '2px solid #555555'}} cols="60" rows="6"/>
               </p> 
 
-              <button style={buttonContainer} >Send My Message</button>
+              <DefaultButton> Send My Message</DefaultButton>
           </div>
 
 
