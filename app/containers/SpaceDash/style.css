@@ -1,7 +1,16 @@
-/* SpaceDash Styles */
+/* AdminDash Styles */
 
 .container {
   display:flex;
   flex-direction:column;
   min-height:100vh;
+}
+
+.spaceDashBody { 
+  height: 100%; 
+  width: 100%; 
+}
+
+.spaceDashMain { 
+  padding: 30px; 
 }
