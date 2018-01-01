@@ -27,19 +27,10 @@ import { NewSponsorForm } from './NewSponsorForm';
 import { SelectedOrganizers } from './SelectedOrganizers';
 import { SelectedSponsors } from './SelectedSponsors';
 
-// validation
-import { 
-  removeDuplicateDate,
-  removeDuplicateStart,
-  removeDuplicateEnd,
-  dateErrors,
-  multiDayTimeErrors,
-  timeError
-} from './dateUtils';
+import DateUtils from './DateUtils';
 
 // styles
 import StyleHelpers from '../../utils/StyleHelpers';
-import './style.css';
 import './styleM.css';
 
 export default class AddEvent extends Component {
@@ -88,10 +79,6 @@ export default class AddEvent extends Component {
     sponsorFocused: false,
     organizerFocused: false,
   };
-
-  // componentWillMount() {
-  //   this.authenticate(localStorage['token']);
-  // }
 
   componentDidMount() {
     this.getSponsors();
@@ -202,7 +189,7 @@ export default class AddEvent extends Component {
       if (today.valueOf() < selectedDate.valueOf()) {
         this.setState({	day: e.target.value }, () => {
           if (this.state.day && this.state.start && this.state.end) {
-            const error = timeError(this.state.start, this.state.end, this.state.day);
+            const error = this.DateUtils.timeError(this.state.start, this.state.end, this.state.day);
             if (error) { 
               this.setState({	modalMessage: "Invalid Date", dateError: "Please Cheack the order of your dates" })
             } else {
@@ -222,7 +209,7 @@ export default class AddEvent extends Component {
     if (typeof index !== 'number') {
       this.setState({	start: e.target.value }, () => {
         if (this.state.day && this.state.start && this.state.end) {
-          const error = timeError(this.state.start, this.state.end, this.state.day);
+          const error = this.DateUtils.timeError(this.state.start, this.state.end, this.state.day);
             error ? this.setState({	dateError: "Please check your start and end times" })
                   : this.setState({	dateError: ''})
         }
@@ -234,7 +221,7 @@ export default class AddEvent extends Component {
     if (typeof index !== 'number') {
       this.setState({	end: e.target.value }, () => {
           if (this.state.day && this.state.start && this.state.end) {
-            const error = timeError(this.state.start, this.state.end, this.state.day);
+            const error = this.DateUtils.timeError(this.state.start, this.state.end, this.state.day);
             error ? this.setState({	dateError: "Please check your start and end times" })
                   : this.setState({	dateError: ''})
           }
@@ -255,12 +242,12 @@ export default class AddEvent extends Component {
 
       const dates = this.state.dateMulti.slice(); 
       const date = { day: e.target.value, index: index, };
-      const removeDate = removeDuplicateDate(dates, date);
+      const removeDate = this.DateUtils.removeDuplicateDate(dates, date);
 
       if (typeof removeDate !== 'number') {
         dates.push(date);
         this.setState({	dateMulti: dates }, () => {
-          if (dateErrors(this.state.dateMulti)) {
+          if (this.DateUtils.dateErrors(this.state.dateMulti)) {
             this.setState({	dateError: "Please Cheack the order of your dates" });
           } else {
             this.setState({	dateError: '' });
@@ -270,7 +257,7 @@ export default class AddEvent extends Component {
         dates.splice(removeDate, 1);
         dates.push(date);
         this.setState({	dateMulti: dates }, () => {
-          if (dateErrors(this.state.dateMulti)) {
+          if (this.DateUtils.dateErrors(this.state.dateMulti)) {
             this.setState({	dateError: "Please Cheack the order of your dates" });
           } else {
             this.setState({	dateError: '' });
@@ -285,11 +272,11 @@ export default class AddEvent extends Component {
       const startTimes = this.state.startMulti.slice();
       const endTimes = this.state.endMulti.slice(); 
       const time = { start: e.target.value, index: index, };
-      const removeTime = removeDuplicateStart(startTimes, time);
+      const removeTime = this.DateUtils.removeDuplicateStart(startTimes, time);
       if (typeof removeTime !== 'number') {
         startTimes.push(time);
         this.setState({	startMulti: startTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+          if (this.DateUtils.multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times', });
            } else { 
              this.setState({	timeError: '' }) 
@@ -299,7 +286,7 @@ export default class AddEvent extends Component {
         startTimes.splice(removeTime, 1);
         startTimes.push(time);
         this.setState({	startMulti: startTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+          if (this.DateUtils.multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times',  });
            } else { 
              this.setState({	timeError: '' }) 
@@ -314,11 +301,11 @@ export default class AddEvent extends Component {
       const startTimes = this.state.startMulti.slice();
       const endTimes = this.state.endMulti.slice(); 
       const time = { end: e.target.value, index: index, };
-      const removeTime = removeDuplicateEnd(endTimes, time);
+      const removeTime = this.DateUtils.removeDuplicateEnd(endTimes, time);
       if (typeof removeTime !== 'number') {
         endTimes.push(time);
         this.setState({	endMulti: endTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+          if (this.DateUtils.multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times', });
            } else { 
              this.setState({	timeError: '' }) 
@@ -328,7 +315,7 @@ export default class AddEvent extends Component {
         endTimes.splice(removeTime, 1);
         endTimes.push(time);
         this.setState({	endMulti: endTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+          if (this.DateUtils.multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times', });
            } else { 
              this.setState({	timeError: '' }) 
