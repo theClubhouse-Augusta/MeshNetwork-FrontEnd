@@ -339,7 +339,7 @@ export default class EventDetail extends React.PureComponent {
                 {(upcomingEvents && !hostSpace) &&
                 <ul className="eventUpcomingList"> 
                   {upcomingEvents.map((event, key) => 
-                  <a key={`a${key}`} href={`/EventDetail/${event.id}`}>
+                  <a key={`a${key}`} href={`/event/${event.id}`}>
                     <li style={{lineHeight: '2em'}}>
                       {`${moment(event.start).format('MMMM D')} ${event.title} @${event.name}`}
                     </li>
@@ -349,7 +349,7 @@ export default class EventDetail extends React.PureComponent {
                 {(upcomingEvents && workSpaces) &&
                 <ul className="eventUpcomingList"> 
                   {upcomingEvents.map((event, key) => 
-                  <a key={`a${key}`} href={`/EventDetail/${event.id}`}>
+                  <a key={`a${key}`} href={`/event/${event.id}`}>
                     <li style={{lineHeight: '2em'}}>
                       {`${moment(event.start).format('MMMM D')} ${event.title} @` + `${workSpaces.map(space => space.name,)}`}
                     </li>

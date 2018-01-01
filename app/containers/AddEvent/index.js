@@ -5,10 +5,10 @@
  */
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import Header from 'components/Header'; 
-import Footer from 'components/Footer'; 
 import Snackbar from 'material-ui/Snackbar'; 
 import Select from 'react-select';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/Button';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
@@ -16,6 +16,8 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'react-select/dist/react-select.css';
 
 // compononents,
+import Header from 'components/Header'; 
+import Footer from 'components/Footer'; 
 import ErrorModal from '../../components/ErrorModal';
 import { MdInsertDriveFile } from 'react-icons/lib/md'; 
 import DateTimeSelect from '../../components/DateTimeSelect'; 
@@ -36,6 +38,7 @@ import {
 } from './dateUtils';
 
 // styles
+import StyleHelpers from '../../utils/StyleHelpers';
 import './style.css';
 import './styleM.css';
 
@@ -81,6 +84,9 @@ export default class AddEvent extends Component {
     multidayComponent: '',
     // tags
     loadedTags: '',
+    tagFocused: false,
+    sponsorFocused: false,
+    organizerFocused: false,
   };
 
   // componentWillMount() {
@@ -494,6 +500,14 @@ export default class AddEvent extends Component {
   }
 
   closeModal = () => this.setState(() => ({ modalMessage: '' }))
+  onTagFocus = () => this.setState({ tagFocused: true });
+  onTagBlur = () => this.setState({ tagFocused: false });
+
+  onOrganizerFocus = () => this.setState({ organizerFocused: true });
+  onOrganizerBlur = () => this.setState({ organizerFocused: false });
+
+  onSponsorFocus = () => this.setState({ sponsorFocused: true });
+  onSponsorBlur = () => this.setState({ sponsorFocused: false });
 
   render() {
 
@@ -516,8 +530,13 @@ export default class AddEvent extends Component {
       snackBar,
       snackBarMessage,
       modalMessage,
-      searchEnter
+      searchEnter,
+      tagFocused,
+      organizerFocused,
+      sponsorFocused,
     } = this.state;
+
+    const Helper = new StyleHelpers;
 
     return (
       this.loading()
@@ -528,89 +547,125 @@ export default class AddEvent extends Component {
             <Helmet title="AddEvent" meta={[ { name: 'description', content: 'Description of AddEvent' }]}/>
             <Header />
 
-            <div>
-              <div className="addEventBanner"></div>
-              <div className="addEventBody">
-                <h2 className="addEventTitle"> Submit An Event </h2> 
+            <main className="spaceSignUpMain">
 
-                <div className="addEventInstructions">
-                  <p> a bunch of submission instructions & stuff</p>
-                  <ul className="addEventDesList"> 
-                    <li className="listItemReset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </li>
-                    <li className="listItemReset">Maecenas mollis, turpis ut malesuada sodales, ex purus suscipit augue, quis viverra felis leo quis diam.</li>
-                    <li className="listItemReset">Ut congue ex dolor, ut semper odio viverra nec.</li>
-                    <li className="listItemReset">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vulputate ultrices tortor a egestas. Morbi cursus placerat nibh, sed finibus quam molestie tincidunt. </li>
-                  </ul> 
-                </div>              
+              <div className="spaceSignUpTitle">Submit an Event</div>
+              <div className="spaceSignUpContainer">
 
-                <div className="addEventForm"> 
-                  {/* checkbox for comprehensive event */}
-                  <div style={{display:'flex', alignSelf: 'flex-start', marginLeft: '10%', marginBottom: 30}}>
-                    <input type="checkBox" id="comprehensive-event" onKeyDown={(e) => e.keyCode === 13 ? this.toggleCompEvent() : null} onChange={this.toggleCompEvent} checked={checkCompEvent} />
-                    <label htmlFor="comprehensive-event"> &nbsp;&nbsp;comprehensive event </label>
-                  </div>
-                  {/* event name */}
-                  <label htmlFor="eventName" style={{alignSelf: 'flex-start', margin: '0 0 0 10%',}}> Event name </label>
-                  <div className="addEventNameInput"> 
+                <TextField 
+                  label="Event name" 
+                  onChange={this.eventName} 
+                  type="text" 
+                  name="eventName" 
+                  margin="normal"
+                  //style={{width: '100%', marginTop: 10, height: '35px', border: '1px solid black'}} 
+                />
+                <TextField 
+                  onChange={this.eventUrl}
+                  type="url" 
+                  label="Event url" 
+                  margin="normal"
+                />
 
-                    <input onChange={this.eventName} type="text" name="" id="eventName" style={{width: '100%', marginTop: 10, height: '35px', border: '1px solid black'}} />
-                  </div>
+                <label
+                  style={{    
+                    marginTop: Helper.getLabelStyle(tagFocused, selectedTags)[0],
+                    color: Helper.getLabelStyle(tagFocused, selectedTags)[1],
+                  }} 
+                  className={Helper.getLabelClassName(tagFocused, selectedTags)}
+                >
+                  Skills
+                </label>
+                {loadedTags && 
+                <Select.Creatable 
+                  className={Helper.getSelectStyle(tagFocused, selectedTags)}
+                  placeholder={!tagFocused && !!!selectedTags.length ? 'Skills' : ''} 
+                  multi 
+                  style={{
+                    background: '#f8f8f8', 
+                    border: 'none', 
+                    boxShadow: 'none'
+                  }}
+                  options={loadedTags} 
+                  onChange={this.selectTag} 
+                  value={selectedTags} 
+                  onFocus={this.onTagFocus} 
+                  onBlur={this.onTagBlur}
+                />}
 
-                  {/* event url */}
-                  <p className="addEventDateTime"> 
-                    <label htmlFor="eventUrl" style={{textAlign: 'justify', width: '60%'}}> Add any relevant outside URL </label>
-                    <span> <small>(such as Github repo or official challenge page)</small> </span> 
-                    <input onChange={this.eventUrl} type="url" name="eventUrl" id="event outside url" style={{width: '100%', marginTop: 10, height: '35px', border: '1px solid black'}} />
-                  </p>
+                <label
+                  style={{    
+                    marginTop: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[0],
+                    color: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[1],
+                  }} 
+                  className={Helper.getLabelClassName(organizerFocused, selectedOrganizers)}
+                >
+                 Event Organizer 
+                </label>
 
-                  <div className="addEventTagContainer">                 
-                    <label className="addEventFormLabel"> Add any keywords or topics that best describe your event </label>
-                    {/* event tags */}
-                    {loadedTags && <Select.Creatable multi={true} options={loadedTags} onChange={this.selectTag} value={selectedTags} />}
-                  </div> 
+                {organizers && 
+                <Select 
+                  className={Helper.getSelectStyle(organizerFocused, selectedOrganizers)}
+                  placeholder={!organizerFocused && !!!selectedOrganizers.length ? 'Event Organizers' : ''} 
+                  multi
+                  style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                  options={organizers} 
+                  onChange={this.selectOrganizer} 
+                  value={selectedOrganizers} 
+                  onFocus={this.onOrganizerFocus} 
+                  onBlur={this.onOrganizerBlur}
+                />}
 
-                  <div className="addEventUserSelect"> 
-                    <label className="addEventFormLabel"> Event Organizers</label>
-                    {/* Organizer Select */}
-                    {organizers && <Select key={`orgSelect`} multi={true} options={organizers} onChange={this.selectOrganizer} value={selectedOrganizers} />}
-                    {/* selected organizers */}
-                    {!!selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={selectedOrganizers} removeOrganizer={this.removeOrganizer} />}
-                  </div>
+                {!!selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={selectedOrganizers} removeOrganizer={this.removeOrganizer} />}
+                {!!sponsors.length && [
+                  <label 
+                    style={{    
+                      marginTop: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[0],
+                      color: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[1],
+                    }} 
+                    key={`label$`} 
+                    className={Helper.getLabelClassName(sponsorsFocused, selectedSponsors)}
+                  >
+                    Event Sponsors 
+                  </label>,
+                  <Select 
+                    className={Helper.getSelectStyle(sponsorFocused, selectedSponsors)}
+                    placeholder={!sponsorsFocused && !!!selectedSponsors.length ? 'Event Sponsors' : ''} 
+                    key={`sponsors`} 
+                    multi
+                    style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                    options={sponsors} 
+                    onChange={this.selectSponsor} 
+                    value={selectedSponsors} 
+                    onFocus={this.onSponsorFocus} 
+                    onBlur={this.onSponsorBlur}
+                  />
+                ]}
 
-                  {/* Sponsors */}
-                  <div className="addEventSponsorContainer">
-                    {/* Sponsor select form */}
-                    <div className="addEventOrganizerBlock">
-                      {!!sponsors.length && [
-                      <label className="addEventFormLabel" key={`label$`}> Event Sponsors </label>,
-                      <Select key={`sponsors`} multi={true} options={sponsors} onChange={this.selectSponsor} value={selectedSponsors} />
-                      ]}
-                    </div>
+                {!!selectedSponsors.length && 
+                <SelectedSponsors 
+                  selectedSponsors={selectedSponsors} 
+                  removeSponsor={this.removeSponsor} 
+                  newSponsor={false} 
+                />}
 
-                    {/* Selected Sponsors*/}
-                    {!!selectedSponsors.length && <SelectedSponsors selectedSponsors={selectedSponsors} removeSponsor={this.removeSponsor} newSponsor={false} />}
-                  </div>
+                <label htmlFor="newSponsors" >
+                  &nbsp;&nbsp;Add new sponsor
+                </label>
 
-                  {/* Add new Sponsor check box */}
-                  <label htmlFor="newSponsors" style={{alignSelf: 'flex-start', margin: '10px 0 0 9%'}}>&nbsp;&nbsp;Add new sponsor</label>
-                  <div style={{ display: 'flex', alignSelf: 'flex-start', margin: '0 0 0 10%'}}>
-                    <input id="newSponsors" type="checkbox" onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null} onChange={this.toggleNewSponsors} checked={checkNewSponsors} />
-                  </div>
-                  {/* new Sponsor form */}
-                  <div className={checkNewSponsors ? 'addEventDateTime' : 'addEventTimeHide' }> 
-                      {checkNewSponsors && 
-                        <NewSponsorForm 
-                          onFormSubmit={this.onNewSponsorSubmit}
-                      />}
-                  </div> 
-                  {/* New Sponsors*/}
-                  <div className="addEventSponsorContainer">
-                    {!!newSponsors.length && <SelectedSponsors selectedSponsors={newSponsors} removeSponsor={this.removeNewSponsor} newSponsor={true} />}
-                  </div> 
+                <input 
+                  id="newSponsors" 
+                  type="checkbox" 
+                  onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null} onChange={this.toggleNewSponsors} checked={checkNewSponsors} 
+                />
 
-                  {/* Event Date/Time */}
+                <div className={checkNewSponsors ? 'addEventDateTime' : 'addEventTimeHide' }> 
+                  {checkNewSponsors && <NewSponsorForm onFormSubmit={this.onNewSponsorSubmit} />}
+                </div> 
+
+                  {!!newSponsors.length && <SelectedSponsors selectedSponsors={newSponsors} removeSponsor={this.removeNewSponsor} newSponsor={true} />}
+
                   <div className="" style={{width: '80%'}}> 
-                    {/* Single day event */}
                     {(dateError && !checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{dateError}</p>}
                     {(timeError && !checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{timeError}</p>}
                     {!checkMultiday && [
@@ -627,10 +682,8 @@ export default class AddEvent extends Component {
                     />
                     ]} 
 
-                    {/* checkbox for multi-day */}
                     <input style={{marginTop:50}} type="checkBox" id="multi-day-event"  onChange={this.toggleMultiday} checked={checkMultiday} onKeyDown={(e) => e.keyCode === 13 ? this.toggleMultiday() : null} />
                     <label htmlFor="multi-day-event"> &nbsp;&nbsp;multi-day event </label>
-                    {/* text form "how many days?"" */}
                     {(checkMultiday && !days) &&         
                     <p style={{display: 'flex', flexDirection: 'column'}}>  
                       <label htmlFor="event-days">How many days?</label>
@@ -644,14 +697,13 @@ export default class AddEvent extends Component {
                       />
                     </p>}
 
-                    {/* error messages for invalid date selections */}
                     {(dateError && checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{dateError}</p>}
                     {(timeError && checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{timeError}</p>}
+
                     {/* multiday event forms */}
                     {(checkMultiday && days) && this.multiDay(days) }          
                   </div>              
 
-                  {/* event description */}
                   <div className="addEventDesContainer">
                     <label className="addEventFormLabel"> Event Description</label>
                     <div style={{ border: '1px solid black', height: '200px', margin: '0 auto', width: '100%'}}>
@@ -677,8 +729,23 @@ export default class AddEvent extends Component {
                     </div>
                   </div>
 
+                <div style={{
+                  display: 'flex',
+                  marginTop: '32px',
+                  marginBottom: '32px'
+                }}>    
+                  <input
+                    type="checkBox" 
+                    id="comprehensive-event" 
+                    onKeyDown={(e) => e.keyCode === 13 ? this.toggleCompEvent() : null} onChange={this.toggleCompEvent} checked={checkCompEvent} 
+                  />
+                  <label 
+                    htmlFor="comprehensive-event"> 
+                      &nbsp;&nbsp;comprehensive event 
+                  </label>
+                </div>
 
-                    <p style={{display: 'flex', flexDirection: 'column', width: '80%', marginTop: 30}}>  
+                    {/* <p style={{display: 'flex', flexDirection: 'column', width: '80%', marginTop: 30}}>   */}
                       <label htmlFor="event-files">Upload any other relevant documents</label>
                       <input 
                         multiple
@@ -687,7 +754,7 @@ export default class AddEvent extends Component {
                         type="file" 
                         style={{width: '100%', marginTop: 10, height: '35px'}} 
                       />
-                    </p>
+                    {/* </p> */}
 
                     <div style={{marginTop: '40px', width: '80%'}}>
                       <h4 style={{marginBottom: 10}}> Uploaded files </h4>
@@ -710,21 +777,21 @@ export default class AddEvent extends Component {
                         </ol> : null}
                     </div>
                   
-                  <div 
+                  {/* <div 
                   className="addEventSubmit"
-                  >
+                  > */}
                     {/* submit form */}
-                    <button label="Submit" 
+                    {/* <button label="Submit" 
                     className="addEventSubmitButton" 
                     onClick={this.Submit}
-                    > Submit </button> 
-                    <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
-                  </div>
+                    > Submit </button>  */}
+                  {/* </div> */}
                 
-                </div> 
+                {/* </div>  */}
               </div>          
-            </div>  
+            </main>  
 
+            <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
             <Footer />
             <ErrorModal message={modalMessage} closeModal={this.closeModal} />          
           </div>

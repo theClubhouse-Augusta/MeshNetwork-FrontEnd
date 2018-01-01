@@ -65,7 +65,7 @@ export default class SpaceProfile extends React.PureComponent {
   }
 
  getProfile = () => {
-    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+    fetch('http://localhost:8000/api/workspace/'+ this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {

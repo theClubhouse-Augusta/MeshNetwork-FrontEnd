@@ -25,38 +25,10 @@ import UserSignIn from '../UserSignIn';
 export default class App extends Component {
 
   state = {
-    user: '',
+
   };
 
 
-  login = (e, email, password) => {
-    e.preventDefault();
-    const data = new FormData();
-    data.append('email', email);
-    data.append('password', password);
-
-    fetch('http://localhost:8000/api/login', {
-      method: 'post',
-      body: data,
-    })
-    .then(response => response.json() )
-    .then(loggedInUser => {
-      if (loggedInUser.token === false || loggedInUser.error) {
-        alert('invalid credentials'); // eslint-disable-line
-      } else if (loggedInUser.token !== false) {
-        localStorage['token'] = loggedInUser.token;
-        localStorage['user'] = loggedInUser.user;
-        this.setState({
-          user: loggedInUser,
-          loading: false,
-          redirect: <Redirect to={`/UserProfile/${loggedInUser['user'].id}`} />
-        });
-      }
-    })
-    .catch(error => {
-      alert(`in login: ${error}`); // eslint-disable-line
-    })
-  }
 
   render() {
     return (
@@ -88,7 +60,11 @@ export default class App extends Component {
 
           <Route
             path="/signIn"
-            render={(props) => <UserSignIn {...props}/>}
+            render={(props) => 
+              <UserSignIn 
+                {...props}
+              />
+            }
           />
 
           <Route
@@ -161,7 +137,7 @@ export default class App extends Component {
           />
 
           <Route
-            path="/UserProfile"
+            path="/user/:id"
             render={(props) => (
               <UserProfile
                 {...props}

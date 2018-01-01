@@ -33,9 +33,6 @@ export default class UserProfile extends React.Component {
     }
   }
 
-  componentDidMount() {
-  }
-
   loadUser = token => {
     if (!token) {
       this.props.history.push('/');
@@ -118,7 +115,7 @@ export default class UserProfile extends React.Component {
                     <ul className="profileTagCloud">
                       {events.map((event, index) => 
                         <li 
-                          onClick={() => {this.props.history.push(`/EventDetail/${event.id}`)}}
+                          onClick={() => {this.props.history.push(`/event/${event.id}`)}}
                           key={`${event.title}${index}`} 
                           className="EventTag"
                         >
@@ -135,12 +132,9 @@ export default class UserProfile extends React.Component {
                   <div className="profileBio">
                     {!!user.name && <h1>About {user.name}</h1>}
                     {!!!user.name && <About />}
-                    {/*<div className="profileBioContent">
-                      <p
-                        dangerouslySetInnerHTML={{__html: user.bio}}
-                      >
-                      </p>
-                    </div>*/}
+                    {<div className="profileBioContent">
+                      <p> {user.bio} </p>
+                    </div>}
                   </div>
 
                   <aside className="profileAttending">
@@ -150,7 +144,7 @@ export default class UserProfile extends React.Component {
                     <ul className="profileAttendingContent">
                       {upcoming.map((attend, index) => 
                         <li 
-                          onClick={() => {this.props.history.push(`/EventDetail/${attend.id}`)}}
+                          onClick={() => {this.props.history.push(`/event/${attend.id}`)}}
                           key={`${attend.title}${index}`} 
                           className="profileAttendingItem"
                         >

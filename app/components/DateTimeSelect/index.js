@@ -12,7 +12,7 @@ import './style.css';
 import './styleM.css';
 
 const DateTimeSelect = props =>
-  <div className={ !props.multiday ? "dateTimeContainer" : "dateTimeContainerMultiday"}> 
+  <div className="dateTimeContainerMultiday"> 
     <DatePicker 
       label={props.dateLabel}
       index={typeof props.index === 'number' ? props.index : false} 
