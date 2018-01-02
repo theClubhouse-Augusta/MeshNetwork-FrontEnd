@@ -52,3 +52,30 @@
   max-height:200px;
   max-width:100%;
 }
+
+.home-toolbar {
+  background:transparent;
+  border:none;
+  border-bottom:1px solid #DDDDDD;
+  display:flex;
+  width:100%;
+}
+
+.home-wrapper {
+  width:100%;
+  margin-top:15px;
+}
+
+.rdw-editor-main {
+  min-height:500px;
+  font-family:'Lato';
+  font-weight:400;
+  font-size:1.1em;
+  color:#333333;
+  line-height:30px;
+  letter-spacing: 1px;
+}
+
+.toolbarHidden {
+  display:none;
+}

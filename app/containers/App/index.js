@@ -4,18 +4,18 @@ import Home from '../Home';
 import About from '../About';
 import Booking from '../Booking';
 import BusinessSearch from '../BusinessSearch';
-import Contact from '../Contact';
+//import Contact from '../Contact';
 import EventDetail from '../EventDetail';
-import Events from '../Events';
+//import Events from '../Events';
 import Spaces from '../Spaces';
-import Sponsors from '../Sponsors';
+//import Sponsors from '../Sponsors';
 import MemberAcct from '../MemberAcct';
 import MemberSearch from '../MemberSearch';
 import MemberDash from '../MemberDash';
 import AddEvent from '../AddEvent';
 import SpaceProfile from '../SpaceProfile';
 import UserProfile from '../UserProfile';
-import KioskSystem from '../KioskSystem';
+import Kiosk from '../Kiosk';
 import NotFound from '../NotFound';
 import SpaceDash from '../SpaceDash';
 import SpaceSignUp from '../SpaceSignUp';
@@ -111,15 +111,15 @@ export default class App extends Component {
             render={(props) => <EventDetail {...props} />}
           />
 
-          <Route
+          {/*<Route
             path="/events"
             render={() => <Events />}
-          />
+          />*/}
 
-          <Route
+          {/*<Route
             path="/Sponsors"
             component={Sponsors}
-          />
+          />*/}
 
           <Route
             path="/Spaces"
@@ -169,7 +169,7 @@ export default class App extends Component {
             )}
           />
           <Route path="/kiosk/:id"
-            render={(props) => <KioskSystem {...props} />}
+            render={(props) => <Kiosk {...props} />}
           />
 
           <Route

@@ -10,6 +10,11 @@ import { Link } from 'react-router-dom';
 import Header from 'components/Header';
 import PropTypes from 'prop-types';
 
+import {EditorState, ContentState, convertFromHTML, convertToRaw} from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
@@ -25,12 +30,13 @@ export default class SpaceSignUp extends React.PureComponent {
       name:"",
       city:"",
       address:"",
+      password:"",
       state:"",
       zipcode:"",
       email:"",
       website:"",
       phone_number:"",
-      description:"",
+      description:EditorState.createEmpty(),
       logo:"",
       logoPreview:"",
       msg:"",
@@ -43,13 +49,14 @@ export default class SpaceSignUp extends React.PureComponent {
 
   handleName = (event) => { this.setState({name:event.target.value})};
   handleCity = (event) => { this.setState({city:event.target.value})};
+  handlePassword = (event) => { this.setState({password:event.target.value})};
   handleAddress = (event) => { this.setState({address:event.target.value})};
   handleState = (event) => {this.setState({state:event.target.value})};
   handleZip = (event) => {this.setState({zipcode:event.target.value})};
   handleEmail = (event) => {this.setState({email:event.target.value})};
   handleWebsite = (event) => {this.setState({website:event.target.value})};
   handlePhone = (event) => {this.setState({phone_number:event.target.value})};
-  handleDescription = (event) => {this.setState({description:event.target.value})};
+  handleDescription = (editorState) => {this.setState({description: editorState, editorState: editorState})};
   handleLogo = (event) => {
     event.preventDefault();
     let reader = new FileReader();
@@ -70,6 +77,7 @@ export default class SpaceSignUp extends React.PureComponent {
     let data = new FormData();
 
     data.append('name', this.state.name);
+    data.append('password', this.state.password);
     data.append('city', this.state.city);
     data.append('address', this.state.address);
     data.append('state', this.state.state);
@@ -77,7 +85,7 @@ export default class SpaceSignUp extends React.PureComponent {
     data.append('email', this.state.email);
     data.append('website', this.state.website);
     data.append('phone_number', this.state.phone_number);
-    data.append('description', this.state.description);
+    data.append('description', draftToHtml(convertToRaw(this.state.description.getCurrentContent())));
     data.append('logo', this.state.logo);
 
     fetch("http://innovationmesh.com/api/newspace", {
@@ -130,13 +138,32 @@ export default class SpaceSignUp extends React.PureComponent {
           <div className="spaceSignUpTitle">Create a New WorkSpace</div>
           <div className="spaceSignUpContainer">
             <TextField label="Organization Name" value={this.state.name} onChange={this.handleName} margin="normal"/>
+            <TextField label="Password" value={this.state.password} onChange={this.handlePassword} margin="normal" type="password"/>
             <TextField label="City" value={this.state.city} onChange={this.handleCity} margin="normal"/>
             <TextField label="Address" value={this.state.address} onChange={this.handleAddress} margin="normal"/>
             <TextField label="State" value={this.state.state} onChange={this.handleState} margin="normal"/>
             <TextField label="ZIP" value={this.state.zipcode} onChange={this.handleZip} margin="normal"/>
             <TextField label="E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
             <TextField label="Phone #" value={this.state.phone_number} onChange={this.handlePhone} margin="normal"/>
-            <TextField label="Brief Description" value={this.state.description} onChange={this.handleDescription} margin="normal"/>
+            <Editor
+                editorState={this.state.description}
+                toolbarClassName="home-toolbar"
+                wrapperClassName="home-wrapper"
+                editorClassName="rdw-editor-main"
+                onEditorStateChange={this.handleDescription}
+                placeholder="Describe your WorkSpace here in great detail. Be sure to include as much as can about the features of your space."
+                toolbar={{
+                  inline: { inDropdown: true },
+                  fontSize:{ className: "toolbarHidden",},
+                  fontFamily:{className: "toolbarHidden",},
+                  list: { inDropdown: true, options: ['unordered', 'ordered'] },
+                  textAlign: { inDropdown: true,  options: ['left', 'center', 'right'] },
+                  link: { inDropdown: true },
+                  remove:{className: "toolbarHidden",},
+                  emoji: {className: "toolbarHidden",},
+                  history: {className: "toolbarHidden",},
+                }}
+              />
             <div className="spaceLogoMainImageRow">
               <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
                 {this.renderLogoImageText()}

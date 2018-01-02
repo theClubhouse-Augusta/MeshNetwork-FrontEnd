@@ -25,11 +25,7 @@ div.BS-Container h1 {
   min-height: 4em;
   width:100%;
   /* background */
-  background:linear-gradient(
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.4)),
-    url('../../images/co2.jpg'
-  );
+  background:#888888;
   background-size:cover;
   background-position:center center;
   /* text */
@@ -81,7 +77,7 @@ dl#BS-workSpaceInfo div {
 
 /* make all <dt> bold */
 dl#BS-workSpaceInfo dt {
-  font-weight:700; 
+  font-weight:700;
 }
 
 /* search input */

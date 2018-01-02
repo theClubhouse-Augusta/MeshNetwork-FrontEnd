@@ -27,9 +27,15 @@ export default class UserSignUp extends React.PureComponent {
       skills:[],
       avatar:"",
       avatarPreview:"",
+      selectedOption: '',
+      skills:[],
       msg:"",
       snack:false,
     }
+  }
+
+  componentWillMount() {
+    this.getSkills();
   }
 
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
@@ -53,15 +59,22 @@ export default class UserSignUp extends React.PureComponent {
     reader.readAsDataURL(file);
   };
 
-  selectTag = selectedTag => {
-    const copy = selectedTag.slice(-1)[0];
-    if (copy !== undefined) {
-      copy.value = copy.value.replace(/\s\s+/g, ' ').trim();
-      copy.label = copy.label.replace(/\s\s+/g, ' ').trim();
-      this.setState({ selectedTags: selectedTag });
-    } else {
-      this.setState({ selectedTags: selectedTag });
-    }
+  handleSkills = (selectedOption) => {
+    this.setState({ selectedOption });
+  }
+
+  getSkills = () => {
+    fetch("http://innovationmesh.com/api/skills/all", {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        skills:json
+      })
+    }.bind(this))
   }
 
   renderAvatarImage = () => {
@@ -100,13 +113,21 @@ export default class UserSignUp extends React.PureComponent {
             <TextField label="Full Name" value={this.state.name} onChange={this.handleName} margin="normal"/>
             <TextField label="E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
             <TextField label="Password" value={this.state.password} onChange={this.handlePassword} margin="normal"/>
+            <Select
+              name="addSkills"
+              value={this.state.selectedOption.value}
+              onChange={this.handleSkills}
+              options={this.state.skills}
+              removeSelected={false}
+              multi={true}
+            />
             <TextField label="Brief Description" value={this.state.description} onChange={this.handleDescription} margin="normal"/>
             <div className="spaceLogoMainImageRow">
-              <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
+              <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                 {this.renderAvatarImageText()}
                 {this.renderAvatarImage()}
               </label>
-              <input type="file" onChange={this.handleLogo} id="logo-image" style={{display:'none'}}/>
+              <input type="file" onChange={this.handleLogo} id="avatar-image" style={{display:'none'}}/>
             </div>
             <FlatButton style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} onClick={this.storeSpace}>Confirm Sign Up</FlatButton>
           </div>

@@ -54,17 +54,18 @@
   font-family:'Noto Sans';
 }
 
-.bookingtTypeButton {
+.bookingTypeButton {
   font-family:'Noto Sans';
   font-size:1.2em;
-  border:2px solid #E8E8E8;
+  border:2px solid #EEEEEE;
+  background:#F8F8F8;
   border-radius:3px;
   padding:15px;
   margin-top:15px;
   cursor:pointer;
 }
 
-.bookintActiveTypeButton {
+.bookingActiveTypeButton {
   font-family:'Noto Sans';
   font-size:1.2em;
   border:2px solid #E8E8E8;
@@ -72,5 +73,5 @@
   padding:15px;
   margin-top:15px;
   cursor:pointer;
-  background:#EEEEEE;
+  background:#FFFFFF;
 }

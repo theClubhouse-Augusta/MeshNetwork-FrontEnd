@@ -10,11 +10,7 @@
     height:35vh;
     width:100%;
     /* background */
-    background:linear-gradient(
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4)),
-      url('../../images/002.jpg'
-    );
+    background:#888888;
     background-size:cover;
     background-position:center center;
     /* text */
@@ -59,7 +55,7 @@
 
   main#MS-main > section > div {
     display: flex;
-    justify-content: space-between;  
+    justify-content: space-between;
     width: 80%;
   }
 
@@ -67,7 +63,7 @@
     /* text */
     text-align: center;
     color: whitesmoke;
-    box-sizing: content-box;  
+    box-sizing: content-box;
     /* height,width */
     height: 2.8em;
     width: 30%;

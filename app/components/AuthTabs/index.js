@@ -41,9 +41,8 @@ export default class AuthTabs extends React.PureComponent {
       // website: '',
       // phoneNumber: '',
       // description: EditorState.createEmpty(),
-      selectedTag: '',
       selectedTags: [],
-      loadedTags: '',
+      loadedTags: [],
       // avatar: '',
       // imagePreviewUrl: '',
       value: 0, 
@@ -156,7 +155,7 @@ export default class AuthTabs extends React.PureComponent {
     // data.append('description', JSON.stringify(draftToHtml(convertToRaw(this.state.description.getCurrentContent()))));
     data.append('tags', JSON.stringify(this.state.selectedTags));
     data.append('name', this.state.name);
-    // data.append('workspace', this.state.workspace);
+    data.append('workspace', this.state.workspace);
     data.append('email', this.state.email);
     data.append('password', this.state.password);
     // data.append('company', this.state.company);
@@ -251,7 +250,7 @@ export default class AuthTabs extends React.PureComponent {
           <div id="signUpForm">
             <p className="userFormItem">
               <label htmlFor="name" className="userFormLabel">name</label>
-              <MtextField onChange={this.name} type="text" name="" id="name" />
+              <MtextField onChange={this.props.name} type="text" name="" id="name" />
             </p>
             {!!workspaces.length &&
             <div className="userFormItem">
@@ -407,7 +406,11 @@ export default class AuthTabs extends React.PureComponent {
             </div>
           </div>
         </TabContainer>}
-        <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
+        <Snackbar 
+          open={snackBar} 
+          message={snackBarMessage} 
+          autoHideDuration={4000} 
+        />
       </form>   
     );
   }
