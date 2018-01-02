@@ -17,7 +17,7 @@ import SpaceProfile from '../SpaceProfile';
 import UserProfile from '../UserProfile';
 import Kiosk from '../Kiosk';
 import NotFound from '../NotFound';
-import AdminDash from '../AdminDash';
+import SpaceDash from '../SpaceDash';
 import SpaceSignUp from '../SpaceSignUp';
 import UserSignUp from '../UserSignUp';
 import UserSignIn from '../UserSignIn';
@@ -173,8 +173,8 @@ export default class App extends Component {
           />
 
           <Route
-            path="/admindash"
-            component={AdminDash}
+            path="/spacedash/:id"
+            render={(props) => <SpaceDash {...props} />} 
           />
 
           <Route component={NotFound} />
