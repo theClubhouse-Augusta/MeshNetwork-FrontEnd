@@ -30,7 +30,7 @@ export default class BusinessSearch extends React.Component {
   }
 
   loadSpaces = () => {
-    fetch('http://localhost:8000/api/workspaces'
+    fetch('http://innovationmesh.com/api/workspaces'
     )
     .then((response) =>
       response.json((resepo))

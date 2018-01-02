@@ -120,6 +120,7 @@ export default class UserSignUp extends React.PureComponent {
               options={this.state.skills}
               removeSelected={false}
               multi={true}
+              placeholder="Tell us about your Skills..."
             />
             <TextField label="Brief Description" value={this.state.description} onChange={this.handleDescription} margin="normal"/>
             <div className="spaceLogoMainImageRow">
@@ -127,9 +128,9 @@ export default class UserSignUp extends React.PureComponent {
                 {this.renderAvatarImageText()}
                 {this.renderAvatarImage()}
               </label>
-              <input type="file" onChange={this.handleLogo} id="avatar-image" style={{display:'none'}}/>
+              <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
             </div>
-            <FlatButton style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} onClick={this.storeSpace}>Confirm Sign Up</FlatButton>
+            <FlatButton style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} onClick={this.signUp}>Confirm Sign Up</FlatButton>
           </div>
         </main>
 

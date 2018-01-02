@@ -180,20 +180,11 @@ export default class SpaceProfile extends React.PureComponent {
               </div>
             </div>
 
-            <div className="spaceProfileBannerColumnRight">
-              <div className="spaceProfileMap">
-              <MapComponent
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
-                  loadingElement={<div style={{ height: '100%' }} />}
-                  containerElement={<div id="mapComp" />}
-                  mapElement={<div style={{ height: '100%' }} />}
-                  lat={33.5105746}
-                  lon={-82.0856046}
-              />
-              </div>
+            <div className="spaceProfileMap">
+              <img src={"https://maps.googleapis.com/maps/api/staticmap?center="+ this.state.spaceProfile.city +","+ this.state.spaceProfile.state +"&zoom=13&size=1280x300&maptype=roadmap&markers=color:blue%7C"+this.state.spaceProfile.lat+","+this.state.spaceProfile.lon+"&key=AIzaSyBDiXTt6jIkCs_VKtQeBZcVosIEgAdR1R0"}/>
             </div>
 
-            </div>
+          </div>
 
 
 
@@ -224,7 +215,7 @@ export default class SpaceProfile extends React.PureComponent {
                   <FlatButton style={{background:'#ee3868', color:'#FFFFFF', width:'200px'}}>Explore Memberships </FlatButton>
                 </div>
 
-                <div className="spaceProfileMembershipPerks">
+                {/*}<div className="spaceProfileMembershipPerks">
                   <h4> Space Perks </h4>
                   <div className="spaceProfilePerksWrapper">
                     <ul style={styles.list}>
@@ -238,7 +229,7 @@ export default class SpaceProfile extends React.PureComponent {
                      <li style={styles.listItem}>3-D Printer</li>
                     </ul>
                   </div>
-                </div>
+                </div>*/}
 
                 <div className="spaceProfileMembershipContact">
 
