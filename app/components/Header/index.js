@@ -39,8 +39,11 @@ export default class Header extends React.PureComponent {
       return(
         <nav className="navMobile">
           <Link to="/" className="navButton">Home</Link>
-          <Link to="/contact" className="navButton">Contact</Link>
-          <a href="https://github.com/Technpoathic" className="navButton">Github</a>
+          <Link to="/spaces" className="navButton">Discover</Link>
+          <Link to="/about" className="navButton">About</Link>
+          {/*<Link to="/events" className="navButton">Events</Link>*/}
+          <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton">Challenges</a>
+          <a href="http://lms.innovationmesh.com" target="_blank" className="navButton">Education</a>
         </nav>
       )
     }
@@ -56,9 +59,10 @@ export default class Header extends React.PureComponent {
 
           <nav className="nav">
             <Link to="/" className="navButton">Home</Link>
+            <Link to="/spaces" className="navButton">Discover</Link>
             <Link to="/about" className="navButton">About</Link>
-            <Link to="/spaces" className="navButton">Spaces</Link>
-            <Link to="/events" className="navButton">Events</Link>
+            <Link to="/" className="navButton">Search</Link>
+            {/*<Link to="/events" className="navButton">Events</Link>*/}
             <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton">Challenges</a>
             <a href="http://lms.innovationmesh.com" target="_blank" className="navButton">Education</a>
           </nav>

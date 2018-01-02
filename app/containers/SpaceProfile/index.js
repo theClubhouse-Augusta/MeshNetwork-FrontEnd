@@ -22,11 +22,11 @@ import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Card, { CardHeader, CardMedia } from 'material-ui/Card';
+import FlatButton from 'material-ui/Button';
 
 
 import './style.css';
 import './styleM.css';
-import DefaultButton from '../../components/CustomUI/DefaultButton/index';
 
 
 const styles = {
@@ -52,16 +52,17 @@ export default class SpaceProfile extends React.PureComponent {
   constructor() {
     super();
     this.state = {
-      token:sessionStorage.getItem("token"),
+      token:localStorage.getItem("token"),
       spaceProfile:'',
       profileEvents: '',
+      users:[],
       }
   }
 
   componentWillMount() {
     this.getProfile();
     //getSpaceEvents();
-    //getSpaceUsers();
+    this.getUsers();
   }
 
  getProfile = () => {
@@ -74,8 +75,6 @@ export default class SpaceProfile extends React.PureComponent {
     .then(function(json) {
       this.setState({
         spaceProfile:json
-      }, function() {
-        console.log(this.state.spaceProfile);
       })
     }.bind(this))
 }
@@ -114,26 +113,19 @@ export default class SpaceProfile extends React.PureComponent {
     })
   }
 
-
-/*
-  getSpaceUsers = () => {
-    fetch('http://localhost:8000/api/users/space/' + this.props.match.params.id, {
-      method: 'GET'
-    }).then((response) => {
-      return response.json();
-    }).then(json => {
-      let memberCards = json.response.map((memberCard) => {
-        return (
-          <Avatar
-            //alt={memberCard.name}
-            src={memberCard.avatar}
-            style={styles.avatar}
-          />
-        )
-      })
+  getUsers = () => {
+    fetch('http://innovationmesh.com/api/users/space/' + this.props.match.params.id, {
+      method:'GET'
     })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        users:json
+      })
+    }.bind(this))
   }
-*/
 
   render() {
 
@@ -196,7 +188,7 @@ export default class SpaceProfile extends React.PureComponent {
                   containerElement={<div id="mapComp" />}
                   mapElement={<div style={{ height: '100%' }} />}
                   lat={33.5105746}
-                  lon={-82.08560469999999}
+                  lon={-82.0856046}
               />
               </div>
             </div>
@@ -207,8 +199,9 @@ export default class SpaceProfile extends React.PureComponent {
 
            <div className="spaceProfileBody">
            <div className="spaceProfileActions">
-             <Link to={'/booking/' + this.state.spaceProfile.id}><DefaultButton>Booking System </DefaultButton></Link>
-             <Link to={'/join/' + this.state.spaceProfile.id}><DefaultButton>Join This Space </DefaultButton></Link>
+             <Link to={'/booking/' + this.state.spaceProfile.id}><FlatButton style={{background:'#3399cc', color:'#FFFFFF', width:'200px'}}>Booking System </FlatButton></Link>
+             <Link to={'/join/' + this.state.spaceProfile.id}><FlatButton style={{background:'#ee3868', color:'#FFFFFF', width:'200px'}}>Join This Space </FlatButton></Link>
+             <Link to={'/kiosk/' + this.state.spaceProfile.id}><FlatButton style={{background:'#3399cc', color:'#FFFFFF', width:'200px'}}>Check-In</FlatButton></Link>
            </div>
 
 
@@ -228,7 +221,7 @@ export default class SpaceProfile extends React.PureComponent {
                 <div className="spaceProfileMemberships">
                   <h4>Memberships:</h4>
                   <p> starting at </p>
-                  <DefaultButton> Explore Memberships </DefaultButton>
+                  <FlatButton style={{background:'#ee3868', color:'#FFFFFF', width:'200px'}}>Explore Memberships </FlatButton>
                 </div>
 
                 <div className="spaceProfileMembershipPerks">
@@ -274,8 +267,13 @@ export default class SpaceProfile extends React.PureComponent {
 
             <div className="spaceProfileSpaceMembers">
             <h4 className="spaceProfileMemberHeader">Members</h4>
-            <div className="spaceProfileAvatarBlock">
-             {/* {memberCards} */}
+            <div className="spaceProfileUserList">
+             {this.state.users.map((u, i) => (
+              <div className="spaceProfileUser" key={i}>
+                <img className="spaceProfileUserAvatar" src={u.avatar}/>
+                <div className="spaceProfileUserContent">{u.name}</div>
+              </div>
+             ))}
             </div>
 
             </div>
