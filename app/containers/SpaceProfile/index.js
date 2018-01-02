@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import MapComponent from 'components/MapComponent';
+import Moment from 'react-moment';
 import {
   TiSocialAtCircular,
   TiSocialFacebookCircular,
@@ -54,14 +55,14 @@ export default class SpaceProfile extends React.PureComponent {
     this.state = {
       token:localStorage.getItem("token"),
       spaceProfile:'',
-      profileEvents: '',
+      events: [],
       users:[],
       }
   }
 
   componentWillMount() {
     this.getProfile();
-    //getSpaceEvents();
+    this.getSpaceEvents();
     this.getUsers();
   }
 
@@ -80,37 +81,17 @@ export default class SpaceProfile extends React.PureComponent {
 }
 
   getSpaceEvents = () => {
-    fetch(`http://localhost:8000/api/events/upcoming/${this.state.id}`, {
+    fetch('http://innovationmesh.com/api/upcoming/'+ this.props.match.params.id, {
       method: 'GET'
     })
-    .then((response) => {
+    .then(function(response) {
       return response.json();
-    }).then(data => {
-      let profileEvents = data.response.map((profileEvent) => {
-        return (
-          <div  key={'profileCard' + profileCard.id}>
-          <Card
-          className="spaceEventCard" containerStyle={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  justifyContent: 'space-between'}}>
-          <CardMedia className="spaceEventCardImage">
-
-          </CardMedia>
-
-          <div className="spaceEventCardContent">
-            <CardHeader title={event.name} style={{padding: '0'}} />
-            <div className="spaceEventCardDetails">
-              <span className="spaceEventCardDate" style={{margin: '1em 0'}}>  </span>
-              <span className="spaceEventCardTime" style={{margin: '1em'}}>
-               </span>
-              <span className="spaceEventCardLocation" style={{margin: '1em 0 0 1em'}}> </span>
-            </div>
-            <p className="spaceEventCardDescription">  </p>
-          </div>
-        </Card>
-        </div>
-        )
-      })
-      this.setState({profileEvents:profileEvents});
     })
+    .then(function(json) {
+      this.setState({
+        events:json
+      })
+    }.bind(this))
   }
 
   getUsers = () => {
@@ -249,7 +230,21 @@ export default class SpaceProfile extends React.PureComponent {
             <div className="spaceProfileUpcomingEvents">
                 <h4 style={{textAlign: 'center'}}> Upcoming Events </h4>
                 <div className="spaceProfileEventsWrapper">
-                 {this.state.profileEvents}
+                  <div className="eventList">
+                    {this.state.events.map((event, i) => (
+                      <Link to={'/event/' + event.id} className="eventBlock">
+                        <div className="eventBlockImage"></div>
+                        <div className="eventBlockInfo">
+                          <div className="eventBlockTitle">{event.title}</div>
+                          <div className="eventBlockDesc">
+                            <Moment parse="YYYY-MM-DD HH:mm">
+                                {event.start}
+                            </Moment>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
 
             </div>

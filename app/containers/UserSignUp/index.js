@@ -3,35 +3,58 @@
  * UserSignUp
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
-import Header from 'components/Header';
-
+import { Link } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import Select from 'react-select';
 
+import Header from 'components/Header';
+
+// styles
+import StyleHelpers from '../../utils/StyleHelpers';
 import './style.css';
 import './styleM.css';
 
-export default class UserSignUp extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name:"",
-      email:"",
-      password:"",
-      phoneNumber:"",
-      skills:[],
-      avatar:"",
-      avatarPreview:"",
-      selectedOption: '',
-      skills:[],
-      msg:"",
-      snack:false,
-    }
+export default class UserSignUp extends React.Component {
+
+  state = {
+    name:"",
+    email:"",
+    password: "",
+    bio: "",
+    loadedTags: [],
+    selectedTags: [],
+    avatar: '',
+    imagePreviewUrl: '',
+    // foo
+    msg:"",
+    snack:false,
+    focused: false,
+  };
+
+  path = this.props.location.pathname.split('/');
+  spaceID = this.path[this.path.length - 1];
+
+  componentDidMount() {
+    this.loadSkills();
+  }
+
+  loadSkills = () => {
+    fetch('http://localhost:8000/api/skills/all', {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+    })
+    .then(response => response.json())
+    .then(json => {this.setState({ loadedTags:json })})
+    .catch(error => {
+      alert(`error in fetching data from server: ${error}`);
+    });
+  }
+
+  selectTag = selectedTag => {
+    this.setState({ selectedTags: selectedTag });
   }
 
   componentWillMount() {
@@ -41,9 +64,10 @@ export default class UserSignUp extends React.PureComponent {
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  handleName = (event) => {this.setState({name:event.target.name})};
-  handleEmail = (event) => {this.setState({email:event.target.email})};
-  handlePassword = (event) => {this.setState({password:event.target.password})};
+  handleName = (event) => { this.setState({name:event.target.value.replace(/\s\s+/g, ' ') })};
+  handleEmail = (event) => {this.setState({email:event.target.value})};
+  handlePassword = (event) => {this.setState({password:event.target.value})};
+  handleBio = (event) => {this.setState({bio:event.target.value})};
   handleAvatar = (event) => {
     event.preventDefault();
     let reader = new FileReader();
@@ -52,60 +76,84 @@ export default class UserSignUp extends React.PureComponent {
     reader.onloadend = () => {
       this.setState({
         avatar: file,
-        avatarPreview: reader.result
+        imagePreviewUrl: reader.result
       });
     }
-
     reader.readAsDataURL(file);
   };
 
-  handleSkills = (selectedOption) => {
-    this.setState({ selectedOption });
-  }
+  storeUser = () => {
+    let data = new FormData();
+    let {
+      name,
+      email,
+      password,
+      bio,
+      selectedTags,
+      avatar
+    } = this.state;
 
-  getSkills = () => {
-    fetch("http://innovationmesh.com/api/skills/all", {
-      method:'GET'
+    data.append('name', name.trim());
+    data.append('tags', JSON.stringify(selectedTags));
+    data.append('email', email.trim());
+    data.append('password', password.trim());
+    data.append('bio', bio.trim());
+    data.append('spaceID', this.spaceID);
+    data.append('avatar', avatar);
+
+    fetch("http://localhost:8000/api/signUp", {
+      method:'POST',
+      body:data,
     })
-    .then(function(response) {
-      return response.json();
+    .then(response => response.json())
+    .then(user => {
+      if (user.error) {
+        this.showSnack(user.error);
+      }
+        localStorage['token'] = user.token;
+        this.showSnack("Account created successfully!");
+        setTimeout(() => {
+          this.props.history.push(`/user/${user.id}`)
+        }, 2000);
     })
-    .then(function(json) {
-      this.setState({
-        skills:json
-      })
-    }.bind(this))
+    .catch(error => {
+      alert(`signUp ${error}`);
+    })
   }
 
   renderAvatarImage = () => {
-    if(this.state.logo !== "")
+    if(this.state.avatar !== "")
     {
       return(
-        <img src={this.state.logoPreview} className="spaceLogoImagePreview"/>
+        <img src={this.state.imagePreviewUrl} className="spaceLogoImagePreview"/>
       )
     }
   }
 
   renderAvatarImageText = () => {
-    if(this.state.logoPreview === "" || this.state.logoPreview === undefined || this.state.logoPreview === null) {
+    if (this.state.imagePreviewUrl === "" || this.state.imagePreviewUrl === undefined || this.state.imagePreviewUrl === null) {
       return(
         <span style={{display:'flex', flexDirection:'column', textAlign:'center'}}>
-          Select an Avatar
-          <span style={{fontSize:'0.9rem', marginTop:'5px'}}>For Best Size Use: 512 x 512</span>
+          Select a profile picture
+          <span style={{fontSize:'0.9rem', marginTop:'5px'}}>
+            For Best Size Use: 512 x 512
+          </span>
         </span>
       )
     }
   }
-
+  onFocus = () => this.setState({ focused: true });
+  onBlur = () => this.setState({ focused: false });
 
   render() {
+    const { selectedTags, loadedTags, focused } = this.state;
+    const Helper = new StyleHelpers;
+    const marginTop = Helper.getLabelStyle(focused, selectedTags)[0];
+    const color = Helper.getLabelStyle(focused, selectedTags)[1];
     return (
       <div className="container">
-        <Helmet title="UserSignUp" meta={[ { name: 'description', content: 'Description of UserSignUp' }]}/>
-
-        <header>
-          <Header/>
-        </header>
+        <Helmet title="SpaceSignUp" meta={[ { name: 'description', content: 'Description of SpaceSignUp' }]}/>
+        <Header/>
 
         <main className="spaceSignUpMain">
           <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
@@ -122,7 +170,54 @@ export default class UserSignUp extends React.PureComponent {
               multi={true}
               placeholder="Tell us about your Skills..."
             />
-            <TextField label="Brief Description" value={this.state.description} onChange={this.handleDescription} margin="normal"/>
+            <TextField label="Bio"
+              value={this.state.bio}
+              onChange={this.handleBio}
+              margin="normal"
+            />
+            <label
+              style={{
+                marginTop: marginTop,
+                color: color,
+              }}
+              //className={StyleHelpers.getC(focused, selectedTags)}
+              className={Helper.getLabelClassName(focused, selectedTags)}
+            >
+              Skills
+            </label>
+
+              {/* //: !focused && !!!selectedTags.length
+              : false
+              ? "MyInputLabel-animated-9 MyInputLabel-formControl-6 MyInputLabel-root-5 MyInputLabel-root-11"
+              : true
+              ? "MyInputLabel-animated-9 MyInputLabel-shrink-8 MyInputLabel-focused-122 MyInputLabel-formControl-62 MyInputLabel-root-112"
+              : "MyInputLabel-animated-9 MyInputLabel-formControl-6 MyInputLabel-root-5 MyInputLabel-root-11" */}
+            {!!loadedTags.length &&
+            <Select.Creatable
+              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
+              className={Helper.getSelectStyle(focused, selectedTags)}
+              style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+              multi
+              options={loadedTags}
+              onChange={this.selectTag}
+              value={selectedTags}
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
+            />}
+
+            {!!!loadedTags.length &&
+            <Select.Creatable
+              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
+              className={Helper.getSelectStyle(focused, selectedTags)}
+              multi
+              style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+              options={selectedTags}
+              onChange={this.selectTag}
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
+              value={selectedTags}
+            />}
+            {/* <MySelect /> */}
             <div className="spaceLogoMainImageRow">
               <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                 {this.renderAvatarImageText()}
@@ -130,7 +225,12 @@ export default class UserSignUp extends React.PureComponent {
               </label>
               <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
             </div>
-            <FlatButton style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} onClick={this.signUp}>Confirm Sign Up</FlatButton>
+            <FlatButton
+              style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+              onClick={this.storeUser}
+            >
+               Sign Up
+            </FlatButton>
           </div>
         </main>
 
@@ -145,7 +245,3 @@ export default class UserSignUp extends React.PureComponent {
     );
   }
 }
-
-UserSignUp.contextTypes = {
-  router: React.PropTypes.object
-};

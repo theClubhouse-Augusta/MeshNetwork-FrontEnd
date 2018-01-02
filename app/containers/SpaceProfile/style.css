@@ -222,3 +222,9 @@ a.spaceProfileActions {
   font-weight:bold;
   flex-grow:1;
 }
+
+.spaceProfileEventsWrapper {
+  margin:0 auto;
+  width:100%;
+  max-width:800px;
+}

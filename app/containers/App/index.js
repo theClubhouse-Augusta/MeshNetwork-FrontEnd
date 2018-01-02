@@ -3,7 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../Home';
 import About from '../About';
 import Booking from '../Booking';
-import BusinessSearch from '../BusinessSearch';
 //import Contact from '../Contact';
 import EventDetail from '../EventDetail';
 //import Events from '../Events';
@@ -25,38 +24,10 @@ import UserSignIn from '../UserSignIn';
 export default class App extends Component {
 
   state = {
-    user: '',
+
   };
 
 
-  login = (e, email, password) => {
-    e.preventDefault();
-    const data = new FormData();
-    data.append('email', email);
-    data.append('password', password);
-
-    fetch('http://localhost:8000/api/login', {
-      method: 'post',
-      body: data,
-    })
-    .then(response => response.json() )
-    .then(loggedInUser => {
-      if (loggedInUser.token === false || loggedInUser.error) {
-        alert('invalid credentials'); // eslint-disable-line
-      } else if (loggedInUser.token !== false) {
-        localStorage['token'] = loggedInUser.token;
-        localStorage['user'] = loggedInUser.user;
-        this.setState({
-          user: loggedInUser,
-          loading: false,
-          redirect: <Redirect to={`/UserProfile/${loggedInUser['user'].id}`} />
-        });
-      }
-    })
-    .catch(error => {
-      alert(`in login: ${error}`); // eslint-disable-line
-    })
-  }
 
   render() {
     return (
@@ -88,13 +59,8 @@ export default class App extends Component {
 
           <Route
             path="/signIn"
-            render={(props) => <UserSignIn {...props}/>}
-          />
-
-          <Route
-            path="/BusinessSearch"
             render={(props) =>
-              <BusinessSearch
+              <UserSignIn
                 {...props}
               />
             }
@@ -137,11 +103,10 @@ export default class App extends Component {
           />
 
           <Route
-            path="/MemberSearch"
+            path="/members"
             render={(props) =>
               <MemberSearch
                 {...props}
-                getLoggedInUser={this.getLoggedInUser}
               />
             }
           />
@@ -161,7 +126,7 @@ export default class App extends Component {
           />
 
           <Route
-            path="/UserProfile"
+            path="/user/:id"
             render={(props) => (
               <UserProfile
                 {...props}
@@ -174,7 +139,7 @@ export default class App extends Component {
 
           <Route
             path="/spacedash/:id"
-            render={(props) => <SpaceDash {...props} />} 
+            render={(props) => <SpaceDash {...props} />}
           />
 
           <Route component={NotFound} />

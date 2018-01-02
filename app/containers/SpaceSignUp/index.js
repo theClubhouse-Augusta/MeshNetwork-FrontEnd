@@ -48,14 +48,14 @@ export default class SpaceSignUp extends React.PureComponent {
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  handleName = (event) => { this.setState({name:event.target.value})};
+  handleName = (event) => { this.setState({name:event.target.value.replace(/\s\s+/g, ' ') })};
   handleCity = (event) => { this.setState({city:event.target.value})};
-  handlePassword = (event) => { this.setState({password:event.target.value})};
-  handleAddress = (event) => { this.setState({address:event.target.value})};
+  handleAddress = (event) => { this.setState({address:event.target.value.replace(/\s\s+/g, ' ') })};
   handleState = (event) => {this.setState({state:event.target.value})};
   handleZip = (event) => {this.setState({zipcode:event.target.value})};
   handleEmail = (event) => {this.setState({email:event.target.value})};
   handleWebsite = (event) => {this.setState({website:event.target.value})};
+  handlePassword = (event) => {this.setState({password:event.target.value})};
   handlePhone = (event) => {this.setState({phone_number:event.target.value})};
   handleDescription = (editorState) => {this.setState({description: editorState, editorState: editorState})};
   handleLogo = (event) => {
@@ -91,36 +91,81 @@ export default class SpaceSignUp extends React.PureComponent {
     reader.readAsDataURL(file);
   };
 
-  storeSpace = () => {
-    let _this = this;
+  storeUser = () => {
     let data = new FormData();
+    let {
+      name,
+      email,
+      password,
+      avatar
+    } = this.state;
 
-    data.append('name', this.state.name);
-    data.append('password', this.state.password);
-    data.append('city', this.state.city);
-    data.append('address', this.state.address);
-    data.append('state', this.state.state);
-    data.append('zipcode', this.state.zipcode);
-    data.append('email', this.state.email);
-    data.append('website', this.state.website);
-    data.append('phone_number', this.state.phone_number);
-    data.append('description', draftToHtml(convertToRaw(this.state.description.getCurrentContent())));
-    data.append('logo', this.state.logo);
+    data.append('name', name.trim());
+    data.append('email', email.trim());
+    data.append('password', password.trim());
+    data.append('spaceID', 0);
+    data.append('avatar', avatar);
 
-    fetch("http://innovationmesh.com/api/newspace", {
+    fetch("http://localhost:8000/api/signUp", {
       method:'POST',
       body:data,
+    })
+    .then(response => response.json())
+    .then(user => {
+      if (user.error) {
+        this.showSnack(user.error);
+      } else {
+        localStorage['token'] = user.token;
+        this.storeSpace(user.token);
+      }
+    })
+    .catch(error => {
+      alert(`signUp ${error}`);
+    })
+  }
+
+
+  storeSpace = (token) => {
+    let _this = this;
+    let data = new FormData();
+    let {
+      name,
+      city,
+      address,
+      state,
+      zipcode,
+      email,
+      website,
+      phone_number,
+    } = this.state;
+
+    data.append('name', name.trim());
+    data.append('city', city.trim());
+    data.append('address', address.trim());
+    data.append('state', state.trim());
+    data.append('zipcode', zipcode.trim());
+    data.append('email', email.trim());
+    data.append('website', website.trim());
+    data.append('phone_number', phone_number.trim());
+    data.append('description', this.state.description);
+    data.append('logo', this.state.logo);
+
+    fetch("http://localhost:8000/api/newspace", {
+      method:'POST',
+      body:data,
+      headers:{'Authorization':'Bearer '+ token}
     })
     .then(function(response) {
       return response.json();
     })
-    .then(function(json) {
-      if(json.error) {
-        _this.showSnack(json.error);
+    .then(function(spaceID) {
+      if(spaceID.error) {
+        _this.showSnack(spaceID.error);
       }
-      else if(json.success){
-        _this.showSnack(json.error);
-      }
+        _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
+        setTimeout(() => {
+          this.props.history.push(`/space/${spaceID}`)
+        }, 2000);
     }.bind(this))
   }
 
@@ -174,11 +219,11 @@ export default class SpaceSignUp extends React.PureComponent {
         </header>
 
         <main className="spaceSignUpMain">
-          <div className="spaceSignUpTitle">Create a New WorkSpace</div>
-          <div className="userSignUp">
-            <TextField label="Full Name" value={this.state.userName} onChange={this.handleUserName} margin="normal"/>
-            <TextField label="E-mail" value={this.state.userEmail} onChange={this.handleUserEmail} margin="normal"/>
-            <TextField label="Password" value={this.state.userPassword} onChange={this.handleUserPassword} margin="normal"/>
+          <div className="spaceSignUpTitle">Create a New Organization</div>
+          <div className="spaceSignUpContainer">
+            <TextField label="Founder Full Name" value={this.state.userName} onChange={this.handleUserName} margin="normal"/>
+            <TextField label="Founder E-mail" value={this.state.userEmail} onChange={this.handleUserEmail} margin="normal"/>
+            <TextField label="Founder Password" value={this.state.userPassword} onChange={this.handleUserPassword} margin="normal"/>
             <div className="spaceLogoMainImageRow">
               <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                 {this.renderAvatarImageText()}
@@ -193,7 +238,8 @@ export default class SpaceSignUp extends React.PureComponent {
             <TextField label="Address" value={this.state.address} onChange={this.handleAddress} margin="normal"/>
             <TextField label="State" value={this.state.state} onChange={this.handleState} margin="normal"/>
             <TextField label="ZIP" value={this.state.zipcode} onChange={this.handleZip} margin="normal"/>
-            <TextField label="E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
+            <TextField label=" Organization E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
+            <TextField label="Website" value={this.state.website} onChange={this.handleWebsite} margin="normal"/>
             <TextField label="Phone #" value={this.state.phone_number} onChange={this.handlePhone} margin="normal"/>
             <Editor
                 editorState={this.state.description}
