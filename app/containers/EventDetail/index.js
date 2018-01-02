@@ -221,8 +221,8 @@ export default class EventDetail extends React.PureComponent {
                     <div className="eventOrganizers">
                       <h3> organizers </h3>
                       {organizers && organizers.map((organizer, key) =>
-                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/userprofile/${organizer.id}`))}>
-                          <Avatar key={`org${key}`} src={organizer.avatar} />
+                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/user/${organizer.id}`))}>
+                          {!!organizer.avatar && <Avatar key={`org${key}`} src={organizer.avatar} />}
                           {organizer.name}
                         </div>
                       )}

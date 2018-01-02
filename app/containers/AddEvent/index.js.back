@@ -64,6 +64,7 @@ export default class AddEvent extends Component {
     eventFiles: [],
     // organizers 
     organizers: '',
+    organizerQuery: '',
     showOrganizers: false, 
     selectedOrganizers: [],
     // sponsors
@@ -72,17 +73,16 @@ export default class AddEvent extends Component {
     // add new Sponsor form values
     sponsorNames: '',
     sponsorLogos: '',
+    imagePreviewUrl: '',
     sponsorWebsites: '',
     // date/time
-    checkMultiday: false,
+    checkMultiday: '',
+    multidayComponent: '',
     // tags
     loadedTags: '',
     tagFocused: false,
     sponsorFocused: false,
     organizerFocused: false,
-    checkedRadio: null,
-    logo:"",
-    logoPreview:"",
   };
 
   componentDidMount() {
@@ -156,34 +156,40 @@ export default class AddEvent extends Component {
   }
 
   removeOrganizer = (organizer) => {
+    let { formValues } = this.state;
     if (organizer) {
-      const organizers = this.state.selectedOrganizers.slice();
+      const organizers = formValues.selectedOrganizers.slice();
       const remove = organizers.findIndex(previous => previous === organizer);
       if (remove !== -1) {
         organizers.splice(remove, 1);
-        this.setState({	selectedOrganizers: organizers });
+        formValues.selectedOrganizers = organizers;
+        this.setState({ formValues });
       }
     }
   }
 
   removeSponsor = (sponsor) => {
+    let { formValues } = this.state;
     if (sponsor) {
-      const sponsors = this.state.selectedSponsors.slice();
+      const sponsors = formValues.selectedSponsors.slice();
       const remove = sponsors.findIndex(previous => previous === sponsor);
       if (remove !== -1) {
         sponsors.splice(remove, 1);
-        this.setState({	selectedSponsors: sponsors });
+        formValues.selectedSponsors = sponsors;
+        this.setState({ formValues });
       }
     }
   }
 
   removeNewSponsor = (sponsor) => {
+    let { formValues } = this.state;
     if (sponsor) {
-      const sponsors = this.state.newSponsors.slice();
+      const sponsors = formValues.newSponsors.slice();
       const remove = sponsors.findIndex(previous => previous === sponsor);
       if (remove !== -1) {
         sponsors.splice(remove, 1);
-        this.setState({	newSponsors: sponsors });
+        formValues.newSponsors = sponsors;
+        this.setState({ formValues });
       }
     }
   }
@@ -236,8 +242,8 @@ export default class AddEvent extends Component {
   }
 
   selectDateMulti = (e, index) => {
+    let { formValues } = this.state;
     if (typeof index === 'number') {
-
       const today = new Date();
       const selectedDate = new Date(e.target.value);
 
@@ -246,14 +252,15 @@ export default class AddEvent extends Component {
         return;
       }
 
-      const dates = this.state.dateMulti.slice(); 
+      const dates = formValues.dateMulti.slice(); 
       const date = { day: e.target.value, index: index, };
       const removeDate = removeDuplicateDate(dates, date);
 
       if (typeof removeDate !== 'number') {
         dates.push(date);
-        this.setState({	dateMulti: dates }, () => {
-          if (dateErrors(this.state.dateMulti)) {
+        formValues.dateMulti = dates;
+        this.setState({ formValues	}, () => {
+          if (dateErrors(formValues.dateMulti)) {
             this.setState({	dateError: "Please Cheack the order of your dates" });
           } else {
             this.setState({	dateError: '' });
@@ -262,8 +269,9 @@ export default class AddEvent extends Component {
       } else if (typeof removeDate === 'number')  {
         dates.splice(removeDate, 1);
         dates.push(date);
-        this.setState({	dateMulti: dates }, () => {
-          if (dateErrors(this.state.dateMulti)) {
+        formValues.dateMulti = dates;
+        this.setState({ formValues	}, () => {
+          if (dateErrors(formValues.dateMulti)) {
             this.setState({	dateError: "Please Cheack the order of your dates" });
           } else {
             this.setState({	dateError: '' });
@@ -274,15 +282,17 @@ export default class AddEvent extends Component {
   }
 
   selectStartMulti = (e, index) => {
+    let { formValues } = this.state;
     if (typeof index === 'number') {
-      const startTimes = this.state.startMulti.slice();
-      const endTimes = this.state.endMulti.slice(); 
+      const startTimes = formValues.startMulti.slice();
+      const endTimes = formValues.endMulti.slice(); 
       const time = { start: e.target.value, index: index, };
       const removeTime = removeDuplicateStart(startTimes, time);
       if (typeof removeTime !== 'number') {
         startTimes.push(time);
-        this.setState({	startMulti: startTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+        formValues.startMulti = startTimes;
+        this.setState({ formValues	}, () => {
+          if (multiDayTimeErrors(formValues.startMulti, formValues.endMulti, formValues.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times', });
            } else { 
              this.setState({	timeError: '' }) 
@@ -291,8 +301,9 @@ export default class AddEvent extends Component {
       } else if (typeof removeTime === 'number')  {
         startTimes.splice(removeTime, 1);
         startTimes.push(time);
-        this.setState({	startMulti: startTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+        formValues.startMulti = startTimes;
+        this.setState({ formValues }, () => {
+          if (multiDayTimeErrors(formValues.startMulti, formValues.endMulti, formValues.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times',  });
            } else { 
              this.setState({	timeError: '' }) 
@@ -303,15 +314,17 @@ export default class AddEvent extends Component {
   }
 
   selectEndMulti = (e, index) => {
+    let { formValues } = this.state;
     if (typeof index === 'number') {
-      const startTimes = this.state.startMulti.slice();
-      const endTimes = this.state.endMulti.slice(); 
+      const startTimes = formValues.startMulti.slice();
+      const endTimes = formValues.endMulti.slice(); 
       const time = { end: e.target.value, index: index, };
       const removeTime = removeDuplicateEnd(endTimes, time);
       if (typeof removeTime !== 'number') {
         endTimes.push(time);
-        this.setState({	endMulti: endTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+        formValues.endMulti = endTimes;
+        this.setState({ formValues	}, () => {
+          if (multiDayTimeErrors(formValues.startMulti, formValues.endMulti, formValues.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times', });
            } else { 
              this.setState({	timeError: '' }) 
@@ -320,8 +333,9 @@ export default class AddEvent extends Component {
       } else if (typeof removeTime === 'number')  {
         endTimes.splice(removeTime, 1);
         endTimes.push(time);
-        this.setState({	endMulti: endTimes }, () => {
-          if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+        formValues.endMulti = endTimes;
+        this.setState({ formValues	}, () => {
+          if (multiDayTimeErrors(formValues.startMulti, formValues.endMulti, formValues.dateMulti)) {
              this.setState({	timeError: 'Check you start and end times', });
            } else { 
              this.setState({	timeError: '' }) 
@@ -356,31 +370,54 @@ export default class AddEvent extends Component {
   checkKey = (e) => e.keyCode === 13 ? this.setState({	searchEnter: true }) : null 
 
   toggleCompEvent =  () => this.setState({ checkCompEvent: !this.state.checkCompEvent });
-  eventName = (e) => this.setState({ name: e.target.value.replace(/\s\s+/g, ' ').trim() });
-  eventUrl = (e) => this.setState({ url: e.target.value.trim() });
-  eventDays = (e) => this.setState({ days: e.target.value });
-	selectTag = (selectedTag) => {
-    const copy = selectedTag.slice(-1)[0];
-    if (copy !== undefined) {
-      copy.value = copy.value.replace(/\s\s+/g, ' ').trim();
-      copy.label = copy.label.replace(/\s\s+/g, ' ').trim();
-      this.setState({ selectedTags: selectedTag });
-    } else {
-      this.setState({ selectedTags: selectedTag });
-    }
+
+  eventName = (e) => {
+    let { formValues } = this.state;
+    formValues.name = e.target.value.replace(/\s\s+/g, ' ').trim();
+    this.setState({ formValues });
   }
 
-	selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
-  selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
-  eventDescription = e => this.setState({ description: e.target.value });
+  eventUrl = (e) => {
+    let { formValues } = this.state;
+    formValues.url = e.target.value.replace(/\s\s+/g, ' ').trim();
+    this.setState({ formValues });
+  }
+
+  eventDays = (e) => this.setState({ days: e.target.value });
+
+  selectTag = selectedTag => {
+    let { formValues } = this.state;
+    formValues.selectedTags = selectedTag;
+    this.setState({ formValues });
+  }
+
+  selectSponsor = selectedSponsor => {
+    let { formValues } = this.state;
+    formValues.selectedSponsors = selectedSponsor;
+    this.setState({ formValues });
+  }
+
+  selectOrganizer = selectedOrganizer => {
+    let { formValues } = this.state;
+    formValues.selectedOrganizers = selectedOrganizer;
+    this.setState({ formValues });
+  }
+
+  eventDescription = e => {
+    let { formValues } = this.state;
+    formValues.description = e.target.value;
+    this.setState({ formValues });
+  }
   eventFiles = (e) => {
     e.preventDefault();
+    let { formValues } = this.state;
     let file = e.target.files[0];
     let reader = new FileReader();
-    const files = this.state.eventFiles.slice();
+    const files = formValues.eventFiles.slice();
     reader.onload = () => {
-      files.push(file)
-      this.setState({ eventFiles: files });
+      files.push(file);
+      formValues.eventFiles = files;
+      this.setState({ formValues });
     };
     reader.readAsDataURL(e.target.files[0]);
   }
@@ -394,19 +431,39 @@ export default class AddEvent extends Component {
     });
 
   sponsorName = e => {
-    this.setState({ sponsorNames: e.target.value });
+    let { newSponsorFormValues } = this.state;
+    newSponsorFormValues.sponsorNames = e.target.value;
+    this.setState({ newSponsorFormValues });
   }
 
-	sponsorUrl = e => this.setState({ sponsorWebsites: e.target.value });
+  sponsorUrl = e => {
+    let { newSponsorFormValues } = this.state;
+    newSponsorFormValues.sponsorWebsites = e.target.value;
+    this.setState({ newSponsorFormValues });
+  }
+
+  handleLogo = (event) => {
+    event.preventDefault();
+    let { newSponsorFormValues } = this.state;
+    let reader = new FileReader();
+    newSponsorFormValues.logo = event.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({ newSponsorFormValues }, () => {
+        this.setState({ logoPreview: reader.result })
+      });
+    }
+    reader.readAsDataURL(newSponsorFormValues.logo);
+  };
 
   onNewSponsorSubmit = (e) => {
     e.preventDefault();
 
-    let { sponsorNames, sponsorWebsites, logo } = this.state;
+    let { sponsorNames, sponsorWebsites, logo, formValues } = this.state;
 
     if (logo && sponsorNames && sponsorWebsites) {
       const oldSponsors = this.state.sponsors.slice();
-      const newSponsors = this.state.newSponsors.slice();
+      const newSponsors = formValues.newSponsors.slice();
 
       const sponsor = {
         name: this.state.sponsorNames,
@@ -420,7 +477,8 @@ export default class AddEvent extends Component {
 
       if (duplicateOld === -1 && duplicateNew === -1) {
         newSponsors.push(sponsor);
-          this.setState({newSponsors: newSponsors});
+        formValues.newSponsors = newSponsors;
+        this.setState({ formValues });
       } else {
         this.toggleSnackBar("Sponsor name already taken!");
       }
@@ -443,7 +501,6 @@ export default class AddEvent extends Component {
     } = this.state;
 
 
-
     let data = new FormData();
     data.append('description', eventDescription);
     data.append('tags', JSON.stringify(this.state.selectedTags));
@@ -454,7 +511,7 @@ export default class AddEvent extends Component {
     data.append('organizers', JSON.stringify(this.state.selectedOrganizers));
     data.append('sponsors', JSON.stringify(this.state.selectedSponsors));
 
-    if (!!newSponsors.length) {
+    if (!!formValues.newSponsors.length) {
       data.append('newSponsors', JSON.stringify(newSponsors));
       newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
     }
@@ -523,31 +580,26 @@ export default class AddEvent extends Component {
     timeError: ''
   });
 
-  handleLogo = (event) => {
-    event.preventDefault();
-    let reader = new FileReader();
-    let file = event.target.files[0];
-
-    reader.onloadend = () => {
-      this.setState({
-        logo: file,
-        logoPreview: reader.result
-      });
-    }
-
-    reader.readAsDataURL(file);
-  };
   render() {
 
     const { 
-      snackBarMessage, dateError, modalMessage,
-      snackBar, checkCompEvent, days,    
-      description, selectedTag, selectedTags,
-      selectedSponsors, newSponsors, eventFiles,
-      organizers, showOrganizers, selectedOrganizers,
-      sponsors, checkNewSponsors, sponsorNames,
-      sponsorLogos, checkMultiday, loadedTags,
-      tagFocused, sponsorFocused, organizerFocused,
+      formValues,
+      snackBarMessage, 
+      dateError, 
+      modalMessage,
+      snackBar, 
+      days,    
+      organizers, 
+      showOrganizers, 
+      sponsors, 
+      checkNewSponsors, 
+      sponsorNames, 
+      sponsorLogos, 
+      checkMultiday, 
+      loadedTags, 
+      tagFocused, 
+      sponsorFocused, 
+      organizerFocused, 
       checkedRadio,
     } = this.state;
 
@@ -574,18 +626,18 @@ export default class AddEvent extends Component {
 
                 <label                  
                   style={{                        
-                    marginTop: Helper.getLabelStyle(tagFocused, selectedTags)[0],                    
-                    color: Helper.getLabelStyle(tagFocused, selectedTags)[1],                  
+                    marginTop: Helper.getLabelStyle(tagFocused, formValues.selectedTags)[0],                    
+                    color: Helper.getLabelStyle(tagFocused, formValues.selectedTags)[1],                  
                   }} 
-                  className={Helper.getLabelClassName(tagFocused, selectedTags)}
+                  className={Helper.getLabelClassName(tagFocused, formValues.selectedTags)}
                 >
                  event tags 
                 </label>
 
               {this.state.loadedTags && 
               <Select.Creatable 
-                className={Helper.getSelectStyle(tagFocused, selectedTags)}
-                placeholder={!tagFocused && !!!selectedTags.length ? 'Choose or create some tags that describe your event ' : ''} 
+                className={Helper.getSelectStyle(tagFocused, formValues.selectedTags)}
+                placeholder={!tagFocused && !!! formValues.selectedTags.length ? 'Choose or create some tags that describe your event ' : ''} 
                 multi 
                 style={{
                   background: '#f8f8f8', 
@@ -594,64 +646,64 @@ export default class AddEvent extends Component {
                 }}
                 options={loadedTags} 
                 onChange={this.selectTag} 
-                value={selectedTags} 
+                value={formValues.selectedTags} 
                 onFocus={this.onTagFocus} 
                 onBlur={this.onTagBlur}
               />}
 
               <label
                 style={{    
-                  marginTop: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[0],
-                  color: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[1],
+                  marginTop: Helper.getLabelStyle(organizerFocused, formValues.selectedOrganizers)[0],
+                  color: Helper.getLabelStyle(organizerFocused, formValues.selectedOrganizers)[1],
                 }} 
-                className={Helper.getLabelClassName(organizerFocused, selectedOrganizers)}
+                className={Helper.getLabelClassName(organizerFocused, formValues.selectedOrganizers)}
               >
                 Event Organizer 
               </label>
 
               {organizers && 
               <Select 
-                className={Helper.getSelectStyle(organizerFocused, selectedOrganizers)}
-                placeholder={!organizerFocused && !!!selectedOrganizers.length ? 'Event Organizers' : ''} 
+                className={Helper.getSelectStyle(organizerFocused, formValues.selectedOrganizers)}
+                placeholder={!organizerFocused && !!!formValues.selectedOrganizers.length ? 'Event Organizers' : ''} 
                 multi
                 style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
                 options={organizers} 
                 onChange={this.selectOrganizer} 
-                value={selectedOrganizers} 
+                value={formValues.selectedOrganizers} 
                 onFocus={this.onOrganizerFocus} 
                 onBlur={this.onOrganizerBlur}
               />}
 
-              {!!selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={selectedOrganizers} removeOrganizer={this.removeOrganizer} />}
+              {!!formValues.selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={formValues.selectedOrganizers} removeOrganizer={this.removeOrganizer} />}
 
               {!!sponsors.length && [
                 <label 
                   style={{    
-                    marginTop: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[0],
-                    color: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[1],
+                    marginTop: Helper.getLabelStyle(sponsorFocused, formValues.selectedSponsors)[0],
+                    color: Helper.getLabelStyle(sponsorFocused, formValues.selectedSponsors)[1],
                   }} 
                   key={`label$`} 
-                  className={Helper.getLabelClassName(sponsorFocused, selectedSponsors)}
+                  className={Helper.getLabelClassName(sponsorFocused, formValues.selectedSponsors)}
                 >
                   selected sponsors 
                 </label>,
                 <Select 
-                  className={Helper.getSelectStyle(sponsorFocused, selectedSponsors)}
-                  placeholder={!sponsorFocused && !!!selectedSponsors.length ? 'Search Sponsors' : ''} 
+                  className={Helper.getSelectStyle(sponsorFocused, formValues.selectedSponsors)}
+                  placeholder={!sponsorFocused && !!!formValues.selectedSponsors.length ? 'Search Sponsors' : ''} 
                   key={`sponsors`} 
                   multi
                   style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
                   options={sponsors} 
                   onChange={this.selectSponsor} 
-                  value={selectedSponsors} 
+                  value={ formValues.selectedSponsors} 
                   onFocus={this.onSponsorFocus} 
                   onBlur={this.onSponsorBlur}
                 />
               ]}
 
-              {!!selectedSponsors.length && 
+              {!!formValues.selectedSponsors.length && 
               <SelectedSponsors 
-                selectedSponsors={selectedSponsors} 
+                selectedSponsors={formValues.selectedSponsors} 
                 removeSponsor={this.removeSponsor} 
                 newSponsor={false} 
               />}
@@ -773,9 +825,9 @@ export default class AddEvent extends Component {
               />
             ]}
 
-            {!!newSponsors.length && 
+            {!!formValues.newSponsors.length && 
             <SelectedSponsors 
-              selectedSponsors={newSponsors} 
+              selectedSponsors={formValues.newSponsors} 
               removeSponsor={this.removeNewSponsor} 
               newSponsor={true} 
             />}
@@ -788,10 +840,10 @@ export default class AddEvent extends Component {
               </div>
             </label>
 
-            <div style={{marginTop: '40px',  color: 'rgba(0,0,0,0.54)',}}>
-              {!!eventFiles.length ? [
+            <div style={{marginTop: '40px', width: '80%', color: 'rgba(0,0,0,0.54)',}}>
+              {!!formValues.eventFiles.length ? [
                 <h4 key="fileh4" style={{marginBottom: 10}}> Uploaded files </h4>,
-                  <ol key="fileol" style={{ height: '100%', display:'flex', flexDirection: 'column',  marginBottom: '60px',  }}>
+                  <ol key="fileol" style={{ height: '100%', display:'flex', flexDirection: 'column',  marginBottom: '60px', borderTop: '2px solid rgba(0,0,0,0.54)', }}>
                     {eventFiles.map((file, key) => [
                       <li style={{height:'30px', borderBottom:'2px solid rgba(0,0,0,0.54)', paddingBottom: 20, paddingTop: 20}} key={`file${key}`}> 
                         <MdInsertDriveFile size="40px" /> 
@@ -806,7 +858,7 @@ export default class AddEvent extends Component {
               <input
                 type="checkBox" 
                 id="comprehensive-event" 
-                onKeyDown={(e) => e.keyCode === 13 ? this.toggleCompEvent() : null} onChange={this.toggleCompEvent} checked={checkCompEvent} 
+                onKeyDown={(e) => e.keyCode === 13 ? this.toggleCompEvent() : null} onChange={this.toggleCompEvent} checked={formValues.checkCompEvent} 
               />
 
               <label style={{color: 'rgba(0,0,0,0.54)'}} htmlFor="comprehensive-event"> 
