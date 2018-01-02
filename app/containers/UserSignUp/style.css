@@ -38,7 +38,15 @@
 }
 
  .foobar:hover {
-    border-bottom: 2.4px solid rgb(100,100,100);
+    border-bottom: 2px solid rgb(100,100,100);
+ }
+
+ .foobar2:hover {
+   border-bottom: 2px solid rgb(100,100,100);
+ }
+
+ .foobar3:hover {
+  border-bottom: 2px solid #304ffe;
  }
 
 .Select-arrow {

@@ -4,7 +4,7 @@ import './style.css';
 
 const OptionModal = props => 
   <Modal
-    isOpen={props.message}
+    isOpen={!!props.message}
     onRequestClose={props.closeModal}
     contentLabel="Selected Option"
     closeTimeoutMS={200}
