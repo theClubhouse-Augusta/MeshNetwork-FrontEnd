@@ -26,6 +26,12 @@ export default class UserSignIn extends React.PureComponent {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.user) {
+      this.props.history.push('/memberSearch')
+    }
+  }
+
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
@@ -33,13 +39,11 @@ export default class UserSignIn extends React.PureComponent {
   handlePassword = (event) => {this.setState({password:event.target.value})};
 
   signIn = () => {
-    let _this = this;
     let data = new FormData();
-
     data.append('email', this.state.email);
     data.append('password', this.state.password);
 
-    fetch("http://innovationmesh.com/api/login", {
+    fetch("http://localhost:8000/api/login", {
       method:'POST',
       body:data
     })
@@ -49,12 +53,15 @@ export default class UserSignIn extends React.PureComponent {
     .then(function(json) {
       if(json.error)
       {
-        _this.showSnack(json.error);
+        this.showSnack(json.error);
       }
       else if(json.token)
       {
         localStorage.setItem('token', json.token);
-        _this.showSnack('Welcome back!');
+        this.showSnack('Welcome back!');
+        setTimeout(() => { 
+          this.props.history.push(`/user/${json.user.id}`)
+        }, 2000);
       }
     }.bind(this));
   };

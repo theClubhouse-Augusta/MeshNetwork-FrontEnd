@@ -15,14 +15,12 @@ import './styleM.css';
 
 
 export default class BusinessSearch extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+
+    state = {
       spaces: [],
       spaceID: {},
       markerClicked: false,
     };
-  }
 
 
   componentDidMount() {
@@ -30,12 +28,9 @@ export default class BusinessSearch extends React.Component {
   }
 
   loadSpaces = () => {
-    fetch('http://localhost:8000/api/workspaces'
-    )
-    .then((response) =>
-      response.json((resepo))
-    )
-    .then((json) => {
+    fetch('http://localhost:8000/api/workspaces')
+    .then(response => response.json())
+    .then(json => {
       this.setState({ spaces: json });
     })
     .catch((error) => {

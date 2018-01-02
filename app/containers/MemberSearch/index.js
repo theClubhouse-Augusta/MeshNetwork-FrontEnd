@@ -111,7 +111,7 @@ export default class MemberSearch extends Component {
                         <dd> &nbsp;&nbsp;&nbsp;{user.name} </dd>
                       </div>
 
-                      <div>  
+                      <div>
                         <dt>company:</dt>
                         <dd> &nbsp;&nbsp;&nbsp;{user.company} </dd>
                       </div>

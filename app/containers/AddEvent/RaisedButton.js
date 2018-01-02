@@ -13,12 +13,22 @@ const styles = theme => ({
 });
 
 const RaisedButton = props => 
-  <Button raised color="primary" className={props.classes.button} style={{alignSelf: 'center'}}>
-    add new sponsor
+  <Button 
+    onClick={props.onSubmit}
+    raised 
+    color="primary"  
+    className={props.classes.button} 
+    style={ props.style }
+//      alignSelf: 'center',
+  //    marginTop: 24,
+    //  marginBottom: 64
+    //}}
+  >
+    {props.sponsor ? 'Add new Sponsor' : 'submit'}
   </Button>
 
 RaisedButton.propTypes = {
   classes: PropTypes.object.isRequired,
-  AddNewSponsor: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired
 };
 export default withStyles(styles)(RaisedButton);

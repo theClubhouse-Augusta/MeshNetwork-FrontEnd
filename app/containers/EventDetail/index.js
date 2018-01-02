@@ -221,8 +221,8 @@ export default class EventDetail extends React.PureComponent {
                     <div className="eventOrganizers">
                       <h3> organizers </h3>
                       {organizers && organizers.map((organizer, key) =>
-                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/userprofile/${organizer.id}`))}>
-                          <Avatar key={`org${key}`} src={organizer.avatar} />
+                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/user/${organizer.id}`))}>
+                          {!!organizer.avatar && <Avatar key={`org${key}`} src={organizer.avatar} />}
                           {organizer.name}
                         </div>
                       )}
@@ -339,7 +339,7 @@ export default class EventDetail extends React.PureComponent {
                 {(upcomingEvents && !hostSpace) &&
                 <ul className="eventUpcomingList"> 
                   {upcomingEvents.map((event, key) => 
-                  <a key={`a${key}`} href={`/EventDetail/${event.id}`}>
+                  <a key={`a${key}`} href={`/event/${event.id}`}>
                     <li style={{lineHeight: '2em'}}>
                       {`${moment(event.start).format('MMMM D')} ${event.title} @${event.name}`}
                     </li>
@@ -349,7 +349,7 @@ export default class EventDetail extends React.PureComponent {
                 {(upcomingEvents && workSpaces) &&
                 <ul className="eventUpcomingList"> 
                   {upcomingEvents.map((event, key) => 
-                  <a key={`a${key}`} href={`/EventDetail/${event.id}`}>
+                  <a key={`a${key}`} href={`/event/${event.id}`}>
                     <li style={{lineHeight: '2em'}}>
                       {`${moment(event.start).format('MMMM D')} ${event.title} @` + `${workSpaces.map(space => space.name,)}`}
                     </li>

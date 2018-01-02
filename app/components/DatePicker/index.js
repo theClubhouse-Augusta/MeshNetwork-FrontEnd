@@ -43,7 +43,6 @@ DatePicker.propTypes = {
   classes: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
   selector: PropTypes.func.isRequired,
-  multiday: PropTypes.bool.isRequired,
   index: PropTypes.oneOfType([
     PropTypes.number.isRequired,
     PropTypes.bool.isRequired

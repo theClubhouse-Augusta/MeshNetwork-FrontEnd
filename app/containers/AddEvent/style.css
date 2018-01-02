@@ -54,6 +54,7 @@
 .addEventSelectedOrganizersContainer {
   display: flex;
   flex-direction: column;
+  margin-bottom: 64px;
 }
 
 .addEventSponsorsContainer {
@@ -187,8 +188,11 @@ dl#addEventUserInfo dt {
 }
 
 .addEventFormLabel { 
+  color: rgba(0, 0, 0, 0.54);
   display: block; 
-  margin-bottom: 20px;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  /* display: none; */
 }
 
 .addEventUserSelect { 

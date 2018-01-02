@@ -2,13 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export const SelectedOrganizers = props =>
-  <div className="addEventSelectedOrganizersContainer">
-    {/*<h3 style={{marginBottom: 12, marginTop: 4}}>Selected Organizers</h3>*/}
+  <div style={{color: 'rgba(0,0,0,0.54)', marginBottom:'32px', }}>
+   Organizers
     <ul>
       {props.selectedOrganizers.map(organizer => 
-        <li className="addEventOrganizerCard" key={`selected${organizer.value}`}>
+        <li 
+          className="addEventOrganizerCard foobar" 
+          key={`selected${organizer.value}`}>
         
-          <img className="fakeUserPic" src={organizer.avatar} />
+          <img 
+            className="fakeUserPic" 
+            style={{
+              height: '72px',
+              width: '72px'
+            }}
+            src={organizer.avatar} 
+            />
 
           <dl id="addEventUserInfo">
             <div>  
