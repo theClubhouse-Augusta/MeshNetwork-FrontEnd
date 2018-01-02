@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types'; 
-import Helmet from 'react-helmet'; 
+
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
@@ -36,24 +36,25 @@ export default class SpaceDash extends React.PureComponent {
 
     return (
       <div className="container">
-        <Helmet title="AdminDash" meta={[ { name: 'description', content: 'Description of AdminDash' }]}/>
+      
 
        <div className="spaceDashBody">
        <AppBar position="static">
           <Tabs value={value} onChange={this.handleTabChange}>
+            <Tab label="User Management" />
             <Tab label="Space Information"  />
             <Tab label="Event Management" />
             <Tab label="Metrics" />
-            <Tab label="User Management" />
+            
           </Tabs>
         </AppBar>
           
 
         <div className="spaceDashMain">
-        {value === 0 && <SpaceInformation id={this.props.match.params.id}/> }
-        {value === 1 && <EventDash />}
-        {value === 2 && <Metrics /> }
-        {value === 3 && <UserDash /> }
+        {value === 3 && <SpaceInformation id={this.props.match.params.id}/> }
+        {value === 1 && <EventDash id={this.props.match.params.id}/>}
+        {value === 2 && <Metrics id={this.props.match.params.id}/> }
+        {value === 0 && <UserDash id={this.props.match.params.id}/> }
         
         </div>
        </div>
@@ -63,5 +64,5 @@ export default class SpaceDash extends React.PureComponent {
 }
 
 SpaceDash.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 };

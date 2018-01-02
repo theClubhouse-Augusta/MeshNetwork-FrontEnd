@@ -8,7 +8,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Header from 'components/Header';
-
+import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/Button';
 
 import './style.css';
@@ -19,7 +19,7 @@ export default class Home extends React.PureComponent {
   render() {
     return (
       <div className="container">
-        <Helmet title="Home" meta={[ { name: 'description', content: 'Description of Home' }]}/>
+        <Helmet title="Home" meta={ { name: 'description', content: 'Description of Home' }}/>
           <header>
             <Header />
           </header>

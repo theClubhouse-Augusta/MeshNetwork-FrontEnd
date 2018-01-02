@@ -8,6 +8,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Header from 'components/Header';
+import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
@@ -161,5 +162,5 @@ export default class SpaceSignUp extends React.PureComponent {
 }
 
 SpaceSignUp.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 };

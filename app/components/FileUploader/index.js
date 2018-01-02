@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import './style.css';
 import './styleM.css';
 
@@ -24,5 +24,5 @@ export default class FileUploader extends React.PureComponent {
 }
 
 FileUploader.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 };

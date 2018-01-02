@@ -5,6 +5,7 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
 import { TextField } from 'material-ui';
 import Button from 'material-ui/Button';
@@ -211,5 +212,5 @@ export default class SpaceInformation extends React.PureComponent {
 }
 
 SpaceInformation.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 };
