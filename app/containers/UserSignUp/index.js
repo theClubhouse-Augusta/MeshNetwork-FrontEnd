@@ -57,6 +57,10 @@ export default class UserSignUp extends React.Component {
     this.setState({ selectedTags: selectedTag });
   }
 
+  componentWillMount() {
+    this.getSkills();
+  }
+
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
@@ -223,7 +227,7 @@ export default class UserSignUp extends React.Component {
             />}
             {/* <MySelect /> */}
             <div className="spaceLogoMainImageRow">
-              <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
+              <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                 {this.renderAvatarImageText()}
                 {this.renderAvatarImage()}
               </label>

@@ -179,7 +179,8 @@
   .spaceProfileSpaceMembers {
     margin: 0 auto;
     padding: 30px;
-    max-width: 600px;
+    width:100%;
+    max-width: 1200px;
   }
 
     .spaceProfileMemberHeader {
@@ -194,3 +195,37 @@
       align-content: space-between;
       flex-wrap: wrap;
     }
+
+.spaceProfileUserList {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.spaceProfileUser {
+  width:21%;
+  display:flex;
+  flex-direction:row;
+  background:#F8F8F8;
+  margin:1%;
+  border-radius:3px;
+}
+
+.spaceProfileUserAvatar {
+  width:60px;
+  height:60px;
+  border-radius:3px;
+}
+
+.spaceProfileUserContent {
+  display:flex;
+  flex-direction:row;
+  justify-content: center;
+  align-items:center;
+  text-align:center;
+  font-family:'Lato';
+  font-size:1.1em;
+  font-weight:bold;
+  flex-grow:1;
+}

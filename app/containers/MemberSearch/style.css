@@ -1,5 +1,5 @@
 /**
-* MemberSearch Styles 
+* MemberSearch Styles
 */
 
 .MS-Container {
@@ -27,11 +27,7 @@ div.MS-Container h1 {
   height:45vh;
   width:100%;
   /* background */
-  background:linear-gradient(
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.4)),
-    url('../../images/002.jpg'
-  );
+  background:#888888;
   background-size:cover;
   background-position:center center;
   /* text */
@@ -105,7 +101,7 @@ dl#MS-userInfo div {
 
 /* make all <dt> bold */
 dl#MS-userInfo dt {
-  font-weight:700; 
+  font-weight:700;
 }
 
 /* search input */
@@ -164,7 +160,7 @@ main#MS-main > section {
 /* put tag buttons in row */
 main#MS-main > section > div {
   display: flex;
-  justify-content: space-between;  
+  justify-content: space-between;
   width: 30%;
 }
 
@@ -173,7 +169,7 @@ section#MS-TagRowOne {
   display: flex;
   justify-content: center;
   margin-bottom: .75em;
-} 
+}
 
 
 /* skill tag buttons */
@@ -181,7 +177,7 @@ button#MS-tags {
   /* text */
   text-align: center;
   color: whitesmoke;
-  box-sizing: content-box;  
+  box-sizing: content-box;
   /* height,width */
   height: 2.8em;
   width: 7.8em;
