@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export const SelectedSponsors = props =>
-  <div style={{marginBottom:'60px'}}>
-    Selected Sponsors
+  <div style={{color: 'rgba(0,0,0,0.54)', marginBottom:'32px', }}>
+    {props.newSponsor ? 'New Sponsors' : null}
     <ul>
       {props.selectedSponsors.map(sponsor => 
-        <li className="addEventOrganizerCard" key={ !props.newSponsor ? `selectedSponsor${sponsor.value}` : `newSponsor${sponsor.name}`}>  
+        <li 
+          className="addEventOrganizerCard foobar" 
+          key={ !props.newSponsor ? `selectedSponsor${sponsor.value}` : `newSponsor${sponsor.name}`}
+        >  
           <img className="fakeUserPic" src={props.newSponsor ? sponsor.imagePreviewUrl : sponsor.logo} />
           <dl id="addEventUserInfo">
             <div>  
