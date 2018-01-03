@@ -42,7 +42,7 @@ export default class SpaceDash extends React.PureComponent {
        <AppBar position="static">
           <Tabs value={value} onChange={this.handleTabChange}>
             <Tab label="User Management" />
-            <Tab label="Space Information"  />
+            
             <Tab label="Event Management" />
             <Tab label="Metrics" />
             
@@ -51,10 +51,10 @@ export default class SpaceDash extends React.PureComponent {
           
 
         <div className="spaceDashMain">
-        {value === 3 && <SpaceInformation id={this.props.match.params.id}/> }
+        {value === 0 && <UserDash id={this.props.match.params.id}/> }
         {value === 1 && <EventDash id={this.props.match.params.id}/>}
         {value === 2 && <Metrics id={this.props.match.params.id}/> }
-        {value === 0 && <UserDash id={this.props.match.params.id}/> }
+        
         
         </div>
        </div>

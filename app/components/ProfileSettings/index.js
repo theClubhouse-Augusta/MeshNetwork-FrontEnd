@@ -221,10 +221,6 @@ const ProfileSettings = props =>
 
 export default ProfileSettings;
 
-<<<<<<< HEAD
-ProfileSettings.contextTypes = {
-  router: PropTypes.object
-=======
 ProfileSettings.propTypes = {
   // userInfo functions
   name: PropTypes.func.isRequired,
@@ -271,5 +267,4 @@ ProfileSettings.propTypes = {
   Dribble: PropTypes.string.isRequired,
   Behance: PropTypes.string.isRequired,
   Angellist: PropTypes.string.isRequired,
->>>>>>> 8baead33bc128eb35669d4f81e5f2008a2b9a9ce
 };

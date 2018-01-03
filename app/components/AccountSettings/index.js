@@ -104,10 +104,6 @@ const AccountSettings = props =>
 
 export default AccountSettings;
 
-<<<<<<< HEAD
-AccountSettings.contextTypes = {
-  router: PropTypes.object
-=======
 AccountSettings.propTypes = {
   // input functions
   password: PropTypes.func.isRequired,
@@ -124,5 +120,4 @@ AccountSettings.propTypes = {
   CurrentPassword: PropTypes.string.isRequired,
   emailError: PropTypes.bool.isRequired,
   passwordError: PropTypes.bool.isRequired
->>>>>>> 8baead33bc128eb35669d4f81e5f2008a2b9a9ce
 };

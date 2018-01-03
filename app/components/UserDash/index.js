@@ -12,16 +12,19 @@ import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-
 import './style.css';
 import './styleM.css';
 
-// const name = 'firstName' + ',' + 'lastName' ??? 
+
+
+
+
 
 
 export default class UserDash extends React.PureComponent {
   constructor(props) {
     super(props); 
 
-    this.state = {
+    this.state = { 
       columns: [
-        { name: 'roleID', title: 'role', getCellValue: row => (row.user ? row.user.roleID : undefined )},
+        { name: 'roleID', title: 'Role', getCellValue: row => (row.user ? row.user.roleID : undefined )},
         { name: 'verfied', title: 'Verified', getCellValue: row => (row.user ? row.user.verified : undefined ) },
         { name: 'name', title: 'Name', getCellValue: row => (row.user ? row.user.name : undefined ) },      
         { name: 'email', title: 'Email', getCellValue: row => (row.user ? row.user.email : undefined ) },      
@@ -29,18 +32,43 @@ export default class UserDash extends React.PureComponent {
         getCellValue: row => (row.user ? row.user.created_at : undefined ) },      
         { name: 'ban', title: 'Banned?', getCellValue: row => (row.user ? row.user.ban : undefined )} ,
       ], 
-      rows: [
-        {user: { roleID: 0, verified: 1, name: 'User A', email: 'a@gmail.com', created_at: '10/2009', ban: 0 }},     
+      rows: [ 
+        {user: {roleID: '2', verified: '1', name: 'sally sue', email: 'sallys@gmail.com', created_at: 'Jan 3, 2018 16:00', ban: ''}}, 
+        {user: {roleID: '2', verified: '1', name: 'bob bobert', email: 'bobert@gmail.com', created_at: 'Jan 3, 2018 16:00', ban: ''}}, 
         ]
     }
+  } 
+// getCellValue is for if we want to assign the array of users to their own user objs 
+
+//roleID=> actual role name
+//created_at => readable date format
+
+
+/* componentWillMount() { 
+    this.loadSpaceUsers(); 
   }
 
+  loadSpaceUsers = (props) => {
+    fetch('http://innovationmesh.com/api/users/space/'+ this.props.id, {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        rows:json
+      }, function() {
+        console.log(this.state.rows);
+      })
+    }.bind(this)) 
+} */
 
   render() { 
     const { rows, columns} = this.state; 
   
     return (
-      <div>
+      <div className="userDashContainer">
         <Paper> 
           <Grid
               rows={rows}
