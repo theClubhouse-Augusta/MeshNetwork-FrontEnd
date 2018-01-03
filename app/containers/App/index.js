@@ -28,8 +28,6 @@ export default class App extends Component {
 
   };
 
-
-
   render() {
     return (
         <Switch>
@@ -152,6 +150,7 @@ export default class App extends Component {
             path="/spacedash/:id"
             render={(props) => <SpaceDash {...props} />} 
           />
+
 
           <Route component={NotFound} />
         </Switch>

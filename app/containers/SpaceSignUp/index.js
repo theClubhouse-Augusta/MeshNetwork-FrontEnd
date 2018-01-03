@@ -29,7 +29,7 @@ export default class SpaceSignUp extends React.PureComponent {
       name:"",
       city:"",
       address:"",
-      password:"",
+      // password:"",
       state:"",
       zipcode:"",
       email:"",
@@ -53,7 +53,7 @@ export default class SpaceSignUp extends React.PureComponent {
   handleZip = (event) => {this.setState({zipcode:event.target.value})};
   handleEmail = (event) => {this.setState({email:event.target.value})};
   handleWebsite = (event) => {this.setState({website:event.target.value})};
-  handlePassword = (event) => {this.setState({password:event.target.value})};
+  // handlePassword = (event) => {this.setState({password:event.target.value})};
   handlePhone = (event) => {this.setState({phone_number:event.target.value})};
   handleDescription = (editorState) => {this.setState({description: editorState, editorState: editorState})};
   handleLogo = (event) => {
@@ -147,7 +147,7 @@ export default class SpaceSignUp extends React.PureComponent {
           <div className="spaceSignUpTitle">Create a New WorkSpace</div>
           <div className="spaceSignUpContainer">
             <TextField label="Organization Name" value={this.state.name} onChange={this.handleName} margin="normal"/>
-            <TextField label="Password" value={this.state.password} onChange={this.handlePassword} margin="normal" type="password"/>
+            {/* <TextField label="Password" value={this.state.password} onChange={this.handlePassword} margin="normal" type="password"/> */}
             <TextField label="City" value={this.state.city} onChange={this.handleCity} margin="normal"/>
             <TextField label="Address" value={this.state.address} onChange={this.handleAddress} margin="normal"/>
             <TextField label="State" value={this.state.state} onChange={this.handleState} margin="normal"/>

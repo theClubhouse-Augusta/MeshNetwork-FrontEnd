@@ -22,7 +22,7 @@ export default class StyleHelpers {
    * @param {boolean} focused 
    * @param {array} selected 
    */
-  getLabelStyle = (focused:Boolean, selected:Array<object>) => {
+  getLabelStyle = (focused, selected) => {
     if (!!selected.length) {
       if (!focused) {
         return ['32px', 'rgba(0, 0, 0, 0.54)'];

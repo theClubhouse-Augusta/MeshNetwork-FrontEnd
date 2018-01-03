@@ -12,15 +12,20 @@ import Snackbar from 'material-ui/Snackbar';
 import Select from 'react-select';
 
 import Header from 'components/Header';
+import Checkout from '../Checkout'; 
 
 // styles
 import StyleHelpers from '../../utils/StyleHelpers';
 import './style.css';
 import './styleM.css';
 
-export default class UserSignUp extends React.Component {
+class UserSignUp extends React.Component {
 
   state = {
+    multi: true,
+    multiValue: [],
+    options: [],
+    value: undefined,
     name:"",
     email:"",
     password: "",
@@ -54,11 +59,23 @@ export default class UserSignUp extends React.Component {
   }
 
   selectTag = selectedTag => {
+    console.log('wtf', selectedTag);
     this.setState({ selectedTags: selectedTag });
   }
 
+  handleOnChange = (value) => {
+    let { options } = this.state;
+    console.log('o', options);
+    const { multi } = this.state;
+    if (multi) {
+      this.setState({ multiValue: value });
+    } else {
+      this.setState({ value });
+    }
+ }
+
   componentWillMount() {
-    this.getSkills();
+    this.loadSkills();
   }
 
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
@@ -90,11 +107,16 @@ export default class UserSignUp extends React.Component {
       password,
       bio,
       selectedTags,
-      avatar
+      avatar,
+      multiValue
     } = this.state;
 
     data.append('name', name.trim());
-    data.append('tags', JSON.stringify(selectedTags));
+    if (selectedTags.length) {
+      data.append('tags', JSON.stringify(selectedTags));
+    } else {
+      data.append('tags', JSON.stringify(multiValue));
+    }
     data.append('email', email.trim());
     data.append('password', password.trim());
     data.append('bio', bio.trim());
@@ -146,110 +168,116 @@ export default class UserSignUp extends React.Component {
   onBlur = () => this.setState({ focused: false });
 
   render() {
-    const { selectedTags, loadedTags, focused } = this.state;
+    const { 
+      selectedTags, 
+      loadedTags, 
+      focused,
+      multi, 
+      multiValue, 
+      options, 
+      value 
+    } = this.state;
     const Helper = new StyleHelpers;
     const marginTop = Helper.getLabelStyle(focused, selectedTags)[0];
     const color = Helper.getLabelStyle(focused, selectedTags)[1];
     return (
-      <div className="container">
-        <Helmet title="SpaceSignUp" meta={[ { name: 'description', content: 'Description of SpaceSignUp' }]}/>
-        <Header/>
+        <div className="container">
+          <Helmet title="SpaceSignUp" meta={[ { name: 'description', content: 'Description of SpaceSignUp' }]}/>
+          <Header/>
 
-        <main className="spaceSignUpMain">
-          <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
-          <div className="spaceSignUpContainer">
-            <TextField 
-              label="Full Name" 
-              value={this.state.name} 
-              onChange={this.handleName} 
-              margin="normal"
-            />
-            <TextField 
-              type="email" 
-              label="Email" 
-              value={this.state.email} 
-              onChange={this.handleEmail} 
-              margin="normal"
-            />
-            <TextField 
-              type="password" 
-              label="Password" 
-              value={this.state.password} 
-              onChange={this.handlePassword} 
-              margin="normal"
-            />
-            <TextField label="Bio" 
-              value={this.state.bio} 
-              onChange={this.handleBio}
-              margin="normal"
-            />
-            <label 
-              style={{
-                marginTop: marginTop,
-                color: color,
-              }}
-              //className={StyleHelpers.getC(focused, selectedTags)} 
-              className={Helper.getLabelClassName(focused, selectedTags)}
-            >
-              Skills
-            </label>
-
-              {/* //: !focused && !!!selectedTags.length
-              : false
-              ? "MyInputLabel-animated-9 MyInputLabel-formControl-6 MyInputLabel-root-5 MyInputLabel-root-11" 
-              : true
-              ? "MyInputLabel-animated-9 MyInputLabel-shrink-8 MyInputLabel-focused-122 MyInputLabel-formControl-62 MyInputLabel-root-112"
-              : "MyInputLabel-animated-9 MyInputLabel-formControl-6 MyInputLabel-root-5 MyInputLabel-root-11" */}
-            {!!loadedTags.length && 
-            <Select.Creatable 
-              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
-              className={Helper.getSelectStyle(focused, selectedTags)}
-              style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-              multi 
-              options={loadedTags} 
-              onChange={this.selectTag} 
-              value={selectedTags} 
-              onFocus={this.onFocus} 
-              onBlur={this.onBlur}
-            />}
-
-            {!!!loadedTags.length && 
-            <Select.Creatable 
-              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
-              className={Helper.getSelectStyle(focused, selectedTags)}
-              multi 
-              style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-              options={selectedTags} 
-              onChange={this.selectTag}
-              onFocus={this.onFocus} 
-              onBlur={this.onBlur}
-              value={selectedTags} 
-            />}
-            {/* <MySelect /> */}
-            <div className="spaceLogoMainImageRow">
-              <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
-                {this.renderAvatarImageText()}
-                {this.renderAvatarImage()}
+          <main className="spaceSignUpMain">
+            <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
+            <div className="spaceSignUpContainer">
+              <TextField 
+                label="Full Name" 
+                value={this.state.name} 
+                onChange={this.handleName} 
+                margin="normal"
+              />
+              <TextField 
+                type="email" 
+                label="Email" 
+                value={this.state.email} 
+                onChange={this.handleEmail} 
+                margin="normal"
+              />
+              <TextField 
+                type="password" 
+                label="Password" 
+                value={this.state.password} 
+                onChange={this.handlePassword} 
+                margin="normal"
+              />
+              <TextField label="Bio" 
+                value={this.state.bio} 
+                onChange={this.handleBio}
+                margin="normal"
+              />
+              <label 
+                style={{
+                  marginTop: marginTop,
+                  color: color,
+                }}
+                className={Helper.getLabelClassName(focused, selectedTags)}
+              >
+                Skills
               </label>
-              <input type="file" onChange={this.handleAvatar} id="logo-image" style={{display:'none'}}/>
-            </div>
-            <FlatButton 
-              style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} 
-              onClick={this.storeUser}
-            >
-               Sign Up
-            </FlatButton>
-          </div>
-        </main>
 
-        <footer></footer>
-        <Snackbar
-          open={this.state.snack}
-          message={this.state.msg}
-          autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
-        />
-      </div>
+              {!!loadedTags.length && 
+              <Select.Creatable 
+                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+                className={Helper.getSelectStyle(focused, selectedTags)}
+                style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                multi 
+                options={loadedTags}
+                onChange={this.selectTag} 
+                value={selectedTags} 
+                onFocus={this.onFocus} 
+                onBlur={this.onBlur}
+              />}
+
+              {!!!loadedTags.length && 
+              <Select.Creatable
+                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+                multi
+                className={Helper.getSelectStyle(focused, selectedTags)}
+                options={options}
+                style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                onChange={this.handleOnChange}
+                value={multiValue}
+                onFocus={this.onFocus} 
+                onBlur={this.onBlur}
+              />}
+
+              <Checkout />
+
+              
+              <div className="spaceLogoMainImageRow">
+                <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
+                  {this.renderAvatarImageText()}
+                  {this.renderAvatarImage()}
+                </label>
+                <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
+              </div>
+              <FlatButton 
+                style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} 
+                onClick={this.storeUser}
+              >
+                Sign Up
+              </FlatButton>
+            </div>
+          </main>
+
+          <footer></footer>
+          <Snackbar
+            open={this.state.snack}
+            message={this.state.msg}
+            autoHideDuration={3000}
+            onRequestClose={this.handleRequestClose}
+          />
+        </div>
     );
   }
 }
+
+export default UserSignUp;

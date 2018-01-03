@@ -56,7 +56,7 @@ export default class UserProfile extends React.Component {
       }
     })
     .catch(error => {
-      alert(`error!: ${error.message}`);
+      //alert(`error!: ${error.message}`);
     });
   }
 
