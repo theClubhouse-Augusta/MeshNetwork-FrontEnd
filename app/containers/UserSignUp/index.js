@@ -12,7 +12,6 @@ import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import Select from 'react-select';
 
-import Header from 'components/Header';
 
 // styles
 import StyleHelpers from '../../utils/StyleHelpers';
@@ -254,10 +253,7 @@ export default class UserSignUp extends React.Component {
     );
   }
 }
-<<<<<<< HEAD
 
 UserSignUp.contextTypes = {
   router: PropTypes.object
 };
-=======
->>>>>>> e917cdebea23c80cf6d11096036d0918b154256b
