@@ -158,37 +158,29 @@ export default class UserSignUp extends React.Component {
         <main className="spaceSignUpMain">
           <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
           <div className="spaceSignUpContainer">
-            <TextField 
-              label="Full Name" 
-              value={this.state.name} 
-              onChange={this.handleName} 
-              margin="normal"
+            <TextField label="Full Name" value={this.state.name} onChange={this.handleName} margin="normal"/>
+            <TextField label="E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
+            <TextField label="Password" value={this.state.password} onChange={this.handlePassword} margin="normal"/>
+            <Select
+              name="addSkills"
+              value={this.state.selectedOption.value}
+              onChange={this.handleSkills}
+              options={this.state.skills}
+              removeSelected={false}
+              multi={true}
+              placeholder="Tell us about your Skills..."
             />
-            <TextField 
-              type="email" 
-              label="Email" 
-              value={this.state.email} 
-              onChange={this.handleEmail} 
-              margin="normal"
-            />
-            <TextField 
-              type="password" 
-              label="Password" 
-              value={this.state.password} 
-              onChange={this.handlePassword} 
-              margin="normal"
-            />
-            <TextField label="Bio" 
-              value={this.state.bio} 
+            <TextField label="Bio"
+              value={this.state.bio}
               onChange={this.handleBio}
               margin="normal"
             />
-            <label 
+            <label
               style={{
                 marginTop: marginTop,
                 color: color,
               }}
-              //className={StyleHelpers.getC(focused, selectedTags)} 
+              //className={StyleHelpers.getC(focused, selectedTags)}
               className={Helper.getLabelClassName(focused, selectedTags)}
             >
               Skills
@@ -196,34 +188,34 @@ export default class UserSignUp extends React.Component {
 
               {/* //: !focused && !!!selectedTags.length
               : false
-              ? "MyInputLabel-animated-9 MyInputLabel-formControl-6 MyInputLabel-root-5 MyInputLabel-root-11" 
+              ? "MyInputLabel-animated-9 MyInputLabel-formControl-6 MyInputLabel-root-5 MyInputLabel-root-11"
               : true
               ? "MyInputLabel-animated-9 MyInputLabel-shrink-8 MyInputLabel-focused-122 MyInputLabel-formControl-62 MyInputLabel-root-112"
               : "MyInputLabel-animated-9 MyInputLabel-formControl-6 MyInputLabel-root-5 MyInputLabel-root-11" */}
-            {!!loadedTags.length && 
-            <Select.Creatable 
-              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+            {!!loadedTags.length &&
+            <Select.Creatable
+              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
               className={Helper.getSelectStyle(focused, selectedTags)}
               style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-              multi 
-              options={loadedTags} 
-              onChange={this.selectTag} 
-              value={selectedTags} 
-              onFocus={this.onFocus} 
+              multi
+              options={loadedTags}
+              onChange={this.selectTag}
+              value={selectedTags}
+              onFocus={this.onFocus}
               onBlur={this.onBlur}
             />}
 
-            {!!!loadedTags.length && 
-            <Select.Creatable 
-              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+            {!!!loadedTags.length &&
+            <Select.Creatable
+              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
               className={Helper.getSelectStyle(focused, selectedTags)}
-              multi 
+              multi
               style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-              options={selectedTags} 
+              options={selectedTags}
               onChange={this.selectTag}
-              onFocus={this.onFocus} 
+              onFocus={this.onFocus}
               onBlur={this.onBlur}
-              value={selectedTags} 
+              value={selectedTags}
             />}
             {/* <MySelect /> */}
             <div className="spaceLogoMainImageRow">
@@ -231,10 +223,10 @@ export default class UserSignUp extends React.Component {
                 {this.renderAvatarImageText()}
                 {this.renderAvatarImage()}
               </label>
-              <input type="file" onChange={this.handleAvatar} id="logo-image" style={{display:'none'}}/>
+              <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
             </div>
-            <FlatButton 
-              style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} 
+            <FlatButton
+              style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
               onClick={this.storeUser}
             >
                Sign Up

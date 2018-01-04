@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import MapComponent from 'components/MapComponent';
+import Moment from 'react-moment';
 import {
   TiSocialAtCircular,
   TiSocialFacebookCircular,
@@ -54,19 +55,19 @@ export default class SpaceProfile extends React.PureComponent {
     this.state = {
       token:localStorage.getItem("token"),
       spaceProfile:'',
-      profileEvents: '',
+      events: [],
       users:[],
       }
   }
 
   componentWillMount() {
     this.getProfile();
-    //getSpaceEvents();
+    this.getSpaceEvents();
     this.getUsers();
   }
 
  getProfile = () => {
-    fetch('http://localhost:8000/api/workspace/'+ this.props.match.params.id, {
+    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -80,37 +81,17 @@ export default class SpaceProfile extends React.PureComponent {
 }
 
   getSpaceEvents = () => {
-    fetch(`http://localhost:8000/api/events/upcoming/${this.state.id}`, {
+    fetch('http://innovationmesh.com/api/upcoming/'+ this.props.match.params.id, {
       method: 'GET'
     })
-    .then((response) => {
+    .then(function(response) {
       return response.json();
-    }).then(data => {
-      let profileEvents = data.response.map((profileEvent) => {
-        return (
-          <div  key={'profileCard' + profileCard.id}>
-          <Card
-          className="spaceEventCard" containerStyle={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap',  justifyContent: 'space-between'}}>
-          <CardMedia className="spaceEventCardImage">
-
-          </CardMedia>
-
-          <div className="spaceEventCardContent">
-            <CardHeader title={event.name} style={{padding: '0'}} />
-            <div className="spaceEventCardDetails">
-              <span className="spaceEventCardDate" style={{margin: '1em 0'}}>  </span>
-              <span className="spaceEventCardTime" style={{margin: '1em'}}>
-               </span>
-              <span className="spaceEventCardLocation" style={{margin: '1em 0 0 1em'}}> </span>
-            </div>
-            <p className="spaceEventCardDescription">  </p>
-          </div>
-        </Card>
-        </div>
-        )
-      })
-      this.setState({profileEvents:profileEvents});
     })
+    .then(function(json) {
+      this.setState({
+        events:json
+      })
+    }.bind(this))
   }
 
   getUsers = () => {
@@ -180,20 +161,11 @@ export default class SpaceProfile extends React.PureComponent {
               </div>
             </div>
 
-            <div className="spaceProfileBannerColumnRight">
-              <div className="spaceProfileMap">
-              <MapComponent
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
-                  loadingElement={<div style={{ height: '100%' }} />}
-                  containerElement={<div id="mapComp" />}
-                  mapElement={<div style={{ height: '100%' }} />}
-                  lat={33.5105746}
-                  lon={-82.0856046}
-              />
-              </div>
+            <div className="spaceProfileMap">
+              <img src={"https://maps.googleapis.com/maps/api/staticmap?center="+ this.state.spaceProfile.city +","+ this.state.spaceProfile.state +"&zoom=13&size=1280x300&maptype=roadmap&markers=color:blue%7C"+this.state.spaceProfile.lat+","+this.state.spaceProfile.lon+"&key=AIzaSyBDiXTt6jIkCs_VKtQeBZcVosIEgAdR1R0"}/>
             </div>
 
-            </div>
+          </div>
 
 
 
@@ -224,7 +196,7 @@ export default class SpaceProfile extends React.PureComponent {
                   <FlatButton style={{background:'#ee3868', color:'#FFFFFF', width:'200px'}}>Explore Memberships </FlatButton>
                 </div>
 
-                <div className="spaceProfileMembershipPerks">
+                {/*}<div className="spaceProfileMembershipPerks">
                   <h4> Space Perks </h4>
                   <div className="spaceProfilePerksWrapper">
                     <ul style={styles.list}>
@@ -238,7 +210,7 @@ export default class SpaceProfile extends React.PureComponent {
                      <li style={styles.listItem}>3-D Printer</li>
                     </ul>
                   </div>
-                </div>
+                </div>*/}
 
                 <div className="spaceProfileMembershipContact">
 
@@ -258,7 +230,21 @@ export default class SpaceProfile extends React.PureComponent {
             <div className="spaceProfileUpcomingEvents">
                 <h4 style={{textAlign: 'center'}}> Upcoming Events </h4>
                 <div className="spaceProfileEventsWrapper">
-                 {this.state.profileEvents}
+                  <div className="eventList">
+                    {this.state.events.map((event, i) => (
+                      <Link to={'/event/' + event.id} className="eventBlock">
+                        <div className="eventBlockImage"></div>
+                        <div className="eventBlockInfo">
+                          <div className="eventBlockTitle">{event.title}</div>
+                          <div className="eventBlockDesc">
+                            <Moment parse="YYYY-MM-DD HH:mm">
+                                {event.start}
+                            </Moment>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
 
             </div>

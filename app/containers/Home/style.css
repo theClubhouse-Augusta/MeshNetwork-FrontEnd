@@ -58,7 +58,8 @@ button {
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url('https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-13095.jpg');
+    background:url('http://innovationmesh.com/assets/tri.jpg');
+    /*background:linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url('https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-13095.jpg');*/
     background-size:cover;
     background-repeat:no-repeat;
     background-position:center center;
@@ -67,7 +68,7 @@ button {
 .homeBodyHeaderSlant {
   font-family: 'Spectral', serif;
   font-size: 5em;
-  line-height:120px;
+  line-height:100px;
   text-align:center;
   color:#FFFFFF;
 }

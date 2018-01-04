@@ -3,7 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../Home';
 import About from '../About';
 import Booking from '../Booking';
-import BusinessSearch from '../BusinessSearch';
 //import Contact from '../Contact';
 import EventDetail from '../EventDetail';
 //import Events from '../Events';
@@ -23,10 +22,6 @@ import UserSignUp from '../UserSignUp';
 import UserSignIn from '../UserSignIn';
 
 export default class App extends Component {
-
-  state = {
-
-  };
 
 
 
@@ -60,17 +55,8 @@ export default class App extends Component {
 
           <Route
             path="/signIn"
-            render={(props) => 
-              <UserSignIn 
-                {...props}
-              />
-            }
-          />
-
-          <Route
-            path="/BusinessSearch"
             render={(props) =>
-              <BusinessSearch
+              <UserSignIn
                 {...props}
               />
             }
@@ -113,11 +99,10 @@ export default class App extends Component {
           />
 
           <Route
-            path="/MemberSearch"
+            path="/members"
             render={(props) =>
               <MemberSearch
                 {...props}
-                getLoggedInUser={this.getLoggedInUser}
               />
             }
           />
@@ -150,7 +135,7 @@ export default class App extends Component {
 
           <Route
             path="/spacedash/:id"
-            render={(props) => <SpaceDash {...props} />} 
+            render={(props) => <SpaceDash {...props} />}
           />
 
           <Route component={NotFound} />

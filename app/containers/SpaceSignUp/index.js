@@ -29,7 +29,9 @@ export default class SpaceSignUp extends React.PureComponent {
       name:"",
       city:"",
       address:"",
-      password:"",
+      userName:"",
+      userEmail:"",
+      userPassword:"",
       state:"",
       zipcode:"",
       email:"",
@@ -71,7 +73,59 @@ export default class SpaceSignUp extends React.PureComponent {
     reader.readAsDataURL(file);
   };
 
-  storeSpace = () => {
+  handleUserName = (event) => {this.setState({name:event.target.userName})};
+  handleUserEmail = (event) => {this.setState({email:event.target.userEmail})};
+  handleUserPassword = (event) => {this.setState({password:event.target.userPassword})};
+  handleAvatar = (event) => {
+    event.preventDefault();
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        avatar: file,
+        avatarPreview: reader.result
+      });
+    }
+
+    reader.readAsDataURL(file);
+  };
+
+  storeUser = () => {
+    let data = new FormData();
+    let {
+      name,
+      email,
+      password,
+      avatar
+    } = this.state;
+
+    data.append('name', name.trim());
+    data.append('email', email.trim());
+    data.append('password', password.trim());
+    data.append('spaceID', 0);
+    data.append('avatar', avatar);
+
+    fetch("http://localhost:8000/api/signUp", {
+      method:'POST',
+      body:data,
+    })
+    .then(response => response.json())
+    .then(user => {
+      if (user.error) {
+        this.showSnack(user.error);
+      } else {
+        localStorage['token'] = user.token;
+        this.storeSpace(user.token);
+      }
+    })
+    .catch(error => {
+      alert(`signUp ${error}`);
+    })
+  }
+
+
+  storeSpace = (token) => {
     let _this = this;
     let data = new FormData();
     let {
@@ -99,6 +153,7 @@ export default class SpaceSignUp extends React.PureComponent {
     fetch("http://localhost:8000/api/newspace", {
       method:'POST',
       body:data,
+      headers:{'Authorization':'Bearer '+ token}
     })
     .then(function(response) {
       return response.json();
@@ -107,8 +162,8 @@ export default class SpaceSignUp extends React.PureComponent {
       if(spaceID.error) {
         _this.showSnack(spaceID.error);
       }
-        _this.showSnack("Workspace created successfully!");
-        setTimeout(() => { 
+        _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
+        setTimeout(() => {
           this.props.history.push(`/space/${spaceID}`)
         }, 2000);
     }.bind(this))
@@ -134,6 +189,26 @@ export default class SpaceSignUp extends React.PureComponent {
     }
   }
 
+  renderAvatarImage = () => {
+    if(this.state.logo !== "")
+    {
+      return(
+        <img src={this.state.logoPreview} className="spaceLogoImagePreview"/>
+      )
+    }
+  }
+
+  renderAvatarImageText = () => {
+    if(this.state.logoPreview === "" || this.state.logoPreview === undefined || this.state.logoPreview === null) {
+      return(
+        <span style={{display:'flex', flexDirection:'column', textAlign:'center'}}>
+          Select an Avatar
+          <span style={{fontSize:'0.9rem', marginTop:'5px'}}>For Best Size Use: 512 x 512</span>
+        </span>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -144,15 +219,26 @@ export default class SpaceSignUp extends React.PureComponent {
         </header>
 
         <main className="spaceSignUpMain">
-          <div className="spaceSignUpTitle">Create a New WorkSpace</div>
+          <div className="spaceSignUpTitle">Create a New Organization</div>
+          <div className="spaceSignUpContainer">
+            <TextField label="Founder Full Name" value={this.state.userName} onChange={this.handleUserName} margin="normal"/>
+            <TextField label="Founder E-mail" value={this.state.userEmail} onChange={this.handleUserEmail} margin="normal"/>
+            <TextField label="Founder Password" value={this.state.userPassword} onChange={this.handleUserPassword} margin="normal"/>
+            <div className="spaceLogoMainImageRow">
+              <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
+                {this.renderAvatarImageText()}
+                {this.renderAvatarImage()}
+              </label>
+              <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
+            </div>
+          </div>
           <div className="spaceSignUpContainer">
             <TextField label="Organization Name" value={this.state.name} onChange={this.handleName} margin="normal"/>
-            <TextField label="Password" value={this.state.password} onChange={this.handlePassword} margin="normal" type="password"/>
             <TextField label="City" value={this.state.city} onChange={this.handleCity} margin="normal"/>
             <TextField label="Address" value={this.state.address} onChange={this.handleAddress} margin="normal"/>
             <TextField label="State" value={this.state.state} onChange={this.handleState} margin="normal"/>
             <TextField label="ZIP" value={this.state.zipcode} onChange={this.handleZip} margin="normal"/>
-            <TextField label="E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
+            <TextField label=" Organization E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
             <TextField label="Website" value={this.state.website} onChange={this.handleWebsite} margin="normal"/>
             <TextField label="Phone #" value={this.state.phone_number} onChange={this.handlePhone} margin="normal"/>
             <Editor

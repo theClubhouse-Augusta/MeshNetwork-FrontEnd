@@ -30,7 +30,7 @@
 .spaceLogoMainImageRow {
   display:flex;
   flex-direction:row;
-  justify-content: space-between;
+  justify-content: center;
   margin-top:15px;
   margin-bottom:15px;
 }
