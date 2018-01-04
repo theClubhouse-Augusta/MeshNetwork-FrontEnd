@@ -23,10 +23,6 @@ import UserSignIn from '../UserSignIn';
 
 export default class App extends Component {
 
-  state = {
-
-  };
-
 
 
   render() {

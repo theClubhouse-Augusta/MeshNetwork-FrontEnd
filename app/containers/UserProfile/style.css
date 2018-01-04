@@ -1,192 +1,103 @@
 /* UserProfile Styles */
-.UP-container {
+.container {
   display:flex;
   flex-direction:column;
   min-height:100vh;
-  background-color: black;
-}
-
-
-.UP-loading {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  background-image:url(https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwj34pTYzs7XAhWLS98KHbdRDSoQjRwIBw&url=https%3A%2F%2Fgithub.com%2Fadenix%2FSpinnerCSS&psig=AOvVaw0frLMXgzptOb5G9LfzMRzT&ust=1511317504693128);
-  background-size: cover;
-  background-position: center center;
-  opacity: 1;
 }
 
 .mainProfile {
   width:100%;
-  max-width:1000px;
-  margin:0 auto;
-  margin-top: 60px;
-  background-color: #FFFFFF;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+  height:calc(100vh - 55px);
+  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
 }
 
 .profileHeader {
-  top: 10em;
   min-height:200px;
-  background:#EEEEEE;
   width:100%;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-}
-
-section.profileHeader img:first-child {
-  height: 200px;  
-  width: 200px;  
-}
-
-.profileInfo {
-  padding:10px;
+  max-width:800px;
   display:flex;
   flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border-bottom:1px solid #FFFFFF;
 }
 
-.profileName {
+.profileHeaderImg {
+  width:200px;
+  height:200px;
+  border-radius:50%;
+}
+
+.profileHeaderTitle {
   font-size:3em;
-  /* background: red; */
-  min-width:400px;
-  min-height:50px;
+  font-family:'Noto Sans';
+  color:#FFFFFF;
+  text-align:center;
 }
 
-.profileTitle {
-  min-width:500px;
-  min-height:30px;
-  /* background:#DDDDDD; */
-  margin-top:10px;
+.profileSubTitle {
+  font-size:1.5em;
+  font-family:'Noto Sans';
+  color:#FFFFFF;
+  text-align:center;
+  color:#EEEEEE;
+  margin-bottom:5px;
 }
 
-.profileSpace {
-  min-width:500px;
-  min-height:30px;
-  /* background:#DDDDDD; */
-  margin-top:10px;
-}
-
-.profileSocial {
-  min-width:500px;
-  min-height:40px;
-  /* background:#DDDDDD; */
-  margin-top:10px;
-}
-
-.profileColumns {
-  background:#CCCCCC;
-  min-height:100vh;
+.profileContact {
+  width:100%;
+  max-width:750px;
+  padding:20px;
   display:flex;
   flex-direction:row;
+  justify-content: space-between;
+  border-bottom:1px solid #FFFFFF;
 }
 
-.profileColumnLeft {
-  width:30%;
-  min-height:100vh;
-  background:#BBBBBB;
-  border-right: 1px solid #DDDDDD;
+.profileSpaceBlock {
+  border-radius:4px;
+  border:2px solid #FFFFFF;
+  padding:10px 20px;
+  color:#FFFFFF;
+  text-transform:uppercase;
+  cursor:pointer;
 }
 
-.profileTagCloud {
+.profileSpaceBlock:hover {
+  background:rgba(255, 255, 255, 0.2);
+}
+
+.profileSocialList {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+}
+
+.profileIconStyle {
+  color:#FFFFFF;
+  font-size:2em;
+  margin-left:10px;
+  cursor:pointer;
+}
+
+.profileSkillsList {
   width:100%;
-  background:#eeeeee;
+  max-width:900px;
   display:flex;
   flex-direction:row;
   flex-wrap:wrap;
-  justify-content: space-between;
-  /* box-sizing: border-box; */
+  margin-top:15px;
 }
 
-.EventTag {
-  cursor: pointer;
-  height:30px;
-  width:70px;
-  background-color:#111111;
-  margin:10px;
-  border-radius:5px;
-  color: white;
-  text-align: center;
-}
-
-.profileTag {
-  height:30px;
-  width:70px;
-  background-color:#111111;
-  margin:10px;
-  border-radius:5px;
-  color: white;
-  text-align: center;
-}
-
-.profileMentorship {
-  min-height:200px;
-  width:100%;
-  background:#999999;
-}
-
-.profileEvents {
-  min-height:300px;
-  width:100%;
-  background:#888888;
-}
-
-.profileColumnRight {
-  display:flex;
-  flex-direction:column;
-  width:70%;
-}
-
-.profileBio {
-  width:100%;
-  min-height:500px;
-  background:#777777;
-}
-
-.profileBio h1 {
-  display:flex;
-  justify-content: center;
-  min-height:40px;
-  background:#666666;
-  margin:15px;
-  /* width: 100%; */
-}
-
-.profileBioContent {
-  display:flex;
-  min-height:600px;
-  background:#666666;
-  margin:15px;
-}
-
-.profileAttending {
-  display:flex;
-  flex-direction:column;
-  min-height:300px;
-  background:#555555;
-}
-
-aside.profileAttending h2 {
-  min-height:40px;
-  background:#444444;
-  margin:15px;
-  text-align: center;
-}
-
-.profileAttendingContent {
-  display:flex;
-  flex-direction:column;
-  min-height:200px;
-  background:#444444;
-  margin:15px;
-}
-
-.profileAttendingItem {
-  cursor: pointer;
-  display:flex;
-  flex-direction:row;
-  justify-content: center;
-  min-height:40px;
-  background:#333333;
-  margin:10px;
+@keyframes profileFlicker {
+  0% {
+    background:rgba(255,255,255, 0.5);
+  }
+  100% {
+    background:rgba(255,255,255, 0.1)
+  }
 }
