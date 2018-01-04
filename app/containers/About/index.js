@@ -5,8 +5,11 @@
  */
 import React from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+
+import FlatButton from 'material-ui/Button';
 
 import './style.css';
 import './styleM.css';
@@ -67,8 +70,7 @@ export default class About extends React.PureComponent {
           <div className="aboutButtons">
             <div className="aboutButtonText">Ready to Discover the Mesh Network?</div>
             <div className="aboutButtonsContainer">
-              <button label="Sign Up"  style={{ marginLeft:'15px', width:'200px'}} /> {/* TODO */}
-              <button label="Contact Us" style={{ marginLeft:'15px', width:'200px'}} /> { /* TODO */ }
+              <Link to={'/newSpace'} style={{margin:'15px', width:'30%'}}><FlatButton style={{width:'100%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign Up</FlatButton></Link>
             </div>
           </div>
         </main>

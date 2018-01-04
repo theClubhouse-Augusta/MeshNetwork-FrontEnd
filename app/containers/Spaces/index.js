@@ -18,6 +18,7 @@ import {
 import Card, { CardMedia, CardContent, CardHeader } from 'material-ui/Card';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import MyMapComponent from './MyMapComponent';
 
 import './style.css';
 import './styleM.css';
@@ -27,7 +28,9 @@ export default class Spaces extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      workspaces:[]
+      spaces:[],
+      spaceID: {},
+      markerClicked: false,
     }
   }
 
@@ -36,7 +39,7 @@ export default class Spaces extends React.PureComponent {
   }
 
   getSpaces = () => {
-    fetch(`http://localhost:8000/api/workspaces`, {
+    fetch(`http://innovationmesh.com/api/workspaces`, {
       method:'GET'
     })
     .then(function(response) {
@@ -44,9 +47,13 @@ export default class Spaces extends React.PureComponent {
     })
     .then(function(json) {
       this.setState({
-        workspaces:json
+        spaces:json
       })
     }.bind(this))
+  }
+
+  clickMarker = (spaceId) => {
+    this.props.history.push(`/space/${spaceId}`);
   }
 
 
@@ -56,12 +63,20 @@ export default class Spaces extends React.PureComponent {
         <Helmet title="Spaces" meta={[ { name: 'description', content: 'Description of Spaces' }]}/>
         <Header />
         <div className="spacesBodyWrapper">
-          <div className="spacesHeader">
-            <span className="spacesTitle">CO-WORK SPACES</span>
-          </div>
-
+            <MyMapComponent
+              isMarkerShown
+              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
+              loadingElement={<div style={{ height: '100%' }} />}
+              containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
+              mapElement={<div style={{ height: '23em' }} />}
+              lat={33.5105746}
+              lon={-82.08560469999999}
+              clickMarker={this.clickMarker}
+              spaces={this.state.spaces}
+            />
+          <div className="spaceListHeader">Find Your Space</div>
           <div className="spacesList">
-            {this.state.workspaces.map((space, i) => (
+            {this.state.spaces.map((space, i) => (
               <Link to={'space/' + space.id} className="spaceListing" key={i}>
                 <Card style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
                   <CardMedia style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', flexGrow:'1'}}>
