@@ -1,21 +1,22 @@
-/*
- *
- * Checkout
- *
- */
-
+/**
+*
+* Checkout
+*
+*/
 import React from 'react';
-import Helmet from 'react-helmet';
-import MyStoreCheckout from './MyStoreCheckout';
-import {StripeProvider} from 'react-stripe-elements';
+import {Elements} from 'react-stripe-elements';
+import CheckoutForm from './CheckoutForm';
 
 import './style.css';
 import './styleM.css';
+class Checkout extends React.Component {
+  render() {
+    return (
+      <Elements>
+        <CheckoutForm {...this.props} />
+      </Elements>
+    );
+  }
+}
 
-const Checkout = props =>      
-  <StripeProvider 
-    apiKey={props.apiKey ? props.apiKey : "pk_test_12345"}
-  >
-    <MyStoreCheckout />
-  </StripeProvider>
-  export default Checkout;
+export default Checkout;

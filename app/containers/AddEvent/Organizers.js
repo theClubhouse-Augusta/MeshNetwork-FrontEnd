@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes, { oneOfType } from 'prop-types';
 
 export const Organizers = props => 
   <div className={props.showOrganizers ? "addEventOrganizersContainer" : "addEventOrganizersContainerHide"}>
     <ul>
       {props.organizers.map(organizer => 
         <li className="addEventOrganizerCard" onClick={() => {props.selectOrganizer(organizer)}} key={`li${organizer.id}`}>
-          <img className="fakeUserPic" src={organizer.avatar} />
+          <img alt="" className="fakeUserPic" src={organizer.avatar} />
           <dl id="addEventUserInfo">
             <div>  
               <dt>name:</dt>
@@ -25,12 +24,3 @@ export const Organizers = props =>
       )}
     </ul>
   </div>
-
-Organizers.propTypes = {
-  showOrganizers: PropTypes.bool.isRequired,
-  selectOrganizer: PropTypes.func.isRequired,
-  organizers: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.array.isRequired,
-  ]),  
-};

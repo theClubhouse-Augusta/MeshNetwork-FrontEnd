@@ -1,19 +1,45 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { StripeProvider } from 'react-stripe-elements';
 
 import '!file-loader?name=[name].[ext]!./favicon.ico';
 import '!file-loader?name=[name].[ext]!./manifest.json';
 
 import App from 'containers/App';
 
-
 ReactDOM.render((
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <StripeProvider apiKey="pk_test_rJKqFRMRduGAyguxdWT2TfcI"> 
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StripeProvider>
 ), document.getElementById('app'));
 
 if (process.env.NODE_ENV === 'production') {
   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 }
+
+
+
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import { BrowserRouter } from 'react-router-dom';
+
+// import '!file-loader?name=[name].[ext]!./favicon.ico';
+// import '!file-loader?name=[name].[ext]!./manifest.json';
+
+// import App from 'containers/App';
+
+
+// ReactDOM.render((
+//     <BrowserRouter>
+//       <App />
+//     </BrowserRouter>
+// ), document.getElementById('app'));
+
+// if (process.env.NODE_ENV === 'production') {
+//   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
+// }
+
+

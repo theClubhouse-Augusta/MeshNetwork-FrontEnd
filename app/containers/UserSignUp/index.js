@@ -12,7 +12,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Select from 'react-select';
 
 import Header from 'components/Header';
-import Checkout from '../Checkout'; 
+// import Checkout from '../Checkout'; 
 
 // styles
 import StyleHelpers from '../../utils/StyleHelpers';
@@ -249,7 +249,7 @@ class UserSignUp extends React.Component {
                 onBlur={this.onBlur}
               />}
 
-              <Checkout />
+              {/* <Checkout /> */}
 
               
               <div className="spaceLogoMainImageRow">
