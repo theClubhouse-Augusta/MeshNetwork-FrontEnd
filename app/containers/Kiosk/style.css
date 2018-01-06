@@ -99,6 +99,9 @@
   flex-direction:row;
   transition: all .26s ease-in-out;
   cursor:pointer;
+  margin-bottom:20px;
+  text-decoration:none;
+  color:#222222;
 }
 
 .eventBlockImage {
