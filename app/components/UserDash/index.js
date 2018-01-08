@@ -13,11 +13,6 @@ import './style.css';
 import './styleM.css';
 
 
-
-
-
-
-
 export default class UserDash extends React.PureComponent {
   constructor(props) {
     super(props); 
@@ -35,7 +30,11 @@ export default class UserDash extends React.PureComponent {
       rows: [ 
         {user: {roleID: '2', verified: '1', name: 'sally sue', email: 'sallys@gmail.com', created_at: 'Jan 3, 2018 16:00', ban: ''}}, 
         {user: {roleID: '2', verified: '1', name: 'bob bobert', email: 'bobert@gmail.com', created_at: 'Jan 3, 2018 16:00', ban: ''}}, 
-        ]
+        ], 
+      editingRows: [], 
+      addedRows: [], 
+      changedRows: [], 
+      deletingRows: [], 
     }
   } 
 // getCellValue is for if we want to assign the array of users to their own user objs 

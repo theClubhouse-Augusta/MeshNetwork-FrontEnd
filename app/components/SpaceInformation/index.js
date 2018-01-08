@@ -74,10 +74,13 @@ export default class SpaceInformation extends React.PureComponent {
     }
   
   renderLogoPreview = () => {
-    if(this.state.logo !== '') 
+    if(this.state.logo !== '' /* this.state.spaceProfile.logo */) 
     { return (
       <img src={this.state.logoPreview} height='250px' width= '250px'/>
-    )}
+    )} /* else 
+    { return (
+      <img src={this.state.spaceProfile.logo} height='250px' width= '250px'/>
+    )} */
   }
     
 

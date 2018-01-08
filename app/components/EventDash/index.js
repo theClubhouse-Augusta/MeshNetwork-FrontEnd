@@ -7,11 +7,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
-import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'; 
+import { EditingState } from '@devexpress/dx-react-grid'; 
+import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'; 
+
 
 import './style.css';
 import './styleM.css';
-import {DragHandle} from 'material-ui-icons';
+
+
+const getRowId = row => row.id; 
 
 export default class EventDash extends React.PureComponent {
   constructor(props) { 
@@ -32,9 +36,14 @@ export default class EventDash extends React.PureComponent {
       ], 
       rows: [
         {event: {status: 1, title:'pynight', creator: 'sally sue', organizers: 'sally sue, bob bobert', dateTime: '1/12/2018 6p-9p', description: 'yay its python, as always newbie corner', }}, 
-      ]
+      ], 
+      editingRows: [], 
+      addedRows: [], 
+      changedRows: [], 
     }
-  }
+  };
+
+
 
 
   componentWillMount() {
@@ -57,6 +66,7 @@ export default class EventDash extends React.PureComponent {
     }.bind(this))
   }
 
+
 //eventID param
   getEventOrganizers= () => { 
 
@@ -64,13 +74,12 @@ export default class EventDash extends React.PureComponent {
 
 //eventID Param 
   getEventDateTime = () => { 
-
+    fetch('http://localhost:8000/api/')
   }
 
 
-  //UPDATE HANDLE
-  
-  //DELETEHANDLE 
+commitChanges() {} 
+
   render() {
     const { rows, columns } = this.state; 
 
@@ -79,9 +88,19 @@ export default class EventDash extends React.PureComponent {
         <Paper> 
           <Grid
             rows={rows} 
-            columns={columns}> 
+            columns={columns}
+            getRowId={getRowId}> 
+            <EditingState
+              onCommitChanges={this.commitChanges} 
+            /> 
             <Table />
             <TableHeaderRow />
+            <TableEditRow />
+            <TableEditColumn 
+              showAddCommand
+              showEditCommand
+              showDeleteCommand
+            />
           </Grid>
         </Paper>
       </div>

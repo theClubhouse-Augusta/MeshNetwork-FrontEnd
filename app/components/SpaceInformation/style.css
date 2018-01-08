@@ -47,7 +47,9 @@
                
             }
 
-            .spaceIDashPayment {
+            .spaceIDashPaymentInfo {
+                display: flex; 
+                flex-direction: column; 
 
             }
 
