@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 export const SelectedSponsors = props =>
   <div style={{color: 'rgba(0,0,0,0.54)', marginBottom:'32px', }}>
@@ -31,9 +30,3 @@ export const SelectedSponsors = props =>
       )}
     </ul>
   </div>
-
-SelectedSponsors.propTypes = {
-  selectedSponsors: PropTypes.array.isRequired,
-  removeSponsor: PropTypes.func.isRequired,
-  newSponsor: PropTypes.bool.isRequired,
-};

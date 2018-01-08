@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes, { oneOfType } from 'prop-types';
 
 export const Sponsors = props => 
   <div className= {props.sponsors ? "addEventSponsorsContainer" : "addEventOrganizersContainerHide"}>
@@ -7,7 +6,7 @@ export const Sponsors = props =>
     <ul>
       {props.sponsors.map(sponsor => 
         <li className="addEventOrganizerCard" onClick={() => {props.selectSponsor(sponsor)}} key={`sponsor${sponsor.id}`}>
-          <img className="fakeUserPic" src={sponsor.logo} />
+          <img alt="" className="fakeUserPic" src={sponsor.logo} />
           <dl id="addEventUserInfo">
             <div>  
               <dt>name:</dt>
@@ -26,11 +25,3 @@ export const Sponsors = props =>
       )}
     </ul>
   </div>
-
-Sponsors.propTypes = {
-  selectSponsor: PropTypes.func.isRequired,
-  sponsors: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.array.isRequired,
-  ]),  
-};

@@ -6,6 +6,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Select from 'react-select';
+import moment from 'moment';
+import { Link } from 'react-router-dom'
 
 import Header from 'components/Header';
 
@@ -36,17 +38,37 @@ export default class Kiosk extends React.PureComponent {
       snack:false,
     }
   }
+  
+  componentDidMount() {
+    try {
+      const reasonsKiosk = localStorage.getItem('reasonsKiosk');
+      const usersKiosk = localStorage.getItem('usersKiosk');
+      const workspaceKiosk = localStorage.getItem('workspaceKiosk');
+      const eventsKiosk = localStorage.getItem('eventsKiosk');
+
+      const reasons = JSON.parse(reasonsKiosk);
+      const users = JSON.parse(usersKiosk);
+      const workspace = JSON.parse(workspaceKiosk);
+      const events = JSON.parse(eventsKiosk);
+
+      if (reasons && users && events && workspace) {
+        this.setState(() => ({ reasons }));
+        this.setState(() => ({ users }));
+        this.setState(() => ({ events }));
+        this.setState(() => ({ workspace }));
+      } else {
+        this.getUpcomingEvents();
+        this.getProfile();
+        this.getUsers();
+        this.getReasons();
+      }
+    } catch (e) {
+      // Do nothing at all
+    }
+  }
 
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
-
-  componentDidMount() {
-    this.getUpcomingEvents();
-    this.getProfile();
-    this.getUsers();
-    //this.getReasons();
-  }
-
 
    getProfile = () => {
       fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
@@ -56,28 +78,11 @@ export default class Kiosk extends React.PureComponent {
         return response.json();
       })
       .then(function(json) {
+        localStorage['workspaceKiosk'] = JSON.stringify(json);
         this.setState({
           workspace:json
         })
       }.bind(this))
-  }
-
-  getKioskStyles = () => {
-    fetch('http://innovationmesh.com/api/kiosk/'+this.props.match.params.id)
-    .then(response => response.json())
-    .then(Kiosk => {
-      if (Kiosk) {
-        this.setState({
-          kioskStyles: Kiosk.styles,
-          workspace: Kiosk.workspace,
-        });
-      } else {
-        // redirect 404
-      }
-    })
-    .catch(error => {
-      // do something with error
-    })
   }
 
   getUsers = () => {
@@ -85,7 +90,9 @@ export default class Kiosk extends React.PureComponent {
     .then(response => response.json())
     .then(Users => {
       if (Users) {
-        this.setState({	users: Users });
+        this.setState({	users: Users }, () => {
+          localStorage['usersKiosk'] = JSON.stringify(Users);
+        });
       }
     })
     .catch(error => {
@@ -98,7 +105,9 @@ export default class Kiosk extends React.PureComponent {
     .then(response => response.json())
     .then(Reasons => {
       if (Reasons) {
-        this.setState({	reasons: Reasons });
+        this.setState({	reasons: Reasons }, () => {
+          localStorage['reasonsKiosk'] = JSON.stringify(Reasons);
+        });
       }
     })
     .catch(error => {
@@ -111,7 +120,9 @@ export default class Kiosk extends React.PureComponent {
     .then(response => response.json())
     .then(Events => {
       if (Events) {
-        this.setState({	events: Events });
+        this.setState({	events: Events }, () => {
+        localStorage['eventsKiosk'] = JSON.stringify(Events);
+        });
       }
     })
     .catch(error => {
@@ -120,12 +131,11 @@ export default class Kiosk extends React.PureComponent {
   }
 
   storeAppearance = () => {
-    let _this = this;
     let data = new FormData();
     data.append('userID', this.state.loggedInUser.value);
     data.append('eventID', 0);
     data.append('spaceID', this.props.match.params.id);
-    data.append('occasion', this.state.seelctedReason);
+    data.append('occasion', this.state.selectedReason);
 
     fetch('http://innovationmesh.com/api/appearance', {
       method:'POST',
@@ -147,8 +157,7 @@ export default class Kiosk extends React.PureComponent {
   }
 
   selectReason = (reason) => {
-    this.setState({	selectedReason: reason },
-    function() {
+    this.setState({	selectedReason: reason }, () => {
       this.storeAppearance();
     });
   }
@@ -156,22 +165,26 @@ export default class Kiosk extends React.PureComponent {
   restartPage = () => {window.location.reload()}
 
   renderComplete = () => {
-    if(this.state.showComplete === true)
+    if (this.state.showComplete === true)
     {
+      let { events } = this.state;
       return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
           <div className="kioskTitle">Thanks for Checking-In!</div>
-          <div className="kioskSubtitle">Be sure to check out these Events</div>
 
-          <div className="eventList">
-            <div className="eventBlock">
-              <div className="eventBlockImage"></div>
-              <div className="eventBlockInfo">
-                <div className="eventBlockTitle">Some Event</div>
-                <div className="eventBlockDesc">November 18, 2017</div>
+          {!!events.length && <div className="kioskSubtitle">Be sure to check out these Events</div>}
+
+          {!!events.length && events.map((event, key) => 
+            <Link target="_blank" to={`/event/${event.id}`} key={`eventDiv2${key}`} className="eventList">
+              <div className="eventBlock">
+                <div className="eventBlockImage"></div>
+                  <div  className="eventBlockInfo">
+                    <div className="eventBlockTitle">{event.title}</div>
+                    <div className="eventBlockDesc">{moment(event.start).format('MMMM, Do, YYYY')}</div>
+                  </div>
               </div>
-            </div>
-          </div>
+            </Link>
+          )}
 
           <FlatButton style={{background:'#FFFFFF', color:'#222222', marginTop:'30px', width:'80%', fontWeight:'bold'}} onClick={this.restartPage}>Done</FlatButton>
         </div>
@@ -180,25 +193,26 @@ export default class Kiosk extends React.PureComponent {
   }
 
   renderReasons = () => {
+    let { reasons } = this.state;
     if(this.state.loggedInUser)
     {
       return(
         <div className="kioskReasons">
-          <div className="kioskReasonBlock">
-            <WorkIcon size={40} style={{marginBottom:'10px'}} onClick={() => this.selectReason('Work')}/>
-            Work
+          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.work)}>
+            <WorkIcon size={40} style={{marginBottom:'10px'}} />
+            {reasons.work}
           </div>
-          <div className="kioskReasonBlock">
-            <MeetIcon size={40} style={{marginBottom:'10px'}} onClick={() => this.selectReason('Meet-Up')}/>
-            Meet-Up
+          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.meetup)}>
+            <MeetIcon size={40} style={{marginBottom:'10px'}} />
+            {reasons.meetup}
           </div>
-          <div className="kioskReasonBlock">
-            <EventIcon size={40} style={{marginBottom:'10px'}} onClick={() => this.selectReason('Event')}/>
-            Event
+          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.event)}>
+            <EventIcon size={40} style={{marginBottom:'10px'}} />
+            {reasons.event}
           </div>
-          <div className="kioskReasonBlock">
-            <ClassIcon size={40} style={{marginBottom:'10px'}} onClick={() => this.selectReason('Class')}/>
-            Class
+          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.student)}>
+            <ClassIcon size={40} style={{marginBottom:'10px'}} />
+            {reasons.student}
           </div>
         </div>
       )
@@ -213,7 +227,6 @@ export default class Kiosk extends React.PureComponent {
         <header>
 
         </header>
-
         <main className="kioskMain">
           <img className="kioskLogo" src={this.state.workspace.logo}/>
           <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>

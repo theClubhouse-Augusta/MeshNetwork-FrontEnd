@@ -42,7 +42,8 @@ export default class UserProfile extends React.Component {
 
   getUser = token => {
     fetch('http://innovationmesh.com/api/user/' + this.props.match.params.id, {
-      method:'GET'
+      method:'GET',
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(function(response) {
       return response.json();
@@ -87,7 +88,7 @@ export default class UserProfile extends React.Component {
             <div className="profileSubTitle">{this.state.user.title}</div>
           </div>
           <div className="profileContact">
-            <Link to={'/space/'+this.state.user.spaceID} className="profileSpaceBlock">
+           <Link to={'/space/'+this.state.user.spaceID} className="profileSpaceBlock">
               {this.state.space.name}
             </Link>
             <div className="profileSocialList">
@@ -104,6 +105,7 @@ export default class UserProfile extends React.Component {
           </div>
           <div className="profileSkillsList">
             <div className="tagsBox">
+
               {this.state.skills.map((skill, i) => (
                 this.renderTag(skill, i)
               ))}

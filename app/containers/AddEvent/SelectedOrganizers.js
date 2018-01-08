@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 export const SelectedOrganizers = props =>
   <div style={{color: 'rgba(0,0,0,0.54)', marginBottom:'32px', }}>
@@ -39,8 +38,3 @@ export const SelectedOrganizers = props =>
       )}
     </ul>
   </div>
-
-SelectedOrganizers.propTypes = {
-  selectedOrganizers: PropTypes.array.isRequired,
-  removeOrganizer: PropTypes.func.isRequired,
-};

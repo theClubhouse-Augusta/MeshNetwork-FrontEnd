@@ -18,11 +18,10 @@ import Kiosk from '../Kiosk';
 import NotFound from '../NotFound';
 import SpaceDash from '../SpaceDash';
 import SpaceSignUp from '../SpaceSignUp';
-import UserSignUp from '../UserSignUp';
+import UserSignUp from '../Checkout';
 import UserSignIn from '../UserSignIn';
 
 export default class App extends Component {
-
 
 
   render() {
@@ -137,6 +136,7 @@ export default class App extends Component {
             path="/spacedash/:id"
             render={(props) => <SpaceDash {...props} />}
           />
+
 
           <Route component={NotFound} />
         </Switch>
