@@ -46,7 +46,38 @@ export default class EventDetail extends React.PureComponent {
     if ( isNaN(parseInt(this.eventID)) || this.eventID === '0' || this.eventID === '0') {
       this.props.history.push('/');
     } else {
-      this.getEvent(this.eventID);
+      try {
+        const json = localStorage.getItem('EventDetail');
+        const event = JSON.parse(json);
+        if (event) {
+          if (event.local) {
+            this.setState({ 
+              event: event.event,
+              workSpace: event.local,
+              upcomingEvents: event.upcomingEvents,
+              sponsors: event.sponsors,
+              organizers: event.organizers,
+              attendees: event.attendees,
+              tags: event.tags
+            });
+          } else {
+            this.setState({ 
+              event: event.event,
+              hostSpace: event.hostSpace,
+              workSpaces: event.nonLocal,
+              upcomingEvents: event.upcomingEvents,
+              sponsors: event.sponsors,
+              organizers: event.organizers,
+              attendees: event.attendees,
+              tags: event.tags
+            });
+          }
+        } else {
+          this.getEvent(this.eventID);
+        }
+      } catch (error) {
+       // do something 
+      }
     }
   }
 
@@ -55,7 +86,7 @@ export default class EventDetail extends React.PureComponent {
   }
 
   getEvent = (eventID) => {
-    fetch(`http://localhost:8000/api/event/${eventID}`, {
+    fetch(`http://innovationmesh.com/api/event/${eventID}`, {
       headers: { Authorization: `Bearer ${this.token}` }
     })
     .then(reponse => reponse.json())
@@ -69,6 +100,8 @@ export default class EventDetail extends React.PureComponent {
           organizers: Event.organizers,
           attendees: Event.attendees,
           tags: Event.tags
+        }, () => {
+          localStorage['EventDetail'] = JSON.stringify(Event);
         });
       } else if (Event.nonLocal) {
         this.setState({	
@@ -80,6 +113,8 @@ export default class EventDetail extends React.PureComponent {
           organizers: Event.organizers,
           attendees: Event.attendees,
           tags: Event.tags
+        }, () => {
+          localStorage['EventDetail'] = JSON.stringify(Event);
         })
       }
     })
@@ -90,7 +125,7 @@ export default class EventDetail extends React.PureComponent {
 
   registerForEvent = (e, eventID) => {
     e.preventDefault();
-    fetch(`http://localhost:8000/api/event/join/${eventID}`, {
+    fetch(`http://innovationmesh.com/api/event/join/${eventID}`, {
       headers: { Authorization: `Bearer ${this.token}` }
     },
     )
@@ -102,7 +137,7 @@ export default class EventDetail extends React.PureComponent {
       } else if (signedUp.duplicate) {
         this.toggleSnackBar(signedUp.duplicate);
       } else if (signedUp.error) {
-        this.props.history.push('/auth');
+        this.props.history.push('/signIn');
       }
     })
     .catch(error => {
@@ -316,7 +351,7 @@ export default class EventDetail extends React.PureComponent {
 
               <div className="eventRegistration">
                 <button 
-                  onClick={(e) => { this.registerForEvent(e, event.id) }}  
+                  onClick={(e) => {this.registerForEvent(e, event.id) }}  
                   style={{ marginTop: '40px'}} 
                   backgroundColor="#e36937"  
                 > 

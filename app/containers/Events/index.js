@@ -30,7 +30,7 @@ export default class Events extends React.PureComponent {
   // }
 
   // getSpaces = () => {
-  //   fetch(`http://localhost:8000/api/workspaces`,)
+  //   fetch(`http://innovationmesh.com/api/workspaces`,)
   //   .then(response => response.json())
   //   .then(Workspaces => {
   //     if (!Workspaces.error) {
@@ -47,7 +47,7 @@ export default class Events extends React.PureComponent {
 
   // // TODO get events by selected spaceID
   // getUpcomingEvents = () => {
-  //   fetch(`http://localhost:8000/api/upcoming/${'SPACEID'}`)
+  //   fetch(`http://innovationmesh.com/api/upcoming/${'SPACEID'}`)
   //   .then(response => response.json())
   //   .then(Events => {
   //     if (Events) {

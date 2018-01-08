@@ -83,6 +83,8 @@ export default class AddEvent extends Component {
     checkedRadio: null,
     logo:"",
     logoPreview:"",
+    eventImg:"",
+    eventImgPreview:"",
   };
 
   componentDidMount() {
@@ -96,7 +98,7 @@ export default class AddEvent extends Component {
     if (!token) {
       this.props.history.push('/');
     }
-    fetch(`http://localhost:8000/api/authorize`, {
+    fetch(`http://innovationmesh.com/api/authorize`, {
         headers: { Authorization: `Bearer ${token}` },
     })
     .then(response => response.json())
@@ -115,7 +117,7 @@ export default class AddEvent extends Component {
   loading = () => this.state.loading;
 
   getSponsors = () => {
-    fetch(`http://localhost:8000/api/sponsors`, {
+    fetch(`http://innovationmesh.com/api/sponsors`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
     .then(response => response.json())
@@ -130,7 +132,7 @@ export default class AddEvent extends Component {
   }
 
   getOrganizers = () => {
-    fetch(`http://localhost:8000/api/organizers/all`, {
+    fetch(`http://innovationmesh.com/api/organizers/all`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
     .then(response => response.json())
@@ -145,7 +147,7 @@ export default class AddEvent extends Component {
   }
 
   loadSkills = () => {
-    fetch('http://localhost:8000/api/skills/all', {
+    fetch('http://innovationmesh.com/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(response => response.json())
@@ -353,12 +355,12 @@ export default class AddEvent extends Component {
   }
 
   // submit form if 'enter' is pressed
-  checkKey = (e) => e.keyCode === 13 ? this.setState({	searchEnter: true }) : null 
+  checkKey = event => e.keyCode === 13 ? this.setState({	searchEnter: true }) : null 
 
   toggleCompEvent =  () => this.setState({ checkCompEvent: !this.state.checkCompEvent });
-  eventName = (e) => this.setState({ name: e.target.value.replace(/\s\s+/g, ' ').trim() });
-  eventUrl = (e) => this.setState({ url: e.target.value.trim() });
-  eventDays = (e) => this.setState({ days: e.target.value });
+  eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
+  eventUrl = event => this.setState({ url: event.target.value.trim() });
+  eventDays = event => this.setState({ days: event.target.value });
 	selectTag = (selectedTag) => {
     const copy = selectedTag.slice(-1)[0];
     if (copy !== undefined) {
@@ -373,16 +375,16 @@ export default class AddEvent extends Component {
 	selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
   selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
   eventDescription = e => this.setState({ description: e.target.value });
-  eventFiles = (e) => {
-    e.preventDefault();
-    let file = e.target.files[0];
+  eventFiles = (event) => {
+    event.preventDefault();
+    let file = event.target.files[0];
     let reader = new FileReader();
     const files = this.state.eventFiles.slice();
     reader.onload = () => {
       files.push(file)
       this.setState({ eventFiles: files });
     };
-    reader.readAsDataURL(e.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
   }
 
   toggleNewSponsors =  () => this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
@@ -393,11 +395,11 @@ export default class AddEvent extends Component {
       snackBarMessage: message
     });
 
-  sponsorName = e => {
-    this.setState({ sponsorNames: e.target.value });
+  sponsorName = event => {
+    this.setState({ sponsorNames: event.target.value });
   }
 
-	sponsorUrl = e => this.setState({ sponsorWebsites: e.target.value });
+	sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
 
   onNewSponsorSubmit = (e) => {
     e.preventDefault();
@@ -450,6 +452,7 @@ export default class AddEvent extends Component {
     this.state.eventFiles.forEach((file, index) => data.append(`files${index}`, file));
     data.append('compEvent', !!this.state.checkCompEvent);
     data.append('name', this.state.name);
+    data.append('image', this.state.eventImg);
     data.append('url', this.state.url);
     data.append('organizers', JSON.stringify(this.state.selectedOrganizers));
     data.append('sponsors', JSON.stringify(this.state.selectedSponsors));
@@ -473,7 +476,7 @@ export default class AddEvent extends Component {
       }
     } 
 
-    fetch(`http://localhost:8000/api/event`, {
+    fetch(`http://innovationmesh.com/api/event`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,
@@ -513,6 +516,26 @@ export default class AddEvent extends Component {
       )
     }
   }
+
+  renderEventImage = () => {
+    if(this.state.eventImg !== "")
+    {
+      return(
+        <img src={this.state.eventImgPreview} className="spaceLogoImagePreview"/>
+      )
+    }
+  }
+
+  renderEventImageText = () => {
+    if(this.state.eventImgPreview === "" || this.state.eventImgPreview === undefined || this.state.eventImgPreview === null) {
+      return(
+        <span style={{display:'flex', flexDirection:'column', textAlign:'center'}}>
+          Select a Logo
+          <span style={{fontSize:'0.9rem', marginTop:'5px'}}>For Best Size Use: 512 x 512</span>
+        </span>
+      )
+    }
+  }
   changeRadio = e => this.setState({
     checkedRadio: e.target.value,
     days: '',
@@ -532,6 +555,21 @@ export default class AddEvent extends Component {
       this.setState({
         logo: file,
         logoPreview: reader.result
+      });
+    }
+
+    reader.readAsDataURL(file);
+  };
+
+  handleEventImage = (event) => {
+    event.preventDefault();
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+       eventImg: file,
+       eventImgPreview: reader.result
       });
     }
 
@@ -574,8 +612,8 @@ export default class AddEvent extends Component {
 
                 <label                  
                   style={{                        
-                    marginTop: Helper.getLabelStyle(tagFocused, selectedTags)[0],                    
-                    color: Helper.getLabelStyle(tagFocused, selectedTags)[1],                  
+                    marginTop: Helper.getLabelStyle(tagFocused, selectedTags)[0], 
+                    color: Helper.getLabelStyle(tagFocused, selectedTags)[1], 
                   }} 
                   className={Helper.getLabelClassName(tagFocused, selectedTags)}
                 >
@@ -815,10 +853,24 @@ export default class AddEvent extends Component {
 
             </div>
 
-            <RaisedButton
-              style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
-              onSubmit={this.Submit}      
-            />
+            <div className="spaceLogoMainImageRow">
+              <label htmlFor="event-image" className="spaceLogoMainImageBlock">
+                {this.renderEventImageText()}
+                {this.renderEventImage()}
+              <input 
+                type="file" 
+                onChange={this.handleEventImage} 
+                id="event-image" 
+                style={{display:'none'}}
+                accept="image/png, image/jpg, image/jpeg" 
+              />
+            </label>
+          </div>
+
+          <RaisedButton
+            style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+            onSubmit={this.Submit}      
+          />
           </div>          
         </main>  
         <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />

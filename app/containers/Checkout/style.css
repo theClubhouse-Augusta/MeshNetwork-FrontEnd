@@ -1,5 +1,4 @@
-/* UserSignUp Styles */
-
+/* Checkout Styles */
 .container {
   display:flex;
   flex-direction:column;
@@ -120,4 +119,14 @@
   font-size: 1rem;
   font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
   line-height: 1;
+}
+.MuiExpansionPanelSummary-content-94 {
+  justify-content: center;
+}
+.MuiCollapse-wrapperInner-111 {
+  background:  #f8f8f8;
+}
+
+span.Select-value-label {
+  background: "red"
 }

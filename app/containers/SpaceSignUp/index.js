@@ -10,14 +10,15 @@ import { Link } from 'react-router-dom';
 import Header from 'components/Header';
 import PropTypes from 'prop-types';
 
-import {EditorState, ContentState, convertFromHTML, convertToRaw} from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import {EditorState} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
+
+import Header from '../../components/Header';
 
 import './style.css';
 import './styleM.css';
@@ -47,7 +48,7 @@ export default class SpaceSignUp extends React.PureComponent {
   }
 
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
+  showSnack = (msg) => { this.setState({ msg: msg }); };
 
   handleName = (event) => { this.setState({name:event.target.value.replace(/\s\s+/g, ' ') })};
   handleCity = (event) => { this.setState({city:event.target.value})};
@@ -56,7 +57,7 @@ export default class SpaceSignUp extends React.PureComponent {
   handleZip = (event) => {this.setState({zipcode:event.target.value})};
   handleEmail = (event) => {this.setState({email:event.target.value})};
   handleWebsite = (event) => {this.setState({website:event.target.value})};
-  handlePassword = (event) => {this.setState({password:event.target.value})};
+  // handlePassword = (event) => {this.setState({password:event.target.value})};
   handlePhone = (event) => {this.setState({phone_number:event.target.value})};
   handleDescription = (editorState) => {this.setState({description: editorState, editorState: editorState})};
   handleLogo = (event) => {
@@ -74,9 +75,9 @@ export default class SpaceSignUp extends React.PureComponent {
     reader.readAsDataURL(file);
   };
 
-  handleUserName = (event) => {this.setState({name:event.target.userName})};
-  handleUserEmail = (event) => {this.setState({email:event.target.userEmail})};
-  handleUserPassword = (event) => {this.setState({password:event.target.userPassword})};
+  handleUserName = (event) => {this.setState({userName:event.target.value})};
+  handleUserEmail = (event) => {this.setState({userEmail:event.target.value})};
+  handleUserPassword = (event) => {this.setState({userPassword:event.target.value})};
   handleAvatar = (event) => {
     event.preventDefault();
     let reader = new FileReader();
@@ -92,22 +93,22 @@ export default class SpaceSignUp extends React.PureComponent {
     reader.readAsDataURL(file);
   };
 
-  storeUser = () => {
+  storeUser = spaceID => {
     let data = new FormData();
     let {
-      name,
-      email,
-      password,
+      userName,
+      userEmail,
+      userPassword,
       avatar
     } = this.state;
 
-    data.append('name', name.trim());
-    data.append('email', email.trim());
-    data.append('password', password.trim());
-    data.append('spaceID', 0);
+    data.append('name', userName.trim());
+    data.append('email', userEmail.trim());
+    data.append('password', userPassword.trim());
+    data.append('spaceID', spaceID);
     data.append('avatar', avatar);
 
-    fetch("http://localhost:8000/api/signUp", {
+    fetch("http://innovationmesh.com/api/signUp", {
       method:'POST',
       body:data,
     })
@@ -117,7 +118,6 @@ export default class SpaceSignUp extends React.PureComponent {
         this.showSnack(user.error);
       } else {
         localStorage['token'] = user.token;
-        this.storeSpace(user.token);
       }
     })
     .catch(error => {
@@ -125,9 +125,7 @@ export default class SpaceSignUp extends React.PureComponent {
     })
   }
 
-
-  storeSpace = (token) => {
-    let _this = this;
+  storeSpace = () => {
     let data = new FormData();
     let {
       name,
@@ -151,30 +149,31 @@ export default class SpaceSignUp extends React.PureComponent {
     data.append('description', this.state.description);
     data.append('logo', this.state.logo);
 
-    fetch("http://localhost:8000/api/newspace", {
+    fetch("http://innovationmesh.com/api/newspace", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer '+ token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(spaceID) {
+    .then(response => response.json())
+    .then(spaceID => { 
+      console.log('one');
       if(spaceID.error) {
-        _this.showSnack(spaceID.error);
-      }
-        _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
+        console.log('two');
+        this.showSnack(spaceID.error);
+      } else {
+        this.storeUser(spaceID);
+        this.showSnack("Thanks! We will review your workspace and be in contact soon.");
         setTimeout(() => {
           this.props.history.push(`/space/${spaceID}`)
         }, 2000);
-    }.bind(this))
+      }
+    })
   }
 
   renderLogoImage = () => {
     if(this.state.logo !== "")
     {
       return(
-        <img src={this.state.logoPreview} className="spaceLogoImagePreview"/>
+        <img src={this.state.logoPreview} className="spaceLogoImagePreview" alt="" />
       )
     }
   }
@@ -191,16 +190,16 @@ export default class SpaceSignUp extends React.PureComponent {
   }
 
   renderAvatarImage = () => {
-    if(this.state.logo !== "")
+    if(this.state.avatar !== "")
     {
       return(
-        <img src={this.state.logoPreview} className="spaceLogoImagePreview"/>
+        <img alt="" src={this.state.avatarPreview} className="spaceLogoImagePreview"/>
       )
     }
   }
 
   renderAvatarImageText = () => {
-    if(this.state.logoPreview === "" || this.state.logoPreview === undefined || this.state.logoPreview === null) {
+    if(this.state.avatarPreview === "" || this.state.avatarPreview === undefined || this.state.avatarPreview === null) {
       return(
         <span style={{display:'flex', flexDirection:'column', textAlign:'center'}}>
           Select an Avatar
@@ -224,7 +223,7 @@ export default class SpaceSignUp extends React.PureComponent {
           <div className="spaceSignUpContainer">
             <TextField label="Founder Full Name" value={this.state.userName} onChange={this.handleUserName} margin="normal"/>
             <TextField label="Founder E-mail" value={this.state.userEmail} onChange={this.handleUserEmail} margin="normal"/>
-            <TextField label="Founder Password" value={this.state.userPassword} onChange={this.handleUserPassword} margin="normal"/>
+            <TextField type="password" label="Founder Password" value={this.state.userPassword} onChange={this.handleUserPassword} margin="normal"/>
             <div className="spaceLogoMainImageRow">
               <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                 {this.renderAvatarImageText()}
@@ -268,23 +267,29 @@ export default class SpaceSignUp extends React.PureComponent {
               </label>
               <input type="file" onChange={this.handleLogo} id="logo-image" style={{display:'none'}}/>
             </div>
-            <FlatButton style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} onClick={this.storeSpace}>Confirm New Space</FlatButton>
+            <FlatButton 
+              style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} 
+              onClick={this.storeSpace}
+            >
+              Confirm New Space
+            </FlatButton>
             <Link to={'/spaces'} style={{alignSelf:'center', width:'80%'}}><FlatButton style={{width:'100%', backgroundColor:'#BBBBBB', padding:'10px', marginTop:'30px', color:'#FFFFFF', fontWeight:'bold'}} >Not a Founder? Join a WorkSpace instead!</FlatButton></Link>
           </div>
         </main>
 
         <footer></footer>
         <Snackbar
-          open={this.state.snack}
           message={this.state.msg}
           autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
         />
       </div>
     );
   }
 }
 
+<<<<<<< HEAD
 SpaceSignUp.contextTypes = {
   router: PropTypes.object
 };
+=======
+>>>>>>> f4e6d017e88b66041e496c8591496b1eaeeee894
