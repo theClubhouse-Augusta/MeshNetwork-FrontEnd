@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { StripeProvider } from 'react-stripe-elements';
 
 import '!file-loader?name=[name].[ext]!./favicon.ico';
 import '!file-loader?name=[name].[ext]!./manifest.json';
@@ -9,11 +8,9 @@ import '!file-loader?name=[name].[ext]!./manifest.json';
 import App from 'containers/App';
 
 ReactDOM.render((
-  <StripeProvider apiKey="pk_test_rJKqFRMRduGAyguxdWT2TfcI"> 
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StripeProvider>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 ), document.getElementById('app'));
 
 if (process.env.NODE_ENV === 'production') {

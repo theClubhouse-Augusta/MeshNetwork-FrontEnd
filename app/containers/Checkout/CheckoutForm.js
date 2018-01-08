@@ -1,12 +1,16 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import Select from 'react-select';
 import {injectStripe} from 'react-stripe-elements';
 import CardSection from './CardSection';
+import ExpansionPanel, {
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 
 import Header from '../../components/Header';
 
@@ -47,7 +51,7 @@ class CheckoutForm extends React.Component {
   }
 
   loadSkills = () => {
-    fetch('http://localhost:8000/api/skills/all', {
+    fetch('http://innovationmesh.com/api/skills/all', {
     })
     .then(response => response.json())
     .then(json => {this.setState({ loadedTags:json })})
@@ -57,7 +61,7 @@ class CheckoutForm extends React.Component {
   }
 
   loadPlans = () => {
-    fetch(`http://localhost:8000/api/plans/${this.spaceID}`, {
+    fetch(`http://innovationmesh.com/api/plans/${this.spaceID}`, {
     })
     .then(response => response.json())
     .then(json => {this.setState({ loadedPlans:json })})
@@ -106,57 +110,12 @@ class CheckoutForm extends React.Component {
     reader.readAsDataURL(file);
   };
 
-  // storeUser = (e) => {
-  //   e.preventDefault();
-  //   let data = new FormData();
-  //   let {
-  //     name,
-  //     email,
-  //     password,
-  //     bio,
-  //     selectedTags,
-  //     avatar,
-  //     multiValue
-  //   } = this.state;
-
-  //   data.append('name', name.trim());
-  //   if (selectedTags.length) {
-  //     data.append('tags', JSON.stringify(selectedTags));
-  //   } else {
-  //     data.append('tags', JSON.stringify(multiValue));
-  //   }
-  //   data.append('email', email.trim());
-  //   data.append('password', password.trim());
-  //   data.append('bio', bio.trim());
-  //   data.append('spaceID', this.spaceID);
-  //   data.append('avatar', avatar);
-
-  //   fetch("http://localhost:8000/api/signUp", {
-  //     method:'POST',
-  //     body:data,
-  //   })
-  //   .then(response => response.json())
-  //   .then(user => {
-  //     if (user.error) {
-  //       this.showSnack(user.error);
-  //     } else {
-  //       localStorage['token'] = user.token;
-  //       this.showSnack("Account created successfully!");
-  //       setTimeout(() => {
-  //         this.props.history.push(`/user/${user.id}`)
-  //       }, 2000);
-  //     }
-  //   })
-  //   .catch(error => {
-  //     alert(`signUp ${error}`);
-  //   })
-  // }
 
   renderAvatarImage = () => {
     if(this.state.avatar !== "")
     {
       return(
-        <img src={this.state.imagePreviewUrl} className="spaceLogoImagePreview"/>
+        <img alt="avatarpreview" src={this.state.imagePreviewUrl} className="spaceLogoImagePreview"/>
       )
     }
   }
@@ -192,12 +151,7 @@ class CheckoutForm extends React.Component {
       multiValue,
       plan
     } = this.state;
-    // We don't want to let default form submission happen here, which would refresh the page.
-
-    // Within the context of `Elements`, this call to createToken knows which Element to
-    // tokenize, since there's only one in this group.
     this.props.stripe.createToken({name: name}).then(({token}) => {
-      console.log('Received Stripe token:', token);
     data.append('name', name.trim());
     if (selectedTags.length) {
       data.append('tags', JSON.stringify(selectedTags));
@@ -210,9 +164,9 @@ class CheckoutForm extends React.Component {
     data.append('spaceID', this.spaceID);
     data.append('avatar', avatar);
     data.append('customerToken', token.id);
-    data.append('plan', JSON.stringify(plan))
+    data.append('plan', plan)
 
-    fetch("http://localhost:8000/api/signUp", {
+    fetch("http://innovationmesh.com/api/signUp", {
       method:'POST',
       body:data,
     })
@@ -245,18 +199,14 @@ class CheckoutForm extends React.Component {
       focused,
       planFocused,
       plan,
-      multi, 
       multiValue, 
       options, 
-      value,
       loadedPlans, 
     } = this.state;
-    const Helper = new StyleHelpers;
+    const Helper = new StyleHelpers();
     const marginTop = Helper.getLabelStyle(focused, selectedTags)[0];
     const color = Helper.getLabelStyle(focused, selectedTags)[1];
 
-    const marginTopPlan = Helper.getLabelStyle(planFocused, plan)[0];
-    const colorPlan = Helper.getLabelStyle(planFocused, plan)[1];
 
     return (
       <form className="container" onSubmit={this.handleSubmit}>
@@ -328,21 +278,60 @@ class CheckoutForm extends React.Component {
               />}
 
 
-              {!!loadedPlans.length && 
-              <Select
-                placeholder="Subscription plans" 
-                multi={false}
-                //className={Helper.getSelectStyle(planFocused, plan)}
-                options={loadedPlans}
-                //style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-                style={{color: "black"}}
-                onChange={this.selectPlan}
-                value={plan}
-                onFocus={this.onFocusPlan} 
-                onBlur={this.onBlurPlan}
-              />}
+              <label
+                style={{
+                  marginBottom: 12,
+                }}
+              >
+                Select a Plan
+              </label>
 
-        <CardSection />
+
+              {!!loadedPlans.length && 
+              <div style={{
+                marginBottom: 32
+              }}>
+                {loadedPlans.map((subscription, key) =>
+                  <ExpansionPanel 
+                    key={`expanel${key}`}
+                      style={{
+                      color: subscription.name === plan ? '#f8f8f8' : 'inherit',
+                      background: subscription.name === plan ? '#8d8d8d' : 'inherit',
+                      textAlign: 'center'
+                      }}
+                  >
+                    <ExpansionPanelSummary 
+                      expandIcon={<ExpandMoreIcon />}>
+                      {subscription.name} 
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails 
+                      style={{
+                        fill: 'blue',
+                        color: '#333333',
+                        flexDirection: 'column',
+                        margin: '0, auto'
+                      }}
+                    >
+                      {subscription.description}
+                      <FlatButton 
+                        style={{
+                          margin: ' 0 auto', 
+                          backgroundColor:'#797979', 
+                          padding:'10px', 
+                          marginTop:'15px', 
+                          color:'#FFFFFF', 
+                          fontWeight:'bold'
+                        }} 
+                        onClick={() => this.selectPlan(subscription.name)}
+                      >
+                        Select 
+                      </FlatButton>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                )}
+              </div>}
+
+              <CardSection />
               
               <div className="spaceLogoMainImageRow">
                 <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">

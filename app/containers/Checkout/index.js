@@ -5,18 +5,18 @@
 */
 import React from 'react';
 import {Elements} from 'react-stripe-elements';
+import { StripeProvider } from 'react-stripe-elements';
+
 import CheckoutForm from './CheckoutForm';
 
 import './style.css';
 import './styleM.css';
-class Checkout extends React.Component {
-  render() {
-    return (
+export default function Checkout(props) { 
+  return (
+    <StripeProvider apiKey="pk_test_rJKqFRMRduGAyguxdWT2TfcI">
       <Elements>
-        <CheckoutForm {...this.props} />
+        <CheckoutForm {...props} />
       </Elements>
-    );
-  }
+    </StripeProvider>
+  );
 }
-
-export default Checkout;
