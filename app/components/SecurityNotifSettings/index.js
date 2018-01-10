@@ -5,6 +5,7 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './style.css';
 import './styleM.css';
@@ -74,5 +75,5 @@ export default class SecurityNotifSettings extends React.PureComponent {
 }
 
 SecurityNotifSettings.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 };

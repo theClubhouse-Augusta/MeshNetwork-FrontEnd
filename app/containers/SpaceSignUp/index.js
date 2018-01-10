@@ -7,6 +7,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
+import Header from 'components/Header';
+import PropTypes from 'prop-types';
 
 import {EditorState} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
@@ -15,8 +17,6 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
-
-import Header from '../../components/Header';
 
 import './style.css';
 import './styleM.css';
@@ -285,3 +285,6 @@ export default class SpaceSignUp extends React.PureComponent {
   }
 }
 
+SpaceSignUp.contextTypes = {
+  router: PropTypes.object
+};

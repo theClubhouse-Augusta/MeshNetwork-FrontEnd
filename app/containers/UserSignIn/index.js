@@ -7,7 +7,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
-
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
@@ -97,5 +97,5 @@ export default class UserSignIn extends React.PureComponent {
 }
 
 UserSignIn.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 };
