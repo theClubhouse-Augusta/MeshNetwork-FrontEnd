@@ -18,8 +18,6 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
-import Header from '../../components/Header';
-
 import './style.css';
 import './styleM.css';
 
@@ -287,9 +285,6 @@ export default class SpaceSignUp extends React.PureComponent {
   }
 }
 
-<<<<<<< HEAD
 SpaceSignUp.contextTypes = {
   router: PropTypes.object
 };
-=======
->>>>>>> f4e6d017e88b66041e496c8591496b1eaeeee894

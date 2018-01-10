@@ -13,6 +13,21 @@ import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@dev
 
 import './style.css';
 import './styleM.css';
+import {VerifiedUser} from 'material-ui-icons';
+
+/* TO DO 
+    -ROW GENERATOR 
+    -POSTS 
+    
+    -special renders for
+      VerifiedUser
+      Banned 
+    -human readable 
+      dates 
+      roles     
+    
+    L8R
+*/ 
 
 const getRowId = row => row.id;
 

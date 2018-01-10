@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
 import { TextField } from 'material-ui';
 import Button from 'material-ui/Button';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -25,20 +25,26 @@ const inputStyle = {
   maxWidth: '70%',
 }
 
+const content = 'yo some content'; 
 
-const content = 'yes hello some content'; 
+
+/* TODO 
+  -logo & description var out & render 
+  - POSTs 
+  ? payment info storage 
+*/ 
 
 export default class SpaceInformation extends React.PureComponent {
   state = {
     spaceProfile: {},
     logo: '',  
     logoPreview: '', 
-   // editorState: EditorState.createWithContent(content), 
+    editorState: EditorState.createWithContent(ContentState.createFromText(content)),    
   }
 
   
-   
-  /* componentWillMount() {
+
+componentWillMount() {
     this.getSpaceInfo();
   }
 
@@ -51,14 +57,16 @@ export default class SpaceInformation extends React.PureComponent {
     })
     .then(function(json) {
       this.setState({
-        spaceProfile:json
+        spaceProfile:json, 
+        logo: json.logo, 
+        
       }, function() {
-        console.log(this.state.spaceProfile);
+        console.log(this.state);
       })
     }.bind(this))
-} */
+} 
 
-    handleLogo = (event) => {
+/*   handleLogo = (event) => {
       event.preventDefault(); 
       let reader = new FileReader(); 
       let file = event.target.files[0]; 
@@ -73,24 +81,23 @@ export default class SpaceInformation extends React.PureComponent {
       console.log(this.state.logoPreview);  
     }
   
-  renderLogoPreview = () => {
-    if(this.state.logo !== '' /* this.state.spaceProfile.logo */) 
+ renderLogoPreview = () => {
+ if(this.state.logo !== this.state.spaceProfile.logo ) 
     { return (
       <img src={this.state.logoPreview} height='250px' width= '250px'/>
-    )} /* else 
+    )}  else if (this.state.logoPreview === null )
     { return (
       <img src={this.state.spaceProfile.logo} height='250px' width= '250px'/>
-    )} */
-  }
-    
+    )} 
+  } 
+*/ 
 
-  render() {
+onChange = (editorState) => {
+  this.setState({editorState}); 
+}
 
-    /* onChange = (editorState) => {
-      this.setState({editorState}); 
-    } */
-
-
+  render() {  
+   
     return (
       <div className="spaceInfoDash">
       <Paper>
@@ -100,16 +107,19 @@ export default class SpaceInformation extends React.PureComponent {
           <div className="spaceIDashMain">
               <form className="spaceIDashForm"> 
 
+{/* INPUTS FYI- if you turn them back into a regular exp it bugs the floating label pls avoid */}
+
                 <div className="spaceIDashInfoMain">
                   <div className="spaceIDashContactInfo">
                     <p className="spaceFormItem">
-                      <TextField
-                        label={'Space Name'}
-                        margin='normal'
-                        //placeholder={this.state.spaceProfile.name}
-                        //defaultValue={this.state.spaceProfile.name}
-                        style={{width: '100%'}}
+                      <TextField                        
+                        label= 'Space Name'
+                        margin='normal'                      
+                        value={`${this.state.spaceProfile.name}`}
+                        placeholder={`${this.state.spaceProfile.name}`}
+                        style={{width: '80%'}}
                       />
+                    
                     </p>
 
                     <div className="spaceIDashContactDet">
@@ -117,26 +127,26 @@ export default class SpaceInformation extends React.PureComponent {
                         <TextField
                           label={'Email'}
                           margin='normal'
-                          //placeholder={this.state.spaceProfile.email}
-                          //defaultValue={this.state.spaceProfile.email}                         
+                          value={`${this.state.spaceProfile.email}`}
+                          placeholder={`${this.state.spaceProfile.email}`}            
+                          style={{width: '80%'}}          
                         />
                       </p>
                       <p className="spaceFormItem">
                         <TextField
                           label={'Website'}
                           margin='normal'
-                          //placeholder={this.state.spaceProfile.website}
-                          //defaultValue={this.state.spaceProfile.website}
-                          
+                          value={`${this.state.spaceProfile.website}`}
+                          placeholder={`${this.state.spaceProfile.website}`}
+                          style={{width: '80%'}}
                         />
                       </p>
                       <p className="spaceFormItem">
                         <TextField
                           label={'Phone'}
                           margin='normal'
-                          //placeholder={this.state.spaceProfile.phone_number}
-                          //defaultValue={this.state.spaceProfile.phone_number}
-                          
+                          value={`${this.state.spaceProfile.phone_number}`}
+                          placeholder={`${this.state.spaceProfile.phone_number}`}                          
                         />
                       </p>
                     </div>
@@ -146,16 +156,16 @@ export default class SpaceInformation extends React.PureComponent {
                     <TextField
                       label={'Address'}
                       margin='normal'
-                      //placeholder={this.state.spaceProfile.address}
-                      //defaultValue={this.state.spaceProfile.address}                    
+                      value={`${this.state.spaceProfile.address}`}
+                      placeholder={`${this.state.spaceProfile.address}`}                    
                     />
 
                     <div className="spaceIDashAdd">
                       <TextField
                         label={'City'}
                         margin='normal'
-                        //placeholder={this.state.spaceProfile.city}
-                        //defaultValue={this.state.spaceProfile.city}
+                        value={`${this.state.spaceProfile.city}`}
+                        placeholder={`${this.state.spaceProfile.city}`}  
                         style={{maxWidth: '120px'}}
                         
                       />
@@ -163,16 +173,16 @@ export default class SpaceInformation extends React.PureComponent {
                       <TextField 
                        label={'State'}
                        margin='normal'
-                       //placeholder={this.state.spaceProfile.state}
-                      //defaultValue={this.state.spaceProfile.state}
+                       value={`${this.state.spaceProfile.state}`}
+                      placeholder={`${this.state.spaceProfile.state}`}  
                        style={{maxWidth: '50px'}}
                       /> 
-                      
+                
                       <TextField
                         label={'Zipcode'}
                         margin='normal'
-                        //placeholder=  {this.state.spaceProfile.zipcode}
-                        //defaultValue={this.state.spaceProfile.zipcode}
+                        value={`${this.state.spaceProfile.zipcode}`}
+                      placeholder={`${this.state.spaceProfile.zipcode}`}  
                         style={{maxWidth: '100px'}}
                       />
                     </div>
@@ -202,7 +212,7 @@ export default class SpaceInformation extends React.PureComponent {
 
                     <h3 style={{margin: '15px 0'}}> Logo </h3>
                     <div className="spaceIDashLogoPreview">
-                        {this.renderLogoPreview()}
+                         {this.renderLogoPreview()} 
                     </div>   
                       
                       <div> 
@@ -227,43 +237,44 @@ export default class SpaceInformation extends React.PureComponent {
                   <TextField 
                       label={'Facebook'}
                       margin='normal'
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                      value={`${this.state.spaceProfile.facebook}`}
+                          placeholder={`${this.state.spaceProfile.facebook}`}
                     />
                     <TextField 
                       label={'Twitter'}
                       margin='normal'
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                      value={`${this.state.spaceProfile.twitter}`}
+                      placeholder={`${this.state.spaceProfile.twitter}`}
                     
                     />
                     <TextField 
                       label={'Instagram'}
                       margin='normal'
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                      value={`${this.state.spaceProfile.instagram}`}
+                      placeholder={`${this.state.spaceProfile.instagram}`}
                     />
                   
                     <TextField 
                       label={'Pinterest'}
                       margin='normal'
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                      //value={`${this.state.spaceProfile.pinterest}`}
+                      //placeholder={`${this.state.spaceProfile.pinterest}`}
                     />
+
+
                     <TextField 
                       label={'Youtube'}
                       margin='normal'
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                     // value={`${this.state.spaceProfile.youtube}`}
+                      //placeholder={`${this.state.spaceProfile.youtube}`}
                     />
                     <TextField 
                       label={'Tumblr'}
                       margin='normal'
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                      //value={`${this.state.spaceProfile.tumblr}`}
+                      //placeholder={`${this.state.spaceProfile.tumblr}`}
                     />
-                  </div>
-                 
+                  </div>                
 
                   </div>                
               </form>
@@ -271,13 +282,15 @@ export default class SpaceInformation extends React.PureComponent {
 
               <div className="spaceIDashDescription">    
                 <h3 style={{margin: '15px 0'}}>Description</h3>
-
-               {/* <Editor 
+                <Paper>
+                <Editor 
                     editorState={this.state.editorState}
                     // toolbarClassName="home-toolbar"
                     // wrapperClassName="home-wrapper"
                     // editorClassName="rdw-editor-main"
+                    editorStyle={{padding: '0 .5em'}}
                     onEditorStateChange={this.onChange}
+                    
                     toolbar={{
                       inline: { inDropdown: true },
                       fontSize: { className: 'toolbarHidden' },
@@ -287,13 +300,13 @@ export default class SpaceInformation extends React.PureComponent {
                       link: { inDropdown: true },
                       remove: { className: 'toolbarHidden' },
                       emoji: { className: 'toolbarHidden' },
-                      history: { className: 'toolbarHidden' },
+                      history: { className: 'toolbarHidden'},
                     }}
-                  /> */}
+                  />
+                  </Paper>  
               </div>
           </div>
-
-          </Paper> 
+        </Paper> 
 
       </div>
     );

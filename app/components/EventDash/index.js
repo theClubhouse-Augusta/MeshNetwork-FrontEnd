@@ -15,6 +15,19 @@ import './style.css';
 import './styleM.css';
 
 
+/* TO DO 
+    -ROW GENERATOR 
+    -POSTS 
+    
+    ??? eventOrganizer & eventDates APIs 
+    -approval button 
+    -   
+    
+    L8R
+*/ 
+
+
+
 const getRowId = row => row.id;
 
 export default class EventDash extends React.PureComponent {
