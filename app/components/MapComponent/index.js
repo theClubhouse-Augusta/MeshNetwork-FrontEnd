@@ -12,7 +12,7 @@ import {
   Marker,
   InfoWindow,
 } from 'react-google-maps';
-
+import PropTypes from 'prop-types';
 const MapComponent = withScriptjs(withGoogleMap((props) => (
   <GoogleMap
     defaultZoom={7}
@@ -45,3 +45,6 @@ const GenerateMarkers = (props) => (
     </div>
 );
 
+MapComponent.contextTypes = {
+  router: PropTypes.object
+};

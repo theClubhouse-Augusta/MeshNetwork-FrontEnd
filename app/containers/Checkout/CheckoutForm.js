@@ -10,7 +10,7 @@ import ExpansionPanel, {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
 } from 'material-ui/ExpansionPanel';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import ExpandMoreIcon from 'react-icons/lib/md/expand-more';
 
 import Header from '../../components/Header';
 
@@ -193,15 +193,15 @@ class CheckoutForm extends React.Component {
   }
 
   render() {
-    const { 
-      selectedTags, 
-      loadedTags, 
+    const {
+      selectedTags,
+      loadedTags,
       focused,
       planFocused,
       plan,
-      multiValue, 
-      options, 
-      loadedPlans, 
+      multiValue,
+      options,
+      loadedPlans,
     } = this.state;
     const Helper = new StyleHelpers();
     const marginTop = Helper.getLabelStyle(focused, selectedTags)[0];
@@ -216,32 +216,32 @@ class CheckoutForm extends React.Component {
           <div className="spaceSignUpMain">
             <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
             <div className="spaceSignUpContainer">
-              <TextField 
-                label="Full Name" 
-                value={this.state.name} 
-                onChange={this.handleName} 
+              <TextField
+                label="Full Name"
+                value={this.state.name}
+                onChange={this.handleName}
                 margin="normal"
               />
-              <TextField 
-                type="email" 
-                label="Email" 
-                value={this.state.email} 
-                onChange={this.handleEmail} 
+              <TextField
+                type="email"
+                label="Email"
+                value={this.state.email}
+                onChange={this.handleEmail}
                 margin="normal"
               />
-              <TextField 
-                type="password" 
-                label="Password" 
-                value={this.state.password} 
-                onChange={this.handlePassword} 
+              <TextField
+                type="password"
+                label="Password"
+                value={this.state.password}
+                onChange={this.handlePassword}
                 margin="normal"
               />
-              <TextField label="Bio" 
-                value={this.state.bio} 
+              <TextField label="Bio"
+                value={this.state.bio}
                 onChange={this.handleBio}
                 margin="normal"
               />
-              <label 
+              <label
                 style={{
                   marginTop: marginTop,
                   color: color,
@@ -251,29 +251,29 @@ class CheckoutForm extends React.Component {
                 Skills
               </label>
 
-              {!!loadedTags.length && 
-              <Select.Creatable 
-                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+              {!!loadedTags.length &&
+              <Select.Creatable
+                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
                 className={Helper.getSelectStyle(focused, selectedTags)}
                 style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-                multi 
+                multi
                 options={loadedTags}
-                onChange={this.selectTag} 
-                value={selectedTags} 
-                onFocus={this.onFocus} 
+                onChange={this.selectTag}
+                value={selectedTags}
+                onFocus={this.onFocus}
                 onBlur={this.onBlur}
               />}
 
-              {!!!loadedTags.length && 
+              {!!!loadedTags.length &&
               <Select.Creatable
-                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
                 multi
                 className={Helper.getSelectStyle(focused, selectedTags)}
                 options={options}
                 style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
                 onChange={this.handleOnChange}
                 value={multiValue}
-                onFocus={this.onFocus} 
+                onFocus={this.onFocus}
                 onBlur={this.onBlur}
               />}
 
@@ -287,12 +287,12 @@ class CheckoutForm extends React.Component {
               </label>
 
 
-              {!!loadedPlans.length && 
+              {!!loadedPlans.length &&
               <div style={{
                 marginBottom: 32
               }}>
                 {loadedPlans.map((subscription, key) =>
-                  <ExpansionPanel 
+                  <ExpansionPanel
                     key={`expanel${key}`}
                       style={{
                       color: subscription.name === plan ? '#f8f8f8' : 'inherit',
@@ -300,11 +300,11 @@ class CheckoutForm extends React.Component {
                       textAlign: 'center'
                       }}
                   >
-                    <ExpansionPanelSummary 
+                    <ExpansionPanelSummary
                       expandIcon={<ExpandMoreIcon />}>
-                      {subscription.name} 
+                      {subscription.name}
                     </ExpansionPanelSummary>
-                    <ExpansionPanelDetails 
+                    <ExpansionPanelDetails
                       style={{
                         fill: 'blue',
                         color: '#333333',
@@ -313,18 +313,18 @@ class CheckoutForm extends React.Component {
                       }}
                     >
                       {subscription.description}
-                      <FlatButton 
+                      <FlatButton
                         style={{
-                          margin: ' 0 auto', 
-                          backgroundColor:'#797979', 
-                          padding:'10px', 
-                          marginTop:'15px', 
-                          color:'#FFFFFF', 
+                          margin: ' 0 auto',
+                          backgroundColor:'#797979',
+                          padding:'10px',
+                          marginTop:'15px',
+                          color:'#FFFFFF',
                           fontWeight:'bold'
-                        }} 
+                        }}
                         onClick={() => this.selectPlan(subscription.name)}
                       >
-                        Select 
+                        Select
                       </FlatButton>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
@@ -332,7 +332,7 @@ class CheckoutForm extends React.Component {
               </div>}
 
               <CardSection />
-              
+
               <div className="spaceLogoMainImageRow">
                 <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                   {this.renderAvatarImageText()}
@@ -340,8 +340,8 @@ class CheckoutForm extends React.Component {
                 </label>
                 <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
               </div>
-              <FlatButton 
-                style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} 
+              <FlatButton
+                style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
                 onClick={this.storeUser}
               >
                 Sign Up

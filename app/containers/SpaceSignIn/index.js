@@ -6,6 +6,7 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
+import PropTypes from 'prop-types';
 
 import './style.css';
 import './styleM.css';
@@ -22,3 +23,6 @@ export default class SpaceSignIn extends React.PureComponent {
   }
 }
 
+SpaceSignIn.contextTypes = {
+  router: PropTypes.object
+};

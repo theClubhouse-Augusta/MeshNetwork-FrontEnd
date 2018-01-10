@@ -69,8 +69,9 @@ export default class About extends React.PureComponent {
           </div>
           <div className="aboutButtons">
             <div className="aboutButtonText">Ready to Discover the Mesh Network?</div>
-            <div className="aboutButtonsContainer">
-              <Link to={'/newSpace'} style={{margin:'15px', width:'30%'}}><FlatButton style={{width:'100%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign Up</FlatButton></Link>
+            <div className="aboutButtons">
+              <Link to={'/newSpace'} style={{ width:'200px',marginRight:'15px'}}><FlatButton style={{width:'100%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign Up</FlatButton></Link>
+              <Link to={'/spaces'} style={{ width:'200px',marginRight:'15px'}}><FlatButton style={{width:'100%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Discover More</FlatButton></Link>
             </div>
           </div>
         </main>

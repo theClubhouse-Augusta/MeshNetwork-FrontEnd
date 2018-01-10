@@ -1,3 +1,4 @@
+
 /*
  *
  * SpaceDash
@@ -6,7 +7,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types'; 
-import Helmet from 'react-helmet'; 
+
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
@@ -20,11 +21,33 @@ import './styleM.css';
 
 
 
+const getUsersAPI = 'http://innovationmesh.com/api/users/space/'; 
+
 export default class SpaceDash extends React.PureComponent {
   state ={
     value: 0,
+    spaceUsers: {}, 
   }
 
+  componentWillMount() {
+    this.loadSpaceUsers(); 
+  }
+
+  loadSpaceUsers = () => {
+    fetch( getUsersAPI + this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        spaceUsers:json
+      }, function() {
+        console.log(this.state.spaceUsers);
+      })
+    }.bind(this))
+  }
 
   handleTabChange = (event, value) => {
     this.setState({ value });
@@ -36,24 +59,30 @@ export default class SpaceDash extends React.PureComponent {
 
     return (
       <div className="container">
-        <Helmet title="AdminDash" meta={[ { name: 'description', content: 'Description of AdminDash' }]}/>
+      
 
        <div className="spaceDashBody">
        <AppBar position="static">
           <Tabs value={value} onChange={this.handleTabChange}>
-            <Tab label="Space Information"  />
+            <Tab label="Space Information" />   
             <Tab label="Event Management" />
-            <Tab label="Metrics" />
-            <Tab label="User Management" />
+            <Tab label="User Management" />          
+            <Tab label="Metrics" />     
+                 
           </Tabs>
         </AppBar>
-          
 
         <div className="spaceDashMain">
-        {value === 0 && <SpaceInformation id={this.props.match.params.id}/> }
-        {value === 1 && <EventDash />}
-        {value === 2 && <Metrics /> }
-        {value === 3 && <UserDash /> }
+        {value === 0 && <SpaceInformation id={this.props.match.params.id}/>}
+        {value === 1 && <EventDash id={this.props.match.params.id} 
+                                   users={this.state.spaceUsesrs}/>}
+        {value === 2 && <UserDash id={this.props.match.params.id} 
+                                  users={this.state.spaceUsesrs}/> }
+        {value === 3 && <Metrics id={this.props.match.params.id}
+                                 users={this.state.spaceUsesrs}/> }
+       
+       
+        
         
         </div>
        </div>
@@ -62,3 +91,6 @@ export default class SpaceDash extends React.PureComponent {
   }
 }
 
+SpaceDash.contextTypes = {
+  router: PropTypes.object
+};
