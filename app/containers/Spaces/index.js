@@ -18,6 +18,7 @@ import Card, { CardMedia, CardContent, CardHeader } from 'material-ui/Card';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import MyMapComponent from './MyMapComponent';
+import FlatButton from 'material-ui/Button';
 
 import './style.css';
 import './styleM.css';
@@ -92,9 +93,9 @@ export default class Spaces extends React.PureComponent {
         </div>
         <div className="aboutButtons">
           <div className="aboutButtonText">Ready to Discover the Mesh Network?</div>
-          <div className="aboutButtonsContainer">
-            <button label="Sign Up" style={{ marginLeft:'15px', width:'200px'}}/>
-            <button label="Contact Us" style={{ marginLeft:'15px', width:'200px'}}/>
+          <div className="aboutButtons">
+            <Link to={'/newSpace'} style={{ width:'200px',marginRight:'15px'}}><FlatButton style={{width:'100%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign Up</FlatButton></Link>
+            <Link to={'/about'} style={{ width:'200px',marginRight:'15px'}}><FlatButton style={{width:'100%', background:'#3399cc', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Learn More</FlatButton></Link>
           </div>
         </div>
         <Footer />
