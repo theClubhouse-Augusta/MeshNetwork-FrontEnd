@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Paper from 'material-ui/Paper'; 
+import Paper from 'material-ui/Paper';
 import { TextField } from 'material-ui';
 import Button from 'material-ui/Button';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
@@ -20,29 +20,29 @@ import './styleM.css';
 
 
 const inputStyle = {
-  border: '1px solid black', 
+  border: '1px solid black',
   marginLeft: '1em',
   maxWidth: '70%',
 }
 
-const content = 'yo some content'; 
+const content = 'yo some content';
 
 
-/* TODO 
-  -logo & description var out & render 
-  - POSTs 
-  ? payment info storage 
-*/ 
+/* TODO
+  -logo & description var out & render
+  - POSTs
+  ? payment info storage
+*/
 
 export default class SpaceInformation extends React.PureComponent {
   state = {
     spaceProfile: {},
-    logo: '',  
-    logoPreview: '', 
-    editorState: EditorState.createWithContent(ContentState.createFromText(content)),    
+    logo: '',
+    logoPreview: '',
+    editorState: EditorState.createWithContent(ContentState.createFromText(content)),
   }
 
-  
+
 
 componentWillMount() {
     this.getSpaceInfo();
@@ -57,47 +57,47 @@ componentWillMount() {
     })
     .then(function(json) {
       this.setState({
-        spaceProfile:json, 
-        logo: json.logo, 
-        
+        spaceProfile:json,
+        logo: json.logo,
+
       }, function() {
         console.log(this.state);
       })
     }.bind(this))
-} 
+}
 
 /*   handleLogo = (event) => {
-      event.preventDefault(); 
-      let reader = new FileReader(); 
-      let file = event.target.files[0]; 
-      reader.onloadend = () => 
+      event.preventDefault();
+      let reader = new FileReader();
+      let file = event.target.files[0];
+      reader.onloadend = () =>
       {
-        this.setState({ 
-          logo: file, 
-          logoPreview: reader.result, 
+        this.setState({
+          logo: file,
+          logoPreview: reader.result,
         })
       }
       reader.readAsDataURL(file);
-      console.log(this.state.logoPreview);  
+      console.log(this.state.logoPreview);
     }
-  
+
  renderLogoPreview = () => {
- if(this.state.logo !== this.state.spaceProfile.logo ) 
+ if(this.state.logo !== this.state.spaceProfile.logo )
     { return (
       <img src={this.state.logoPreview} height='250px' width= '250px'/>
     )}  else if (this.state.logoPreview === null )
     { return (
       <img src={this.state.spaceProfile.logo} height='250px' width= '250px'/>
-    )} 
-  } 
+    )}
+  }
 */ 
 
 onChange = (editorState) => {
-  this.setState({editorState}); 
+  this.setState({editorState});
 }
 
-  render() {  
-   
+  render() {
+
     return (
       <div className="spaceInfoDash">
       <Paper>
@@ -105,21 +105,21 @@ onChange = (editorState) => {
             <h2></h2>
           </div>
           <div className="spaceIDashMain">
-              <form className="spaceIDashForm"> 
+              <form className="spaceIDashForm">
 
 {/* INPUTS FYI- if you turn them back into a regular exp it bugs the floating label pls avoid */}
 
                 <div className="spaceIDashInfoMain">
                   <div className="spaceIDashContactInfo">
                     <p className="spaceFormItem">
-                      <TextField                        
+                      <TextField
                         label= 'Space Name'
-                        margin='normal'                      
+                        margin='normal'
                         value={`${this.state.spaceProfile.name}`}
                         placeholder={`${this.state.spaceProfile.name}`}
                         style={{width: '80%'}}
                       />
-                    
+
                     </p>
 
                     <div className="spaceIDashContactDet">
@@ -128,8 +128,8 @@ onChange = (editorState) => {
                           label={'Email'}
                           margin='normal'
                           value={`${this.state.spaceProfile.email}`}
-                          placeholder={`${this.state.spaceProfile.email}`}            
-                          style={{width: '80%'}}          
+                          placeholder={`${this.state.spaceProfile.email}`}
+                          style={{width: '80%'}}
                         />
                       </p>
                       <p className="spaceFormItem">
@@ -146,18 +146,18 @@ onChange = (editorState) => {
                           label={'Phone'}
                           margin='normal'
                           value={`${this.state.spaceProfile.phone_number}`}
-                          placeholder={`${this.state.spaceProfile.phone_number}`}                          
+                          placeholder={`${this.state.spaceProfile.phone_number}`}
                         />
                       </p>
                     </div>
 
-                 
-                  <div className="spaceIDashLocation">                    
+
+                  <div className="spaceIDashLocation">
                     <TextField
                       label={'Address'}
                       margin='normal'
                       value={`${this.state.spaceProfile.address}`}
-                      placeholder={`${this.state.spaceProfile.address}`}                    
+                      placeholder={`${this.state.spaceProfile.address}`}
                     />
 
                     <div className="spaceIDashAdd">
@@ -165,24 +165,24 @@ onChange = (editorState) => {
                         label={'City'}
                         margin='normal'
                         value={`${this.state.spaceProfile.city}`}
-                        placeholder={`${this.state.spaceProfile.city}`}  
+                        placeholder={`${this.state.spaceProfile.city}`}
                         style={{maxWidth: '120px'}}
-                        
+
                       />
-                    
-                      <TextField 
+
+                      <TextField
                        label={'State'}
                        margin='normal'
                        value={`${this.state.spaceProfile.state}`}
-                      placeholder={`${this.state.spaceProfile.state}`}  
+                      placeholder={`${this.state.spaceProfile.state}`}
                        style={{maxWidth: '50px'}}
-                      /> 
-                
+                      />
+
                       <TextField
                         label={'Zipcode'}
                         margin='normal'
                         value={`${this.state.spaceProfile.zipcode}`}
-                      placeholder={`${this.state.spaceProfile.zipcode}`}  
+                      placeholder={`${this.state.spaceProfile.zipcode}`}
                         style={{maxWidth: '100px'}}
                       />
                     </div>
@@ -190,71 +190,71 @@ onChange = (editorState) => {
 
                   <div className="spaceIDashPaymentInfo" style={{padding: '15px 0'}}>
                   <h3 > Payment System </h3>
-                  <TextField 
+                  <TextField
                       label={'Stripe API Key'}
-                      margin='normal'     
+                      margin='normal'
                       //placeholder={this.state.spaceProfile.}
                       //defaultValue={this.state.spaceProfile.}
                     />
-                    <TextField 
+                    <TextField
                       label={'Outside Payment URL'}
-                      margin='normal'     
+                      margin='normal'
                       //placeholder={this.state.spaceProfile.}
                       //defaultValue={this.state.spaceProfile.}
                     />
                   </div>
 
-           
-                </div>   
+
+                </div>
 
 
-                  <div className="spaceIDashLogo">    
+                  <div className="spaceIDashLogo">
 
                     <h3 style={{margin: '15px 0'}}> Logo </h3>
                     <div className="spaceIDashLogoPreview">
-                         {this.renderLogoPreview()} 
-                    </div>   
-                      
-                      <div> 
+                         {this.renderLogoPreview()}
+                    </div>
+
+                      <div>
                         <label style={{display: 'flex', flexDirection:'column'}}>
                           <Button raised component="span" >
                             Upload
-                            <input     
-                            onChange={this.handleLogo} 
+                            <input
+                            onChange={this.handleLogo}
                             type="file"
                             style={{display:'none'}}
                             accept="image/png, image/jpg, image/jpeg"
                         />
-                          </Button>    
-                        </label>                   
-                      </div>                   
-                 </div>                 
-                </div>  
-                
-                <div className="spaceIDashSocialForm"> 
+                          </Button>
+                        </label>
+                      </div>
+                 </div>
+                </div>
+
+                <div className="spaceIDashSocialForm">
                   <h3 style={{margin: '15px 0'}}>Social Media Handles</h3>
                   <div className="spaceIDashSocialMedia">
-                  <TextField 
+                  <TextField
                       label={'Facebook'}
                       margin='normal'
                       value={`${this.state.spaceProfile.facebook}`}
                           placeholder={`${this.state.spaceProfile.facebook}`}
                     />
-                    <TextField 
+                    <TextField
                       label={'Twitter'}
                       margin='normal'
                       value={`${this.state.spaceProfile.twitter}`}
                       placeholder={`${this.state.spaceProfile.twitter}`}
-                    
+
                     />
-                    <TextField 
+                    <TextField
                       label={'Instagram'}
                       margin='normal'
                       value={`${this.state.spaceProfile.instagram}`}
                       placeholder={`${this.state.spaceProfile.instagram}`}
                     />
-                  
-                    <TextField 
+
+                    <TextField
                       label={'Pinterest'}
                       margin='normal'
                       //value={`${this.state.spaceProfile.pinterest}`}
@@ -262,35 +262,35 @@ onChange = (editorState) => {
                     />
 
 
-                    <TextField 
+                    <TextField
                       label={'Youtube'}
                       margin='normal'
                      // value={`${this.state.spaceProfile.youtube}`}
                       //placeholder={`${this.state.spaceProfile.youtube}`}
                     />
-                    <TextField 
+                    <TextField
                       label={'Tumblr'}
                       margin='normal'
                       //value={`${this.state.spaceProfile.tumblr}`}
                       //placeholder={`${this.state.spaceProfile.tumblr}`}
                     />
-                  </div>                
+                  </div>
 
-                  </div>                
+                  </div>
               </form>
 
 
-              <div className="spaceIDashDescription">    
+              <div className="spaceIDashDescription">
                 <h3 style={{margin: '15px 0'}}>Description</h3>
                 <Paper>
-                <Editor 
+                <Editor
                     editorState={this.state.editorState}
                     // toolbarClassName="home-toolbar"
                     // wrapperClassName="home-wrapper"
                     // editorClassName="rdw-editor-main"
                     editorStyle={{padding: '0 .5em'}}
                     onEditorStateChange={this.onChange}
-                    
+
                     toolbar={{
                       inline: { inDropdown: true },
                       fontSize: { className: 'toolbarHidden' },
@@ -303,10 +303,10 @@ onChange = (editorState) => {
                       history: { className: 'toolbarHidden'},
                     }}
                   />
-                  </Paper>  
+                  </Paper>
               </div>
           </div>
-        </Paper> 
+        </Paper>
 
       </div>
     );
