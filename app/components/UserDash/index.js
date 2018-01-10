@@ -31,6 +31,9 @@ import {VerifiedUser} from 'material-ui-icons';
 
 const getRowId = row => row.id;
 
+const userUpdateAPI = 'http://www.innovationmesh.com/api/updateUser'; 
+
+
 export default class UserDash extends React.PureComponent {
   constructor(props) { 
     super(props); 
@@ -90,7 +93,7 @@ export default class UserDash extends React.PureComponent {
     this.loadSpaceUsers(); 
   }
 
-  loadSpaceUsers = (props) => {
+loadSpaceUsers = (props) => {
     fetch('http://innovationmesh.com/api/users/space/'+ this.props.id, {
       method:'GET'
     })
@@ -108,7 +111,18 @@ export default class UserDash extends React.PureComponent {
 
 
 commitChanges({ added, changed, deleted }) {
+  let rows = this.state; 
 
+  data.append()
+
+  fetch(userUpdateAPI, {
+    method: 'POST', 
+    body: data, 
+  })
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error); 
+  })
 }
 
   render() {

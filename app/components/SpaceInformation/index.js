@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
 import { TextField } from 'material-ui';
 import Button from 'material-ui/Button';
-import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import { EditorState, ContentState, convertToRaw, convertFromRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -18,34 +18,67 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style.css';
 import './styleM.css';
 
+  
 
-const inputStyle = {
-  border: '1px solid black', 
-  marginLeft: '1em',
-  maxWidth: '70%',
-}
+const spaceUpdateAPI = 'http://innovationmesh.com/api/spaceupdate'; 
 
-const content = 'yo some content'; 
-
-
-/* TODO 
-  -logo & description var out & render 
-  - POSTs 
-  ? payment info storage 
-*/ 
 
 export default class SpaceInformation extends React.PureComponent {
   state = {
-    spaceProfile: {},
-    logo: '',  
-    logoPreview: '', 
-    editorState: EditorState.createWithContent(ContentState.createFromText(content)),    
-  }
+    name: '', 
+    email: '',
+    website: '',
+    phone_number: '',
+    address: '',
+    city: '',
+    state: '',
+    zipcode: '',
+    //stripeKey: '',
+    //payURL: '',
+    facebook: '', 
+    twitter: '',
+    instagram: '',
+    //pinterest: '',
+    //youtube: '',
+    //tumblr: '', 
 
-  
+    logo: '',  
+    logoPreview: '',
+
+    description: '', 
+    //editorState:EditorState.createWithContent(ContentState.convertFromRaw(this.props.description)),
+
+  }  
 
 componentWillMount() {
     this.getSpaceInfo();
+  }
+
+  handleInputChange = name => event => { 
+    this.setState({
+      [name]: event.target.value, 
+    }, function() {
+      console.log('it changed');
+    });
+  };
+
+  onEditorChange = (editorState) => {
+    this.setState({editorState}); 
+  }
+
+  handleLogo = (event) => {
+    event.preventDefault(); 
+    let reader = new FileReader(); 
+    let file = event.target.files[0]; 
+    reader.onloadend = () => 
+    {
+      this.setState({ 
+        logo: file, 
+        logoPreview: reader.result, 
+      })
+    }
+    reader.readAsDataURL(file);
+    console.log(this.state.logoPreview);  
   }
 
  getSpaceInfo= () => {
@@ -57,47 +90,102 @@ componentWillMount() {
     })
     .then(function(json) {
       this.setState({
-        spaceProfile:json, 
-        logo: json.logo, 
-        
-      }, function() {
-        console.log(this.state);
-      })
-    }.bind(this))
+        name: json.name, 
+        email: json.email,
+        website: json.website,
+        phone_number: json.phone_number,   
+        address: json.address,   
+        city: json.city,               
+        state: json.state,   
+        zipcode: json.zipcode,
+        logo: json.logo,   
+        description: json.description,
+        facebook: json.facebook,   
+        twitter: json.twitter,  
+        instagram: json.instagram,   
+        //pinterest: json.pinterest,   
+        //youtube: json.youtube,   
+        //tumblr: json.tumblr, 
+        stripe: json.stripe, 
+        //payURL:  json.payURL, 
+      },function() {
+        console.log(this.state); 
+      })}
+    .bind(this))
 } 
 
-/*   handleLogo = (event) => {
-      event.preventDefault(); 
-      let reader = new FileReader(); 
-      let file = event.target.files[0]; 
-      reader.onloadend = () => 
-      {
-        this.setState({ 
-          logo: file, 
-          logoPreview: reader.result, 
-        })
-      }
-      reader.readAsDataURL(file);
-      console.log(this.state.logoPreview);  
-    }
-  
- renderLogoPreview = () => {
- if(this.state.logo !== this.state.spaceProfile.logo ) 
-    { return (
-      <img src={this.state.logoPreview} height='250px' width= '250px'/>
-    )}  else if (this.state.logoPreview === null )
-    { return (
-      <img src={this.state.spaceProfile.logo} height='250px' width= '250px'/>
-    )} 
-  } 
-*/ 
 
-onChange = (editorState) => {
-  this.setState({editorState}); 
+
+renderLogoPreview = () => {
+  if (this.state.logoPreview == '' )
+  {
+    return(
+      <img src={this.state.logo} className="spaceIDashLogoPreview" />
+    )
+  }
+   else (this.state.logo !== this.state.logoPreview); {
+    return ( 
+      <img src={this.state.logoPreview} className="spaceIDashLogoPreview" />
+    )
+  }
 }
 
+
+
+
+spaceInfoSubmit = () => {
+  let data = new FormData(); 
+    let { 
+    name,
+    city, 
+    address, 
+    state, 
+    zipcode, 
+    email, 
+    website, 
+    phone_number, 
+    description, 
+    facebook,
+    twitter, 
+    instagram, 
+    pinterest, 
+    youtube, 
+    tumblr, 
+    logo 
+   } = this.state;  
+
+  data.append('name', name.trim());
+  data.append('city', city.trim());
+  data.append('address', address.trim());
+  data.append('state', state.trim());
+  //data.append('zipcode', zipcode.trim());
+  data.append('email', email.trim());
+  data.append('website', website.trim());
+  data.append('phone_number', phone_number.trim());
+  //data.append('description', );
+  data.append('facebook', facebook.trim()); 
+  data.append('twitter', twitter.trim()); 
+  data.append('instagram', instagram.trim()); 
+  //data.append('pinterest', pinterest.trim()); 
+  //data.append('youtube', youtube.trim()); 
+  //data.append('tumblr', tumblr.trim()); 
+  //data.append('logo', this.state. logo);
+
+  fetch(spaceUpdateAPI, {
+    //header? 
+    method: 'POST', 
+    body: data, 
+  })
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error); 
+  })
+}
+
+
   render() {  
-   
+    const { contentState } = this.state; 
+
     return (
       <div className="spaceInfoDash">
       <Paper>
@@ -112,11 +200,12 @@ onChange = (editorState) => {
                 <div className="spaceIDashInfoMain">
                   <div className="spaceIDashContactInfo">
                     <p className="spaceFormItem">
-                      <TextField                        
+                      <TextField           
                         label= 'Space Name'
-                        margin='normal'                      
-                        value={`${this.state.spaceProfile.name}`}
-                        placeholder={`${this.state.spaceProfile.name}`}
+                        margin='normal'       
+                        value={`${this.state.name}`}
+                        placeholder={`${this.state.name}`}
+                        onChange={this.handleInputChange('name')}
                         style={{width: '80%'}}
                       />
                     
@@ -127,8 +216,8 @@ onChange = (editorState) => {
                         <TextField
                           label={'Email'}
                           margin='normal'
-                          value={`${this.state.spaceProfile.email}`}
-                          placeholder={`${this.state.spaceProfile.email}`}            
+                          value={`${this.state.email}`}
+                          placeholder={`${this.state.email}`}   onChange={this.handleInputChange('email')}         
                           style={{width: '80%'}}          
                         />
                       </p>
@@ -136,8 +225,9 @@ onChange = (editorState) => {
                         <TextField
                           label={'Website'}
                           margin='normal'
-                          value={`${this.state.spaceProfile.website}`}
-                          placeholder={`${this.state.spaceProfile.website}`}
+                          value={`${this.state.website}`}
+                          placeholder={`${this.state.website}`}
+                          onChange={this.handleInputChange('website')}
                           style={{width: '80%'}}
                         />
                       </p>
@@ -145,8 +235,8 @@ onChange = (editorState) => {
                         <TextField
                           label={'Phone'}
                           margin='normal'
-                          value={`${this.state.spaceProfile.phone_number}`}
-                          placeholder={`${this.state.spaceProfile.phone_number}`}                          
+                          value={`${this.state.phone_number}`}
+                          placeholder={`${this.state.phone_number}`}        onChange={this.handleInputChange('phone_number')}                  
                         />
                       </p>
                     </div>
@@ -156,34 +246,36 @@ onChange = (editorState) => {
                     <TextField
                       label={'Address'}
                       margin='normal'
-                      value={`${this.state.spaceProfile.address}`}
-                      placeholder={`${this.state.spaceProfile.address}`}                    
+                      value={`${this.state.address}`}
+                      placeholder={`${this.state.address}`}      onChange={this.handleInputChange('address')}              
                     />
 
                     <div className="spaceIDashAdd">
                       <TextField
                         label={'City'}
                         margin='normal'
-                        value={`${this.state.spaceProfile.city}`}
-                        placeholder={`${this.state.spaceProfile.city}`}  
+                        value={`${this.state.city}`}
+                        placeholder={`${this.state.city}`}  
                         style={{maxWidth: '120px'}}
-                        
+                        onChange={this.handleInputChange('city')}
                       />
                     
                       <TextField 
                        label={'State'}
                        margin='normal'
-                       value={`${this.state.spaceProfile.state}`}
-                      placeholder={`${this.state.spaceProfile.state}`}  
+                       value={`${this.state.state}`}
+                      placeholder={`${this.state.state}`}  
                        style={{maxWidth: '50px'}}
+                       onChange={this.handleInputChange('state')}
                       /> 
                 
                       <TextField
                         label={'Zipcode'}
                         margin='normal'
-                        value={`${this.state.spaceProfile.zipcode}`}
-                      placeholder={`${this.state.spaceProfile.zipcode}`}  
+                        value={`${this.state.zipcode}`}
+                      placeholder={`${this.state.zipcode}`}  
                         style={{maxWidth: '100px'}}
+                        onChange={this.handleInputChange('zipcode')}
                       />
                     </div>
                   </div>
@@ -193,14 +285,16 @@ onChange = (editorState) => {
                   <TextField 
                       label={'Stripe API Key'}
                       margin='normal'     
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                      //placeholder={this.state.stripeKey }
+                      //defaultValue={this.state.stripeKey }
+                      //onChange={this.handleInputChange('stripeKey')}
                     />
                     <TextField 
                       label={'Outside Payment URL'}
                       margin='normal'     
-                      //placeholder={this.state.spaceProfile.}
-                      //defaultValue={this.state.spaceProfile.}
+                      //placeholder={this.state.payURL}
+                      //defaultValue={this.state.payURL}
+                      //onChange={this.handleInputChange('payURL')}
                     />
                   </div>
 
@@ -212,7 +306,7 @@ onChange = (editorState) => {
 
                     <h3 style={{margin: '15px 0'}}> Logo </h3>
                     <div className="spaceIDashLogoPreview">
-                         {this.renderLogoPreview()} 
+                         { this.renderLogoPreview() } 
                     </div>   
                       
                       <div> 
@@ -237,42 +331,47 @@ onChange = (editorState) => {
                   <TextField 
                       label={'Facebook'}
                       margin='normal'
-                      value={`${this.state.spaceProfile.facebook}`}
-                          placeholder={`${this.state.spaceProfile.facebook}`}
+                      value={`${this.state.facebook}`}
+                      placeholder={`${this.state.facebook}`}
+                      onChange={this.handleInputChange('facebook')}
                     />
                     <TextField 
                       label={'Twitter'}
                       margin='normal'
-                      value={`${this.state.spaceProfile.twitter}`}
-                      placeholder={`${this.state.spaceProfile.twitter}`}
-                    
+                      value={`${this.state.twitter}`}
+                      placeholder={`${this.state.twitter}`}
+                      onChange={this.handleInputChange('twitter')}
                     />
                     <TextField 
                       label={'Instagram'}
                       margin='normal'
-                      value={`${this.state.spaceProfile.instagram}`}
-                      placeholder={`${this.state.spaceProfile.instagram}`}
+                      value={`${this.state.instagram}`}
+                      placeholder={`${this.state.instagram}`}
+                      onChange={this.handleInputChange('instagram')}
                     />
                   
                     <TextField 
                       label={'Pinterest'}
                       margin='normal'
-                      //value={`${this.state.spaceProfile.pinterest}`}
-                      //placeholder={`${this.state.spaceProfile.pinterest}`}
+                      //value={`${this.state.pinterest}`}
+                      //placeholder={`${this.state.pinterest}`}
+                      //onChange={this.handleInputChange('pintersest')}
                     />
 
 
                     <TextField 
                       label={'Youtube'}
                       margin='normal'
-                     // value={`${this.state.spaceProfile.youtube}`}
-                      //placeholder={`${this.state.spaceProfile.youtube}`}
+                     // value={`${this.state.youtube}`}
+                      //placeholder={`${this.state.youtube}`}
+                      //onChange={this.handleInputChange('youtube')}
                     />
                     <TextField 
                       label={'Tumblr'}
                       margin='normal'
-                      //value={`${this.state.spaceProfile.tumblr}`}
-                      //placeholder={`${this.state.spaceProfile.tumblr}`}
+                      //value={`${this.state.tumblr}`}
+                      //placeholder={`${this.state.tumblr}`}
+                      //onChange={this.handleInputChange('tumblr')}
                     />
                   </div>                
 
@@ -284,13 +383,12 @@ onChange = (editorState) => {
                 <h3 style={{margin: '15px 0'}}>Description</h3>
                 <Paper>
                 <Editor 
-                    editorState={this.state.editorState}
+                    editorState={contentState}
+                    onEditorStateChange={this.onEditorChange}
                     // toolbarClassName="home-toolbar"
                     // wrapperClassName="home-wrapper"
                     // editorClassName="rdw-editor-main"
-                    editorStyle={{padding: '0 .5em'}}
-                    onEditorStateChange={this.onChange}
-                    
+                    editorStyle={{padding: '0 .5em'}}                 
                     toolbar={{
                       inline: { inDropdown: true },
                       fontSize: { className: 'toolbarHidden' },
@@ -304,6 +402,15 @@ onChange = (editorState) => {
                     }}
                   />
                   </Paper>  
+              </div>
+              <div className="spaceIDashSubmit">
+                    <Button 
+                    raised
+                    style={{backgroundColor:'#3399cc', padding:'15px', marginTop:'15px', color:'#FFFFFF', width: '50%' }}
+                    onClick={this.spaceInfoSubmit}
+                    > 
+                      Submit
+                    </Button>
               </div>
           </div>
         </Paper> 

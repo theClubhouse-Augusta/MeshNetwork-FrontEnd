@@ -26,7 +26,7 @@ import './styleM.css';
     L8R
 */ 
 
-
+const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate'; 
 
 const getRowId = row => row.id;
 
@@ -120,8 +120,24 @@ export default class EventDash extends React.PureComponent {
 */
 
 commitChanges({ added, changed, deleted }) {
+  let rows = this.state; 
 
+  data.append()
+
+  fetch(eventUpdateAPI, {
+    method: 'POST', 
+    body: data, 
+  })
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error); 
+  })
 }
+
+
+
+
+
 
   render() {
     const { rows, columns, editingRows, addedRows, changedRows } = this.state;
