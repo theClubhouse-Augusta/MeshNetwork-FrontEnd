@@ -22,6 +22,3 @@ export default class SpaceSignIn extends React.PureComponent {
   }
 }
 
-SpaceSignIn.contextTypes = {
-  router: React.PropTypes.object
-};

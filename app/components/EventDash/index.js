@@ -19,6 +19,3 @@ export default class EventDash extends React.PureComponent {
   }
 }
 
-EventDash.contextTypes = {
-  router: React.PropTypes.object
-};

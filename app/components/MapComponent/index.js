@@ -45,6 +45,3 @@ const GenerateMarkers = (props) => (
     </div>
 );
 
-MapComponent.contextTypes = {
-  router: React.PropTypes.object
-};

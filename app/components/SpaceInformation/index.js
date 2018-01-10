@@ -40,7 +40,7 @@ export default class SpaceInformation extends React.PureComponent {
   }
 
  getSpaceInfo= () => {
-    fetch('http://innovationmesh.com/api/workspace/'+ this.props.id, {
+    fetch('http://localhost:8000/api/workspace/'+ this.props.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -210,6 +210,3 @@ export default class SpaceInformation extends React.PureComponent {
   }
 }
 
-SpaceInformation.contextTypes = {
-  router: React.PropTypes.object
-};

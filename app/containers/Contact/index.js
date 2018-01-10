@@ -105,6 +105,3 @@ export default class Contact extends React.PureComponent {
   }
 }
 
-Contact.contextTypes = {
-  router: React.PropTypes.object
-};

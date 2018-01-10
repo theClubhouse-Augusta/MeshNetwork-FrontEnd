@@ -38,7 +38,7 @@ export default class Spaces extends React.PureComponent {
   }
 
   getSpaces = () => {
-    fetch(`http://innovationmesh.com/api/workspaces`, {
+    fetch(`http://localhost:8000/api/workspaces`, {
       method:'GET'
     })
     .then(function(response) {
@@ -103,6 +103,3 @@ export default class Spaces extends React.PureComponent {
   }
 }
 
-Spaces.contextTypes = {
-  router: React.PropTypes.object
-};

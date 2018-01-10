@@ -19,6 +19,3 @@ export default class UserDash extends React.PureComponent {
   }
 }
 
-UserDash.contextTypes = {
-  router: React.PropTypes.object
-};

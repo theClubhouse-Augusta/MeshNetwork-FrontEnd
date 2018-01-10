@@ -118,6 +118,3 @@ export default class MemberDash extends React.PureComponent {
   }
 }
 
-MemberDash.contextTypes = {
-  router: React.PropTypes.object
-};

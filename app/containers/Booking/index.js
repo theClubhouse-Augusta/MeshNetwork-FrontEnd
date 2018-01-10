@@ -112,7 +112,7 @@ export default class Booking extends React.PureComponent {
     data.append('times', this.state.activeTimes);
     data.append('spaceID', this.props.match.params.id);
 
-    fetch("http://innovationmesh.com/api/booking", {
+    fetch("http://localhost:8000/api/booking", {
       method:'POST',
       body:data
     })
@@ -219,6 +219,3 @@ export default class Booking extends React.PureComponent {
   }
 }
 
-Booking.contextTypes = {
-  router: React.PropTypes.object
-};

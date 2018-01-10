@@ -73,6 +73,3 @@ export default class SecurityNotifSettings extends React.PureComponent {
   }
 }
 
-SecurityNotifSettings.contextTypes = {
-  router: React.PropTypes.object
-};

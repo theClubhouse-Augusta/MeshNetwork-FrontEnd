@@ -62,6 +62,3 @@ export default class SpaceDash extends React.PureComponent {
   }
 }
 
-SpaceDash.contextTypes = {
-  router: React.PropTypes.object
-};

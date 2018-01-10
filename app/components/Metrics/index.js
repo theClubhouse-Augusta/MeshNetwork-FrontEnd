@@ -19,6 +19,3 @@ export default class Metrics extends React.PureComponent {
   }
 }
 
-Metrics.contextTypes = {
-  router: React.PropTypes.object
-};
