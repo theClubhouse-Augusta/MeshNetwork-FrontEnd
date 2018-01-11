@@ -23,14 +23,18 @@ import './styleM.css';
 
 const getUsersAPI = 'http://innovationmesh.com/api/users/space/'; 
 
+const spaceInfoAPI = 'http://innovationmesh.com/api/workspace/'; 
+
 export default class SpaceDash extends React.PureComponent {
   state ={
     value: 0,
     spaceUsers: {}, 
+    spaceDescription:'', 
   }
 
   componentWillMount() {
     this.loadSpaceUsers(); 
+    this.loadSpaceDescription(); 
   }
 
   loadSpaceUsers = () => {
@@ -43,11 +47,27 @@ export default class SpaceDash extends React.PureComponent {
     .then(function(json) {
       this.setState({
         spaceUsers:json
-      }, function() {
-        console.log(this.state.spaceUsers);
-      })
+      },)
     }.bind(this))
   }
+
+//passing down as prop so EditorState can render correctly 
+
+loadSpaceDescription = () => {
+  fetch(spaceInfoAPI + this.props.match.params.id, {
+    method:'GET'
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(json) {
+    this.setState({
+      spaceDescription: json.description, 
+    }, function() {
+      console.log(this.state.spaceDescription);
+    })
+  }.bind(this))
+}
 
   handleTabChange = (event, value) => {
     this.setState({ value });
@@ -73,7 +93,8 @@ export default class SpaceDash extends React.PureComponent {
         </AppBar>
 
         <div className="spaceDashMain">
-        {value === 0 && <SpaceInformation id={this.props.match.params.id}/>}
+        {value === 0 && <SpaceInformation id={this.props.match.params.id}
+                                          description={this.state.spaceDescription}/>}
         {value === 1 && <EventDash id={this.props.match.params.id} 
                                    users={this.state.spaceUsesrs}/>}
         {value === 2 && <UserDash id={this.props.match.params.id} 
