@@ -20,7 +20,7 @@ import './styleM.css';
 
   
 
-const spaceUpdateAPI = 'http://innovationmesh.com/api/spaceupdate'; 
+const spaceUpdateAPI = 'http://localhost:8000/api/spaceupdate'; 
 
 
 export default class SpaceInformation extends React.PureComponent {
