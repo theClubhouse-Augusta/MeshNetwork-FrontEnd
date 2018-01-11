@@ -231,9 +231,6 @@ export default class Metrics extends React.PureComponent {
   }
 }
 
-<<<<<<< HEAD
-=======
 Metrics.contextTypes = {
   router: PropTypes.object
 };
->>>>>>> 2c3b274f5ce643c3b164cfc1b5c200bd11a1e92d

@@ -212,7 +212,7 @@ onChange = (editorState) => {
 
                     <h3 style={{margin: '15px 0'}}> Logo </h3>
                     <div className="spaceIDashLogoPreview">
-                         {this.renderLogoPreview()} 
+                         {/* {this.renderLogoPreview()}  */}
                     </div>   
                       
                       <div> 
@@ -313,9 +313,6 @@ onChange = (editorState) => {
   }
 }
 
-<<<<<<< HEAD
-=======
 SpaceInformation.contextTypes = {
   router: PropTypes.object
 };
->>>>>>> 2c3b274f5ce643c3b164cfc1b5c200bd11a1e92d
