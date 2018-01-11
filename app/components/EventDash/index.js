@@ -26,7 +26,7 @@ import './styleM.css';
     L8R
 */ 
 
-const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate'; 
+const eventUpdateAPI = 'http://localhost:8000/api/eventUpdate'; 
 
 const getRowId = row => row.id;
 

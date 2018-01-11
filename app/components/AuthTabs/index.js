@@ -62,7 +62,7 @@ export default class AuthTabs extends React.PureComponent {
   }
 
   loadSkills = () => {
-    fetch('http://innovationmesh.com/api/skills/all', {
+    fetch('http://localhost:8000/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(response => response.json())
@@ -73,7 +73,7 @@ export default class AuthTabs extends React.PureComponent {
   }
 
   getSpaces = () => {
-    fetch(`http://innovationmesh.com/api/workspaces`,)
+    fetch(`http://localhost:8000/api/workspaces`,)
     .then(response => response.json())
     .then(Workspaces => {
       if (!Workspaces.error) {
@@ -164,7 +164,7 @@ export default class AuthTabs extends React.PureComponent {
     // data.append('searchOpt', this.state.searchOpt ? 1 : 0);
     // data.append('avatar', this.state.avatar);
 
-    fetch(`http://innovationmesh.com/api/signUp`, {
+    fetch(`http://localhost:8000/api/signUp`, {
       method: 'post',
       body: data,
     })

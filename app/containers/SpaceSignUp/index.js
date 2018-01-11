@@ -10,7 +10,8 @@ import { Link } from 'react-router-dom';
 import Header from 'components/Header';
 import PropTypes from 'prop-types';
 
-import {EditorState} from 'draft-js';
+import {EditorState, convertToRaw} from 'draft-js';
+import drafToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -105,8 +106,9 @@ export default class SpaceSignUp extends React.PureComponent {
     data.append('password', userPassword.trim());
     data.append('spaceID', spaceID);
     data.append('avatar', avatar);
+    data.append('organizer', true);
 
-    fetch("http://innovationmesh.com/api/signUp", {
+    fetch("http://localhost:8000/api/signUp", {
       method:'POST',
       body:data,
     })
@@ -144,10 +146,10 @@ export default class SpaceSignUp extends React.PureComponent {
     data.append('email', email.trim());
     data.append('website', website.trim());
     data.append('phone_number', phone_number.trim());
-    data.append('description', this.state.description);
+      data.append('description', drafToHtml(convertToRaw(this.state.description.getCurrentContent())));
     data.append('logo', this.state.logo);
 
-    fetch("http://innovationmesh.com/api/newspace", {
+    fetch("http://localhost:8000/api/newspace", {
       method:'POST',
       body:data,
     })

@@ -43,7 +43,7 @@ export default class Header extends React.PureComponent {
           <Link to="/about" className="navButton">About</Link>
           {/*<Link to="/events" className="navButton">Events</Link>*/}
           <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton">Challenges</a>
-          <a href="http://lms.innovationmesh.com" target="_blank" className="navButton">Education</a>
+          <a href="http://lms.localhost:8000" target="_blank" className="navButton">Education</a>
         </nav>
       )
     }

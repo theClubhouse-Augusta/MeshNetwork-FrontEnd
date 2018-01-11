@@ -51,7 +51,7 @@ class CheckoutForm extends React.Component {
   }
 
   loadSkills = () => {
-    fetch('http://innovationmesh.com/api/skills/all', {
+    fetch('http://localhost:8000/api/skills/all', {
     })
     .then(response => response.json())
     .then(json => {this.setState({ loadedTags:json })})
@@ -61,10 +61,10 @@ class CheckoutForm extends React.Component {
   }
 
   loadPlans = () => {
-    fetch(`http://innovationmesh.com/api/plans/${this.spaceID}`, {
+    fetch(`http://localhost:8000/api/plans/${this.spaceID}`, {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedPlans:json })})
+    .then(json => {this.setState({ loadedPlans: json.data })})
     .catch(error => {
       alert(`error in fetching data from server: ${error}`);
     });
@@ -74,7 +74,9 @@ class CheckoutForm extends React.Component {
     this.setState({ selectedTags: selectedTag });
   }
 
-  selectPlan = selected => {
+  selectPlan = (e,selected) => {
+    e.preventDefault();
+    console.log('s',selected);
     this.setState({ plan: selected });
   }
 
@@ -151,7 +153,62 @@ class CheckoutForm extends React.Component {
       multiValue,
       plan
     } = this.state;
-    this.props.stripe.createToken({name: name}).then(({token}) => {
+      this.props.stripe.createToken({name: name}).then(({token}) => {
+        data.append('name', name.trim());
+        if (selectedTags.length) {
+          data.append('tags', JSON.stringify(selectedTags));
+        } else {
+          data.append('tags', JSON.stringify(multiValue));
+        }
+        data.append('email', email.trim());
+        data.append('password', password.trim());
+        data.append('bio', bio.trim());
+        data.append('spaceID', this.spaceID);
+        data.append('avatar', avatar);
+        if (token.id) {
+          data.append('customerToken', token.id);
+        }
+        data.append('plan', plan)
+        data.append('organizer', false);
+
+        fetch("http://localhost:8000/api/signUp", {
+          method:'POST',
+          body:data,
+        })
+        .then(response => response.json())
+        .then(user => {
+          if (user.error) {
+            this.showSnack(user.error);
+          } else {
+            localStorage['token'] = user.token;
+            this.showSnack("Account created successfully!");
+          // setTimeout(() => {
+          //   this.props.history.push(`/user/${user.id}`)
+          // }, 2000);
+          }
+        })
+        .catch(error => {
+          alert(`signUp ${error}`);
+        })
+      });
+    // However, this line of code will do the same thing:
+    // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
+  }
+
+  storeFreeUser = e => {
+    console.log('wtf');
+    e.preventDefault();
+    let data = new FormData();
+    let {
+      name,
+      email,
+      password,
+      bio,
+      selectedTags,
+      avatar,
+      multiValue,
+      plan
+    } = this.state;
     data.append('name', name.trim());
     if (selectedTags.length) {
       data.append('tags', JSON.stringify(selectedTags));
@@ -163,10 +220,10 @@ class CheckoutForm extends React.Component {
     data.append('bio', bio.trim());
     data.append('spaceID', this.spaceID);
     data.append('avatar', avatar);
-    data.append('customerToken', token.id);
     data.append('plan', plan)
+    data.append('organizer', false);
 
-    fetch("http://innovationmesh.com/api/signUp", {
+    fetch("http://localhost:8000/api/signUp", {
       method:'POST',
       body:data,
     })
@@ -177,23 +234,20 @@ class CheckoutForm extends React.Component {
       } else {
         localStorage['token'] = user.token;
         this.showSnack("Account created successfully!");
-        // setTimeout(() => {
-        //   this.props.history.push(`/user/${user.id}`)
-        // }, 2000);
+      // setTimeout(() => {
+      //   this.props.history.push(`/user/${user.id}`)
+      // }, 2000);
       }
     })
     .catch(error => {
       alert(`signUp ${error}`);
     })
-
-    });
-
-    // However, this line of code will do the same thing:
-    // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
+  // However, this line of code will do the same thing:
+  // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
   }
 
   render() {
-    const {
+    let {
       selectedTags,
       loadedTags,
       focused,
@@ -203,6 +257,7 @@ class CheckoutForm extends React.Component {
       options,
       loadedPlans,
     } = this.state;
+
     const Helper = new StyleHelpers();
     const marginTop = Helper.getLabelStyle(focused, selectedTags)[0];
     const color = Helper.getLabelStyle(focused, selectedTags)[1];
@@ -278,60 +333,32 @@ class CheckoutForm extends React.Component {
               />}
 
 
-              <label
-                style={{
-                  marginBottom: 12,
-                }}
-              >
+              <label style={{ marginBottom: 12, }}>
                 Select a Plan
               </label>
 
+                <FlatButton
+                  style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                  onClick={(e) => this.selectPlan(e, "free")}
+                >
+                  Free tier
+                </FlatButton>
 
-              {!!loadedPlans.length &&
-              <div style={{
-                marginBottom: 32
-              }}>
-                {loadedPlans.map((subscription, key) =>
-                  <ExpansionPanel
-                    key={`expanel${key}`}
-                      style={{
-                      color: subscription.name === plan ? '#f8f8f8' : 'inherit',
-                      background: subscription.name === plan ? '#8d8d8d' : 'inherit',
-                      textAlign: 'center'
-                      }}
+              {!!loadedPlans.length && loadedPlans.map((plan, key) => {
+                let id = plan.id;
+                {/* let amount = plan.amount.toString().splice(2, 0, '.'); */}
+                let amount = (plan.amount / 100).toFixed(2).toString();
+                return (
+                  <FlatButton
+                    key={`goo${key}`}
+                    style={{backgroundColor: id === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                    onClick={(e) => this.selectPlan(e, id)}
                   >
-                    <ExpansionPanelSummary
-                      expandIcon={<ExpandMoreIcon />}>
-                      {subscription.name}
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails
-                      style={{
-                        fill: 'blue',
-                        color: '#333333',
-                        flexDirection: 'column',
-                        margin: '0, auto'
-                      }}
-                    >
-                      {subscription.description}
-                      <FlatButton
-                        style={{
-                          margin: ' 0 auto',
-                          backgroundColor:'#797979',
-                          padding:'10px',
-                          marginTop:'15px',
-                          color:'#FFFFFF',
-                          fontWeight:'bold'
-                        }}
-                        onClick={() => this.selectPlan(subscription.name)}
-                      >
-                        Select
-                      </FlatButton>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                )}
-              </div>}
+                    {plan.name} - {amount}
+                  </FlatButton>
+              )})} 
 
-              <CardSection />
+              {plan !== "free" ? <CardSection /> : null}
 
               <div className="spaceLogoMainImageRow">
                 <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
@@ -342,7 +369,7 @@ class CheckoutForm extends React.Component {
               </div>
               <FlatButton
                 style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
-                onClick={this.storeUser}
+               onClick={ plan === "free" ? this.storeFreeUser : this.storeUser}
               >
                 Sign Up
               </FlatButton>

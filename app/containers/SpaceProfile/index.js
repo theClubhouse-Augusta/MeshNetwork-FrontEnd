@@ -67,7 +67,7 @@ export default class SpaceProfile extends React.PureComponent {
   }
 
  getProfile = () => {
-    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+    fetch('http://localhost:8000/api/workspace/'+ this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -81,7 +81,7 @@ export default class SpaceProfile extends React.PureComponent {
 }
 
   getSpaceEvents = () => {
-    fetch('http://innovationmesh.com/api/upcoming/'+ this.props.match.params.id, {
+    fetch('http://localhost:8000/api/upcoming/'+ this.props.match.params.id, {
       method: 'GET'
     })
     .then(function(response) {
@@ -95,7 +95,7 @@ export default class SpaceProfile extends React.PureComponent {
   }
 
   getUsers = () => {
-    fetch('http://innovationmesh.com/api/users/space/' + this.props.match.params.id, {
+    fetch('http://localhost:8000/api/users/space/' + this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -180,7 +180,7 @@ export default class SpaceProfile extends React.PureComponent {
            <div className="spaceProfileAbout"
            >
                 <div className="spaceProfileAboutContent">
-                <p> {this.state.spaceProfile.description} </p>
+                  <p dangerouslySetInnerHTML={{__html:this.state.spaceProfile.description}} />
                 </div>
 
                 <div className="spaceProfileStaff"></div>
