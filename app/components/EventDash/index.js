@@ -39,25 +39,21 @@ export default class EventDash extends React.PureComponent {
         //attempting to keep name values === api obj keys             
 //ICON RENDERS 
         //approved, denied
-        { name: 'status', title: 'Status' }, 
-        { name: 'title', title: 'Event Name'},
+       // { name: 'status', title: 'Status', getCellValue: row => {row. ? row.event.status : undefined} }, 
+
+        { name: 'title', title: 'Event Name', },
 //this is where we can't pull straight from api anymore 
         //userID => query name 
-        { name: 'creator', title: 'Created By' },        
-        //was name added to event organizers either? 
-        { name: 'organizers', title: 'Organizers' }, 
-        // grab from whichever api & make human readable       
-        { name: 'dateTime', title: 'Date(s) & Time' },
-
-        //back to straight api 
-        { name: 'description', title: 'Description' },
-      ],
-      rows: [
-        {id: '1', status: '', title: 'PyNight', creator: '', organizers:'', dateTime: '', description: ''},
-        {id: '2', status: '', title: '1 mil cups', creator: '', organizers:'', dateTime: '', description: ''},
-        {id: '3', status: '', title: 'JS Meetup', creator: '', organizers:'', dateTime: '', description: ''},
+        //{ name: 'creator', title: 'Created By', getCellValue: row => {row.event ? row.event.creator : undefined} },        
         
+        //{ name: 'organizers', title: 'Organizers', getCellValue: row => {row.event ? row.event.organizers : undefined} },
+
+        // grab from whichever api & make human readable       
+        //{ name: 'dateTime', title: 'Date(s) & Time', getCellValue: row => {row.event ? row.event.dateTime : undefined} },
+
+        { name: 'description', title: 'Description',  },
       ],
+      rows: [],
       editingRows: [],
       addedRows: [],
       changedRows: {},
@@ -86,13 +82,12 @@ export default class EventDash extends React.PureComponent {
   }
 
 
-/*
   componentWillMount() {
     this.loadSpaceEvents(); 
   }
 
-  loadSpaceEvents= (props) => { 
-    fetch('http://localhost:8000/api/workevents/' + this.props.id, {
+  loadSpaceEvents= () => { 
+    fetch('http://innovationmesh.com/api/workevents/' + this.props.id, {
       method: 'GET'
     })
     .then(function(response) {
@@ -100,14 +95,15 @@ export default class EventDash extends React.PureComponent {
     })
     .then(function(json) { 
       this.setState({
-        spaceEvents:json
+        rows:json, 
       }, function() {
-        console.log(this.state.spaceEvents); 
+        console.log(this.state.rows); 
       })
     }.bind(this))
   }
 
 
+/*
 //eventID param
   getEventOrganizers= () => { 
 

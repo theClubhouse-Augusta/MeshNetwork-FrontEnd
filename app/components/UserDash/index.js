@@ -29,6 +29,7 @@ import {VerifiedUser} from 'material-ui-icons';
     L8R
 */ 
 
+
 const getRowId = row => row.id;
 
 const userUpdateAPI = 'http://www.innovationmesh.com/api/updateUser'; 
@@ -40,24 +41,15 @@ export default class UserDash extends React.PureComponent {
 
     this.state = {
       columns: [
-        //take & convert role ID
         {name: 'role', title: 'Role'}, 
-        {name: 'verified', title: 'Verified'}, 
+        //{name: 'verified', title: 'Verified'}, 
         {name: 'email', title: 'Email'}, 
-        //??
         {name: 'name', title: 'Name'}, 
         //take & convert created_at
         {name: 'dateTime', title: 'Member Since'},
-        {name: 'ban', title: ''}, 
+        {name: 'ban', title: 'Ban'}, 
       ],
-//ROLEID => readable role name
-      rows: [
-        {id: '1', role: '', verified: '', email: '', name: 'bob bobert', dateTime: '', ban: ''},
-        {id: '2', role: '', verified: '', email: '', name: 'sally sue', dateTime: '', ban: ''},
-    
-        /* there is an option to wrap these in another object if need be
-        ie {user: {id:...}} you have to add  getCellValue: row => (row.user ? row.user.id : undefined) to the column dec*/
-      ],
+      rows: props.users, 
       editingRows: [],
       addedRows: [],
       changedRows: {},
@@ -85,30 +77,11 @@ export default class UserDash extends React.PureComponent {
     });
   }
 
-//roleID=> actual role name
 //created_at => readable date format
 
-
-/* componentWillMount() { 
-    this.loadSpaceUsers(); 
-  }
-
-loadSpaceUsers = (props) => {
-    fetch('http://innovationmesh.com/api/users/space/'+ this.props.id, {
-      method:'GET'
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      this.setState({
-        rows:json
-      }, function() {
-        console.log(this.state.rows);
-      })
-    }.bind(this)) 
-} */
-
+componentWillReceiveProps(users) {
+  this.setState({rows: this.props.users})    
+}
 
 commitChanges({ added, changed, deleted }) {
   let rows = this.state; 
