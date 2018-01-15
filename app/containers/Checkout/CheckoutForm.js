@@ -80,7 +80,6 @@ class CheckoutForm extends React.Component {
 
   handleOnChange = (value) => {
     let { options } = this.state;
-    console.log('o', options);
     const { multi } = this.state;
     if (multi) {
       this.setState({ multiValue: value });
@@ -132,6 +131,15 @@ class CheckoutForm extends React.Component {
       )
     }
   }
+
+  renderCreditCard = () => {
+    if(this.state.plan !== 'Free - $0') {
+      return(
+        <CardSection/>
+      )
+    }
+  }
+
   onFocus = () => this.setState({ focused: true });
   onBlur = () => this.setState({ focused: false });
 
@@ -151,8 +159,16 @@ class CheckoutForm extends React.Component {
       multiValue,
       plan
     } = this.state;
-    this.props.stripe.createToken({name: name}).then(({token}) => {
+
+    let token = {id:0};
+    if(this.state.plan !== 'Free - $0') {
+      this.props.stripe.createToken({name: name}).then(({token}) => {
+        token = token;
+      })
+    }
+
     data.append('name', name.trim());
+
     if (selectedTags.length) {
       data.append('tags', JSON.stringify(selectedTags));
     } else {
@@ -175,21 +191,10 @@ class CheckoutForm extends React.Component {
       if (user.error) {
         this.showSnack(user.error);
       } else {
-        localStorage['token'] = user.token;
+        localStorage.setItem(user.token)
         this.showSnack("Account created successfully!");
-        // setTimeout(() => {
-        //   this.props.history.push(`/user/${user.id}`)
-        // }, 2000);
       }
     })
-    .catch(error => {
-      alert(`signUp ${error}`);
-    })
-
-    });
-
-    // However, this line of code will do the same thing:
-    // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
   }
 
   render() {
@@ -331,7 +336,7 @@ class CheckoutForm extends React.Component {
                 )}
               </div>}
 
-              <CardSection />
+              {this.renderCreditCard()}
 
               <div className="spaceLogoMainImageRow">
                 <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
