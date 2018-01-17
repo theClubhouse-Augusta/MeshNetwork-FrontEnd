@@ -180,7 +180,7 @@ export default class SpaceProfile extends React.PureComponent {
            <div className="spaceProfileAbout"
            >
                 <div className="spaceProfileAboutContent">
-                <p> {this.state.spaceProfile.description} </p>
+                  <p dangerouslySetInnerHTML={{__html:this.state.spaceProfile.description}} />
                 </div>
 
                 <div className="spaceProfileStaff"></div>

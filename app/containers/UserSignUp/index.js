@@ -43,7 +43,7 @@ export default class UserSignUp extends React.Component {
   }
 
   loadSkills = () => {
-    fetch('http://localhost:8000/api/skills/all', {
+    fetch('http://innovationmesh.com/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(response => response.json())
@@ -101,7 +101,7 @@ export default class UserSignUp extends React.Component {
     data.append('spaceID', this.spaceID);
     data.append('avatar', avatar);
 
-    fetch("http://localhost:8000/api/signUp", {
+    fetch("http://innovationmesh.com/api/signUp", {
       method:'POST',
       body:data,
     })
