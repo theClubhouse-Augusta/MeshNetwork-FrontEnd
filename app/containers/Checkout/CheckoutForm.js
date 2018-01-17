@@ -39,7 +39,7 @@ class CheckoutForm extends React.Component {
     snack:false,
     focused: false,
     planFocused: false,
-    plan: {}
+    plan: "free"
   };
 
   path = this.props.location.pathname.split('/');
@@ -47,27 +47,23 @@ class CheckoutForm extends React.Component {
 
   componentDidMount() {
     this.loadSkills();
-    this.loadPlans();
+    if (this.props.pubkey) {
+      this.loadPlans();
+    }
   }
 
   loadSkills = () => {
     fetch('http://localhost:8000/api/skills/all', {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedTags:json })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .then(json => {this.setState({ loadedTags:json })});
   }
 
   loadPlans = () => {
     fetch(`http://localhost:8000/api/plans/${this.spaceID}`, {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedPlans: json.data })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .then(json => {this.setState({ loadedPlans: json.data })});
   }
 
   selectTag = selectedTag => {
@@ -187,16 +183,12 @@ class CheckoutForm extends React.Component {
           // }, 2000);
           }
         })
-        .catch(error => {
-          alert(`signUp ${error}`);
-        })
       });
     // However, this line of code will do the same thing:
     // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
   }
 
   storeFreeUser = e => {
-    console.log('wtf');
     e.preventDefault();
     let data = new FormData();
     let {
@@ -234,13 +226,7 @@ class CheckoutForm extends React.Component {
       } else {
         localStorage['token'] = user.token;
         this.showSnack("Account created successfully!");
-      // setTimeout(() => {
-      //   this.props.history.push(`/user/${user.id}`)
-      // }, 2000);
       }
-    })
-    .catch(error => {
-      alert(`signUp ${error}`);
     })
   // However, this line of code will do the same thing:
   // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
@@ -333,16 +319,19 @@ class CheckoutForm extends React.Component {
               />}
 
 
-              <label style={{ marginBottom: 12, }}>
-                Select a Plan
-              </label>
+              {this.props.pubkey &&
+              <React.Fragment>
+                <label style={{ marginBottom: 12, }}>
+                  Select a Plan
+                </label>
 
-                <FlatButton
-                  style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
-                  onClick={(e) => this.selectPlan(e, "free")}
-                >
-                  Free tier
-                </FlatButton>
+                  <FlatButton
+                    style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                    onClick={(e) => this.selectPlan(e, "free")}
+                  >
+                    Free tier
+                  </FlatButton>
+                </React.Fragment>}
 
               {!!loadedPlans.length && loadedPlans.map((plan, key) => {
                 let id = plan.id;
@@ -358,7 +347,7 @@ class CheckoutForm extends React.Component {
                   </FlatButton>
               )})} 
 
-              {plan !== "free" ? <CardSection /> : null}
+              {plan !== "free" && this.props.pubkey ? <CardSection /> : null}
 
               <div className="spaceLogoMainImageRow">
                 <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
