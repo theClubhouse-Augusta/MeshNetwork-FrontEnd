@@ -7,7 +7,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types'; 
-
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
@@ -47,7 +46,9 @@ export default class SpaceDash extends React.PureComponent {
     .then(function(json) {
       this.setState({
         spaceUsers:json
-      },)
+      }, function() {
+        console.log(this.state.spaceUsers)
+      })
     }.bind(this))
   }
 
@@ -63,9 +64,7 @@ loadSpaceDescription = () => {
   .then(function(json) {
     this.setState({
       spaceDescription: json.description, 
-    }, function() {
-      console.log(this.state.spaceDescription);
-    })
+    },)
   }.bind(this))
 }
 
@@ -96,11 +95,11 @@ loadSpaceDescription = () => {
         {value === 0 && <SpaceInformation id={this.props.match.params.id}
                                           description={this.state.spaceDescription}/>}
         {value === 1 && <EventDash id={this.props.match.params.id} 
-                                   users={this.state.spaceUsesrs}/>}
+                                   users={this.state.spaceUsers}/>}
         {value === 2 && <UserDash id={this.props.match.params.id} 
-                                  users={this.state.spaceUsesrs}/> }
+                                  users={this.state.spaceUsers}/> }
         {value === 3 && <Metrics id={this.props.match.params.id}
-                                 users={this.state.spaceUsesrs}/> }
+                                 users={this.state.spaceUsers}/> }
        
        
         

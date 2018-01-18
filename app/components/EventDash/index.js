@@ -9,10 +9,15 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
 import { EditingState } from '@devexpress/dx-react-grid'; 
 import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'; 
-
+import { TableCell } from 'material-ui';
+import Icon from 'material-ui/Icon';
+import IconButton from 'material-ui/IconButton';
+import DoneIcon from 'material-ui-icons/Done'; 
+import QuestionAnswerIcon from 'material-ui-icons/QuestionAnswer'; 
 
 import './style.css';
 import './styleM.css';
+
 
 
 /* TO DO 
@@ -26,49 +31,87 @@ import './styleM.css';
     L8R
 */ 
 
-const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate'; 
+const getEventsAPI = 'http://innovationmesh.com/api/workevents/'; 
+const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate';
+const eventDateTimeAPI = ''; 
 
-const getRowId = row => row.id;
+
+
+
+
+const Cell = (props) => {
+  if (props.column.name === 'status') {
+    return <EventApproveCell {...props} />;
+  }
+  return <Table.Cell {...props} />;
+};
+Cell.propTypes = {
+  column: PropTypes.shape({ name: PropTypes.string }).isRequired,
+};
+
+
+
+const EventApproveCell = ({
+  value 
+}) => { 
+  if (value === 0 ) { 
+    // IconButtons have padding baked in 
+    return (<TableCell style={{padding: '0'}}> 
+              <ApprovalButton />
+            </TableCell>) 
+  }
+  return (
+            <TableCell style={{padding: '0'}}> 
+              <RevokeApproveButton />
+            </TableCell>
+  )
+}
+
+const ApprovalButton = ({ onExecute }) => (
+    <IconButton onClick={onExecute} title="Approve Event" aria-label="approve event button" style={{color: 'orange', margin: '0'}}>
+      <QuestionAnswerIcon style={{height: '.75em', width: '.75em'}}/>
+    </IconButton> 
+); 
+ApprovalButton.propTypes = {
+  onExecute: PropTypes.func.isRequired,
+}
+
+const RevokeApproveButton = ({ onExecute }) => (
+  <IconButton onClick={onExecute} title="Revoke Approval" aria-label="revoke event approval button" style={{color: 'green'}}>
+    <DoneIcon />
+  </IconButton> 
+); 
+RevokeApproveButton.propTypes = {
+  onExecute: PropTypes.func.isRequired,
+}
+
 
 export default class EventDash extends React.PureComponent {
   constructor(props) { 
-    super(props); 
-
+    super(props);    
     this.state = {
-      columns: [
-        //attempting to keep name values === api obj keys             
-//ICON RENDERS 
-        //approved, denied
-        { name: 'status', title: 'Status' }, 
-        { name: 'title', title: 'Event Name'},
-//this is where we can't pull straight from api anymore 
-        //userID => query name 
-        { name: 'creator', title: 'Created By' },        
-        //was name added to event organizers either? 
-        { name: 'organizers', title: 'Organizers' }, 
-        // grab from whichever api & make human readable       
-        { name: 'dateTime', title: 'Date(s) & Time' },
-
-        //back to straight api 
-        { name: 'description', title: 'Description' },
-      ],
       rows: [
-        {id: '1', status: '', title: 'PyNight', creator: '', organizers:'', dateTime: '', description: ''},
-        {id: '2', status: '', title: '1 mil cups', creator: '', organizers:'', dateTime: '', description: ''},
-        {id: '3', status: '', title: 'JS Meetup', creator: '', organizers:'', dateTime: '', description: ''},
-        
+        { id: 1, status: 0, name: 'Bob', lastName: 'Brown', age: 21,  },
+        { id: 2, status: 1, name: 'John', lastName: 'Smith', age: 35,  },
+        { id: 3, status: 1, name: 'Mike', lastName: 'Mitchel', age: 28,  },
+      ],
+      columns: [
+        // column order is DELIBERATE, pls do not adjust w/o UX consideration! 
+        { name: 'status', title: 'Status'}, 
+        { name: 'name', title: 'Name' },
+        { name: 'lastName', title: 'Last Name' },
+        { name: 'age', title: 'Age' },        
       ],
       editingRows: [],
       addedRows: [],
       changedRows: {},
     };
+
     this.changeAddedRows = this.changeAddedRows.bind(this);
     this.changeEditingRows = this.changeEditingRows.bind(this);
     this.changeChangedRows = this.changeChangedRows.bind(this);
     this.commitChanges = this.commitChanges.bind(this);
-    this.onEditingRowsChange = this.onEditingRowsChange.bind(this); 
   }
-
   changeAddedRows(addedRows) {
     this.setState({ addedRows });
   }
@@ -79,20 +122,19 @@ export default class EventDash extends React.PureComponent {
     this.setState({ changedRows });
   }
 
-  onEditingRowsChange(editingRows) {
-    this.setState({
-      editingRows
-    });
+  commitChanges() {
+    // Commit logic
   }
 
 
-/*
-  componentWillMount() {
-    this.loadSpaceEvents(); 
+ /* componentWillMount() {
+    this.loadSpaceEvents();
+    //this.getEventOrganizers(); 
+    //this.getEventDateTime();  
   }
 
-  loadSpaceEvents= (props) => { 
-    fetch('http://innovationmesh.com/api/workevents/' + this.props.id, {
+  loadSpaceEvents= () => { 
+    fetch(getEventsAPI + this.props.id, {
       method: 'GET'
     })
     .then(function(response) {
@@ -100,25 +142,46 @@ export default class EventDash extends React.PureComponent {
     })
     .then(function(json) { 
       this.setState({
-        spaceEvents:json
+        rows:json, 
       }, function() {
-        console.log(this.state.spaceEvents); 
+        console.log(this.state.rows); 
       })
     }.bind(this))
   }
 
 
+/*
 //eventID param
   getEventOrganizers= () => { 
-
-  }
-
-//eventID Param 
-  getEventDateTime = () => { 
-    fetch('http://innovationmesh.com/api/')
+   match this.props.users 
+   get name offa that obj 
   }
 */
 
+//reassign id => eventid:? 
+/*
+  getEventDateTime = () => { 
+    fetch(eventDateTimeAPI + {id} {
+      method: 'GET'
+    })
+    .then(response => reponse.json())
+    .then( 
+
+    )
+
+  }
+*/
+
+
+renderReadableDate = () => { 
+    const dateObject = new Date(Date.parse()); 
+
+    const dateReadable = dateObject.toDateString(); 
+
+    console.log(dateReadable); 
+  }
+
+/*
 commitChanges({ added, changed, deleted }) {
   let rows = this.state; 
 
@@ -134,36 +197,45 @@ commitChanges({ added, changed, deleted }) {
   })
 }
 
-
+*/ 
 
 
 
 
   render() {
-    const { rows, columns, editingRows, addedRows, changedRows } = this.state;
-
+      const { rows, 
+            columns,  
+            editingRows, 
+            addedRows, 
+            changedRows,
+            deletingRows } = this.state;
 
     return (
       <div className="eventDashContainer">
         <Paper> 
           <Grid
-            rows={rows} 
-            columns={columns}
-            getRowId={getRowId}
+          rows={rows} 
+          columns={columns}
+          getRowId={row => row.id}
             > 
             <EditingState
-              onCommitChanges={this.commitChanges}
-              editingRows={editingRows}
-              onEditingRowsChange={this.onEditingRowsChange}
+            editingRows={editingRows}
+            onEditingRowsChange={this.changeEditingRows}
+            changedRows={changedRows}
+            onChangedRowsChange={this.changeChangedRows}
+            addedRows={addedRows}
+            onAddedRowsChange={this.changeAddedRows}
+            onCommitChanges={this.commitChanges}
           />
-          <Table />
+          <Table 
+            cellComponent={Cell}/>
           <TableHeaderRow />
           <TableEditRow />
           <TableEditColumn
-            showAddCommand
-            showEditCommand
-            showDeleteCommand
-            allowEditing={!editingRows.length}
+          showAddCommand
+          showEditCommand
+          showDeleteCommand
+          allowEditing={!editingRows.length}
           />
           </Grid>
         </Paper>
