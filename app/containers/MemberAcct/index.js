@@ -18,6 +18,7 @@ import ProfileSettings from '../../components/ProfileSettings';
 import AccountSettings from '../../components/AccountSettings';
 import SecurityNotifSettings from '../../components/SecurityNotifSettings'; 
 
+import Logger from '../../utils/Logger';
 import './style.css';
 import './styleM.css';
 
@@ -67,9 +68,7 @@ export default class MemberAcct extends React.PureComponent {
     })
     .then(response => response.json())
     .then(json => this.setState({ loadedTags:json }))
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .catch(error => Logger(`front-end: MemberAcct@loadSkills: ${error.message}`));
   }
 
   loadUserSkills = () => {
@@ -78,9 +77,7 @@ export default class MemberAcct extends React.PureComponent {
     })
     .then(response => response.json())
     .then(json => {this.setState({ selectedTags:json })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .catch(error => Logger(`front-end: MemberAcct@loadUserSkiils: ${error.message}`));
   }
 
   handleChange = (event, value) => {

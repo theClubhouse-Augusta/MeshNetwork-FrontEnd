@@ -11,15 +11,15 @@ import ExpansionPanel, {
   ExpansionPanelDetails,
 } from 'material-ui/ExpansionPanel';
 import ExpandMoreIcon from 'react-icons/lib/md/expand-more';
-
 import Header from '../../components/Header';
 
 import StyleHelpers from '../../utils/StyleHelpers';
+import Logger from '../../utils/Logger';
+
 import './style.css';
 import './styleM.css';
 
 class CheckoutForm extends React.Component {
-
   state = {
     multi: true,
     multiValue: [],
@@ -42,9 +42,6 @@ class CheckoutForm extends React.Component {
     plan: "free"
   };
 
-  path = this.props.location.pathname.split('/');
-  spaceID = this.path[this.path.length - 1];
-
   componentDidMount() {
     this.loadSkills();
     if (this.props.pubkey) {
@@ -56,14 +53,16 @@ class CheckoutForm extends React.Component {
     fetch('http://localhost:8000/api/skills/all', {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedTags:json })});
+    .then(json => {this.setState({ loadedTags:json })})
+    .catch(error => Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`));
   }
 
   loadPlans = () => {
-    fetch(`http://localhost:8000/api/plans/${this.spaceID}`, {
+    fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedPlans: json.data })});
+    .then(json => {this.setState({ loadedPlans: json.data })})
+    .catch(error => Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`));
   }
 
   selectTag = selectedTag => {
@@ -159,7 +158,7 @@ class CheckoutForm extends React.Component {
         data.append('email', email.trim());
         data.append('password', password.trim());
         data.append('bio', bio.trim());
-        data.append('spaceID', this.spaceID);
+        data.append('spaceID', this.props.match.params.id);
         data.append('avatar', avatar);
         if (token.id) {
           data.append('customerToken', token.id);
@@ -183,6 +182,7 @@ class CheckoutForm extends React.Component {
           // }, 2000);
           }
         })
+        .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
       });
     // However, this line of code will do the same thing:
     // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
@@ -210,7 +210,7 @@ class CheckoutForm extends React.Component {
     data.append('email', email.trim());
     data.append('password', password.trim());
     data.append('bio', bio.trim());
-    data.append('spaceID', this.spaceID);
+    data.append('spaceID', this.props.match.params.id);
     data.append('avatar', avatar);
     data.append('plan', plan)
     data.append('organizer', false);
@@ -228,6 +228,8 @@ class CheckoutForm extends React.Component {
         this.showSnack("Account created successfully!");
       }
     })
+    .catch(error => Logger(`front-end: CheckoutForm@storeFreeUser: ${error.message}`));
+
   // However, this line of code will do the same thing:
   // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
   }

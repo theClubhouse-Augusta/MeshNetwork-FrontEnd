@@ -48,7 +48,6 @@ export default class SpaceSignUp extends React.PureComponent {
 
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ msg: msg }); };
-
   handleName = (event) => { this.setState({name:event.target.value.replace(/\s\s+/g, ' ') })};
   handleCity = (event) => { this.setState({city:event.target.value})};
   handleAddress = (event) => { this.setState({address:event.target.value.replace(/\s\s+/g, ' ') })};
@@ -146,7 +145,7 @@ export default class SpaceSignUp extends React.PureComponent {
     data.append('email', email.trim());
     data.append('website', website.trim());
     data.append('phone_number', phone_number.trim());
-      data.append('description', drafToHtml(convertToRaw(this.state.description.getCurrentContent())));
+    data.append('description', drafToHtml(convertToRaw(this.state.description.getCurrentContent())));
     data.append('logo', this.state.logo);
 
     fetch("http://localhost:8000/api/newspace", {

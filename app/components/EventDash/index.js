@@ -10,6 +10,7 @@ import Paper from 'material-ui/Paper';
 import { EditingState } from '@devexpress/dx-react-grid'; 
 import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'; 
 
+import Logger from '../../utils/Logger';
 
 import './style.css';
 import './styleM.css';
@@ -129,9 +130,7 @@ commitChanges({ added, changed, deleted }) {
     body: data, 
   })
   .then(response => response.json())
-  .catch(error => {
-    console.log(error); 
-  })
+  .catch(error => Logger(`front-end: EventDash@commitChanges: ${error.message}`));
 }
 
 

@@ -18,6 +18,7 @@ import 'react-select/dist/react-select.css';
 
 import MtextField from '../../components/CustomUi/MtextField'; 
 import DefaultButton from '../../components/CustomUi/DefaultButton'; 
+import Logger from '../../utils/Logger';
 
 
 import './style.css';
@@ -66,10 +67,8 @@ export default class AuthTabs extends React.PureComponent {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedTags:json })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .then(json => this.setState({ loadedTags:json }))
+    .catch(error => Logger(`front-end: AuthTabs@Loadskills: ${error.message}`));
   }
 
   getSpaces = () => {
@@ -83,9 +82,7 @@ export default class AuthTabs extends React.PureComponent {
         });
       }
     })
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`); // eslint-disable-line
-    });
+    .catch(error => Logger(`front-end: AuthTabs@getSpaces: ${error.message}`));
   }
   
   handleChange = (event, value) => (
@@ -176,9 +173,7 @@ export default class AuthTabs extends React.PureComponent {
         this.toggleSnackBar(json.error);
       }
     })
-    .catch(error => {
-      this.toggleSnackBar(JSON.stringify(error));
-    })
+    .catch(error => Logger(`front-end: AuthTabs@signUp: ${error.message}`));
   }
 
   render() {

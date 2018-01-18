@@ -45,7 +45,7 @@ export default class Checkout extends React.Component {
       })
     : 
     this.setState({ component:
-       <StripeProvider apiKey="">
+      <StripeProvider apiKey="pk_test_rJKqFRMRduGAyguxdWT2TfcI"> 
         <Elements>
           <CheckoutForm pubkey={false} {...this.props} />
         </Elements>
