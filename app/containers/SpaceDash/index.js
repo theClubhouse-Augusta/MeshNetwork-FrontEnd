@@ -46,7 +46,9 @@ export default class SpaceDash extends React.PureComponent {
     .then(function(json) {
       this.setState({
         spaceUsers:json
-      },)
+      }, function() {
+        console.log(this.state.spaceUsers)
+      })
     }.bind(this))
   }
 

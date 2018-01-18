@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
+import Moment from 'react-moment'; 
 import { EditingState } from '@devexpress/dx-react-grid'; 
 import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'; 
 
@@ -14,23 +15,6 @@ import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@dev
 import './style.css';
 import './styleM.css';
 import {VerifiedUser} from 'material-ui-icons';
-
-/* TO DO 
-    -ROW GENERATOR 
-    -POSTS 
-    
-    -special renders for
-      VerifiedUser
-      Banned 
-    -human readable 
-      dates 
-      roles     
-    
-    L8R
-*/ 
-
-
-const getRowId = row => row.id;
 
 const userUpdateAPI = 'http://www.innovationmesh.com/api/updateUser'; 
 
@@ -40,27 +24,26 @@ export default class UserDash extends React.PureComponent {
     super(props); 
 
     this.state = {
-      columns: [
-        {name: 'role', title: 'Role'}, 
-        //{name: 'verified', title: 'Verified'}, 
-        {name: 'email', title: 'Email'}, 
-        {name: 'name', title: 'Name'}, 
-        //take & convert created_at
-        {name: 'dateTime', title: 'Member Since'},
-        {name: 'ban', title: 'Ban'}, 
+      rows: [
+        { id: 1, name: 'Bob', lastName: 'Brown', age: 21 },
+        { id: 2, name: 'John', lastName: 'Smith', age: 35 },
+        { id: 3, name: 'Mike', lastName: 'Mitchel', age: 28 },
       ],
-      rows: props.users, 
+      columns: [
+        { name: 'name', title: 'Name' },
+        { name: 'lastName', title: 'Last Name' },
+        { name: 'age', title: 'Age' },
+      ],
       editingRows: [],
       addedRows: [],
       changedRows: {},
     };
+
     this.changeAddedRows = this.changeAddedRows.bind(this);
     this.changeEditingRows = this.changeEditingRows.bind(this);
     this.changeChangedRows = this.changeChangedRows.bind(this);
     this.commitChanges = this.commitChanges.bind(this);
-    this.onEditingRowsChange = this.onEditingRowsChange.bind(this); 
   }
-
   changeAddedRows(addedRows) {
     this.setState({ addedRows });
   }
@@ -71,36 +54,22 @@ export default class UserDash extends React.PureComponent {
     this.setState({ changedRows });
   }
 
-  onEditingRowsChange(editingRows) {
-    this.setState({
-      editingRows
-    });
+  commitChanges() {
+    // Commit logic
   }
-
 //created_at => readable date format
 
 componentWillReceiveProps(users) {
   this.setState({rows: this.props.users})    
 }
 
-commitChanges({ added, changed, deleted }) {
-  let rows = this.state; 
-
-  data.append()
-
-  fetch(userUpdateAPI, {
-    method: 'POST', 
-    body: data, 
-  })
-  .then(response => response.json())
-  .catch(error => {
-    console.log(error); 
-  })
-}
-
   render() {
-    const { rows, columns, editingRows, addedRows, changedRows } = this.state;
-
+    const { rows, 
+            columns,  
+            editingRows, 
+            addedRows, 
+            changedRows,
+            deletingRows } = this.state;
 
     return (
       <div className="userDashContainer">
@@ -108,12 +77,16 @@ commitChanges({ added, changed, deleted }) {
           <Grid
             rows={rows} 
             columns={columns}
-            getRowId={getRowId}
+            getRowId={row => row.id}
             > 
             <EditingState
-              onCommitChanges={this.commitChanges}
-              editingRows={editingRows}
-              onEditingRowsChange={this.onEditingRowsChange}
+            editingRows={editingRows}
+            onEditingRowsChange={this.changeEditingRows}
+            changedRows={changedRows}
+            onChangedRowsChange={this.changeChangedRows}
+            addedRows={addedRows}
+            onAddedRowsChange={this.changeAddedRows}
+            onCommitChanges={this.commitChanges}
           />
           <Table />
           <TableHeaderRow />

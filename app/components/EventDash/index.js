@@ -26,45 +26,37 @@ import './styleM.css';
     L8R
 */ 
 
-const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate'; 
+const getEventsAPI = 'http://innovationmesh.com/api/workevents/'; 
+const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate';
+const eventDateTimeAPI = ''; 
 
-const getRowId = row => row.id;
 
 export default class EventDash extends React.PureComponent {
   constructor(props) { 
     super(props); 
 
+   
     this.state = {
-      columns: [
-        //attempting to keep name values === api obj keys             
-//ICON RENDERS 
-        //approved, denied
-       // { name: 'status', title: 'Status', getCellValue: row => {row. ? row.event.status : undefined} }, 
-
-        { name: 'title', title: 'Event Name', },
-//this is where we can't pull straight from api anymore 
-        //userID => query name 
-        //{ name: 'creator', title: 'Created By', getCellValue: row => {row.event ? row.event.creator : undefined} },        
-        
-        //{ name: 'organizers', title: 'Organizers', getCellValue: row => {row.event ? row.event.organizers : undefined} },
-
-        // grab from whichever api & make human readable       
-        //{ name: 'dateTime', title: 'Date(s) & Time', getCellValue: row => {row.event ? row.event.dateTime : undefined} },
-
-        { name: 'description', title: 'Description',  },
+      rows: [
+        { id: 1, name: 'Bob', lastName: 'Brown', age: 21 },
+        { id: 2, name: 'John', lastName: 'Smith', age: 35 },
+        { id: 3, name: 'Mike', lastName: 'Mitchel', age: 28 },
       ],
-      rows: [],
+      columns: [
+        { name: 'name', title: 'Name' },
+        { name: 'lastName', title: 'Last Name' },
+        { name: 'age', title: 'Age' },
+      ],
       editingRows: [],
       addedRows: [],
       changedRows: {},
     };
+
     this.changeAddedRows = this.changeAddedRows.bind(this);
     this.changeEditingRows = this.changeEditingRows.bind(this);
     this.changeChangedRows = this.changeChangedRows.bind(this);
     this.commitChanges = this.commitChanges.bind(this);
-    this.onEditingRowsChange = this.onEditingRowsChange.bind(this); 
   }
-
   changeAddedRows(addedRows) {
     this.setState({ addedRows });
   }
@@ -75,19 +67,19 @@ export default class EventDash extends React.PureComponent {
     this.setState({ changedRows });
   }
 
-  onEditingRowsChange(editingRows) {
-    this.setState({
-      editingRows
-    });
+  commitChanges() {
+    // Commit logic
   }
 
 
-  componentWillMount() {
-    this.loadSpaceEvents(); 
+ /* componentWillMount() {
+    this.loadSpaceEvents();
+    //this.getEventOrganizers(); 
+    //this.getEventDateTime();  
   }
 
   loadSpaceEvents= () => { 
-    fetch('http://innovationmesh.com/api/workevents/' + this.props.id, {
+    fetch(getEventsAPI + this.props.id, {
       method: 'GET'
     })
     .then(function(response) {
@@ -106,15 +98,35 @@ export default class EventDash extends React.PureComponent {
 /*
 //eventID param
   getEventOrganizers= () => { 
-
-  }
-
-//eventID Param 
-  getEventDateTime = () => { 
-    fetch('http://localhost:8000/api/')
+   match this.props.users 
+   get name offa that obj 
   }
 */
 
+//reassign id => eventid:? 
+/*
+  getEventDateTime = () => { 
+    fetch(eventDateTimeAPI + {id} {
+      method: 'GET'
+    })
+    .then(response => reponse.json())
+    .then( 
+
+    )
+
+  }
+*/
+
+
+renderReadableDate = () => { 
+    const dateObject = new Date(Date.parse()); 
+
+    const dateReadable = dateObject.toDateString(); 
+
+    console.log(dateReadable); 
+  }
+
+/*
 commitChanges({ added, changed, deleted }) {
   let rows = this.state; 
 
@@ -130,36 +142,44 @@ commitChanges({ added, changed, deleted }) {
   })
 }
 
-
+*/ 
 
 
 
 
   render() {
-    const { rows, columns, editingRows, addedRows, changedRows } = this.state;
-
+      const { rows, 
+            columns,  
+            editingRows, 
+            addedRows, 
+            changedRows,
+            deletingRows } = this.state;
 
     return (
       <div className="eventDashContainer">
         <Paper> 
           <Grid
-            rows={rows} 
-            columns={columns}
-            getRowId={getRowId}
+          rows={rows} 
+          columns={columns}
+          getRowId={row => row.id}
             > 
             <EditingState
-              onCommitChanges={this.commitChanges}
-              editingRows={editingRows}
-              onEditingRowsChange={this.onEditingRowsChange}
+            editingRows={editingRows}
+            onEditingRowsChange={this.changeEditingRows}
+            changedRows={changedRows}
+            onChangedRowsChange={this.changeChangedRows}
+            addedRows={addedRows}
+            onAddedRowsChange={this.changeAddedRows}
+            onCommitChanges={this.commitChanges}
           />
           <Table />
           <TableHeaderRow />
           <TableEditRow />
           <TableEditColumn
-            showAddCommand
-            showEditCommand
-            showDeleteCommand
-            allowEditing={!editingRows.length}
+          showAddCommand
+          showEditCommand
+          showDeleteCommand
+          allowEditing={!editingRows.length}
           />
           </Grid>
         </Paper>
