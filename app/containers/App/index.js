@@ -20,6 +20,7 @@ import SpaceDash from '../SpaceDash';
 import SpaceSignUp from '../SpaceSignUp';
 import UserSignUp from '../Checkout';
 import UserSignIn from '../UserSignIn';
+import DataViz from '../DataViz';
 
 export default class App extends Component {
 
@@ -135,6 +136,12 @@ export default class App extends Component {
           <Route
             path="/spacedash/:id"
             render={(props) => <SpaceDash {...props} />}
+          />
+
+
+          <Route
+            path="/dataviz/:id"
+            render={(props) => <DataViz {...props} />}
           />
 
 

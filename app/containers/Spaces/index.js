@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import {
@@ -19,6 +19,7 @@ import Card, { CardMedia, CardContent, CardHeader } from 'material-ui/Card';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import MyMapComponent from './MyMapComponent';
+import FlatButton from 'material-ui/Button';
 
 import './style.css';
 import './styleM.css';
@@ -59,46 +60,39 @@ export default class Spaces extends React.PureComponent {
 
   render() {
     return (
-      <div className="container">
+      <div className="spacesContainer">
         <Helmet title="Spaces" meta={[ { name: 'description', content: 'Description of Spaces' }]}/>
-        <Header />
-        <div className="spacesBodyWrapper">
+        <header className="spacesHeaderContainer">
+          <Header backgroundColor="#FFFFFF"/>
+        </header>
+
+        <main className="spacesMain">
+          <div className="spacesMainContainer">
+          {this.state.spaces.map((space, i) => (
+            <Link to={'space/' + space.slug} className="spacesBlock" key={i}>
+              <div  className="spacesBlockImage">
+                <img src={space.logo}/>
+              </div>
+              <div className="spacesBlockTitle">{space.name}</div>
+              <div className="spacesBlockContent">{space.address} {space.city}, {space.state} {space.zipcode}</div>
+            </Link>
+          ))}
+          </div>
+          <div className="spacesMapContainer">
             <MyMapComponent
               isMarkerShown
               googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
               loadingElement={<div style={{ height: '100%' }} />}
-              containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
-              mapElement={<div style={{ height: '23em' }} />}
+              containerElement={<div id="dude" style={{ minHeight: '23em' }} />}
+              mapElement={<div style={{ height: '100vh', width:'100%' }} />}
               lat={33.5105746}
               lon={-82.08560469999999}
               clickMarker={this.clickMarker}
               spaces={this.state.spaces}
             />
-          <div className="spaceListHeader">Find Your Space</div>
-          <div className="spacesList">
-            {this.state.spaces.map((space, i) => (
-              <Link to={'space/' + space.id} className="spaceListing" key={i}>
-                <Card style={{height:'100%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
-                  <CardMedia style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', flexGrow:'1'}}>
-                    <img src={space.logo} alt="" width="100%"/>
-                  </CardMedia>
-                  <div>
-                    <CardHeader className="spaceNameHeader" title={space.name} />
-                    <CardContent className="spaceAddress"> {space.address} {space.city}, {space.state} {space.zipcode}</CardContent>
-                  </div>
-                </Card>
-              </Link>
-            ))}
           </div>
-        </div>
-        <div className="aboutButtons">
-          <div className="aboutButtonText">Ready to Discover the Mesh Network?</div>
-          <div className="aboutButtonsContainer">
-            <button label="Sign Up" style={{ marginLeft:'15px', width:'200px'}}/>
-            <button label="Contact Us" style={{ marginLeft:'15px', width:'200px'}}/>
-          </div>
-        </div>
-        <Footer />
+        </main>
+
       </div>
     );
   }

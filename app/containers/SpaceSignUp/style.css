@@ -1,9 +1,10 @@
 /* SpaceSignUp Styles */
 
-.container {
+.spaceSignUpcontainer {
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  background:#F8F8F8;
 }
 
 .spaceSignUpMain {
@@ -13,13 +14,19 @@
   display:flex;
   flex-direction:column;
   padding:30px;
-  background:#F8F8F8;
+  background:#FFFFFF;
+  border-radius:5px;
   min-height:calc(100vh - 90px);
+  border:1px solid #DDDDDD;
 }
 
 .spaceSignUpTitle {
-  font-size:2em;
+  font-size:1em;
+  font-family:'Noto Sans';
+  font-weight:bold;
+  color:#555555;
   border-bottom:1px solid #DDDDDD;
+  padding-bottom:10px;
 }
 
 .spaceSignUpContainer {
@@ -78,4 +85,31 @@
 
 .toolbarHidden {
   display:none;
+}
+
+.spaceSignUpBanner {
+  width:100%;
+  height:350px;
+  background:linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url('http://h4z.it/Image/cf9fdc_-add-listing.jpg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.spaceSignUpMain {
+  margin-top:-40px;
+}
+
+.spaceSignUpUser {
+  display:flex;
+  flex-direction:column;
+  border-radius:5px;
+  border:1px solid #DDDDDD;
+  padding:20px;
+  margin-top:-70px;
+  background:#FFFFFF;
 }

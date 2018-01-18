@@ -10,7 +10,7 @@ import ExpansionPanel, {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
 } from 'material-ui/ExpansionPanel';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import ExpandMoreIcon from 'react-icons/lib/md/expand-more';
 
 import Header from '../../components/Header';
 
@@ -21,6 +21,7 @@ import './styleM.css';
 class CheckoutForm extends React.Component {
 
   state = {
+    space:'',
     multi: true,
     multiValue: [],
     options: [],
@@ -34,47 +35,60 @@ class CheckoutForm extends React.Component {
     selectedTags: [],
     avatar: '',
     imagePreviewUrl: '',
-    // foo
     msg:"",
     snack:false,
     focused: false,
     planFocused: false,
-    plan: {}
+    plan: "free"
   };
 
-  path = this.props.location.pathname.split('/');
-  spaceID = this.path[this.path.length - 1];
+  //path = this.props.location.pathname.split('/');
+  //spaceID = this.path[this.path.length - 1];
+  spaceID = this.props.match.params.id;
 
   componentDidMount() {
+    this.getSpace();
     this.loadSkills();
-    this.loadPlans();
+    if (this.props.pubkey) {
+      this.loadPlans();
+    }
+  }
+
+  getSpace = () => {
+    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        space:json
+      })
+    }.bind(this));
   }
 
   loadSkills = () => {
     fetch('http://innovationmesh.com/api/skills/all', {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedTags:json })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .then(json => {this.setState({ loadedTags:json })});
   }
 
   loadPlans = () => {
     fetch(`http://innovationmesh.com/api/plans/${this.spaceID}`, {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedPlans:json })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .then(json => {this.setState({ loadedPlans: json.data })});
   }
 
   selectTag = selectedTag => {
     this.setState({ selectedTags: selectedTag });
   }
 
-  selectPlan = selected => {
+  selectPlan = (e,selected) => {
+    e.preventDefault();
+    console.log('s',selected);
     this.setState({ plan: selected });
   }
 
@@ -151,7 +165,57 @@ class CheckoutForm extends React.Component {
       multiValue,
       plan
     } = this.state;
-    this.props.stripe.createToken({name: name}).then(({token}) => {
+      this.props.stripe.createToken({name: name}).then(({token}) => {
+        data.append('name', name.trim());
+        if (selectedTags.length) {
+          data.append('tags', JSON.stringify(selectedTags));
+        } else {
+          data.append('tags', JSON.stringify(multiValue));
+        }
+        data.append('email', email.trim());
+        data.append('password', password.trim());
+        data.append('bio', bio.trim());
+        data.append('spaceID', this.state.space.id);
+        data.append('avatar', avatar);
+        if (token.id) {
+          data.append('customerToken', token.id);
+        }
+        data.append('plan', plan);
+
+        fetch("http://innovationmesh.com/api/signUp", {
+          method:'POST',
+          body:data,
+        })
+        .then(response => response.json())
+        .then(user => {
+          if (user.error) {
+            this.showSnack(user.error);
+          } else {
+            localStorage['token'] = user.token;
+            this.showSnack("Account created successfully!");
+          // setTimeout(() => {
+          //   this.props.history.push(`/user/${user.id}`)
+          // }, 2000);
+          }
+        })
+      });
+    // However, this line of code will do the same thing:
+    // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
+  }
+
+  storeFreeUser = e => {
+    e.preventDefault();
+    let data = new FormData();
+    let {
+      name,
+      email,
+      password,
+      bio,
+      selectedTags,
+      avatar,
+      multiValue,
+      plan
+    } = this.state;
     data.append('name', name.trim());
     if (selectedTags.length) {
       data.append('tags', JSON.stringify(selectedTags));
@@ -161,10 +225,9 @@ class CheckoutForm extends React.Component {
     data.append('email', email.trim());
     data.append('password', password.trim());
     data.append('bio', bio.trim());
-    data.append('spaceID', this.spaceID);
+    data.append('spaceID', this.state.space.id);
     data.append('avatar', avatar);
-    data.append('customerToken', token.id);
-    data.append('plan', plan)
+    data.append('plan', plan);
 
     fetch("http://innovationmesh.com/api/signUp", {
       method:'POST',
@@ -177,32 +240,24 @@ class CheckoutForm extends React.Component {
       } else {
         localStorage['token'] = user.token;
         this.showSnack("Account created successfully!");
-        // setTimeout(() => {
-        //   this.props.history.push(`/user/${user.id}`)
-        // }, 2000);
       }
     })
-    .catch(error => {
-      alert(`signUp ${error}`);
-    })
-
-    });
-
-    // However, this line of code will do the same thing:
-    // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
+  // However, this line of code will do the same thing:
+  // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
   }
 
   render() {
-    const { 
-      selectedTags, 
-      loadedTags, 
+    let {
+      selectedTags,
+      loadedTags,
       focused,
       planFocused,
       plan,
-      multiValue, 
-      options, 
-      loadedPlans, 
+      multiValue,
+      options,
+      loadedPlans,
     } = this.state;
+
     const Helper = new StyleHelpers();
     const marginTop = Helper.getLabelStyle(focused, selectedTags)[0];
     const color = Helper.getLabelStyle(focused, selectedTags)[1];
@@ -214,34 +269,37 @@ class CheckoutForm extends React.Component {
           <Header/>
 
           <div className="spaceSignUpMain">
-            <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+              <img src={this.state.space.logo} height="auto" width="300px" />
+              <div className="spaceSignUpTitle">Join {this.state.space.name}</div>
+            </div>
             <div className="spaceSignUpContainer">
-              <TextField 
-                label="Full Name" 
-                value={this.state.name} 
-                onChange={this.handleName} 
+              <TextField
+                label="Full Name"
+                value={this.state.name}
+                onChange={this.handleName}
                 margin="normal"
               />
-              <TextField 
-                type="email" 
-                label="Email" 
-                value={this.state.email} 
-                onChange={this.handleEmail} 
+              <TextField
+                type="email"
+                label="Email"
+                value={this.state.email}
+                onChange={this.handleEmail}
                 margin="normal"
               />
-              <TextField 
-                type="password" 
-                label="Password" 
-                value={this.state.password} 
-                onChange={this.handlePassword} 
+              <TextField
+                type="password"
+                label="Password"
+                value={this.state.password}
+                onChange={this.handlePassword}
                 margin="normal"
               />
-              <TextField label="Bio" 
-                value={this.state.bio} 
+              <TextField label="Bio"
+                value={this.state.bio}
                 onChange={this.handleBio}
                 margin="normal"
               />
-              <label 
+              <label
                 style={{
                   marginTop: marginTop,
                   color: color,
@@ -251,88 +309,63 @@ class CheckoutForm extends React.Component {
                 Skills
               </label>
 
-              {!!loadedTags.length && 
-              <Select.Creatable 
-                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+              {!!loadedTags.length &&
+              <Select.Creatable
+                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
                 className={Helper.getSelectStyle(focused, selectedTags)}
                 style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-                multi 
+                multi
                 options={loadedTags}
-                onChange={this.selectTag} 
-                value={selectedTags} 
-                onFocus={this.onFocus} 
+                onChange={this.selectTag}
+                value={selectedTags}
+                onFocus={this.onFocus}
                 onBlur={this.onBlur}
               />}
 
-              {!!!loadedTags.length && 
+              {!!!loadedTags.length &&
               <Select.Creatable
-                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''} 
+                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
                 multi
                 className={Helper.getSelectStyle(focused, selectedTags)}
                 options={options}
                 style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
                 onChange={this.handleOnChange}
                 value={multiValue}
-                onFocus={this.onFocus} 
+                onFocus={this.onFocus}
                 onBlur={this.onBlur}
               />}
 
 
-              <label
-                style={{
-                  marginBottom: 12,
-                }}
-              >
-                Select a Plan
-              </label>
+              {this.props.pubkey &&
+              <React.Fragment>
+                <label style={{ marginBottom: 12, }}>
+                  Select a Plan
+                </label>
 
-
-              {!!loadedPlans.length && 
-              <div style={{
-                marginBottom: 32
-              }}>
-                {loadedPlans.map((subscription, key) =>
-                  <ExpansionPanel 
-                    key={`expanel${key}`}
-                      style={{
-                      color: subscription.name === plan ? '#f8f8f8' : 'inherit',
-                      background: subscription.name === plan ? '#8d8d8d' : 'inherit',
-                      textAlign: 'center'
-                      }}
+                  <FlatButton
+                    style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                    onClick={(e) => this.selectPlan(e, "free")}
                   >
-                    <ExpansionPanelSummary 
-                      expandIcon={<ExpandMoreIcon />}>
-                      {subscription.name} 
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails 
-                      style={{
-                        fill: 'blue',
-                        color: '#333333',
-                        flexDirection: 'column',
-                        margin: '0, auto'
-                      }}
-                    >
-                      {subscription.description}
-                      <FlatButton 
-                        style={{
-                          margin: ' 0 auto', 
-                          backgroundColor:'#797979', 
-                          padding:'10px', 
-                          marginTop:'15px', 
-                          color:'#FFFFFF', 
-                          fontWeight:'bold'
-                        }} 
-                        onClick={() => this.selectPlan(subscription.name)}
-                      >
-                        Select 
-                      </FlatButton>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                )}
-              </div>}
+                    Free tier
+                  </FlatButton>
+                </React.Fragment>}
 
-              <CardSection />
-              
+              {!!loadedPlans.length && loadedPlans.map((plan, key) => {
+                let id = plan.id;
+                {/* let amount = plan.amount.toString().splice(2, 0, '.'); */}
+                let amount = (plan.amount / 100).toFixed(2).toString();
+                return (
+                  <FlatButton
+                    key={`goo${key}`}
+                    style={{backgroundColor: id === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                    onClick={(e) => this.selectPlan(e, id)}
+                  >
+                    {plan.name} - {amount}
+                  </FlatButton>
+              )})}
+
+              {plan !== "free" && this.props.pubkey ? <CardSection /> : null}
+
               <div className="spaceLogoMainImageRow">
                 <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                   {this.renderAvatarImageText()}
@@ -340,9 +373,9 @@ class CheckoutForm extends React.Component {
                 </label>
                 <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
               </div>
-              <FlatButton 
-                style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}} 
-                onClick={this.storeUser}
+              <FlatButton
+                style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+               onClick={ plan === "free" ? this.storeFreeUser : this.storeUser}
               >
                 Sign Up
               </FlatButton>

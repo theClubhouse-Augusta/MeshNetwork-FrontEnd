@@ -38,7 +38,7 @@ export default class Kiosk extends React.PureComponent {
       snack:false,
     }
   }
-  
+
   componentDidMount() {
     try {
       const reasonsKiosk = localStorage.getItem('reasonsKiosk');
@@ -174,7 +174,7 @@ export default class Kiosk extends React.PureComponent {
 
           {!!events.length && <div className="kioskSubtitle">Be sure to check out these Events</div>}
 
-          {!!events.length && events.map((event, key) => 
+          {!!events.length && events.map((event, key) =>
             <Link target="_blank" to={`/event/${event.id}`} key={`eventDiv2${key}`} className="eventList">
               <div className="eventBlock">
                 <div className="eventBlockImage"></div>

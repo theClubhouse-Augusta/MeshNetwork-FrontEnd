@@ -1,9 +1,10 @@
 /* Spaces Styles */
 
-.container {
+.spacesContainer {
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  background:#EEEEEE;
 }
 
 .spacesHeader {
@@ -45,10 +46,6 @@
       padding: 16px;
     }
 
-    .spaceLocation {
-      margin: 4vh 0 0 0;
-    }
-
     .spaceDescription {
         margin: 2em 0;
       }
@@ -81,4 +78,77 @@
   max-width:600px;
   margin:0 auto;
   margin-top:20px;
+}
+
+.spacesMain {
+  display:flex;
+  flex-direction:row;
+}
+
+.spacesMainContainer {
+  width:38%;
+  min-height:100vh;
+  background:#EEEEEE;
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  margin-top:60px;
+}
+
+.spacesMapContainer {
+  width:62%;
+  height:100vh;
+  position:fixed;
+  top:0;
+  right:0;
+  z-index:0;
+}
+
+.spacesBlock {
+  width:45%;
+  margin:2%;
+  border:1px solid #CCCCCC;
+  border-radius:5px;
+  background:#FFFFFF;
+  box-shadow:0 0 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.spacesBlockImage {
+  width:100%;
+  height:200px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+  border-radius:5px 5px 0px 0px;
+}
+
+.spacesBlockImage img {
+  width:100%;
+  height:auto;
+}
+
+.spacesBlockTitle {
+  padding:10px;
+  font-family: 'HankenBook';
+  color:#ff4d58;
+  font-size:1.5em;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.spacesBlockContent {
+  padding-left:10px;
+  padding-right:10px;
+  padding-bottom:10px;
+  font-family:'Noto Sans';
+  color:#999999;
+  font-size:0.8em;
+}
+
+.spacesHeaderContainer {
+  width:100%;
+  position:fixed;
+  z-index:99;
 }

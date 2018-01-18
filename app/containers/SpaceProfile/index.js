@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import MapComponent from 'components/MapComponent';
 import Moment from 'react-moment';
 import {
   TiSocialAtCircular,
@@ -24,6 +23,13 @@ import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Card, { CardHeader, CardMedia } from 'material-ui/Card';
 import FlatButton from 'material-ui/Button';
+
+import DoubleArrow from 'react-icons/lib/fa/angle-double-right';
+import FacebookIcon from 'react-icons/lib/fa/facebook';
+import TwitterIcon from 'react-icons/lib/fa/twitter';
+import InstagramIcon from 'react-icons/lib/fa/instagram';
+import MailIcon from 'react-icons/lib/fa/envelope-o';
+import LinkIcon from 'react-icons/lib/fa/chain';
 
 
 import './style.css';
@@ -62,8 +68,6 @@ export default class SpaceProfile extends React.PureComponent {
 
   componentWillMount() {
     this.getProfile();
-    this.getSpaceEvents();
-    this.getUsers();
   }
 
  getProfile = () => {
@@ -76,12 +80,15 @@ export default class SpaceProfile extends React.PureComponent {
     .then(function(json) {
       this.setState({
         spaceProfile:json
+      }, function() {
+        this.getSpaceEvents(this.state.spaceProfile.id);
+        this.getUsers(this.state.spaceProfile.id);
       })
     }.bind(this))
 }
 
-  getSpaceEvents = () => {
-    fetch('http://innovationmesh.com/api/upcoming/'+ this.props.match.params.id, {
+  getSpaceEvents = (id) => {
+    fetch('http://innovationmesh.com/api/workevents/'+ id, {
       method: 'GET'
     })
     .then(function(response) {
@@ -89,13 +96,13 @@ export default class SpaceProfile extends React.PureComponent {
     })
     .then(function(json) {
       this.setState({
-        events:json
+        events:json.data
       })
     }.bind(this))
   }
 
-  getUsers = () => {
-    fetch('http://innovationmesh.com/api/users/space/' + this.props.match.params.id, {
+  getUsers = (id) => {
+    fetch('http://innovationmesh.com/api/spaceOrganizers/' + id, {
       method:'GET'
     })
     .then(function(response) {
@@ -112,166 +119,101 @@ export default class SpaceProfile extends React.PureComponent {
 
     return (
       <div className="container">
-        <Helmet title="SpaceProfile" meta={[ { name: 'description', content: 'Description of SpaceProfile' }]}/>
-        <Header />
+        <Helmet title={this.state.spaceProfile.name} meta={[ { name: 'description', content: 'Description of SpaceProfile' }]}/>
+        <header>
+          <Header />
+        </header>
 
-        <main className="spaceProfileMain">
-
-            <div className="spaceProfileBanner">
-              <div className="spaceProfileBannerColumnLeft">
-                <div className="spaceProfileHeader">
-                <div>
-                  <h2 className="spaceProfileName">{this.state.spaceProfile.name}</h2>
-                  <div className="spaceProfileContactLinks">
-                    <div className="spaceProfileContact">
-                      <p className="spaceProfileEmail"> <TiSocialAtCircular /> <a href="mailto:" >{this.state.spaceProfile.email}</a></p>
-                      <p className="spaceProfileWebsite"><a href={this.state.spaceProfile.website}>{this.state.spaceProfile.website}</a></p>
-                    </div>
-                    <div className="spaceProfileSocialMediaBlock">
-                      <span className="spaceProfileSocialIcon">
-                        <a href='mailto:'>
-                          <span className="spaceProfileSocialLabel"></span>
-                        </a>
-                      </span>
-
-                      <span className="spaceProfileSocialIcon">
-                        <a href="">
-                          <TiSocialFacebookCircular  />
-                          <span className="spaceProfileSocialLabel">  </span>
-                        </a>
-                      </span>
-
-                      <span className="spaceProfileSocialIcon">
-                        <a href="">
-                          <TiSocialInstagramCircular />
-                          <span className="spaceProfileSocialLabel">  </span>
-                        </a>
-                      </span>
-
-                      <span className="spaceProfileSocialIcon">
-                        <a href="">
-                          <TiSocialTwitterCircular />
-                          <span className="spaceProfileSocialLabel"></span>
-                        </a>
-                      </span>
-                    </div>
-                  </div>
+        <main>
+          <div className="spaceGalleryContainer"></div>
+          <div className="spaceMainHeader">
+            <div className="spaceMainContainer" style={{alignItems:'center'}}>
+              <div className="spaceMainOne">
+                <div className="spaceMainBread">MeshNetwork<DoubleArrow size={10} style={{marginLeft:'5px', marginRight:'5px'}}/> WorkSpace <DoubleArrow size={10} style={{marginLeft:'5px', marginRight:'5px'}}/> Home </div>
+                <div className="spaceMainTitle">{this.state.spaceProfile.name}</div>
+                <div className="spaceMainSlogan">{this.state.spaceProfile.city}&#39;s Collaborative Workspace</div>
+                <div className="spaceContact">
+                  <a href={this.state.spaceProfile.facebook} className="spaceContactBlock">
+                    <FacebookIcon size={20}/>
+                  </a>
+                  <a href={this.state.spaceProfile.twitter} className="spaceContactBlock">
+                    <TwitterIcon size={20}/>
+                  </a>
+                  <a href={this.state.spaceProfile.instagram} className="spaceContactBlock">
+                    <InstagramIcon size={20}/>
+                  </a>
+                  <a href={this.state.spaceProfile.website} className="spaceContactBlock">
+                    <LinkIcon size={20}/>
+                  </a>
+                  <a href={"mailto:"+ this.state.spaceProfile.email} className="spaceContactBlock">
+                    <MailIcon size={20}/>
+                  </a>
                 </div>
-                <img src={this.state.spaceProfile.logo} height="auto" width="300px" />
+              </div>
+              <div className="spaceMainTwo">
+                <img src={this.state.spaceProfile.logo} className="spaceMainLogo"/>
               </div>
             </div>
-
-            <div className="spaceProfileMap">
-              <img src={"https://maps.googleapis.com/maps/api/staticmap?center="+ this.state.spaceProfile.city +","+ this.state.spaceProfile.state +"&zoom=13&size=1280x300&maptype=roadmap&markers=color:blue%7C"+this.state.spaceProfile.lat+","+this.state.spaceProfile.lon+"&key=AIzaSyBDiXTt6jIkCs_VKtQeBZcVosIEgAdR1R0"}/>
-            </div>
-
           </div>
-
-
-
-           <div className="spaceProfileBody">
-           <div className="spaceProfileActions">
-             <Link to={'/booking/' + this.state.spaceProfile.id}><FlatButton style={{background:'#3399cc', color:'#FFFFFF', width:'200px'}}>Booking System </FlatButton></Link>
-             <Link to={'/join/' + this.state.spaceProfile.id}><FlatButton style={{background:'#ee3868', color:'#FFFFFF', width:'200px'}}>Join This Space </FlatButton></Link>
-             <Link to={'/kiosk/' + this.state.spaceProfile.id}><FlatButton style={{background:'#3399cc', color:'#FFFFFF', width:'200px'}}>Check-In</FlatButton></Link>
-           </div>
-
-
-           <div className="spaceProfileAbout"
-           >
-                <div className="spaceProfileAboutContent">
-                <p> {this.state.spaceProfile.description} </p>
+          <div className="spaceMainContent">
+            <div className="spaceMainContainer">
+              <div className="spaceMainOne">
+                <div className="spaceShare"></div>
+                <div className="spaceMainDescription">
+                  {this.state.spaceProfile.description}
                 </div>
-
-                <div className="spaceProfileStaff"></div>
-            </div>
-
-      <Divider />
-
-            <div className="spaceProfileMembership">
-
-                <div className="spaceProfileMemberships">
-                  <h4>Memberships:</h4>
-                  <p> starting at </p>
-                  <FlatButton style={{background:'#ee3868', color:'#FFFFFF', width:'200px'}}>Explore Memberships </FlatButton>
+                <div className="spaceFeatures"></div>
+                <div className="spaceEvents">
+                  {this.state.events.map((event, i) => (
+                    <Link to={'/event/' + event.id} className="spaceEventBlock">
+                      <div className="spaceEventBlockImage">
+                        <img src={event.image} />
+                      </div>
+                      <div className="spaceEventBlockTitle">{event.title}</div>
+                      <div className="spaceEventBlockContent">
+                        {event.start}
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-
-                {/*}<div className="spaceProfileMembershipPerks">
-                  <h4> Space Perks </h4>
-                  <div className="spaceProfilePerksWrapper">
-                    <ul style={styles.list}>
-                     <li style={styles.listItem}>Semi private workspace and desks</li>
-                     <li style={styles.listItem}>Secure Wifi</li>
-                     <li style={styles.listItem}>Electronics and Prototyping Lab</li>
-                     <li style={styles.listItem}>Community & Networking Events</li>
-                     <li style={styles.listItem}>Free off-street parking</li>
-                     <li style={styles.listItem}>Enclosed outdoor courtyard with patio seating</li>
-                     <li style={styles.listItem}>Coffee and monthly specials</li>
-                     <li style={styles.listItem}>3-D Printer</li>
-                    </ul>
+              </div>
+              <div className="spaceMainTwo">
+                <div className="spaceOptions">
+                  <Link to={'/booking/' + this.state.spaceProfile.id} style={{width:'100%', marginBottom:'15px'}}><FlatButton style={{background:'#ff4d58', color:'#FFFFFF', width:'100%'}}>Bookings </FlatButton></Link>
+                  <Link to={'/join/' + this.state.spaceProfile.id} style={{width:'100%', marginBottom:'15px'}}><FlatButton style={{background:'#FFFFFF', color:'#ff4d58', width:'100%', border:'1px solid #CCCCCC'}}>Join This Space </FlatButton></Link>
+                  <Link to={'/kiosk/' + this.state.spaceProfile.id} style={{width:'100%'}}><FlatButton style={{background:'#ff4d58', color:'#FFFFFF', width:'100%'}}>Check-In</FlatButton></Link>
+                </div>
+                <div className="spaceLocation">
+                  <div className="spaceLocationImage">
+                    <img src={"https://maps.googleapis.com/maps/api/staticmap?center="+ this.state.spaceProfile.city +","+ this.state.spaceProfile.state +"&zoom=14&size=640x640&maptype=roadmap&markers=color:blue%7C"+this.state.spaceProfile.lat+","+this.state.spaceProfile.lon+"&key=AIzaSyBDiXTt6jIkCs_VKtQeBZcVosIEgAdR1R0"}/>
                   </div>
-                </div>*/}
-
-                <div className="spaceProfileMembershipContact">
-
-                  <div className="spaceProfileMembAddContact">
-                    <p> For more information:</p>
-                    <ul className="spaceProfileMemConLinks">
-                      <li> <a href={this.state.spaceProfile.website}>Website</a> </li>
-                      <li>  <a href="mailto:heythere@theclubhou.se">
-                      {this.state.spaceProfile.email} </a></li>
-                    </ul>
+                  <div className="spaceLocationContent">
+                    {this.state.spaceProfile.address} {this.state.spaceProfile.city}, {this.state.spaceProfile.state} {this.state.spaceProfile.zipcode}
                   </div>
                 </div>
-            </div>
+                <div className="spaceTime">
 
-    <Divider />
-
-            <div className="spaceProfileUpcomingEvents">
-                <h4 style={{textAlign: 'center'}}> Upcoming Events </h4>
-                <div className="spaceProfileEventsWrapper">
-                  <div className="eventList">
-                    {this.state.events.map((event, i) => (
-                      <Link to={'/event/' + event.id} className="eventBlock">
-                        <div className="eventBlockImage"></div>
-                        <div className="eventBlockInfo">
-                          <div className="eventBlockTitle">{event.title}</div>
-                          <div className="eventBlockDesc">
-                            <Moment parse="YYYY-MM-DD HH:mm">
-                                {event.start}
-                            </Moment>
-                          </div>
-                        </div>
-                      </Link>
+                </div>
+                <div className="spaceMembers">
+                  <div className="spaceMembersTitle">Organizers</div>
+                    <div className="spaceMembersContent">
+                    {this.state.users.map((u, i) => (
+                     <div className="spaceProfileUser" key={i}>
+                       <img className="spaceProfileUserAvatar" src={u.avatar}/>
+                       <div className="spaceProfileUserContent">{u.name}</div>
+                     </div>
                     ))}
                   </div>
                 </div>
-
-            </div>
-
-    <Divider />
-
-            <div className="spaceProfileSpaceMembers">
-            <h4 className="spaceProfileMemberHeader">Members</h4>
-            <div className="spaceProfileUserList">
-             {this.state.users.map((u, i) => (
-              <div className="spaceProfileUser" key={i}>
-                <img className="spaceProfileUserAvatar" src={u.avatar}/>
-                <div className="spaceProfileUserContent">{u.name}</div>
               </div>
-             ))}
             </div>
-
-            </div>
-
-           </div>
-
-
-
-
+          </div>
         </main>
 
-       <Footer />
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+
+        </footer>
       </div>
     );
   }

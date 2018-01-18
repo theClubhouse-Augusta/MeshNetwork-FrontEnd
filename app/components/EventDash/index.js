@@ -33,9 +33,7 @@ const eventDateTimeAPI = '';
 
 export default class EventDash extends React.PureComponent {
   constructor(props) { 
-    super(props); 
-
-   
+    super(props);    
     this.state = {
       rows: [
         { id: 1, name: 'Bob', lastName: 'Brown', age: 21 },
