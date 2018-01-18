@@ -26,7 +26,7 @@ import './styleM.css';
     L8R
 */ 
 
-const eventUpdateAPI = 'http://localhost:8000/api/eventUpdate'; 
+const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate'; 
 
 const getRowId = row => row.id;
 
@@ -92,7 +92,7 @@ export default class EventDash extends React.PureComponent {
   }
 
   loadSpaceEvents= (props) => { 
-    fetch('http://localhost:8000/api/workevents/' + this.props.id, {
+    fetch('http://innovationmesh.com/api/workevents/' + this.props.id, {
       method: 'GET'
     })
     .then(function(response) {
@@ -115,7 +115,7 @@ export default class EventDash extends React.PureComponent {
 
 //eventID Param 
   getEventDateTime = () => { 
-    fetch('http://localhost:8000/api/')
+    fetch('http://innovationmesh.com/api/')
   }
 */
 

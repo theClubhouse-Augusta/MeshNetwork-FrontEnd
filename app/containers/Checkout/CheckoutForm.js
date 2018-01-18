@@ -21,6 +21,7 @@ import './styleM.css';
 class CheckoutForm extends React.Component {
 
   state = {
+    space:'',
     multi: true,
     multiValue: [],
     options: [],
@@ -34,7 +35,6 @@ class CheckoutForm extends React.Component {
     selectedTags: [],
     avatar: '',
     imagePreviewUrl: '',
-    // foo
     msg:"",
     snack:false,
     focused: false,
@@ -42,25 +42,41 @@ class CheckoutForm extends React.Component {
     plan: "free"
   };
 
-  path = this.props.location.pathname.split('/');
-  spaceID = this.path[this.path.length - 1];
+  //path = this.props.location.pathname.split('/');
+  //spaceID = this.path[this.path.length - 1];
+  spaceID = this.props.match.params.id;
 
   componentDidMount() {
+    this.getSpace();
     this.loadSkills();
     if (this.props.pubkey) {
       this.loadPlans();
     }
   }
 
+  getSpace = () => {
+    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        space:json
+      })
+    }.bind(this));
+  }
+
   loadSkills = () => {
-    fetch('http://localhost:8000/api/skills/all', {
+    fetch('http://innovationmesh.com/api/skills/all', {
     })
     .then(response => response.json())
     .then(json => {this.setState({ loadedTags:json })});
   }
 
   loadPlans = () => {
-    fetch(`http://localhost:8000/api/plans/${this.spaceID}`, {
+    fetch(`http://innovationmesh.com/api/plans/${this.spaceID}`, {
     })
     .then(response => response.json())
     .then(json => {this.setState({ loadedPlans: json.data })});
@@ -159,15 +175,14 @@ class CheckoutForm extends React.Component {
         data.append('email', email.trim());
         data.append('password', password.trim());
         data.append('bio', bio.trim());
-        data.append('spaceID', this.spaceID);
+        data.append('spaceID', this.state.space.id);
         data.append('avatar', avatar);
         if (token.id) {
           data.append('customerToken', token.id);
         }
-        data.append('plan', plan)
-        data.append('organizer', false);
+        data.append('plan', plan);
 
-        fetch("http://localhost:8000/api/signUp", {
+        fetch("http://innovationmesh.com/api/signUp", {
           method:'POST',
           body:data,
         })
@@ -210,12 +225,11 @@ class CheckoutForm extends React.Component {
     data.append('email', email.trim());
     data.append('password', password.trim());
     data.append('bio', bio.trim());
-    data.append('spaceID', this.spaceID);
+    data.append('spaceID', this.state.space.id);
     data.append('avatar', avatar);
-    data.append('plan', plan)
-    data.append('organizer', false);
+    data.append('plan', plan);
 
-    fetch("http://localhost:8000/api/signUp", {
+    fetch("http://innovationmesh.com/api/signUp", {
       method:'POST',
       body:data,
     })
@@ -255,7 +269,10 @@ class CheckoutForm extends React.Component {
           <Header/>
 
           <div className="spaceSignUpMain">
-            <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+              <img src={this.state.space.logo} height="auto" width="300px" />
+              <div className="spaceSignUpTitle">Join {this.state.space.name}</div>
+            </div>
             <div className="spaceSignUpContainer">
               <TextField
                 label="Full Name"
@@ -345,7 +362,7 @@ class CheckoutForm extends React.Component {
                   >
                     {plan.name} - {amount}
                   </FlatButton>
-              )})} 
+              )})}
 
               {plan !== "free" && this.props.pubkey ? <CardSection /> : null}
 

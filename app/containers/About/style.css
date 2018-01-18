@@ -7,14 +7,11 @@
 }
 
 .aboutBanner {
-  height:400px;
+  height:300px;
   width:100%;
-  background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('https://hackaugusta.net/wp-content/uploads/2014/10/Academy-Front.png');
+  background:linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)),url('http://h4z.it/Image/6d4ad4_e-full-width.jpg');
   background-size:cover;
   background-position:center center;
-  font-family: 'Encode Sans', sans-serif;
-  font-size:3em;
-  line-height:120px;
   text-align:center;
   color:#FFFFFF;
   display:flex;
@@ -34,23 +31,20 @@
   max-width:800px;
   margin: 0 auto;
   padding:15px;
-  background:#F8F8F8;
 }
 
 
 .aboutTextHeader {
-  font-family: 'Noto Sans', sans-serif;
-  font-size:1.5em;
-  font-weight:800;
-  color:#222222;
-  border-bottom:1px solid #888888;
+  font-family: 'HankenBook';
+  color:#333333;
+  font-size:1.3em;
+  margin-bottom:10px;
 }
 
 .aboutContent {
-  font-family: 'Spectral', serif;
+  font-family: 'Noto Sans', serif;
   display:flex;
   flex-direction:column;
-  margin:15px;
   margin-bottom:30px;
 }
 
@@ -79,4 +73,45 @@
   font-weight:800;
 
   color:#FFFFFF;
+}
+
+
+.aboutMainTitle {
+  font-family: 'HankenBook';
+  color:#333333;
+  font-size:1.5em;
+  padding:30px;
+}
+
+.aboutMainContainer {
+  display:flex;
+  flex-direction:column;
+}
+
+.aboutMainRow {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+}
+
+.aboutMainContentTitle {
+  font-family: 'HankenBook';
+  color:#333333;
+  font-size:1.3em;
+  margin-bottom:10px;
+}
+
+.aboutMainContent {
+  padding:15px;
+  font-family:'Noto Sans';
+  display:flex;
+  flex-direction:column;
+}
+
+.aboutCallToAction {
+  font-family: 'HankenBook';
+  color:#AAAAAA;
+  text-align:center;
+  font-size:1.3em;
+  margin-bottom:15px;
 }

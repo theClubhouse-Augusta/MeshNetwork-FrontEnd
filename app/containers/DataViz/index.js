@@ -7,8 +7,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
-// import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear'; 
-// import { AllAppearances } from '../../components/DataViz/AllAppearances'; 
+// import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear';
+// import { AllAppearances } from '../../components/DataViz/AllAppearances';
 
 import './style.css';
 import './styleM.css';
@@ -25,4 +25,3 @@ export default class DataViz extends React.PureComponent {
     );
   }
 }
-

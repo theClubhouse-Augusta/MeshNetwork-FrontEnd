@@ -15,7 +15,22 @@ export default class Header extends React.PureComponent {
   constructor() {
     super();
     this.state = {
-      menuOpen:false
+      menuOpen:false,
+      textColor:"#000000",
+      backgroundColor:"transparent",
+    }
+  }
+
+  componentWillMount() {
+    if(this.props.textColor) {
+      this.setState({
+        textColor:this.props.textColor
+      })
+    }
+    if(this.props.backgroundColor) {
+      this.setState({
+        backgroundColor:this.props.backgroundColor
+      })
     }
   }
 
@@ -43,7 +58,7 @@ export default class Header extends React.PureComponent {
           <Link to="/about" className="navButton">About</Link>
           {/*<Link to="/events" className="navButton">Events</Link>*/}
           <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton">Challenges</a>
-          <a href="http://lms.localhost:8000" target="_blank" className="navButton">Education</a>
+          <a href="http://lms.innovationmesh.com" target="_blank" className="navButton">Education</a>
         </nav>
       )
     }
@@ -51,20 +66,21 @@ export default class Header extends React.PureComponent {
 
   render() {
     return (
-      <div className="headerComponent">
+      <div className="headerComponent" style={{background:this.state.backgroundColor}}>
         <div className="navBar">
-          <div className="siteName">
-            Mesh Network
+          <div className="siteName" style={{color:this.state.textColor}}>
+            Mesh
+            <span style={{color:'#ff4d58'}}> Network</span>
           </div>
 
           <nav className="nav">
-            <Link to="/" className="navButton">Home</Link>
-            <Link to="/spaces" className="navButton">Discover</Link>
-            <Link to="/about" className="navButton">About</Link>
-            <Link to="/members" className="navButton">Search</Link>
+            <Link to="/" className="navButton" style={{color:this.state.textColor}}>Home</Link>
+            <Link to="/spaces" className="navButton" style={{color:this.state.textColor}}>Explore</Link>
+            <Link to="/about" className="navButton" style={{color:this.state.textColor}}>About</Link>
+            <Link to="/members" className="navButton" style={{color:this.state.textColor}}>Search</Link>
             {/*<Link to="/events" className="navButton">Events</Link>*/}
-            <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton">Challenges</a>
-            <a href="http://lms.innovationmesh.com" target="_blank" className="navButton">Education</a>
+            <a href="http://challenges.innovationmesh.com" target="_blank" className="navButton" style={{color:this.state.textColor}}>Challenges</a>
+            <a href="http://lms.innovationmesh.com" target="_blank" className="navButton" style={{color:this.state.textColor}}>Education</a>
           </nav>
 
           <Bars className="menuIcon" onClick={this.handleMenu}/>
