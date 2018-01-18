@@ -266,121 +266,128 @@ class CheckoutForm extends React.Component {
     return (
       <form className="container" onSubmit={this.handleSubmit}>
           <Helmet title="SpaceSignUp" meta={[ { name: 'description', content: 'Description of SpaceSignUp' }]}/>
-          <Header/>
-
-          <div className="spaceSignUpMain">
-            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-              <img src={this.state.space.logo} height="auto" width="300px" />
-              <div className="spaceSignUpTitle">Join {this.state.space.name}</div>
+          <header className="checkoutHeaderContainer">
+            <Header headerTitle={this.state.space.name}/>
+            <div className="checkoutHeaderBanner">
+              <div className="homeHeaderContentTitle">Join {this.state.space.name}</div>
+              <div className="homeHeaderContentSubtitle">Find out what all the buzz is about</div>
             </div>
-            <div className="spaceSignUpContainer">
-              <TextField
-                label="Full Name"
-                value={this.state.name}
-                onChange={this.handleName}
-                margin="normal"
-              />
-              <TextField
-                type="email"
-                label="Email"
-                value={this.state.email}
-                onChange={this.handleEmail}
-                margin="normal"
-              />
-              <TextField
-                type="password"
-                label="Password"
-                value={this.state.password}
-                onChange={this.handlePassword}
-                margin="normal"
-              />
-              <TextField label="Bio"
-                value={this.state.bio}
-                onChange={this.handleBio}
-                margin="normal"
-              />
-              <label
-                style={{
-                  marginTop: marginTop,
-                  color: color,
-                }}
-                className={Helper.getLabelClassName(focused, selectedTags)}
-              >
-                Skills
-              </label>
+          </header>
 
-              {!!loadedTags.length &&
-              <Select.Creatable
-                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
-                className={Helper.getSelectStyle(focused, selectedTags)}
-                style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-                multi
-                options={loadedTags}
-                onChange={this.selectTag}
-                value={selectedTags}
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
-              />}
-
-              {!!!loadedTags.length &&
-              <Select.Creatable
-                placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
-                multi
-                className={Helper.getSelectStyle(focused, selectedTags)}
-                options={options}
-                style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
-                onChange={this.handleOnChange}
-                value={multiValue}
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
-              />}
-
-
-              {this.props.pubkey &&
-              <React.Fragment>
-                <label style={{ marginBottom: 12, }}>
-                  Select a Plan
-                </label>
-
-                  <FlatButton
-                    style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
-                    onClick={(e) => this.selectPlan(e, "free")}
-                  >
-                    Free tier
-                  </FlatButton>
-                </React.Fragment>}
-
-              {!!loadedPlans.length && loadedPlans.map((plan, key) => {
-                let id = plan.id;
-                {/* let amount = plan.amount.toString().splice(2, 0, '.'); */}
-                let amount = (plan.amount / 100).toFixed(2).toString();
-                return (
-                  <FlatButton
-                    key={`goo${key}`}
-                    style={{backgroundColor: id === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
-                    onClick={(e) => this.selectPlan(e, id)}
-                  >
-                    {plan.name} - {amount}
-                  </FlatButton>
-              )})}
-
-              {plan !== "free" && this.props.pubkey ? <CardSection /> : null}
-
-              <div className="spaceLogoMainImageRow">
-                <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
-                  {this.renderAvatarImageText()}
-                  {this.renderAvatarImage()}
-                </label>
-                <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
+          <main className="userSignUpMain">
+            <div className="spaceSignUpMain">
+              <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                <img src={this.state.space.logo} height="auto" width="300px" />
               </div>
-              <FlatButton
-                style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
-               onClick={ plan === "free" ? this.storeFreeUser : this.storeUser}
-              >
-                Sign Up
-              </FlatButton>
+              <div className="spaceSignUpContainer">
+                <TextField
+                  label="Full Name"
+                  value={this.state.name}
+                  onChange={this.handleName}
+                  margin="normal"
+                />
+                <TextField
+                  type="email"
+                  label="Email"
+                  value={this.state.email}
+                  onChange={this.handleEmail}
+                  margin="normal"
+                />
+                <TextField
+                  type="password"
+                  label="Password"
+                  value={this.state.password}
+                  onChange={this.handlePassword}
+                  margin="normal"
+                />
+                <TextField label="Bio"
+                  value={this.state.bio}
+                  onChange={this.handleBio}
+                  margin="normal"
+                />
+                <label
+                  style={{
+                    marginTop: marginTop,
+                    color: color,
+                  }}
+                  className={Helper.getLabelClassName(focused, selectedTags)}
+                >
+                  Skills
+                </label>
+
+                {!!loadedTags.length &&
+                <Select.Creatable
+                  placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
+                  className={Helper.getSelectStyle(focused, selectedTags)}
+                  style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                  multi
+                  options={loadedTags}
+                  onChange={this.selectTag}
+                  value={selectedTags}
+                  onFocus={this.onFocus}
+                  onBlur={this.onBlur}
+                />}
+
+                {!!!loadedTags.length &&
+                <Select.Creatable
+                  placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
+                  multi
+                  className={Helper.getSelectStyle(focused, selectedTags)}
+                  options={options}
+                  style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                  onChange={this.handleOnChange}
+                  value={multiValue}
+                  onFocus={this.onFocus}
+                  onBlur={this.onBlur}
+                />}
+
+
+                {this.props.pubkey &&
+                <React.Fragment>
+                  <label style={{ marginBottom: 12, }}>
+                    Select a Plan
+                  </label>
+
+                    <FlatButton
+                      style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                      onClick={(e) => this.selectPlan(e, "free")}
+                    >
+                      Free tier
+                    </FlatButton>
+                  </React.Fragment>}
+
+                {!!loadedPlans.length && loadedPlans.map((plan, key) => {
+                  let id = plan.id;
+                  {/* let amount = plan.amount.toString().splice(2, 0, '.'); */}
+                  let amount = (plan.amount / 100).toFixed(2).toString();
+                  return (
+                    <FlatButton
+                      key={`goo${key}`}
+                      style={{backgroundColor: id === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                      onClick={(e) => this.selectPlan(e, id)}
+                    >
+                      {plan.name} - {amount}
+                    </FlatButton>
+                )})}
+
+                {plan !== "free" && this.props.pubkey ? <CardSection /> : null}
+
+                <div className="spaceLogoMainImageRow">
+                  <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
+                    {this.renderAvatarImageText()}
+                    {this.renderAvatarImage()}
+                  </label>
+                  <input type="file" onChange={this.handleAvatar} id="avatar-image" style={{display:'none'}}/>
+                </div>
+                <FlatButton
+                  style={{backgroundColor:'#ff4d58', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                 onClick={ plan === "free" ? this.storeFreeUser : this.storeUser}
+                >
+                  Sign Up
+                </FlatButton>
+              </div>
             </div>
-          </div>
+          </main>
 
           <footer></footer>
           <Snackbar

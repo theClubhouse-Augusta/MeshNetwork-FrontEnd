@@ -159,9 +159,7 @@ export default class SpaceProfile extends React.PureComponent {
             <div className="spaceMainContainer">
               <div className="spaceMainOne">
                 <div className="spaceShare"></div>
-                <div className="spaceMainDescription">
-                  {this.state.spaceProfile.description}
-                </div>
+                <div className="spaceMainDescription" dangerouslySetInnerHTML={{ __html: this.state.spaceProfile.description }}/>
                 <div className="spaceFeatures"></div>
                 <div className="spaceEvents">
                   {this.state.events.map((event, i) => (

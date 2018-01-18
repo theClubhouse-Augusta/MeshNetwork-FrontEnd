@@ -181,7 +181,7 @@ export default class MemberSearch extends Component {
 
           <div className="memberSearchResults">
             {this.state.results.map((user, index) => (
-              <Link to={'/member/' + user.id} className="eventBlock">
+              <Link to={'/user/' + user.id} className="eventBlock">
                 <div className="eventBlockImage">
                   <img src={user.avatar} style={{width:'100%', height:'auto'}}/>
                 </div>

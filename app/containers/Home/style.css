@@ -93,7 +93,6 @@ textarea {
   display:flex;
   flex-direction:column;
   background:linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url('http://h4z.it/Image/88b757_banner.jpg');
-
   background-repeat:no-repeat;
   background-size:cover;
   background-position:center center;
@@ -151,6 +150,45 @@ textarea {
   font-size:2em;
 }
 
+.homeMainSectionContent {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  width:100%;
+  max-width:1000px;
+  margin-top:30px;
+  margin-bottom:30px;
+}
+
+.homeMainSectionBlock {
+  width:28%;
+  border:1px solid #CCCCCC;
+  border-radius:3px;
+  padding:15px;
+}
+
+.homeMainSectionBlock img {
+  width:100%;
+  height:200px;
+}
+
+.homeMainSectionBlockTitle {
+  font-family: 'HankenBook';
+  color:#222222;
+  font-size:1.5em;
+  margin-bottom:10px;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+.homeMainSectionBlockContent {
+  font-family:'Noto Sans';
+  color:#555555;
+  letter-spacing:1px;
+  text-align:center;
+  font-size:0.9em;
+}
+
 .homeFooterContainer {
   background:#261e1e;
   width:100%;
@@ -163,6 +201,29 @@ textarea {
   font-family:'Noto Sans';
   font-size:0.8em;
   margin-top:30px;
+}
+
+.homeMainSectionBlockOne {
+  display:flex;
+  flex-direction:column;
+  width:20%;
+  border:1px solid #CCCCCC;
+  border-radius:5px;
+  justify-content: center;
+  align-items:center;
+  padding:10px;
+}
+
+.homeMainSectionBlockOne img {
+  filter: invert(100%);
+  width:70%;
+  max-width:150px;
+  height:auto;
+  padding:10px;
+  border:5px solid #000000;
+  border-radius:50%;
+  margin-bottom:15px;
+
 }
 
 .homeMainSectionSubtitle {

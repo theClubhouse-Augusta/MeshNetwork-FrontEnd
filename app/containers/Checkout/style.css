@@ -5,8 +5,8 @@
   min-height:100vh;
 }
  .foobar {
-  margin-top:32px; 
-  margin-bottom:22px; 
+  margin-top:32px;
+  margin-bottom:22px;
   background: #f8f8f8;
   border-bottom: 1.4px solid rgb(100,100,100);
   border-top: none;
@@ -15,7 +15,7 @@
 }
 
  .foobar2 {
-  margin-bottom:22px; 
+  margin-bottom:22px;
   background: #f8f8f8;
   border-bottom: 1.4px solid rgb(100,100,100);
   border-top: none;
@@ -24,7 +24,7 @@
 }
 
  .foobar3 {
-  margin-bottom:22px; 
+  margin-bottom:22px;
   background: #f8f8f8;
   border-bottom: 1.4px solid #304ffe;
   border-top: none;
@@ -33,7 +33,7 @@
 }
 
 .labelFoobar {
-  margin-top:32px; 
+  margin-top:32px;
 }
 
  .foobar:hover {
@@ -98,7 +98,7 @@
 .MyInputLabel-shrink-8 {
   transform: translate(0, 1.5px) scale(0.75);
   transform-origin: top left;
-  margin-top: 12px; 
+  margin-top: 12px;
 }
 
 .MyInputLabel-formControl-62 {
@@ -129,4 +129,21 @@
 
 span.Select-value-label {
   background: "red"
+}
+
+.checkoutHeaderBanner {
+  width:100%;
+  height:300px;
+  background:linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url('http://h4z.it/Image/3c408f_331-1067x800.jpg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.userSignUpMain {
+  background:#F8F8F8;
 }
