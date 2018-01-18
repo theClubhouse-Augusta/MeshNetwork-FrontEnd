@@ -22,8 +22,73 @@ export default class Home extends React.PureComponent {
   render() {
     return (
       <div className="container">
-        <Helmet title="Home" meta={ { name: 'description', content: 'Description of Home' }}/>
-          <header>
+        <Helmet title="Mesh Network of Innovation" meta={ { name: 'description', content: 'Description of Home' }}/>
+          <header className="homeHeaderContainer">
+            <div classname="homeHeaderBar">
+              <Header textColor="#FFFFFF"/>
+            </div>
+            <div className="homeHeaderContent">
+              <div className="homeHeaderContentTitle">Discover Great CoWork Spaces</div>
+              <div className="homeHeaderContentSubtitle">Find amazing places to work, network, and innovate.</div>
+              <div className="homeHeaderContentSearchBar">
+                <div className="homeSignButtons">
+                  <Link to={'/newSpace'} style={{margin:'15px', width:'45%'}}><FlatButton style={{width:'100%', background:'#FFFFFF', paddingTop:'10px', paddingBottom:'10px',color:'#ff4d58', fontWeight:'bold'}}>Sign Up</FlatButton></Link>
+                  <Link to={'/signIn'} style={{margin:'15px', width:'45%'}}><FlatButton style={{width:'100%', background:'#ff4d58', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign In</FlatButton></Link>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <main>
+            <div className="homeMainSection">
+              <div className="homeMainSectionTitle">What are you interested in?</div>
+              <div className="homeMainSectionSubtitle">
+                Explore some of the best features of co-working from our partners and friends.
+              </div>
+              <div className="homeMainSectionContent">
+
+              </div>
+            </div>
+            <div className="homeMainSection" style={{background:'#EEEEEE'}}>
+              <div className="homeMainSectionTitle">
+                Best Things to Do at a Space
+              </div>
+              <div className="homeMainSectionSubtitle">
+                Find the best events among our participating spaces.
+              </div>
+              <div className="homeMainSectionContent">
+
+              </div>
+            </div>
+            <div className="homeMainSection">
+              <div className="homeMainSectionTitle">
+                See How It Works
+              </div>
+              <div className="homeMainSectionSubtitle">
+                Discover the how the Mesh Network can help you find everything you want.
+              </div>
+              <div className="homeMainSectionContent">
+
+              </div>
+            </div>
+            <div className="homeMainSection" style={{background:'#EEEEEE'}}>
+              <div className="homeMainSectionTitle">
+                Tips & Articles
+              </div>
+              <div className="homeMainSectionSubtitle">
+                Browse the latest helpful Articles and Tips
+              </div>
+              <div className="homeMainSectionContent">
+
+              </div>
+            </div>
+          </main>
+
+          <footer className="homeFooterContainer">
+            Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+          </footer>
+
+          {/*<header>
             <Header />
           </header>
 
@@ -93,7 +158,7 @@ export default class Home extends React.PureComponent {
             </div>
           </main>
 
-          <footer></footer>
+          <footer></footer>*/}
         </div>
     );
   }

@@ -171,7 +171,7 @@ export default class MemberSearch extends Component {
 
           <TextField style={{width:'100%', maxWidth:'700px', textAlign:'center', marginBottom:'10px', color:'#FFFFFF'}} label="Member Search" value={this.state.query} onChange={this.searchQuery} onKeyDown={(e) => { this.checkKey(e); }}/>
 
-          <div className="membersSubTitle">Popular Tags</div>
+          <div className="membersSubTitle">Popular Skills</div>
 
           <div className="tagsBox">
             {this.state.skills.map((skill, i) => (

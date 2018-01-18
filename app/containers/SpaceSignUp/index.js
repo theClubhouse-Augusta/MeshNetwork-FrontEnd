@@ -211,16 +211,20 @@ export default class SpaceSignUp extends React.PureComponent {
 
   render() {
     return (
-      <div className="container">
+      <div className="spaceSignUpcontainer">
         <Helmet title="SpaceSignUp" meta={[ { name: 'description', content: 'Description of SpaceSignUp' }]}/>
 
         <header>
-          <Header/>
+          <Header backgroundColor="#FFFFFF"/>
+          <div className="spaceSignUpBanner">
+            <div className="homeHeaderContentTitle">Add your CoWorking Space</div>
+            <div className="homeHeaderContentSubtitle">Join our Mesh Network of Innovation</div>
+          </div>
         </header>
 
         <main className="spaceSignUpMain">
-          <div className="spaceSignUpTitle">Create a New Organization</div>
-          <div className="spaceSignUpContainer">
+          <div className="spaceSignUpUser">
+            <div className="spaceSignUpTitle">Create a Founder</div>
             <TextField label="Founder Full Name" value={this.state.userName} onChange={this.handleUserName} margin="normal"/>
             <TextField label="Founder E-mail" value={this.state.userEmail} onChange={this.handleUserEmail} margin="normal"/>
             <TextField type="password" label="Founder Password" value={this.state.userPassword} onChange={this.handleUserPassword} margin="normal"/>
@@ -268,16 +272,19 @@ export default class SpaceSignUp extends React.PureComponent {
               <input type="file" onChange={this.handleLogo} id="logo-image" style={{display:'none'}}/>
             </div>
             <FlatButton
-              style={{backgroundColor:'#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+              style={{backgroundColor:'#ff4d58', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold', paddingTop:'15px', paddingBottom:'15px'}}
               onClick={this.storeSpace}
             >
               Confirm New Space
             </FlatButton>
-            <Link to={'/spaces'} style={{alignSelf:'center', width:'80%'}}><FlatButton style={{width:'100%', backgroundColor:'#BBBBBB', padding:'10px', marginTop:'30px', color:'#FFFFFF', fontWeight:'bold'}} >Not a Founder? Join a WorkSpace instead!</FlatButton></Link>
+            <Link to={'/spaces'} style={{alignSelf:'center', width:'80%'}}><FlatButton style={{width:'100%', backgroundColor:'#FFFFFF', padding:'10px', marginTop:'30px', color:'#ff4d58', fontWeight:'bold', border:'1px solid #CCCCCC', paddingTop:'15px', paddingBottom:'15px'}} >Not a Founder? Join a WorkSpace instead!</FlatButton></Link>
           </div>
         </main>
 
-        <footer></footer>
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+        </footer>
+
         <Snackbar
           message={this.state.msg}
           autoHideDuration={3000}

@@ -86,3 +86,87 @@ textarea {
   padding: .25em;
   font-size: 18px;
 }
+
+.homeHeaderContainer {
+  width:100%;
+  height:500px;
+  display:flex;
+  flex-direction:column;
+  background:linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url('http://h4z.it/Image/88b757_banner.jpg');
+
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center center;
+}
+
+.homeHeaderContent {
+  display:flex;
+  height:100%;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.homeHeaderContentTitle {
+  font-family: 'HankenBook';
+  color:#FFFFFF;
+  font-size:3em;
+}
+
+.homeHeaderContentSubtitle {
+  font-family:'Noto Sans';
+  color:#CCCCCC;
+  margin-bottom:15px;
+}
+
+.homeHeaderContentSearchBar {
+  width:50%;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+}
+
+.homeHeaderContentSearchInput {
+  border-radius:3px;
+  border:none;
+  outline:none;
+  width:50%;
+  font-family:'Noto Sans';
+  padding-left:5px;
+  padding-right:5px;
+  margin-right:15px;
+}
+
+.homeMainSection {
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  border-bottom:1px solid #DDDDDD;
+}
+
+.homeMainSectionTitle {
+  font-family: 'HankenBook';
+  color:#222222;
+  font-size:2em;
+}
+
+.homeFooterContainer {
+  background:#261e1e;
+  width:100%;
+  height:100px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+  color:#BBBBBB;
+  font-family:'Noto Sans';
+  font-size:0.8em;
+  margin-top:30px;
+}
+
+.homeMainSectionSubtitle {
+  color:#888888;
+  font-family:'Noto Sans';
+  font-size:0.9em;
+}

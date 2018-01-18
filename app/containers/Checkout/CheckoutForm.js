@@ -21,6 +21,7 @@ import './styleM.css';
 class CheckoutForm extends React.Component {
 
   state = {
+    space:'',
     multi: true,
     multiValue: [],
     options: [],
@@ -34,12 +35,11 @@ class CheckoutForm extends React.Component {
     selectedTags: [],
     avatar: '',
     imagePreviewUrl: '',
-    // foo
     msg:"",
     snack:false,
     focused: false,
     planFocused: false,
-    plan: {}
+    plan: "free"
   };
 
   //path = this.props.location.pathname.split('/');
@@ -47,28 +47,39 @@ class CheckoutForm extends React.Component {
   spaceID = this.props.match.params.id;
 
   componentDidMount() {
+    this.getSpace();
     this.loadSkills();
-    this.loadPlans();
+    if (this.props.pubkey) {
+      this.loadPlans();
+    }
+  }
+
+  getSpace = () => {
+    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        space:json
+      })
+    }.bind(this));
   }
 
   loadSkills = () => {
     fetch('http://innovationmesh.com/api/skills/all', {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedTags:json })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .then(json => {this.setState({ loadedTags:json })});
   }
 
   loadPlans = () => {
     fetch(`http://innovationmesh.com/api/plans/${this.spaceID}`, {
     })
     .then(response => response.json())
-    .then(json => {this.setState({ loadedPlans: json })})
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
+    .then(json => {this.setState({ loadedPlans: json.data })});
   }
 
   selectTag = selectedTag => {
@@ -164,13 +175,12 @@ class CheckoutForm extends React.Component {
         data.append('email', email.trim());
         data.append('password', password.trim());
         data.append('bio', bio.trim());
-        data.append('spaceID', this.spaceID);
+        data.append('spaceID', this.state.space.id);
         data.append('avatar', avatar);
         if (token.id) {
           data.append('customerToken', token.id);
         }
-        data.append('plan', plan)
-        data.append('organizer', false);
+        data.append('plan', plan);
 
         fetch("http://innovationmesh.com/api/signUp", {
           method:'POST',
@@ -188,16 +198,12 @@ class CheckoutForm extends React.Component {
           // }, 2000);
           }
         })
-        .catch(error => {
-          alert(`signUp ${error}`);
-        })
       });
     // However, this line of code will do the same thing:
     // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
   }
 
   storeFreeUser = e => {
-    console.log('wtf');
     e.preventDefault();
     let data = new FormData();
     let {
@@ -219,10 +225,9 @@ class CheckoutForm extends React.Component {
     data.append('email', email.trim());
     data.append('password', password.trim());
     data.append('bio', bio.trim());
-    data.append('spaceID', this.spaceID);
+    data.append('spaceID', this.state.space.id);
     data.append('avatar', avatar);
-    data.append('plan', plan)
-    data.append('organizer', false);
+    data.append('plan', plan);
 
     fetch("http://innovationmesh.com/api/signUp", {
       method:'POST',
@@ -235,13 +240,7 @@ class CheckoutForm extends React.Component {
       } else {
         localStorage['token'] = user.token;
         this.showSnack("Account created successfully!");
-      // setTimeout(() => {
-      //   this.props.history.push(`/user/${user.id}`)
-      // }, 2000);
       }
-    })
-    .catch(error => {
-      alert(`signUp ${error}`);
     })
   // However, this line of code will do the same thing:
   // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
@@ -270,7 +269,10 @@ class CheckoutForm extends React.Component {
           <Header/>
 
           <div className="spaceSignUpMain">
-            <div className="spaceSignUpTitle">Join Our Mesh Network!</div>
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+              <img src={this.state.space.logo} height="auto" width="300px" />
+              <div className="spaceSignUpTitle">Join {this.state.space.name}</div>
+            </div>
             <div className="spaceSignUpContainer">
               <TextField
                 label="Full Name"
@@ -334,19 +336,23 @@ class CheckoutForm extends React.Component {
               />}
 
 
-              <label style={{ marginBottom: 12, }}>
-                Select a Plan
-              </label>
+              {this.props.pubkey &&
+              <React.Fragment>
+                <label style={{ marginBottom: 12, }}>
+                  Select a Plan
+                </label>
 
-                <FlatButton
-                  style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
-                  onClick={(e) => this.selectPlan(e, "free")}
-                >
-                  Free tier
-                </FlatButton>
+                  <FlatButton
+                    style={{backgroundColor: "free" === this.state.plan ? 'grey' : '#3399cc', padding:'10px', marginTop:'15px', color:'#FFFFFF', fontWeight:'bold'}}
+                    onClick={(e) => this.selectPlan(e, "free")}
+                  >
+                    Free tier
+                  </FlatButton>
+                </React.Fragment>}
 
               {!!loadedPlans.length && loadedPlans.map((plan, key) => {
                 let id = plan.id;
+                {/* let amount = plan.amount.toString().splice(2, 0, '.'); */}
                 let amount = (plan.amount / 100).toFixed(2).toString();
                 return (
                   <FlatButton
@@ -358,7 +364,7 @@ class CheckoutForm extends React.Component {
                   </FlatButton>
               )})}
 
-              {plan !== "free" ? <CardSection /> : null}
+              {plan !== "free" && this.props.pubkey ? <CardSection /> : null}
 
               <div className="spaceLogoMainImageRow">
                 <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
