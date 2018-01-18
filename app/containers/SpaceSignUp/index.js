@@ -240,6 +240,8 @@ export default class SpaceSignUp extends React.PureComponent {
             <TextField label=" Organization E-mail" value={this.state.email} onChange={this.handleEmail} margin="normal"/>
             <TextField label="Website" value={this.state.website} onChange={this.handleWebsite} margin="normal"/>
             <TextField label="Phone #" value={this.state.phone_number} onChange={this.handlePhone} margin="normal"/>
+            <TextField label="Stripe Public Key" value={this.state.phone_number} onChange={this.handlePhone} margin="normal"/>
+            <TextField label="Stripe Private Key" value={this.state.phone_number} onChange={this.handlePhone} margin="normal"/>
             <Editor
                 editorState={this.state.description}
                 toolbarClassName="home-toolbar"

@@ -38,7 +38,7 @@ export default class Kiosk extends React.PureComponent {
       snack:false,
     }
   }
-  
+
   componentDidMount() {
     try {
       const reasonsKiosk = localStorage.getItem('reasonsKiosk');
@@ -71,7 +71,7 @@ export default class Kiosk extends React.PureComponent {
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
    getProfile = () => {
-      fetch('http://localhost:8000/api/workspace/'+ this.props.match.params.id, {
+      fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
         method:'GET'
       })
       .then(function(response) {
@@ -86,7 +86,7 @@ export default class Kiosk extends React.PureComponent {
   }
 
   getUsers = () => {
-    fetch('http://localhost:8000/api/users/space/'+this.props.match.params.id)
+    fetch('http://innovationmesh.com/api/users/space/'+this.props.match.params.id)
     .then(response => response.json())
     .then(Users => {
       if (Users) {
@@ -101,7 +101,7 @@ export default class Kiosk extends React.PureComponent {
   }
 
   getReasons = () => {
-    fetch('http://localhost:8000/api/occasions')
+    fetch('http://innovationmesh.com/api/occasions')
     .then(response => response.json())
     .then(Reasons => {
       if (Reasons) {
@@ -116,7 +116,7 @@ export default class Kiosk extends React.PureComponent {
   }
 
   getUpcomingEvents = () => {
-    fetch('http://localhost:8000/api/upcoming/'+this.props.match.params.id)
+    fetch('http://innovationmesh.com/api/upcoming/'+this.props.match.params.id)
     .then(response => response.json())
     .then(Events => {
       if (Events) {
@@ -137,7 +137,7 @@ export default class Kiosk extends React.PureComponent {
     data.append('spaceID', this.props.match.params.id);
     data.append('occasion', this.state.selectedReason);
 
-    fetch('http://localhost:8000/api/appearance', {
+    fetch('http://innovationmesh.com/api/appearance', {
       method:'POST',
       body:data
     })
@@ -174,7 +174,7 @@ export default class Kiosk extends React.PureComponent {
 
           {!!events.length && <div className="kioskSubtitle">Be sure to check out these Events</div>}
 
-          {!!events.length && events.map((event, key) => 
+          {!!events.length && events.map((event, key) =>
             <Link target="_blank" to={`/event/${event.id}`} key={`eventDiv2${key}`} className="eventList">
               <div className="eventBlock">
                 <div className="eventBlockImage"></div>

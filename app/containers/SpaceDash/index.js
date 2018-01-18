@@ -21,9 +21,9 @@ import './styleM.css';
 
 
 
-const getUsersAPI = 'http://localhost:8000/api/users/space/'; 
+const getUsersAPI = 'http://innovationmesh.com/api/users/space/'; 
 
-const spaceInfoAPI = 'http://localhost:8000/api/workspace/'; 
+const spaceInfoAPI = 'http://innovationmesh.com/api/workspace/'; 
 
 export default class SpaceDash extends React.PureComponent {
   state ={

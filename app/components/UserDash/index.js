@@ -31,7 +31,7 @@ import {VerifiedUser} from 'material-ui-icons';
 
 const getRowId = row => row.id;
 
-const userUpdateAPI = 'http://www.localhost:8000/api/updateUser'; 
+const userUpdateAPI = 'http://www.innovationmesh.com/api/updateUser'; 
 
 
 export default class UserDash extends React.PureComponent {
@@ -94,7 +94,7 @@ export default class UserDash extends React.PureComponent {
   }
 
 loadSpaceUsers = (props) => {
-    fetch('http://localhost:8000/api/users/space/'+ this.props.id, {
+    fetch('http://innovationmesh.com/api/users/space/'+ this.props.id, {
       method:'GET'
     })
     .then(function(response) {

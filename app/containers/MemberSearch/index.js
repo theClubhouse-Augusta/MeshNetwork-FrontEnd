@@ -42,7 +42,7 @@ export default class MemberSearch extends Component {
   }
 
   loadSkills = () => {
-    fetch('http://localhost:8000/api/skills', {
+    fetch('http://innovationmesh.com/api/skills', {
       //headers: { Authorization: `Bearer ${this.token}` },
     })
     .then(response => response.json())
@@ -61,7 +61,7 @@ export default class MemberSearch extends Component {
   // submit form if 'enter' is pressed
   checkKey = (e) => {
     if (e.keyCode === 13 && this.state.query) {
-      fetch(`http://localhost:8000/api/search/?query=${encodeURIComponent(this.state.query)}`, {
+      fetch(`http://innovationmesh.com/api/search/?query=${encodeURIComponent(this.state.query)}`, {
         //headers: { Authorization: `Bearer ${this.token}` },
       })
       .then(response =>
@@ -124,7 +124,7 @@ export default class MemberSearch extends Component {
   }
 
   tagClick = (tag) => {
-    fetch(`http://localhost:8000/api/search/?tag=${encodeURIComponent(tag)}`, {
+    fetch(`http://innovationmesh.com/api/search/?tag=${encodeURIComponent(tag)}`, {
       //headers: { Authorization: `Bearer ${this.token}` },
     })
     .then(function(response) {
@@ -171,7 +171,7 @@ export default class MemberSearch extends Component {
 
           <TextField style={{width:'100%', maxWidth:'700px', textAlign:'center', marginBottom:'10px', color:'#FFFFFF'}} label="Member Search" value={this.state.query} onChange={this.searchQuery} onKeyDown={(e) => { this.checkKey(e); }}/>
 
-          <div className="membersSubTitle">Popular Tags</div>
+          <div className="membersSubTitle">Popular Skills</div>
 
           <div className="tagsBox">
             {this.state.skills.map((skill, i) => (

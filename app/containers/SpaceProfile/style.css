@@ -189,42 +189,216 @@ a.spaceProfileActions {
   flex-wrap: wrap;
 }
 
-.spaceProfileUserList {
-  display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-
 .spaceProfileUser {
-  width:21%;
   display:flex;
   flex-direction:row;
   background:#F8F8F8;
-  margin:1%;
+  margin-top:5px;
   border-radius:3px;
 }
 
 .spaceProfileUserAvatar {
-  width:60px;
-  height:60px;
+  width:50px;
+  height:50px;
   border-radius:3px;
 }
 
 .spaceProfileUserContent {
   display:flex;
   flex-direction:row;
-  justify-content: center;
   align-items:center;
-  text-align:center;
-  font-family:'Lato';
-  font-size:1.1em;
-  font-weight:bold;
+  font-family:'Noto Sans';
+  font-size:1em;
   flex-grow:1;
+  margin-left:15px;
 }
 
 .spaceProfileEventsWrapper {
   margin:0 auto;
   width:100%;
   max-width:800px;
+}
+
+.spaceGalleryContainer {
+  width:100%;
+  height:400px;
+  background:#EEEEEE;
+}
+
+.spaceMainContainer {
+  width:100%;
+  max-width:1000px;
+  margin:20px auto;
+  display:flex;
+  flex-direction:row;
+}
+
+.spaceMainHeader {
+  height:210px;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid #DDDDDD;
+}
+
+.spaceMainOne {
+  width:68%;
+  display:flex;
+  flex-direction:column;
+  margin-right:2%;
+}
+
+.spaceMainTwo {
+  width:30%;
+}
+
+.spaceMainBread {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  font-family:'Noto Sans';
+  color:#999999;
+  font-size:0.9em;
+}
+
+.spaceMainTitle {
+  font-family: 'HankenBook';
+  color:#ff4d58;
+  font-size:3em;
+  margin-top:15px;
+  margin-bottom:10px;
+}
+
+.spaceMainSlogan {
+  font-family: 'HankenBook';
+  color:#BBBBBB;
+  font-size:1.2em;
+  margin-bottom:15px;
+}
+
+.spaceContact {
+  display:flex;
+  flex-direction:row;
+}
+
+.spaceContactBlock {
+  text-decoration:none;
+  margin-right:15px;
+  color:#999999;
+}
+
+.spaceMainContent {
+  display:flex;
+  flex-direction:column;
+  background:#F8F8F8;
+}
+
+.spaceMainDescription {
+  font-family:'Noto Sans';
+  letter-spacing:1px;
+  line-height:30px;
+  background:#FFFFFF;
+  border-radius:3px;
+  padding:15px;
+  color:#777777;
+  border:1px solid #DDDDDD;
+}
+
+.spaceMainLogo {
+  max-width:100%;
+  max-height:190px;
+}
+
+.spaceOptions {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:15px;
+  border-radius:3px;
+  border:1px solid #DDDDDD;
+  background:#FFFFFF;
+}
+
+.spaceLocation {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:15px;
+  border-radius:3px;
+  border:1px solid #DDDDDD;
+  background:#FFFFFF;
+  margin-top:15px;
+}
+
+.spaceLocation img {
+  width:100%;
+}
+
+.spaceLocationContent {
+  font-family:'Noto Sans';
+  color:#999999;
+  font-size:0.8em;
+}
+
+.spaceMembers {
+  display:flex;
+  flex-direction:column;
+  padding:15px;
+  border-radius:3px;
+  border:1px solid #DDDDDD;
+  background:#FFFFFF;
+  margin-top:15px;
+}
+
+.spaceMembersTitle {
+  font-family:'Noto Sans';
+  font-size:0.9em;
+  color:#666666;
+}
+
+.spaceEvents {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}
+
+.spaceEventBlock {
+  width:45%;
+  margin:2%;
+  border:1px solid #CCCCCC;
+  border-radius:3px;
+  background:#FFFFFF;
+}
+
+.spaceEventBlockImage {
+  width:100%;
+  height:200px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+  border-radius:3px 3px 0px 0px;
+}
+
+.spacesBlockImage img {
+  width:100%;
+  height:auto;
+}
+
+.spaceEventBlockTitle {
+  padding:10px;
+  font-family: 'HankenBook';
+  color:#ff4d58;
+  font-size:1.5em;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.spaceEventBlockContent {
+  padding-left:10px;
+  padding-right:10px;
+  padding-bottom:10px;
+  font-family:'Noto Sans';
+  color:#999999;
+  font-size:0.8em;
 }

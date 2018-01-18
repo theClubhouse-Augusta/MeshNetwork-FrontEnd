@@ -25,4 +25,3 @@ export default class DataViz extends React.PureComponent {
     );
   }
 }
-
