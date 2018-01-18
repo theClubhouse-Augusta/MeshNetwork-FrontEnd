@@ -9,10 +9,15 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
 import { EditingState } from '@devexpress/dx-react-grid'; 
 import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'; 
-
+import { TableCell } from 'material-ui';
+import Icon from 'material-ui/Icon';
+import IconButton from 'material-ui/IconButton';
+import DoneIcon from 'material-ui-icons/Done'; 
+import QuestionAnswerIcon from 'material-ui-icons/QuestionAnswer'; 
 
 import './style.css';
 import './styleM.css';
+
 
 
 /* TO DO 
@@ -31,19 +36,71 @@ const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate';
 const eventDateTimeAPI = ''; 
 
 
+
+
+
+const Cell = (props) => {
+  if (props.column.name === 'status') {
+    return <EventApproveCell {...props} />;
+  }
+  return <Table.Cell {...props} />;
+};
+Cell.propTypes = {
+  column: PropTypes.shape({ name: PropTypes.string }).isRequired,
+};
+
+
+
+const EventApproveCell = ({
+  value 
+}) => { 
+  if (value === 0 ) { 
+    // IconButtons have padding baked in 
+    return (<TableCell style={{padding: '0'}}> 
+              <ApprovalButton />
+            </TableCell>) 
+  }
+  return (
+            <TableCell style={{padding: '0'}}> 
+              <RevokeApproveButton />
+            </TableCell>
+  )
+}
+
+const ApprovalButton = ({ onExecute }) => (
+    <IconButton onClick={onExecute} title="Approve Event" aria-label="approve event button" style={{color: 'orange', margin: '0'}}>
+      <QuestionAnswerIcon style={{height: '.75em', width: '.75em'}}/>
+    </IconButton> 
+); 
+ApprovalButton.propTypes = {
+  onExecute: PropTypes.func.isRequired,
+}
+
+const RevokeApproveButton = ({ onExecute }) => (
+  <IconButton onClick={onExecute} title="Revoke Approval" aria-label="revoke event approval button" style={{color: 'green'}}>
+    <DoneIcon />
+  </IconButton> 
+); 
+RevokeApproveButton.propTypes = {
+  onExecute: PropTypes.func.isRequired,
+}
+
+
 export default class EventDash extends React.PureComponent {
   constructor(props) { 
     super(props);    
     this.state = {
       rows: [
-        { id: 1, name: 'Bob', lastName: 'Brown', age: 21 },
-        { id: 2, name: 'John', lastName: 'Smith', age: 35 },
-        { id: 3, name: 'Mike', lastName: 'Mitchel', age: 28 },
+        { id: 1, status: 0, name: 'Bob', lastName: 'Brown', age: 21,  },
+        { id: 2, status: 1, name: 'John', lastName: 'Smith', age: 35,  },
+        { id: 3, status: 1, name: 'Mike', lastName: 'Mitchel', age: 28,  },
       ],
       columns: [
+        // column order is DELIBERATE, pls do not adjust w/o UX consideration! 
+        { name: 'status', title: 'Status'}, 
         { name: 'name', title: 'Name' },
         { name: 'lastName', title: 'Last Name' },
-        { name: 'age', title: 'Age' },
+        { name: 'age', title: 'Age' },        
       ],
       editingRows: [],
       addedRows: [],
@@ -170,7 +227,8 @@ commitChanges({ added, changed, deleted }) {
             onAddedRowsChange={this.changeAddedRows}
             onCommitChanges={this.commitChanges}
           />
-          <Table />
+          <Table 
+            cellComponent={Cell}/>
           <TableHeaderRow />
           <TableEditRow />
           <TableEditColumn
