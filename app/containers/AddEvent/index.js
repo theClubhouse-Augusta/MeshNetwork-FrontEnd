@@ -24,6 +24,7 @@ import { Sponsors } from './Sponsors';
 import { SelectedSponsors } from './SelectedSponsors';
 import { SelectedOrganizers } from './SelectedOrganizers';
 
+import authenticate from '../../utils/Authenticate';
 import {
     removeDuplicateDate,
     removeDuplicateStart,
@@ -89,25 +90,21 @@ export default class AddEvent extends PureComponent {
         eventImgPreview: '',
     };
 
+    componentWillMount() {
+        if (!!localStorage['token'])
+            this.props.history.push('/');
+    }
+
     async componentDidMount() {
-        const authorized = await this.authenticate(localStorage['token']);
+        const authorized = await authenticate(localStorage['token'], this.props.history)
         if (!authorized.error) {
             this.getOrganizers();
             this.getSponsors();
             this.loadSkills();
             this.setState({ loading: false });
-        }
-    }
-
-    authenticate = async (token) => {
-        if (!token)
+        } else {
             this.props.history.push('/');
-
-        const response = await fetch(`http://localhost:8000/api/authorize`, {
-            headers: { Authorization: `Bearer ${token}` },
-        })
-        const authorized = await response.json();
-        return authorized;
+        }
     }
 
     loading = () => this.state.loading;

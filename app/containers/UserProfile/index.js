@@ -22,6 +22,8 @@ import BehanceIcon from 'react-icons/lib/fa/behance-square';
 import DribbbleIcon from 'react-icons/lib/fa/dribbble';
 import WebsiteIcon from 'react-icons/lib/fa/globe';
 
+import authenticate from '../../utils/Authenticate';
+
 import './style.css';
 import './styleM.css';
 
@@ -32,12 +34,20 @@ export default class UserProfile extends React.Component {
             user: '',
             space: '',
             skills: [],
-            token: localStorage.getItem('token')
+            token: localStorage.getItem('token'),
+            loading: true,
         }
     }
 
-    componentWillMount() {
-        this.getUser()
+
+    async componentDidMount() {
+        const authorized = await authenticate(localStorage['token'], this.props.history)
+        if (!authorized.error) {
+            this.getUser();
+            this.setState({ loading: false })
+        } else {
+            this.props.history.push('/');
+        }
     }
 
     getUser = token => {
@@ -75,49 +85,53 @@ export default class UserProfile extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
-                <header>
-                    <Header />
-                </header>
+            this.state.loading
+                ?
+                <div>spinner here</div>
+                :
+                <div className="container">
+                    <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
+                    <header>
+                        <Header />
+                    </header>
 
-                <main className="mainProfile">
-                    <div className="profileHeader">
-                        <img src={this.state.user.avatar} className="profileHeaderImg" />
-                        <div className="profileHeaderTitle">{this.state.user.name}</div>
-                        <div className="profileSubTitle">{this.state.user.title}</div>
-                    </div>
-                    <div className="profileContact">
-                        <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
-                            {this.state.space.name}
-                        </Link>
-                        <div className="profileSocialList">
-                            <MailIcon className="profileIconStyle" />
-                            <FacebookIcon className="profileIconStyle" />
-                            <TwitterIcon className="profileIconStyle" />
-                            <LinkedInIcon className="profileIconStyle" />
-                            <InstagramIcon className="profileIconStyle" />
-                            <GithubIcon className="profileIconStyle" />
-                            <BehanceIcon className="profileIconStyle" />
-                            <DribbbleIcon className="profileIconStyle" />
-                            <WebsiteIcon className="profileIconStyle" />
+                    <main className="mainProfile">
+                        <div className="profileHeader">
+                            <img src={this.state.user.avatar} className="profileHeaderImg" />
+                            <div className="profileHeaderTitle">{this.state.user.name}</div>
+                            <div className="profileSubTitle">{this.state.user.title}</div>
                         </div>
-                    </div>
-                    <div className="profileSkillsList">
-                        <div className="tagsBox">
-
-                            {this.state.skills.map((skill, i) => (
-                                this.renderTag(skill, i)
-                            ))}
+                        <div className="profileContact">
+                            <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
+                                {this.state.space.name}
+                            </Link>
+                            <div className="profileSocialList">
+                                <MailIcon className="profileIconStyle" />
+                                <FacebookIcon className="profileIconStyle" />
+                                <TwitterIcon className="profileIconStyle" />
+                                <LinkedInIcon className="profileIconStyle" />
+                                <InstagramIcon className="profileIconStyle" />
+                                <GithubIcon className="profileIconStyle" />
+                                <BehanceIcon className="profileIconStyle" />
+                                <DribbbleIcon className="profileIconStyle" />
+                                <WebsiteIcon className="profileIconStyle" />
+                            </div>
                         </div>
-                    </div>
-                </main>
+                        <div className="profileSkillsList">
+                            <div className="tagsBox">
 
-                <footer>
+                                {this.state.skills.map((skill, i) => (
+                                    this.renderTag(skill, i)
+                                ))}
+                            </div>
+                        </div>
+                    </main>
 
-                </footer>
+                    <footer>
 
-            </div>
+                    </footer>
+
+                </div>
         );
     }
 }

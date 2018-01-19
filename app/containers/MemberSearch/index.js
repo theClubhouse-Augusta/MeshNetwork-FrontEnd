@@ -3,7 +3,7 @@
  * MemberSearch
  *
  */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes, { oneOfType } from 'prop-types';
 /* Icons */
@@ -16,11 +16,13 @@ import Snackbar from 'material-ui/Snackbar';
 /* Components */
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
+
+import authenticate from '../../utils/Authenticate';
 /* css */
 import './style.css';
 import './styleM.css';
 
-export default class MemberSearch extends Component {
+export default class MemberSearch extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,15 +32,23 @@ export default class MemberSearch extends Component {
             token: localStorage.getItem('token'),
             msg: "",
             snack: false,
+            loading: true,
         };
     }
 
     handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-    componentWillMount() {
-        this.loadSkills();
+    async componentWillMount() {
+        const authorized = await authenticate(localStorage['token'], this.props.history)
+        if (!authorized.error) {
+            this.loadSkills();
+            this.setState({loading: false})
+        } else {
+            this.props.history.push('/signIn');
+        }
     }
+
 
     loadSkills = () => {
         fetch('http://localhost:8000/api/skills', {
@@ -153,6 +163,10 @@ export default class MemberSearch extends Component {
 
     render() {
         return (
+            this.state.loading 
+            ?
+                <div>spinner here</div>
+            :
             <div className="membersContainer">
                 <Helmet title="MemberSearch" meta={[{ name: 'description', content: 'Description of MemberSearch' }]} />
 
