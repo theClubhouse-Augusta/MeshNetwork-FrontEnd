@@ -1,7 +1,7 @@
 
 /*
  *
- * AllAppearances 
+ * AllAppearances
  *
  */
 import React from 'react';
@@ -13,7 +13,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend, 
+  Legend,
 } from 'Recharts';
 import Logger from '../../utils/Logger';
 
@@ -30,7 +30,7 @@ export class AllAppearances extends React.PureComponent {
   }
 
   loadAppearances = () => {
-    fetch(`http://localhost:8000/api/appearances/${this.props.match.params.id}`, {
+    fetch(`https://innovationmesh.com/api/appearances/${this.props.match.params.id}`, {
     })
     .then(response => response.json())
     .then(json => this.setState({ data:json }))
@@ -43,9 +43,9 @@ export class AllAppearances extends React.PureComponent {
     return (
       <div className="container">
         {data &&
-         <LineChart 
-          width={this.props.width ? this.props.width : 800} 
-          height={this.props.height ? this.props.height : 800} 
+         <LineChart
+          width={this.props.width ? this.props.width : 800}
+          height={this.props.height ? this.props.height : 800}
           data={data}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
         >

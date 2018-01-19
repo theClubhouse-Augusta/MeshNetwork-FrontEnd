@@ -46,7 +46,50 @@ export default class Home extends React.PureComponent {
                 Explore some of the best features of co-working from our partners and friends.
               </div>
               <div className="homeMainSectionContent">
-
+                <div className="homeMainSectionBlockOne"
+                  style={{
+                    background:'linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/7e9818_-11-15.05.27.jpg)',
+                    backgroundRepeat:'no-repeat',
+                    backgroundSize:'cover',
+                    backgroundPosition:'center center'
+                  }}
+                >
+                  <img src="http://h4z.it/Image/093903_cowork.PNG"/>
+                  <div className="homeMainSectionBlockTitle" style={{color:'#FFFFFF'}}>CoWork</div>
+                </div>
+                <div className="homeMainSectionBlockOne"
+                  style={{
+                    background:'linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/67b755_fablabpng.png)',
+                    backgroundRepeat:'no-repeat',
+                    backgroundSize:'cover',
+                    backgroundPosition:'center center'
+                  }}
+                >
+                  <img src="http://h4z.it/Image/2b608a_hack.PNG"/>
+                  <div className="homeMainSectionBlockTitle" style={{color:'#FFFFFF'}}>Code</div>
+                </div>
+                <div className="homeMainSectionBlockOne"
+                  style={{
+                    background:'linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/4f56fa_ebridge2_660.jpg)',
+                    backgroundRepeat:'no-repeat',
+                    backgroundSize:'cover',
+                    backgroundPosition:'center center'
+                  }}
+                >
+                  <img src="http://h4z.it/Image/6d9807_3Dprinting.PNG"/>
+                  <div className="homeMainSectionBlockTitle" style={{color:'#FFFFFF'}}>Make</div>
+                </div>
+                <div className="homeMainSectionBlockOne"
+                  style={{
+                    background:'linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/7e9818_-11-15.05.27.jpg)',
+                    backgroundRepeat:'no-repeat',
+                    backgroundSize:'cover',
+                    backgroundPosition:'center center'
+                  }}
+                >
+                  <img src="http://h4z.it/Image/0cf50f_studio.PNG"/>
+                  <div className="homeMainSectionBlockTitle" style={{color:'#FFFFFF'}}>Create</div>
+                </div>
               </div>
             </div>
             <div className="homeMainSection" style={{background:'#EEEEEE'}}>
@@ -68,7 +111,21 @@ export default class Home extends React.PureComponent {
                 Discover the how the Mesh Network can help you find everything you want.
               </div>
               <div className="homeMainSectionContent">
-
+                <div className="homeMainSectionBlock">
+                  <img src="http://h4z.it/Image/af1a08_how1.PNG" />
+                  <div className="homeMainSectionBlockTitle">Choose What You Do</div>
+                  <div className="homeMainSectionBlockContent">Creating a new workspace? Whether you are just starting out or joining your local community, the Mesh Network has something to offer.</div>
+                </div>
+                <div className="homeMainSectionBlock">
+                  <img src="http://h4z.it/Image/3889d9_how2.PNG" />
+                  <div className="homeMainSectionBlockTitle">Find What You Want</div>
+                  <div className="homeMainSectionBlockContent">Search and filter hundreds of listings, read reviews, explore photos and find the perfect spot.</div>
+                </div>
+                <div className="homeMainSectionBlock">
+                  <img src="http://h4z.it/Image/79caa9_how3.PNG" />
+                  <div className="homeMainSectionBlockTitle">Explore Awesome Places</div>
+                  <div className="homeMainSectionBlockContent">Go and have a productive time or even make a booking directly from the listing page. All of those, thanks to the Mesh Network!</div>
+                </div>
               </div>
             </div>
             <div className="homeMainSection" style={{background:'#EEEEEE'}}>

@@ -24,7 +24,7 @@ export default class Sponsors extends React.PureComponent {
   //   this.getSponsors();
   // }
   // getSponsors = () => {
-  //   fetch(`http://innovationmesh.com/api/sponsors`, {
+  //   fetch(`https://innovationmesh.com/api/sponsors`, {
   //     headers: { Authorization: `Bearer ${localStorage['token']}` }
   //   })
   //   .then(response => response.json())

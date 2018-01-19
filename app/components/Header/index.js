@@ -18,6 +18,7 @@ export default class Header extends React.PureComponent {
       menuOpen:false,
       textColor:"#000000",
       backgroundColor:"transparent",
+      headerTitle:"Mesh Network"
     }
   }
 
@@ -30,6 +31,11 @@ export default class Header extends React.PureComponent {
     if(this.props.backgroundColor) {
       this.setState({
         backgroundColor:this.props.backgroundColor
+      })
+    }
+    if(this.props.headerTitle) {
+      this.setState({
+        headerTitle:this.props.headerTitle
       })
     }
   }
@@ -65,12 +71,15 @@ export default class Header extends React.PureComponent {
   }
 
   render() {
+    let headerTitle = <span>Mesh <span style={{color:'#ff4d58'}}> Network</span></span>;
+    if(this.state.headerTitle != "Mesh Network") {
+      headerTitle = this.state.headerTitle;
+    }
     return (
       <div className="headerComponent" style={{background:this.state.backgroundColor}}>
         <div className="navBar">
           <div className="siteName" style={{color:this.state.textColor}}>
-            Mesh
-            <span style={{color:'#ff4d58'}}> Network</span>
+            {headerTitle}
           </div>
 
           <nav className="nav">

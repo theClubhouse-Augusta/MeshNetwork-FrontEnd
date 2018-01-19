@@ -6,42 +6,41 @@
   min-height:100vh;
 }
 
-.addEventBanner { 
-  height:200px;
+.addEventBanner {
   width:100%;
-  background: #26aae1; 
-  font-family: 'Anton', sans-serif;
-  font-size:4em;
-  line-height:120px;
-  text-align:center;
-  color:#FFFFFF;
+  height:350px;
+  background:linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url('http://h4z.it/Image/1f1d71_216-1202x800.jpg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center bottom;
+  background-attachment:fixed;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
 }
 
-.addEventBody { 
+.addEventBody {
   min-height:100vh;
   width:100%;
   max-width:1000px;
   margin: 30px auto;
   padding:15px;
 }
-.addEventContent { 
-  display: flex; 
-  flex-direction: column; 
+.addEventContent {
+  display: flex;
+  flex-direction: column;
   align-content: center;
-  margin: 0 auto;  
+  margin: 0 auto;
 }
 
-.addEventTitle { 
+.addEventTitle {
   text-align: center;
 }
 
 .addEventInstructions {
   margin: 2em auto 0 auto;
-  width: 600px;  
+  width: 600px;
 }
 
 .addEventOrganizersContainer {
@@ -104,7 +103,7 @@ dl#addEventUserInfo div:first-child {
 }
 /* make all <dt> bold */
 dl#addEventUserInfo dt {
-  font-weight:700; 
+  font-weight:700;
 }
 
 .addEventRemoveOrg {
@@ -143,72 +142,72 @@ dl#addEventUserInfo dt {
   flex-direction: column; */
 }
 
-.addEventDesList { 
+.addEventDesList {
   list-style: unset;
-  margin: 2em 0; 
+  margin: 2em 0;
 }
 
-.listItemReset { 
-  display: block;    
-  margin: 1em 0;       
+.listItemReset {
+  display: block;
+  margin: 1em 0;
 }
 
-.addEventForm { 
-  max-width:1000px;   
+.addEventForm {
+  max-width:1000px;
   margin: 0 auto;
   padding: 15px;
-  border: 1px dashed #DDDDDD; 
-  margin: 30px; 
-  display: flex; 
+  border: 1px dashed #DDDDDD;
+  margin: 30px;
+  display: flex;
   flex-direction: column;
-  justify-content: space-around; 
-  align-items: center;  
+  justify-content: space-around;
+  align-items: center;
 }
 
-.addEventFormItem { 
-  width: 50%; 
-  margin: 30px 10%; 
-  align-self: flex-start; 
-  display: flex; 
-  justify-content: space-between; 
+.addEventFormItem {
+  width: 50%;
+  margin: 30px 10%;
+  align-self: flex-start;
+  display: flex;
+  justify-content: space-between;
 }
 
-.addEventFormItemNewSponsor { 
-  width: 50%; 
-  margin:0 0 0 8%; 
-  align-self: flex-start; 
-  display: flex; 
-  justify-content: space-between; 
+.addEventFormItemNewSponsor {
+  width: 50%;
+  margin:0 0 0 8%;
+  align-self: flex-start;
+  display: flex;
+  justify-content: space-between;
 }
 .fakeUserPic {
-  height: 75px; 
-  width: 75px; 
-  border-radius: 50%; 
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
   background: #DDDDDD;
 }
 
-.addEventFormLabel { 
+.addEventFormLabel {
   color: rgba(0, 0, 0, 0.54);
-  display: block; 
+  display: block;
   margin-top: 32px;
   margin-bottom: 24px;
   /* display: none; */
 }
 
-.addEventUserSelect { 
-  width: 80%; 
-  margin: 30px 0; 
+.addEventUserSelect {
+  width: 80%;
+  margin: 30px 0;
 }
 
-.addEventSponsorContainer { 
-  width: 80%; 
-  margin: 30px 0; 
+.addEventSponsorContainer {
+  width: 80%;
+  margin: 30px 0;
   /* margin-top: 100px; */
 }
 
 .addEventDateTime {
   width: 80%;
-  margin: 30px 0; 
+  margin: 30px 0;
 }
 
 .addEventDateTimeHide {
@@ -224,7 +223,7 @@ dl#addEventUserInfo dt {
 
 .addEventTagContainer {
   width: 80%;
-  margin-left: 10%; 
+  margin-left: 10%;
   /* font-weight: bold; */
   align-self: flex-start;
   /* margin: 30px 10%;  */
@@ -232,24 +231,24 @@ dl#addEventUserInfo dt {
   margin-bottom: 30px;
 }
 
-.addEventTagWrapper { 
-  display: flex; 
-  flex-direction: row; 
+.addEventTagWrapper {
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-content: center;  
-  width: 100%; 
+  align-content: center;
+  width: 100%;
 }
 
-.addEventDesContainer { 
+.addEventDesContainer {
   width: 85%;
-  margin: 70px 0 0 0; 
+  margin: 70px 0 0 0;
 }
 
-.addEventSubmit { 
+.addEventSubmit {
   text-align: center;
-  margin: 8% auto 0 auto; 
+  margin: 8% auto 0 auto;
   width: 200px;
-  background: grey; 
+  background: grey;
 }
 
 /* text editor */
@@ -277,9 +276,9 @@ dl#addEventUserInfo dt {
   letter-spacing: 1px;
 }
 
-.rdw-editor-wrapper { 
-  box-sizing: content-box; 
-  height: inherit; 
+.rdw-editor-wrapper {
+  box-sizing: content-box;
+  height: inherit;
 }
 .toolbarHidden {
   display: none;

@@ -10,14 +10,6 @@ import classNames from 'classnames';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Moment from 'react-moment';
-import {
-  TiSocialAtCircular,
-  TiSocialFacebookCircular,
-  TiSocialInstagramCircular,
-  TiSocialTwitterCircular,
-  TiInputChecked,
-  TiArrowSync
-} from 'react-icons/lib/ti';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
@@ -71,7 +63,7 @@ export default class SpaceProfile extends React.PureComponent {
   }
 
  getProfile = () => {
-    fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+    fetch('https://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -88,7 +80,7 @@ export default class SpaceProfile extends React.PureComponent {
 }
 
   getSpaceEvents = (id) => {
-    fetch('http://innovationmesh.com/api/workevents/'+ id, {
+    fetch('https://innovationmesh.com/api/workevents/'+ id, {
       method: 'GET'
     })
     .then(function(response) {
@@ -102,7 +94,7 @@ export default class SpaceProfile extends React.PureComponent {
   }
 
   getUsers = (id) => {
-    fetch('http://innovationmesh.com/api/spaceOrganizers/' + id, {
+    fetch('https://innovationmesh.com/api/spaceOrganizers/' + id, {
       method:'GET'
     })
     .then(function(response) {
@@ -159,9 +151,7 @@ export default class SpaceProfile extends React.PureComponent {
             <div className="spaceMainContainer">
               <div className="spaceMainOne">
                 <div className="spaceShare"></div>
-                <div className="spaceMainDescription">
-                  {this.state.spaceProfile.description}
-                </div>
+                <div className="spaceMainDescription" dangerouslySetInnerHTML={{ __html: this.state.spaceProfile.description }}/>
                 <div className="spaceFeatures"></div>
                 <div className="spaceEvents">
                   {this.state.events.map((event, i) => (
@@ -179,9 +169,10 @@ export default class SpaceProfile extends React.PureComponent {
               </div>
               <div className="spaceMainTwo">
                 <div className="spaceOptions">
-                  <Link to={'/booking/' + this.state.spaceProfile.id} style={{width:'100%', marginBottom:'15px'}}><FlatButton style={{background:'#ff4d58', color:'#FFFFFF', width:'100%'}}>Bookings </FlatButton></Link>
-                  <Link to={'/join/' + this.state.spaceProfile.id} style={{width:'100%', marginBottom:'15px'}}><FlatButton style={{background:'#FFFFFF', color:'#ff4d58', width:'100%', border:'1px solid #CCCCCC'}}>Join This Space </FlatButton></Link>
-                  <Link to={'/kiosk/' + this.state.spaceProfile.id} style={{width:'100%'}}><FlatButton style={{background:'#ff4d58', color:'#FFFFFF', width:'100%'}}>Check-In</FlatButton></Link>
+                  <Link to={'/booking/' + this.state.spaceProfile.slug} style={{width:'100%', marginBottom:'15px'}}><FlatButton style={{background:'#ff4d58', color:'#FFFFFF', width:'100%'}}>Bookings </FlatButton></Link>
+                  <Link to={'/join/' + this.state.spaceProfile.slug} style={{width:'100%', marginBottom:'15px'}}><FlatButton style={{background:'#FFFFFF', color:'#ff4d58', width:'100%', border:'1px solid #CCCCCC'}}>Join This Space </FlatButton></Link>
+                  <Link to={'/kiosk/' + this.state.spaceProfile.slug} style={{width:'100%', marginBottom:'15px'}}><FlatButton style={{background:'#ff4d58', color:'#FFFFFF', width:'100%'}}>Check-In</FlatButton></Link>
+                  <Link to={'/spacedash/' + this.state.spaceProfile.slug} style={{width:'100%'}}><FlatButton style={{background:'#FFFFFF', color:'#ff4d58', width:'100%', border:'1px solid #CCCCCC'}}>Dashboard</FlatButton></Link>
                 </div>
                 <div className="spaceLocation">
                   <div className="spaceLocationImage">

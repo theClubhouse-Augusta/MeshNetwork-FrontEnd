@@ -4,6 +4,7 @@
  *
  */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Helmet from 'react-helmet';
@@ -11,6 +12,7 @@ import { TiGroup } from 'react-icons/lib/ti';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar';
+import FlatButton from 'material-ui/Button';
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';

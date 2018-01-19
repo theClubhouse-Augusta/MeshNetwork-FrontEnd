@@ -7,29 +7,96 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper'; 
+import Moment from 'react-moment'; 
 import { EditingState } from '@devexpress/dx-react-grid'; 
-import { Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'; 
+import { Grid, Table, TableHeaderRow,           
+  TableEditRow, 
+  TableEditColumn,   } from '@devexpress/dx-react-grid-material-ui';
+import {
+    TableCell,
+    Button,
+    IconButton,
+    Input,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    MenuItem,
+    Select,
+  } from 'material-ui';
+import BlockIcon from 'material-ui-icons/Block'; 
+import ThumbDownIcon from 'material-ui-icons/ThumbDown'; 
 
+/* 
+TO DO 
+  Row Generator 
+
+  Role Editing Cell Render 
+  Banning Mechanism 
+  Dialog Warn for Banning 
+
+  Commiting the Changes 
+*/
 
 import './style.css';
 import './styleM.css';
-import {VerifiedUser} from 'material-ui-icons';
+import {ThumbUp} from 'material-ui-icons';
 
-/* TO DO 
-    -ROW GENERATOR 
-    -POSTS 
-    
-    -special renders for
-      VerifiedUser
-      Banned 
-    -human readable 
-      dates 
-      roles     
-    
-    L8R
-*/ 
+const Cell = (props) => { 
+  if (props.column.name === 'ban') { 
+    return <BanStatusCell {...props} />;
+  } if (props.column.name === 'role') {
+    return <RoleStatusCell  {...props}/>
+  }
+  return <Table.Cell {...props} />
+}
 
-const getRowId = row => row.id;
+const RoleStatusCell = ({ value }) => {
+  if (value === 1) {
+    return (<div style={{padding:'16px 8px'}}> Administrator </div>)
+  } if (value === 2 ) {
+    return (<div style={{color: 'teal', padding:'16px 8px' }}> Space Admin</div>)
+  } return (<div style={{color: 'orange',      padding:'16px 8px' }}> Member </div> )
+}
+
+const RoleEditSelect = ({ value, onValueChange }) => (
+   <TableCell> 
+    <Select 
+      value={value}
+      onChange={event => onValueChange(event.target.value)}
+      input={
+        <Input />
+      }
+      >
+      {roleValues.map(item => (
+        <MenuItem key={item} value={item}>{item}</MenuItem>
+      ))}
+    </Select>
+   </TableCell>
+)
+
+/* const onValueChange - 
+label change = role id value change */
+
+const BanStatusCell = ( { value } ) => {
+  if (value === 0) {
+      return ( <TableCell style={{padding: '0'}}>
+                <BanButton />
+               </TableCell>)
+  } return ( <TableCell style={{padding: '0'}} disabled>
+                <BlockIcon />
+              </TableCell> )
+}
+
+const BanButton = ({ onBanExecute }) => (
+  <IconButton onClick={onBanExecute} title="Ban User" aria-label="ban user button" style={{color: 'gray'}}>
+    <ThumbDownIcon  style={{height: '.75em', width: '.75em'}}/>
+  </IconButton> 
+) 
+
+/* onBanExecute = () => {this.setState({ban: 1}); function() {console.log('banned')}} */
+
 
 const userUpdateAPI = 'http://www.innovationmesh.com/api/updateUser'; 
 
@@ -39,36 +106,28 @@ export default class UserDash extends React.PureComponent {
     super(props); 
 
     this.state = {
-      columns: [
-        //take & convert role ID
-        {name: 'role', title: 'Role'}, 
-        {name: 'verified', title: 'Verified'}, 
-        {name: 'email', title: 'Email'}, 
-        //??
-        {name: 'name', title: 'Name'}, 
-        //take & convert created_at
-        {name: 'dateTime', title: 'Member Since'},
-        {name: 'ban', title: ''}, 
-      ],
-//ROLEID => readable role name
       rows: [
-        {id: '1', role: '', verified: '', email: '', name: 'bob bobert', dateTime: '', ban: ''},
-        {id: '2', role: '', verified: '', email: '', name: 'sally sue', dateTime: '', ban: ''},
-    
-        /* there is an option to wrap these in another object if need be
-        ie {user: {id:...}} you have to add  getCellValue: row => (row.user ? row.user.id : undefined) to the column dec*/
+        { id: 1, role: 1, name: 'Bob', lastName: 'Brown', age: 21, ban: 0 },
+        { id: 2, role: 2, name: 'John', lastName: 'Smith', age: 35, ban: 1 },
+        { id: 3, role: 3, name: 'Mike', lastName: 'Mitchel', age: 28, ban: 0 },
+      ],
+      columns: [
+        { name: 'role', title: 'Role' },
+        { name: 'name', title: 'Name' },
+        { name: 'lastName', title: 'Last Name' },
+        { name: 'age', title: 'Age' },
+        { name: 'ban', title: 'Ban Status'}
       ],
       editingRows: [],
       addedRows: [],
       changedRows: {},
     };
+
     this.changeAddedRows = this.changeAddedRows.bind(this);
     this.changeEditingRows = this.changeEditingRows.bind(this);
     this.changeChangedRows = this.changeChangedRows.bind(this);
     this.commitChanges = this.commitChanges.bind(this);
-    this.onEditingRowsChange = this.onEditingRowsChange.bind(this); 
   }
-
   changeAddedRows(addedRows) {
     this.setState({ addedRows });
   }
@@ -79,55 +138,22 @@ export default class UserDash extends React.PureComponent {
     this.setState({ changedRows });
   }
 
-  onEditingRowsChange(editingRows) {
-    this.setState({
-      editingRows
-    });
+  commitChanges() {
+    // Commit logic
   }
-
-//roleID=> actual role name
 //created_at => readable date format
 
-
-/* componentWillMount() { 
-    this.loadSpaceUsers(); 
-  }
-
-loadSpaceUsers = (props) => {
-    fetch('http://innovationmesh.com/api/users/space/'+ this.props.id, {
-      method:'GET'
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      this.setState({
-        rows:json
-      }, function() {
-        console.log(this.state.rows);
-      })
-    }.bind(this)) 
-} */
-
-
-commitChanges({ added, changed, deleted }) {
-  let rows = this.state; 
-
-  data.append()
-
-  fetch(userUpdateAPI, {
-    method: 'POST', 
-    body: data, 
-  })
-  .then(response => response.json())
-  .catch(error => {
-    console.log(error); 
-  })
+componentWillReceiveProps(users) {
+  this.setState({rows: this.props.users})    
 }
 
   render() {
-    const { rows, columns, editingRows, addedRows, changedRows } = this.state;
-
+    const { rows, 
+            columns,  
+            editingRows, 
+            addedRows, 
+            changedRows,
+            deletingRows } = this.state;
 
     return (
       <div className="userDashContainer">
@@ -135,14 +161,18 @@ commitChanges({ added, changed, deleted }) {
           <Grid
             rows={rows} 
             columns={columns}
-            getRowId={getRowId}
+            getRowId={row => row.id}
             > 
             <EditingState
-              onCommitChanges={this.commitChanges}
-              editingRows={editingRows}
-              onEditingRowsChange={this.onEditingRowsChange}
+            editingRows={editingRows}
+            onEditingRowsChange={this.changeEditingRows}
+            changedRows={changedRows}
+            onChangedRowsChange={this.changeChangedRows}
+            addedRows={addedRows}
+            onAddedRowsChange={this.changeAddedRows}
+            onCommitChanges={this.commitChanges}
           />
-          <Table />
+          <Table cellComponent={Cell}/>
           <TableHeaderRow />
           <TableEditRow />
           <TableEditColumn
@@ -152,6 +182,11 @@ commitChanges({ added, changed, deleted }) {
             allowEditing={!editingRows.length}
           />
           </Grid>
+
+          <Dialog>
+          {/* are you sure you want to ban this user */ }
+          </Dialog>
+
         </Paper>
       </div>
     );

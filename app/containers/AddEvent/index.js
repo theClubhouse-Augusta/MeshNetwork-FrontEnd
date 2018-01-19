@@ -584,6 +584,10 @@ export default class AddEvent extends Component {
                     <Helmet title="AddEvent" meta={[{ name: 'description', content: 'Description of AddEvent' }]} />
                     <Header />
 
+                    <div className="addEventBanner">
+                        <div className="homeHeaderContentTitle">Add a New Event</div>
+                        <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
+                    </div>
                     <main className="spaceSignUpMain">
 
                         <div className="spaceSignUpTitle">Submit an Event</div>
@@ -867,4 +871,307 @@ export default class AddEvent extends Component {
                 </div>
         );
     }
+              {
+    checkNewSponsors && [
+        <TextField
+            key="newSponTF1"
+            label="name"
+            onChange={this.sponsorName}
+            value={this.state.sponsorNames}
+            type="text"
+            margin="normal"
+        />,
+
+        <TextField
+            key="newSponTF2"
+            label="website"
+            onChange={this.sponsorUrl}
+            value={this.state.sponsorWebsites}
+            type="url"
+            margin="normal"
+        />,
+
+        <div key="newSponTF3" className="spaceLogoMainImageRow">
+            <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
+                {this.renderLogoImageText()}
+                {this.renderLogoImage()}
+                <input
+                    type="file"
+                    onChange={this.handleLogo}
+                    id="logo-image"
+                    style={{ display: 'none' }}
+                    accept="image/png, image/jpg, image/jpeg"
+                />
+            </label>
+        </div>,
+
+        <RaisedButton
+            key="newSponTF4"
+            onSubmit={this.onNewSponsorSubmit}
+            sponsor
+            style={{
+                backgroundColor: '#3399cc',
+                marginBottom: 64,
+                padding: '10px',
+                marginTop: '15px',
+                color: '#FFFFFF',
+                fontWeight: 'bold'
+            }}
+        />
+    ]
 }
+
+{
+!!newSponsors.length &&
+    <SelectedSponsors
+        selectedSponsors={newSponsors}
+        removeSponsor={this.removeNewSponsor}
+        newSponsor={true}
+    />
+}
+
+<input multiple id="event-files" type="file" style={{ display: 'none' }} onChange={this.eventFiles} />
+    <label htmlFor="event-files">
+        <div style={{ display: 'flex', color: 'rgba(0,0,0,0.54)', flexDirection: 'column', marginBottom: 16 }}>
+            <MdFileUpload size="40px" />
+            Upload any other relevant documents
+              </div>
+    </label>
+
+    <div style={{ marginTop: '40px', color: 'rgba(0,0,0,0.54)', }}>
+        {!!eventFiles.length ? [
+            <h4 key="fileh4" style={{ marginBottom: 10 }}> Uploaded files </h4>,
+            <ol key="fileol" style={{ height: '100%', display: 'flex', flexDirection: 'column', marginBottom: '60px', }}>
+                {eventFiles.map((file, key) => [
+                    <li style={{ height: '30px', borderBottom: '2px solid rgba(0,0,0,0.54)', paddingBottom: 20, paddingTop: 20 }} key={`file${key}`}>
+                        <MdInsertDriveFile size="40px" />
+                        {file.name}
+                    </li>
+                ])}
+            </ol>
+        ] : null}
+    </div>
+
+    <div style={{ display: 'flex', marginBottom: 32 }}>
+        <input
+            type="checkBox"
+            id="comprehensive-event"
+            onKeyDown={(e) => e.keyCode === 13 ? this.toggleCompEvent() : null} onChange={this.toggleCompEvent} checked={checkCompEvent}
+        />
+
+        <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="comprehensive-event">
+            &nbsp;&nbsp;comprehensive event
+              </label>
+
+    </div>
+
+    <div className="spaceLogoMainImageRow">
+        <label htmlFor="event-image" className="spaceLogoMainImageBlock">
+            {this.renderEventImageText()}
+            {this.renderEventImage()}
+            <input
+                type="file"
+                onChange={this.handleEventImage}
+                id="event-image"
+                style={{ display: 'none' }}
+                accept="image/png, image/jpg, image/jpeg"
+            />
+        </label>
+    </div>
+
+    <RaisedButton
+        style={{ backgroundColor: '#3399cc', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }}
+        onSubmit={this.Submit}
+    />
+          </div >
+        </main >
+    <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
+    <footer className="homeFooterContainer">
+        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+        </footer>
+    <ErrorModal message={modalMessage} closeModal={this.closeModal} />
+      </div >
+    );
+  }
+}
+
+// const {
+//   snackBarMessage, dateError, modalMessage,
+//   snackBar, checkCompEvent, days,
+//   description, selectedTag, selectedTags,
+//   selectedSponsors, newSponsors, eventFiles,
+//   organizers, showOrganizers, selectedOrganizers,
+//   sponsors, checkNewSponsors, sponsorNames,
+//   sponsorLogos, checkMultiday, loadedTags,
+//   tagFocused, sponsorFocused, organizerFocused,
+//   checkedRadio,
+// } = this.state;
+
+// const Helper = new StyleHelpers;
+
+// const options = [{id:0,nm:"one day event"},{id:1,nm:"multi-day event"}];
+// return (
+//   this.loading()
+//     ?
+//       <h1>spinner here!</h1>
+//     :
+//       <div className="container">
+//         <Helmet title="AddEvent" meta={[ { name: 'description', content: 'Description of AddEvent' }]}/>
+//         <header>
+//           <Header />
+//           <div className="addEventBanner">
+//             <div className="homeHeaderContentTitle">Add a New Event</div>
+//             <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
+//           </div>
+//         </header>
+
+//         <main className="spaceSignUpMain">
+//           <div className="spaceSignUpContainer">
+//             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
+//             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
+//             <TextField label="Breif description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription}/>
+
+//             <label
+//               style={{
+//                 marginTop: Helper.getLabelStyle(tagFocused, selectedTags)[0],
+//                 color: Helper.getLabelStyle(tagFocused, selectedTags)[1],
+//               }}
+//               className={Helper.getLabelClassName(tagFocused, selectedTags)}
+//             >
+//              event tags
+//             </label>
+
+//           {this.state.loadedTags &&
+//           <Select.Creatable
+//             className={Helper.getSelectStyle(tagFocused, selectedTags)}
+//             placeholder={!tagFocused && !!!selectedTags.length ? 'Choose or create some tags that describe your event ' : ''}
+//             multi
+//             style={{
+//               background: '#f8f8f8',
+//               border: 'none',
+//               boxShadow: 'none',
+//             }}
+//             options={loadedTags}
+//             onChange={this.selectTag}
+//             value={selectedTags}
+//             onFocus={this.onTagFocus}
+//             onBlur={this.onTagBlur}
+//           />}
+
+//           <label
+//             style={{
+//               marginTop: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[0],
+//               color: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[1],
+//             }}
+//             className={Helper.getLabelClassName(organizerFocused, selectedOrganizers)}
+//           >
+//             Event Organizer
+//           </label>
+
+//           {organizers &&
+//           <Select
+//             className={Helper.getSelectStyle(organizerFocused, selectedOrganizers)}
+//             placeholder={!organizerFocused && !!!selectedOrganizers.length ? 'Event Organizers' : ''}
+//             multi
+//             style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+//             options={organizers}
+//             onChange={this.selectOrganizer}
+//             value={selectedOrganizers}
+//             onFocus={this.onOrganizerFocus}
+//             onBlur={this.onOrganizerBlur}
+//           />}
+
+//           {!!selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={selectedOrganizers} removeOrganizer={this.removeOrganizer} />}
+
+//           {!!sponsors.length && [
+//             <label
+//               style={{
+//                 marginTop: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[0],
+//                 color: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[1],
+//               }}
+//               key={`label$`}
+//               className={Helper.getLabelClassName(sponsorFocused, selectedSponsors)}
+//             >
+//               selected sponsors
+//             </label>,
+//             <Select
+//               className={Helper.getSelectStyle(sponsorFocused, selectedSponsors)}
+//               placeholder={!sponsorFocused && !!!selectedSponsors.length ? 'Search Sponsors' : ''}
+//               key={`sponsors`}
+//               multi
+//               style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+//               options={sponsors}
+//               onChange={this.selectSponsor}
+//               value={selectedSponsors}
+//               onFocus={this.onSponsorFocus}
+//               onBlur={this.onSponsorBlur}
+//             />
+//           ]}
+
+//           {!!selectedSponsors.length &&
+//           <SelectedSponsors
+//             selectedSponsors={selectedSponsors}
+//             removeSponsor={this.removeSponsor}
+//             newSponsor={false}
+//           />}
+
+//           {(dateError && !checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{dateError}</p>}
+//           {(timeError && !checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{timeError}</p>}
+//           {(dateError && checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{dateError}</p>}
+//           {(timeError && checkMultiday) && <p style={{textAlign: 'center', margin: 0, padding: 0, color: 'red',}}>{timeError}</p>}
+
+//           <div
+//             style={{
+//               display:'flex',
+//               flexDirection: 'column',
+//               height: 50,
+//               color: 'rgba(0,0,0,0.54)',
+//               justifyContent: 'space-between',
+//               marginBottom: parseInt(this.state.checkedRadio) === 1 ? 32: '',
+//               marginTop: 32
+//             }}
+//           >
+//             {options.map((item,i) =>
+//                 <label key={`l${item.id}`} className="radio-inline">
+//                   <input
+//                     type="radio"
+//                     checked={this.state.checkedRadio == i}
+//                     ref={(el) => this["myRadioRef" + i] = el}
+//                     value={item.id}
+//                     onChange={this.changeRadio}
+//                     onKeyDown={(e) => e.keyCode === 13 ? this.changeRadio() : null}
+//                   />
+//                     <span style={{paddingLeft: 8}}>{item.nm}</span>
+//                 </label>
+//             )}
+//             </div>
+
+//             {parseInt(this.state.checkedRadio) === 1 &&
+//             <TextField
+//               label="How many days?"
+//               onChange={this.eventDays}
+//               value={this.state.days}
+//               type="text"
+//             />}
+
+//             {parseInt(this.state.checkedRadio) === 0 && [
+//               <label key="singleDay" className="addEventFormLabel"> date & time </label>,
+//               <DateTimeSelect
+//                 key="singleDay2"
+//                 dateLabel="Start date"
+//                 startTimeLabel="event start"
+//                 endTimeLabel="event end"
+//                 multiday={false}
+//                 selectDate={this.selectDate}
+//                 selectStart={this.selectStart}
+//                 selectEnd={this.selectEnd}
+//               />
+//             ]}
+
+//           {(parseInt(this.state.checkedRadio) === 1 && days) && this.multiDay(days) }
+
+{/* <input
+                  id="newSponsors"
+                  type="checkbox"
+                  onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null} onChange={this.toggleNewSponsors} checked={checkNewSponsors}
+                /> */}

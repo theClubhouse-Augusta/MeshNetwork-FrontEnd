@@ -63,7 +63,7 @@ export default class MemberAcct extends React.PureComponent {
   }
 
   loadSkills = () => {
-    fetch('http://innovationmesh.com/api/skills/all', {
+    fetch('https://innovationmesh.com/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(response => response.json())
@@ -72,7 +72,7 @@ export default class MemberAcct extends React.PureComponent {
   }
 
   loadUserSkills = () => {
-    fetch('http://innovationmesh.com/api/userskills', {
+    fetch('https://innovationmesh.com/api/userskills', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
     .then(response => response.json())
@@ -183,7 +183,7 @@ export default class MemberAcct extends React.PureComponent {
     data.append('website', website);
     data.append('avatar', this.state.avatar);
 
-    fetch(`http://innovationmesh.com/api/updateUser`, {
+    fetch(`https://innovationmesh.com/api/updateUser`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,
@@ -208,7 +208,7 @@ export default class MemberAcct extends React.PureComponent {
     data.append('company', company.trim());
     data.append('hireable', hireable);
 
-    fetch(`http://innovationmesh.com/api/updateUser`, {
+    fetch(`https://innovationmesh.com/api/updateUser`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,
@@ -232,7 +232,7 @@ export default class MemberAcct extends React.PureComponent {
     let { selectedTags } = this.state;
     data.append('tags', JSON.stringify(selectedTags));
 
-    fetch(`http://innovationmesh.com/api/updateUser`, {
+    fetch(`https://innovationmesh.com/api/updateUser`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,

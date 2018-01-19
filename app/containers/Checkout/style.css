@@ -1,30 +1,32 @@
 /* Checkout Styles */
+
 .container {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
- .foobar {
-  margin-top:32px; 
-  margin-bottom:22px; 
+
+.foobar {
+  margin-top: 32px;
+  margin-bottom: 22px;
   background: #fff;
-  border-bottom: 1.4px solid rgb(100,100,100);
+  border-bottom: 1.4px solid rgb(100, 100, 100);
   border-top: none;
   border-right: none;
   border-left: none;
 }
 
- .foobar2 {
-  margin-bottom:22px; 
+.foobar2 {
+  margin-bottom: 22px;
   background: #fff;
-  border-bottom: 1.4px solid rgb(100,100,100);
+  border-bottom: 1.4px solid rgb(100, 100, 100);
   border-top: none;
   border-right: none;
   border-left: none;
 }
 
- .foobar3 {
-  margin-bottom:22px; 
+.foobar3 {
+  margin-bottom: 22px;
   background: #fff;
   border-bottom: 1.4px solid #304ffe;
   border-top: none;
@@ -33,20 +35,20 @@
 }
 
 .labelFoobar {
-  margin-top:32px; 
+  margin-top: 32px;
 }
 
- .foobar:hover {
-    border-bottom: 2px solid rgb(100,100,100);
- }
+.foobar:hover {
+  border-bottom: 2px solid rgb(100, 100, 100);
+}
 
- .foobar2:hover {
-   border-bottom: 2px solid rgb(100,100,100);
- }
+.foobar2:hover {
+  border-bottom: 2px solid rgb(100, 100, 100);
+}
 
- .foobar3:hover {
+.foobar3:hover {
   border-bottom: 2px solid #304ffe;
- }
+}
 
 .Select-arrow {
   display: none;
@@ -87,18 +89,17 @@
 }
 
 .MyInputLabel-root-11 {
-  color: rgba(0,0,0,0.54);
+  color: rgba(0, 0, 0, 0.54);
   padding: 0;
   font-size: 1rem;
   font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
   line-height: 1;
 }
 
-
 .MyInputLabel-shrink-8 {
   transform: translate(0, 1.5px) scale(0.75);
   transform-origin: top left;
-  margin-top: 12px; 
+  margin-top: 12px;
 }
 
 .MyInputLabel-formControl-62 {
@@ -112,21 +113,41 @@
 }
 
 .MyInputLabel-focused-122 {
-  color: rgba(0,0,0,0.54);
+  color: rgba(0, 0, 0, 0.54);
 }
+
 .MyInputLabel-root-112 {
   padding: 0;
   font-size: 1rem;
   font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
   line-height: 1;
 }
+
 .MuiExpansionPanelSummary-content-94 {
   justify-content: center;
 }
+
 .MuiCollapse-wrapperInner-111 {
-  background:  #fff;
+  background: #fff;
 }
 
 span.Select-value-label {
   background: "red"
+}
+
+.checkoutHeaderBanner {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('http://h4z.it/Image/3c408f_331-1067x800.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.userSignUpMain {
+  background: #F8F8F8;
 }

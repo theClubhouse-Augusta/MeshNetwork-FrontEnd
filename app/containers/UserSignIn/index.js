@@ -43,7 +43,7 @@ export default class UserSignIn extends React.PureComponent {
     data.append('email', this.state.email);
     data.append('password', this.state.password);
 
-    fetch("http://innovationmesh.com/api/login", {
+    fetch("https://innovationmesh.com/api/login", {
       method:'POST',
       body:data
     })
@@ -68,21 +68,26 @@ export default class UserSignIn extends React.PureComponent {
 
   render() {
     return (
-      <div className="container">
+      <div className="userSignIncontainer">
         <Helmet title="UserSignIn" meta={[ { name: 'description', content: 'Description of UserSignIn' }]}/>
 
-        <header>
+        <header style={{background:'#FFFFFF'}}>
           <Header/>
+          <div className="userSignUpBanner">
+            <div className="homeHeaderContentTitle">Welcome Back, Fellow Coworker</div>
+            <div className="homeHeaderContentSubtitle">Find out what you have been missing</div>
+          </div>
         </header>
 
         <main className="userSignInMain">
-          <div className="userAuthContainer">
-            <div className="userAuthHeader">Sign into the Mesh</div>
-            <TextField style={{width:'100%', marginBottom:'10px'}} label="E-mail" value={this.state.email} onChange={this.handleEmail}/>
-            <TextField style={{width:'100%', marginBottom:'10px'}} label="Password" value={this.state.password} onChange={this.handlePassword} type="password"/>
-            <FlatButton style={{width:'80%', backgroundColor:"#3399cc", margin:'15px', color:'#FFFFFF'}} onClick={this.signIn}>Sign In</FlatButton>
-          </div>
+          <TextField style={{width:'100%', marginBottom:'15px'}} label="E-mail" value={this.state.email} onChange={this.handleEmail}/>
+          <TextField style={{width:'100%', marginBottom:'15px'}} label="Password" value={this.state.password} onChange={this.handlePassword} type="password"/>
+          <FlatButton style={{width:'80%', backgroundColor:"#ff4d58", margin:'15px', color:'#FFFFFF'}} onClick={this.signIn}>Sign In</FlatButton>
         </main>
+
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+        </footer>
 
         <Snackbar
           open={this.state.snack}

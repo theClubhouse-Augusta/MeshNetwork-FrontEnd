@@ -16,7 +16,6 @@ import Snackbar from 'material-ui/Snackbar';
 /* Components */
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
-import Footer from 'components/Footer';
 /* css */
 import './style.css';
 import './styleM.css';
@@ -42,16 +41,13 @@ export default class MemberSearch extends Component {
   }
 
   loadSkills = () => {
-    fetch('http://innovationmesh.com/api/skills', {
+    fetch('https://innovationmesh.com/api/skills', {
       //headers: { Authorization: `Bearer ${this.token}` },
     })
     .then(response => response.json())
     .then(json => {
       this.setState({ skills:json });
     })
-    .catch(error => {
-      alert(`error in fetching data from server: ${error}`);
-    });
   }
 
   searchQuery = (e) => {
@@ -61,7 +57,7 @@ export default class MemberSearch extends Component {
   // submit form if 'enter' is pressed
   checkKey = (e) => {
     if (e.keyCode === 13 && this.state.query) {
-      fetch(`http://innovationmesh.com/api/search/?query=${encodeURIComponent(this.state.query)}`, {
+      fetch(`https://innovationmesh.com/api/search/?query=${encodeURIComponent(this.state.query)}`, {
         //headers: { Authorization: `Bearer ${this.token}` },
       })
       .then(response =>
@@ -74,9 +70,6 @@ export default class MemberSearch extends Component {
 
         }
       })
-      .catch(error => {
-        alert(`error in fetching data from server: ${error}`); // eslint-disable-line
-      });
     }
   }
 
@@ -124,7 +117,7 @@ export default class MemberSearch extends Component {
   }
 
   tagClick = (tag) => {
-    fetch(`http://innovationmesh.com/api/search/?tag=${encodeURIComponent(tag)}`, {
+    fetch(`https://innovationmesh.com/api/search/?tag=${encodeURIComponent(tag)}`, {
       //headers: { Authorization: `Bearer ${this.token}` },
     })
     .then(function(response) {
@@ -144,11 +137,13 @@ export default class MemberSearch extends Component {
     let chipStyle = {
       color:"#FFFFFF",
       margin:'5px',
+      borderRadius:'5px',
+      background:'#ff4d58'
     }
 
-    let rand = Math.random() * (10 - 1) + 1;
+    /*let rand = Math.random() * (10 - 1) + 1;
 
-    chipStyle.animation = 'flicker '+ rand + 's ease alternate infinite';
+    chipStyle.animation = 'flicker '+ rand + 's ease alternate infinite';*/
 
     return(
       <Chip style={chipStyle} key={i} label={skill.name} onClick={ () => {this.tagClick(skill.name)}}/>
@@ -161,14 +156,17 @@ export default class MemberSearch extends Component {
       <div className="membersContainer">
         <Helmet title="MemberSearch" meta={[ { name: 'description', content: 'Description of MemberSearch' }]} />
 
-        <header>
+        <header style={{background:'#FFFFFF'}}>
           <Header />
+          <div className="membersBanner">
+            <div className="homeHeaderContentTitle">Connect with People</div>
+            <div className="homeHeaderContentSubtitle">Discover new and innovative members</div>
+          </div>
         </header>
 
-        <div className="membersBanner">Make Connections</div>
-
-        <main className="membersMain">
-
+        <main className="memberSearchMain">
+          <div className="">
+          </div>
           <TextField style={{width:'100%', maxWidth:'700px', textAlign:'center', marginBottom:'10px', color:'#FFFFFF'}} label="Member Search" value={this.state.query} onChange={this.searchQuery} onKeyDown={(e) => { this.checkKey(e); }}/>
 
           <div className="membersSubTitle">Popular Skills</div>
@@ -181,7 +179,7 @@ export default class MemberSearch extends Component {
 
           <div className="memberSearchResults">
             {this.state.results.map((user, index) => (
-              <Link to={'/member/' + user.id} className="eventBlock">
+              <Link to={'/user/' + user.id} className="eventBlock">
                 <div className="eventBlockImage">
                   <img src={user.avatar} style={{width:'100%', height:'auto'}}/>
                 </div>
@@ -195,7 +193,9 @@ export default class MemberSearch extends Component {
             ))}
           </div>
         </main>
-        <Footer />
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+        </footer>
         <Snackbar
           open={this.state.snack}
           message={this.state.msg}
