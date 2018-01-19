@@ -30,46 +30,46 @@ TO DO
 */
 
 
-const getEventsAPI = 'https://innovationmesh.com/api/workevents/';
-const eventUpdateAPI = 'https://innovationmesh.com/api/eventUpdate';
+const getEventsAPI = 'http://localhost:8000/api/workevents/';
+const eventUpdateAPI = 'http://localhost:8000/api/eventUpdate';
 const eventDateTimeAPI = '';
 const eventVerifyAPI = '';
 
 
 const Cell = (props) => {
-  if (props.column.name === 'status') {
-    return <EventApproveCell {...props} />;
-  }
-  return <Table.Cell {...props} />;
+    if (props.column.name === 'status') {
+        return <EventApproveCell {...props} />;
+    }
+    return <Table.Cell {...props} />;
 };
 Cell.propTypes = {
-  column: PropTypes.shape({ name: PropTypes.string }).isRequired,
+    column: PropTypes.shape({ name: PropTypes.string }).isRequired,
 };
 
 
 
 const EventApproveCell = ({ value }) => {
-  if (value === 0 ) {
-    // IconButtons have padding baked in
-    return (<TableCell style={{padding: '0'}}>
-              <ApprovalButton />
-            </TableCell>)
-  }
-  return ( <TableCell style={{padding: '0'}}>
-            <RevokeApproveButton />
-          </TableCell>
-  )
+    if (value === 0) {
+        // IconButtons have padding baked in
+        return (<TableCell style={{ padding: '0' }}>
+            <ApprovalButton />
+        </TableCell>)
+    }
+    return (<TableCell style={{ padding: '0' }}>
+        <RevokeApproveButton />
+    </TableCell>
+    )
 }
 
 const ApprovalButton = ({ onApproval }) => (
     <IconButton
-    //onClick={onApproval}
-    title="Approve Event" aria-label="approve event button" style={{color: 'orange', margin: '0'}}>
-      <QuestionAnswerIcon style={{height: '.75em', width: '.75em'}}/>
+        //onClick={onApproval}
+        title="Approve Event" aria-label="approve event button" style={{ color: 'orange', margin: '0' }}>
+        <QuestionAnswerIcon style={{ height: '.75em', width: '.75em' }} />
     </IconButton>
 );
 ApprovalButton.propTypes = {
-  onExecute: PropTypes.func.isRequired,
+    onExecute: PropTypes.func.isRequired,
 }
 
 /*const onApproval = () => {
@@ -77,16 +77,16 @@ ApprovalButton.propTypes = {
 }*/
 
 const RevokeApproveButton = ({ onRevokeApproval }) => (
-  <IconButton
-  //onClick={onRevokeApproval}
-  title="Revoke Approval"
-  aria-label="revoke event approval button"
-  style={{color: 'green'}}>
-    <DoneIcon />
-  </IconButton>
+    <IconButton
+        //onClick={onRevokeApproval}
+        title="Revoke Approval"
+        aria-label="revoke event approval button"
+        style={{ color: 'green' }}>
+        <DoneIcon />
+    </IconButton>
 );
 RevokeApproveButton.propTypes = {
-  onExecute: PropTypes.func.isRequired,
+    onExecute: PropTypes.func.isRequired,
 }
 
 /*const onRevokeApproval = () => {
@@ -95,163 +95,163 @@ RevokeApproveButton.propTypes = {
 
 
 export default class EventDash extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rows: [
-        { id: 1, status: 0, name: 'Bob', lastName: 'Brown', age: 21,  },
-        { id: 2, status: 1, name: 'John', lastName: 'Smith', age: 35,  },
-        { id: 3, status: 1, name: 'Mike', lastName: 'Mitchel', age: 28,  },
-      ],
-      columns: [
-        // column order is DELIBERATE, pls do not adjust w/o UX consideration!
-        { name: 'status', title: 'Status'},
-        { name: 'name', title: 'Name' },
-        { name: 'lastName', title: 'Last Name' },
-        { name: 'age', title: 'Age' },
-      ],
-      editingRows: [],
-      addedRows: [],
-      changedRows: {},
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            rows: [
+                { id: 1, status: 0, name: 'Bob', lastName: 'Brown', age: 21, },
+                { id: 2, status: 1, name: 'John', lastName: 'Smith', age: 35, },
+                { id: 3, status: 1, name: 'Mike', lastName: 'Mitchel', age: 28, },
+            ],
+            columns: [
+                // column order is DELIBERATE, pls do not adjust w/o UX consideration!
+                { name: 'status', title: 'Status' },
+                { name: 'name', title: 'Name' },
+                { name: 'lastName', title: 'Last Name' },
+                { name: 'age', title: 'Age' },
+            ],
+            editingRows: [],
+            addedRows: [],
+            changedRows: {},
+        };
 
-    this.changeAddedRows = this.changeAddedRows.bind(this);
-    this.changeEditingRows = this.changeEditingRows.bind(this);
-    this.changeChangedRows = this.changeChangedRows.bind(this);
-    this.commitChanges = this.commitChanges.bind(this);
-  }
-  changeAddedRows(addedRows) {
-    this.setState({ addedRows });
-  }
-  changeEditingRows(editingRows) {
-    this.setState({ editingRows });
-  }
-  changeChangedRows(changedRows) {
-    this.setState({ changedRows });
-  }
+        this.changeAddedRows = this.changeAddedRows.bind(this);
+        this.changeEditingRows = this.changeEditingRows.bind(this);
+        this.changeChangedRows = this.changeChangedRows.bind(this);
+        this.commitChanges = this.commitChanges.bind(this);
+    }
+    changeAddedRows(addedRows) {
+        this.setState({ addedRows });
+    }
+    changeEditingRows(editingRows) {
+        this.setState({ editingRows });
+    }
+    changeChangedRows(changedRows) {
+        this.setState({ changedRows });
+    }
 
-  commitChanges() {
-    // Commit logic
-  }
+    commitChanges() {
+        // Commit logic
+    }
 
 
- /* componentWillMount() {
-    this.loadSpaceEvents();
-    //this.getEventOrganizers();
-    //this.getEventDateTime();
-  }
+    /* componentWillMount() {
+       this.loadSpaceEvents();
+       //this.getEventOrganizers();
+       //this.getEventDateTime();
+     }
+   
+     loadSpaceEvents= () => {
+       fetch(getEventsAPI + this.props.id, {
+         method: 'GET'
+       })
+       .then(function(response) {
+         return response.json();
+       })
+       .then(function(json) {
+         this.setState({
+           rows:json,
+         }, function() {
+           console.log(this.state.rows);
+         })
+       }.bind(this))
+     }
+   
+   
+   /*
+   //eventID param
+     getEventOrganizers= () => {
+      match this.props.users
+      get name offa that obj
+     }
+   */
 
-  loadSpaceEvents= () => {
-    fetch(getEventsAPI + this.props.id, {
-      method: 'GET'
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      this.setState({
-        rows:json,
-      }, function() {
-        console.log(this.state.rows);
+    //reassign id => eventid:?
+    /*
+      getEventDateTime = () => {
+        fetch(eventDateTimeAPI + {id} {
+          method: 'GET'
+        })
+        .then(response => reponse.json())
+        .then(
+    
+        )
+    
+      }
+    */
+
+
+    renderReadableDate = () => {
+        const dateObject = new Date(Date.parse());
+
+        const dateReadable = dateObject.toDateString();
+
+        console.log(dateReadable);
+    }
+
+    /*
+    commitChanges({ added, changed, deleted }) {
+      let rows = this.state;
+    
+      data.append()
+    
+      fetch(eventUpdateAPI, {
+        method: 'POST',
+        body: data,
       })
-    }.bind(this))
-  }
-
-
-/*
-//eventID param
-  getEventOrganizers= () => {
-   match this.props.users
-   get name offa that obj
-  }
-*/
-
-//reassign id => eventid:?
-/*
-  getEventDateTime = () => {
-    fetch(eventDateTimeAPI + {id} {
-      method: 'GET'
-    })
-    .then(response => reponse.json())
-    .then(
-
-    )
-
-  }
-*/
-
-
-renderReadableDate = () => {
-    const dateObject = new Date(Date.parse());
-
-    const dateReadable = dateObject.toDateString();
-
-    console.log(dateReadable);
-  }
-
-/*
-commitChanges({ added, changed, deleted }) {
-  let rows = this.state;
-
-  data.append()
-
-  fetch(eventUpdateAPI, {
-    method: 'POST',
-    body: data,
-  })
-  .then(response => response.json())
-  .catch(error => {
-    console.log(error);
-  })
-}
-
-*/
+      .then(response => response.json())
+      .catch(error => {
+        console.log(error);
+      })
+    }
+    
+    */
 
 
 
 
-  render() {
-      const { rows,
+    render() {
+        const { rows,
             columns,
             editingRows,
             addedRows,
             changedRows,
             deletingRows } = this.state;
 
-    return (
-      <div className="eventDashContainer">
-        <Paper>
-          <Grid
-          rows={rows}
-          columns={columns}
-          getRowId={row => row.id}
-            >
-            <EditingState
-            editingRows={editingRows}
-            onEditingRowsChange={this.changeEditingRows}
-            changedRows={changedRows}
-            onChangedRowsChange={this.changeChangedRows}
-            addedRows={addedRows}
-            onAddedRowsChange={this.changeAddedRows}
-            onCommitChanges={this.commitChanges}
-          />
-          <Table
-            cellComponent={Cell}/>
-          <TableHeaderRow />
-          <TableEditRow />
-          <TableEditColumn
-          showAddCommand
-          showEditCommand
-          showDeleteCommand
-          allowEditing={!editingRows.length}
-          />
-          </Grid>
-        </Paper>
-      </div>
-    );
-  }
+        return (
+            <div className="eventDashContainer">
+                <Paper>
+                    <Grid
+                        rows={rows}
+                        columns={columns}
+                        getRowId={row => row.id}
+                    >
+                        <EditingState
+                            editingRows={editingRows}
+                            onEditingRowsChange={this.changeEditingRows}
+                            changedRows={changedRows}
+                            onChangedRowsChange={this.changeChangedRows}
+                            addedRows={addedRows}
+                            onAddedRowsChange={this.changeAddedRows}
+                            onCommitChanges={this.commitChanges}
+                        />
+                        <Table
+                            cellComponent={Cell} />
+                        <TableHeaderRow />
+                        <TableEditRow />
+                        <TableEditColumn
+                            showAddCommand
+                            showEditCommand
+                            showDeleteCommand
+                            allowEditing={!editingRows.length}
+                        />
+                    </Grid>
+                </Paper>
+            </div>
+        );
+    }
 }
 
 EventDash.contextTypes = {
-  router: PropTypes.object
+    router: PropTypes.object
 };
