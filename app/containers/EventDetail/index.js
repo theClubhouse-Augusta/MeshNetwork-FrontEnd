@@ -4,13 +4,15 @@
  *
  */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Helmet from 'react-helmet';
-import { TiGroup } from 'react-icons/lib/ti'; 
+import { TiGroup } from 'react-icons/lib/ti';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import Snackbar from 'material-ui/Snackbar'; 
+import Snackbar from 'material-ui/Snackbar';
+import FlatButton from 'material-ui/Button';
 
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -30,55 +32,17 @@ export default class EventDetail extends React.PureComponent {
     workSpace: '',
     workSpaces: '',
     upcomingEvents: '',
-    sponsors: '',
+    sponsors: [],
     organizers: [],
     attendees: [],
+    dates:[],
     snackBarMessage: '',
     snackBar: false,
     tags: [],
   };
 
-  token = localStorage['token'];
-  path = this.props.location.pathname.split('/');
-  eventID = this.path[this.path.length - 1];
-
   componentDidMount() {
-    if ( isNaN(parseInt(this.eventID)) || this.eventID === '0' || this.eventID === '0') {
-      this.props.history.push('/');
-    } else {
-      try {
-        const json = localStorage.getItem('EventDetail');
-        const event = JSON.parse(json);
-        if (event) {
-          if (event.local) {
-            this.setState({ 
-              event: event.event,
-              workSpace: event.local,
-              upcomingEvents: event.upcomingEvents,
-              sponsors: event.sponsors,
-              organizers: event.organizers,
-              attendees: event.attendees,
-              tags: event.tags
-            });
-          } else {
-            this.setState({ 
-              event: event.event,
-              hostSpace: event.hostSpace,
-              workSpaces: event.nonLocal,
-              upcomingEvents: event.upcomingEvents,
-              sponsors: event.sponsors,
-              organizers: event.organizers,
-              attendees: event.attendees,
-              tags: event.tags
-            });
-          }
-        } else {
-          this.getEvent(this.eventID);
-        }
-      } catch (error) {
-       // do something 
-      }
-    }
+    this.getEvent(this.props.match.params.id);
   }
 
   clickMapMarker = (spaceId) => {
@@ -86,46 +50,29 @@ export default class EventDetail extends React.PureComponent {
   }
 
   getEvent = (eventID) => {
-    fetch(`http://innovationmesh.com/api/event/${eventID}`, {
-      headers: { Authorization: `Bearer ${this.token}` }
+    fetch(`https://innovationmesh.com/api/event/${eventID}`, {
+      method:'GET'
     })
-    .then(reponse => reponse.json())
-    .then(Event => {
-      if (Event.local) {
-        this.setState({	
-          event: Event.event,
-          workSpace: Event.local,
-          upcomingEvents: Event.upcomingEvents,
-          sponsors: Event.sponsors,
-          organizers: Event.organizers,
-          attendees: Event.attendees,
-          tags: Event.tags
-        }, () => {
-          localStorage['EventDetail'] = JSON.stringify(Event);
-        });
-      } else if (Event.nonLocal) {
-        this.setState({	
-          event: Event.event,
-          hostSpace: Event.hostSpace,
-          workSpaces: Event.nonLocal,
-          upcomingEvents: Event.upcomingEvents,
-          sponsors: Event.sponsors,
-          organizers: Event.organizers,
-          attendees: Event.attendees,
-          tags: Event.tags
-        }, () => {
-          localStorage['EventDetail'] = JSON.stringify(Event);
-        })
-      }
+    .then(function(response) {
+      return response.json();
     })
-    .catch(error => {
-      alert(`error getEvent(): ${error}`)
-    });
+    .then(function(json) {
+      this.setState({
+        event: json.event,
+        workSpace: json.workspace,
+        upcomingEvents: json.upcomingEvents,
+        sponsors: json.sponsors,
+        organizers: json.organizers,
+        attendees: json.attendees,
+        dates: json.dates,
+        tags: json.tags
+      })
+    }.bind(this))
   }
 
   registerForEvent = (e, eventID) => {
     e.preventDefault();
-    fetch(`http://innovationmesh.com/api/event/join/${eventID}`, {
+    fetch(`https://innovationmesh.com/api/event/join/${eventID}`, {
       headers: { Authorization: `Bearer ${this.token}` }
     },
     )
@@ -145,39 +92,39 @@ export default class EventDetail extends React.PureComponent {
     });
   };
 
-  toggleSnackBar = (message) => 
-    this.setState({	
-      snackBar: !this.state.snackBar, 
+  toggleSnackBar = (message) =>
+    this.setState({
+      snackBar: !this.state.snackBar,
       snackBarMessage: message
     });
 
   handleDates = (start, end) => {
     // hour:min:sec
-    const startHourMinSec = moment(start).format('hms'); 
+    const startHourMinSec = moment(start).format('hms');
     const endHourMinSec = moment(end).format('hms');
 
     // day of month
-    const startDay = moment(start).format('Do'); 
+    const startDay = moment(start).format('Do');
     const endDay = moment(end).format('Do');
 
     let timeFormat;
     if ( startHourMinSec !== endHourMinSec && startDay !== endDay ) {
         if (startDay === endDay) {
-          timeFormat = ( 
+          timeFormat = (
             <time>
               {`${moment(start).format('MMMM Do h:mm')} - ${moment(end).format('h:mm')}`}
             </time>
           );
         } else {
-          timeFormat = ( 
+          timeFormat = (
             <div>
-              <time> 
+              <time>
                 starts:&nbsp;&nbsp;&nbsp;{`${moment(start).format(`MMMM D, h:mm A`)}`}
-              </time> 
+              </time>
 
-              <br/> 
+              <br/>
 
-              <time> 
+              <time>
                 ends:&nbsp;&nbsp;&nbsp;{`${moment(end).format('MMMM D, h:mm A')}`}
               </time>
             </div>
@@ -188,7 +135,7 @@ export default class EventDetail extends React.PureComponent {
   }
 
 
-  render() {  
+  render() {
     const {
       event,
       workSpace,
@@ -196,6 +143,7 @@ export default class EventDetail extends React.PureComponent {
       workSpaces,
       upcomingEvents,
       sponsors,
+      dates,
       organizers,
       attendees,
       snackBar,
@@ -207,198 +155,114 @@ export default class EventDetail extends React.PureComponent {
     const end = event.end;
 
     return (
-      <div className="container">
+      <div className="eventDetailContainer">
         <Helmet title="EventDetail" meta={[ { name: 'description', content: 'Description of EventDetail' }]}/>
-        <Header />
-        
-        <main>
-          <div className="eventBanner">
-            <h1 className="eventName">{event.title}</h1>
-            <h2 className="eventDateTime"> 
-              {this.handleDates(start,end)}
-            </h2>
+        <header style={{background:'#FFFFFF'}}>
+          <Header />
+          <div className="eventDetailBanner"
+            style={{
+              background:"linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url("+this.state.event.image+")",
+              backgroundRepeat:'no-repeat',
+              backgroundSize:'cover',
+              backgroundPosition:'center center',
+            }}>
+            <div className="homeHeaderContentTitle">{this.state.event.title}</div>
+            <div className="homeHeaderContentSubtitle">{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
           </div>
+        </header>
 
-          <div className="eventBody">
-            <div className="eventDescription">
-              <div className="eventQuickInfo">
-                  <div className="eventNotices">
-                    <div className="eventNotice"> 
-                      <TiGroup style={{fontSize: '32px'}} /> 
-                        <label style={{marginLeft: '10px', lineHeight: '32px'}}>
-                          Public Welcome
-                        </label>  
-                    </div>
-
-                    {!!tags.length && 
-                    <div className="eventTags">
-                      {tags.map((tag, key) =>
-                        <Chip key={`chip${key}`} label={tag} style={{margin: '10px'}} />
-                      )}
-                    </div>}
-
-                  </div>
-
-                </div>
-
-                {event && 
-                <div                 
-                  className="eventDescriptionContent"
-                  dangerouslySetInnerHTML={{__html: event.description}}
-                >
+        <main className="spaceSignUpMain">
+          <div className="spaceSignUpUser">
+            <div className="spaceSignUpTitle">Event Location</div>
+            {workSpace &&
+              <MapLocal
+                isMarkerShown
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={<div style={{ height: '100%' }} />}
+                containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
+                mapElement={<div style={{ height: '23em' }} />}
+                lat={workSpace.lat}
+                lon={workSpace.lon}
+                clickMapMarker={this.clickMapMarker}
+                workSpace={workSpace}
+              />
+            }
+          </div>
+          <div className="spaceSignUpContainer">
+            <div className="eventDetailSection">
+              <div className="eventDetailSectionTitle">Description</div>
+              <div className="eventDetailSectionContent">
+                <div dangerouslySetInnerHTML={{__html: this.state.event.description}}/>
+                {!!tags.length &&
+                <div className="eventTags">
+                  {tags.map((tag, key) =>
+                    <Chip key={`chip${key}`} label={tag} style={{color:"#FFFFFF", marginRight:'5px', marginTop:'5px', borderRadius:'5px', background:'#ff4d58'}} />
+                  )}
                 </div>}
-                
-                {event && <a key="foo" href={event.url}> Find out more </a>}
-
-                <div className="eventPeopleBlock">
-
-                  <div className="eventAvatarsBlock"> 
-                    <div className="eventOrganizers">
-                      <h3> organizers </h3>
-                      {organizers && organizers.map((organizer, key) =>
-                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/user/${organizer.id}`))}>
-                          {!!organizer.avatar && <Avatar key={`org${key}`} src={organizer.avatar} />}
-                          {organizer.name}
-                        </div>
-                      )}
-                    </div>
-                  
-                    <div className="eventAttendees">
-                      <h3> attendees </h3>
-                      {attendees &&
-                      attendees.map((attendee, key) =>
-                        <div className="eventDetailAvatar" onClick={() => (this.props.history.push(`/userprofile/${attendee.id}`))}>
-                          <Avatar key={`att${key}`} src={attendee.avatar} />
-                          {attendee.name}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="eventSponsorsBlock">
-                    <h3> sponsors </h3>
-                    {sponsors && sponsors.map((sponser,key) => 
-                      <Card key={`eventSponsorCard${key}`} className="eventSponsorCard"> 
-                        <CardMedia title="a company logo"> 
-                          <h2 className="eventCardHeader">{sponser.name}</h2>
-                          <img src={`${sponser.logo}`} className="eventSponsorLogo"/> 
-                        </CardMedia> 
-                      </Card>
-                    )}
-                  </div>
-                </div> 
               </div>
-
-            <div className="eventLocationInfo">
-              <div className="eventMap">
-                {/* local event */}
-                {workSpace &&
-                  <MapLocal
-                    isMarkerShown
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
-                    loadingElement={<div style={{ height: '100%' }} />}
-                    containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
-                    mapElement={<div style={{ height: '23em' }} />}
-                    lat={workSpace.lat}
-                    lon={workSpace.lon}
-                    clickMapMarker={this.clickMapMarker}
-                    workSpace={workSpace}
-                  />
-                }
-
-                {/* non-local event */}
-                {workSpaces &&
-                  <MapNonLocal
-                    isMarkerShown
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
-                    loadingElement={<div style={{ height: '100%' }} />}
-                    containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
-                    mapElement={<div style={{ height: '23em' }} />}
-                    lat={33.5105746}
-                    lon={-82.08560469999999}
-                    clickMarker={this.clickMapMarker}
-                    spaces={workSpaces}
-                  />
-                }
-              <div className="eventLocation">
-                {/* local event */}
-                {workSpace && <div className="eventSpace">{workSpace.name}</div>}
-
-                {/* non-local event */}
-                {hostSpace && <div className="eventSpace">{hostSpace.name}</div>}
-              </div>               
-              <div className="eventAddress">
-
-                {/* local event */}
-                  {workSpace &&
-                    <address>
-                      {workSpace.address}, <br />
-                      {`${workSpace.city}, ${workSpace.state} ${workSpace.zipcode}`}  <br />
-                    </address> 
-                  }
-
-                  {/* non-local event */}
-                  {hostSpace &&
-                    <address>
-                      {hostSpace.address}, <br />
-                      {`${hostSpace.city}, ${hostSpace.state} ${hostSpace.zipcode}`}  <br />
-                    </address> 
-                  }
-
-
+            </div>
+            <div className="eventDetailSection">
+              <div className="eventDetailSectionTitle">Time & Days</div>
+              <div className="eventDetailSectionContent">
+                <div className="eventDetailDates">
+                  {this.state.dates.map((date, i) => (
+                    <div className="eventDetailsDateBlock">{date.start} -- {date.end}</div>
+                  ))}
+                </div>
+                <div className="eventDetailSignUpRow">
+                  <div className="homeSignButtons">
+                    <Link to={'/join/'+ this.state.workSpace.slug} style={{margin:'15px', width:'45%'}}><FlatButton style={{width:'100%', background:'#ff4d58', paddingTop:'10px', paddingBottom:'10px',color:'#FFFFFF', fontWeight:'bold'}}>Sign Up</FlatButton></Link>
+                    <Link to={'/space/' + this.state.workSpace.slug} style={{margin:'15px', width:'45%'}}><FlatButton style={{width:'100%', background:'#FFFFFF', paddingTop:'10px', paddingBottom:'10px',color:'#ff4d58', fontWeight:'bold', border:'1px solid #DDDDDD'}}>About the Space</FlatButton></Link>
+                  </div>
                 </div>
               </div>
-
-              <div className="eventRegistration">
-                <button 
-                  onClick={(e) => {this.registerForEvent(e, event.id) }}  
-                  style={{ marginTop: '40px'}} 
-                  backgroundColor="#e36937"  
-                > 
-                  register  
-                </button>
-                  
-                <Snackbar
-                  open={this.state.open}
-                  message="You're signed up!"
-                  autoHideDuration={4000}
-                />
-              </div>
-
-              <div className="eventSponsors">
-                
-              </div>
-
-              <div className="eventUpcomingEvents">
-                <h4 className="eventUpcomingTitle"> Upcoming events </h4> 
-                {(upcomingEvents && !hostSpace) &&
-                <ul className="eventUpcomingList"> 
-                  {upcomingEvents.map((event, key) => 
-                  <a key={`a${key}`} href={`/event/${event.id}`}>
-                    <li style={{lineHeight: '2em'}}>
-                      {`${moment(event.start).format('MMMM D')} ${event.title} @${event.name}`}
-                    </li>
-                  </a>)} 
-                </ul>} 
-
-                {(upcomingEvents && workSpaces) &&
-                <ul className="eventUpcomingList"> 
-                  {upcomingEvents.map((event, key) => 
-                  <a key={`a${key}`} href={`/event/${event.id}`}>
-                    <li style={{lineHeight: '2em'}}>
-                      {`${moment(event.start).format('MMMM D')} ${event.title} @` + `${workSpaces.map(space => space.name,)}`}
-                    </li>
-                  </a>)}
-                </ul>} 
-              </div>
-              <img src="htto://localhost" alt=""/>
-              
             </div>
-          </div>        
-        </main>  
+            <div className="eventDetailSection">
+              <div className="eventDetailSectionTitle">Organizers</div>
+              <div className="eventDetailSectionContent">
+                <div className="eventDetailUsersList">
+                  {this.state.organizers.map((organizer, i) => (
+                    <div className="eventDetailUsersBlock">
+                      <img src={organizer.avatar}/>
+                      <div style={{marginTop:'10px'}}>{organizer.name}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="eventDetailSection">
+              <div className="eventDetailSectionTitle">Sponsors</div>
+              <div className="eventDetailSectionContent">
+                <div className="eventDetailUsersList">
+                  {this.state.sponsors.map((sponsor, i) => (
+                    <div className="eventDetailUsersBlock">
+                      <img src={sponsor.logo}/>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="eventDetailSection">
+              <div className="eventDetailSectionTitle">Attendees</div>
+              <div className="eventDetailSectionContent">
+                <div className="eventDetailUsersList">
+                  {this.state.attendees.map((attendee, i) => (
+                    <div className="eventDetailUsersBlock">
+                      <img src={attendee.avatar}/>
+                      <div style={{marginTop:'10px'}}>{attendee.name}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
 
-        <Footer />
-        <Snackbar open={snackBar} message={snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+        </footer>
+
+        <Snackbar open={this.state.snackBar} message={this.state.snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
       </div>
     );
   }

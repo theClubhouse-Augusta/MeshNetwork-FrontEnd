@@ -13,12 +13,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend, 
+  Legend,
   BarChart,
   Bar
 } from 'Recharts';
 
-import DateRangePicker from '../DateRangePicker'; 
+import DateRangePicker from '../DateRangePicker';
 
 import './style.css';
 import './styleM.css';
@@ -36,12 +36,12 @@ export class AppearanceByMonthYear extends React.PureComponent {
   loadAppearancesForMonthYear = () => {
     const { year, year2, month, month2 } = this.state;
     if (year && year2 && month && month2) {
-      fetch(`http://localhost:8000/api/appearances/range/${this.props.match.params.id}/${month}/${year}/${month2}/${year2}`, {
+      fetch(`https://innovationmesh.com/api/appearances/range/${this.props.match.params.id}/${month}/${year}/${month2}/${year2}`, {
       })
       .then(response => response.json())
-      .then(json => this.setState({ 
+      .then(json => this.setState({
           dataTwo:json,
-          error: false 
+          error: false
         }))
       .catch(error => {
         alert(`error in fetching data from server: ${error}`);
@@ -60,16 +60,16 @@ export class AppearanceByMonthYear extends React.PureComponent {
   };
 
   selectYear = e => {
-    if (e.target.value.match(/^\d*$/)) 
+    if (e.target.value.match(/^\d*$/))
       this.setState({ year: e.target.value });
   }
 
   selectYear2 = e => {
-    if (e.target.value.match(/^\d*$/)) 
+    if (e.target.value.match(/^\d*$/))
       this.setState({ year2: e.target.value });
   }
-  
-  
+
+
   render() {
     const { error, month, year, dataTwo, month2, year2} = this.state;
 
@@ -96,10 +96,10 @@ export class AppearanceByMonthYear extends React.PureComponent {
 
           <FlatButton
             style={{
-              backgroundColor:'#3399cc', 
-              padding:'10px', 
-              marginTop:'15px', 
-              color:'#FFFFFF', 
+              backgroundColor:'#3399cc',
+              padding:'10px',
+              marginTop:'15px',
+              color:'#FFFFFF',
               fontWeight:'bold',
               width: 240,
               margin: 12
@@ -110,7 +110,7 @@ export class AppearanceByMonthYear extends React.PureComponent {
           </FlatButton>
         </section>
         <section>
-          {dataTwo && 
+          {dataTwo &&
           <BarChart width={730} height={300} data={dataTwo}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
@@ -124,4 +124,3 @@ export class AppearanceByMonthYear extends React.PureComponent {
     );
   }
 }
-

@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 
 
 import TextField from 'material-ui/TextField';
@@ -114,7 +114,7 @@ export default class Booking extends React.PureComponent {
     data.append('times', this.state.activeTimes);
     data.append('spaceID', this.props.match.params.id);
 
-    fetch("http://innovationmesh.com/api/booking", {
+    fetch("https://innovationmesh.com/api/booking", {
       method:'POST',
       body:data
     })
@@ -209,7 +209,9 @@ export default class Booking extends React.PureComponent {
           </div>
         </main>
 
-        <footer></footer>
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+        </footer>
         <Snackbar
           open={this.state.snack}
           message={this.state.msg}

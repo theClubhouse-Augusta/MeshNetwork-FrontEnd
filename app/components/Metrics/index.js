@@ -26,16 +26,16 @@ import './styleM.css';
 */ 
 
 // member joins per year
-const joinsAPI = 'http://innovationmesh.com/api/db/Joins'; 
+const joinsAPI = 'https://innovationmesh.com/api/db/Joins'; 
 
 //total unique visits 
-const spaceAppAPI= 'http://innovationmesh.com/api/db/appearances/';
+const spaceAppAPI= 'https://innovationmesh.com/api/db/appearances/';
 
 //total appearances by user 
-const userAppAPI= 'http://innovationmesh.com/api/appearance/';
+const userAppAPI= 'https://innovationmesh.com/api/appearance/';
 
 //attendance by event 
-const eventAppAPI = 'http://innovationmesh.com/api/countAppearances/eventAll/'; 
+const eventAppAPI = 'https://innovationmesh.com/api/countAppearances/eventAll/'; 
 
 //const numberArrayConverter= ; 
 //const convertedArraySum = ;

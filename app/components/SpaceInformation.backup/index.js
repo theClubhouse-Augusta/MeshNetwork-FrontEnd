@@ -9,8 +9,7 @@ import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 import { TextField } from 'material-ui';
 import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';
-import { EditorState, ContentState, convertToRaw, convertFromRaw, convertFromHTML } from 'draft-js';
+import { EditorState, ContentState, convertToRaw, convertFromRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -19,15 +18,13 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style.css';
 import './styleM.css';
 
+
+
 const spaceUpdateAPI = 'https://innovationmesh.com/api/spaceupdate';
 
 
 export default class SpaceInformation extends React.PureComponent {
   state = {
-    token:localStorage.getItem('token'),
-    msg:"",
-    snack:false,
-    id:'',
     name: '',
     email: '',
     website: '',
@@ -36,32 +33,34 @@ export default class SpaceInformation extends React.PureComponent {
     city: '',
     state: '',
     zipcode: '',
-    stripe: '',
+    stripeKey: '',
     pubKey: '',
     facebook: '',
     twitter: '',
     instagram: '',
+
     logo: '',
     logoPreview: '',
+
     description: '',
+    //editorState:EditorState.createWithContent(ContentState.convertFromRaw(this.props.description)),
 
   }
 
-  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
-
-  componentWillMount() {
+componentWillMount() {
     this.getSpaceInfo();
   }
 
   handleInputChange = name => event => {
     this.setState({
       [name]: event.target.value,
+    }, function() {
+      console.log(this.state);
     });
   };
 
   onEditorChange = (editorState) => {
-    this.setState({description:editorState});
+    this.setState({editorState});
   }
 
   handleLogo = (event) => {
@@ -88,7 +87,6 @@ export default class SpaceInformation extends React.PureComponent {
     })
     .then(function(json) {
       this.setState({
-        id: json.id,
         name: json.name,
         email: json.email,
         website: json.website,
@@ -98,12 +96,12 @@ export default class SpaceInformation extends React.PureComponent {
         state: json.state,
         zipcode: json.zipcode,
         logo: json.logo,
-        description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(json.description))),
+        description: json.description,
         facebook: json.facebook,
         twitter: json.twitter,
         instagram: json.instagram,
         stripe: json.stripe,
-        pubKey:  json.pubKey,
+        payURL:  json.payURL,
       },function() {
         console.log(this.state);
       })}
@@ -126,11 +124,12 @@ renderLogoPreview = () => {
   }
 }
 
+
+
+
 spaceInfoSubmit = () => {
-  let _this = this;
   let data = new FormData();
     let {
-    id,
     name,
     city,
     address,
@@ -143,44 +142,38 @@ spaceInfoSubmit = () => {
     facebook,
     twitter,
     instagram,
-    stride,
-    pubKey,
+    pinterest,
+    youtube,
+    tumblr,
     logo
    } = this.state;
 
-  data.append('spaceID', id)
-  data.append('name', name);
-  data.append('city', city);
-  data.append('address', address);
-  data.append('state', state);
-  data.append('zipcode', zipcode);
-  data.append('email', email);
-  data.append('website', website);
-  data.append('phone_number', phone_number);
-  data.append('description', draftToHtml(convertToRaw(description.getCurrentContent())));
-  data.append('facebook', facebook);
-  data.append('twitter', twitter);
-  data.append('instagram', instagram);
-  data.append('logo', logo);
-  data.append('stride', stride);
-  data.append('pubKey', pubKey);
+  data.append('name', name.trim());
+  data.append('city', city.trim());
+  data.append('address', address.trim());
+  data.append('state', state.trim());
+  //data.append('zipcode', zipcode.trim());
+  data.append('email', email.trim());
+  data.append('website', website.trim());
+  data.append('phone_number', phone_number.trim());
+  //data.append('description', );
+  data.append('facebook', facebook );
+  //data.append('twitter', twitter.trim());
+  //data.append('instagram', instagram.trim());
+  //data.append('pinterest', pinterest.trim());
+  //data.append('youtube', youtube.trim());
+  //data.append('tumblr', tumblr.trim());
+  //data.append('logo', this.state. logo);
 
   fetch(spaceUpdateAPI, {
+    //header?
     method: 'POST',
     body: data,
-    headers: {'Authorization':'Bearer ' + this.state.token}
   })
-  .then(function(response) {
-    return response.json();
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error);
   })
-  .then(function(json) {
-    if(json.error) {
-      _this.showSnack(json.error);
-    }
-    else if(json.success) {
-      _this.showSnack(json.success);
-    }
-  }.bind(this));
 }
 
 
@@ -195,6 +188,8 @@ spaceInfoSubmit = () => {
           </div>
           <div className="spaceIDashMain">
               <form className="spaceIDashForm">
+
+{/* INPUTS FYI- if you turn them back into a regular exp it bugs the floating label pls avoid */}
 
                 <div className="spaceIDashInfoMain">
                   <div className="spaceIDashContactInfo">
@@ -282,18 +277,18 @@ spaceInfoSubmit = () => {
                   <div className="spaceIDashPaymentInfo" style={{padding: '15px 0'}}>
                   <h3 > Payment System </h3>
                   <TextField
-                      label={'Stripe Private Key'}
+                      label={'Stripe API Key'}
                       margin='normal'
-                      placeholder={this.state.stripeKey }
-                      defaultValue={this.state.stripeKey }
-                      onChange={this.handleInputChange('stripeKey')}
+                      //placeholder={this.state.stripeKey }
+                      //defaultValue={this.state.stripeKey }
+                      //onChange={this.handleInputChange('stripeKey')}
                     />
                     <TextField
-                      label={'Stripe Public Key'}
+                      label={'Outside Payment URL'}
                       margin='normal'
-                      placeholder={this.state.pubKey}
-                      defaultValue={this.state.pubKey}
-                      onChange={this.handleInputChange('pubKey')}
+                      //placeholder={this.state.payURL}
+                      //defaultValue={this.state.payURL}
+                      //onChange={this.handleInputChange('payURL')}
                     />
                   </div>
 
@@ -358,7 +353,7 @@ spaceInfoSubmit = () => {
                 <h3 style={{margin: '15px 0'}}>Description</h3>
                 <Paper>
                 <Editor
-                    editorState={this.state.description}
+                    editorState={contentState}
                     onEditorStateChange={this.onEditorChange}
                     // toolbarClassName="home-toolbar"
                     // wrapperClassName="home-wrapper"
@@ -381,7 +376,7 @@ spaceInfoSubmit = () => {
               <div className="spaceIDashSubmit">
                     <Button
                     raised
-                    style={{backgroundColor:'#ff4d58', padding:'10px', marginTop:'15px', color:'#FFFFFF', width: '50%' }}
+                    style={{backgroundColor:'#3399cc', padding:'15px', marginTop:'15px', color:'#FFFFFF', width: '50%' }}
                     onClick={this.spaceInfoSubmit}
                     >
                       Submit
@@ -389,12 +384,7 @@ spaceInfoSubmit = () => {
               </div>
           </div>
         </Paper>
-        <Snackbar
-          open={this.state.snack}
-          message={this.state.msg}
-          autoHideDuration={3000}
-          onClose={this.handleRequestClose}
-        />
+
       </div>
     );
   }
