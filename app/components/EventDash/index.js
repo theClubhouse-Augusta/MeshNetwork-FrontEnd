@@ -15,28 +15,25 @@ import IconButton from 'material-ui/IconButton';
 import DoneIcon from 'material-ui-icons/Done'; 
 import QuestionAnswerIcon from 'material-ui-icons/QuestionAnswer'; 
 
-import './style.css';
+import './style.css'; 
 import './styleM.css';
 
+/* 
+TO DO 
+  Row Generator
 
+  Verification in general???? Need API ❓
 
-/* TO DO 
-    -ROW GENERATOR 
-    -POSTS 
-    
-    ??? eventOrganizer & eventDates APIs 
-    -approval button 
-    -   
-    
-    L8R
-*/ 
+  Editing State Status Render ➡ literally the same thing    
+
+  Commiting the Changes 
+*/
+
 
 const getEventsAPI = 'http://innovationmesh.com/api/workevents/'; 
 const eventUpdateAPI = 'http://innovationmesh.com/api/eventUpdate';
 const eventDateTimeAPI = ''; 
-
-
-
+const eventVerifyAPI = ''; 
 
 
 const Cell = (props) => {
@@ -51,24 +48,23 @@ Cell.propTypes = {
 
 
 
-const EventApproveCell = ({
-  value 
-}) => { 
+const EventApproveCell = ({ value }) => { 
   if (value === 0 ) { 
     // IconButtons have padding baked in 
     return (<TableCell style={{padding: '0'}}> 
               <ApprovalButton />
             </TableCell>) 
   }
-  return (
-            <TableCell style={{padding: '0'}}> 
-              <RevokeApproveButton />
-            </TableCell>
+  return ( <TableCell style={{padding: '0'}}> 
+            <RevokeApproveButton />
+          </TableCell>
   )
 }
 
-const ApprovalButton = ({ onExecute }) => (
-    <IconButton onClick={onExecute} title="Approve Event" aria-label="approve event button" style={{color: 'orange', margin: '0'}}>
+const ApprovalButton = ({ onApproval }) => (
+    <IconButton 
+    //onClick={onApproval} 
+    title="Approve Event" aria-label="approve event button" style={{color: 'orange', margin: '0'}}>
       <QuestionAnswerIcon style={{height: '.75em', width: '.75em'}}/>
     </IconButton> 
 ); 
@@ -76,14 +72,26 @@ ApprovalButton.propTypes = {
   onExecute: PropTypes.func.isRequired,
 }
 
-const RevokeApproveButton = ({ onExecute }) => (
-  <IconButton onClick={onExecute} title="Revoke Approval" aria-label="revoke event approval button" style={{color: 'green'}}>
+/*const onApproval = () => {
+  console.log('clicky')
+}*/
+
+const RevokeApproveButton = ({ onRevokeApproval }) => (
+  <IconButton 
+  //onClick={onRevokeApproval} 
+  title="Revoke Approval" 
+  aria-label="revoke event approval button" 
+  style={{color: 'green'}}>
     <DoneIcon />
   </IconButton> 
 ); 
 RevokeApproveButton.propTypes = {
   onExecute: PropTypes.func.isRequired,
 }
+
+/*const onRevokeApproval = () => {
+
+} */
 
 
 export default class EventDash extends React.PureComponent {

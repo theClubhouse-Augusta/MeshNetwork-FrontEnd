@@ -55,7 +55,7 @@ componentWillMount() {
     this.setState({
       [name]: event.target.value,
     }, function() {
-      console.log('it changed');
+      console.log(this.state);
     });
   };
 
@@ -160,9 +160,9 @@ spaceInfoSubmit = () => {
   data.append('website', website.trim());
   data.append('phone_number', phone_number.trim());
   //data.append('description', );
-  data.append('facebook', facebook.trim());
-  data.append('twitter', twitter.trim());
-  data.append('instagram', instagram.trim());
+  data.append('facebook', facebook );
+  //data.append('twitter', twitter.trim());
+  //data.append('instagram', instagram.trim());
   //data.append('pinterest', pinterest.trim());
   //data.append('youtube', youtube.trim());
   //data.append('tumblr', tumblr.trim());
