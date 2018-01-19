@@ -18,6 +18,18 @@ import QuestionAnswerIcon from 'material-ui-icons/QuestionAnswer';
 import './style.css';
 import './styleM.css';
 
+/*
+TO DO
+  Row Generator
+
+  Verification in general???? Need API ❓
+
+  Editing State Status Render ➡ literally the same thing
+
+  Commiting the Changes
+*/
+
+
 const getEventsAPI = 'https://innovationmesh.com/api/workevents/';
 const eventUpdateAPI = 'https://innovationmesh.com/api/eventUpdate';
 const eventDateTimeAPI = '';
@@ -86,11 +98,17 @@ export default class EventDash extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      rows:this.props.users,
+      rows: [
+        { id: 1, status: 0, name: 'Bob', lastName: 'Brown', age: 21,  },
+        { id: 2, status: 1, name: 'John', lastName: 'Smith', age: 35,  },
+        { id: 3, status: 1, name: 'Mike', lastName: 'Mitchel', age: 28,  },
+      ],
       columns: [
+        // column order is DELIBERATE, pls do not adjust w/o UX consideration!
+        { name: 'status', title: 'Status'},
         { name: 'name', title: 'Name' },
-        { email: 'email', title: 'E-mail' },
-        { title: 'title', title: 'Title' },
+        { name: 'lastName', title: 'Last Name' },
+        { name: 'age', title: 'Age' },
       ],
       editingRows: [],
       addedRows: [],
@@ -221,6 +239,12 @@ commitChanges({ added, changed, deleted }) {
             cellComponent={Cell}/>
           <TableHeaderRow />
           <TableEditRow />
+          <TableEditColumn
+          showAddCommand
+          showEditCommand
+          showDeleteCommand
+          allowEditing={!editingRows.length}
+          />
           </Grid>
         </Paper>
       </div>

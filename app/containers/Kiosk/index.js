@@ -71,7 +71,7 @@ export default class Kiosk extends React.PureComponent {
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
    getProfile = () => {
-      fetch('http://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+      fetch('https://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
         method:'GET'
       })
       .then(function(response) {
@@ -86,7 +86,7 @@ export default class Kiosk extends React.PureComponent {
   }
 
   getUsers = () => {
-    fetch('http://innovationmesh.com/api/users/space/'+this.props.match.params.id)
+    fetch('https://innovationmesh.com/api/users/space/'+this.props.match.params.id)
     .then(response => response.json())
     .then(Users => {
       if (Users) {
@@ -101,7 +101,7 @@ export default class Kiosk extends React.PureComponent {
   }
 
   getReasons = () => {
-    fetch('http://innovationmesh.com/api/occasions')
+    fetch('https://innovationmesh.com/api/occasions')
     .then(response => response.json())
     .then(Reasons => {
       if (Reasons) {
@@ -116,7 +116,7 @@ export default class Kiosk extends React.PureComponent {
   }
 
   getUpcomingEvents = () => {
-    fetch('http://innovationmesh.com/api/upcoming/'+this.props.match.params.id)
+    fetch('https://innovationmesh.com/api/upcoming/'+this.props.match.params.id)
     .then(response => response.json())
     .then(Events => {
       if (Events) {
@@ -137,7 +137,7 @@ export default class Kiosk extends React.PureComponent {
     data.append('spaceID', this.props.match.params.id);
     data.append('occasion', this.state.selectedReason);
 
-    fetch('http://innovationmesh.com/api/appearance', {
+    fetch('https://innovationmesh.com/api/appearance', {
       method:'POST',
       body:data
     })

@@ -6,6 +6,7 @@
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  background:#F8F8F8;
 }
 
 .membersBanner {
@@ -15,13 +16,11 @@
   background-repeat:no-repeat;
   background-size:cover;
   background-position:center center;
-  font-size:3em;
   display:flex;
-  flex-direction:row;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
   color:#FFFFFF;
-  font-family:'Noto Sans';
 }
 
 .membersMain {
@@ -158,6 +157,21 @@ div#MS-SearchForm  > input::-webkit-input-placeholder {
 .memberSearchResults {
   width:100%;
   max-width:800px;
+}
+
+.memberSearchMain {
+  width:100%;
+  max-width:720px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:30px;
+  background:#FFFFFF;
+  border-radius:5px;
+  min-height:calc(100vh - 90px);
+  border:1px solid #DDDDDD;
+  margin-top:-40px;
 }
 
 @keyframes flicker {
