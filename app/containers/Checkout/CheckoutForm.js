@@ -51,7 +51,7 @@ class CheckoutForm extends React.Component {
     }
 
     getSpace = () => {
-        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -65,7 +65,7 @@ class CheckoutForm extends React.Component {
     }
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
@@ -179,7 +179,7 @@ class CheckoutForm extends React.Component {
             }
             data.append('plan', plan);
 
-            fetch("https://innovationmesh.com/api/signUp", {
+            fetch("http://localhost:8000/api/signUp", {
                 method: 'POST',
                 body: data,
             })
@@ -227,7 +227,7 @@ class CheckoutForm extends React.Component {
         data.append('avatar', avatar);
         data.append('plan', plan);
 
-        fetch("https://innovationmesh.com/api/signUp", {
+        fetch("http://localhost:8000/api/signUp", {
             method: 'POST',
             body: data,
         })

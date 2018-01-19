@@ -15,8 +15,8 @@ import Logger from '../../utils/Logger';
 import './style.css';
 import './styleM.css';
 
-const getEventsAPI = 'https://innovationmesh.com/api/workevents/';
-const eventUpdateAPI = 'https://innovationmesh.com/api/eventUpdate';
+const getEventsAPI = 'http://localhost:8000/api/workevents/';
+const eventUpdateAPI = 'http://localhost:8000/api/eventUpdate';
 const eventDateTimeAPI = '';
 const eventVerifyAPI = '';
 
