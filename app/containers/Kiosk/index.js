@@ -24,20 +24,20 @@ import './styleM.css';
 import 'react-select/dist/react-select.css';
 
 export default class Kiosk extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loggedInUser: '',
-      workspace:"",
-      events: [],
-      users: [],
-      reasons: [],
-      showComplete:false,
-      selectedReason: '',
-      msg:"",
-      snack:false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            loggedInUser: '',
+            workspace: "",
+            events: [],
+            users: [],
+            reasons: [],
+            showComplete: false,
+            selectedReason: '',
+            msg: "",
+            snack: false,
+        }
     }
-  }
 
   componentDidMount() {
     this.getUpcomingEvents();
@@ -49,21 +49,20 @@ export default class Kiosk extends React.PureComponent {
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-   getProfile = () => {
-      fetch('https://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
-        method:'GET'
+  getProfile = () => {
+    fetch('https://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        workspace:json
+      }, function() {
+        this.getUsers(json.id);
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        localStorage['workspaceKiosk'] = JSON.stringify(json);
-        this.setState({
-          workspace:json
-        }, function() {
-          this.getUsers(json.id);
-        })
-      }.bind(this))
+    }.bind(this))
   }
 
   getUsers = (id) => {
@@ -121,93 +120,90 @@ export default class Kiosk extends React.PureComponent {
     data.append('spaceID', this.state.workspace.id);
     data.append('occasion', this.state.selectedReason);
 
-    fetch('https://innovationmesh.com/api/appearance', {
-      method:'POST',
-      body:data
+  fetch('https://innovationmesh.com/api/appearance', {
+    method: 'POST',
+    body: data
+  })
+    .then(function (response) {
+        return response.json();
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      this.setState({
-        selectedReason:'',
-        showComplete:true
-      })
+    .then(function (json) {
+        this.setState({
+            selectedReason: '',
+            showComplete: true
+        })
     }.bind(this))
   }
 
-  handleNameInputChange = (loggedInUser) => {
-    this.setState({ loggedInUser });
-  }
-
-  selectReason = (reason) => {
-    this.setState({	selectedReason: reason }, () => {
-      this.storeAppearance();
-    });
-  }
-
-  restartPage = () => {window.location.reload()}
-
-  renderComplete = () => {
-    if (this.state.showComplete === true)
-    {
-      let { events } = this.state;
-      return(
-        <div style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
-          <div className="kioskTitle">Thanks for Checking-In!</div>
-
-          {!!events.length && <div className="kioskSubtitle">Be sure to check out these Events</div>}
-
-          {!!events.length && events.map((event, key) =>
-            <Link target="_blank" to={`/event/${event.id}`} key={`eventDiv2${key}`} className="eventList">
-              <div className="eventBlock">
-                <div className="eventBlockImage"></div>
-                  <div  className="eventBlockInfo">
-                    <div className="eventBlockTitle">{event.title}</div>
-                    <div className="eventBlockDesc">{moment(event.start).format('MMMM, Do, YYYY')}</div>
-                  </div>
-              </div>
-            </Link>
-          )}
-
-          <FlatButton style={{background:'#FFFFFF', color:'#222222', marginTop:'30px', width:'80%', fontWeight:'bold'}} onClick={this.restartPage}>Done</FlatButton>
-        </div>
-      )
+    handleNameInputChange = (loggedInUser) => {
+        this.setState({ loggedInUser });
     }
-  }
 
-  renderReasons = () => {
-    let { reasons } = this.state;
-    if(this.state.loggedInUser)
-    {
-      return(
-        <div className="kioskReasons">
-          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.work)}>
-            <WorkIcon size={40} style={{marginBottom:'10px'}} />
-            {reasons.work}
-          </div>
-          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.meetup)}>
-            <MeetIcon size={40} style={{marginBottom:'10px'}} />
-            {reasons.meetup}
-          </div>
-          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.event)}>
-            <EventIcon size={40} style={{marginBottom:'10px'}} />
-            {reasons.event}
-          </div>
-          <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.student)}>
-            <ClassIcon size={40} style={{marginBottom:'10px'}} />
-            {reasons.student}
-          </div>
-        </div>
-      )
+    selectReason = (reason) => {
+        this.setState({ selectedReason: reason }, () => {
+            this.storeAppearance();
+        });
     }
-  }
+
+    restartPage = () => { window.location.reload() }
+
+    renderComplete = () => {
+        if (this.state.showComplete === true) {
+            let { events } = this.state;
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+                    <div className="kioskTitle">Thanks for Checking-In!</div>
+
+                    {!!events.length && <div className="kioskSubtitle">Be sure to check out these Events</div>}
+
+                    {!!events.length && events.map((event, key) =>
+                        <Link target="_blank" to={`/event/${event.id}`} key={`eventDiv2${key}`} className="eventList">
+                            <div className="eventBlock">
+                                <div className="eventBlockImage"></div>
+                                <div className="eventBlockInfo">
+                                    <div className="eventBlockTitle">{event.title}</div>
+                                    <div className="eventBlockDesc">{moment(event.start).format('MMMM, Do, YYYY')}</div>
+                                </div>
+                            </div>
+                        </Link>
+                    )}
+
+                    <FlatButton style={{ background: '#FFFFFF', color: '#222222', marginTop: '30px', width: '80%', fontWeight: 'bold' }} onClick={this.restartPage}>Done</FlatButton>
+                </div>
+            )
+        }
+    }
+
+    renderReasons = () => {
+        let { reasons } = this.state;
+        if (this.state.loggedInUser) {
+            return (
+                <div className="kioskReasons">
+                    <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.work)}>
+                        <WorkIcon size={40} style={{ marginBottom: '10px' }} />
+                        {reasons.work}
+                    </div>
+                    <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.meetup)}>
+                        <MeetIcon size={40} style={{ marginBottom: '10px' }} />
+                        {reasons.meetup}
+                    </div>
+                    <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.event)}>
+                        <EventIcon size={40} style={{ marginBottom: '10px' }} />
+                        {reasons.event}
+                    </div>
+                    <div className="kioskReasonBlock" onClick={() => this.selectReason(reasons.student)}>
+                        <ClassIcon size={40} style={{ marginBottom: '10px' }} />
+                        {reasons.student}
+                    </div>
+                </div>
+            )
+        }
+    }
 
   render() {
-
     return (
       <div className="kioskContainer">
-        <Helmet title={"Check-In to " + this.state.workspace.name} meta={[ { name: 'description', content: 'Description of KioskSystem' }]}/>
+        <Helmet title={"Check-In to " + this.state.workspace.name} meta={[{ name: 'description', content: 'Description of KioskSystem' }]} />
         <header>
 
         </header>
@@ -231,12 +227,12 @@ export default class Kiosk extends React.PureComponent {
 
               {this.renderComplete()}
 
-            <Snackbar
-              open={this.state.snack}
-              message={this.state.msg}
-              autoHideDuration={3000}
-              onRequestClose={this.handleRequestClose}
-            />
+              <Snackbar
+                open={this.state.snack}
+                message={this.state.msg}
+                autoHideDuration={3000}
+                onRequestClose={this.handleRequestClose}
+              />
           </div>
         </main>
       </div>

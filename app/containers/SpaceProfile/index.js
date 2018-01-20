@@ -29,22 +29,22 @@ import './styleM.css';
 
 
 const styles = {
-  avatar: {
-    margin: 20,
-    background: '#AAAAAA',
-    width: 60,
-    height: 60,
-  },
-  list: {
-    listStyleType: 'disc',
-    columnCount: '2',
-    padding: '15px',
+    avatar: {
+        margin: 20,
+        background: '#AAAAAA',
+        width: 60,
+        height: 60,
+    },
+    list: {
+        listStyleType: 'disc',
+        columnCount: '2',
+        padding: '15px',
 
-  },
-  listItem: {
-    display: 'block',
-    lineHeight: '2em',
-  },
+    },
+    listItem: {
+        display: 'block',
+        lineHeight: '2em',
+    },
 };
 
 export default class SpaceProfile extends React.PureComponent {
@@ -226,9 +226,8 @@ export default class SpaceProfile extends React.PureComponent {
 
         <footer className="homeFooterContainer">
           Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-
         </footer>
-      </div>
-    );
-  }
+            </div>
+        );
+    }
 }

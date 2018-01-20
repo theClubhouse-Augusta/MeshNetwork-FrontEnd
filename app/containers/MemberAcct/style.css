@@ -9,23 +9,56 @@
 .acctBanner { 
   width: 100%;
   margin: 0 auto;
-  padding-top: 20px; 
   background:#222222;
   height:200px;
   display:flex;
-  flex-direction:column;
-  align-items:center;
+  flex-direction:column; 
   justify-content: center;
   font-family: 'Anton', sans-serif;
-  font-size:2em;
+  font-size:1.5em;
   text-align:center;
   color:#FFFFFF;
 }
 
 .acctBody { 
   min-height:100vh;
-  width:100%;
+  width:80%;
+  max-width: 800px; 
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:30px;
+  background:#FFFFFF;
+  border-radius:5px;
+  min-height:calc(100vh - 90px);
+  border:1px solid #DDDDDD;
+  margin-top:-40px;
 }
+
+.acctMainInfo {
+  width: 100%; 
+  padding: 30px; 
+}
+
+
+.acctManagement { 
+  
+ width: 75%;
+}
+
+  .acctChangePassForm, .acctChangeEmailForm { 
+    display: flex; 
+    flex-direction: column;
+    margin: 15px 0;
+    padding: 15px;  
+  }
+
+  .acctDeleteAcctForm { 
+    width: 80%; 
+    margin: 15px 0; 
+    padding: 15px;  
+  }
 
 .acctSubmitButton {
   width: 100px; 

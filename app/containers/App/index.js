@@ -25,128 +25,128 @@ import DataViz from '../DataViz';
 export default class App extends Component {
 
 
-  render() {
-    return (
-        <Switch>
-          <Route
-            exact path="/" // eslint-disable-line
-            render={props => <Home {...props} />}
-          />
+    render() {
+        return (
+            <Switch>
+                <Route
+                    exact path="/" // eslint-disable-line
+                    render={props => <Home {...props} />}
+                />
 
-          <Route
-            path="/About"
-            render={() => <About />}
-          />
+                <Route
+                    path="/About"
+                    render={() => <About />}
+                />
 
-          <Route
-            path="/booking/:id"
-            render={(props) => <Booking {...props}/>}
-          />
+                <Route
+                    path="/booking/:id"
+                    render={(props) => <Booking {...props} />}
+                />
 
-          <Route
-            path="/newSpace"
-            render={(props) => <SpaceSignUp {...props}/>}
-          />
+                <Route
+                    path="/newSpace"
+                    render={(props) => <SpaceSignUp {...props} />}
+                />
 
-          <Route
-            path="/join/:id"
-            render={(props) => <UserSignUp {...props}/>}
-          />
+                <Route
+                    path="/join/:id"
+                    render={(props) => <UserSignUp {...props} />}
+                />
 
-          <Route
-            path="/signIn"
-            render={(props) =>
-              <UserSignIn
-                {...props}
-              />
-            }
-          />
+                <Route
+                    path="/signIn"
+                    render={(props) =>
+                        <UserSignIn
+                            {...props}
+                        />
+                    }
+                />
 
-          {/*<Route
+                {/*<Route
             path="/Contact"
             render={() => <Contact />}
           />
           */}
 
-          <Route
-            path="/event/:id"
-            render={(props) => <EventDetail {...props} />}
-          />
+                <Route
+                    path="/event/:id"
+                    render={(props) => <EventDetail {...props} />}
+                />
 
-          {/*<Route
+                {/*<Route
             path="/events"
             render={() => <Events />}
           />*/}
 
-          {/*<Route
+                {/*<Route
             path="/Sponsors"
             component={Sponsors}
           />*/}
 
-          <Route
-            path="/Spaces"
-            component={Spaces}
-          />
+                <Route
+                    path="/Spaces"
+                    component={Spaces}
+                />
 
-          <Route
-            path="/account"
-            component={MemberAcct}
-          />
+                <Route
+                    path="/account"
+                    component={MemberAcct}
+                />
 
-          <Route
-            path="/dashboard"
-            component={MemberDash}
-          />
+                <Route
+                    path="/dashboard"
+                    component={MemberDash}
+                />
 
-          <Route
-            path="/members"
-            render={(props) =>
-              <MemberSearch
-                {...props}
-              />
-            }
-          />
+                <Route
+                    path="/members"
+                    render={(props) =>
+                        <MemberSearch
+                            {...props}
+                        />
+                    }
+                />
 
-          <Route
-            path="/AddEvent"
-            render={(props) =>
-              <AddEvent
-                {...props}
-              />
-            }
-          />
+                <Route
+                    path="/AddEvent"
+                    render={(props) =>
+                        <AddEvent
+                            {...props}
+                        />
+                    }
+                />
 
-          <Route
-            path="/space/:id"
-            render={(props) => <SpaceProfile {...props} />}
-          />
+                <Route
+                    path="/space/:id"
+                    render={(props) => <SpaceProfile {...props} />}
+                />
 
-          <Route
-            path="/user/:id"
-            render={(props) => (
-              <UserProfile
-                {...props}
-              />
-            )}
-          />
-          <Route path="/kiosk/:id"
-            render={(props) => <Kiosk {...props} />}
-          />
+                <Route
+                    path="/user/:id"
+                    render={(props) => (
+                        <UserProfile
+                            {...props}
+                        />
+                    )}
+                />
+                <Route path="/kiosk/:id"
+                    render={(props) => <Kiosk {...props} />}
+                />
 
-          <Route
-            path="/spacedash/:id"
-            render={(props) => <SpaceDash {...props} />}
-          />
-
-
-          <Route
-            path="/dataviz/:id"
-            render={(props) => <DataViz {...props} />}
-          />
+                <Route
+                    path="/spacedash/:id"
+                    render={(props) => <SpaceDash {...props} />}
+                />
 
 
-          <Route component={NotFound} />
-        </Switch>
-    );
-  }
+                <Route
+                    path="/dataviz/:id"
+                    render={(props) => <DataViz {...props} />}
+                />
+
+
+                <Route component={NotFound} />
+            </Switch>
+        );
+    }
 }
