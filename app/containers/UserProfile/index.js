@@ -22,107 +22,121 @@ import BehanceIcon from 'react-icons/lib/fa/behance-square';
 import DribbbleIcon from 'react-icons/lib/fa/dribbble';
 import WebsiteIcon from 'react-icons/lib/fa/globe';
 
+import authenticate from '../../utils/Authenticate';
+
 import './style.css';
 import './styleM.css';
 
 export default class UserProfile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: '',
-      space:'',
-      skills:[],
-      token:localStorage.getItem('token')
-    }
-  }
-
-  componentWillMount() {
-    this.getUser()
-  }
-
-  getUser = token => {
-    fetch('https://innovationmesh.com/api/user/' + this.props.match.params.id, {
-      method:'GET',
-      headers: { Authorization: `Bearer ${localStorage['token']}` },
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      this.setState({
-        user:json.user,
-        space:json.space,
-        skills:json.skills,
-      })
-    }.bind(this))
-  }
-
-  renderTag = (skill, i) => {
-    let chipStyle = {
-      color:"#FFFFFF",
-      margin:'5px',
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: '',
+            space: '',
+            skills: [],
+            token: localStorage.getItem('token'),
+            loading: true,
+        }
     }
 
-    let rand = Math.random() * (10 - 1) + 1;
 
-    chipStyle.animation = 'profileFlicker '+ rand + 's ease alternate infinite';
+    async componentDidMount() {
+        const authorized = await authenticate(localStorage['token'], this.props.history)
+        if (!authorized.error) {
+            this.getUser();
+            this.setState({ loading: false })
+        } else {
+            this.props.history.push('/');
+        }
+    }
 
-    return(
-      <Chip style={chipStyle} key={i} label={skill.name}/>
-    )
+    getUser = token => {
+        fetch('http://localhost:8000/api/user/' + this.props.match.params.id, {
+            method: 'GET',
+            headers: { Authorization: `Bearer ${localStorage['token']}` },
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                this.setState({
+                    user: json.user,
+                    space: json.space,
+                    skills: json.skills,
+                })
+            }.bind(this))
+    }
 
-  }
+    renderTag = (skill, i) => {
+        let chipStyle = {
+            color: "#FFFFFF",
+            margin: '5px',
+        }
 
-  render() {
-    return (
-      <div className="container">
-        <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
-        <header>
-          <Header />
-        </header>
+        let rand = Math.random() * (10 - 1) + 1;
 
-        <main className="mainProfile">
-          <div className="profileHeader">
-            <img src={this.state.user.avatar} className="profileHeaderImg"/>
-            <div className="profileHeaderTitle">{this.state.user.name}</div>
-            <div className="profileSubTitle">{this.state.user.title}</div>
-          </div>
-          <div className="profileContact">
-           <Link to={'/space/'+this.state.user.spaceID} className="profileSpaceBlock">
-              {this.state.space.name}
-            </Link>
-            <div className="profileSocialList">
-              <MailIcon className="profileIconStyle" />
-              <FacebookIcon className="profileIconStyle" />
-              <TwitterIcon className="profileIconStyle" />
-              <LinkedInIcon className="profileIconStyle" />
-              <InstagramIcon className="profileIconStyle" />
-              <GithubIcon className="profileIconStyle" />
-              <BehanceIcon className="profileIconStyle" />
-              <DribbbleIcon className="profileIconStyle" />
-              <WebsiteIcon className="profileIconStyle" />
-            </div>
-          </div>
-          <div className="profileSkillsList">
-            <div className="tagsBox">
+        chipStyle.animation = 'profileFlicker ' + rand + 's ease alternate infinite';
 
-              {this.state.skills.map((skill, i) => (
-                this.renderTag(skill, i)
-              ))}
-            </div>
-          </div>
-        </main>
+        return (
+            <Chip style={chipStyle} key={i} label={skill.name} />
+        )
 
-        <footer>
+    }
 
-        </footer>
+    render() {
+        return (
+            this.state.loading
+                ?
+                <div>spinner here</div>
+                :
+                <div className="container">
+                    <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
+                    <header>
+                        <Header />
+                    </header>
 
-      </div>
-    );
-  }
+                    <main className="mainProfile">
+                        <div className="profileHeader">
+                            <img src={this.state.user.avatar} className="profileHeaderImg" />
+                            <div className="profileHeaderTitle">{this.state.user.name}</div>
+                            <div className="profileSubTitle">{this.state.user.title}</div>
+                        </div>
+                        <div className="profileContact">
+                            <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
+                                {this.state.space.name}
+                            </Link>
+                            <div className="profileSocialList">
+                                <MailIcon className="profileIconStyle" />
+                                <FacebookIcon className="profileIconStyle" />
+                                <TwitterIcon className="profileIconStyle" />
+                                <LinkedInIcon className="profileIconStyle" />
+                                <InstagramIcon className="profileIconStyle" />
+                                <GithubIcon className="profileIconStyle" />
+                                <BehanceIcon className="profileIconStyle" />
+                                <DribbbleIcon className="profileIconStyle" />
+                                <WebsiteIcon className="profileIconStyle" />
+                            </div>
+                        </div>
+                        <div className="profileSkillsList">
+                            <div className="tagsBox">
+
+                                {this.state.skills.map((skill, i) => (
+                                    this.renderTag(skill, i)
+                                ))}
+                            </div>
+                        </div>
+                    </main>
+
+                    <footer>
+
+                    </footer>
+
+                </div>
+        );
+    }
 }
 
 UserProfile.propTypes = {
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
 };

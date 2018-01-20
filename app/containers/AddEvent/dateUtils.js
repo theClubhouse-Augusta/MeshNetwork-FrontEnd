@@ -121,3 +121,16 @@ const convertToUnixTimeStamp = (time) => {
     const date = new Date(formatTime[0], formatTime[1], formatTime[2], formatTime[3], formatTime[4])
     return date.valueOf();
   }
+
+  export const formatSelectedDate = selectedDate => {
+      let selectedDateFormat = selectedDate.replace(/-/g, '/');
+      const date = new Date(selectedDateFormat);
+      return date.valueOf();
+  }
+
+  export const formatTodaysDate = () => {
+      const today = new Date();
+      const todayString = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`
+      const todayFromFormat = new Date(todayString);
+      return todayFromFormat.valueOf();
+  }

@@ -16,91 +16,89 @@ import './style.css';
 import './styleM.css';
 
 export default class UserSignIn extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email:"",
-      password:"",
-      msg:"",
-      snack:false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: "",
+            password: "",
+            msg: "",
+            snack: false,
+        }
     }
-  }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.user) {
-      this.props.history.push('/memberSearch')
+    componentDidUpdate(prevProps) {
+        if (this.props.user) {
+            this.props.history.push('/memberSearch')
+        }
     }
-  }
 
-  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  handleEmail = (event) => {this.setState({email:event.target.value})};
-  handlePassword = (event) => {this.setState({password:event.target.value})};
+    handleEmail = (event) => { this.setState({ email: event.target.value }) };
+    handlePassword = (event) => { this.setState({ password: event.target.value }) };
 
-  signIn = () => {
-    let data = new FormData();
-    data.append('email', this.state.email);
-    data.append('password', this.state.password);
+    signIn = () => {
+        let data = new FormData();
+        data.append('email', this.state.email);
+        data.append('password', this.state.password);
 
-    fetch("https://innovationmesh.com/api/login", {
-      method:'POST',
-      body:data
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      if(json.error)
-      {
-        this.showSnack(json.error);
-      }
-      else if(json.token)
-      {
-        localStorage.setItem('token', json.token);
-        this.showSnack('Welcome back!');
-        setTimeout(() => {
-          this.props.history.push(`/user/${json.user.id}`)
-        }, 2000);
-      }
-    }.bind(this));
-  };
+        fetch("http://localhost:8000/api/login", {
+            method: 'POST',
+            body: data
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
+                    this.showSnack(json.error);
+                }
+                else if (json.token) {
+                    localStorage.setItem('token', json.token);
+                    this.showSnack('Welcome back!');
+                    setTimeout(() => {
+                        this.props.history.push(`/user/${json.user.id}`)
+                    }, 2000);
+                }
+            }.bind(this));
+    };
 
-  render() {
-    return (
-      <div className="userSignIncontainer">
-        <Helmet title="UserSignIn" meta={[ { name: 'description', content: 'Description of UserSignIn' }]}/>
+    render() {
+        return (
+            <div className="userSignIncontainer">
+                <Helmet title="UserSignIn" meta={[{ name: 'description', content: 'Description of UserSignIn' }]} />
 
-        <header style={{background:'#FFFFFF'}}>
-          <Header/>
-          <div className="userSignUpBanner">
-            <div className="homeHeaderContentTitle">Welcome Back, Fellow Coworker</div>
-            <div className="homeHeaderContentSubtitle">Find out what you have been missing</div>
-          </div>
-        </header>
+                <header style={{ background: '#FFFFFF' }}>
+                    <Header />
+                    <div className="userSignUpBanner">
+                        <div className="homeHeaderContentTitle">Welcome Back, Fellow Coworker</div>
+                        <div className="homeHeaderContentSubtitle">Find out what you have been missing</div>
+                    </div>
+                </header>
 
-        <main className="userSignInMain">
-          <TextField style={{width:'100%', marginBottom:'15px'}} label="E-mail" value={this.state.email} onChange={this.handleEmail}/>
-          <TextField style={{width:'100%', marginBottom:'15px'}} label="Password" value={this.state.password} onChange={this.handlePassword} type="password"/>
-          <FlatButton style={{width:'80%', backgroundColor:"#ff4d58", margin:'15px', color:'#FFFFFF'}} onClick={this.signIn}>Sign In</FlatButton>
-        </main>
+                <main className="userSignInMain">
+                    <TextField style={{ width: '100%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
+                    <TextField style={{ width: '100%', marginBottom: '15px' }} label="Password" value={this.state.password} onChange={this.handlePassword} type="password" />
+                    <FlatButton style={{ width: '80%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.signIn}>Sign In</FlatButton>
+                </main>
 
-        <footer className="homeFooterContainer">
-          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                <footer className="homeFooterContainer">
+                    Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
         </footer>
 
-        <Snackbar
-          open={this.state.snack}
-          message={this.state.msg}
-          autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
-        />
+                <Snackbar
+                    open={this.state.snack}
+                    message={this.state.msg}
+                    autoHideDuration={3000}
+                    onRequestClose={this.handleRequestClose}
+                />
 
-      </div>
-    );
-  }
+            </div>
+        );
+    }
 }
 
 UserSignIn.contextTypes = {
-  router: PropTypes.object
+    router: PropTypes.object
 };
