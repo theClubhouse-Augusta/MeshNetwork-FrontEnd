@@ -145,6 +145,7 @@ onUserInfoSubmit = e => {
                   type='password'
                   style={{maxWidth: '300px'}}
                   onChange={this.handleInputChange('currentPassword')}
+                  error={}
                   //checkPW 
                 />
                 
@@ -155,6 +156,7 @@ onUserInfoSubmit = e => {
                   type='password'
                   style={{maxWidth: '300px'}}
                   onChange={this.handleInputChange('password')}
+                  error={}
                 />
                 <TextField
                   label={'Confirm New Password'}
@@ -162,6 +164,7 @@ onUserInfoSubmit = e => {
                   type='password'
                   style={{maxWidth: '300px'}}
                   onChange={this.handleInputChange('passwordConfirm')}
+                  error={}
                 />
                 <Button style={{backgroundColor: '#00c355', padding:'10px', marginTop:'15px', color:'#FFFFFF', width: '40%' }}> Update Password </Button> 
               </div>           
