@@ -55,6 +55,7 @@ export default class SpaceProfile extends React.PureComponent {
       spaceProfile:'',
       events: [],
       users:[],
+      photoGallery:[]
       }
   }
 
@@ -75,6 +76,7 @@ export default class SpaceProfile extends React.PureComponent {
       }, function() {
         this.getSpaceEvents(this.state.spaceProfile.id);
         this.getUsers(this.state.spaceProfile.id);
+        this.getPhotoGallery(this.state.spaceProfile.id);
       })
     }.bind(this))
 }
@@ -107,6 +109,21 @@ export default class SpaceProfile extends React.PureComponent {
     }.bind(this))
   }
 
+  getPhotoGallery = (id) => {
+    fetch('https://innovationmesh.com/api/getPhotos/'+id, {
+      method:'GET',
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        photoGallery:json.photos
+      })
+    }.bind(this))
+  }
+
+
   render() {
 
     return (
@@ -117,7 +134,13 @@ export default class SpaceProfile extends React.PureComponent {
         </header>
 
         <main>
-          <div className="spaceGalleryContainer"></div>
+          <div className="spaceGalleryContainer">
+            {this.state.photoGallery.map((photo, i) => (
+              <div className="spaceGalleryPhotoBlock">
+                <img src={photo.photoThumbnail} />
+              </div>
+            ))}
+          </div>
           <div className="spaceMainHeader">
             <div className="spaceMainContainer" style={{alignItems:'center'}}>
               <div className="spaceMainOne">

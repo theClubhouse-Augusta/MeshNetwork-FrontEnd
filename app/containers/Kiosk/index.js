@@ -40,31 +40,10 @@ export default class Kiosk extends React.PureComponent {
   }
 
   componentDidMount() {
-    try {
-      const reasonsKiosk = localStorage.getItem('reasonsKiosk');
-      const usersKiosk = localStorage.getItem('usersKiosk');
-      const workspaceKiosk = localStorage.getItem('workspaceKiosk');
-      const eventsKiosk = localStorage.getItem('eventsKiosk');
-
-      const reasons = JSON.parse(reasonsKiosk);
-      const users = JSON.parse(usersKiosk);
-      const workspace = JSON.parse(workspaceKiosk);
-      const events = JSON.parse(eventsKiosk);
-
-      if (reasons && users && events && workspace) {
-        this.setState(() => ({ reasons }));
-        this.setState(() => ({ users }));
-        this.setState(() => ({ events }));
-        this.setState(() => ({ workspace }));
-      } else {
-        this.getUpcomingEvents();
-        this.getProfile();
-        this.getUsers();
-        this.getReasons();
-      }
-    } catch (e) {
-      // Do nothing at all
-    }
+    this.getUpcomingEvents();
+    this.getProfile();
+    this.getReasons();
+    this.getTodaysEvents();
   }
 
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
@@ -81,60 +60,65 @@ export default class Kiosk extends React.PureComponent {
         localStorage['workspaceKiosk'] = JSON.stringify(json);
         this.setState({
           workspace:json
+        }, function() {
+          this.getUsers(json.id);
         })
       }.bind(this))
   }
 
-  getUsers = () => {
-    fetch('https://innovationmesh.com/api/users/space/'+this.props.match.params.id)
-    .then(response => response.json())
-    .then(Users => {
-      if (Users) {
-        this.setState({	users: Users }, () => {
-          localStorage['usersKiosk'] = JSON.stringify(Users);
-        });
-      }
+  getUsers = (id) => {
+    fetch('https://innovationmesh.com/api/users/space/'+id)
+    .then(function(response) {
+      return response.json();
     })
-    .catch(error => {
-      // do something with error
-    })
+    .then(function(json) {
+      this.setState({
+        users:json
+      })
+    }.bind(this))
   }
 
   getReasons = () => {
     fetch('https://innovationmesh.com/api/occasions')
-    .then(response => response.json())
-    .then(Reasons => {
-      if (Reasons) {
-        this.setState({	reasons: Reasons }, () => {
-          localStorage['reasonsKiosk'] = JSON.stringify(Reasons);
-        });
-      }
+    .then(function(response) {
+      return response.json();
     })
-    .catch(error => {
-      // do something with error
-    })
+    .then(function(json) {
+      this.setState({
+        reasons:json
+      })
+    }.bind(this))
   }
 
   getUpcomingEvents = () => {
     fetch('https://innovationmesh.com/api/upcoming/'+this.props.match.params.id)
-    .then(response => response.json())
-    .then(Events => {
-      if (Events) {
-        this.setState({	events: Events }, () => {
-        localStorage['eventsKiosk'] = JSON.stringify(Events);
-        });
-      }
+    .then(function(response) {
+      return response.json();
     })
-    .catch(error => {
-      // do something with error
+    .then(function(json) {
+      this.setState({
+        events:json
+      })
+    }.bind(this))
+  }
+
+  getTodaysEvents = () => {
+    fetch('https://innovationmesh.com/api/upcoming/'+this.props.match.params.id)
+    .then(function(response) {
+      return response.json();
     })
+    .then(function(json) {
+      this.setState({
+        events:json
+      })
+    }.bind(this))
   }
 
   storeAppearance = () => {
     let data = new FormData();
     data.append('userID', this.state.loggedInUser.value);
     data.append('eventID', 0);
-    data.append('spaceID', this.props.match.params.id);
+    data.append('spaceID', this.state.workspace.id);
     data.append('occasion', this.state.selectedReason);
 
     fetch('https://innovationmesh.com/api/appearance', {
@@ -228,7 +212,7 @@ export default class Kiosk extends React.PureComponent {
 
         </header>
         <main className="kioskMain">
-          <img className="kioskLogo" src={this.state.workspace.logo}/>
+          <img className="kioskLogo" src={this.state.workspace.logo} style={{width:'300px', height:'auto', marginTop:'30px'}}/>
           <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
           <div className="kioskSubtitle">Check-In with Us!</div>
            <div className="kioskContent">
