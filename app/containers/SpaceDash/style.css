@@ -99,3 +99,9 @@
   background:#DDDDDD;
   border-bottom:1px solid #CCCCCC;
 }
+
+.spaceDashPhotoGallery {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}

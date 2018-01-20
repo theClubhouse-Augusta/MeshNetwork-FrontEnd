@@ -221,8 +221,16 @@ a.spaceProfileActions {
 
 .spaceGalleryContainer {
   width:100%;
-  height:400px;
+  height:340px;
   background:#EEEEEE;
+  display:flex;
+  flex-direction:row;
+  overflow-x:auto;
+  align-items:center;
+}
+
+.spaceGalleryPhotoBlock {
+  margin-right:2.5px;
 }
 
 .spaceMainContainer {

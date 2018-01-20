@@ -65,7 +65,7 @@ export default class AddEvent extends PureComponent {
         endMulti: [],
         newSponsors: [],
         eventFiles: [],
-        // organizers 
+        // organizers
         organizers: '',
         showOrganizers: false,
         selectedOrganizers: [],
@@ -110,7 +110,7 @@ export default class AddEvent extends PureComponent {
     loading = () => this.state.loading;
 
     getSponsors = () => {
-        fetch(`http://localhost:8000/api/sponsors`, {
+        fetch(`https://innovationmesh.com/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -124,7 +124,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getOrganizers = () => {
-        fetch(`http://localhost:8000/api/organizers/all`, {
+        fetch(`https://innovationmesh.com/api/organizers/all`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -139,7 +139,7 @@ export default class AddEvent extends PureComponent {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -447,7 +447,7 @@ export default class AddEvent extends PureComponent {
             }
         }
 
-        fetch(`http://localhost:8000/api/event`, {
+        fetch(`https://innovationmesh.com/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
