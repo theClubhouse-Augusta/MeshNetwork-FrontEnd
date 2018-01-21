@@ -12,6 +12,8 @@ import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
 import Header from 'components/Header';
+import Spinner from '../../components/Spinner';
+import authenticate from '../../utils/Authenticate';
 
 import './style.css';
 import './styleM.css';
@@ -30,7 +32,17 @@ export default class Booking extends React.PureComponent {
             types: ['Private Office', 'Mentor', 'Tour', 'Meeting Room'],
             days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             times: [{ time: "08:00", active: 0 }, { time: "09:00", active: 0 }, { time: "10:00", active: 0 }, { time: "11:00", active: 0 }, { time: "12:00", active: 0 }, { time: "13:00", active: 0 }, { time: "14:00", active: 0 }, { time: "15:00", active: 0 }, { time: "16:00", active: 0 }, { time: "17:00", active: 0 }, { time: "18:00", active: 0 }],
-            app: this.props.app
+            app: this.props.app,
+            loading: true,
+        }
+    }
+
+    async componentWillMount() {
+        const authorized = await authenticate(localStorage['token'], this.props.history);
+        if (!authorized.error) {
+            this.setState({ loading: false })
+        } else {
+            this.props.history.push('/signIn');
         }
     }
 
@@ -168,52 +180,56 @@ export default class Booking extends React.PureComponent {
 
     render() {
         return (
-            <div className="container">
-                <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
+            this.state.loading
+                ?
+                <Spinner />
+                :
+                <div className="container">
+                    <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
 
-                <header>
-                    <Header app={this.state.app} />
-                </header>
+                    <header>
+                        <Header app={this.state.app} />
+                    </header>
 
-                <main>
-                    <div className="bookingContainer">
-                        <div className="bookingInfoContainer">
-                            <div className="bookingColumnTitle">Your Info</div>
-                            <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
-                            <TextField label="E-mail" margin='normal' fullWidth={true} onChange={this.handleEmail} value={this.state.email} />
-                            {this.state.types.map((type, i) => (
-                                this.renderTypeButton(type, i)
-                            ))}
-                            <FlatButton style={{ width: '100%', background: '#ee3868', color: '#FFFFFF', marginTop: '15px' }}>Confirm Booking</FlatButton>
+                    <main>
+                        <div className="bookingContainer">
+                            <div className="bookingInfoContainer">
+                                <div className="bookingColumnTitle">Your Info</div>
+                                <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
+                                <TextField label="E-mail" margin='normal' fullWidth={true} onChange={this.handleEmail} value={this.state.email} />
+                                {this.state.types.map((type, i) => (
+                                    this.renderTypeButton(type, i)
+                                ))}
+                                <FlatButton style={{ width: '100%', background: '#ee3868', color: '#FFFFFF', marginTop: '15px' }}>Confirm Booking</FlatButton>
+                            </div>
+                            <div className="bookingTimeContainer">
+                                <div className="bookingColumnTitle">Schedule Times</div>
+                                {this.state.days.map((day, i) => (
+                                    <ExpansionPanel style={{ marginTop: '30px' }} key={i}>
+                                        <ExpansionPanelSummary>
+                                            <div className="bookingPanelTitle">{day}</div>
+                                        </ExpansionPanelSummary>
+                                        <ExpansionPanelDetails style={{ display: 'flex', flexDirection: 'column' }}>
+                                            {this.state.times.map((time, j) => (
+                                                this.renderTimes(day, time, j)
+                                            ))}
+                                        </ExpansionPanelDetails>
+                                    </ExpansionPanel>
+                                ))}
+                            </div>
                         </div>
-                        <div className="bookingTimeContainer">
-                            <div className="bookingColumnTitle">Schedule Times</div>
-                            {this.state.days.map((day, i) => (
-                                <ExpansionPanel style={{ marginTop: '30px' }} key={i}>
-                                    <ExpansionPanelSummary>
-                                        <div className="bookingPanelTitle">{day}</div>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelDetails style={{ display: 'flex', flexDirection: 'column' }}>
-                                        {this.state.times.map((time, j) => (
-                                            this.renderTimes(day, time, j)
-                                        ))}
-                                    </ExpansionPanelDetails>
-                                </ExpansionPanel>
-                            ))}
-                        </div>
-                    </div>
-                </main>
+                    </main>
 
-                <footer className="homeFooterContainer">
-                    Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                    <footer className="homeFooterContainer">
+                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
         </footer>
-                <Snackbar
-                    open={this.state.snack}
-                    message={this.state.msg}
-                    autoHideDuration={3000}
-                    onRequestClose={this.handleRequestClose}
-                />
-            </div>
+                    <Snackbar
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={3000}
+                        onRequestClose={this.handleRequestClose}
+                    />
+                </div>
         );
     }
 }

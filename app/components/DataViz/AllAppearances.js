@@ -7,13 +7,12 @@
 import React from 'react';
 
 import {
-    LineChart,
-    Line,
+    AreaChart,
+    Area,
     XAxis,
     YAxis,
     CartesianGrid,
-    Tooltip,
-    Legend,
+    Tooltip
 } from 'Recharts';
 import Logger from '../../utils/Logger';
 
@@ -41,22 +40,14 @@ export class AllAppearances extends React.PureComponent {
         const { data } = this.state;
 
         return (
-            <div className="container">
-                {data &&
-                    <LineChart
-                        width={this.props.width ? this.props.width : 800}
-                        height={this.props.height ? this.props.height : 800}
-                        data={data}
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                    >
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="appearances" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    </LineChart>}
-            </div>
+            <AreaChart width={600} height={400} data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
+                <Area type='monotone' dataKey='check-ins' stroke='#8884d8' fill='#8884d8' />
+            </AreaChart>
         );
     }
 }

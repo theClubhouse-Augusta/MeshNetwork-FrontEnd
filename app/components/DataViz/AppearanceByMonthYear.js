@@ -116,7 +116,7 @@ export class AppearanceByMonthYear extends React.PureComponent {
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="appearances" fill="#8884d8" />
+                            <Bar dataKey="check-ins" fill="#8884d8" />
                         </BarChart>}
                 </section>
             </div>

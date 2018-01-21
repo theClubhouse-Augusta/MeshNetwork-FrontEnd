@@ -13,7 +13,6 @@ import FlatButton from 'material-ui/Button';
 
 import Particles from 'react-particles-js';
 
-import './style.css';
 import './styleM.css';
 
 

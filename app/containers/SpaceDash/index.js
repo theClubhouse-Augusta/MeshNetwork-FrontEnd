@@ -21,6 +21,8 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Ta
 import FlatButton from 'material-ui/Button';
 
 import Header from 'components/Header';
+import Spinner from '../../components/Spinner';
+import authenticate from '../../utils/Authenticate';
 
 import './style.css';
 import './styleM.css';
@@ -37,11 +39,18 @@ export default class SpaceDash extends React.PureComponent {
         memberCount: 0,
         eventCount: 0,
         checkinCount: 0,
-        spaceEvents: []
+        spaceEvents: [],
+        loading: true,
     }
 
-    componentWillMount() {
-        this.loadSpaceDescription();
+    async componentDidMount() {
+        const authorized = await authenticate(localStorage['token'], this.props.history);
+        if (!authorized.error) {
+            this.loadSpaceDescription();
+            this.setState({ loading: false });
+        } else {
+            this.props.history.push('/');
+        }
     }
 
     loadSpaceUsers = (id) => {
@@ -201,24 +210,27 @@ export default class SpaceDash extends React.PureComponent {
 
     render() {
         const { value } = this.state;
-
         return (
-            <div className="container">
-                <Helmet title="Space Dashboard" meta={[{ name: 'description', content: 'Description of SpaceDashboard' }]} />
+            this.state.loading
+                ?
+                <Spinner loading={this.state.loading} />
+                :
+                <div className="container">
+                    <Helmet title="Space Dashboard" meta={[{ name: 'description', content: 'Description of SpaceDashboard' }]} />
 
-                <header>
+                    <header>
 
-                </header>
+                    </header>
 
-                <main className="spaceDashMain">
-                    <div className="spaceDashMenu">
-                        <div className="spaceDashMenuItem" onClick={() => this.changeMenu(0)}>Dashboard</div>
-                        <div className="spaceDashMenuItem" onClick={() => this.changeMenu(1)}>Space Information</div>
-                    </div>
-                    {this.renderDashContent()}
+                    <main className="spaceDashMain">
+                        <div className="spaceDashMenu">
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(0)}>Dashboard</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(1)}>Space Information</div>
+                        </div>
+                        {this.renderDashContent()}
 
-                </main>
-            </div>
+                    </main>
+                </div>
         );
     }
 }

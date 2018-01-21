@@ -19,6 +19,9 @@ import EventIcon from 'react-icons/lib/fa/black-tie';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/Button';
 
+import Spinner from '../../components/Spinner';
+import authenticate from '../../utils/Authenticate';
+
 import './style.css';
 import './styleM.css';
 import 'react-select/dist/react-select.css';
@@ -30,28 +33,32 @@ export default class Kiosk extends React.PureComponent {
             loggedInUser: '',
             workspace: "",
             events: [],
+            todaysEvents: [],
             users: [],
             reasons: [],
             showComplete: false,
             selectedReason: '',
             msg: "",
             snack: false,
+            loading: true,
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        const authorized = await authenticate(localStorage['token'], this.props.history);
+        if (authorized.error)
+            this.props.history.push('/signIn')
         try {
             const reasonsKiosk = localStorage.getItem('reasonsKiosk');
             const usersKiosk = localStorage.getItem('usersKiosk');
             const workspaceKiosk = localStorage.getItem('workspaceKiosk');
             const eventsKiosk = localStorage.getItem('eventsKiosk');
-
             const reasons = JSON.parse(reasonsKiosk);
             const users = JSON.parse(usersKiosk);
             const workspace = JSON.parse(workspaceKiosk);
             const events = JSON.parse(eventsKiosk);
-
             if (reasons && users && events && workspace) {
+                this.getTodaysEvents();
                 this.setState(() => ({ reasons }));
                 this.setState(() => ({ users }));
                 this.setState(() => ({ events }));
@@ -61,6 +68,8 @@ export default class Kiosk extends React.PureComponent {
                 this.getProfile();
                 this.getUsers();
                 this.getReasons();
+                this.getTodaysEvents();
+                this.setState({ loading: false });
             }
         } catch (e) {
             // Do nothing at all
@@ -78,9 +87,10 @@ export default class Kiosk extends React.PureComponent {
                 return response.json();
             })
             .then(function (json) {
-                localStorage['workspaceKiosk'] = JSON.stringify(json);
                 this.setState({
                     workspace: json
+                }, () => {
+                    localStorage['workspaceKiosk'] = JSON.stringify(json);
                 })
             }.bind(this))
     }
@@ -122,6 +132,22 @@ export default class Kiosk extends React.PureComponent {
                 if (Events) {
                     this.setState({ events: Events }, () => {
                         localStorage['eventsKiosk'] = JSON.stringify(Events);
+                    });
+                }
+            })
+            .catch(error => {
+                // do something with error
+            })
+    }
+
+    getTodaysEvents = () => {
+        fetch('http://localhost:8000/api/today/event', {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(response => response.json())
+            .then(Events => {
+                if (Events) {
+                    this.setState({ todaysEvents: Events }, () => {
                     });
                 }
             })
@@ -218,42 +244,45 @@ export default class Kiosk extends React.PureComponent {
     }
 
     render() {
-
         return (
-            <div className="kioskContainer">
-                <Helmet title={"Check-In to " + this.state.workspace.name} meta={[{ name: 'description', content: 'Description of KioskSystem' }]} />
-                <header>
+            this.state.loading
+                ?
+                <Spinner loading={this.state.loading} />
+                :
+                <div className="kioskContainer">
+                    <Helmet title={"Check-In to " + this.state.workspace.name} meta={[{ name: 'description', content: 'Description of KioskSystem' }]} />
+                    <header>
 
-                </header>
-                <main className="kioskMain">
-                    <img className="kioskLogo" src={this.state.workspace.logo} />
-                    <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
-                    <div className="kioskSubtitle">Check-In with Us!</div>
-                    <div className="kioskContent">
-                        <Select
-                            name="form-field-name"
-                            value={this.state.loggedInUser.value}
-                            placeholder="Select your Name"
-                            arrowRenderer={null}
-                            clearable={true}
-                            openOnClick={false}
-                            onChange={this.handleNameInputChange}
-                            options={this.state.users}
-                        />
+                    </header>
+                    <main className="kioskMain">
+                        <img className="kioskLogo" src={this.state.workspace.logo} />
+                        <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
+                        <div className="kioskSubtitle">Check-In with Us!</div>
+                        <div className="kioskContent">
+                            <Select
+                                name="form-field-name"
+                                value={this.state.loggedInUser.value}
+                                placeholder="Select your Name"
+                                arrowRenderer={null}
+                                clearable={true}
+                                openOnClick={false}
+                                onChange={this.handleNameInputChange}
+                                options={this.state.users}
+                            />
 
-                        {this.renderReasons()}
+                            {this.renderReasons()}
 
-                        {this.renderComplete()}
+                            {this.renderComplete()}
 
-                        <Snackbar
-                            open={this.state.snack}
-                            message={this.state.msg}
-                            autoHideDuration={3000}
-                            onRequestClose={this.handleRequestClose}
-                        />
-                    </div>
-                </main>
-            </div>
+                            <Snackbar
+                                open={this.state.snack}
+                                message={this.state.msg}
+                                autoHideDuration={3000}
+                                onRequestClose={this.handleRequestClose}
+                            />
+                        </div>
+                    </main>
+                </div>
         );
     }
 }

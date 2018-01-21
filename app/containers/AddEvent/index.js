@@ -14,7 +14,7 @@ import RaisedButton from "./RaisedButton";
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 
 // compononents,
-import Header from 'components/Header';
+import Header from '../../components/Header';
 import Footer from 'components/Footer';
 import ErrorModal from '../../components/ErrorModal';
 import { MdInsertDriveFile } from 'react-icons/lib/md';
@@ -23,6 +23,7 @@ import { Organizers } from './Organizers';
 import { Sponsors } from './Sponsors';
 import { SelectedSponsors } from './SelectedSponsors';
 import { SelectedOrganizers } from './SelectedOrganizers';
+import Spinner from '../../components/Spinner';
 
 import authenticate from '../../utils/Authenticate';
 import {
@@ -90,13 +91,8 @@ export default class AddEvent extends PureComponent {
         eventImgPreview: '',
     };
 
-    componentWillMount() {
-        if (!!localStorage['token'])
-            this.props.history.push('/');
-    }
-
     async componentDidMount() {
-        const authorized = await authenticate(localStorage['token'], this.props.history)
+        const authorized = await authenticate(localStorage['token'], this.props.history);
         if (!authorized.error) {
             this.getOrganizers();
             this.getSponsors();
@@ -106,8 +102,6 @@ export default class AddEvent extends PureComponent {
             this.props.history.push('/');
         }
     }
-
-    loading = () => this.state.loading;
 
     getSponsors = () => {
         fetch(`http://localhost:8000/api/sponsors`, {
@@ -379,7 +373,7 @@ export default class AddEvent extends PureComponent {
     sponsorName = event => this.setState({ sponsorNames: event.target.value });
     sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
 
-    onNewSponsorSubmit = (e) => {
+    onNewSponsorSubmit = e => {
         e.preventDefault();
         let { sponsorNames, sponsorWebsites, logo } = this.state;
         if (logo && sponsorNames && sponsorWebsites) {
@@ -544,7 +538,7 @@ export default class AddEvent extends PureComponent {
     render() {
 
         const {
-      snackBarMessage, dateError, modalMessage,
+            snackBarMessage, dateError, modalMessage,
             snackBar, checkCompEvent, days,
             description, selectedTag, selectedTags,
             selectedSponsors, newSponsors, eventFiles,
@@ -567,9 +561,9 @@ export default class AddEvent extends PureComponent {
             }
         ];
         return (
-            this.loading()
+            this.state.loading
                 ?
-                <h1>spinner here!</h1>
+                <Spinner loading={this.state.loading} />
                 :
                 <div className="container">
                     <Helmet title="AddEvent" meta={[{ name: 'description', content: 'Description of AddEvent' }]} />
