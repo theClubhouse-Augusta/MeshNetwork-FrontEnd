@@ -52,7 +52,7 @@ export default class MemberSearch extends PureComponent {
 
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills', {
+        fetch('https://innovationmesh.com/api/skills', {
             //headers: { Authorization: `Bearer ${this.token}` },
         })
             .then(response => response.json())
@@ -68,7 +68,7 @@ export default class MemberSearch extends PureComponent {
     // submit form if 'enter' is pressed
     checkKey = (e) => {
         if (e.keyCode === 13 && this.state.query) {
-            fetch(`http://localhost:8000/api/search/?query=${encodeURIComponent(this.state.query)}`, {
+            fetch(`https://innovationmesh.com/api/search/?query=${encodeURIComponent(this.state.query)}`, {
                 //headers: { Authorization: `Bearer ${this.token}` },
             })
                 .then(response =>
@@ -128,7 +128,7 @@ export default class MemberSearch extends PureComponent {
     }
 
     tagClick = (tag) => {
-        fetch(`http://localhost:8000/api/search/?tag=${encodeURIComponent(tag)}`, {
+        fetch(`https://innovationmesh.com/api/search/?tag=${encodeURIComponent(tag)}`, {
             //headers: { Authorization: `Bearer ${this.token}` },
         })
             .then(function (response) {
@@ -153,7 +153,7 @@ export default class MemberSearch extends PureComponent {
         }
 
         /*let rand = Math.random() * (10 - 1) + 1;
-    
+
         chipStyle.animation = 'flicker '+ rand + 's ease alternate infinite';*/
 
         return (
@@ -203,27 +203,32 @@ export default class MemberSearch extends PureComponent {
                                         <div className="eventBlockDesc">
                                             {user.title}
                                         </div>
-                                    </div>
+                                        <div className="eventBlockInfo">
+                                            <div className="eventBlockTitle">{user.name}</div>
+                                            <div className="eventBlockDesc">
+                                                {user.title}
+                                            </div>
+                                        </div>
                                 </Link>
-                            ))}
+                                    ))}
                         </div>
                     </main>
                     <footer className="homeFooterContainer">
-                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                                Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
         </footer>
-                    <Snackbar
-                        open={this.state.snack}
-                        message={this.state.msg}
-                        autoHideDuration={3000}
-                        onClose={this.handleRequestClose}
-                    />
-                </div>
-        );
+                            <Snackbar
+                                open={this.state.snack}
+                                message={this.state.msg}
+                                autoHideDuration={3000}
+                                onClose={this.handleRequestClose}
+                            />
+                        </div>
+                        );
     }
 }
 
 MemberSearch.propTypes = {
-    redirect: PropTypes.oneOfType([
+                            redirect: PropTypes.oneOfType([
         PropTypes.object.isRequired,
         PropTypes.string.isRequired,
     ]),

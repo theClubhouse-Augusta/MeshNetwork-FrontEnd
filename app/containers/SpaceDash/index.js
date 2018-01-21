@@ -19,6 +19,7 @@ import { AllAppearances } from '../../components/DataViz/AllAppearances';
 
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import FlatButton from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
 
 import Header from 'components/Header';
 import Spinner from '../../components/Spinner';
@@ -27,22 +28,26 @@ import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
 
-const getUsersAPI = 'http://localhost:8000/api/getSpaceUsers/';
+const getUsersAPI = 'https://innovationmesh.com/api/getSpaceUsers/';
 
-const spaceInfoAPI = 'http://localhost8000/api/workspace/';
+const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/';
 
 export default class SpaceDash extends React.PureComponent {
     state = {
+        token: localStorage.getItem('token'),
         activeMenu: 0,
         spaceUsers: [],
         spaceDescription: '',
+        spaceID: 0,
         memberCount: 0,
         eventCount: 0,
         checkinCount: 0,
         spaceEvents: [],
+        photoGallery: [],
+        msg: "",
+        snack: false,
         loading: true,
     }
-
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
         if (!authorized.error) {
@@ -52,6 +57,9 @@ export default class SpaceDash extends React.PureComponent {
             this.props.history.push('/');
         }
     }
+
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     loadSpaceUsers = (id) => {
         fetch(getUsersAPI + id, {
@@ -79,16 +87,18 @@ export default class SpaceDash extends React.PureComponent {
             .then(function (json) {
                 this.setState({
                     spaceDescription: json.description,
+                    spaceID: json.id
                 }, function () {
                     this.loadSpaceUsers(json.id);
                     this.getSpaceStats(json.id);
                     this.getSpaceEvents(json.id);
+                    this.getPhotoGallery(json.id);
                 })
             }.bind(this))
     }
 
     getSpaceStats = (id) => {
-        fetch('http://localhost:8000/api/getSpaceStats/' + id, {
+        fetch('https://innovationmesh.com/api/getSpaceStats/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -104,7 +114,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getSpaceEvents = (id) => {
-        fetch('http://localhost:8000/api/getDashboardEvents/' + id, {
+        fetch('https://innovationmesh.com/api/getDashboardEvents/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -121,6 +131,60 @@ export default class SpaceDash extends React.PureComponent {
         this.setState({
             activeMenu: id
         })
+    }
+
+    getPhotoGallery = (id) => {
+        fetch('https://innovationmesh.com/api/getPhotos/' + id, {
+            method: 'GET',
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                this.setState({
+                    photoGallery: json.photos
+                })
+            }.bind(this))
+    }
+
+    handleGalleryPhoto = (event) => {
+        event.preventDefault();
+        let reader = new FileReader();
+        let file = event.target.files[0];
+
+        reader.onloadend = () => {
+            this.storePhoto(file);
+        }
+        reader.readAsDataURL(file);
+    }
+
+    storePhoto = (file) => {
+        let _this = this;
+        let photoGallery = this.state.photoGallery;
+        let data = new FormData();
+
+        data.append('spaceID', this.state.spaceID);
+        data.append('photo', file);
+        fetch('https://innovationmesh.com/api/storePhoto', {
+            method: 'POST',
+            body: data,
+            headers: { 'Authorization': 'Bearer ' + this.state.token }
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
+                    _this.showSnack(json.error);
+                }
+                else if (json.success) {
+                    _this.showSnack(json.success);
+                    photoGallery.push(json.photo);
+                    _this.setState({
+                        photoGallery: photoGallery
+                    })
+                }
+            }.bind(this))
     }
 
     renderDashContent = () => {
@@ -206,10 +270,30 @@ export default class SpaceDash extends React.PureComponent {
                 </div>
             )
         }
+        else if (this.state.activeMenu === 2) {
+            return (
+                <div className="spaceDashContent">
+                    <Header />
+                    <div className="spaceDashOptions">
+                        <label htmlFor="photo-file" style={{ width: '10%', margin: '10px' }}>
+                            <div style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }} >Upload Photo</div>
+                        </label>
+                        <input type="file" onChange={this.handleGalleryPhoto} id="photo-file" style={{ display: 'none' }} />
+                    </div>
+                    <div className="spaceDashPhotoGallery">
+                        {this.state.photoGallery.map((photo, i) => (
+                            <div className="spaceDashPhotoBlock">
+                                <img src={photo.photoThumbnail} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )
+        }
     }
 
     render() {
-        const { value } = this.state;
+
         return (
             this.state.loading
                 ?
@@ -226,10 +310,17 @@ export default class SpaceDash extends React.PureComponent {
                         <div className="spaceDashMenu">
                             <div className="spaceDashMenuItem" onClick={() => this.changeMenu(0)}>Dashboard</div>
                             <div className="spaceDashMenuItem" onClick={() => this.changeMenu(1)}>Space Information</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(2)}>Photo Gallery</div>
                         </div>
                         {this.renderDashContent()}
 
                     </main>
+                    <Snackbar
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={3000}
+                        onClose={this.handleRequestClose}
+                    />
                 </div>
         );
     }

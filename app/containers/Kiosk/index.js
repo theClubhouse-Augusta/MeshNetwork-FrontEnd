@@ -48,39 +48,19 @@ export default class Kiosk extends React.PureComponent {
         const authorized = await authenticate(localStorage['token'], this.props.history);
         if (authorized.error)
             this.props.history.push('/signIn')
-        try {
-            const reasonsKiosk = localStorage.getItem('reasonsKiosk');
-            const usersKiosk = localStorage.getItem('usersKiosk');
-            const workspaceKiosk = localStorage.getItem('workspaceKiosk');
-            const eventsKiosk = localStorage.getItem('eventsKiosk');
-            const reasons = JSON.parse(reasonsKiosk);
-            const users = JSON.parse(usersKiosk);
-            const workspace = JSON.parse(workspaceKiosk);
-            const events = JSON.parse(eventsKiosk);
-            if (reasons && users && events && workspace) {
-                this.getTodaysEvents();
-                this.setState(() => ({ reasons }));
-                this.setState(() => ({ users }));
-                this.setState(() => ({ events }));
-                this.setState(() => ({ workspace }));
-            } else {
-                this.getUpcomingEvents();
-                this.getProfile();
-                this.getUsers();
-                this.getReasons();
-                this.getTodaysEvents();
-                this.setState({ loading: false });
-            }
-        } catch (e) {
-            // Do nothing at all
-        }
+
+        this.getUpcomingEvents();
+        this.getProfile();
+        this.getReasons();
+        this.getTodaysEvents();
+        this.setState({ loading: false });
     }
 
     handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     getProfile = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -89,81 +69,56 @@ export default class Kiosk extends React.PureComponent {
             .then(function (json) {
                 this.setState({
                     workspace: json
-                }, () => {
-                    localStorage['workspaceKiosk'] = JSON.stringify(json);
+                }, function () {
+                    this.getUsers(json.id);
                 })
             }.bind(this))
     }
 
-    getUsers = () => {
-        fetch('http://localhost:8000/api/users/space/' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(Users => {
-                if (Users) {
-                    this.setState({ users: Users }, () => {
-                        localStorage['usersKiosk'] = JSON.stringify(Users);
-                    });
-                }
+    getUsers = (id) => {
+        fetch('https://innovationmesh.com/api/users/space/' + id)
+            .then(function (response) {
+                return response.json();
             })
-            .catch(error => {
-                // do something with error
-            })
+            .then(function (json) {
+                this.setState({
+                    users: json
+                })
+            }.bind(this))
     }
 
     getReasons = () => {
-        fetch('http://localhost:8000/api/occasions')
-            .then(response => response.json())
-            .then(Reasons => {
-                if (Reasons) {
-                    this.setState({ reasons: Reasons }, () => {
-                        localStorage['reasonsKiosk'] = JSON.stringify(Reasons);
-                    });
-                }
+        fetch('https://innovationmesh.com/api/occasions')
+            .then(function (response) {
+                return response.json();
             })
-            .catch(error => {
-                // do something with error
-            })
+            .then(function (json) {
+                this.setState({
+                    reasons: json
+                })
+            }.bind(this))
     }
 
     getUpcomingEvents = () => {
-        fetch('http://localhost:8000/api/upcoming/' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(Events => {
-                if (Events) {
-                    this.setState({ events: Events }, () => {
-                        localStorage['eventsKiosk'] = JSON.stringify(Events);
-                    });
-                }
+        fetch('https://innovationmesh.com/api/upcoming/' + this.props.match.params.id)
+            .then(function (response) {
+                return response.json();
             })
-            .catch(error => {
-                // do something with error
-            })
-    }
-
-    getTodaysEvents = () => {
-        fetch('http://localhost:8000/api/today/event', {
-            headers: { Authorization: `Bearer ${localStorage['token']}` }
-        })
-            .then(response => response.json())
-            .then(Events => {
-                if (Events) {
-                    this.setState({ todaysEvents: Events }, () => {
-                    });
-                }
-            })
-            .catch(error => {
-                // do something with error
-            })
+            .then(function (json) {
+                this.setState({
+                    events: json
+                })
+            }.bind(this))
     }
 
     storeAppearance = () => {
         let data = new FormData();
         data.append('userID', this.state.loggedInUser.value);
         data.append('eventID', 0);
-        data.append('spaceID', this.props.match.params.id);
+        data.append('spaceID', this.state.workspace.id);
         data.append('occasion', this.state.selectedReason);
 
-        fetch('http://localhost:8000/api/appearance', {
+        fetch('https://innovationmesh.com/api/appearance', {
             method: 'POST',
             body: data
         })
@@ -188,7 +143,23 @@ export default class Kiosk extends React.PureComponent {
         });
     }
 
-    restartPage = () => { window.location.reload() }
+    getTodaysEvents = () => {
+        fetch('http://localhost:8000/api/today/event', {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(response => response.json())
+            .then(Events => {
+                if (Events) {
+                    this.setState({ todaysEvents: Events }, () => {
+                    });
+                }
+            })
+            .catch(error => {
+                // do something with error
+            })
+    }
+
+    // restartPage = () => { window.location.reload() }
 
     renderComplete = () => {
         if (this.state.showComplete === true) {
@@ -255,7 +226,7 @@ export default class Kiosk extends React.PureComponent {
 
                     </header>
                     <main className="kioskMain">
-                        <img className="kioskLogo" src={this.state.workspace.logo} />
+                        <img className="kioskLogo" src={this.state.workspace.logo} style={{ width: '300px', height: 'auto', marginTop: '30px' }} />
                         <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
                         <div className="kioskSubtitle">Check-In with Us!</div>
                         <div className="kioskContent">

@@ -15,8 +15,8 @@ import Logger from '../../utils/Logger';
 import './style.css';
 import './styleM.css';
 
-const getEventsAPI = 'http://localhost:8000/api/workevents/';
-const eventUpdateAPI = 'http://localhost:8000/api/eventUpdate';
+const getEventsAPI = 'https://innovationmesh.com/api/workevents/';
+const eventUpdateAPI = 'https://innovationmesh.com/api/eventUpdate';
 const eventDateTimeAPI = '';
 const eventVerifyAPI = '';
 
@@ -119,7 +119,7 @@ export default class EventDash extends React.PureComponent {
        //this.getEventOrganizers();
        //this.getEventDateTime();
      }
-   
+
      loadSpaceEvents= () => {
        fetch(getEventsAPI + this.props.id, {
          method: 'GET'
@@ -135,8 +135,8 @@ export default class EventDash extends React.PureComponent {
          })
        }.bind(this))
      }
-   
-   
+
+
    /*
    //eventID param
      getEventOrganizers= () => {
@@ -153,9 +153,9 @@ export default class EventDash extends React.PureComponent {
         })
         .then(response => reponse.json())
         .then(
-    
+
         )
-    
+
       }
     */
 
@@ -171,9 +171,9 @@ export default class EventDash extends React.PureComponent {
     /*
     commitChanges({ added, changed, deleted }) {
       let rows = this.state;
-    
+
       data.append()
-    
+
       fetch(eventUpdateAPI, {
         method: 'POST',
         body: data,
@@ -181,7 +181,7 @@ export default class EventDash extends React.PureComponent {
       .then(response => response.json())
       .catch(error => Logger(`front-end: EventDash@commitChanges: ${error.message}`));
     }
-    
+
     */
 
 

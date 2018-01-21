@@ -23,6 +23,7 @@ export default class Booking extends React.PureComponent {
         super(props);
         this.state = {
             msg: "",
+            spaceProfile: "",
             snack: false,
             space: "",
             name: "",
@@ -55,6 +56,10 @@ export default class Booking extends React.PureComponent {
         }, function () {
             this.forceUpdate();
         })
+    }
+
+    componentWillMount() {
+        this.getProfile();
     }
 
     handleName = (event) => { this.setState({ name: event.target.value }) }
@@ -113,17 +118,33 @@ export default class Booking extends React.PureComponent {
         })
     }
 
+    getProfile = () => {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+            method: 'GET'
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                this.setState({
+                    spaceProfile: json
+                })
+            }.bind(this));
+    }
+
     storeBooking = () => {
         let _this = this;
         let data = new FormData;
 
+        console.log(JSON.stringify(this.state.activeTimes));
+
         data.append('name', this.state.name);
         data.append('email', this.state.email);
-        data.append('type', this.state.type);
-        data.append('times', this.state.activeTimes);
-        data.append('spaceID', this.props.match.params.id);
+        data.append('type', this.state.activeType);
+        data.append('times', JSON.stringify(this.state.activeTimes));
+        data.append('spaceID', this.state.spaceProfile.id);
 
-        fetch("http://localhost:8000/api/booking", {
+        fetch("https://innovationmesh.com/api/booking", {
             method: 'POST',
             body: data
         })
@@ -136,6 +157,9 @@ export default class Booking extends React.PureComponent {
                 }
                 else if (json.success) {
                     _this.showSnack(json.success);
+                    setTimeout(() => {
+                        this.props.history.push(`/space/${this.state.spaceProfile.id}`)
+                    }, 5000);
                 }
             }.bind(this));
     }
@@ -162,7 +186,7 @@ export default class Booking extends React.PureComponent {
                 <div className="bookingTimeBlock" key={j}>
                     <div className="bookingTimeText">{item.time}</div>
                     <div className="bookingTimeButton">
-                        <FlatButton style={{ background: '#ee3868', color: '#FFFFFF' }} onClick={() => this.handleTime(day, item.time, j)}>Select</FlatButton>
+                        <FlatButton style={{ background: '#ff4d58', color: '#FFFFFF' }} onClick={() => this.handleTime(day, item.time, j)}>Select</FlatButton>
                     </div>
                 </div>
             )
@@ -171,7 +195,7 @@ export default class Booking extends React.PureComponent {
                 <div className="bookingTimeBlock" key={j}>
                     <div className="bookingTimeText">{item.time}</div>
                     <div className="bookingTimeButton">
-                        <FlatButton style={{ background: '#ee3868', color: '#FFFFFF' }} onClick={() => this.removeTime(day, item.time, j)}>Remove</FlatButton>
+                        <FlatButton style={{ background: '#ff4d58', color: '#FFFFFF' }} onClick={() => this.removeTime(day, item.time, j)}>Remove</FlatButton>
                     </div>
                 </div>
             )
@@ -185,14 +209,14 @@ export default class Booking extends React.PureComponent {
                 <Spinner />
                 :
                 <div className="container">
+
                     <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
 
-                    <header>
+                    <header style={{ background: '#FFFFFF' }}>
                         <Header app={this.state.app} />
                     </header>
-
                     <main>
-                        <div className="bookingContainer">
+                        <div className="bookingMainContainer">
                             <div className="bookingInfoContainer">
                                 <div className="bookingColumnTitle">Your Info</div>
                                 <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
@@ -200,35 +224,20 @@ export default class Booking extends React.PureComponent {
                                 {this.state.types.map((type, i) => (
                                     this.renderTypeButton(type, i)
                                 ))}
-                                <FlatButton style={{ width: '100%', background: '#ee3868', color: '#FFFFFF', marginTop: '15px' }}>Confirm Booking</FlatButton>
-                            </div>
-                            <div className="bookingTimeContainer">
-                                <div className="bookingColumnTitle">Schedule Times</div>
-                                {this.state.days.map((day, i) => (
-                                    <ExpansionPanel style={{ marginTop: '30px' }} key={i}>
-                                        <ExpansionPanelSummary>
-                                            <div className="bookingPanelTitle">{day}</div>
-                                        </ExpansionPanelSummary>
-                                        <ExpansionPanelDetails style={{ display: 'flex', flexDirection: 'column' }}>
-                                            {this.state.times.map((time, j) => (
-                                                this.renderTimes(day, time, j)
-                                            ))}
-                                        </ExpansionPanelDetails>
-                                    </ExpansionPanel>
-                                ))}
+                                <FlatButton style={{ width: '100%', background: '#ff4d58', color: '#FFFFFF', marginTop: '15px' }} onClick={this.storeBooking}>Confirm Booking</FlatButton>
                             </div>
                         </div>
                     </main>
 
                     <footer className="homeFooterContainer">
                         Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-        </footer>
                     <Snackbar
-                        open={this.state.snack}
-                        message={this.state.msg}
-                        autoHideDuration={3000}
-                        onRequestClose={this.handleRequestClose}
-                    />
+                            open={this.state.snack}
+                            message={this.state.msg}
+                            autoHideDuration={5000}
+                            onClose={this.handleRequestClose}
+                        />
+                    </footer>
                 </div>
         );
     }

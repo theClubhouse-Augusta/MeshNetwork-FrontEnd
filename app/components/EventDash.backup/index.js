@@ -30,8 +30,8 @@ TO DO
 */
 
 
-const getEventsAPI = 'http://localhost:8000/api/workevents/';
-const eventUpdateAPI = 'http://localhost:8000/api/eventUpdate';
+const getEventsAPI = 'https://innovationmesh.com/api/workevents/';
+const eventUpdateAPI = 'https://innovationmesh.com/api/eventUpdate';
 const eventDateTimeAPI = '';
 const eventVerifyAPI = '';
 
