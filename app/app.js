@@ -7,6 +7,7 @@ import '!file-loader?name=[name].[ext]!./favicon.ico';
 import '!file-loader?name=[name].[ext]!./manifest.json';
 
 import App from 'containers/App';
+import './app.css';
 
 ReactDOM.render((
     <BrowserRouter>

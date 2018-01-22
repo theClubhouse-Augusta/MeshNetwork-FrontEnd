@@ -8,15 +8,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Helmet from 'react-helmet';
-import { TiGroup } from 'react-icons/lib/ti';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/Button';
 
 import Header from 'components/Header';
-import Footer from 'components/Footer';
 import { MapLocal } from "./MapLocal";
-import { MapNonLocal } from "./MapNonLocal";
 
 
 import './style.css';
@@ -137,15 +134,6 @@ export default class EventDetail extends React.PureComponent {
         const {
       event,
             workSpace,
-            hostSpace,
-            workSpaces,
-            upcomingEvents,
-            sponsors,
-            dates,
-            organizers,
-            attendees,
-            snackBar,
-            snackBarMessage,
             tags
     } = this.state;
         // organizers.forEach(organizer => attendees.push(organizer))

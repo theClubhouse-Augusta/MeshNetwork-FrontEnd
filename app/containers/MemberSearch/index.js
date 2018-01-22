@@ -5,9 +5,8 @@
  */
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes, { oneOfType } from 'prop-types';
+import PropTypes from 'prop-types';
 /* Icons */
-import MdPerson from 'react-icons/lib/md/person';
 
 import Chip from 'material-ui/Chip';
 import TextField from 'material-ui/TextField';
@@ -16,6 +15,7 @@ import Snackbar from 'material-ui/Snackbar';
 /* Components */
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
+import Spinner from '../../components/Spinner';
 
 import authenticate from '../../utils/Authenticate';
 /* css */
@@ -43,7 +43,7 @@ export default class MemberSearch extends PureComponent {
         const authorized = await authenticate(localStorage['token'], this.props.history)
         if (!authorized.error) {
             this.loadSkills();
-            this.setState({loading: false})
+            this.setState({ loading: false })
         } else {
             this.props.history.push('/signIn');
         }
@@ -164,68 +164,73 @@ export default class MemberSearch extends PureComponent {
     render() {
         return (
             this.state.loading
-            ?
-                <div>spinner here</div>
-            :
-            <div className="membersContainer">
-                <Helmet title="MemberSearch" meta={[{ name: 'description', content: 'Description of MemberSearch' }]} />
+                ?
+                <Spinner />
+                :
+                <div className="membersContainer">
+                    <Helmet title="MemberSearch" meta={[{ name: 'description', content: 'Description of MemberSearch' }]} />
 
-                <header style={{ background: '#FFFFFF' }}>
-                    <Header />
-                    <div className="membersBanner">
-                        <div className="homeHeaderContentTitle">Connect with People</div>
-                        <div className="homeHeaderContentSubtitle">Discover new and innovative members</div>
-                    </div>
-                </header>
+                    <header style={{ background: '#FFFFFF' }}>
+                        <Header />
+                        <div className="membersBanner">
+                            <div className="homeHeaderContentTitle">Connect with People</div>
+                            <div className="homeHeaderContentSubtitle">Discover new and innovative members</div>
+                        </div>
+                    </header>
 
-                <main className="memberSearchMain">
-                    <div className="">
-                    </div>
-                    <TextField style={{ width: '100%', maxWidth: '700px', textAlign: 'center', marginBottom: '10px', color: '#FFFFFF' }} label="Member Search" value={this.state.query} onChange={this.searchQuery} onKeyDown={(e) => { this.checkKey(e); }} />
+                    <main className="memberSearchMain">
+                        <div className="">
+                        </div>
+                        <TextField style={{ width: '100%', maxWidth: '700px', textAlign: 'center', marginBottom: '10px', color: '#FFFFFF' }} label="Member Search" value={this.state.query} onChange={this.searchQuery} onKeyDown={(e) => { this.checkKey(e); }} />
 
-                    <div className="membersSubTitle">Popular Skills</div>
+                        <div className="membersSubTitle">Popular Skills</div>
 
-                    <div className="tagsBox">
-                        {this.state.skills.map((skill, i) => (
-                            this.renderTag(skill, i)
-                        ))}
-                    </div>
+                        <div className="tagsBox">
+                            {this.state.skills.map((skill, i) => (
+                                this.renderTag(skill, i)
+                            ))}
+                        </div>
 
-                    <div className="memberSearchResults">
-                        {this.state.results.map((user, index) => (
-                            <Link to={'/user/' + user.id} className="eventBlock">
-                                <div className="eventBlockImage">
-                                    <img src={user.avatar} style={{ width: '100%', height: 'auto' }} />
-                                </div>
-                                <div className="eventBlockInfo">
-                                    <div className="eventBlockTitle">{user.name}</div>
-                                    <div className="eventBlockDesc">
-                                        {user.title}
+                        <div className="memberSearchResults">
+                            {this.state.results.map((user, index) => (
+                                <Link
+                                    key={`results${index}`}
+                                    to={'/user/' + user.id} className="eventBlock"
+                                >
+                                    <div className="eventBlockImage">
+                                        <img src={user.avatar} style={{ width: '100%', height: 'auto' }} />
                                     </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </main>
-                <footer className="homeFooterContainer">
-                    Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                                    <div className="eventBlockInfo">
+                                        <div className="eventBlockTitle">{user.name}</div>
+                                        <div className="eventBlockDesc">
+                                            {user.title}
+                                        </div>
+                                        <div className="eventBlockInfo">
+                                            <div className="eventBlockTitle">{user.name}</div>
+                                            <div className="eventBlockDesc">
+                                                {user.title}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </main>
+                    <footer className="homeFooterContainer">
+                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
         </footer>
-                <Snackbar
-                    open={this.state.snack}
-                    message={this.state.msg}
-                    autoHideDuration={3000}
-                    onClose={this.handleRequestClose}
-                />
-            </div>
+                    <Snackbar
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={3000}
+                        onClose={this.handleRequestClose}
+                    />
+                </div>
         );
     }
 }
 
 MemberSearch.propTypes = {
-    redirect: PropTypes.oneOfType([
-        PropTypes.object.isRequired,
-        PropTypes.string.isRequired,
-    ]),
     getLoggedInUser: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
 };

@@ -1,53 +1,58 @@
 /* KioskSystem Styles */
 
 .kioskContainer {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-family: 'Encode Sans', sans-serif;
   background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
   background-size: 400% 400%;
-  padding-bottom:50px;
+  padding-bottom: 50px;
   animation: Gradient 15s ease infinite;
 }
 
 .kioskMain {
-  display:flex;
-  flex-direction:column;
-  width:100%;
-  max-width:1000px;
-  margin:0 auto;
-  align-items:center;
-  height:100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: center;
+  height: 100vh;
 }
 
 @keyframes Gradient {
-	0% { background-position: 0% 50% }
-	50% { background-position: 100% 50% }
-	100% { background-position: 0% 50% }
+  0% {
+    background-position: 0% 50%
+  }
+  50% {
+    background-position: 100% 50%
+  }
+  100% {
+    background-position: 0% 50%
+  }
 }
 
-
 .kioskTitle {
-  font-size:3em;
-  color:#FFFFFF;
-  font-variant:small-caps;
-  font-weight:bold;
+  font-size: 3em;
+  color: #FFFFFF;
+  font-variant: small-caps;
+  font-weight: bold;
 }
 
 .kioskSubtitle {
-  font-size:1.8em;
-  color:#EEEEEE;
-  width:80%;
-  text-align:center;
-  border-bottom:1px solid #FFFFFF;
-  padding-bottom:10px;
+  font-size: 1.8em;
+  color: #EEEEEE;
+  width: 80%;
+  text-align: center;
+  border-bottom: 1px solid #FFFFFF;
+  padding-bottom: 10px;
 }
 
 .kioskContent {
   width: 100%;
-  max-width:600px;
-  margin-top:30px;
+  max-width: 600px;
+  margin-top: 30px;
 }
 
 .kioskUserName {
@@ -57,77 +62,102 @@
 }
 
 .kioskReasons {
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 
 .kioskReasonBlock {
-  display:flex;
-  flex-direction:column;
-  color:#FFFFFF;
-  border-radius:5px;
-  border:3px solid #FFFFFF;
-  padding:15px;
-  width:24%;
-  height:100px;
-  margin:1%;
-  align-items:center;
+  display: flex;
+  flex-direction: column;
+  color: #FFFFFF;
+  border-radius: 5px;
+  border: 3px solid #FFFFFF;
+  padding: 15px;
+  width: 24%;
+  height: 100px;
+  margin: 1%;
+  align-items: center;
   justify-content: center;
-  cursor:pointer;
-  font-weight:bold;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .kioskReasonBlock:hover {
-  background:#FFFFFF;
-  color:#222222;
+  background: #FFFFFF;
+  color: #222222;
 }
 
 .eventList {
-  display:flex;
-  flex-direction:column;
-  width:100%;
-  margin-top:15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 15px;
 }
 
 .eventBlock {
-  width:100%;
-  height:100px;
-  box-shadow:0 3px 10px 0 rgba(0, 0, 0, 0.3);
-  background:#FFFFFF;
-  display:flex;
-  flex-direction:row;
+  width: 100%;
+  height: 100px;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: row;
   transition: all .26s ease-in-out;
-  cursor:pointer;
-  margin-bottom:20px;
-  text-decoration:none;
-  color:#222222;
+  cursor: pointer;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #222222;
 }
 
 .eventBlockImage {
-  width:100px;
-  height:100px;
-  background:#EEEEEE;
+  width: 100px;
+  height: 100px;
+  background: #EEEEEE;
 }
 
 .eventBlockInfo {
-  padding-left:10px;
-  padding-right:10px;
-  display:flex;
-  flex-direction:column;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
 .eventBlockTitle {
-  font-size:2em;
-  font-variant:small-caps;
+  font-size: 2em;
+  font-variant: small-caps;
 }
 
 .eventBlockDesc {
-  font-size:0.9em;
-  color:#999999;
+  font-size: 0.9em;
+  color: #999999;
 }
 
 .eventBlock:hover {
   transform: scale(1.1);
+}
+
+div.kioskContent div.Select--single {
+  margin-bottom: 16px;
+}
+
+div.kioskContent div.Select-value {
+  background-color: #fff;
+  /* background-color: rgba(0, 126, 255, .08); */
+  border: none;
+  /* border: 1px solid #c2e0ff; */
+  /* border: 1px solid rgba(0, 126, 255, .24); */
+  /* color: #007eff; */
+  display: inline-block;
+  font-size: .9em;
+  line-height: 1.4;
+  margin-left: 5px;
+  /* margin-top: 5px; */
+  /* margin-bottom: 8px; */
+  vertical-align: top;
+  box-sizing: border-box;
+  cursor: default;
+  border-spacing: 0;
+  border-collapse: separate;
+  /* margin-bottom: 16px; */
 }
