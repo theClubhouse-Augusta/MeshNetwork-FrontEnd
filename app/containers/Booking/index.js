@@ -2,7 +2,6 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 
-
 import TextField from 'material-ui/TextField';
 import ExpansionPanel, {
     ExpansionPanelSummary,
@@ -192,10 +191,6 @@ export default class Booking extends React.PureComponent {
 
     render() {
         return (
-            this.state.loading
-                ?
-                <Spinner />
-                :
                 <div className="container">
                 <Helmet>
                     <title>Bookings</title>
