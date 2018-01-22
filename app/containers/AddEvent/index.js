@@ -97,7 +97,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getSponsors = () => {
-        fetch(`http://localhost:8000/api/sponsors`, {
+        fetch(`https://innovationmesh.com/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -111,7 +111,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getOrganizers = () => {
-        fetch(`http://localhost:8000/api/organizers/all`, {
+        fetch(`https://innovationmesh.com/api/organizers/all`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -126,7 +126,7 @@ export default class AddEvent extends PureComponent {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -433,7 +433,7 @@ export default class AddEvent extends PureComponent {
             }
         }
 
-        fetch(`http://localhost:8000/api/event`, {
+        fetch(`https://innovationmesh.com/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -573,10 +573,10 @@ export default class AddEvent extends PureComponent {
 
                         <div className="spaceSignUpTitle">Submit an Event</div>
                         <div className="spaceSignUpContainer">
-                            
+
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
-                            <TextField label="Breif description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
+                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
                             <label
                                 style={{
