@@ -27,6 +27,7 @@ export default class SpaceProfile extends React.PureComponent {
         super();
         this.state = {
             token: localStorage.getItem("token"),
+            user: JSON.parse(localStorage.getItem("user")),
             spaceProfile: '',
             events: [],
             users: [],
@@ -96,6 +97,16 @@ export default class SpaceProfile extends React.PureComponent {
                     photoGallery: json.photos
                 })
             }.bind(this))
+    }
+
+    renderDashboard = () => {
+      if(this.state.user) {
+        if(this.state.user.spaceID == this.state.spaceProfile.id && this.state.user.roleID == 2) {
+          return(
+            <Link to={'/spacedash/' + this.state.spaceProfile.slug} style={{ width: '100%' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Dashboard</FlatButton></Link>
+          )
+        }
+      }
     }
 
 
@@ -170,7 +181,7 @@ export default class SpaceProfile extends React.PureComponent {
                                     <Link to={'/booking/' + this.state.spaceProfile.slug} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#ff4d58', color: '#FFFFFF', width: '100%' }}>Bookings </FlatButton></Link>
                                     <Link to={'/join/' + this.state.spaceProfile.slug} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Join This Space </FlatButton></Link>
                                     <Link to={'/kiosk/' + this.state.spaceProfile.slug} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#ff4d58', color: '#FFFFFF', width: '100%' }}>Check-In</FlatButton></Link>
-                                    <Link to={'/spacedash/' + this.state.spaceProfile.slug} style={{ width: '100%' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Dashboard</FlatButton></Link>
+                                    {this.renderDashboard()}
                                 </div>
                                 <div className="spaceLocation">
                                     <div className="spaceLocationImage">
