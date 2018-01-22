@@ -51,7 +51,7 @@ export default class MemberSearch extends PureComponent {
 
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills', {
+        fetch('http://localhost:8000/api/skills', {
             //headers: { Authorization: `Bearer ${this.token}` },
         })
             .then(response => response.json())
@@ -67,7 +67,7 @@ export default class MemberSearch extends PureComponent {
     // submit form if 'enter' is pressed
     checkKey = (e) => {
         if (e.keyCode === 13 && this.state.query) {
-            fetch(`https://innovationmesh.com/api/search/?query=${encodeURIComponent(this.state.query)}`, {
+            fetch(`http://localhost:8000/api/search/?query=${encodeURIComponent(this.state.query)}`, {
                 //headers: { Authorization: `Bearer ${this.token}` },
             })
                 .then(response =>
@@ -127,7 +127,7 @@ export default class MemberSearch extends PureComponent {
     }
 
     tagClick = (tag) => {
-        fetch(`https://innovationmesh.com/api/search/?tag=${encodeURIComponent(tag)}`, {
+        fetch(`http://localhost:8000/api/search/?tag=${encodeURIComponent(tag)}`, {
             //headers: { Authorization: `Bearer ${this.token}` },
         })
             .then(function (response) {

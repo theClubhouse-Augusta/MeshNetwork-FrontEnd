@@ -478,3 +478,14 @@ span#react-select-2--backspace-remove-message.Select-aria-only {
 .eventBlock:hover {
   transform: scale(1.1);
 }
+span#react-select-5--backspace-remove-message.Select-aria-only {
+    display: none;
+}
+
+span#react-select-3--backspace-remove-message.Select-aria-only {
+    display: none;
+}
+
+div.spaceSignUpContainer div.Select-control {
+   background: #fff;
+}
