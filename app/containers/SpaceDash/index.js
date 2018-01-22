@@ -27,9 +27,9 @@ import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
 
-const getUsersAPI = 'http://localhost:8000/api/getSpaceUsers/';
+const getUsersAPI = 'https://innovationmesh.com/api/getSpaceUsers/';
 
-const spaceInfoAPI = 'http://localhost:8000/api/workspace/';
+const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/';
 
 export default class SpaceDash extends React.PureComponent {
     state = {
@@ -97,7 +97,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getSpaceStats = (id) => {
-        fetch('http://localhost:8000/api/getSpaceStats/' + id, {
+        fetch('https://innovationmesh.com/api/getSpaceStats/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -113,7 +113,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getSpaceEvents = (id) => {
-        fetch('http://localhost:8000/api/getDashboardEvents/' + id, {
+        fetch('https://innovationmesh.com/api/getDashboardEvents/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -133,7 +133,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getPhotoGallery = (id) => {
-        fetch('http://localhost:8000/api/getPhotos/' + id, {
+        fetch('https://innovationmesh.com/api/getPhotos/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -164,7 +164,7 @@ export default class SpaceDash extends React.PureComponent {
 
         data.append('spaceID', this.state.spaceID);
         data.append('photo', file);
-        fetch('http://localhost:8000/api/storePhoto', {
+        fetch('https://innovationmesh.com/api/storePhoto', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
