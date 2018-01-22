@@ -45,7 +45,7 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`https://innovationmesh.com/api/event/${eventID}`, {
+        fetch(`http://localhost:8000/api/event/${eventID}`, {
             method: 'GET'
         })
             .then(function (response) {
