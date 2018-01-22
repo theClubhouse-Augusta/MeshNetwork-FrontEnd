@@ -10,6 +10,8 @@ import Snackbar from 'material-ui/Snackbar';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import Select from 'react-select';
+import { Creatable } from 'react-select'; 
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -19,14 +21,15 @@ import Logger from '../../utils/Logger';
 import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
+import 'react-select/dist/react-select.css';
 
 export default class MemberAcct extends React.PureComponent {
     state = {
-        // ProfileSettings: userInfoForm
         name: '',
         website: '',
         title: '',
         avatar: '',
+        avatarPreview: '', 
         imagePreviewUrl: '',
         email: '',
         emailConfirm: '',
@@ -57,15 +60,18 @@ export default class MemberAcct extends React.PureComponent {
         loading: true,
     };
 
-    async componentWillMount() {
+   /* async componentWillMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
         if (!authorized.error) {
             this.setState({ loading: false });
         } else {
             this.props.history.push('/');
         }
+    } */
+    
+    componentWillMount () { 
+        this.getUserInfo(); 
     }
-
 
     handleInputChange = name => event => {
         this.setState({
@@ -76,6 +82,33 @@ export default class MemberAcct extends React.PureComponent {
             //}
         );
     };
+
+    handleAvatar = (event) => {
+        event.preventDefault();
+        let reader = new FileReader();
+        let file = event.target.files[0];
+        reader.onloadend = () => {
+            this.setState({
+                avatar: file,
+                avatarPreview: reader.result,
+            })
+        }
+        reader.readAsDataURL(file);
+        console.log(this.state.avatarPreview);
+    }
+
+    renderAvatarPreview = () => {
+        if (this.state.avatarPreview == '') {
+            return (               
+                <img src={this.state.avatar} className="acctProfilePicturePreview" height="200px" width="200px" />               
+            )
+        }
+        else (this.state.avatar !== this.state.avatarPreview); {
+            return (
+                <img src={this.state.avatarPreview} className="acctProfilePicturePreview" height="200px" width="200px" />
+            )
+        }
+    }
 
     confirmPassword = () => {
         if (this.state.password !== this.state.passwordConfirm) {
@@ -91,6 +124,35 @@ export default class MemberAcct extends React.PureComponent {
         } else {
             this.setState({ emailError: false });
         }
+    }
+
+  getUserInfo = () => {
+        fetch('https://innovationmesh.com/api/user/' + this.props.match.params.id, {
+            method: 'GET',
+            headers: { Authorization: `Bearer ${localStorage['token']}` },
+        })
+            .then(function (response) {
+                return response.json();
+            
+            })
+            .then(function (json) {
+                this.setState({
+                    name: json.user.name,
+                    website: json.user.website,
+                    title: json.user.title,
+                    avatar: json.user.avatar,
+                    email: json.user.email,     
+                    facebook: json.user.facebook,
+                    twitter: json.user.twitter,
+                    instagram: json.user.instagram,
+                    linkedin: json.user.linkedin,
+                    github: json.user.github,
+                    behance: json.user.behance,
+                    angellist: json.user.angellist,
+                }, function() {
+                    console.log(this.state); 
+                })
+            }.bind(this))
     }
 
     onUserInfoSubmit = e => {
@@ -122,12 +184,86 @@ export default class MemberAcct extends React.PureComponent {
     }
 
 
+    loadSkills = () => {
+      fetch('https://innovationmesh.com/api/skills/all', {
+        headers: { Authorization: `Bearer ${localStorage['token']}` },
+      })
+      .then(response => response.json())
+      .then(json => this.setState({ loadedTags:json }))
+      .catch(error => {
+        alert(`error in fetching data from server: ${error}`);
+      });
+    }
+  
+    loadUserSkills = () => {
+      fetch('https://innovationmesh.com/api/userskills', {
+        headers: { Authorization: `Bearer ${localStorage['token']}` },
+      })
+      .then(response => response.json())
+      .then(json => {this.setState({ selectedTags:json })})
+      .catch(error => {
+        alert(`error in fetching data from server: ${error}`);
+      });
+    }
+  
+  
+  
+  selectTag = selectedTag => {
+    const selectedTags = selectedTag.slice(0, (selectedTag.length - 1));
+    const selected = selectedTag.slice(-1)[0];
+  
+    const loaded = this.state.loadedTags.slice(1);
+    const s = this.state.selectedTags.slice();
+  
+    if (!!selected.id) {
+      this.setState({ selectedTags: selectedTag });
+    } else {
+      selected.value = selected.value.replace(/\s\s+/g, ' ').trim();
+      selected.label = selected.label.replace(/\s\s+/g, ' ').trim();
+      const duplicateLoaded = loaded.findIndex(tag => tag.label === selected.label);
+      const duplicateSelected = s.findIndex(tag => tag.label === selected.label);
+      if (duplicateLoaded === -1 && duplicateSelected === -1) {
+        selectedTags.push(selected);
+        this.setState({	selectedTags: selectedTags });
+      } else {
+        this.setState({	selectedTags: selectedTags });
+      }
+    }
+    // else {
+      // this.setState({ selectedTags: selectedTag });
+    // }
+  }
+
+  onTagsSubmit = e => {
+    e.preventDefault();
+    let data = new FormData();
+    let { selectedTags } = this.state;
+    data.append('tags', JSON.stringify(selectedTags));
+  
+    fetch(`https://innovationmesh.com/api/updateUser`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+      method: 'post',
+      body: data,
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json.success) {
+        this.toggleSnackBar(json.success);
+      } else {
+        this.toggleSnackBar(json.error);
+      }
+    })
+    .catch(error => {
+      this.toggleSnackBar(JSON.stringify(error));
+    })
+  }
+
     render() {
         return (
-            this.state.loading
-                ?
-                <Spinner loading={this.state.loading} />
-                :
+            //this.state.loading
+               // ?
+                //<Spinner loading={this.state.loading} />
+               // :
                 <div className="container">
                     <Helmet title="MemberAcct" meta={[{ name: 'description', content: 'Description of MemberAcct' }]} />
                     <Header />
@@ -139,9 +275,125 @@ export default class MemberAcct extends React.PureComponent {
 
                         <div className="acctBody">
                             <div className="acctMainInfo">
-                                <div className="acctWorkInfo"></div>
-                                <div className="acctTagSelection"></div>
-                                <div className="acctSocialMedia"></div>
+                                
+                                <div className="acctProfileInfo">       
+                                 <div className="acctProfileMain">
+                                     <h3> Profile Information </h3> 
+                                     
+                                     <TextField
+                                     label={'Name'}
+                                     margin='normal'
+                                     value={`${this.state.name}`}
+                                     placeholder={`${this.state.name}`} onChange={this.handleInputChange('name')}
+                                     />
+                                     <TextField
+                                     label={'Title'}
+                                     margin='normal'
+                                     value={`${this.state.title}`}
+                                     placeholder={`${this.state.title}`} onChange={this.handleInputChange('title')}
+                                         />
+                                     <TextField
+                                         label={'Website'}
+                                         margin='normal'
+                                         value={`${this.state.website}`}
+                                         placeholder={`${this.state.website}`} onChange={this.handleInputChange('website')}
+                                     />
+                                     </div>
+
+                                     <div className="acctProfilePicture">                                    
+                                             {this.renderAvatarPreview()}                                   
+                                         <div>
+                                         <label style={{ display: 'flex', flexDirection: 'column' }}>
+                                             <Button raised component="span" >
+                                                 Upload
+                                                 <input
+                                                     onChange={this.handleAvatar}
+                                                     type="file"
+                                                     style={{ display: 'none' }}
+                                                     accept="image/png, image/jpg, image/jpeg"
+                                                 />
+                                             </Button>
+                                         </label>
+                                     </div>
+                                    </div>
+                                </div>
+                            
+                        
+
+                                <Divider />
+
+                                <div className="acctSocialMediaWrapper">
+                                     <h3> Social Media Handles</h3>
+                                     <div className="acctSocialMedia">
+                                     <TextField
+                                     label={'Facebook'}
+                                     margin='normal'
+                                     value={`${this.state.facebook}`}
+                                    placeholder={`${this.state.facebook}`}
+                                     onChange={this.handleInputChange('facebook')}
+                                    />
+                                    <TextField
+                                    label={'Twitter'}
+                                    margin='normal'
+                                    value={`${this.state.twitter}`}
+                                   placeholder={`${this.state.twitter}`}
+                                    onChange={this.handleInputChange('twitter')}
+                                   />
+                                   <TextField
+                                   label={'Instagram'}
+                                   margin='normal'
+                                   value={`${this.state.instagram}`}
+                                  placeholder={`${this.state.instagram}`}
+                                   onChange={this.handleInputChange('instagram')}
+                                  />
+                                  <TextField
+                                  label={'LinkedIn'}
+                                  margin='normal'
+                                  value={`${this.state.linkedin}`}
+                                 placeholder={`${this.state.linkedin}`}
+                                  onChange={this.handleInputChange('linkedin')}
+                                 />
+                                 <TextField
+                                 label={'Github'}
+                                 margin='normal'
+                                 value={`${this.state.github}`}
+                                placeholder={`${this.state.github}`}
+                                 onChange={this.handleInputChange('github')}
+                                />
+                                <TextField
+                                label={'Behance'}
+                                margin='normal'
+                                value={`${this.state.behance}`}
+                               placeholder={`${this.state.behance}`}
+                                onChange={this.handleInputChange('behance')}
+                               />
+                               <TextField
+                               label={'AngelList'}
+                               margin='normal'
+                               value={`${this.state.angellist}`}
+                              placeholder={`${this.state.angellist}`}
+                               onChange={this.handleInputChange('angellist')}
+                              />
+                                </div>
+                            </div>
+                            </div>
+                            <Divider />
+
+                            <div className="acctTagSelection">
+                            <h3 > Tags </h3> 
+                            <div className="acctTagSelectWrapper" >
+                              {!!this.state.loadedTags.length && [
+                              <label key="skillLabel"> Skills and interests </label>,
+                              <Select.Creatable 
+                                key="skillSelect" 
+                                multi 
+                                options={this.state.loadedTags} 
+                                onChange={this.state.selectTag} 
+                                value={this.state.selectedTags} 
+                              />
+                              ]}
+                            </div>         
+                            <Button style={{ backgroundColor: '#00c355', padding: '10px', marginTop: '15px', color: '#FFFFFF', width: '40%' }}> Submit </Button>
                             </div>
 
                             <Divider />
@@ -156,17 +408,16 @@ export default class MemberAcct extends React.PureComponent {
                                         type='password'
                                         style={{ maxWidth: '300px' }}
                                         onChange={this.handleInputChange('currentPassword')}
-                                    //checkPW 
                                     />
 
                                     <TextField
-                                        //validatey 
                                         label={'New Password'}
                                         margin='normal'
                                         type='password'
                                         style={{ maxWidth: '300px' }}
                                         onChange={this.handleInputChange('password')}
                                     />
+
                                     <TextField
                                         label={'Confirm New Password'}
                                         margin='normal'
