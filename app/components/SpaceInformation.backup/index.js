@@ -20,7 +20,7 @@ import './styleM.css';
 
 
 
-const spaceUpdateAPI = 'http://localhost:8000/api/spaceupdate';
+const spaceUpdateAPI = 'https://innovationmesh.com/api/spaceupdate';
 
 
 export default class SpaceInformation extends React.PureComponent {
@@ -78,7 +78,7 @@ export default class SpaceInformation extends React.PureComponent {
     }
 
     getSpaceInfo = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.id, {
             method: 'GET'
         })
             .then(function (response) {
