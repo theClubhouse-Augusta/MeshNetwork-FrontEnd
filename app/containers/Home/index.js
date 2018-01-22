@@ -28,7 +28,7 @@ export default class Home extends React.PureComponent {
                         <Header textColor="#FFFFFF" />
                     </div>
                     <div className="homeHeaderContent">
-                        <div className="homeHeaderContentTitle">Discover Great CoWork Spaces</div>
+                        <div className="homeHeaderContentTitle">Discover Great Collaborative Spaces</div>
                         <div className="homeHeaderContentSubtitle">Find amazing places to work, network, and innovate.</div>
                         <div className="homeHeaderContentSearchBar">
                             <div className="homeSignButtons">
@@ -43,7 +43,7 @@ export default class Home extends React.PureComponent {
                     <div className="homeMainSection">
                         <div className="homeMainSectionTitle">What are you interested in?</div>
                         <div className="homeMainSectionSubtitle">
-                            Explore some of the best features of co-working from our partners and friends.
+                          Explore some of the best feature of collaboration from our partners and friends.
               </div>
                         <div className="homeMainSectionContent">
                             <div className="homeMainSectionBlockOne"
@@ -108,7 +108,7 @@ export default class Home extends React.PureComponent {
                             See How It Works
               </div>
                         <div className="homeMainSectionSubtitle">
-                            Discover the how the Mesh Network can help you find everything you want.
+                            Discover how the Mesh Network can help you find everything you want.
               </div>
                         <div className="homeMainSectionContent">
                             <div className="homeMainSectionBlock">

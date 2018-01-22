@@ -2,7 +2,6 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 
-
 import TextField from 'material-ui/TextField';
 import ExpansionPanel, {
     ExpansionPanelSummary,
@@ -12,8 +11,6 @@ import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
 import Header from 'components/Header';
-import Spinner from '../../components/Spinner';
-import authenticate from '../../utils/Authenticate';
 
 import './style.css';
 import './styleM.css';
@@ -23,7 +20,7 @@ export default class Booking extends React.PureComponent {
         super(props);
         this.state = {
             msg: "",
-            spaceProfile: "",
+            spaceProfile:"",
             snack: false,
             space: "",
             name: "",
@@ -33,17 +30,7 @@ export default class Booking extends React.PureComponent {
             types: ['Private Office', 'Mentor', 'Tour', 'Meeting Room'],
             days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             times: [{ time: "08:00", active: 0 }, { time: "09:00", active: 0 }, { time: "10:00", active: 0 }, { time: "11:00", active: 0 }, { time: "12:00", active: 0 }, { time: "13:00", active: 0 }, { time: "14:00", active: 0 }, { time: "15:00", active: 0 }, { time: "16:00", active: 0 }, { time: "17:00", active: 0 }, { time: "18:00", active: 0 }],
-            app: this.props.app,
-            loading: true,
-        }
-    }
-
-    async componentWillMount() {
-        const authorized = await authenticate(localStorage['token'], this.props.history);
-        if (!authorized.error) {
-            this.setState({ loading: false })
-        } else {
-            this.props.history.push('/signIn');
+            app: this.props.app
         }
     }
 
@@ -59,7 +46,7 @@ export default class Booking extends React.PureComponent {
     }
 
     componentWillMount() {
-        this.getProfile();
+      this.getProfile();
     }
 
     handleName = (event) => { this.setState({ name: event.target.value }) }
@@ -119,17 +106,17 @@ export default class Booking extends React.PureComponent {
     }
 
     getProfile = () => {
-        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
-            method: 'GET'
-        })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                this.setState({
-                    spaceProfile: json
-                })
-            }.bind(this));
+     fetch('https://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+       method:'GET'
+     })
+     .then(function(response) {
+       return response.json();
+     })
+     .then(function(json) {
+       this.setState({
+         spaceProfile:json
+       })
+     }.bind(this));
     }
 
     storeBooking = () => {
@@ -204,41 +191,52 @@ export default class Booking extends React.PureComponent {
 
     render() {
         return (
-            this.state.loading
-                ?
-                <Spinner />
-                :
-                <div className="container">
+            <div className="bookingContainer">
+                <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
 
-                    <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
+                <header style={{background:'#FFFFFF'}}>
+                    <Header app={this.state.app} />
+                </header>
 
-                    <header style={{ background: '#FFFFFF' }}>
-                        <Header app={this.state.app} />
-                    </header>
-                    <main>
-                        <div className="bookingMainContainer">
-                            <div className="bookingInfoContainer">
-                                <div className="bookingColumnTitle">Your Info</div>
-                                <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
-                                <TextField label="E-mail" margin='normal' fullWidth={true} onChange={this.handleEmail} value={this.state.email} />
-                                {this.state.types.map((type, i) => (
-                                    this.renderTypeButton(type, i)
-                                ))}
-                                <FlatButton style={{ width: '100%', background: '#ff4d58', color: '#FFFFFF', marginTop: '15px' }} onClick={this.storeBooking}>Confirm Booking</FlatButton>
-                            </div>
+                <main>
+                    <div className="bookingMainContainer">
+                        <div className="bookingInfoContainer">
+                            <div className="bookingColumnTitle">Your Info</div>
+                            <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
+                            <TextField label="E-mail" margin='normal' fullWidth={true} onChange={this.handleEmail} value={this.state.email} />
+                            {this.state.types.map((type, i) => (
+                                this.renderTypeButton(type, i)
+                            ))}
+                            <FlatButton style={{ width: '100%', background: '#ff4d58', color: '#FFFFFF', marginTop: '15px' }} onClick={this.storeBooking}>Confirm Booking</FlatButton>
                         </div>
-                    </main>
+                        <div className="bookingTimeContainer">
+                            <div className="bookingColumnTitle">Schedule Times</div>
+                            {this.state.days.map((day, i) => (
+                                <ExpansionPanel style={{ marginTop: '30px' }} key={i}>
+                                    <ExpansionPanelSummary>
+                                        <div className="bookingPanelTitle">{day}</div>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails style={{ display: 'flex', flexDirection: 'column' }}>
+                                        {this.state.times.map((time, j) => (
+                                            this.renderTimes(day, time, j)
+                                        ))}
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
+                            ))}
+                        </div>
+                    </div>
+                </main>
 
-                    <footer className="homeFooterContainer">
-                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                <footer className="homeFooterContainer">
+                    Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
                     <Snackbar
-                            open={this.state.snack}
-                            message={this.state.msg}
-                            autoHideDuration={5000}
-                            onClose={this.handleRequestClose}
-                        />
-                    </footer>
-                </div>
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={5000}
+                        onClose={this.handleRequestClose}
+                    />
+                </footer>
+            </div>
         );
     }
 }

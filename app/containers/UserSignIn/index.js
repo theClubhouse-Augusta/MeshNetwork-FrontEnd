@@ -39,6 +39,7 @@ export default class UserSignIn extends React.PureComponent {
     handlePassword = (event) => { this.setState({ password: event.target.value }) };
 
     signIn = () => {
+        let _this = this;
         let data = new FormData();
         data.append('email', this.state.email);
         data.append('password', this.state.password);
@@ -52,18 +53,28 @@ export default class UserSignIn extends React.PureComponent {
             })
             .then(function (json) {
                 if (json.error) {
-                    this.showSnack(json.error);
+                    _this.showSnack(json.error);
                 }
                 else if (json.token) {
                     localStorage.setItem('token', json.token);
-                    this.showSnack('Welcome back!');
-                    setTimeout(() => {
-                        this.props.history.push(`/user/${json.user.id}`)
-                    }, 2000);
+                    fetch("https://innovationmesh.com/api/getUser", {
+                      method:'GET',
+                      headers: { "Authorization": "Bearer " + json.token}
+                    })
+                    .then(function(response) {
+                      return response.json();
+                    })
+                    .then(function(json) {
+                      console.log(json);
+                      localStorage.setItem('user', JSON.stringify(json));
+                      _this.showSnack('Welcome back!');
+                      setTimeout(() => {
+                          _this.props.history.push(`/user/${json.id}`)
+                      }, 2000);
+                    })
                 }
             }.bind(this));
     };
-
     render() {
         return (
             <div className="userSignIncontainer">
