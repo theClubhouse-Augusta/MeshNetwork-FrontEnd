@@ -51,7 +51,7 @@ class CheckoutForm extends React.Component {
     }
 
     getSpace = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -65,7 +65,7 @@ class CheckoutForm extends React.Component {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
@@ -73,7 +73,7 @@ class CheckoutForm extends React.Component {
     }
 
     loadPlans = () => {
-        fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
+        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedPlans: json.data }) })
@@ -178,24 +178,34 @@ class CheckoutForm extends React.Component {
                 data.append('customerToken', token.id);
             }
             data.append('plan', plan);
+            data.append('username', name);
 
-            fetch("http://localhost:8000/api/signUp", {
+            fetch("https://innovationmesh.com/api/signUp", {
                 method: 'POST',
                 body: data,
             })
-                .then(response => response.json())
-                .then(user => {
-                    if (user.error) {
-                        this.showSnack(user.error);
-                    } else {
-                        localStorage['token'] = user.token;
-                        this.showSnack("Account created successfully!");
-                        // setTimeout(() => {
-                        //   this.props.history.push(`/user/${user.id}`)
-                        // }, 2000);
-                    }
-                })
-                .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
+            .then(response => response.json())
+            .then(user => {
+                if (user.error) {
+                    this.showSnack(user.error);
+                } else {
+                    localStorage['token'] = user.token;
+                    this.showSnack("Account created successfully!");
+                    fetch('http://houseofhackers.me:81/signUp/', {
+                      method:'POST',
+                      body:data
+                    })
+
+                    fetch('http://challenges.innovationmesh.com/api/signUp', {
+                      method:'POST',
+                      body:data
+                    })
+                }
+                // setTimeout(() => {
+                //   this.props.history.push(`/user/${user.id}`)
+                // }, 2000);
+            })
+            .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
         });
         // However, this line of code will do the same thing:
         // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
@@ -226,8 +236,9 @@ class CheckoutForm extends React.Component {
         data.append('spaceID', this.state.space.id);
         data.append('avatar', avatar);
         data.append('plan', plan);
+        data.append('username', name);
 
-        fetch("http://localhost:8000/api/signUp", {
+        fetch("https://innovationmesh.com/api/signUp", {
             method: 'POST',
             body: data,
         })
@@ -238,6 +249,15 @@ class CheckoutForm extends React.Component {
                 } else {
                     localStorage['token'] = user.token;
                     this.showSnack("Account created successfully!");
+                    fetch('http://houseofhackers.me:81/signUp/', {
+                      method:'POST',
+                      body:data
+                    })
+
+                    fetch('http://challenges.innovationmesh.com/api/signUp', {
+                      method:'POST',
+                      body:data
+                    })
                 }
             })
             .catch(error => Logger(`front-end: CheckoutForm@storeFreeUser: ${error.message}`));
@@ -398,7 +418,7 @@ class CheckoutForm extends React.Component {
                     open={this.state.snack}
                     message={this.state.msg}
                     autoHideDuration={3000}
-                    onRequestClose={this.handleRequestClose}
+                    onClose={this.handleRequestClose}
                 />
             </form>
         );

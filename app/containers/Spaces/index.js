@@ -40,7 +40,7 @@ export default class Spaces extends React.PureComponent {
     }
 
     getSpaces = () => {
-        fetch(`http://localhost:8000/api/workspaces`, {
+        fetch(`https://innovationmesh.com/api/workspaces`, {
             method: 'GET'
         })
             .then(function (response) {

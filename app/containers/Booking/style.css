@@ -1,12 +1,14 @@
 /* Booking Styles */
 
-.container {
+.bookingContainer {
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  background:#EEEEEE;
+  justify-content:space-between;
 }
 
-.bookingContainer {
+.bookingMainContainer {
   display:flex;
   flex-direction:row;
   width:100%;
