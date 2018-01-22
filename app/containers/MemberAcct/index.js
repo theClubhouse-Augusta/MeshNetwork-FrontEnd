@@ -87,64 +87,7 @@ export default class MemberAcct extends React.PureComponent {
         }
     }
 
-            <Divider />
-
-            <div className="acctManagement">
-              <h3 style={{margin: '1em 0'}}> Account Management</h3>
-              <div className="acctChangePassForm">
-                   <h4> Change Password</h4>
-                <TextField
-                  label={'Current Password'}
-                  margin='normal'
-                  type='password'
-                  style={{maxWidth: '300px'}}
-                  onChange={this.handleInputChange('currentPassword')}
-                  error={}
-                  //checkPW 
-                />
-                
-                <TextField
-                  //validatey 
-                  label={'New Password'}
-                  margin='normal'
-                  type='password'
-                  style={{maxWidth: '300px'}}
-                  onChange={this.handleInputChange('password')}
-                  error={}
-                />
-                <TextField
-                  label={'Confirm New Password'}
-                  margin='normal'
-                  type='password'
-                  style={{maxWidth: '300px'}}
-                  onChange={this.handleInputChange('passwordConfirm')}
-                  error={}
-                />
-                <Button style={{backgroundColor: '#00c355', padding:'10px', marginTop:'15px', color:'#FFFFFF', width: '40%' }}> Update Password </Button> 
-              </div>           
-             
-              <div className="acctChangeEmailForm">
-                 <h4>Change Email</h4>
-                  <TextField
-                    label={'New Email'}
-                    margin='normal'
-                    type='password'
-                    style={{maxWidth: '300px'}}
-                    onChange={this.handleInputChange('email')}
-                  />
-                <TextField
-                  label={'Confirm New Email'}
-                  margin='normal' 
-                  type='password'
-                  style={{maxWidth: '300px'}}
-                  onChange={this.handleInputChange('emailConfirm')}
-                />
-                <Button style={{backgroundColor: '#00c355', padding:'10px', marginTop:'15px', color:'#FFFFFF', width: '40%' }}> Update Email </Button> 
-              </div>
-              
-              <Divider />
-              <div className="acctDeleteAcctForm">
-                <h3>Delete Account</h3>
+       
     onUserInfoSubmit = e => {
         e.preventDefault();
 
@@ -204,7 +147,6 @@ export default class MemberAcct extends React.PureComponent {
                                     type='password'
                                     style={{ maxWidth: '300px' }}
                                     onChange={this.handleInputChange('currentPassword')}
-                                //checkPW 
                                 />
 
                                 <TextField
