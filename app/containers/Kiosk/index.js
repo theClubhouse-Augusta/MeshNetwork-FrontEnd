@@ -143,7 +143,7 @@ export default class Kiosk extends React.PureComponent {
     }
 
     getTodaysEvents = () => {
-        fetch('http://localhost:8000/api/today/event', {
+        fetch('https://innovationmesh.com/api/today/event', {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
