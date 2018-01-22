@@ -2,7 +2,6 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 
-
 import TextField from 'material-ui/TextField';
 import ExpansionPanel, {
     ExpansionPanelSummary,
