@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import Home from '../Home';
-import About from '../About';
-import Booking from '../Booking';
-//import Contact from '../Contact';
-import EventDetail from '../EventDetail';
-//import Events from '../Events';
-import Spaces from '../Spaces';
-//import Sponsors from '../Sponsors';
-import MemberAcct from '../MemberAcct';
-import MemberSearch from '../MemberSearch';
-import MemberDash from '../MemberDash';
-import AddEvent from '../AddEvent';
-import SpaceProfile from '../SpaceProfile';
-import UserProfile from '../UserProfile';
-import Kiosk from '../Kiosk';
-import NotFound from '../NotFound';
-import SpaceDash from '../SpaceDash';
-import SpaceSignUp from '../SpaceSignUp';
-import UserSignUp from '../Checkout';
-import UserSignIn from '../UserSignIn';
-import DataViz from '../DataViz';
+import { Switch, Route } from 'react-router-dom';
+import asyncComponent from '../../components/AsyncComponent';
+const Home = asyncComponent(() => import('../Home'));
+const About = asyncComponent(() => import('../About'));
+const Booking = asyncComponent(() => import('../Booking'));
+const EventDetail = asyncComponent(() => import('../EventDetail'));
+const Spaces = asyncComponent(() => import('../Spaces'));
+const MemberAcct = asyncComponent(() => import('../MemberAcct'));
+const MemberSearch = asyncComponent(() => import('../MemberSearch'));
+const MemberDash = asyncComponent(() => import('../MemberDash'));
+const AddEvent = asyncComponent(() => import('../AddEvent'));
+const SpaceProfile = asyncComponent(() => import('../SpaceProfile'));
+const UserProfile = asyncComponent(() => import('../UserProfile'));
+const Kiosk = asyncComponent(() => import('../Kiosk'));
+const NotFound = asyncComponent(() => import('../NotFound'));
+const SpaceDash = asyncComponent(() => import('../SpaceDash'));
+const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
+const UserSignUp = asyncComponent(() => import('../Checkout'));
+const UserSignIn = asyncComponent(() => import('../UserSignIn'));
 
 export default class App extends Component {
-
-
     render() {
         return (
             <Switch>
@@ -62,26 +57,10 @@ export default class App extends Component {
                     }
                 />
 
-                {/*<Route
-            path="/Contact"
-            render={() => <Contact />}
-          />
-          */}
-
                 <Route
                     path="/event/:id"
                     render={(props) => <EventDetail {...props} />}
                 />
-
-                {/*<Route
-            path="/events"
-            render={() => <Events />}
-          />*/}
-
-                {/*<Route
-            path="/Sponsors"
-            component={Sponsors}
-          />*/}
 
                 <Route
                     path="/Spaces"
@@ -137,13 +116,6 @@ export default class App extends Component {
                     path="/spacedash/:id"
                     render={(props) => <SpaceDash {...props} />}
                 />
-
-
-                <Route
-                    path="/dataviz/:id"
-                    render={(props) => <DataViz {...props} />}
-                />
-
 
                 <Route component={NotFound} />
             </Switch>

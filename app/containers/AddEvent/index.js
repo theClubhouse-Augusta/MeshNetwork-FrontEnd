@@ -8,21 +8,18 @@ import Helmet from 'react-helmet';
 import Snackbar from 'material-ui/Snackbar';
 import Select from 'react-select';
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/Button';
 import RaisedButton from "./RaisedButton";
 
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 
 // compononents,
-import Header from 'components/Header';
+import Header from '../../components/Header';
 import Footer from 'components/Footer';
-import ErrorModal from '../../components/ErrorModal';
 import { MdInsertDriveFile } from 'react-icons/lib/md';
 import DateTimeSelect from '../../components/DateTimeSelect';
-import { Organizers } from './Organizers';
-import { Sponsors } from './Sponsors';
 import { SelectedSponsors } from './SelectedSponsors';
 import { SelectedOrganizers } from './SelectedOrganizers';
+import Spinner from '../../components/Spinner';
 
 import authenticate from '../../utils/Authenticate';
 import {
@@ -90,13 +87,8 @@ export default class AddEvent extends PureComponent {
         eventImgPreview: '',
     };
 
-    componentWillMount() {
-        if (!!localStorage['token'])
-            this.props.history.push('/');
-    }
-
     async componentDidMount() {
-        const authorized = await authenticate(localStorage['token'], this.props.history)
+        const authorized = await authenticate(localStorage['token']);
         if (!authorized.error) {
             this.getOrganizers();
             this.getSponsors();
@@ -106,8 +98,6 @@ export default class AddEvent extends PureComponent {
             this.props.history.push('/');
         }
     }
-
-    loading = () => this.state.loading;
 
     getSponsors = () => {
         fetch(`https://innovationmesh.com/api/sponsors`, {
@@ -187,14 +177,14 @@ export default class AddEvent extends PureComponent {
                 this.setState({ day: e.target.value }, () => {
                     if (this.state.day && this.state.start && this.state.end) {
                         const error = timeError(this.state.start, this.state.end, this.state.day);
-                        if (error) this.setState({ modalMessage: "Invalid Date", dateError: "1Please check the order of your dates" })
+                        if (error) this.setState({ modalMessage: "Invalid Date", dateError: "Please check the order of your dates" })
                         else this.setState({ dateError: '' })
                     } else {
                         this.setState({ dateError: '' });
                     }
                 });
             } else {
-                this.setState({ dateError: "2Please check the order of your dates" });
+                this.setState({ dateError: "Please check the order of your dates" });
             }
         }
     }
@@ -204,7 +194,7 @@ export default class AddEvent extends PureComponent {
             this.setState({ start: e.target.value }, () => {
                 if (this.state.day && this.state.start && this.state.end) {
                     const error = timeError(this.state.start, this.state.end, this.state.day);
-                    if (error) this.setState({ dateError: "3Please check your start and end times" });
+                    if (error) this.setState({ dateError: "Please check your start and end times" });
                     else this.setState({ dateError: '' });
                 }
             });
@@ -216,7 +206,7 @@ export default class AddEvent extends PureComponent {
             this.setState({ end: e.target.value }, () => {
                 if (this.state.day && this.state.start && this.state.end) {
                     const error = timeError(this.state.start, this.state.end, this.state.day);
-                    if (error) this.setState({ dateError: "4Please check your start and end times" });
+                    if (error) this.setState({ dateError: "Please check your start and end times" });
                     else this.setState({ dateError: '' });
                 }
             });
@@ -226,7 +216,7 @@ export default class AddEvent extends PureComponent {
     selectDateMulti = (e, index) => {
         if (typeof index === 'number') {
             if (formatTodaysDate() > formatSelectedDate(e.target.value)) {
-                this.setState({ dateError: "5Please check the order of your dates" });
+                this.setState({ dateError: "Please check the order of your dates" });
                 return;
             } else {
                 this.setState({ dateError: '' })
@@ -238,14 +228,14 @@ export default class AddEvent extends PureComponent {
             if (typeof removeDate !== 'number') {
                 dates.push(date);
                 this.setState({ dateMulti: dates }, () => {
-                    if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "6Please check the order of your dates" });
+                    if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
                     else this.setState({ dateError: '' });
                 });
             } else if (typeof removeDate === 'number') {
                 dates.splice(removeDate, 1);
                 dates.push(date);
                 this.setState({ dateMulti: dates }, () => {
-                    if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "7Please check the order of your dates" });
+                    if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
                     else this.setState({ dateError: '' });
                 });
             }
@@ -332,7 +322,7 @@ export default class AddEvent extends PureComponent {
     }
 
     // submit form if 'enter' is pressed
-    checkKey = event => e.keyCode === 13 ? this.setState({ searchEnter: true }) : null
+    // checkKey = e => e.keyCode === 13 ? this.setState({ searchEnter: true }) : null
 
     toggleCompEvent = () => this.setState({ checkCompEvent: !this.state.checkCompEvent });
     eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
@@ -379,7 +369,7 @@ export default class AddEvent extends PureComponent {
     sponsorName = event => this.setState({ sponsorNames: event.target.value });
     sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
 
-    onNewSponsorSubmit = (e) => {
+    onNewSponsorSubmit = e => {
         e.preventDefault();
         let { sponsorNames, sponsorWebsites, logo } = this.state;
         if (logo && sponsorNames && sponsorWebsites) {
@@ -404,7 +394,6 @@ export default class AddEvent extends PureComponent {
 
     Submit = () => {
         let {
-            name,
             newSponsors,
             endMulti,
             startMulti,
@@ -414,7 +403,6 @@ export default class AddEvent extends PureComponent {
             end,
             checkMultiday,
             description,
-            selectedSponsors
         } = this.state;
 
         let data = new FormData();
@@ -542,18 +530,17 @@ export default class AddEvent extends PureComponent {
         reader.readAsDataURL(file);
     };
     render() {
-
         const {
-      snackBarMessage, dateError, modalMessage,
-            snackBar, checkCompEvent, days,
-            description, selectedTag, selectedTags,
+            snackBarMessage, dateError,
+            snackBar, checkCompEvent,
+            selectedTags,
             selectedSponsors, newSponsors, eventFiles,
-            organizers, showOrganizers, selectedOrganizers,
-            sponsors, checkNewSponsors, sponsorNames,
-            sponsorLogos, checkMultiday, loadedTags,
+            organizers, selectedOrganizers,
+            sponsors, checkNewSponsors,
+            checkMultiday, loadedTags,
             tagFocused, sponsorFocused, organizerFocused,
-            checkedRadio, loading
-    } = this.state;
+            days,
+        } = this.state;
 
         const Helper = new StyleHelpers;
         const options = [
@@ -567,12 +554,15 @@ export default class AddEvent extends PureComponent {
             }
         ];
         return (
-            this.loading()
+            this.state.loading
                 ?
-                <h1>spinner here!</h1>
+                <Spinner loading={this.state.loading} />
                 :
                 <div className="container">
-                    <Helmet title="AddEvent" meta={[{ name: 'description', content: 'Description of AddEvent' }]} />
+                    <Helmet>
+                        <title>Create Event Form</title>
+                        <meta name="description" content="Description of Create event form" />
+                    </Helmet>
                     <Header />
 
                     <div className="addEventBanner">
@@ -583,7 +573,7 @@ export default class AddEvent extends PureComponent {
 
                         <div className="spaceSignUpTitle">Submit an Event</div>
                         <div className="spaceSignUpContainer">
-
+                            
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
                             <TextField label="Breif description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
@@ -596,7 +586,7 @@ export default class AddEvent extends PureComponent {
                                 className={Helper.getLabelClassName(tagFocused, selectedTags)}
                             >
                                 event tags
-                    </label>
+                            </label>
 
                             {this.state.loadedTags &&
                                 <Select.Creatable
@@ -623,7 +613,7 @@ export default class AddEvent extends PureComponent {
                                 className={Helper.getLabelClassName(organizerFocused, selectedOrganizers)}
                             >
                                 additional organizers
-              </label>
+                            </label>
 
                             {organizers &&
                                 <Select
@@ -650,7 +640,7 @@ export default class AddEvent extends PureComponent {
                                     className={Helper.getLabelClassName(sponsorFocused, selectedSponsors)}
                                 >
                                     selected sponsors
-                </label>,
+                                </label>,
                                 <Select
                                     className={Helper.getSelectStyle(sponsorFocused, selectedSponsors)}
                                     placeholder={!sponsorFocused && !!!selectedSponsors.length ? 'Search Sponsors' : ''}
@@ -711,7 +701,7 @@ export default class AddEvent extends PureComponent {
                                     type="text"
                                 />}
 
-                            {/* {parseInt(this.state.checkedRadio) === 0 && [
+                            {parseInt(this.state.checkedRadio) === 0 && [
                                 <label key="singleDay" className="addEventFormLabel"> date & time </label>,
                                 <DateTimeSelect
                                     key="singleDay2"
@@ -723,16 +713,18 @@ export default class AddEvent extends PureComponent {
                                     selectStart={this.selectStart}
                                     selectEnd={this.selectEnd}
                                 />
-                            ]} */}
+                            ]}
 
-                            {/* {(parseInt(this.state.checkedRadio) === 1 && days) && this.multiDay(days)} */}
+                            {(parseInt(this.state.checkedRadio) === 1 && days) && this.multiDay(days)}
 
                             <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
 
                                 <input
                                     id="newSponsors"
                                     type="checkbox"
-                                    onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null} onChange={this.toggleNewSponsors} checked={checkNewSponsors}
+                                    onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null}
+                                    onChange={this.toggleNewSponsors}
+                                    checked={checkNewSponsors}
                                 />
 
                                 <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
@@ -801,7 +793,7 @@ export default class AddEvent extends PureComponent {
                                 <div style={{ display: 'flex', color: 'rgba(0,0,0,0.54)', flexDirection: 'column', marginBottom: 16 }}>
                                     <MdFileUpload size="40px" />
                                     Upload any other relevant documents
-              </div>
+                                </div>
                             </label>
 
                             <div style={{ marginTop: '40px', color: 'rgba(0,0,0,0.54)', }}>
@@ -827,7 +819,7 @@ export default class AddEvent extends PureComponent {
 
                                 <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="comprehensive-event">
                                     &nbsp;&nbsp;comprehensive event
-              </label>
+                                </label>
 
                             </div>
 
@@ -858,7 +850,6 @@ export default class AddEvent extends PureComponent {
                         onRequestClose={this.handleRequestClose}
                     />
                     <Footer />
-                    {/* <ErrorModal message={modalMessage} closeModal={this.closeModal} /> */}
                 </div>
         );
     }
