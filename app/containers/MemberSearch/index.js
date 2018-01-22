@@ -5,9 +5,8 @@
  */
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes, { oneOfType } from 'prop-types';
+import PropTypes from 'prop-types';
 /* Icons */
-import MdPerson from 'react-icons/lib/md/person';
 
 import Chip from 'material-ui/Chip';
 import TextField from 'material-ui/TextField';
@@ -194,7 +193,10 @@ export default class MemberSearch extends PureComponent {
 
                         <div className="memberSearchResults">
                             {this.state.results.map((user, index) => (
-                                <Link to={'/user/' + user.id} className="eventBlock">
+                                <Link
+                                    key={`results${index}`}
+                                    to={'/user/' + user.id} className="eventBlock"
+                                >
                                     <div className="eventBlockImage">
                                         <img src={user.avatar} style={{ width: '100%', height: 'auto' }} />
                                     </div>
@@ -209,29 +211,26 @@ export default class MemberSearch extends PureComponent {
                                                 {user.title}
                                             </div>
                                         </div>
+                                    </div>
                                 </Link>
-                                    ))}
+                            ))}
                         </div>
                     </main>
                     <footer className="homeFooterContainer">
-                                Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
         </footer>
-                            <Snackbar
-                                open={this.state.snack}
-                                message={this.state.msg}
-                                autoHideDuration={3000}
-                                onClose={this.handleRequestClose}
-                            />
-                        </div>
-                        );
+                    <Snackbar
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={3000}
+                        onClose={this.handleRequestClose}
+                    />
+                </div>
+        );
     }
 }
 
 MemberSearch.propTypes = {
-                            redirect: PropTypes.oneOfType([
-        PropTypes.object.isRequired,
-        PropTypes.string.isRequired,
-    ]),
     getLoggedInUser: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
 };

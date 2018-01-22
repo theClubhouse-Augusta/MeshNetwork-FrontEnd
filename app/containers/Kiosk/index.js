@@ -9,7 +9,6 @@ import Select from 'react-select';
 import moment from 'moment';
 import { Link } from 'react-router-dom'
 
-import Header from 'components/Header';
 
 import MeetIcon from 'react-icons/lib/fa/group';
 import ClassIcon from 'react-icons/lib/fa/graduation-cap';

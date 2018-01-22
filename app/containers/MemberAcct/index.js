@@ -6,9 +6,7 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Tabs, { Tab } from 'material-ui/Tabs';
 import Snackbar from 'material-ui/Snackbar';
-import Select from 'react-select';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
