@@ -670,7 +670,7 @@ export default class AddEvent extends PureComponent {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     height: 50,
-                                    color: '#fff',
+                                    color: 'rgba(0,0,0,0.54)',
                                     justifyContent: 'space-between',
                                     marginBottom: parseInt(this.state.checkedRadio) === 1 ? 32 : '',
                                     marginTop: 32
@@ -725,7 +725,7 @@ export default class AddEvent extends PureComponent {
                                     checked={checkNewSponsors}
                                 />
 
-                                <label style={{ color: '#fff' }} htmlFor="newSponsors" >
+                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
                                     &nbsp;&nbsp;Add new sponsor
                                 </label>
 
@@ -773,7 +773,7 @@ export default class AddEvent extends PureComponent {
                                         marginBottom: 64,
                                         padding: '10px',
                                         marginTop: '15px',
-                                        color: '#FFFFFF',
+                                        color: 'rgba(0,0,0,0.54)',
                                         fontWeight: 'bold'
                                     }}
                                 />
