@@ -12,8 +12,6 @@ import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
 import Header from 'components/Header';
-import Spinner from '../../components/Spinner';
-import authenticate from '../../utils/Authenticate';
 
 import './style.css';
 import './styleM.css';
@@ -34,16 +32,6 @@ export default class Booking extends React.PureComponent {
             days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             times: [{ time: "08:00", active: 0 }, { time: "09:00", active: 0 }, { time: "10:00", active: 0 }, { time: "11:00", active: 0 }, { time: "12:00", active: 0 }, { time: "13:00", active: 0 }, { time: "14:00", active: 0 }, { time: "15:00", active: 0 }, { time: "16:00", active: 0 }, { time: "17:00", active: 0 }, { time: "18:00", active: 0 }],
             app: this.props.app,
-            loading: true,
-        }
-    }
-
-    async componentWillMount() {
-        const authorized = await authenticate(localStorage['token'], this.props.history);
-        if (!authorized.error) {
-            this.setState({ loading: false })
-        } else {
-            this.props.history.push('/signIn');
         }
     }
 

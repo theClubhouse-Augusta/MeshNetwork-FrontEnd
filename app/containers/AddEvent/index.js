@@ -72,7 +72,6 @@ export default class AddEvent extends PureComponent {
         sponsorLogos: '',
         sponsorWebsites: '',
         // date/time
-        checkMultiday: false,
         // tags
         loadedTags: '',
         tagFocused: false,
@@ -399,7 +398,6 @@ export default class AddEvent extends PureComponent {
             day,
             start,
             end,
-            checkMultiday,
             description,
         } = this.state;
 
@@ -418,11 +416,13 @@ export default class AddEvent extends PureComponent {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
-        if (!checkMultiday) {
+        if (!!!dateMulti.length) {
+            console.log('one')
             if (day) data.append('day', JSON.stringify(day));
             if (start) data.append('start', JSON.stringify(start));
             if (end) data.append('end', JSON.stringify(end));
         } else {
+            console.log('two')
             const days = dateMulti.findIndex(previous => previous.day === '');
             const starts = startMulti.findIndex(previous => previous.start === '');
             const ends = endMulti.findIndex(previous => previous.end === '');
@@ -495,7 +495,9 @@ export default class AddEvent extends PureComponent {
         endMulti: [],
         startMulti: [],
         dateError: '',
-        checkMultiday: true,
+        day: '',
+        start: '',
+        end: ''
     });
 
     handleLogo = (event) => {
@@ -535,7 +537,7 @@ export default class AddEvent extends PureComponent {
             selectedSponsors, newSponsors, eventFiles,
             organizers, selectedOrganizers,
             sponsors, checkNewSponsors,
-            checkMultiday, loadedTags,
+            loadedTags,
             tagFocused, sponsorFocused, organizerFocused,
             days,
         } = this.state;
@@ -660,9 +662,9 @@ export default class AddEvent extends PureComponent {
                                     newSponsor={false}
                                 />}
 
-                            {(dateError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
+                            {dateError  && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
                             {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-                            {(dateError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
+                            {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
                             {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
 
                             <div
