@@ -20,7 +20,7 @@ export default class About extends React.PureComponent {
             <div className="container">
                 <Helmet>
                     <title>About</title>
-                    <metaname="description" content="Description of About"/>
+                    <Helmet title="About" meta={[{ name: 'description', content: 'About Page' }]} />
                 </Helmet>
                 <header>
                     <Header/>
