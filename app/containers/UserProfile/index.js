@@ -19,8 +19,6 @@ import LinkedInIcon from 'react-icons/lib/fa/linkedin-square';
 import InstagramIcon from 'react-icons/lib/fa/instagram';
 import GithubIcon from 'react-icons/lib/fa/github-square';
 import BehanceIcon from 'react-icons/lib/fa/behance-square';
-import DribbbleIcon from 'react-icons/lib/fa/dribbble';
-import WebsiteIcon from 'react-icons/lib/fa/globe';
 
 import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
@@ -114,8 +112,6 @@ export default class UserProfile extends React.Component {
                                 <InstagramIcon className="profileIconStyle" />
                                 <GithubIcon className="profileIconStyle" />
                                 <BehanceIcon className="profileIconStyle" />
-                                <DribbbleIcon className="profileIconStyle" />
-                                <WebsiteIcon className="profileIconStyle" />
                             </div>
                         </div>
                         <div className="profileSkillsList">

@@ -9,6 +9,7 @@ import Select from 'react-select';
 import moment from 'moment';
 import { Link } from 'react-router-dom'
 
+import Header from 'components/Header';
 
 import MeetIcon from 'react-icons/lib/fa/group';
 import ClassIcon from 'react-icons/lib/fa/graduation-cap';
@@ -17,9 +18,6 @@ import EventIcon from 'react-icons/lib/fa/black-tie';
 
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/Button';
-
-import Spinner from '../../components/Spinner';
-import authenticate from '../../utils/Authenticate';
 
 import './style.css';
 import './styleM.css';
@@ -32,133 +30,133 @@ export default class Kiosk extends React.PureComponent {
             loggedInUser: '',
             workspace: "",
             events: [],
-            todaysEvents: [],
             users: [],
             reasons: [],
             showComplete: false,
             selectedReason: '',
+            todayEvents:[],
+            selectedEvent:'',
             msg: "",
             snack: false,
-            loading: true,
         }
     }
 
-    async componentDidMount() {
-        const authorized = await authenticate(localStorage['token'], this.props.history);
-        if (authorized.error)
-            this.props.history.push('/signIn')
+  componentDidMount() {
+    this.getUpcomingEvents();
+    this.getProfile();
+    this.getReasons();
+  }
 
-        this.getUpcomingEvents();
-        this.getProfile();
-        this.getReasons();
-        this.getTodaysEvents();
-        this.setState({ loading: false });
-    }
+  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
+  getProfile = () => {
+    fetch('https://innovationmesh.com/api/workspace/'+ this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        workspace:json
+      }, function() {
+        this.getUsers(json.id);
+        this.getToday(json.id);
+      })
+    }.bind(this))
+  }
 
-    getProfile = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
-            method: 'GET'
+  getUsers = (id) => {
+    fetch('https://innovationmesh.com/api/users/space/'+id)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        users:json
+      })
+    }.bind(this))
+  }
+
+  getReasons = () => {
+    fetch('https://innovationmesh.com/api/occasions')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        reasons:json
+      })
+    }.bind(this))
+  }
+
+  getUpcomingEvents = () => {
+    fetch('https://innovationmesh.com/api/upcoming/'+this.props.match.params.id)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        events:json
+      })
+    }.bind(this))
+  }
+
+  getToday = (id) => {
+    fetch('https://innovationmesh.com/api/todayevent/'+id)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        todayEvents:json
+      })
+    }.bind(this))
+  }
+
+  storeAppearance = () => {
+    let data = new FormData();
+    data.append('userID', this.state.loggedInUser.value);
+    data.append('eventID', 0);
+    data.append('spaceID', this.state.workspace.id);
+    data.append('occasion', this.state.selectedReason);
+
+  fetch('https://innovationmesh.com/api/appearance', {
+    method: 'POST',
+    body: data
+  })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (json) {
+        this.setState({
+            showComplete: true
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                this.setState({
-                    workspace: json
-                }, function () {
-                    this.getUsers(json.id);
-                })
-            }.bind(this))
-    }
-
-    getUsers = (id) => {
-        fetch('http://localhost:8000/api/users/space/' + id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                this.setState({
-                    users: json
-                })
-            }.bind(this))
-    }
-
-    getReasons = () => {
-        fetch('http://localhost:8000/api/occasions')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                this.setState({
-                    reasons: json
-                })
-            }.bind(this))
-    }
-
-    getUpcomingEvents = () => {
-        fetch('http://localhost:8000/api/upcoming/' + this.props.match.params.id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                this.setState({
-                    events: json
-                })
-            }.bind(this))
-    }
-
-    storeAppearance = () => {
-        let data = new FormData();
-        data.append('userID', this.state.loggedInUser.value);
-        data.append('eventID', 0);
-        data.append('spaceID', this.state.workspace.id);
-        data.append('occasion', this.state.selectedReason);
-
-        fetch('http://localhost:8000/api/appearance', {
-            method: 'POST',
-            body: data
-        })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                this.setState({
-                    selectedReason: '',
-                    showComplete: true
-                })
-            }.bind(this))
-    }
+    }.bind(this))
+  }
 
     handleNameInputChange = (loggedInUser) => {
         this.setState({ loggedInUser });
     }
 
     selectReason = (reason) => {
+      console.log(reason);
         this.setState({ selectedReason: reason }, () => {
             this.storeAppearance();
         });
     }
 
-    getTodaysEvents = () => {
-        fetch('http://localhost:8000/api/today/event', {
-            headers: { Authorization: `Bearer ${localStorage['token']}` }
-        })
-            .then(response => response.json())
-            .then(Events => {
-                if (Events) {
-                    this.setState({ todaysEvents: Events }, () => {
-                    });
-                }
-            })
-            .catch(error => {
-                // do something with error
-            })
+    selectEvent = (id) => {
+      this.setState({selectedEvent:id});
     }
 
-    // restartPage = () => { window.location.reload() }
+    restartPage = () => {
+      this.setState({
+        selectedReason: '',
+      })
+      window.location.reload();
+    }
 
     renderComplete = () => {
         if (this.state.showComplete === true) {
@@ -213,46 +211,73 @@ export default class Kiosk extends React.PureComponent {
         }
     }
 
-    render() {
-        return (
-            this.state.loading
-                ?
-                <Spinner loading={this.state.loading} />
-                :
-                <div className="kioskContainer">
-                    <Helmet title={"Check-In to " + this.state.workspace.name} meta={[{ name: 'description', content: 'Description of KioskSystem' }]} />
-                    <header>
-
-                    </header>
-                    <main className="kioskMain">
-                        <img className="kioskLogo" src={this.state.workspace.logo} style={{ width: '300px', height: 'auto', marginTop: '30px' }} />
-                        <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
-                        <div className="kioskSubtitle">Check-In with Us!</div>
-                        <div className="kioskContent">
-                            <Select
-                                name="form-field-name"
-                                value={this.state.loggedInUser.value}
-                                placeholder="Select your Name"
-                                arrowRenderer={null}
-                                clearable={true}
-                                openOnClick={false}
-                                onChange={this.handleNameInputChange}
-                                options={this.state.users}
-                            />
-
-                            {this.renderReasons()}
-
-                            {this.renderComplete()}
-
-                            <Snackbar
-                                open={this.state.snack}
-                                message={this.state.msg}
-                                autoHideDuration={3000}
-                                onRequestClose={this.handleRequestClose}
-                            />
-                        </div>
-                    </main>
+    renderToday = () => {
+      if(this.state.selectedReason === 'Event')
+      {
+        if(this.state.todayEvents.length > 0) {
+          return(
+            <div style={{display:'flex', flexDirection:'row'}}>
+              {this.state.todayEvents.map((event, i) => (
+                <div to={'/event/' + event.id} className="spaceEventBlock" onClick={this.selectEvent(event.id)}>
+                  <div className="spaceEventBlockImage">
+                    <img src={event.image} />
+                  </div>
+                  <div className="spaceEventBlockTitle">{event.title}</div>
+                  <div className="spaceEventBlockContent">
+                    {event.start}
+                  </div>
                 </div>
-        );
+              ))}
+            </div>
+          )
+        }
+        else {
+          return (
+            <div style={{color:'#FFFFFF', fontFamily:'Noto Sans', fontSize:'0.9em', fontStyle:'italic', textAlign:'center'}}>
+              There are no Events scheduled for Today.
+            </div>
+          )
+        }
+      }
     }
+
+  render() {
+    return (
+      <div className="kioskContainer">
+        <Helmet title={"Check-In to " + this.state.workspace.name} meta={[{ name: 'description', content: 'Description of KioskSystem' }]} />
+        <header>
+
+        </header>
+        <main className="kioskMain">
+          <img className="kioskLogo" src={this.state.workspace.logo} style={{width:'300px', height:'auto', marginTop:'30px'}}/>
+          <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
+          <div className="kioskSubtitle">Check-In with Us!</div>
+           <div className="kioskContent">
+              <Select
+                name="form-field-name"
+                value={this.state.loggedInUser.value}
+                placeholder="Select your Name"
+                arrowRenderer={null}
+                clearable={true}
+                openOnClick={false}
+                onChange={this.handleNameInputChange}
+                options={this.state.users}
+              />
+
+              {this.renderReasons()}
+              {this.renderToday()}
+
+              {this.renderComplete()}
+
+              <Snackbar
+                open={this.state.snack}
+                message={this.state.msg}
+                autoHideDuration={3000}
+                onRequestClose={this.handleRequestClose}
+              />
+          </div>
+        </main>
+      </div>
+    );
+  }
 }
