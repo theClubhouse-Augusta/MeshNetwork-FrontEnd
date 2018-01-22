@@ -119,7 +119,7 @@ export default class Booking extends React.PureComponent {
     }
 
     getProfile = () => {
-        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -144,7 +144,7 @@ export default class Booking extends React.PureComponent {
         data.append('times', JSON.stringify(this.state.activeTimes));
         data.append('spaceID', this.state.spaceProfile.id);
 
-        fetch("https://innovationmesh.com/api/booking", {
+        fetch("http://localhost:8000/api/booking", {
             method: 'POST',
             body: data
         })
@@ -209,8 +209,10 @@ export default class Booking extends React.PureComponent {
                 <Spinner />
                 :
                 <div className="container">
-
-                    <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
+                <Helmet>
+                    <title>Bookings</title>
+                    <meta name="description" content="Description of Bookings" />
+                </Helmet>
 
                     <header style={{ background: '#FFFFFF' }}>
                         <Header app={this.state.app} />
