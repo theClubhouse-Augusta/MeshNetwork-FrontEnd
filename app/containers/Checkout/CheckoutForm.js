@@ -6,11 +6,6 @@ import Snackbar from 'material-ui/Snackbar';
 import Select from 'react-select';
 import { injectStripe } from 'react-stripe-elements';
 import CardSection from './CardSection';
-import ExpansionPanel, {
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-} from 'material-ui/ExpansionPanel';
-import ExpandMoreIcon from 'react-icons/lib/md/expand-more';
 import Header from '../../components/Header';
 
 import StyleHelpers from '../../utils/StyleHelpers';
@@ -184,28 +179,28 @@ class CheckoutForm extends React.Component {
                 method: 'POST',
                 body: data,
             })
-            .then(response => response.json())
-            .then(user => {
-                if (user.error) {
-                    this.showSnack(user.error);
-                } else {
-                    localStorage['token'] = user.token;
-                    this.showSnack("Account created successfully!");
-                    fetch('http://houseofhackers.me:81/signUp/', {
-                      method:'POST',
-                      body:data
-                    })
+                .then(response => response.json())
+                .then(user => {
+                    if (user.error) {
+                        this.showSnack(user.error);
+                    } else {
+                        localStorage['token'] = user.token;
+                        this.showSnack("Account created successfully!");
+                        fetch('http://houseofhackers.me:81/signUp/', {
+                            method:'POST',
+                            body:data
+                        })
 
-                    fetch('http://challenges.innovationmesh.com/api/signUp', {
-                      method:'POST',
-                      body:data
-                    })
-                }
-                // setTimeout(() => {
-                //   this.props.history.push(`/user/${user.id}`)
-                // }, 2000);
-            })
-            .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
+                        fetch('http://challenges.innovationmesh.com/api/signUp', {
+                            method:'POST',
+                            body:data
+                        })
+                    }
+                    // setTimeout(() => {
+                    //   this.props.history.push(`/user/${user.id}`)
+                    // }, 2000);
+                })
+                .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
         });
         // However, this line of code will do the same thing:
         // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
@@ -250,13 +245,13 @@ class CheckoutForm extends React.Component {
                     localStorage['token'] = user.token;
                     this.showSnack("Account created successfully!");
                     fetch('http://houseofhackers.me:81/signUp/', {
-                      method:'POST',
-                      body:data
+                        method:'POST',
+                        body:data
                     })
 
                     fetch('http://challenges.innovationmesh.com/api/signUp', {
-                      method:'POST',
-                      body:data
+                        method:'POST',
+                        body:data
                     })
                 }
             })
@@ -271,7 +266,6 @@ class CheckoutForm extends React.Component {
       selectedTags,
             loadedTags,
             focused,
-            planFocused,
             plan,
             multiValue,
             options,
@@ -378,7 +372,6 @@ class CheckoutForm extends React.Component {
 
                             {!!loadedPlans.length && loadedPlans.map((plan, key) => {
                                 let id = plan.id;
-                                {/* let amount = plan.amount.toString().splice(2, 0, '.'); */ }
                                 let amount = (plan.amount / 100).toFixed(2).toString();
                                 return (
                                     <FlatButton

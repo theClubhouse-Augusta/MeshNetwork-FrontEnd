@@ -3,38 +3,40 @@
 */
 
 .membersContainer {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  background:#F8F8F8;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #F8F8F8;
 }
 
 .membersBanner {
-  width:100%;
-  height:250px;
-  background:linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url('http://h4z.it/Image/20d733_885-1256x800.jpg');
-  background-repeat:no-repeat;
-  background-size:cover;
-  background-position:center center;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  color:#FFFFFF;
+  width: 100%;
+  height: 250px;
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('http://h4z.it/Image/20d733_885-1256x800.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
 }
 
 .membersMain {
-  width:100%;
-  max-width:1200px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  margin-top:20px;
-  min-height:calc(100vh - 255px);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  min-height: calc(100vh - 255px);
 }
 
+
 /* search bar */
+
 div#MS-SearchForm {
   /* flex */
   display: flex;
@@ -51,18 +53,22 @@ div#MS-SearchForm {
 }
 
 .memberSearchForm {
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
 }
 
+
 /* search results container */
+
 div#MS-postSearchContainer ul {
   display: flex;
   flex-direction: column;
   margin-top: 3vh;
 }
 
+
 /* User Cards */
+
 div#MS-postSearchContainer li {
   display: flex;
   flex-direction: row;
@@ -75,12 +81,16 @@ div#MS-postSearchContainer li:hover {
   cursor: pointer;
 }
 
+
 /* User Avatar */
+
 div#MS-postSearchContainer img {
   border-radius: 50%;
 }
 
+
 /* User Description List */
+
 dl#MS-userInfo {
   display: flex;
   /* flex-direction: row; */
@@ -95,90 +105,101 @@ dl#MS-userInfo {
   margin-left: 3em;
 }
 
+
 /* put all <dt> <dd> pairs in row */
+
 dl#MS-userInfo div {
   display: flex;
 }
 
+
 /* make all <dt> bold */
+
 dl#MS-userInfo dt {
-  font-weight:700;
+  font-weight: 700;
 }
 
+
 /* search input */
+
 div#MS-SearchForm input {
   padding-left: 1.5em;
   width: 100%;
   border: none;
 }
 
+
 /* mozzilla - position/style cursor in searchbar */
-div#MS-SearchForm > input:placeholder-shown {
+
+div#MS-SearchForm>input:placeholder-shown {
   padding-left: 1.5em;
-   /* text */
+  /* text */
   color: black;
   font-weight: 200;
 }
+
 
 /* safari - position/style cursor in searchbar */
-div#MS-SearchForm  > input::-webkit-input-placeholder {
+
+div#MS-SearchForm>input::-webkit-input-placeholder {
   padding-left: .30em;
-   /* text */
+  /* text */
   color: black;
   font-weight: 200;
 }
 
+
 /* icon in search bar */
+
 .MS-MdIcon {
   display: inline-block;
   align-self: center;
 }
 
 .membersSubTitle {
-  font-variant:small-caps;
-  font-size:2.2em;
-  color:#444444;
-  margin-top:15px;
-  font-family:'Noto Sans';
+  font-variant: small-caps;
+  font-size: 2.2em;
+  color: #444444;
+  margin-top: 15px;
+  font-family: 'Noto Sans';
 }
 
-
 .tagsBox {
-  width:100%;
-  max-width:700px;
-  margin:0 auto;
-  margin-bottom:15px;
-  display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
 .memberSearchResults {
-  width:100%;
-  max-width:800px;
+  width: 100%;
+  max-width: 800px;
 }
 
 .memberSearchMain {
-  width:100%;
-  max-width:720px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:30px;
-  background:#FFFFFF;
-  border-radius:5px;
-  min-height:calc(100vh - 90px);
-  border:1px solid #DDDDDD;
-  margin-top:-40px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  min-height: calc(100vh - 90px);
+  border: 1px solid #DDDDDD;
+  margin-top: -40px;
 }
 
 @keyframes flicker {
   0% {
-    background:rgba(0,0,0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
   }
   100% {
-    background:rgba(0,0,0, 0.1)
+    background: rgba(0, 0, 0, 0.1)
   }
 }

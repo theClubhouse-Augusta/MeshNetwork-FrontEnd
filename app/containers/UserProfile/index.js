@@ -22,6 +22,7 @@ import BehanceIcon from 'react-icons/lib/fa/behance-square';
 import DribbbleIcon from 'react-icons/lib/fa/dribbble';
 import WebsiteIcon from 'react-icons/lib/fa/globe';
 
+import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
 
 import './style.css';
@@ -87,7 +88,7 @@ export default class UserProfile extends React.Component {
         return (
             this.state.loading
                 ?
-                <div>spinner here</div>
+                <Spinner loading={this.state.loading} />
                 :
                 <div className="container">
                     <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
