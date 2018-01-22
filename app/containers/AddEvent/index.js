@@ -11,8 +11,6 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from "./RaisedButton";
 
 import MdFileUpload from 'react-icons/lib/md/file-upload';
-
-// compononents,
 import Header from '../../components/Header';
 import Footer from 'components/Footer';
 import { MdInsertDriveFile } from 'react-icons/lib/md';
@@ -100,7 +98,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getSponsors = () => {
-        fetch(`https://innovationmesh.com/api/sponsors`, {
+        fetch(`http://localhost:8000/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -114,7 +112,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getOrganizers = () => {
-        fetch(`https://innovationmesh.com/api/organizers/all`, {
+        fetch(`http://localhost:8000/api/organizers/all`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -129,7 +127,7 @@ export default class AddEvent extends PureComponent {
     }
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -435,7 +433,7 @@ export default class AddEvent extends PureComponent {
             }
         }
 
-        fetch(`https://innovationmesh.com/api/event`, {
+        fetch(`http://localhost:8000/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -672,7 +670,7 @@ export default class AddEvent extends PureComponent {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     height: 50,
-                                    color: 'rgba(0,0,0,0.54)',
+                                    color: '#fff',
                                     justifyContent: 'space-between',
                                     marginBottom: parseInt(this.state.checkedRadio) === 1 ? 32 : '',
                                     marginTop: 32
@@ -727,7 +725,7 @@ export default class AddEvent extends PureComponent {
                                     checked={checkNewSponsors}
                                 />
 
-                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                                <label style={{ color: '#fff' }} htmlFor="newSponsors" >
                                     &nbsp;&nbsp;Add new sponsor
                                 </label>
 

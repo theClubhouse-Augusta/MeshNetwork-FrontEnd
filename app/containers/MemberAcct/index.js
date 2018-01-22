@@ -103,7 +103,7 @@ export default class MemberAcct extends React.PureComponent {
         data.append('website', website);
         data.append('avatar', this.state.avatar);
 
-        fetch(`https://innovationmesh.com/api/updateUser`, {
+        fetch(`http://localhost:8000/api/updateUser`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
