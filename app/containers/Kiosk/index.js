@@ -34,6 +34,8 @@ export default class Kiosk extends React.PureComponent {
             reasons: [],
             showComplete: false,
             selectedReason: '',
+            todayEvents:[],
+            selectedEvent:'',
             msg: "",
             snack: false,
         }
@@ -43,7 +45,6 @@ export default class Kiosk extends React.PureComponent {
     this.getUpcomingEvents();
     this.getProfile();
     this.getReasons();
-    this.getTodaysEvents();
   }
 
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
@@ -61,6 +62,7 @@ export default class Kiosk extends React.PureComponent {
         workspace:json
       }, function() {
         this.getUsers(json.id);
+        this.getToday(json.id);
       })
     }.bind(this))
   }
@@ -101,14 +103,14 @@ export default class Kiosk extends React.PureComponent {
     }.bind(this))
   }
 
-  getTodaysEvents = () => {
-    fetch('https://innovationmesh.com/api/upcoming/'+this.props.match.params.id)
+  getToday = (id) => {
+    fetch('https://innovationmesh.com/api/todayevent/'+id)
     .then(function(response) {
       return response.json();
     })
     .then(function(json) {
       this.setState({
-        events:json
+        todayEvents:json
       })
     }.bind(this))
   }
@@ -129,7 +131,6 @@ export default class Kiosk extends React.PureComponent {
     })
     .then(function (json) {
         this.setState({
-            selectedReason: '',
             showComplete: true
         })
     }.bind(this))
@@ -140,12 +141,22 @@ export default class Kiosk extends React.PureComponent {
     }
 
     selectReason = (reason) => {
+      console.log(reason);
         this.setState({ selectedReason: reason }, () => {
             this.storeAppearance();
         });
     }
 
-    restartPage = () => { window.location.reload() }
+    selectEvent = (id) => {
+      this.setState({selectedEvent:id});
+    }
+
+    restartPage = () => {
+      this.setState({
+        selectedReason: '',
+      })
+      window.location.reload();
+    }
 
     renderComplete = () => {
         if (this.state.showComplete === true) {
@@ -200,6 +211,36 @@ export default class Kiosk extends React.PureComponent {
         }
     }
 
+    renderToday = () => {
+      if(this.state.selectedReason === 'Event')
+      {
+        if(this.state.todayEvents.length > 0) {
+          return(
+            <div style={{display:'flex', flexDirection:'row'}}>
+              {this.state.todayEvents.map((event, i) => (
+                <div to={'/event/' + event.id} className="spaceEventBlock" onClick={this.selectEvent(event.id)}>
+                  <div className="spaceEventBlockImage">
+                    <img src={event.image} />
+                  </div>
+                  <div className="spaceEventBlockTitle">{event.title}</div>
+                  <div className="spaceEventBlockContent">
+                    {event.start}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        }
+        else {
+          return (
+            <div style={{color:'#FFFFFF', fontFamily:'Noto Sans', fontSize:'0.9em', fontStyle:'italic', textAlign:'center'}}>
+              There are no Events scheduled for Today.
+            </div>
+          )
+        }
+      }
+    }
+
   render() {
     return (
       <div className="kioskContainer">
@@ -224,6 +265,7 @@ export default class Kiosk extends React.PureComponent {
               />
 
               {this.renderReasons()}
+              {this.renderToday()}
 
               {this.renderComplete()}
 
