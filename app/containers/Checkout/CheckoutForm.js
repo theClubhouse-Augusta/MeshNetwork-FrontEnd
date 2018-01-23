@@ -11,7 +11,6 @@ import CardSection from './CardSection';
 import Header from '../../components/Header';
 import { FormControl } from 'material-ui/Form';
 
-import StyleHelpers from '../../utils/StyleHelpers';
 import Logger from '../../utils/Logger';
 
 import './style.css';
@@ -21,12 +20,12 @@ import './styleM.css';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
-  },
 };
 
 
@@ -62,7 +61,7 @@ class CheckoutForm extends React.Component {
     }
 
     getSpace = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -76,7 +75,7 @@ class CheckoutForm extends React.Component {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
@@ -84,7 +83,7 @@ class CheckoutForm extends React.Component {
     }
 
     loadPlans = () => {
-        fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
+        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedPlans: json.data }) })
@@ -92,7 +91,7 @@ class CheckoutForm extends React.Component {
     }
 
     handleSkillTags = event => {
-      this.setState({ selectedTags: event.target.value });
+        this.setState({ selectedTags: event.target.value });
     };
 
     selectPlan = (e, selected) => {
@@ -147,9 +146,9 @@ class CheckoutForm extends React.Component {
             return (
                 <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
                     Select a profile picture
-          <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>
+                <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>
                         For Best Size Use: 512 x 512
-          </span>
+                </span>
                 </span>
             )
         }
@@ -191,7 +190,7 @@ class CheckoutForm extends React.Component {
             data.append('plan', plan);
             data.append('username', name);
 
-            fetch("http://localhost:8000/api/signUp", {
+            fetch("https://innovationmesh.com/api/signUp", {
                 method: 'POST',
                 body: data,
             })
@@ -203,13 +202,13 @@ class CheckoutForm extends React.Component {
                         localStorage['token'] = user.token;
                         this.showSnack("Account created successfully!");
                         fetch('http://houseofhackers.me:81/signUp/', {
-                            method:'POST',
-                            body:data
+                            method: 'POST',
+                            body: data
                         })
 
                         fetch('http://challenges.innovationmesh.com/api/signUp', {
-                            method:'POST',
-                            body:data
+                            method: 'POST',
+                            body: data
                         })
                     }
                     // setTimeout(() => {
@@ -245,7 +244,7 @@ class CheckoutForm extends React.Component {
         data.append('plan', plan);
         data.append('username', name);
 
-        fetch("http://localhost:8000/api/signUp", {
+        fetch("https://innovationmesh.com/api/signUp", {
             method: 'POST',
             body: data,
         })
@@ -257,13 +256,13 @@ class CheckoutForm extends React.Component {
                     localStorage['token'] = user.token;
                     this.showSnack("Account created successfully!");
                     fetch('http://houseofhackers.me:81/signUp/', {
-                        method:'POST',
-                        body:data
+                        method: 'POST',
+                        body: data
                     })
 
                     fetch('http://challenges.innovationmesh.com/api/signUp', {
-                        method:'POST',
-                        body:data
+                        method: 'POST',
+                        body: data
                     })
                 }
             })
@@ -275,7 +274,7 @@ class CheckoutForm extends React.Component {
 
     render() {
         let {
-      selectedTags,
+            selectedTags,
             loadedTags,
             focused,
             plan,
@@ -283,11 +282,6 @@ class CheckoutForm extends React.Component {
             options,
             loadedPlans,
     } = this.state;
-
-        const Helper = new StyleHelpers();
-        const marginTop = Helper.getLabelStyle(focused, selectedTags)[0];
-        const color = Helper.getLabelStyle(focused, selectedTags)[1];
-
 
         return (
             <form className="container" onSubmit={this.handleSubmit}>
@@ -331,40 +325,32 @@ class CheckoutForm extends React.Component {
                                 onChange={this.handleBio}
                                 margin="normal"
                             />
-                            <label
-                                style={{
-                                    marginTop: marginTop,
-                                    color: color,
-                                }}
-                                className={Helper.getLabelClassName(focused, selectedTags)}
-                            >
-                </label>
 
-                <FormControl>
-                   <InputLabel htmlFor="tags-select">Skills & Interests</InputLabel>
-                  <Select
-                    multiple
-                    value={this.state.selectedTags}
-                    onChange={this.handleSkillTags}
-                    input={<Input id="tags-select" />}
-                    MenuProps={MenuProps}
-                  >
-                    {this.state.loadedTags.map(tag => (
-                      <MenuItem
-                        key={tag.id}
-                        value={tag.label}
-                      >
-                        {tag.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                            <FormControl>
+                                <InputLabel htmlFor="tags-select">Skills & Interests</InputLabel>
+                                <Select
+                                    multiple
+                                    value={this.state.selectedTags}
+                                    onChange={this.handleSkillTags}
+                                    input={<Input id="tags-select" />}
+                                    MenuProps={MenuProps}
+                                >
+                                    {this.state.loadedTags.map(tag => (
+                                        <MenuItem
+                                            key={tag.id}
+                                            value={tag.label}
+                                        >
+                                            {tag.value}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
 
-          {this.props.pubkey &&
-              <React.Fragment>
-                  <label style={{ marginBottom: 12, marginTop:'20px' }}>
-                      Select a Plan
+                            {this.props.pubkey &&
+                                <React.Fragment>
+                                    <label style={{ marginBottom: 12, marginTop: '20px' }}>
+                                        Select a Plan
                   </label>
 
                                     <FlatButton

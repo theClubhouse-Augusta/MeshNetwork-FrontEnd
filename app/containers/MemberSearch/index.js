@@ -51,7 +51,7 @@ export default class MemberSearch extends PureComponent {
 
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills', {
+        fetch('https://innovationmesh.com/api/skills', {
             //headers: { Authorization: `Bearer ${this.token}` },
         })
             .then(response => response.json())
@@ -71,8 +71,8 @@ export default class MemberSearch extends PureComponent {
             data.append('query', this.state.query);
 
             fetch('https://innovationmesh.com/api/search/', {
-                method:'POST',
-                body:data
+                method: 'POST',
+                body: data
                 //headers: { Authorization: `Bearer ${this.token}` },
             })
                 .then(response =>
@@ -95,20 +95,20 @@ export default class MemberSearch extends PureComponent {
         data.append('tag', tag);
 
         fetch('https://innovationmesh.com/api/search', {
-          method:'POST',
-          body:data
+            method: 'POST',
+            body: data
         })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (json) {
-            if (json.error) {
-                this.showSnack(json.error)
-            }
-            else {
-                this.setState({ results: json });
-            }
-        }.bind(this))
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
+                    this.showSnack(json.error)
+                }
+                else {
+                    this.setState({ results: json });
+                }
+            }.bind(this))
     }
 
     renderTag = (skill, i) => {

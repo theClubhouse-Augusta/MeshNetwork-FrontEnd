@@ -19,14 +19,14 @@ export default class Booking extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            token:localStorage.getItem('token'),
+            token: localStorage.getItem('token'),
             msg: "",
-            spaceProfile:"",
+            spaceProfile: "",
             snack: false,
             space: "",
             name: "",
             email: "",
-            resources:[],
+            resources: [],
             activeType: 0,
             activeTimes: [],
             types: ['Private Office', 'Mentor', 'Tour', 'Meeting Room'],
@@ -48,7 +48,7 @@ export default class Booking extends React.PureComponent {
     }
 
     componentWillMount() {
-      this.getProfile();
+        this.getProfile();
     }
 
     handleName = (event) => { this.setState({ name: event.target.value }) }
@@ -108,36 +108,36 @@ export default class Booking extends React.PureComponent {
     }
 
     getProfile = () => {
-     fetch('http://localhost:8000/api/workspace/'+ this.props.match.params.id, {
-       method:'GET'
-     })
-     .then(function(response) {
-       return response.json();
-     })
-     .then(function(json) {
-       this.setState({
-         spaceProfile:json,
-       }, function() {
-         if(!this.state.token) {
-           this.props.history.push('/join/' + this.state.spaceProfile.slug)
-         }
-        this.getResources(json.id);
-       })
-     }.bind(this));
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+            method: 'GET'
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                this.setState({
+                    spaceProfile: json,
+                }, function () {
+                    if (!this.state.token) {
+                        this.props.history.push('/join/' + this.state.spaceProfile.slug)
+                    }
+                    this.getResources(json.id);
+                })
+            }.bind(this));
     }
 
     getResources = (id) => {
-      fetch('https://innovationmesh.com/api/getResources/'+id, {
-        method:'GET',
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        this.setState({
-          resources:json
+        fetch('https://innovationmesh.com/api/getResources/' + id, {
+            method: 'GET',
         })
-      }.bind(this))
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                this.setState({
+                    resources: json
+                })
+            }.bind(this))
     };
 
     storeBooking = () => {
@@ -150,10 +150,10 @@ export default class Booking extends React.PureComponent {
         data.append('times', JSON.stringify(this.state.activeTimes));
         data.append('spaceID', this.state.spaceProfile.id);
 
-        fetch("http://localhost:8000/api/booking", {
+        fetch("https://innovationmesh.com/api/booking", {
             method: 'POST',
             body: data,
-            headers: { 'Authorization' : 'Bearer ' + this.state.token}
+            headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
             .then(function (response) {
                 return response.json();
@@ -214,7 +214,7 @@ export default class Booking extends React.PureComponent {
             <div className="bookingContainer">
                 <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
 
-                <header style={{background:'#FFFFFF'}}>
+                <header style={{ background: '#FFFFFF' }}>
                     <Header app={this.state.app} />
                 </header>
 

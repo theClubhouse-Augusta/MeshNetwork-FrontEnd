@@ -40,7 +40,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getProfile = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -58,7 +58,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getSpaceEvents = (id) => {
-        fetch('http://localhost:8000/api/workevents/' + id, {
+        fetch('https://innovationmesh.com/api/workevents/' + id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -72,7 +72,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getUsers = (id) => {
-        fetch('http://localhost:8000/api/spaceOrganizers/' + id, {
+        fetch('https://innovationmesh.com/api/spaceOrganizers/' + id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -86,7 +86,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getPhotoGallery = (id) => {
-        fetch('http://localhost:8000/api/getPhotos/' + id, {
+        fetch('https://innovationmesh.com/api/getPhotos/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -100,13 +100,13 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     renderDashboard = () => {
-      if(this.state.user) {
-        if(this.state.user.spaceID == this.state.spaceProfile.id && this.state.user.roleID == 2) {
-          return(
-            <Link to={'/spacedash/' + this.state.spaceProfile.slug} style={{ width: '100%' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Dashboard</FlatButton></Link>
-          )
+        if (this.state.user) {
+            if (this.state.user.spaceID == this.state.spaceProfile.id && this.state.user.roleID == 2) {
+                return (
+                    <Link to={'/spacedash/' + this.state.spaceProfile.slug} style={{ width: '100%' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Dashboard</FlatButton></Link>
+                )
+            }
         }
-      }
     }
 
 

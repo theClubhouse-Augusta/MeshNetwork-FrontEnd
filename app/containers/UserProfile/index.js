@@ -30,7 +30,7 @@ export default class UserProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            auth:JSON.parse(localStorage.getItem('user')),
+            auth: JSON.parse(localStorage.getItem('user')),
             user: '',
             space: '',
             skills: [],
@@ -50,8 +50,8 @@ export default class UserProfile extends React.Component {
         }
     }
 
-    getUser = token => {
-        fetch('http://localhost:8000/api/user/' + this.props.match.params.id, {
+    getUser = () => {
+        fetch('https://innovationmesh.com/api/user/' + this.props.match.params.id, {
             method: 'GET',
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
@@ -62,7 +62,7 @@ export default class UserProfile extends React.Component {
                 this.setState({
                     user: json.user,
                     space: json.space,
-                    skills: JSON.parse(json.user.skills),
+                    skills: json.user.skills ? JSON.parse(json.user.skills) : [],
                 })
             }.bind(this))
     }
@@ -83,15 +83,15 @@ export default class UserProfile extends React.Component {
     }
 
     renderEdit = () => {
-      if(this.state.auth) {
-        if(this.state.auth.id == this.props.match.params.id) {
-          return(
-            <Link to={'/account'} className="profileSpaceBlock">
-              Edit Profile
+        if (this.state.auth) {
+            if (this.state.auth.id == this.props.match.params.id) {
+                return (
+                    <Link to={'/account'} className="profileSpaceBlock">
+                        Edit Profile
             </Link>
-          )
+                )
+            }
         }
-      }
     }
 
     render() {
@@ -113,11 +113,11 @@ export default class UserProfile extends React.Component {
                             <div className="profileSubTitle">{this.state.user.title}</div>
                         </div>
                         <div className="profileContact">
-                            <div style={{display:'flex', flexDirection:'row'}}>
-                              <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
-                                {this.state.space.name}
-                              </Link>
-                              {this.renderEdit()}
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
+                                    {this.state.space.name}
+                                </Link>
+                                {this.renderEdit()}
                             </div>
                             <div className="profileSocialList">
                                 <MailIcon className="profileIconStyle" />
@@ -130,9 +130,9 @@ export default class UserProfile extends React.Component {
                             </div>
                         </div>
                         <div className="profileSkillsList">
-                          {this.state.skills.map((skill, i) => (
-                              this.renderTag(skill, i)
-                          ))}
+                            {this.state.skills.map((skill, i) => (
+                                this.renderTag(skill, i)
+                            ))}
                         </div>
                     </main>
 

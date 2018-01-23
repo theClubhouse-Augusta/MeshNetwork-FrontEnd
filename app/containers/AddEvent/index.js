@@ -6,18 +6,17 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import Snackbar from 'material-ui/Snackbar';
-//import Select from 'react-select';
 import TextField from 'material-ui/TextField';
 import RaisedButton from "./RaisedButton";
 import FlatButton from 'material-ui/Button';
-
+import Checkbox from 'material-ui/Checkbox';
+import { ListItemText } from 'material-ui/List';
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 import Header from '../../components/Header';
 import Footer from 'components/Footer';
 import { MdInsertDriveFile } from 'react-icons/lib/md';
 import DateTimeSelect from '../../components/DateTimeSelect';
 import { SelectedSponsors } from './SelectedSponsors';
-import { SelectedOrganizers } from './SelectedOrganizers';
 import Spinner from '../../components/Spinner';
 
 import Select from 'material-ui/Select';
@@ -38,19 +37,18 @@ import {
 } from './dateUtils';
 
 // styles
-import StyleHelpers from '../../utils/StyleHelpers';
 import './style.css';
 import './styleM.css';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
-  },
 };
 
 export default class AddEvent extends PureComponent {
@@ -80,7 +78,6 @@ export default class AddEvent extends PureComponent {
         // organizers
         organizers: '',
         showOrganizers: false,
-        selectedOrganizers: [],
         // sponsors
         sponsors: '',
         checkNewSponsors: '',
@@ -99,6 +96,9 @@ export default class AddEvent extends PureComponent {
         logoPreview: '',
         eventImg: '',
         eventImgPreview: '',
+        tag: new Set(),
+        selectedOrganizers: new Set(),
+        selectedSponsors: new Set(),
     };
 
     async componentDidMount() {
@@ -114,7 +114,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getSponsors = () => {
-        fetch(`http://localhost:8000/api/sponsors`, {
+        fetch(`https://innovationmesh.com/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -128,7 +128,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getOrganizers = () => {
-        fetch(`http://localhost:8000/api/organizers/all`, {
+        fetch(`https://innovationmesh.com/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -143,7 +143,7 @@ export default class AddEvent extends PureComponent {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -151,27 +151,6 @@ export default class AddEvent extends PureComponent {
             .catch(error => {
                 alert(`error in fetching data from server: ${error}`);
             });
-    }
-    removeOrganizer = (organizer) => {
-        if (organizer) {
-            const organizers = this.state.selectedOrganizers.slice();
-            const remove = organizers.findIndex(previous => previous === organizer);
-            if (remove !== -1) {
-                organizers.splice(remove, 1);
-                this.setState({ selectedOrganizers: organizers });
-            }
-        }
-    }
-
-    removeSponsor = (sponsor) => {
-        if (sponsor) {
-            const sponsors = this.state.selectedSponsors.slice();
-            const remove = sponsors.findIndex(previous => previous === sponsor);
-            if (remove !== -1) {
-                sponsors.splice(remove, 1);
-                this.setState({ selectedSponsors: sponsors });
-            }
-        }
     }
 
     removeNewSponsor = (sponsor) => {
@@ -335,40 +314,30 @@ export default class AddEvent extends PureComponent {
         return multidayComponent;
     }
 
-    // submit form if 'enter' is pressed
-    // checkKey = e => e.keyCode === 13 ? this.setState({ searchEnter: true }) : null
-
     toggleCompEvent = () => this.setState({ checkCompEvent: !this.state.checkCompEvent });
     eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
     eventDays = event => this.setState({ days: event.target.value });
 
-    selectTag = (selectedTag) => {
-        const copy = selectedTag.slice(-1)[0];
-        if (copy !== undefined) {
-            copy.value = copy.value.replace(/\s\s+/g, ' ').trim();
-            copy.label = copy.label.replace(/\s\s+/g, ' ').trim();
-            this.setState({ selectedTags: selectedTag });
-        } else {
-            this.setState({ selectedTags: selectedTag });
-        }
-    }
-
     selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
     selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
     eventDescription = e => this.setState({ description: e.target.value });
 
-    handleTags = event => {
-      this.setState({ selectedTags: event.target.value });
+    handleTagChange = event => {
+        this.setState({ tag: new Set(event.target.value) });
     };
 
-    handleOrganizers = event => {
-      this.setState({ selectedOrganizers: event.target.value });
+    handleOrganizerChange = event => {
+        this.setState({ selectedOrganizers: new Set(event.target.value) });
     };
 
-    handleSponsors = event => {
-      this.setState({ selectedSponsors: event.target.value });
+    handleSponsorChange = event => {
+        this.setState({ selectedSponsors: new Set(event.target.value) });
     };
+
+    // handleSponsors = event => {
+    //     this.setState({ selectedSponsors: event.target.value });
+    // };
 
     eventFiles = event => {
         event.preventDefault();
@@ -432,7 +401,7 @@ export default class AddEvent extends PureComponent {
 
         let data = new FormData();
         data.append('description', description);
-        data.append('tags', JSON.stringify(this.state.selectedTags));
+        data.append('tags', JSON.stringify(this.state.tag));
         this.state.eventFiles.forEach((file, index) => data.append(`files${index}`, file));
         data.append('compEvent', !!this.state.checkCompEvent);
         data.append('name', this.state.name);
@@ -462,7 +431,7 @@ export default class AddEvent extends PureComponent {
             }
         }
 
-        fetch(`http://localhost:8000/api/event`, {
+        fetch(`https://innovationmesh.com/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -474,14 +443,6 @@ export default class AddEvent extends PureComponent {
     }
 
     closeModal = () => this.setState({ modalMessage: '' });
-    onTagFocus = () => this.setState({ tagFocused: true });
-    onTagBlur = () => this.setState({ tagFocused: false });
-
-    onOrganizerFocus = () => this.setState({ organizerFocused: true });
-    onOrganizerBlur = () => this.setState({ organizerFocused: false });
-
-    onSponsorFocus = () => this.setState({ sponsorFocused: true });
-    onSponsorBlur = () => this.setState({ sponsorFocused: false });
 
     renderLogoImage = () => {
         if (this.state.logo !== "")
@@ -571,7 +532,6 @@ export default class AddEvent extends PureComponent {
             days,
         } = this.state;
 
-        const Helper = new StyleHelpers;
         const options = [
             {
                 id: 0,
@@ -607,108 +567,86 @@ export default class AddEvent extends PureComponent {
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
                             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
-                            {this.state.loadedTags &&
-                                /*<Select.Creatable
-                                    className={Helper.getSelectStyle(tagFocused, selectedTags)}
-                                    placeholder={!tagFocused && !!!selectedTags.length ? 'Choose or create some tags that describe your event ' : ''}
-                                    multi
-                                    style={{
-                                        background: '#fff',
-                                        border: 'none',
-                                        boxShadow: 'none',
-                                    }}
-                                    options={loadedTags}
-                                    onChange={this.selectTag}
-                                    value={selectedTags}
-                                    onFocus={this.onTagFocus}
-                                    onBlur={this.onTagBlur}
-                                />*/
-                                <FormControl>
-                                  <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
-                                  <Select
-                                    multiple
-                                    value={this.state.selectedTags}
-                                    onChange={this.handleTags}
-                                    input={<Input id="tags-select" />}
-                                    MenuProps={MenuProps}
-                                  >
-                                    {this.state.loadedTags.map(tag => (
-                                      <MenuItem
-                                        key={tag.id}
-                                        value={tag.id}
-                                      >
-                                        {tag.value}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </FormControl>
-                              }
-
-                            {organizers &&
-                                /*<Select
-                                    className={Helper.getSelectStyle(organizerFocused, selectedOrganizers)}
-                                    placeholder={!organizerFocused && !!!selectedOrganizers.length ? 'Event Organizers' : ''}
-                                    multi
-                                    style={{ background: '#fff', border: 'none', boxShadow: 'none' }}
-                                    options={organizers}
-                                    onChange={this.selectOrganizer}
-                                    value={selectedOrganizers}
-                                    onFocus={this.onOrganizerFocus}
-                                    onBlur={this.onOrganizerBlur}
-                                />*/
-                                <FormControl>
-                                  <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
-                                  <Select
-                                    multiple
-                                    value={this.state.selectedOrganizers}
-                                    onChange={this.handleOrganizers}
-                                    input={<Input id="organizers-select" />}
-                                    MenuProps={MenuProps}
-                                  >
-                                    {this.state.organizers.map(tag => (
-                                      <MenuItem
-                                        key={tag.id}
-                                        value={tag.value}
-                                      >
-                                        {tag.label}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </FormControl>
-                              }
-
-                            {/*!!selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={selectedOrganizers} removeOrganizer={this.removeOrganizer} />*/}
-
-                            {!!sponsors.length &&
-                                <FormControl>
-                                  <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
-                                  <Select
-                                    multiple
-                                    value={this.state.selectedSponsors}
-                                    onChange={this.handleSponsors}
-                                    input={<Input id="sponsors-select" />}
-                                    MenuProps={MenuProps}
-                                  >
-                                    {this.state.sponsors.map(tag => (
-                                      <MenuItem
-                                        key={tag.id}
-                                        value={tag.id}
-                                      >
-                                        {tag.value}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
+                            {loadedTags &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={[...this.state.tag]}
+                                        onChange={this.handleTagChange}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(', ')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {loadedTags.map(tag => (
+                                            <MenuItem key={tag} value={tag}>
+                                                <Checkbox checked={this.state.tag.has(tag)} />
+                                                <ListItemText primary={tag} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
                                 </FormControl>
                             }
 
-                            {/*!!selectedSponsors.length &&
-                                <SelectedSponsors
-                                    selectedSponsors={selectedSponsors}
-                                    removeSponsor={this.removeSponsor}
-                                    newSponsor={false}
-                                />*/}
+                            {organizers &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={[...this.state.selectedOrganizers]}
+                                        onChange={this.handleOrganizerChange}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(', ')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {organizers.map(organizer => (
+                                            <MenuItem key={organizer} value={organizer}>
+                                                <Checkbox checked={this.state.selectedOrganizers.has(organizer)} />
+                                                <ListItemText primary={organizer} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
 
-                            {dateError  && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
+                            {!!sponsors.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={[...this.state.selectedSponsors]}
+                                        onChange={this.handleSponsorChange}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(', ')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {sponsors.map(sponsor => (
+                                            <MenuItem key={sponsor} value={sponsor}>
+                                                <Checkbox checked={this.state.selectedSponsors.has(sponsor)} />
+                                                <ListItemText primary={sponsor} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                    {/* <Select
+                                        multiple
+                                        value={this.state.selectedSponsors}
+                                        onChange={this.handleSponsors}
+                                        input={<Input id="sponsors-select" />}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {this.state.sponsors.map(tag => (
+                                            <MenuItem
+                                                key={tag.id}
+                                                value={tag.id}
+                                            >
+                                                {tag.value}
+                                            </MenuItem>
+                                        ))}
+                                    </Select> */}
+                                </FormControl>
+                            }
+
+                            {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
                             {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
                             {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
                             {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
@@ -764,7 +702,6 @@ export default class AddEvent extends PureComponent {
                             {(parseInt(this.state.checkedRadio) === 1 && days) && this.multiDay(days)}
 
                             <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
-
                                 <input
                                     id="newSponsors"
                                     type="checkbox"
@@ -836,7 +773,7 @@ export default class AddEvent extends PureComponent {
 
                             <input multiple id="event-files" type="file" style={{ display: 'none' }} onChange={this.eventFiles} />
                             <label htmlFor="event-files">
-                                <div style={{ display: 'flex', color: 'rgba(0,0,0,0.54)', flexDirection: 'column', marginBottom: 16 }}>
+                                <div style={{ display: 'flex', color: 'rgba(0,0,0,0.54)', flexDirection: 'column', marginBottom: 16, textAlign: 'center' }}>
                                     <MdFileUpload size="40px" />
                                     Upload any other relevant documents
                                 </div>
@@ -871,7 +808,7 @@ export default class AddEvent extends PureComponent {
                             </div>
 
                             <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
-                              Submit Event
+                                Submit Event
                             </FlatButton>
                         </div>
                     </main>
