@@ -100,13 +100,13 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     renderDashboard = () => {
-      if(this.state.user) {
-        if(this.state.user.spaceID == this.state.spaceProfile.id && this.state.user.roleID == 2) {
-          return(
-            <Link to={'/spacedash/' + this.state.spaceProfile.slug} style={{ width: '100%' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Dashboard</FlatButton></Link>
-          )
+        if (this.state.user) {
+            if (this.state.user.spaceID == this.state.spaceProfile.id && this.state.user.roleID == 2) {
+                return (
+                    <Link to={'/spacedash/' + this.state.spaceProfile.slug} style={{ width: '100%' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Dashboard</FlatButton></Link>
+                )
+            }
         }
-      }
     }
 
 
