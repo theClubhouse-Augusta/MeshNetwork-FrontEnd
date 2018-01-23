@@ -71,8 +71,8 @@ export default class MemberSearch extends PureComponent {
             data.append('query', this.state.query);
 
             fetch('https://innovationmesh.com/api/search/', {
-                method:'POST',
-                body:data
+                method: 'POST',
+                body: data
                 //headers: { Authorization: `Bearer ${this.token}` },
             })
                 .then(response =>
@@ -88,48 +88,6 @@ export default class MemberSearch extends PureComponent {
         }
     }
 
-    ShowSearchResults = () => {
-        return (
-            <div id="MS-postSearchContainer">
-                {/* User Cards */}
-                <ul>
-                    {this.state.results.map((user, index) => {
-                        if (!!user.id) {
-                            return (
-                                <li
-                                    onClick={() => { this.props.history.push(`/UserProfile/${user.id}`); }}
-                                    key={`userAvatar${user.id}`}
-                                >
-                                    <img
-                                        src={user.avatar}
-                                        width="100px"
-                                        height="100px"
-                                        alt="avatar"
-                                    />
-                                    <dl id="MS-userInfo">
-                                        <div>
-                                            <dt>name:</dt>
-                                            <dd> &nbsp;&nbsp;&nbsp;{user.name} </dd>
-                                        </div>
-
-                                        <div>
-                                            <dt>company:</dt>
-                                            <dd> &nbsp;&nbsp;&nbsp;{user.company} </dd>
-                                        </div>
-
-                                        <div>
-                                            <dt>Email:</dt>
-                                            <dd> &nbsp;&nbsp;&nbsp;{user.email} </dd>
-                                        </div>
-                                    </dl>
-                                </li>
-                            );
-                        }
-                    })}
-                </ul>
-            </div>
-        );
-    }
 
     tagClick = (tag) => {
         let data = new FormData();
@@ -137,20 +95,20 @@ export default class MemberSearch extends PureComponent {
         data.append('tag', tag);
 
         fetch('https://innovationmesh.com/api/search', {
-          method:'POST',
-          body:data
+            method: 'POST',
+            body: data
         })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (json) {
-            if (json.error) {
-                this.showSnack(json.error)
-            }
-            else {
-                this.setState({ results: json });
-            }
-        }.bind(this))
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
+                    this.showSnack(json.error)
+                }
+                else {
+                    this.setState({ results: json });
+                }
+            }.bind(this))
     }
 
     renderTag = (skill, i) => {

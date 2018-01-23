@@ -73,6 +73,15 @@
   font-size:1.5em;
 }
 
+.spaceDashDataTitleGraph {
+  font-family: 'HankenBook';
+  margin:15px;
+  color:#ff4d58;
+  font-size:1.5em;
+  margin-bottom: 32px;
+  margin-top: 32px;
+}
+
 
 .spaceDashDataContent {
   width:100%;

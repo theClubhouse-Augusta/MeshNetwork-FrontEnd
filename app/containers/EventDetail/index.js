@@ -182,7 +182,7 @@ export default class EventDetail extends React.PureComponent {
                                 <p>{this.state.event.description}</p>
                                 {!!tags.length &&
                                     <div className="eventTags">
-                                        <a href={this.state.event.url} style={{textDecoration:'none', background:'#EEEEEE', padding:'5px', color:'#222222', marginRight:'10px', borderRadius:'5px', display:'flex', flexDirection:'row', alignItems:'center'}}><LinkIcon size={25}/></a>
+                                        <a href={this.state.event.url} style={{ textDecoration: 'none', background: '#EEEEEE', padding: '5px', color: '#222222', marginRight: '10px', borderRadius: '5px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}><LinkIcon size={25} /></a>
                                         {tags.map((tag, key) =>
                                             <Chip key={`chip${key}`} label={tag} style={{ color: "#FFFFFF", marginRight: '5px', marginTop: '5px', borderRadius: '5px', background: '#ff4d58' }} />
                                         )}
@@ -211,8 +211,8 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.organizers.map((organizer, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={organizer.avatar} style={{width:'100px', height:'100px'}}/>
-                                            <div style={{ marginTop: '10px', textAlign:'center' }}>{organizer.name}</div>
+                                            <img src={organizer.avatar} style={{ width: '100px', height: '100px' }} />
+                                            <div style={{ marginTop: '10px', textAlign: 'center' }}>{organizer.name}</div>
                                         </div>
                                     ))}
                                 </div>
@@ -224,7 +224,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.sponsors.map((sponsor, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={sponsor.logo} style={{width:'100px', height:'100px'}}/>
+                                            <img src={sponsor.logo} style={{ width: '100px', height: '100px' }} />
                                         </div>
                                     ))}
                                 </div>
@@ -236,8 +236,8 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.attendees.map((attendee, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={attendee.avatar} style={{width:'100px', height:'100px'}}/>
-                                            <div style={{ marginTop: '10px', textAlign:'center' }}>{attendee.name}</div>
+                                            <img src={attendee.avatar} style={{ width: '100px', height: '100px' }} />
+                                            <div style={{ marginTop: '10px', textAlign: 'center' }}>{attendee.name}</div>
                                         </div>
                                     ))}
                                 </div>

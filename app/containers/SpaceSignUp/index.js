@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import Header from 'components/Header';
 import PropTypes from 'prop-types';
 
-import {EditorState, convertToRaw} from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import drafToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -27,38 +27,38 @@ export default class SpaceSignUp extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            name:"",
-            city:"",
-            address:"",
-            userName:"",
-            userEmail:"",
-            userPassword:"",
-            state:"",
-            zipcode:"",
-            email:"",
-            website:"",
-            phone_number:"",
-            description:EditorState.createEmpty(),
-            logo:"",
-            logoPreview:"",
-            msg:"",
-            snack:false,
+            name: "",
+            city: "",
+            address: "",
+            userName: "",
+            userEmail: "",
+            userPassword: "",
+            state: "",
+            zipcode: "",
+            email: "",
+            website: "",
+            phone_number: "",
+            description: EditorState.createEmpty(),
+            logo: "",
+            logoPreview: "",
+            msg: "",
+            snack: false,
         }
     }
 
     handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  handleName = (event) => { this.setState({name:event.target.value.replace(/\s\s+/g, ' ') })};
-  handleCity = (event) => { this.setState({city:event.target.value})};
-  handleAddress = (event) => { this.setState({address:event.target.value.replace(/\s\s+/g, ' ') })};
-  handleState = (event) => {this.setState({state:event.target.value})};
-  handleZip = (event) => {this.setState({zipcode:event.target.value})};
-  handleEmail = (event) => {this.setState({email:event.target.value})};
-  handleWebsite = (event) => {this.setState({website:event.target.value})};
-  // handlePassword = (event) => {this.setState({password:event.target.value})};
-  handlePhone = (event) => {this.setState({phone_number:event.target.value})};
-  handleDescription = (editorState) => {this.setState({description: editorState, editorState: editorState})};
+    handleName = (event) => { this.setState({ name: event.target.value.replace(/\s\s+/g, ' ') }) };
+    handleCity = (event) => { this.setState({ city: event.target.value }) };
+    handleAddress = (event) => { this.setState({ address: event.target.value.replace(/\s\s+/g, ' ') }) };
+    handleState = (event) => { this.setState({ state: event.target.value }) };
+    handleZip = (event) => { this.setState({ zipcode: event.target.value }) };
+    handleEmail = (event) => { this.setState({ email: event.target.value }) };
+    handleWebsite = (event) => { this.setState({ website: event.target.value }) };
+    // handlePassword = (event) => {this.setState({password:event.target.value})};
+    handlePhone = (event) => { this.setState({ phone_number: event.target.value }) };
+    handleDescription = (editorState) => { this.setState({ description: editorState, editorState: editorState }) };
     handleLogo = (event) => {
         event.preventDefault();
         let reader = new FileReader();
@@ -74,9 +74,9 @@ export default class SpaceSignUp extends React.PureComponent {
         reader.readAsDataURL(file);
     };
 
-  handleUserName = (event) => {this.setState({userName:event.target.value})};
-  handleUserEmail = (event) => {this.setState({userEmail:event.target.value})};
-  handleUserPassword = (event) => {this.setState({userPassword:event.target.value})};
+    handleUserName = (event) => { this.setState({ userName: event.target.value }) };
+    handleUserEmail = (event) => { this.setState({ userEmail: event.target.value }) };
+    handleUserPassword = (event) => { this.setState({ userPassword: event.target.value }) };
     handleAvatar = (event) => {
         event.preventDefault();
         let reader = new FileReader();
@@ -107,9 +107,9 @@ export default class SpaceSignUp extends React.PureComponent {
         data.append('spaceID', spaceID);
         data.append('avatar', avatar);
 
-        fetch("http://innovationmesh.com/api/signUp", {
-          method:'POST',
-          body:data,
+        fetch("https://innovationmesh.com/api/signUp", {
+            method: 'POST',
+            body: data,
         })
             .then(response => response.json())
             .then(user => {
@@ -134,8 +134,8 @@ export default class SpaceSignUp extends React.PureComponent {
             state,
             zipcode,
             email,
-            website,
             phone_number,
+            website,
             userName,
             userEmail,
             userPassword,
@@ -158,15 +158,15 @@ export default class SpaceSignUp extends React.PureComponent {
         data.append('password', userPassword.trim());
         data.append('avatar', avatar);
 
-        fetch("http://innovationmesh.com/api/newspace", {
-        method:'POST',
-        body:data,
+        fetch("https://innovationmesh.com/api/newspace", {
+            method: 'POST',
+            body: data,
         })
-        .then(function(response) {
-        return response.json();
-        })
-        .then(function(json) {
-        if(json.error) {
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
                     _this.showSnack('There was a problem creating this space. Please review your data and ensure it is valid.');
                 }
                 else {

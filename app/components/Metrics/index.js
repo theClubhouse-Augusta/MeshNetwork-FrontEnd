@@ -26,7 +26,7 @@ import './styleM.css';
 */
 
 // member joins per year
-const joinsAPI = 'https://innovationmesh.com/api/db/Joins';
+const joinsAPI = 'https://innovationmesh.comh.com/api/db/Joins';
 
 //total unique visits 
 const spaceAppAPI = 'https://innovationmesh.com/api/db/appearances/';

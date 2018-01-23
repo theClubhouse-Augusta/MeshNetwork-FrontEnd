@@ -44,12 +44,13 @@ export default class SpaceDash extends React.PureComponent {
         checkinCount: 0,
         spaceEvents: [],
         photoGallery: [],
-        resources:[],
-        resourceName:"",
-        resourceEmail:"",
+        resources: [],
+        resourceName: "",
+        resourceEmail: "",
         msg: "",
         snack: false,
         loading: true,
+        thisMonthCheckIns: 0,
     }
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
@@ -110,7 +111,8 @@ export default class SpaceDash extends React.PureComponent {
                 this.setState({
                     memberCount: json.memberCount,
                     eventCount: json.eventCount,
-                    checkinCount: json.checkinCount
+                    checkinCount: json.checkinCount,
+                    thisMonthCheckIns: json.thisMonthCheckIns,
                 })
             }.bind(this))
     }
@@ -160,117 +162,118 @@ export default class SpaceDash extends React.PureComponent {
         reader.readAsDataURL(file);
     }
 
-  storePhoto = (file) => {
-    let _this = this;
-    let photoGallery = this.state.photoGallery;
-    let data = new FormData();
+    storePhoto = (file) => {
+        let _this = this;
+        let photoGallery = this.state.photoGallery;
+        let data = new FormData();
 
-    data.append('spaceID', this.state.spaceID);
-    data.append('photo', file);
-    fetch('https://innovationmesh.com/api/storePhoto', {
-      method: 'POST',
-      body: data,
-      headers: { 'Authorization': 'Bearer ' + this.state.token }
-      })
-      .then(function (response) {
-          return response.json();
-      })
-      .then(function (json) {
-          if (json.error) {
-              _this.showSnack(json.error);
-          }
-          else if (json.success) {
-              _this.showSnack(json.success);
-              photoGallery.push(json.photo);
-              _this.setState({
-                  photoGallery: photoGallery
-              })
-          }
-      }.bind(this))
+        data.append('spaceID', this.state.spaceID);
+        data.append('photo', file);
+        fetch('https://innovationmesh.com/api/storePhoto', {
+            method: 'POST',
+            body: data,
+            headers: { 'Authorization': 'Bearer ' + this.state.token }
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
+                    _this.showSnack(json.error);
+                }
+                else if (json.success) {
+                    _this.showSnack(json.success);
+                    photoGallery.push(json.photo);
+                    _this.setState({
+                        photoGallery: photoGallery
+                    })
+                }
+            }.bind(this))
     }
 
     handleResourceName = (event) => {
-      this.setState({
-        resourceName:event.target.value
-      })
+        this.setState({
+            resourceName: event.target.value
+        })
     };
 
     handleResourceEmail = (event) => {
-      this.setState({
-        resourceEmail:event.target.value
-      })
+        this.setState({
+            resourceEmail: event.target.value
+        })
     };
 
     getResources = (id) => {
-      fetch('https://innovationmesh.com/api/getResources/'+id, {
-        method:'GET',
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        this.setState({
-          resources:json
+        fetch('https://innovationmesh.com/api/getResources/' + id, {
+            method: 'GET',
         })
-      }.bind(this))
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                this.setState({
+                    resources: json
+                })
+            }.bind(this))
     };
 
     storeResource = () => {
-      let _this = this;
-      let resources = this.state.resources;
-      let data = new FormData();
-      data.append('spaceID', this.state.spaceID);
-      data.append('resourceName', this.state.resourceName);
-      data.append('resourceEmail', this.state.resourceEmail);
+        let _this = this;
+        let resources = this.state.resources;
+        let data = new FormData();
+        data.append('spaceID', this.state.spaceID);
+        data.append('resourceName', this.state.resourceName);
+        data.append('resourceEmail', this.state.resourceEmail);
 
-      fetch('https://innovationmesh.com/api/storeResource', {
-        method:'POST',
-        body:data,
-        headers: {'Authorization': 'Bearer ' + this.state.token}
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        if(json.error) {
-          _this.showSnack(json.error);
-        }
-        else if(json.success) {
-          _this.showSnack(json.success);
-          resources.push(json.resource);
-          this.setState({
-            resources:resources,
-            resourceName:"",
-            resourceEmail:""
-          })
-        }
-      }.bind(this))
+        fetch('https://innovationmesh.com/api/storeResource', {
+            method: 'POST',
+            body: data,
+            headers: { 'Authorization': 'Bearer ' + this.state.token }
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
+                    _this.showSnack(json.error);
+                }
+                else if (json.success) {
+                    _this.showSnack(json.success);
+                    resources.push(json.resource);
+                    this.setState({
+                        resources: resources,
+                        resourceName: "",
+                        resourceEmail: ""
+                    })
+                }
+            }.bind(this))
     };
 
     deleteResource = (id, i) => {
-      let _this = this;
-      let resource = this.state.resources;
+        let _this = this;
+        let resource = this.state.resources;
 
-      fetch('https://innovationmesh.com/api/deleteResource/'+id, {
-        method:'POST',
-        headers: {'Authorization': 'Bearer ' + this.state.token}
-      })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        if(json.error) {
-          _this.showSnack(json.error);
-        }
-        else if(json.success) {
-          _this.showSnack(json.success);
-          resource.splice(i, 1);
-          this.setState({
-            resource:resource
-          })
-        }
-      }.bind(this))
+        fetch('https://innovationmesh.com/api/deleteResource/' + id, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + this.state.token }
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                if (json.error) {
+                    _this.showSnack(json.error);
+                }
+                else if (json.success) {
+                    _this.showSnack(json.success);
+                    resource.splice(i, 1);
+                    this.setState({
+                        resource: resource
+                    })
+                }
+            }.bind(this))
     }
+
 
     renderDashContent = () => {
         if (this.state.activeMenu === 0) {
@@ -287,17 +290,20 @@ export default class SpaceDash extends React.PureComponent {
                             <div className="spaceDashDataContent">{this.state.eventCount}</div>
                         </div>
                         <div className="spaceDashDataBlock">
-                            <div className="spaceDashDataTitle">Check-Ins</div>
-                            <div className="spaceDashDataContent">{this.state.checkinCount}</div>
+                            <div className="spaceDashDataTitle">Check-Ins this month</div>
+                            <div className="spaceDashDataContent">{this.state.thisMonthCheckIns}</div>
                         </div>
                         <div className="spaceDashDataBlock">
-                            <div className="spaceDashDataTitle">Visits</div>
-                            <div className="spaceDashDataContent">500</div>
+                            <div className="spaceDashDataTitle">Total Check-Ins</div>
+                            <div className="spaceDashDataContent">{this.state.checkinCount}</div>
                         </div>
                     </div>
                     <div className="spaceDashMetricsContainer">
-                        {/*<AllAppearances height={600} width={600} {...this.props}  />
-          <AppearanceByMonthYear {...this.props} />*/}
+                        <div className="spaceDashDataTitleGraph">Total Check-ins</div>
+                        <AllAppearances height={600} width={600} {...this.props} />
+
+                        <div className="spaceDashDataTitleGraph">Check-ins range</div>
+                        <AppearanceByMonthYear {...this.props} />
                     </div>
                     <div className="spaceDashOptions">
                         <Link to={'/addEvent'} style={{ width: '10%', margin: '10px' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Add an Event</FlatButton></Link>
@@ -375,30 +381,30 @@ export default class SpaceDash extends React.PureComponent {
                 </div>
             )
         }
-        else if(this.state.activeMenu === 3) {
-          return(
-            <div className="spaceDashContent">
-                <Header />
-                <div className="spaceDashOptions">
-                  <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{marginRight:'10px'}}/>
-                  <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{marginRight:'10px'}}/>
-                  <label style={{ width: '10%', margin: '10px' }}>
-                    <div onClick={this.storeResource} style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold', cursor:'pointer' }} >Add Resource</div>
-                  </label>
-                </div>
-                <div className="spaceDashResources">
-                  {this.state.resources.map((res, i) => (
-                    <div className="spaceDashResourceBlock">
-                      <div className="spaceDashResourceTitle">{res.resourceName}</div>
-                      <div className="spaceDashResourceContact">
-                        {res.resourceEmail}
-                        <span style={{marginLeft:'10px', cursor:'pointer'}} onClick={() => this.deleteResource(res.id, i)}>&middot; Remove</span>
-                      </div>
+        else if (this.state.activeMenu === 3) {
+            return (
+                <div className="spaceDashContent">
+                    <Header />
+                    <div className="spaceDashOptions">
+                        <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px' }} />
+                        <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px' }} />
+                        <label style={{ width: '10%', margin: '10px' }}>
+                            <div onClick={this.storeResource} style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold', cursor: 'pointer' }} >Add Resource</div>
+                        </label>
                     </div>
-                  ))}
+                    <div className="spaceDashResources">
+                        {this.state.resources.map((res, i) => (
+                            <div className="spaceDashResourceBlock">
+                                <div className="spaceDashResourceTitle">{res.resourceName}</div>
+                                <div className="spaceDashResourceContact">
+                                    {res.resourceEmail}
+                                    <span style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => this.deleteResource(res.id, i)}>&middot; Remove</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-          )
+            )
         }
     }
 
