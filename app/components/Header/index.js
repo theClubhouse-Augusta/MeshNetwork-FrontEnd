@@ -79,6 +79,7 @@ export default class Header extends React.PureComponent {
     }
 
     signOut = () => {
+      let _this = this;
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       this.showSnack("Thanks for Visiting!");
@@ -94,7 +95,10 @@ export default class Header extends React.PureComponent {
       if(this.state.user && this.state.token)
       {
         return(
-          <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
+          <div style={{display:'flex', flexDirection:'row'}}>
+            <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
+            <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
+          </div>
         )
       }
     }

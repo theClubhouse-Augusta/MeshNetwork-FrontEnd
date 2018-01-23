@@ -67,7 +67,12 @@ export default class MemberSearch extends PureComponent {
     // submit form if 'enter' is pressed
     checkKey = (e) => {
         if (e.keyCode === 13 && this.state.query) {
-            fetch(`https://innovationmesh.com/api/search/?query=${encodeURIComponent(this.state.query)}`, {
+            let data = new FormData();
+            data.append('query', this.state.query);
+
+            fetch('https://innovationmesh.com/api/search/', {
+                method:'POST',
+                body:data
                 //headers: { Authorization: `Bearer ${this.token}` },
             })
                 .then(response =>
@@ -127,20 +132,25 @@ export default class MemberSearch extends PureComponent {
     }
 
     tagClick = (tag) => {
-        fetch(`https://innovationmesh.com/api/search/?tag=${encodeURIComponent(tag)}`, {
-            //headers: { Authorization: `Bearer ${this.token}` },
+        let data = new FormData();
+
+        data.append('tag', tag);
+
+        fetch('https://innovationmesh.com/api/search', {
+          method:'POST',
+          body:data
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                if (json.error) {
-                    this.showSnack(json.error)
-                }
-                else {
-                    this.setState({ results: json });
-                }
-            }.bind(this))
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (json) {
+            if (json.error) {
+                this.showSnack(json.error)
+            }
+            else {
+                this.setState({ results: json });
+            }
+        }.bind(this))
     }
 
     renderTag = (skill, i) => {
@@ -156,7 +166,7 @@ export default class MemberSearch extends PureComponent {
         chipStyle.animation = 'flicker '+ rand + 's ease alternate infinite';*/
 
         return (
-            <Chip style={chipStyle} key={i} label={skill.name} onClick={() => { this.tagClick(skill.name) }} />
+            <Chip style={chipStyle} key={i} label={skill.name} onClick={() => { this.tagClick(skill.id) }} />
         )
 
     }
@@ -201,15 +211,9 @@ export default class MemberSearch extends PureComponent {
                                         <img src={user.avatar} style={{ width: '100%', height: 'auto' }} />
                                     </div>
                                     <div className="eventBlockInfo">
-                                        <div className="eventBlockTitle">{user.name}</div>
-                                        <div className="eventBlockDesc">
+                                        <div className="searchBlockTitle">{user.name}</div>
+                                        <div className="searchBlockDesc">
                                             {user.title}
-                                        </div>
-                                        <div className="eventBlockInfo">
-                                            <div className="eventBlockTitle">{user.name}</div>
-                                            <div className="eventBlockDesc">
-                                                {user.title}
-                                            </div>
                                         </div>
                                     </div>
                                 </Link>

@@ -3,16 +3,32 @@ import Helmet from 'react-helmet';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
-import Select from 'react-select';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import Input, { InputLabel } from 'material-ui/Input';
 import { injectStripe } from 'react-stripe-elements';
 import CardSection from './CardSection';
 import Header from '../../components/Header';
+import { FormControl } from 'material-ui/Form';
 
 import StyleHelpers from '../../utils/StyleHelpers';
 import Logger from '../../utils/Logger';
 
 import './style.css';
 import './styleM.css';
+
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 
 class CheckoutForm extends React.Component {
     state = {
@@ -25,9 +41,9 @@ class CheckoutForm extends React.Component {
         email: "",
         password: "",
         bio: "",
+        selectedTags: [],
         loadedTags: [],
         loadedPlans: [],
-        selectedTags: [],
         avatar: '',
         imagePreviewUrl: '',
         msg: "",
@@ -75,9 +91,9 @@ class CheckoutForm extends React.Component {
             .catch(error => Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`));
     }
 
-    selectTag = selectedTag => {
-        this.setState({ selectedTags: selectedTag });
-    }
+    handleSkillTags = event => {
+      this.setState({ selectedTags: event.target.value });
+    };
 
     selectPlan = (e, selected) => {
         e.preventDefault();
@@ -220,11 +236,7 @@ class CheckoutForm extends React.Component {
             plan
     } = this.state;
         data.append('name', name.trim());
-        if (selectedTags.length) {
-            data.append('tags', JSON.stringify(selectedTags));
-        } else {
-            data.append('tags', JSON.stringify(multiValue));
-        }
+        data.append('tags', JSON.stringify(selectedTags));
         data.append('email', email.trim());
         data.append('password', password.trim());
         data.append('bio', bio.trim());
@@ -326,40 +338,33 @@ class CheckoutForm extends React.Component {
                                 }}
                                 className={Helper.getLabelClassName(focused, selectedTags)}
                             >
-                                Skills
                 </label>
 
-                            {!!loadedTags.length &&
-                                <Select.Creatable
-                                    placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
-                                    className={Helper.getSelectStyle(focused, selectedTags)}
-                                    style={{ background: '#f8f8f8', border: 'none', boxShadow: 'none' }}
-                                    multi
-                                    options={loadedTags}
-                                    onChange={this.selectTag}
-                                    value={selectedTags}
-                                    onFocus={this.onFocus}
-                                    onBlur={this.onBlur}
-                                />}
-
-                            {!!!loadedTags.length &&
-                                <Select.Creatable
-                                    placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
-                                    multi
-                                    className={Helper.getSelectStyle(focused, selectedTags)}
-                                    options={options}
-                                    style={{ background: '#f8f8f8', border: 'none', boxShadow: 'none' }}
-                                    onChange={this.handleOnChange}
-                                    value={multiValue}
-                                    onFocus={this.onFocus}
-                                    onBlur={this.onBlur}
-                                />}
+                <FormControl>
+                   <InputLabel htmlFor="tags-select">Skills & Interests</InputLabel>
+                  <Select
+                    multiple
+                    value={this.state.selectedTags}
+                    onChange={this.handleSkillTags}
+                    input={<Input id="tags-select" />}
+                    MenuProps={MenuProps}
+                  >
+                    {this.state.loadedTags.map(tag => (
+                      <MenuItem
+                        key={tag.id}
+                        value={tag.label}
+                      >
+                        {tag.value}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
 
-                            {this.props.pubkey &&
-                                <React.Fragment>
-                                    <label style={{ marginBottom: 12, }}>
-                                        Select a Plan
+          {this.props.pubkey &&
+              <React.Fragment>
+                  <label style={{ marginBottom: 12, marginTop:'20px' }}>
+                      Select a Plan
                   </label>
 
                                     <FlatButton

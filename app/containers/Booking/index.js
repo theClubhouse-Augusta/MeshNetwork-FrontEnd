@@ -19,13 +19,15 @@ export default class Booking extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            token:localStorage.getItem('token'),
             msg: "",
             spaceProfile:"",
             snack: false,
             space: "",
             name: "",
             email: "",
-            activeType: "Private Office",
+            resources:[],
+            activeType: 0,
             activeTimes: [],
             types: ['Private Office', 'Mentor', 'Tour', 'Meeting Room'],
             days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -114,26 +116,44 @@ export default class Booking extends React.PureComponent {
      })
      .then(function(json) {
        this.setState({
-         spaceProfile:json
+         spaceProfile:json,
+       }, function() {
+         if(!this.state.token) {
+           this.props.history.push('/join/' + this.state.spaceProfile.slug)
+         }
+        this.getResources(json.id);
        })
      }.bind(this));
     }
+
+    getResources = (id) => {
+      fetch('https://innovationmesh.com/api/getResources/'+id, {
+        method:'GET',
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        this.setState({
+          resources:json
+        })
+      }.bind(this))
+    };
 
     storeBooking = () => {
         let _this = this;
         let data = new FormData;
 
-        console.log(JSON.stringify(this.state.activeTimes));
-
         data.append('name', this.state.name);
         data.append('email', this.state.email);
-        data.append('type', this.state.activeType);
+        data.append('resourceID', this.state.activeType);
         data.append('times', JSON.stringify(this.state.activeTimes));
         data.append('spaceID', this.state.spaceProfile.id);
 
         fetch("https://innovationmesh.com/api/booking", {
             method: 'POST',
-            body: data
+            body: data,
+            headers: { 'Authorization' : 'Bearer ' + this.state.token}
         })
             .then(function (response) {
                 return response.json();
@@ -151,16 +171,16 @@ export default class Booking extends React.PureComponent {
             }.bind(this));
     }
 
-    renderTypeButton = (type, i) => {
+    renderTypeButton = (res, i) => {
 
-        if (this.state.activeType === type) {
+        if (this.state.activeType === res.id) {
             return (
-                <div className="bookingActiveTypeButton" key={i} onClick={() => this.handleType(type)}>{type}</div>
+                <div className="bookingActiveTypeButton" key={i} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
             )
         }
         else {
             return (
-                <div className="bookingTypeButton" key={i} onClick={() => this.handleType(type)}>{type}</div>
+                <div className="bookingTypeButton" key={i} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
             )
         }
     }
@@ -204,8 +224,8 @@ export default class Booking extends React.PureComponent {
                             <div className="bookingColumnTitle">Your Info</div>
                             <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
                             <TextField label="E-mail" margin='normal' fullWidth={true} onChange={this.handleEmail} value={this.state.email} />
-                            {this.state.types.map((type, i) => (
-                                this.renderTypeButton(type, i)
+                            {this.state.resources.map((res, i) => (
+                                this.renderTypeButton(res, i)
                             ))}
                             <FlatButton style={{ width: '100%', background: '#ff4d58', color: '#FFFFFF', marginTop: '15px' }} onClick={this.storeBooking}>Confirm Booking</FlatButton>
                         </div>
