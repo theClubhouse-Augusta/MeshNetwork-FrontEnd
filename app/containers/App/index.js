@@ -68,7 +68,7 @@ export default class App extends Component {
                 />
 
                 <Route
-                    path="/account/:id"
+                    path="/account"
                     render={(props) => <MemberAcct {...props} />}
                 />
 

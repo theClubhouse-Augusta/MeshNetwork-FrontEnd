@@ -105,3 +105,36 @@
   flex-direction:row;
   flex-wrap:wrap;
 }
+
+.spaceDashResources {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}
+
+.spaceDashResourceBlock {
+  width:30%;
+  margin:1%;
+  height:70px;
+  background:#EEEEEE;
+  border:2px solid #DDDDDD;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+}
+
+.spaceDashResourceTitle {
+  font-size:1.8em;
+  font-family:'Noto Sans';
+  padding-left:5px;
+  color:#222222;
+}
+
+.spaceDashResourceContact {
+  font-size:0.9em;
+  font-family:'Noto Sans';
+  padding-left:5px;
+  color:#777777;
+  padding-left:5px;
+
+}

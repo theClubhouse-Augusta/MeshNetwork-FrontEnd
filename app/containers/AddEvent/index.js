@@ -6,9 +6,10 @@
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import Snackbar from 'material-ui/Snackbar';
-import Select from 'react-select';
+//import Select from 'react-select';
 import TextField from 'material-ui/TextField';
 import RaisedButton from "./RaisedButton";
+import FlatButton from 'material-ui/Button';
 
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 import Header from '../../components/Header';
@@ -18,6 +19,11 @@ import DateTimeSelect from '../../components/DateTimeSelect';
 import { SelectedSponsors } from './SelectedSponsors';
 import { SelectedOrganizers } from './SelectedOrganizers';
 import Spinner from '../../components/Spinner';
+
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
 
 import authenticate from '../../utils/Authenticate';
 import {
@@ -35,6 +41,17 @@ import {
 import StyleHelpers from '../../utils/StyleHelpers';
 import './style.css';
 import './styleM.css';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 export default class AddEvent extends PureComponent {
     state = {
@@ -341,6 +358,18 @@ export default class AddEvent extends PureComponent {
     selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
     eventDescription = e => this.setState({ description: e.target.value });
 
+    handleTags = event => {
+      this.setState({ selectedTags: event.target.value });
+    };
+
+    handleOrganizers = event => {
+      this.setState({ selectedOrganizers: event.target.value });
+    };
+
+    handleSponsors = event => {
+      this.setState({ selectedSponsors: event.target.value });
+    };
+
     eventFiles = event => {
         event.preventDefault();
         let file = event.target.files[0];
@@ -482,7 +511,7 @@ export default class AddEvent extends PureComponent {
         if (this.state.eventImgPreview === "" || this.state.eventImgPreview === undefined || this.state.eventImgPreview === null) {
             return (
                 <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                    Add an image for the event page
+                    Add an Event Image
           <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
                 </span>
             )
@@ -578,18 +607,8 @@ export default class AddEvent extends PureComponent {
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
                             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
-                            <label
-                                style={{
-                                    marginTop: Helper.getLabelStyle(tagFocused, selectedTags)[0],
-                                    color: Helper.getLabelStyle(tagFocused, selectedTags)[1],
-                                }}
-                                className={Helper.getLabelClassName(tagFocused, selectedTags)}
-                            >
-                                event tags
-                            </label>
-
                             {this.state.loadedTags &&
-                                <Select.Creatable
+                                /*<Select.Creatable
                                     className={Helper.getSelectStyle(tagFocused, selectedTags)}
                                     placeholder={!tagFocused && !!!selectedTags.length ? 'Choose or create some tags that describe your event ' : ''}
                                     multi
@@ -603,20 +622,30 @@ export default class AddEvent extends PureComponent {
                                     value={selectedTags}
                                     onFocus={this.onTagFocus}
                                     onBlur={this.onTagBlur}
-                                />}
-
-                            <label
-                                style={{
-                                    marginTop: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[0],
-                                    color: Helper.getLabelStyle(organizerFocused, selectedOrganizers)[1],
-                                }}
-                                className={Helper.getLabelClassName(organizerFocused, selectedOrganizers)}
-                            >
-                                additional organizers
-                            </label>
+                                />*/
+                                <FormControl>
+                                  <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
+                                  <Select
+                                    multiple
+                                    value={this.state.selectedTags}
+                                    onChange={this.handleTags}
+                                    input={<Input id="tags-select" />}
+                                    MenuProps={MenuProps}
+                                  >
+                                    {this.state.loadedTags.map(tag => (
+                                      <MenuItem
+                                        key={tag.id}
+                                        value={tag.id}
+                                      >
+                                        {tag.value}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                              }
 
                             {organizers &&
-                                <Select
+                                /*<Select
                                     className={Helper.getSelectStyle(organizerFocused, selectedOrganizers)}
                                     placeholder={!organizerFocused && !!!selectedOrganizers.length ? 'Event Organizers' : ''}
                                     multi
@@ -626,41 +655,58 @@ export default class AddEvent extends PureComponent {
                                     value={selectedOrganizers}
                                     onFocus={this.onOrganizerFocus}
                                     onBlur={this.onOrganizerBlur}
-                                />}
+                                />*/
+                                <FormControl>
+                                  <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
+                                  <Select
+                                    multiple
+                                    value={this.state.selectedOrganizers}
+                                    onChange={this.handleOrganizers}
+                                    input={<Input id="organizers-select" />}
+                                    MenuProps={MenuProps}
+                                  >
+                                    {this.state.organizers.map(tag => (
+                                      <MenuItem
+                                        key={tag.id}
+                                        value={tag.value}
+                                      >
+                                        {tag.label}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                              }
 
-                            {!!selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={selectedOrganizers} removeOrganizer={this.removeOrganizer} />}
+                            {/*!!selectedOrganizers.length && <SelectedOrganizers selectedOrganizers={selectedOrganizers} removeOrganizer={this.removeOrganizer} />*/}
 
-                            {!!sponsors.length && [
-                                <label
-                                    style={{
-                                        marginTop: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[0],
-                                        color: Helper.getLabelStyle(sponsorFocused, selectedSponsors)[1],
-                                    }}
-                                    key={`label$`}
-                                    className={Helper.getLabelClassName(sponsorFocused, selectedSponsors)}
-                                >
-                                    selected sponsors
-                                </label>,
-                                <Select
-                                    className={Helper.getSelectStyle(sponsorFocused, selectedSponsors)}
-                                    placeholder={!sponsorFocused && !!!selectedSponsors.length ? 'Search Sponsors' : ''}
-                                    key={`sponsors`}
-                                    multi
-                                    style={{ background: '#fff', border: 'none', boxShadow: 'none' }}
-                                    options={sponsors}
-                                    onChange={this.selectSponsor}
-                                    value={selectedSponsors}
-                                    onFocus={this.onSponsorFocus}
-                                    onBlur={this.onSponsorBlur}
-                                />
-                            ]}
+                            {!!sponsors.length &&
+                                <FormControl>
+                                  <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
+                                  <Select
+                                    multiple
+                                    value={this.state.selectedSponsors}
+                                    onChange={this.handleSponsors}
+                                    input={<Input id="sponsors-select" />}
+                                    MenuProps={MenuProps}
+                                  >
+                                    {this.state.sponsors.map(tag => (
+                                      <MenuItem
+                                        key={tag.id}
+                                        value={tag.id}
+                                      >
+                                        {tag.value}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                            }
 
-                            {!!selectedSponsors.length &&
+                            {/*!!selectedSponsors.length &&
                                 <SelectedSponsors
                                     selectedSponsors={selectedSponsors}
                                     removeSponsor={this.removeSponsor}
                                     newSponsor={false}
-                                />}
+                                />*/}
 
                             {dateError  && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
                             {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
@@ -810,19 +856,6 @@ export default class AddEvent extends PureComponent {
                                 ] : null}
                             </div>
 
-                            <div style={{ display: 'flex', marginBottom: 32 }}>
-                                <input
-                                    type="checkBox"
-                                    id="comprehensive-event"
-                                    onKeyDown={(e) => e.keyCode === 13 ? this.toggleCompEvent() : null} onChange={this.toggleCompEvent} checked={checkCompEvent}
-                                />
-
-                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="comprehensive-event">
-                                    &nbsp;&nbsp;comprehensive event
-                                </label>
-
-                            </div>
-
                             <div className="spaceLogoMainImageRow">
                                 <label htmlFor="event-image" className="spaceLogoMainImageBlock">
                                     {this.renderEventImageText()}
@@ -837,19 +870,20 @@ export default class AddEvent extends PureComponent {
                                 </label>
                             </div>
 
-                            <RaisedButton
-                                style={{ backgroundColor: '#3399cc', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }}
-                                onSubmit={this.Submit}
-                            />
+                            <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
+                              Submit Event
+                            </FlatButton>
                         </div>
                     </main>
+                    <footer className="homeFooterContainer">
+                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                    </footer>
                     <Snackbar
                         open={snackBar}
                         message={snackBarMessage}
                         autoHideDuration={4000}
-                        onRequestClose={this.handleRequestClose}
+                        onClose={this.handleRequestClose}
                     />
-                    <Footer />
                 </div>
         );
     }

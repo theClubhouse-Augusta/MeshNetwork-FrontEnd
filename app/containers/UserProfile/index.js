@@ -30,6 +30,7 @@ export default class UserProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            auth:JSON.parse(localStorage.getItem('user')),
             user: '',
             space: '',
             skills: [],
@@ -61,7 +62,7 @@ export default class UserProfile extends React.Component {
                 this.setState({
                     user: json.user,
                     space: json.space,
-                    skills: json.skills,
+                    skills: JSON.parse(json.user.skills),
                 })
             }.bind(this))
     }
@@ -77,9 +78,20 @@ export default class UserProfile extends React.Component {
         chipStyle.animation = 'profileFlicker ' + rand + 's ease alternate infinite';
 
         return (
-            <Chip style={chipStyle} key={i} label={skill.name} />
+            <Chip style={chipStyle} key={i} label={skill} />
         )
+    }
 
+    renderEdit = () => {
+      if(this.state.auth) {
+        if(this.state.auth.id == this.props.match.params.id) {
+          return(
+            <Link to={'/account'} className="profileSpaceBlock">
+              Edit Profile
+            </Link>
+          )
+        }
+      }
     }
 
     render() {
@@ -101,9 +113,12 @@ export default class UserProfile extends React.Component {
                             <div className="profileSubTitle">{this.state.user.title}</div>
                         </div>
                         <div className="profileContact">
-                            <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
+                            <div style={{display:'flex', flexDirection:'row'}}>
+                              <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
                                 {this.state.space.name}
-                            </Link>
+                              </Link>
+                              {this.renderEdit()}
+                            </div>
                             <div className="profileSocialList">
                                 <MailIcon className="profileIconStyle" />
                                 <FacebookIcon className="profileIconStyle" />
@@ -115,12 +130,9 @@ export default class UserProfile extends React.Component {
                             </div>
                         </div>
                         <div className="profileSkillsList">
-                            <div className="tagsBox">
-
-                                {this.state.skills.map((skill, i) => (
-                                    this.renderTag(skill, i)
-                                ))}
-                            </div>
+                          {this.state.skills.map((skill, i) => (
+                              this.renderTag(skill, i)
+                          ))}
                         </div>
                     </main>
 

@@ -65,7 +65,6 @@ export default class UserSignIn extends React.PureComponent {
                       return response.json();
                     })
                     .then(function(json) {
-                      console.log(json);
                       localStorage.setItem('user', JSON.stringify(json));
                       _this.showSnack('Welcome back!');
                       setTimeout(() => {

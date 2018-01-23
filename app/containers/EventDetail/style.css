@@ -75,6 +75,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
+  margin-top:15px;
 }
 
 .eventPeopleBlock {
