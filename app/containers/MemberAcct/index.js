@@ -9,12 +9,15 @@ import Helmet from 'react-helmet';
 import Snackbar from 'material-ui/Snackbar';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
-import Select from 'react-select';
-import { Creatable } from 'react-select'; 
+import FlatButton from 'material-ui/Button';
+//import Select from 'react-select';
+//import { Creatable } from 'react-select';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
 
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import Spinner from '../../components/Spinner';
 
 import Logger from '../../utils/Logger';
@@ -23,41 +26,41 @@ import './style.css';
 import './styleM.css';
 import 'react-select/dist/react-select.css';
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 export default class MemberAcct extends React.PureComponent {
     state = {
+        token:localStorage.getItem('token'),
         name: '',
-        website: '',
         title: '',
         avatar: '',
-        avatarPreview: '', 
-        imagePreviewUrl: '',
+        avatarPreview: '',
         email: '',
-        emailConfirm: '',
-        currentPassword: '',
         password: '',
         passwordConfirm: '',
         phoneNumber: '',
-        //bio: '',
-        selectedTag: '',
         selectedTags: [],
         loadedTags: [],
-        value: 0,
-        //company: '',
-        //hireable: false,
         emailError: false,
         passwordError: false,
-        snackBar: false,
-        snackBarMessage: '',
         facebook: '',
         twitter: '',
         instagram: '',
         linkedin: '',
         github: '',
-        //dribble: '',
         behance: '',
-        //
-        angellist: '',
         loading: true,
+        msg: "",
+        snack: false,
     };
 
    /* async componentWillMount() {
@@ -68,9 +71,13 @@ export default class MemberAcct extends React.PureComponent {
             this.props.history.push('/');
         }
     } */
-    
-    componentWillMount () { 
-        this.getUserInfo(); 
+
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
+
+    componentWillMount () {
+        this.getUserInfo();
+        this.loadSkills();
     }
 
     handleInputChange = name => event => {
@@ -78,9 +85,13 @@ export default class MemberAcct extends React.PureComponent {
             [name]: event.target.value,
         },
             //function() {
-            //console.log(this.state); 
+            //console.log(this.state);
             //}
         );
+    };
+
+    handleSkillTags = event => {
+      this.setState({ selectedTags: event.target.value });
     };
 
     handleAvatar = (event) => {
@@ -99,8 +110,8 @@ export default class MemberAcct extends React.PureComponent {
 
     renderAvatarPreview = () => {
         if (this.state.avatarPreview == '') {
-            return (               
-                <img src={this.state.avatar} className="acctProfilePicturePreview" height="200px" width="200px" />               
+            return (
+                <img src={this.state.avatar} className="acctProfilePicturePreview" height="200px" width="200px" />
             )
         }
         else (this.state.avatar !== this.state.avatarPreview); {
@@ -118,68 +129,65 @@ export default class MemberAcct extends React.PureComponent {
         }
     }
 
-    confirmEmail = () => {
-        if (this.state.email !== this.state.emailConfirm) {
-            this.setState({ emailError: true })
-        } else {
-            this.setState({ emailError: false });
-        }
-    }
-
   getUserInfo = () => {
-        fetch('https://innovationmesh.com/api/user/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/getUser', {
             method: 'GET',
-            headers: { Authorization: `Bearer ${localStorage['token']}` },
+            headers: { 'Authorization': 'Bearer ' + this.state.token },
         })
             .then(function (response) {
                 return response.json();
-            
+
             })
             .then(function (json) {
                 this.setState({
-                    name: json.user.name,
-                    website: json.user.website,
-                    title: json.user.title,
-                    avatar: json.user.avatar,
-                    email: json.user.email,     
-                    facebook: json.user.facebook,
-                    twitter: json.user.twitter,
-                    instagram: json.user.instagram,
-                    linkedin: json.user.linkedin,
-                    github: json.user.github,
-                    behance: json.user.behance,
-                    angellist: json.user.angellist,
+                    name: json.name,
+                    title: json.title,
+                    avatar: json.avatar,
+                    email: json.email,
+                    facebook: json.facebook,
+                    twitter: json.twitter,
+                    instagram: json.instagram,
+                    linkedin: json.linkedin,
+                    github: json.github,
+                    behance: json.behance,
                 }, function() {
-                    console.log(this.state); 
+                    console.log(this.state);
                 })
             }.bind(this))
     }
 
-    onUserInfoSubmit = e => {
+    updateUser = e => {
         e.preventDefault();
 
         let data = new FormData();
-        let { title, name, website } = this.state;
-        data.append('title', title.trim());
-        data.append('name', name.trim());
-        data.append('website', website);
+        data.append('title', this.state.title);
+        data.append('name', this.state.name);
         data.append('avatar', this.state.avatar);
+        data.append('facebook', this.state.facebook);
+        data.append('twitter', this.state.twitter);
+        data.append('instagram', this.state.instagram);
+        data.append('linkedin', this.state.linkedin);
+        data.append('github', this.state.github);
+        data.append('behance', this.state.behance);
+        data.append('skills', JSON.stringify(this.state.selectedTags));
+        data.append('password', this.state.password);
+        data.append('passwordConfirm', this.state.passwordConfirm);
 
         fetch(`https://innovationmesh.com/api/updateUser`, {
-            headers: { Authorization: `Bearer ${localStorage['token']}` },
-            method: 'post',
+            headers: { 'Authorization': 'Bearer ' + this.state.token },
+            method: 'POST',
             body: data,
         })
             .then(response => response.json())
             .then(json => {
                 if (json.success) {
-                    this.toggleSnackBar(json.success);
+                    this.showSnack(json.success);
                 } else {
-                    this.toggleSnackBar(json.error);
+                    this.showSnack(json.error);
                 }
             })
             .catch(error => {
-                this.toggleSnackBar(JSON.stringify(error));
+                this.showSnack(JSON.stringify(error));
             })
     }
 
@@ -194,7 +202,7 @@ export default class MemberAcct extends React.PureComponent {
         alert(`error in fetching data from server: ${error}`);
       });
     }
-  
+
     loadUserSkills = () => {
       fetch('https://innovationmesh.com/api/userskills', {
         headers: { Authorization: `Bearer ${localStorage['token']}` },
@@ -205,16 +213,16 @@ export default class MemberAcct extends React.PureComponent {
         alert(`error in fetching data from server: ${error}`);
       });
     }
-  
-  
-  
-  selectTag = selectedTag => {
+
+
+
+  /*selectTag = selectedTag => {
     const selectedTags = selectedTag.slice(0, (selectedTag.length - 1));
     const selected = selectedTag.slice(-1)[0];
-  
+
     const loaded = this.state.loadedTags.slice(1);
     const s = this.state.selectedTags.slice();
-  
+
     if (!!selected.id) {
       this.setState({ selectedTags: selectedTag });
     } else {
@@ -232,14 +240,14 @@ export default class MemberAcct extends React.PureComponent {
     // else {
       // this.setState({ selectedTags: selectedTag });
     // }
-  }
+  }*/
 
-  onTagsSubmit = e => {
+  /*onTagsSubmit = e => {
     e.preventDefault();
     let data = new FormData();
     let { selectedTags } = this.state;
     data.append('tags', JSON.stringify(selectedTags));
-  
+
     fetch(`https://innovationmesh.com/api/updateUser`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
@@ -248,15 +256,15 @@ export default class MemberAcct extends React.PureComponent {
     .then(response => response.json())
     .then(json => {
       if (json.success) {
-        this.toggleSnackBar(json.success);
+        this.showSnack(json.success);
       } else {
-        this.toggleSnackBar(json.error);
+        this.showSnack(json.error);
       }
     })
     .catch(error => {
-      this.toggleSnackBar(JSON.stringify(error));
+      this.showSnack(JSON.stringify(error));
     })
-  }
+  }*/
 
     render() {
         return (
@@ -264,22 +272,25 @@ export default class MemberAcct extends React.PureComponent {
                // ?
                 //<Spinner loading={this.state.loading} />
                // :
-                <div className="container">
+                <div className="accountContainer">
                     <Helmet title="MemberAcct" meta={[{ name: 'description', content: 'Description of MemberAcct' }]} />
-                    <Header />
+                    <header style={{background:'#FFFFFF'}}>
+                      <Header/>
+                      <div className="acctBanner">
+                        <div className="homeHeaderContentTitle">Update Your Profile</div>
+                        <div className="homeHeaderContentSubtitle">Let everyone know what you&#39;re all about.</div>
+                      </div>
+                    </header>
 
                     <main>
-                        <div className="acctBanner">
-                            <h2> account settings </h2>
-                        </div>
 
                         <div className="acctBody">
                             <div className="acctMainInfo">
-                                
-                                <div className="acctProfileInfo">       
+
+                                <div className="acctProfileInfo">
                                  <div className="acctProfileMain">
-                                     <h3> Profile Information </h3> 
-                                     
+                                     <h3> Profile Information </h3>
+
                                      <TextField
                                      label={'Name'}
                                      margin='normal'
@@ -293,18 +304,18 @@ export default class MemberAcct extends React.PureComponent {
                                      placeholder={`${this.state.title}`} onChange={this.handleInputChange('title')}
                                          />
                                      <TextField
-                                         label={'Website'}
+                                         label={'E-mail'}
                                          margin='normal'
-                                         value={`${this.state.website}`}
-                                         placeholder={`${this.state.website}`} onChange={this.handleInputChange('website')}
+                                         value={`${this.state.email}`}
+                                         onChange={this.handleInputChange('email')}
                                      />
                                      </div>
 
-                                     <div className="acctProfilePicture">                                    
-                                             {this.renderAvatarPreview()}                                   
+                                     <div className="acctProfilePicture">
+                                             {this.renderAvatarPreview()}
                                          <div>
                                          <label style={{ display: 'flex', flexDirection: 'column' }}>
-                                             <Button raised component="span" >
+                                             <FlatButton raised component="span" >
                                                  Upload
                                                  <input
                                                      onChange={this.handleAvatar}
@@ -312,18 +323,18 @@ export default class MemberAcct extends React.PureComponent {
                                                      style={{ display: 'none' }}
                                                      accept="image/png, image/jpg, image/jpeg"
                                                  />
-                                             </Button>
+                                             </FlatButton>
                                          </label>
                                      </div>
                                     </div>
                                 </div>
-                            
-                        
+
+
 
                                 <Divider />
 
                                 <div className="acctSocialMediaWrapper">
-                                     <h3> Social Media Handles</h3>
+                                     <h3> Social Media</h3>
                                      <div className="acctSocialMedia">
                                      <TextField
                                      label={'Facebook'}
@@ -367,33 +378,46 @@ export default class MemberAcct extends React.PureComponent {
                                placeholder={`${this.state.behance}`}
                                 onChange={this.handleInputChange('behance')}
                                />
-                               <TextField
-                               label={'AngelList'}
-                               margin='normal'
-                               value={`${this.state.angellist}`}
-                              placeholder={`${this.state.angellist}`}
-                               onChange={this.handleInputChange('angellist')}
-                              />
                                 </div>
                             </div>
                             </div>
                             <Divider />
 
                             <div className="acctTagSelection">
-                            <h3 > Tags </h3> 
-                            <div className="acctTagSelectWrapper" >
+                            <h3> Skills </h3>
+                            <FormControl style={{width:'50%'}}>
+                              <InputLabel htmlFor="tags-select">Skills & Interests</InputLabel>
+                              <Select
+                                style={{width:'100%'}}
+                                multiple
+                                value={this.state.selectedTags}
+                                onChange={this.handleSkillTags}
+                                input={<Input id="tags-select" />}
+                                MenuProps={MenuProps}
+                              >
+                                {this.state.loadedTags.map(tag => (
+                                  <MenuItem
+                                    key={tag.id}
+                                    value={tag.label}
+                                  >
+                                    {tag.value}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                            {/*<div className="acctTagSelectWrapper" >
                               {!!this.state.loadedTags.length && [
                               <label key="skillLabel"> Skills and interests </label>,
-                              <Select.Creatable 
-                                key="skillSelect" 
-                                multi 
-                                options={this.state.loadedTags} 
-                                onChange={this.state.selectTag} 
-                                value={this.state.selectedTags} 
+                              <Select.Creatable
+                                key="skillSelect"
+                                multi
+                                options={this.state.loadedTags}
+                                onChange={this.state.selectTag}
+                                value={this.state.selectedTags}
                               />
                               ]}
-                            </div>         
-                            <Button style={{ backgroundColor: '#00c355', padding: '10px', marginTop: '15px', color: '#FFFFFF', width: '40%' }}> Submit </Button>
+                            </div>*/}
+                            {/*<Button style={{ backgroundColor: '#00c355', padding: '10px', marginTop: '15px', color: '#FFFFFF', width: '40%' }}> Submit </Button>*/}
                             </div>
 
                             <Divider />
@@ -402,13 +426,6 @@ export default class MemberAcct extends React.PureComponent {
                                 <h3 style={{ margin: '1em 0' }}> Account Management</h3>
                                 <div className="acctChangePassForm">
                                     <h4> Change Password</h4>
-                                    <TextField
-                                        label={'Current Password'}
-                                        margin='normal'
-                                        type='password'
-                                        style={{ maxWidth: '300px' }}
-                                        onChange={this.handleInputChange('currentPassword')}
-                                    />
 
                                     <TextField
                                         label={'New Password'}
@@ -425,46 +442,24 @@ export default class MemberAcct extends React.PureComponent {
                                         style={{ maxWidth: '300px' }}
                                         onChange={this.handleInputChange('passwordConfirm')}
                                     />
-                                    <Button style={{ backgroundColor: '#00c355', padding: '10px', marginTop: '15px', color: '#FFFFFF', width: '40%' }}> Update Password </Button>
+                                    <FlatButton
+                                        style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }}
+                                        onClick={this.updateUser}>
+                                        Update User
+                                    </FlatButton>
                                 </div>
-
-                                <div className="acctChangeEmailForm">
-                                    <h4>Change Email</h4>
-                                    <TextField
-                                        label={'New Email'}
-                                        margin='normal'
-                                        type='password'
-                                        style={{ maxWidth: '300px' }}
-                                        onChange={this.handleInputChange('email')}
-                                    />
-                                    <TextField
-                                        label={'Confirm New Email'}
-                                        margin='normal'
-                                        type='password'
-                                        style={{ maxWidth: '300px' }}
-                                        onChange={this.handleInputChange('emailConfirm')}
-                                    />
-                                    <Button style={{ backgroundColor: '#00c355', padding: '10px', marginTop: '15px', color: '#FFFFFF', width: '40%' }}> Update Email </Button>
-                                </div>
-
-                                <Divider />
-                                <div className="acctDeleteAcctForm">
-                                    <h3>Delete Account</h3>
-
-                                    <p style={{ margin: '2em 0' }}> some warnings about deleting accounts </p>
-
-                                    <Button style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', width: '50%' }}>Delete Account </Button>
-                                </div>
-
                             </div>
                         </div>
                     </main>
 
-                    <Footer />
+                    <footer className="homeFooterContainer">
+                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                    </footer>
                     <Snackbar
-                        open={this.state.snackBar}
-                        message={this.state.snackBarMessage}
-                        autoHideDuration={4000}
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={3000}
+                        onClose={this.handleRequestClose}
                     />
                 </div>
         );

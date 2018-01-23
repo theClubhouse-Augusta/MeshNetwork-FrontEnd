@@ -43,7 +43,7 @@ export default class Home extends React.PureComponent {
                     <div className="homeMainSection">
                         <div className="homeMainSectionTitle">What are you interested in?</div>
                         <div className="homeMainSectionSubtitle">
-                          Explore some of the best feature of collaboration from our partners and friends.
+                          Explore some of the best features of collaboration from our partners and friends.
               </div>
                         <div className="homeMainSectionContent">
                             <div className="homeMainSectionBlockOne"
@@ -143,7 +143,7 @@ export default class Home extends React.PureComponent {
 
                 <footer className="homeFooterContainer">
                     Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-          </footer>
+                </footer>
 
                 {/*<header>
             <Header />
