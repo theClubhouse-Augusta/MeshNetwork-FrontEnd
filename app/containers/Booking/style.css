@@ -12,18 +12,18 @@
   display:flex;
   flex-direction:row;
   width:100%;
-  max-width:1200px;
   margin:0 auto;
-  margin-top:30px;
+  flex-grow:1;
+  margin-top:15px;
 }
 
 .bookingInfoContainer{
-  width:38%;
+  width:18%;
   padding:1%;
 }
 
 .bookingTimeContainer {
-  width:58%;
+  width:78%;
   padding:1%;
 }
 
