@@ -64,10 +64,10 @@ class CheckoutForm extends React.Component {
         fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
-            .then(function (response) {
+            .then(function(response) {
                 return response.json();
             })
-            .then(function (json) {
+            .then(function(json) {
                 this.setState({
                     space: json
                 })
@@ -198,18 +198,6 @@ class CheckoutForm extends React.Component {
                 .then(user => {
                     if (user.error) {
                         this.showSnack(user.error);
-                    } else {
-                        localStorage['token'] = user.token;
-                        this.showSnack("Account created successfully!");
-                        fetch('http://houseofhackers.me:81/signUp/', {
-                            method: 'POST',
-                            body: data
-                        })
-
-                        fetch('http://challenges.innovationmesh.com/api/signUp', {
-                            method: 'POST',
-                            body: data
-                        })
                     }
                     // setTimeout(() => {
                     //   this.props.history.push(`/user/${user.id}`)
@@ -252,18 +240,6 @@ class CheckoutForm extends React.Component {
             .then(user => {
                 if (user.error) {
                     this.showSnack(user.error);
-                } else {
-                    localStorage['token'] = user.token;
-                    this.showSnack("Account created successfully!");
-                    fetch('http://houseofhackers.me:81/signUp/', {
-                        method: 'POST',
-                        body: data
-                    })
-
-                    fetch('http://challenges.innovationmesh.com/api/signUp', {
-                        method: 'POST',
-                        body: data
-                    })
                 }
             })
             .catch(error => Logger(`front-end: CheckoutForm@storeFreeUser: ${error.message}`));
