@@ -53,13 +53,11 @@ const MenuProps = {
 
 export default class AddEvent extends PureComponent {
     state = {
-        searchEnter: '',
         loading: true,
         dateError: '',
         modalMessage: '',
         snackBar: false,
         // event
-        checkCompEvent: '',
         name: '',
         url: '',
         days: '',
@@ -88,9 +86,6 @@ export default class AddEvent extends PureComponent {
         // date/time
         // tags
         loadedTags: '',
-        tagFocused: false,
-        sponsorFocused: false,
-        organizerFocused: false,
         checkedRadio: null,
         logo: '',
         logoPreview: '',
@@ -314,7 +309,6 @@ export default class AddEvent extends PureComponent {
         return multidayComponent;
     }
 
-    toggleCompEvent = () => this.setState({ checkCompEvent: !this.state.checkCompEvent });
     eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
     eventDays = event => this.setState({ days: event.target.value });
@@ -403,7 +397,7 @@ export default class AddEvent extends PureComponent {
         data.append('description', description);
         data.append('tags', JSON.stringify(this.state.tag));
         this.state.eventFiles.forEach((file, index) => data.append(`files${index}`, file));
-        data.append('compEvent', !!this.state.checkCompEvent);
+        data.append('compEvent', 0);
         data.append('name', this.state.name);
         data.append('image', this.state.eventImg);
         data.append('url', this.state.url);
@@ -521,14 +515,17 @@ export default class AddEvent extends PureComponent {
     };
     render() {
         const {
-            snackBarMessage, dateError,
-            snackBar, checkCompEvent,
+            snackBarMessage,
+            dateError,
+            snackBar,
             selectedTags,
-            selectedSponsors, newSponsors, eventFiles,
-            organizers, selectedOrganizers,
-            sponsors, checkNewSponsors,
+            selectedSponsors,
+            newSponsors, eventFiles,
+            organizers,
+            selectedOrganizers,
+            sponsors,
+            checkNewSponsors,
             loadedTags,
-            tagFocused, sponsorFocused, organizerFocused,
             days,
         } = this.state;
 
@@ -627,22 +624,6 @@ export default class AddEvent extends PureComponent {
                                             </MenuItem>
                                         ))}
                                     </Select>
-                                    {/* <Select
-                                        multiple
-                                        value={this.state.selectedSponsors}
-                                        onChange={this.handleSponsors}
-                                        input={<Input id="sponsors-select" />}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {this.state.sponsors.map(tag => (
-                                            <MenuItem
-                                                key={tag.id}
-                                                value={tag.id}
-                                            >
-                                                {tag.value}
-                                            </MenuItem>
-                                        ))}
-                                    </Select> */}
                                 </FormControl>
                             }
 

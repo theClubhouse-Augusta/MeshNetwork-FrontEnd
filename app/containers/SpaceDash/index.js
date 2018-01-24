@@ -15,6 +15,7 @@ import SpaceInformation from 'components/SpaceInformation';
 
 import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear';
 import { AllAppearances } from '../../components/DataViz/AllAppearances';
+import { AllJoins } from '../../components/DataViz/AllJoins';
 
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import FlatButton from 'material-ui/Button';
@@ -299,11 +300,22 @@ export default class SpaceDash extends React.PureComponent {
                         </div>
                     </div>
                     <div className="spaceDashMetricsContainer">
-                        {/*}<div className="spaceDashDataTitleGraph">Total Check-ins</div>
-                        <AllAppearances height={600} width={600} {...this.props} />
+                        <h2 className="spaceDashDataTitleGraph">Check-ins range</h2>
+                        <AppearanceByMonthYear {...this.props} />
 
-                        <div className="spaceDashDataTitleGraph">Check-ins range</div>
-                        <AppearanceByMonthYear {...this.props} />*/}
+                        <div className="spaceDashTotalGraphs">
+                            <div className="spaceDashTotalGraphsSection">
+
+                                <h2 className="spaceDashDataTitleGraph">Total Check-ins</h2>
+                                <AllAppearances height={600} width={600} {...this.props} />
+                            </div>
+
+                            <div className="spaceDashTotalGraphsSection">
+                                <div className="spaceDashDataTitleGraph">member sign-ups</div>
+                                <AllJoins height={600} width={600} {...this.props} />
+                            </div>
+
+                        </div>
                     </div>
                     <div className="spaceDashOptions">
                         <Link to={'/addEvent'} style={{ width: '10%', margin: '10px' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Add an Event</FlatButton></Link>

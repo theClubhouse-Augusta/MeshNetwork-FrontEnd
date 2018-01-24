@@ -6,7 +6,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-
 import FlatButton from 'material-ui/Button';
 import {
     XAxis,
@@ -26,13 +25,17 @@ import './styleM.css';
 
 export class AppearanceByMonthYear extends React.PureComponent {
     state = {
-        dataTwo: '',
-        month: '',
-        year: '',
-        month2: '',
-        year2: '',
+        dataTwo: [],
+        month: 1,
+        year: 2013,
+        month2: 1,
+        year2: 2020,
         error: false
     };
+
+    componentDidMount() {
+        this.loadAppearancesForMonthYear();
+    }
 
     loadAppearancesForMonthYear = () => {
         const { year, year2, month, month2 } = this.state;
@@ -71,9 +74,8 @@ export class AppearanceByMonthYear extends React.PureComponent {
 
     render() {
         const { error, month, year, dataTwo, month2, year2 } = this.state;
-
         return (
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-around', width: '80vw' }}>
                 <Helmet title="DataViz" meta={[{ name: 'description', content: 'Description of DataViz' }]} />
                 <section style={{ marginRight: 36 }}>
                     <h3>From</h3>
@@ -106,10 +108,10 @@ export class AppearanceByMonthYear extends React.PureComponent {
                         onClick={this.loadAppearancesForMonthYear}
                     >
                         Sumbit
-          </FlatButton>
+                    </FlatButton>
                 </section>
                 <section>
-                    {dataTwo &&
+                    {!!dataTwo.length &&
                         <BarChart width={730} height={300} data={dataTwo}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
@@ -119,7 +121,10 @@ export class AppearanceByMonthYear extends React.PureComponent {
                             <Bar dataKey="check-ins" fill="#8884d8" />
                         </BarChart>}
                 </section>
+                {!!!dataTwo.length && <h2 className="spaceDashDataTitleGraphz"> No data for selected range</h2>}
             </div>
+
+
         );
     }
 }
