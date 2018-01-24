@@ -10,6 +10,8 @@ import { injectStripe } from 'react-stripe-elements';
 import CardSection from './CardSection';
 import Header from '../../components/Header';
 import { FormControl } from 'material-ui/Form';
+import Checkbox from 'material-ui/Checkbox';
+import { ListItemText } from 'material-ui/List';
 
 import Logger from '../../utils/Logger';
 
@@ -40,7 +42,7 @@ class CheckoutForm extends React.Component {
         email: "",
         password: "",
         bio: "",
-        selectedTags: [],
+        selectedTags: new Set(),
         loadedTags: [],
         loadedPlans: [],
         avatar: '',
@@ -90,9 +92,9 @@ class CheckoutForm extends React.Component {
             .catch(error => Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`));
     }
 
-    handleSkillTags = event => {
+    /*handleSkillTags = event => {
         this.setState({ selectedTags: event.target.value });
-    };
+    };*/
 
     selectPlan = (e, selected) => {
         e.preventDefault();
@@ -130,6 +132,10 @@ class CheckoutForm extends React.Component {
             });
         }
         reader.readAsDataURL(file);
+    };
+
+    handleSkillTags = event => {
+        this.setState({ selectedTags: new Set(event.target.value) });
     };
 
 
@@ -223,6 +229,7 @@ class CheckoutForm extends React.Component {
 
     storeFreeUser = e => {
         e.preventDefault();
+        let _this = this;
         let data = new FormData();
         let {
       name,
@@ -252,10 +259,8 @@ class CheckoutForm extends React.Component {
             .then(user => {
                 if (user.error) {
                     this.showSnack(user.error);
-                } else {
-                    localStorage['token'] = user.token;
-                    this.showSnack("Account created successfully!");
-                    fetch('http://houseofhackers.me:81/signUp/', {
+                } else if(user.token){
+                    /*fetch('http://houseofhackers.me:81/signUp/', {
                         method: 'POST',
                         body: data
                     })
@@ -263,7 +268,23 @@ class CheckoutForm extends React.Component {
                     fetch('http://challenges.innovationmesh.com/api/signUp', {
                         method: 'POST',
                         body: data
+                    })*/
+                    localStorage.setItem('token', user.token);
+                    fetch("https://innovationmesh.com/api/getUser", {
+                        method: 'GET',
+                        headers: { "Authorization": "Bearer " + user.token }
                     })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (json) {
+                        localStorage.setItem('user', JSON.stringify(json.user));
+                        _this.showSnack("Account created successfully!");
+                        setTimeout(() => {
+                            _this.props.history.push(`/user/${json.user.id}`)
+                        }, 2000);
+                    })
+
                 }
             })
             .catch(error => Logger(`front-end: CheckoutForm@storeFreeUser: ${error.message}`));
@@ -326,7 +347,29 @@ class CheckoutForm extends React.Component {
                                 margin="normal"
                             />
 
-                            <FormControl>
+                            {loadedTags &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="tags-multiple">Relevant Tags</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={[...this.state.selectedTags]}
+                                        onChange={this.handleSkillTags}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(', ')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {loadedTags.map(tag => (
+                                            <MenuItem key={tag} value={tag}>
+                                                <Checkbox checked={this.state.selectedTags.has(tag)} />
+                                                <ListItemText primary={tag} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
+
+
+                            {/*<FormControl>
                                 <InputLabel htmlFor="tags-select">Skills & Interests</InputLabel>
                                 <Select
                                     multiple
@@ -344,7 +387,7 @@ class CheckoutForm extends React.Component {
                                         </MenuItem>
                                     ))}
                                 </Select>
-                            </FormControl>
+                            </FormControl>*/}
 
 
                             {this.props.pubkey &&

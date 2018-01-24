@@ -299,11 +299,11 @@ export default class SpaceDash extends React.PureComponent {
                         </div>
                     </div>
                     <div className="spaceDashMetricsContainer">
-                        <div className="spaceDashDataTitleGraph">Total Check-ins</div>
+                        {/*}<div className="spaceDashDataTitleGraph">Total Check-ins</div>
                         <AllAppearances height={600} width={600} {...this.props} />
 
                         <div className="spaceDashDataTitleGraph">Check-ins range</div>
-                        <AppearanceByMonthYear {...this.props} />
+                        <AppearanceByMonthYear {...this.props} />*/}
                     </div>
                     <div className="spaceDashOptions">
                         <Link to={'/addEvent'} style={{ width: '10%', margin: '10px' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Add an Event</FlatButton></Link>

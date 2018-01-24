@@ -16,6 +16,8 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+import Checkbox from 'material-ui/Checkbox';
+import { ListItemText } from 'material-ui/List';
 
 import Header from '../../components/Header';
 import Spinner from '../../components/Spinner';
@@ -44,13 +46,13 @@ export default class MemberAcct extends React.PureComponent {
         title: '',
         avatar: '',
         avatarPreview: '',
-        email: '',
+        //email: '',
         password: '',
         passwordConfirm: '',
         phoneNumber: '',
-        selectedTags: [],
+        selectedTags: new Set(),
         loadedTags: [],
-        emailError: false,
+        //emailError: false,
         passwordError: false,
         facebook: '',
         twitter: '',
@@ -91,7 +93,7 @@ export default class MemberAcct extends React.PureComponent {
     };
 
     handleSkillTags = event => {
-        this.setState({ selectedTags: event.target.value });
+        this.setState({ selectedTags: new Set(event.target.value) });
     };
 
     handleAvatar = (event) => {
@@ -140,16 +142,17 @@ export default class MemberAcct extends React.PureComponent {
             })
             .then(function (json) {
                 this.setState({
-                    name: json.name,
-                    title: json.title,
-                    avatar: json.avatar,
-                    email: json.email,
-                    facebook: json.facebook,
-                    twitter: json.twitter,
-                    instagram: json.instagram,
-                    linkedin: json.linkedin,
-                    github: json.github,
-                    behance: json.behance,
+                    name: json.user.name,
+                    title: json.user.title,
+                    avatar: json.user.avatar,
+                    //email: json.user.email,
+                    facebook: json.user.facebook,
+                    twitter: json.user.twitter,
+                    instagram: json.user.instagram,
+                    linkedin: json.user.linkedin,
+                    github: json.user.github,
+                    behance: json.user.behance,
+                    selectedTags: new Set(json.skills)
                 }, function () {
                     console.log(this.state);
                 })
@@ -219,10 +222,10 @@ export default class MemberAcct extends React.PureComponent {
     /*selectTag = selectedTag => {
       const selectedTags = selectedTag.slice(0, (selectedTag.length - 1));
       const selected = selectedTag.slice(-1)[0];
-  
+
       const loaded = this.state.loadedTags.slice(1);
       const s = this.state.selectedTags.slice();
-  
+
       if (!!selected.id) {
         this.setState({ selectedTags: selectedTag });
       } else {
@@ -247,7 +250,7 @@ export default class MemberAcct extends React.PureComponent {
       let data = new FormData();
       let { selectedTags } = this.state;
       data.append('tags', JSON.stringify(selectedTags));
-  
+
       fetch(`https://innovationmesh.com/api/updateUser`, {
         headers: { Authorization: `Bearer ${localStorage['token']}` },
         method: 'post',
@@ -303,12 +306,12 @@ export default class MemberAcct extends React.PureComponent {
                                         value={`${this.state.title}`}
                                         placeholder={`${this.state.title}`} onChange={this.handleInputChange('title')}
                                     />
-                                    <TextField
+                                    {/*<TextField
                                         label={'E-mail'}
                                         margin='normal'
                                         value={`${this.state.email}`}
                                         onChange={this.handleInputChange('email')}
-                                    />
+                                    />*/}
                                 </div>
 
                                 <div className="acctProfilePicture">
@@ -385,26 +388,26 @@ export default class MemberAcct extends React.PureComponent {
 
                         <div className="acctTagSelection">
                             <h3> Skills </h3>
-                            <FormControl style={{ width: '50%' }}>
-                                <InputLabel htmlFor="tags-select">Skills & Interests</InputLabel>
-                                <Select
-                                    style={{ width: '100%' }}
-                                    multiple
-                                    value={this.state.selectedTags}
-                                    onChange={this.handleSkillTags}
-                                    input={<Input id="tags-select" />}
-                                    MenuProps={MenuProps}
-                                >
-                                    {this.state.loadedTags.map(tag => (
-                                        <MenuItem
-                                            key={tag.id}
-                                            value={tag.label}
-                                        >
-                                            {tag.value}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
+                            {this.state.loadedTags &&
+                                <FormControl style={{ width:'50%' }}>
+                                    <InputLabel htmlFor="tags-multiple">Relevant Tags</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={[...this.state.selectedTags]}
+                                        onChange={this.handleSkillTags}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(', ')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {this.state.loadedTags.map(tag => (
+                                            <MenuItem key={tag} value={tag}>
+                                                <Checkbox checked={this.state.selectedTags.has(tag)} />
+                                                <ListItemText primary={tag} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
                             {/*<div className="acctTagSelectWrapper" >
                               {!!this.state.loadedTags.length && [
                               <label key="skillLabel"> Skills and interests </label>,

@@ -62,7 +62,7 @@ export default class UserProfile extends React.Component {
                 this.setState({
                     user: json.user,
                     space: json.space,
-                    skills: json.user.skills ? JSON.parse(json.user.skills) : [],
+                    skills: json.skills ? json.skills : [],
                 })
             }.bind(this))
     }
@@ -94,6 +94,37 @@ export default class UserProfile extends React.Component {
         }
     }
 
+    renderSocial = () => {
+      let mail = <a href={'mailto:'+this.state.user.email}><MailIcon className="profileIconStyle" /></a>;
+      let facebook = <a href={this.state.user.facebook}><FacebookIcon className="profileIconStyle" /></a>;
+      let twitter = <a href={this.state.user.twitter}><TwitterIcon className="profileIconStyle" /></a>;
+      let instagram = <a href={this.state.user.instagram}><InstagramIcon className="profileIconStyle" /></a>;
+      let linkedin = <a href={this.state.user.linkedin}><LinkedInIcon className="profileIconStyle" /></a>;
+      let github = <a href={this.state.user.github}><GithubIcon className="profileIconStyle" /></a>;
+      let behance = <a href={this.state.user.behance}><BehanceIcon className="profileIconStyle" /></a>;
+
+      if(!this.state.user.email || this.state.user.email == "null") { mail = "";}
+      if(!this.state.user.facebook || this.state.user.facebook == "null") { facebook = "";}
+      if(!this.state.user.twitter || this.state.user.twitter == "null") { twitter = "";}
+      if(!this.state.user.instagram || this.state.user.instagram == "null") { instagram = "";}
+      if(!this.state.user.linkedin || this.state.user.linkedin == "null") { linkedin = "";}
+      if(!this.state.user.github || this.state.user.github == "null") { github = "";}
+      if(!this.state.user.behance || this.state.user.behance == "null") { behance = "";}
+
+      return(
+        <div className="profileSocialList">
+          {mail}
+          {facebook}
+          {twitter}
+          {instagram}
+          {linkedin}
+          {github}
+          {behance}
+        </div>
+      )
+
+    }
+
     render() {
         return (
             this.state.loading
@@ -119,15 +150,7 @@ export default class UserProfile extends React.Component {
                                 </Link>
                                 {this.renderEdit()}
                             </div>
-                            <div className="profileSocialList">
-                                <MailIcon className="profileIconStyle" />
-                                <FacebookIcon className="profileIconStyle" />
-                                <TwitterIcon className="profileIconStyle" />
-                                <LinkedInIcon className="profileIconStyle" />
-                                <InstagramIcon className="profileIconStyle" />
-                                <GithubIcon className="profileIconStyle" />
-                                <BehanceIcon className="profileIconStyle" />
-                            </div>
+                            {this.renderSocial()}
                         </div>
                         <div className="profileSkillsList">
                             {this.state.skills.map((skill, i) => (
