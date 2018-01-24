@@ -33,7 +33,7 @@ export default class Home extends React.PureComponent {
             </div>
             <div className="homeHeaderContentSearchBar">
               <div className="homeSignButtons">
-                <Link to={"/newSpace"} style={{ margin: "15px" }}>
+                <Link to={"/newSpace"} style={{ margin: "15px", width:'48%' }}>
                   <FlatButton
                     style={{
                       width: "100%",
@@ -47,9 +47,10 @@ export default class Home extends React.PureComponent {
                     Sign Up
                   </FlatButton>
                 </Link>
-                <Link to={"/signIn"} style={{ margin: "15px" }}>
+                <Link to={"/signIn"} style={{ margin: "15px", width:'48%' }}>
                   <FlatButton
                     style={{
+                      width:'100%',
                       background: "#ff4d58",
                       paddingTop: "10px",
                       paddingBottom: "10px",

@@ -349,7 +349,7 @@ class CheckoutForm extends React.Component {
 
                             {loadedTags &&
                                 <FormControl style={{ marginTop: 24 }}>
-                                    <InputLabel htmlFor="tags-multiple">Relevant Tags</InputLabel>
+                                    <InputLabel htmlFor="tags-multiple">Skills & Interests</InputLabel>
                                     <Select
                                         multiple
                                         value={[...this.state.selectedTags]}
