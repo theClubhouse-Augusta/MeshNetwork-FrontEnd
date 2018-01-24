@@ -128,6 +128,7 @@
     "moment": "^2.20.1",
     "npm": "^5.6.0",
     "react": "^16.2.0",
+    "react-big-calendar": "^0.17.0",
     "react-dom": "^16.2.0",
     "react-draft-wysiwyg": "^1.12.1",
     "react-google-maps": "^9.2.2",
