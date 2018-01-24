@@ -204,18 +204,6 @@ class CheckoutForm extends React.Component {
                 .then(user => {
                     if (user.error) {
                         this.showSnack(user.error);
-                    } else {
-                        localStorage['token'] = user.token;
-                        this.showSnack("Account created successfully!");
-                        fetch('http://houseofhackers.me:81/signUp/', {
-                            method: 'POST',
-                            body: data
-                        })
-
-                        fetch('http://challenges.innovationmesh.com/api/signUp', {
-                            method: 'POST',
-                            body: data
-                        })
                     }
                     // setTimeout(() => {
                     //   this.props.history.push(`/user/${user.id}`)
@@ -259,7 +247,7 @@ class CheckoutForm extends React.Component {
             .then(user => {
                 if (user.error) {
                     this.showSnack(user.error);
-                } else if(user.token){
+                } else if (user.token) {
                     /*fetch('http://houseofhackers.me:81/signUp/', {
                         method: 'POST',
                         body: data
@@ -274,16 +262,16 @@ class CheckoutForm extends React.Component {
                         method: 'GET',
                         headers: { "Authorization": "Bearer " + user.token }
                     })
-                    .then(function (response) {
-                        return response.json();
-                    })
-                    .then(function (json) {
-                        localStorage.setItem('user', JSON.stringify(json.user));
-                        _this.showSnack("Account created successfully!");
-                        setTimeout(() => {
-                            _this.props.history.push(`/user/${json.user.id}`)
-                        }, 2000);
-                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (json) {
+                            localStorage.setItem('user', JSON.stringify(json.user));
+                            _this.showSnack("Account created successfully!");
+                            setTimeout(() => {
+                                _this.props.history.push(`/user/${json.user.id}`)
+                            }, 2000);
+                        })
 
                 }
             })

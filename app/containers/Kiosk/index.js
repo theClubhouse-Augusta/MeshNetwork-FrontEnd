@@ -51,28 +51,26 @@ export default class Kiosk extends React.PureComponent {
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     getProfile = () => {
-        fetch('https://innovationmesh.comh.com/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     workspace: json
-                }, function () {
+                }, () => {
                     this.getUsers(json.id);
                     this.getToday(json.id);
                 })
-            }.bind(this))
+            })
     }
 
     getUsers = (id) => {
         fetch('https://innovationmesh.com/api/users/space/' + id)
-            .then(function (response) {
+            .then(function(response) {
                 return response.json();
             })
-            .then(function (json) {
+            .then(function(json) {
                 this.setState({
                     users: json
                 })
@@ -81,10 +79,10 @@ export default class Kiosk extends React.PureComponent {
 
     getReasons = () => {
         fetch('https://innovationmesh.com/api/occasions')
-            .then(function (response) {
+            .then(function(response) {
                 return response.json();
             })
-            .then(function (json) {
+            .then(function(json) {
                 this.setState({
                     reasons: json
                 })
@@ -93,10 +91,10 @@ export default class Kiosk extends React.PureComponent {
 
     getUpcomingEvents = () => {
         fetch('https://innovationmesh.com/api/upcoming/' + this.props.match.params.id)
-            .then(function (response) {
+            .then(function(response) {
                 return response.json();
             })
-            .then(function (json) {
+            .then(function(json) {
                 this.setState({
                     events: json
                 })
@@ -104,11 +102,13 @@ export default class Kiosk extends React.PureComponent {
     }
 
     getToday = (id) => {
-        fetch('https://innovationmesh.com/api/todayevent/' + id)
-            .then(function (response) {
+        fetch('https://innovationmesh.com/api/todayevent/' + id, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(function(response) {
                 return response.json();
             })
-            .then(function (json) {
+            .then(function(json) {
                 this.setState({
                     todayEvents: json
                 })
@@ -126,10 +126,10 @@ export default class Kiosk extends React.PureComponent {
             method: 'POST',
             body: data
         })
-            .then(function (response) {
+            .then(function(response) {
                 return response.json();
             })
-            .then(function (json) {
+            .then(function(json) {
                 this.setState({
                     showComplete: true
                 })
