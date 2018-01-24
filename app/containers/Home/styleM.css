@@ -1,1 +1,59 @@
 /* Home Mobile Styles */
+
+@media (max-width: 425px) {
+  .homeHeaderContent {
+    padding: 15px;
+    font-size: 0.8em;
+  }
+
+  .homeHeaderContentSubtitle {
+    font-size: 1.15em;
+    /* some font alignment hackyness */
+    margin-left: 3px;
+  }
+
+  .homeSignButtons {
+    display: flex;
+    direction: row;
+    justify-content: center;
+  }
+
+  .homeMainSectionContent {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .homeMainSectionContentTwo {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  .homeMainSectionBlockOne {
+    width: 40%;
+  }
+
+  .homeMainSectionBlockTwo {
+    width: 80%;
+    margin: 15px auto;
+  }
+
+  .homeMainSectionTitleThree {
+    font-family: "HankenBook";
+    color: #222222;
+    font-size: 2em;
+    align-self: flex-start;
+  }
+
+  .homeFooterContainer {
+    padding: 15px;
+    text-align: center;
+  }
+}
