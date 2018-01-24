@@ -57,3 +57,18 @@
     text-align: center;
   }
 }
+
+@media (max-width: 1024px) and (min-width: 426px) and (orientation: portrait) {
+  .homeHeaderContentTitle {
+    text-align: center;
+  }
+
+  .homeMainSectionContentTwo {
+    justify-content: center;
+  }
+
+  .homeMainSectionBlockTwo {
+    width: 40%;
+    margin: 15px;
+  }
+}

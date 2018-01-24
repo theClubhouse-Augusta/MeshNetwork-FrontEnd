@@ -16,6 +16,10 @@
     display: none;
   }
 
+  .navIcon {
+    display: none;
+  }
+
   .navMobile {
     display: flex;
     flex-direction: column;
@@ -30,5 +34,23 @@
     background: #cccccc;
     width: 90%;
     border-radius: 5px;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+  .logoNav {
+    color: #ffffff;
+  }
+
+  .navIcon {
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    width: 32px;
+    margin: 0 10px;
+  }
+
+  .navLink {
+    display: none;
   }
 }
