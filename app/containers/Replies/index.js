@@ -28,6 +28,7 @@ export default class Replies extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       snack: false,
       msg: "",
       replyOpen:false,
@@ -114,7 +115,7 @@ export default class Replies extends React.PureComponent {
     fetch("http://challenges.innovationmesh.com/api/storeReply/", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -136,7 +137,7 @@ export default class Replies extends React.PureComponent {
   }
 
   renderQuestionReply = () => {
-    if(this.state.app.state.token) {
+    if(this.state.token) {
       return(
         <div className="challenges_questionTopicButton" onClick={() => this.replyDrawer()}>Reply <CommentIcon style={{marginLeft:'5px'}}/></div>
       )
@@ -234,7 +235,7 @@ export default class Replies extends React.PureComponent {
           open={this.state.snack}
           message={this.state.msg}
           autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
         />
       </div>
     );

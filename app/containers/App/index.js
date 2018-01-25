@@ -28,6 +28,14 @@ const Detail = asyncComponent(() => import('containers/Detail'));
 const Team = asyncComponent(() => import('containers/Team'));
 const Teams = asyncComponent(() => import('containers/Teams'));
 
+const LMS = asyncComponent(() => import('containers/LMS'));
+const Courses = asyncComponent(() => import('containers/Courses'));
+const Course = asyncComponent(() => import('containers/Course'));
+const CourseInfo = asyncComponent(() => import('containers/CourseInfo'));
+const NewCourse = asyncComponent(() => import('containers/NewCourse'));
+const Lessons = asyncComponent(() => import('containers/Lessons'));
+const Enroll = asyncComponent(() => import('containers/Enroll'));
+
 export default class App extends Component {
   constructor() {
     super();
@@ -137,6 +145,16 @@ export default class App extends Component {
                 <Route path='/Challenges/Ask/:id' render={(props) => <Replies {...props} app={this}/> } />
                 <Route path='/Challenges/Teams' render={() => <Teams app={this}/> } />
                 <Route path='/Challenges/Team/:id' render={(props) => <Team {...props} app={this}/> } />
+
+                <Route exact path='/LMS' render={(props) => <LMS {...props} app={this}/> } />
+                <Route path='/LMS/Courses' render={(props) => <Courses {...props} app={this}/> } />
+                <Route path='/LMS/Course/:id' render={(props) => <Course {...props} app={this}/> } />
+                <Route path='/LMS/CourseInfo/:id' render={(props) => <CourseInfo {...props} app={this}/> } />
+                <Route path='/LMS/NewCourse' render={(props) => <NewCourse {...props} app={this}/> } />
+                <Route path='/LMS/Lessons/:id/:lid' render={(props) => <Lessons {...props}  app={this}/>}/>
+                <Route path='/LMS/Lessons/:id' render={(props) => <Lessons {...props} app={this}/> } />
+                <Route path='/LMS/Update/:id' render={(props) => <New {...props}  app={this}/>}/>
+                <Route path='/LMS/Enroll/:id' render={(props) => <Enroll {...props}  app={this}/>}/>
 
                 <Route component={NotFound} />
             </Switch>

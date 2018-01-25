@@ -81,8 +81,8 @@ export default class Detail extends React.PureComponent {
     })
   }
 
-  /*renderJoinButton = () => {
-    if(this.state.app.state.token)
+  renderJoinButton = () => {
+    if(this.state.token)
     {
       return(
         <FlatButton onClick={this.joinChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton>
@@ -91,7 +91,7 @@ export default class Detail extends React.PureComponent {
     else {
       <FlatButton onClick={this.props.app.handleAuth} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton>
     }
-  }*/
+  }
 
   render() {
     return (
@@ -149,7 +149,7 @@ export default class Detail extends React.PureComponent {
           open={this.state.snack}
           message={this.state.msg}
           autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
         />
       </div>
     );

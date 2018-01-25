@@ -30,6 +30,7 @@ export default class Teams extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       teams:[],
       snack: false,
       msg: "",
@@ -134,7 +135,7 @@ export default class Teams extends React.PureComponent {
     fetch("http://challenges.innovationmesh.com/api/storeTeam", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -251,7 +252,7 @@ export default class Teams extends React.PureComponent {
           </div>
         </main>
 
-        <Dialog open={this.state.teamOpen} onRequestClose={this.teamDialog}>
+        <Dialog open={this.state.teamOpen} onClose={this.teamDialog}>
           <div style={{display:'flex', flexDirection:'column', padding:'15px'}}>
             <TextField style={{marginBottom:'15px'}} value={this.state.teamName} placeholder="Team Name" onChange={this.handleTeamName}/>
             <TextField style={{marginBottom:'15px'}} value={this.state.teamLocation} placeholder="Team Location" onChange={this.handleTeamLocation}/>
@@ -292,7 +293,7 @@ export default class Teams extends React.PureComponent {
           open={this.state.snack}
           message={this.state.msg}
           autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
         />
 
       </div>

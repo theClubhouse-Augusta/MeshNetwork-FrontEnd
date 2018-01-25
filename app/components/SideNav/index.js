@@ -20,6 +20,8 @@ export default class SideNav extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
+      user:localStorage.getItem('user'),
       categories:[],
       categoryName:"",
       categoryImage:"",
@@ -85,7 +87,7 @@ export default class SideNav extends React.PureComponent {
     fetch("http://challenges.innovationmesh.com/api/storeCategory", {
       method:'POST',
       body:data,
-      headers: {'Authorization':'Bearer ' + this.state.app.state.token}
+      headers: {'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -139,7 +141,7 @@ export default class SideNav extends React.PureComponent {
   }
 
   renderAdd = () => {
-    if(this.state.app.state.user)
+    if(this.state.user)
     {
       return(
         <div className="challenges_categoryButton"><AddIcon style={{cursor:'pointer'}} onClick={this.categoryDialog}/></div>

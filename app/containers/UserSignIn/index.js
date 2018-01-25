@@ -83,11 +83,40 @@ export default class UserSignIn extends React.PureComponent {
                     else if(json.token)
                     {
                       localStorage.setItem('challengeToken', json.token);
-                      //Add the next one here. Remove below and set it in the final promise.
-                      _this.showSnack('Welcome back!');
-                      setTimeout(() => {
-                          _this.props.history.push(`/user/${mainUser.id}`)
-                      }, 2000);
+                      let newData = new FormData();
+                      newData.append('username', _this.state.email);
+                      newData.append('password', _this.state.password);
+                      fetch('http://houseofhackers.me:81/signIn/', {
+                        method:'POST',
+                        body:newData
+                      })
+                      .then(function(response) {
+                        return response.json();
+                      })
+                      .then(function(json) {
+                        if(json.non_field_errors)
+                        {
+                          _this.showSnack("Invalid Credentials");
+                        }
+                        else if(json.token)
+                        {
+                          localStorage.setItem('lmsToken', json.token);
+                          fetch('http://houseofhackers.me:81/getUser/', {
+                            method:'GET',
+                            headers: {'Authorization' : 'JWT ' + json.token}
+                          })
+                          .then(function(response) {
+                            return response.json();
+                          })
+                          .then(function(json) {
+                            localStorage.setItem('lmsUser', JSON.stringify(json.user));
+                            _this.showSnack('Welcome back!');
+                            setTimeout(() => {
+                                _this.props.history.push(`/user/${mainUser.id}`)
+                            }, 2000);
+                          })
+                        }
+                      })
                     }
                   })
                 })
