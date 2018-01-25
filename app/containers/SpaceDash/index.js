@@ -10,6 +10,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
+
 import SpaceInformation from 'components/SpaceInformation';
 
 import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear';
@@ -28,7 +29,7 @@ import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
 
-const getUsersAPI = 'https://innovationmesh.com/api/getSpaceUsers/';
+const getUsersAPI = 'https://innovationmesh.com/api/users/';
 
 const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/';
 
@@ -101,7 +102,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getSpaceStats = (id) => {
-        fetch('https://innovationmesh.com/api/getSpaceStats/' + id, {
+        fetch('https://innovationmesh.com/api/space/metrics/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -118,7 +119,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getSpaceEvents = (id) => {
-        fetch('https://innovationmesh.com/api/getDashboardEvents/' + id, {
+        fetch('https://innovationmesh.com/api/events/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -138,7 +139,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getPhotoGallery = (id) => {
-        fetch('https://innovationmesh.com/api/getPhotos/' + id, {
+        fetch('https://innovationmesh.com/api/photos/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -169,7 +170,7 @@ export default class SpaceDash extends React.PureComponent {
 
         data.append('spaceID', this.state.spaceID);
         data.append('photo', file);
-        fetch('https://innovationmesh.com/api/storePhoto', {
+        fetch('https://innovationmesh.com/api/photos', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -191,6 +192,38 @@ export default class SpaceDash extends React.PureComponent {
             }.bind(this))
     }
 
+    deletePhoto = (id, i, spaceID) => {
+        let photoGallery = this.state.photoGallery;
+        console.log(i);
+        let data = new FormData();
+        data.append("_method", "DELETE");
+        // data.append("spaceID", spaceID);
+        fetch(`https://innovationmesh.com/api/photos/${id}`, {
+            headers: { 'Authorization': 'Bearer ' + this.state.token },
+            method: "POST",
+            body: data,
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.success) {
+                    photoGallery.splice(i, 1);
+                    // const remove = photoGallery.findIndex(previous => previous.id === id);
+
+                    // if (remove !== -1 && photoGallery.length !== 1) {
+                    // this.showSnack(json.success);
+                    //this.setState({ photoGallery: photoGallery.splice(-i, 1) });
+                    this.setState({ photoGallery: photoGallery }, function () {
+                        this.forceUpdate();
+                    })
+                    // } else {
+                    // this.setState({ photoGallery: [] });
+                    // }
+                }
+                else
+                    this.showSnack(json.error);
+            })
+    }
+
     handleResourceName = (event) => {
         this.setState({
             resourceName: event.target.value
@@ -204,7 +237,7 @@ export default class SpaceDash extends React.PureComponent {
     };
 
     getResources = (id) => {
-        fetch('https://innovationmesh.com/api/getResources/' + id, {
+        fetch('https://innovationmesh.com/api/resources/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -225,7 +258,7 @@ export default class SpaceDash extends React.PureComponent {
         data.append('resourceName', this.state.resourceName);
         data.append('resourceEmail', this.state.resourceEmail);
 
-        fetch('https://innovationmesh.com/api/storeResource', {
+        fetch('https://innovationmesh.com/api/resource', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -253,8 +286,8 @@ export default class SpaceDash extends React.PureComponent {
         let _this = this;
         let resource = this.state.resources;
 
-        fetch('https://innovationmesh.com/api/deleteResource/' + id, {
-            method: 'POST',
+        fetch('https://innovationmesh.com/api/resource/' + id, {
+            method: 'GET',
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
             .then(function (response) {
@@ -368,7 +401,7 @@ export default class SpaceDash extends React.PureComponent {
             return (
                 <div className="spaceDashContent">
                     <Header />
-                    <SpaceInformation id={this.props.match.params.id} description={this.state.spaceDescription} />
+                    <SpaceInformation id={this.props.match.params.id} spaceID={this.state.spaceID} description={this.state.spaceDescription} />
                 </div>
             )
         }
@@ -380,13 +413,31 @@ export default class SpaceDash extends React.PureComponent {
                         <label htmlFor="photo-file" style={{ width: '10%', margin: '10px' }}>
                             <div style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }} >Upload Photo</div>
                         </label>
-                        <input type="file" onChange={this.handleGalleryPhoto} id="photo-file" style={{ display: 'none' }} />
+                        <input type="file" accept="image/*" onChange={this.handleGalleryPhoto} id="photo-file" style={{ display: 'none' }} />
                     </div>
                     <div className="spaceDashPhotoGallery">
                         {this.state.photoGallery.map((photo, i) => (
-                            <div className="spaceDashPhotoBlock">
-                                <img src={photo.photoThumbnail} />
-                            </div>
+                            <React.Fragment key={`gallery${i}`} >
+                                <div className="spaceDashPhotoBlock">
+                                    <img src={photo.photoThumbnail} />
+
+                                    <FlatButton
+                                        style={{
+                                            width: '100%',
+                                            background: '#ff4d58',
+                                            paddingTop: '10px',
+                                            paddingBottom: '10px',
+                                            color: '#FFFFFF',
+                                            fontWeight: 'bold',
+                                            alignSelf: 'center'
+                                        }}
+                                        onClick={() => this.deletePhoto(photo.id, i, this.state.spaceID)}
+                                    >
+                                        Delete photo
+                                    </FlatButton>
+
+                                </div>
+                            </React.Fragment>
                         ))}
                     </div>
                 </div>

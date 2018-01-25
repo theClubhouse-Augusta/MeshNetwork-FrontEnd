@@ -34,9 +34,9 @@ export default class Booking extends React.PureComponent {
             resources: [],
             activeType: 0,
             activeTimes: [],
-            events:[],
-            start:"",
-            end:"",
+            events: [],
+            start: "",
+            end: "",
             types: ['Private Office', 'Mentor', 'Tour', 'Meeting Room'],
             days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             times: [{ time: "08:00", active: 0 }, { time: "09:00", active: 0 }, { time: "10:00", active: 0 }, { time: "11:00", active: 0 }, { time: "12:00", active: 0 }, { time: "13:00", active: 0 }, { time: "14:00", active: 0 }, { time: "15:00", active: 0 }, { time: "16:00", active: 0 }, { time: "17:00", active: 0 }, { time: "18:00", active: 0 }],
@@ -70,38 +70,37 @@ export default class Booking extends React.PureComponent {
         }
 
         let events = this.state.events;
-        if(this.state.start !== "" && this.state.end !== "") {
-          events.splice(-1, 1);
+        if (this.state.start !== "" && this.state.end !== "") {
+            events.splice(-1, 1);
         }
 
         this.setState({
             activeType: type,
             activeTimes: activeTimes,
-            events:events,
-            start:"",
-            end:"",
+            events: events,
+            start: "",
+            end: "",
             times: times
         }, function () {
-          fetch('https://innovationmesh.com/api/getBookings/'+type, {
-            method:'GET'
-          })
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(json) {
-            let events = json;
-            for(let i = 0; i < events.length; i++)
-            {
-              events[i].start = new Date(events[i].start);
-              events[i].end = new Date(events[i].end);
-            }
-            _this.setState({
-              events:events
-            }, function() {
-              _this.forceUpdate();
-              console.log(this.state.events);
+            fetch('https://innovationmesh.com/api/bookings/' + type, {
+                method: 'GET'
             })
-          })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (json) {
+                    let events = json;
+                    for (let i = 0; i < events.length; i++) {
+                        events[i].start = new Date(events[i].start);
+                        events[i].end = new Date(events[i].end);
+                    }
+                    _this.setState({
+                        events: events
+                    }, function () {
+                        _this.forceUpdate();
+                        console.log(this.state.events);
+                    })
+                })
         })
     }
 
@@ -163,7 +162,7 @@ export default class Booking extends React.PureComponent {
     }
 
     getResources = (id) => {
-        fetch('https://innovationmesh.com/api/getResources/' + id, {
+        fetch('https://innovationmesh.com/api/resources/' + id, {
             method: 'GET',
         })
             .then(function (response) {
@@ -247,64 +246,64 @@ export default class Booking extends React.PureComponent {
     }
 
     handleNewDate = (slotInfo) => {
-      let start = slotInfo.start.toLocaleString();
-      let end = slotInfo.end.toLocaleString();
-      console.log(slotInfo.start);
-      let dateObject = {
-        title:'Your Booking',
-        start: slotInfo.start,
-        end: slotInfo.end
-      }
-
-      let events = this.state.events;
-      let index = events.length;
-      if(index === 0) {
-        events.push(dateObject);
-      } else {
-        if(this.state.start === "" && this.state.end === "") {
-          events.push(dateObject);
-        } else {
-          events[index - 1] = dateObject;
+        let start = slotInfo.start.toLocaleString();
+        let end = slotInfo.end.toLocaleString();
+        console.log(slotInfo.start);
+        let dateObject = {
+            title: 'Your Booking',
+            start: slotInfo.start,
+            end: slotInfo.end
         }
-      }
 
-      this.setState({
-        events:events,
-        start:start,
-        end:end
-      })
+        let events = this.state.events;
+        let index = events.length;
+        if (index === 0) {
+            events.push(dateObject);
+        } else {
+            if (this.state.start === "" && this.state.end === "") {
+                events.push(dateObject);
+            } else {
+                events[index - 1] = dateObject;
+            }
+        }
+
+        this.setState({
+            events: events,
+            start: start,
+            end: end
+        })
     }
 
     bookedSlot = (event) => {
-      this.showSnack('This Slot has already been booked.');
-      let events = this.state.events;
-      let index = events.length;
-      if(index !== 0) {
-        if(this.state.start !== "" && this.state.end !== "") {
-          events.splice(-1, 1);
-          let start = "";
-          let end = "";
-          this.setState({
-            events:events,
-            start:start,
-            end:end
-          })
+        this.showSnack('This Slot has already been booked.');
+        let events = this.state.events;
+        let index = events.length;
+        if (index !== 0) {
+            if (this.state.start !== "" && this.state.end !== "") {
+                events.splice(-1, 1);
+                let start = "";
+                let end = "";
+                this.setState({
+                    events: events,
+                    start: start,
+                    end: end
+                })
+            }
         }
-      }
     }
 
     eventStyleGetter = (event, start, end, isSelected) => {
-      var backgroundColor = '#ff4d58';
-      var style = {
-          backgroundColor: backgroundColor,
-          borderRadius:'0px',
-          border:'none',
-          fontFamily:'Noto Sans',
-          display: 'block'
-      };
-      return {
-          style: style
-      };
+        var backgroundColor = '#ff4d58';
+        var style = {
+            backgroundColor: backgroundColor,
+            borderRadius: '0px',
+            border: 'none',
+            fontFamily: 'Noto Sans',
+            display: 'block'
+        };
+        return {
+            style: style
+        };
     };
 
 
@@ -319,30 +318,30 @@ export default class Booking extends React.PureComponent {
                 </header>
 
                 <main className="bookingMainContainer">
-                  <div className="bookingInfoContainer">
-                      <div className="bookingColumnTitle">Your Info</div>
-                      <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
-                      <TextField label="E-mail" margin='normal' fullWidth={true} onChange={this.handleEmail} value={this.state.email} />
-                      {this.state.resources.map((res, i) => (
-                          this.renderTypeButton(res, i)
-                      ))}
-                      <FlatButton style={{ width: '100%', background: '#ff4d58', color: '#FFFFFF', marginTop: '15px' }} onClick={this.storeBooking}>Confirm Booking</FlatButton>
-                  </div>
-                  <div style={{width:'100%', background:'#FFFFFF', padding:'10px'}}>
-                  <BigCalendar
-                    selectable
-                    onSelectEvent={event => this.bookedSlot(event)}
-                    defaultView="work_week"
-                    {...this.props}
-                    events={this.state.events}
-                    views={['work_week']}
-                    step={30}
-                    defaultDate={new Date()}
-                    onSelectSlot={slotInfo => this.handleNewDate(slotInfo)}
-                    eventPropGetter={(this.eventStyleGetter)}
-                  />
-                  </div>
-                  {/*<div className="bookingTimeContainer">
+                    <div className="bookingInfoContainer">
+                        <div className="bookingColumnTitle">Your Info</div>
+                        <TextField label="Your Name" margin='normal' fullWidth={true} onChange={this.handleName} value={this.state.name} />
+                        <TextField label="E-mail" margin='normal' fullWidth={true} onChange={this.handleEmail} value={this.state.email} />
+                        {this.state.resources.map((res, i) => (
+                            this.renderTypeButton(res, i)
+                        ))}
+                        <FlatButton style={{ width: '100%', background: '#ff4d58', color: '#FFFFFF', marginTop: '15px' }} onClick={this.storeBooking}>Confirm Booking</FlatButton>
+                    </div>
+                    <div style={{ width: '100%', background: '#FFFFFF', padding: '10px' }}>
+                        <BigCalendar
+                            selectable
+                            onSelectEvent={event => this.bookedSlot(event)}
+                            defaultView="work_week"
+                            {...this.props}
+                            events={this.state.events}
+                            views={['work_week']}
+                            step={30}
+                            defaultDate={new Date()}
+                            onSelectSlot={slotInfo => this.handleNewDate(slotInfo)}
+                            eventPropGetter={(this.eventStyleGetter)}
+                        />
+                    </div>
+                    {/*<div className="bookingTimeContainer">
                       <div className="bookingColumnTitle">Schedule Times</div>
                       {this.state.days.map((day, i) => (
                           <ExpansionPanel style={{ marginTop: '30px' }} key={i}>

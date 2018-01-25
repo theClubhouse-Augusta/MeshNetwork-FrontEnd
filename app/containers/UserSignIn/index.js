@@ -58,7 +58,7 @@ export default class UserSignIn extends React.PureComponent {
               else if (json.token) {
                 let mainToken = json.token;
                 localStorage.setItem('token', mainToken);
-                fetch("https://innovationmesh.com/api/getUser", {
+                fetch("https://innovationmesh.com/api/user/auth", {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + mainToken }
                 })
@@ -86,7 +86,7 @@ export default class UserSignIn extends React.PureComponent {
                       //Add the next one here. Remove below and set it in the final promise.
                       _this.showSnack('Welcome back!');
                       setTimeout(() => {
-                          _this.props.history.push(`/user/${json.user.id}`)
+                          _this.props.history.push(`/user/${mainUser.id}`)
                       }, 2000);
                     }
                   })

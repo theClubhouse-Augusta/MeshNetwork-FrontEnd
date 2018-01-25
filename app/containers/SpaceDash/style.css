@@ -114,6 +114,12 @@
   flex-wrap: wrap;
 }
 
+.spaceDashPhotoBlock {
+  display: flex;
+  flex-direction: column;
+  margin-left: 64px;
+}
+
 .spaceDashResources {
   display: flex;
   flex-direction: row;

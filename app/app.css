@@ -95,8 +95,7 @@ textarea {
   height: 500px;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-    url("https://h4z.it/Image/88b757_banner.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url("https://h4z.it/Image/88b757_banner.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -221,7 +220,6 @@ textarea {
 
 .homeFooterContainer {
   background: #261e1e;
-
   height: 100px;
   display: flex;
   flex-direction: column;
@@ -284,6 +282,7 @@ textarea {
   position: relative;
   transform: translate(0, 23px) scale(1);
 }
+
 
 /* .MyInputLabel-root-5 {
   transform-origin: top left;
@@ -403,6 +402,7 @@ span#react-select-2--backspace-remove-message.Select-aria-only {
   display: none;
 }
 
+
 /* span#react-select-2--value.Select-multi-value-wrapper {
   background: red;
 } */
@@ -507,6 +507,7 @@ span#react-select-2--backspace-remove-message.Select-aria-only {
 .eventBlock:hover {
   transform: scale(1.1);
 }
+
 span#react-select-5--backspace-remove-message.Select-aria-only {
   display: none;
 }

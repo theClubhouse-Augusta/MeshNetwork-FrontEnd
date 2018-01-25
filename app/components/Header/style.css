@@ -1,50 +1,54 @@
 /* NavBar Styles */
 
 .headerComponent {
-  width:100%;
+  width: 100%;
 }
 
 .navBar {
-  display:flex;
-  flex-direction:row;
-  height:55px;
-  justify-content:space-between;
-  align-items:center;
-  margin:0 auto;
+  display: flex;
+  flex-direction: row;
+  height: 55px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .siteName {
-  font-size:2em;
-  line-height:24px;
-  margin-left:10px;
-  font-family:'Noto Sans', sans-serif;
-  color:#FFFFFF;
-  width:30%;
-  font-variant:small-caps;
+  font-size: 2em;
+  line-height: 24px;
+  margin-left: 10px;
+  font-family: "Noto Sans", sans-serif;
+  color: #ffffff;
+  width: 30%;
+  font-variant: small-caps;
 }
 
 .nav {
-  width:70%;
-  display:flex;
-  flex-direction:row;
-  justify-content:flex-end;
-  margin-right:15px;
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 15px;
   font-family: "Noto Sans", sans-serif;
 }
 
+.navIcon {
+  display: none;
+}
+
 .navButton {
-  color:#FFFFFF;
-  text-decoration:none;
-  margin-right:15px;
-  text-transform:uppercase;
-  font-size:0.9em;
-  cursor:pointer;
+  color: #ffffff;
+  text-decoration: none;
+  margin-right: 15px;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
 .navButton:hover {
-  color:#3399cc;
+  color: #3399cc;
 }
 
 .menuIcon {
-  display:none;
+  display: none;
 }
