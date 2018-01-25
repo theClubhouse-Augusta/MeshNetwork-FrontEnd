@@ -58,7 +58,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getSpaceEvents = (id) => {
-        fetch('https://innovationmesh.com/api/workevents/' + id, {
+        fetch('https://innovationmesh.com/api/events/space/' + id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -72,7 +72,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getUsers = (id) => {
-        fetch('https://innovationmesh.com/api/spaceOrganizers/' + id, {
+        fetch('https://innovationmesh.com/api/organizers/space/' + id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -86,7 +86,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getPhotoGallery = (id) => {
-        fetch('https://innovationmesh.com/api/getPhotos/' + id, {
+        fetch('https://innovationmesh.com/api/photos/' + id, {
             method: 'GET',
         })
             .then(function (response) {

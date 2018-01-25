@@ -57,7 +57,7 @@ export default class UserSignIn extends React.PureComponent {
                 }
                 else if (json.token) {
                     localStorage.setItem('token', json.token);
-                    fetch("https://innovationmesh.com/api/getUser", {
+                    fetch("https://innovationmesh.com/api/user/auth", {
                         method: 'GET',
                         headers: { "Authorization": "Bearer " + json.token }
                     })

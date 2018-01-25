@@ -67,10 +67,10 @@ export default class Kiosk extends React.PureComponent {
 
     getUsers = (id) => {
         fetch('https://innovationmesh.com/api/users/space/' + id)
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then(function(json) {
+            .then(function (json) {
                 this.setState({
                     users: json
                 })
@@ -79,10 +79,10 @@ export default class Kiosk extends React.PureComponent {
 
     getReasons = () => {
         fetch('https://innovationmesh.com/api/occasions')
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then(function(json) {
+            .then(function (json) {
                 this.setState({
                     reasons: json
                 })
@@ -91,10 +91,10 @@ export default class Kiosk extends React.PureComponent {
 
     getUpcomingEvents = () => {
         fetch('https://innovationmesh.com/api/upcoming/' + this.props.match.params.id)
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then(function(json) {
+            .then(function (json) {
                 this.setState({
                     events: json
                 })
@@ -105,10 +105,10 @@ export default class Kiosk extends React.PureComponent {
         fetch('https://innovationmesh.com/api/todayevent/' + id, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then(function(json) {
+            .then(function (json) {
                 this.setState({
                     todayEvents: json
                 })
@@ -126,10 +126,10 @@ export default class Kiosk extends React.PureComponent {
             method: 'POST',
             body: data
         })
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then(function(json) {
+            .then(function (json) {
                 this.setState({
                     showComplete: true
                 })

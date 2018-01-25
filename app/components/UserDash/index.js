@@ -100,7 +100,7 @@ const BanButton = ({ onBanExecute }) => (
 /* onBanExecute = () => {this.setState({ban: 1}); function() {console.log('banned')}} */
 
 
-const userUpdateAPI = 'http://www.localhost:8000/api/updateUser';
+const userUpdateAPI = 'http://www.localhost:8000/api/user';
 
 
 export default class UserDash extends React.PureComponent {
