@@ -22,7 +22,7 @@ export default class Checkout extends React.Component {
     }
 
     loadKey = () => {
-        fetch(`http://localhost:8000/api/publickey/${this.props.match.params.id}`, {
+        fetch(`https://innovationmesh.com/api/publickey/${this.props.match.params.id}`, {
         })
             .then(response => response.text())
             .then(Key => {

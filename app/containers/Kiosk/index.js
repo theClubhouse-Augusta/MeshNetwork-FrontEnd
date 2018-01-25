@@ -51,7 +51,7 @@ export default class Kiosk extends React.PureComponent {
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     getProfile = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -66,7 +66,7 @@ export default class Kiosk extends React.PureComponent {
     }
 
     getUsers = (id) => {
-        fetch('http://localhost:8000/api/users/space/' + id)
+        fetch('https://innovationmesh.com/api/users/space/' + id)
             .then(function (response) {
                 return response.json();
             })
@@ -78,7 +78,7 @@ export default class Kiosk extends React.PureComponent {
     }
 
     getReasons = () => {
-        fetch('http://localhost:8000/api/occasions')
+        fetch('https://innovationmesh.com/api/occasions')
             .then(function (response) {
                 return response.json();
             })
@@ -90,7 +90,7 @@ export default class Kiosk extends React.PureComponent {
     }
 
     getUpcomingEvents = () => {
-        fetch('http://localhost:8000/api/upcoming/' + this.props.match.params.id)
+        fetch('https://innovationmesh.com/api/upcoming/' + this.props.match.params.id)
             .then(function (response) {
                 return response.json();
             })
@@ -102,7 +102,7 @@ export default class Kiosk extends React.PureComponent {
     }
 
     getToday = (id) => {
-        fetch('http://localhost:8000/api/todayevent/' + id, {
+        fetch('https://innovationmesh.com/api/todayevent/' + id, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(function (response) {
@@ -122,7 +122,7 @@ export default class Kiosk extends React.PureComponent {
         data.append('spaceID', this.state.workspace.id);
         data.append('occasion', this.state.selectedReason);
 
-        fetch('http://localhost:8000/api/appearance', {
+        fetch('https://innovationmesh.com/api/appearance', {
             method: 'POST',
             body: data
         })

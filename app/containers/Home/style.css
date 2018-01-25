@@ -9,7 +9,7 @@ In the case of multiple components of the same type the first component ex HomeB
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  /*  background:url('http://localhost:8000/assets/tiles.jpg');*/
+  /*  background:url('https://innovationmesh.com/assets/tiles.jpg');*/
 }
 
 h1,
@@ -63,7 +63,7 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: url("http://localhost:8000/assets/tri.jpg");
+  background: url("https://innovationmesh.com/assets/tri.jpg");
   /*background:linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url('https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-13095.jpg');*/
   background-size: cover;
   background-repeat: no-repeat;

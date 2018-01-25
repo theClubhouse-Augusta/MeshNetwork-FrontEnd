@@ -66,7 +66,7 @@ class CheckoutForm extends React.PureComponent {
     }
 
     getSpace = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -80,7 +80,7 @@ class CheckoutForm extends React.PureComponent {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
@@ -88,7 +88,7 @@ class CheckoutForm extends React.PureComponent {
     }
 
     loadPlans = () => {
-        fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
+        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
@@ -180,7 +180,7 @@ class CheckoutForm extends React.PureComponent {
             data.append('plan', plan);
             data.append('username', name);
 
-            fetch("http://localhost:8000/api/signUp", {
+            fetch("https://innovationmesh.com/api/signUp", {
                 method: 'POST',
                 body: data,
             })
@@ -224,9 +224,9 @@ class CheckoutForm extends React.PureComponent {
         data.append('avatar', avatar);
         data.append('plan', plan);
         data.append('username', name);
-        return $tags;
 
-        fetch("http://localhost:8000/api/signUp", {
+
+        fetch("https://innovationmesh.com/api/signUp", {
             method: 'POST',
             body: data,
         })
@@ -245,7 +245,7 @@ class CheckoutForm extends React.PureComponent {
                         body: data
                     })*/
                     localStorage.setItem('token', user.token);
-                    fetch("http://localhost:8000/api/user/auth", {
+                    fetch("https://innovationmesh.com/api/user/auth", {
                         method: 'GET',
                         headers: { "Authorization": "Bearer " + user.token }
                     })
