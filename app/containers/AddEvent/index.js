@@ -11,6 +11,7 @@ import RaisedButton from "./RaisedButton";
 import FlatButton from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItemText } from 'material-ui/List';
+
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 import Header from '../../components/Header';
 import Footer from 'components/Footer';
@@ -50,6 +51,11 @@ const MenuProps = {
         },
     },
 };
+// const loadedTags = [
+//     'one',
+//     'two',
+//     'three',
+// ]
 
 export default class AddEvent extends PureComponent {
     state = {
@@ -74,10 +80,10 @@ export default class AddEvent extends PureComponent {
         newSponsors: [],
         eventFiles: [],
         // organizers
-        organizers: '',
+        organizers: [],
         showOrganizers: false,
         // sponsors
-        sponsors: '',
+        sponsors: [],
         checkNewSponsors: '',
         // add new Sponsor form values
         sponsorNames: '',
@@ -85,15 +91,15 @@ export default class AddEvent extends PureComponent {
         sponsorWebsites: '',
         // date/time
         // tags
-        loadedTags: '',
+        loadedTags: [],
         checkedRadio: null,
         logo: '',
         logoPreview: '',
         eventImg: '',
         eventImgPreview: '',
-        tag: new Set(),
-        selectedOrganizers: new Set(),
-        selectedSponsors: new Set(),
+        tag: [],
+        selectedOrganizers: [],
+        selectedSponsors: [],
     };
 
     async componentDidMount() {
@@ -109,7 +115,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getSponsors = () => {
-        fetch(`https://innovationmesh.com/api/sponsors`, {
+        fetch(`http://localhost:8000/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -123,7 +129,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getOrganizers = () => {
-        fetch(`https://innovationmesh.com/api/organizers/events`, {
+        fetch(`http://localhost:8000/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -138,7 +144,7 @@ export default class AddEvent extends PureComponent {
     }
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -317,21 +323,18 @@ export default class AddEvent extends PureComponent {
     selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
     eventDescription = e => this.setState({ description: e.target.value });
 
-    handleTagChange = event => {
-        this.setState({ tag: new Set(event.target.value) });
-    };
-
     handleOrganizerChange = event => {
-        this.setState({ selectedOrganizers: new Set(event.target.value) });
+        this.setState({ selectedOrganizers: event.target.value });
     };
 
     handleSponsorChange = event => {
-        this.setState({ selectedSponsors: new Set(event.target.value) });
+        this.setState({ selectedSponsors: event.target.value });
     };
 
-    // handleSponsors = event => {
-    //     this.setState({ selectedSponsors: event.target.value });
-    // };
+
+    handleSkillTags = event => {
+        this.setState({ selectedTags: event.target.value });
+    };
 
     eventFiles = event => {
         event.preventDefault();
@@ -395,26 +398,24 @@ export default class AddEvent extends PureComponent {
 
         let data = new FormData();
         data.append('description', description);
-        data.append('tags', JSON.stringify(this.state.tag));
+        data.append('tags', this.state.selectedTags);
         this.state.eventFiles.forEach((file, index) => data.append(`files${index}`, file));
         data.append('compEvent', 0);
         data.append('name', this.state.name);
         data.append('image', this.state.eventImg);
         data.append('url', this.state.url);
-        data.append('organizers', JSON.stringify(this.state.selectedOrganizers));
-        data.append('sponsors', JSON.stringify(this.state.selectedSponsors));
+        data.append('organizers', this.state.selectedOrganizers);
+        data.append('sponsors', this.state.selectedSponsors);
 
         if (!!newSponsors.length) {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
         if (!!!dateMulti.length) {
-            console.log('one')
             if (day) data.append('day', JSON.stringify(day));
             if (start) data.append('start', JSON.stringify(start));
             if (end) data.append('end', JSON.stringify(end));
         } else {
-            console.log('two')
             const days = dateMulti.findIndex(previous => previous.day === '');
             const starts = startMulti.findIndex(previous => previous.start === '');
             const ends = endMulti.findIndex(previous => previous.end === '');
@@ -425,14 +426,18 @@ export default class AddEvent extends PureComponent {
             }
         }
 
-        fetch(`https://innovationmesh.com/api/event`, {
+        fetch(`http://localhost:8000/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
         })
             .then(response => response.json())
             .then(eventID => {
+                console.log('foo', JSON.stringify(eventID))
                 this.props.history.push(`/event/${eventID}`)
+            })
+            .catch(error => {
+                console.log(error);
             })
     }
 
@@ -564,20 +569,20 @@ export default class AddEvent extends PureComponent {
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
                             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
-                            {loadedTags &&
+                            {!!loadedTags.length &&
                                 <FormControl style={{ marginTop: 24 }}>
                                     <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
                                     <Select
                                         multiple
-                                        value={[...this.state.tag]}
-                                        onChange={this.handleTagChange}
+                                        value={this.state.selectedTags}
+                                        onChange={this.handleSkillTags}
                                         input={<Input id="tag-multiple" />}
-                                        renderValue={selected => selected.join(', ')}
+                                        renderValue={selected => selected.join(',')}
                                         MenuProps={MenuProps}
                                     >
-                                        {loadedTags.map(tag => (
-                                            <MenuItem key={tag} value={tag}>
-                                                <Checkbox checked={this.state.tag.has(tag)} />
+                                        {loadedTags.map((tag, key) => (
+                                            <MenuItem key={`${key}tag`} value={tag}>
+                                                <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
                                                 <ListItemText primary={tag} />
                                             </MenuItem>
                                         ))}
@@ -585,20 +590,20 @@ export default class AddEvent extends PureComponent {
                                 </FormControl>
                             }
 
-                            {organizers &&
+                            {!!organizers.length &&
                                 <FormControl style={{ marginTop: 24 }}>
                                     <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
                                     <Select
                                         multiple
-                                        value={[...this.state.selectedOrganizers]}
+                                        value={this.state.selectedOrganizers}
                                         onChange={this.handleOrganizerChange}
                                         input={<Input id="tag-multiple" />}
-                                        renderValue={selected => selected.join(', ')}
+                                        renderValue={selected => selected.join(',')}
                                         MenuProps={MenuProps}
                                     >
                                         {organizers.map(organizer => (
                                             <MenuItem key={organizer} value={organizer}>
-                                                <Checkbox checked={this.state.selectedOrganizers.has(organizer)} />
+                                                <Checkbox checked={this.state.selectedOrganizers.indexOf(organizer) > -1} />
                                                 <ListItemText primary={organizer} />
                                             </MenuItem>
                                         ))}
@@ -611,15 +616,15 @@ export default class AddEvent extends PureComponent {
                                     <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
                                     <Select
                                         multiple
-                                        value={[...this.state.selectedSponsors]}
+                                        value={this.state.selectedSponsors}
                                         onChange={this.handleSponsorChange}
                                         input={<Input id="tag-multiple" />}
-                                        renderValue={selected => selected.join(', ')}
+                                        renderValue={selected => selected.join(',')}
                                         MenuProps={MenuProps}
                                     >
                                         {sponsors.map(sponsor => (
                                             <MenuItem key={sponsor} value={sponsor}>
-                                                <Checkbox checked={this.state.selectedSponsors.has(sponsor)} />
+                                                <Checkbox checked={this.state.selectedSponsors.indexOf(sponsor) > -1} />
                                                 <ListItemText primary={sponsor} />
                                             </MenuItem>
                                         ))}

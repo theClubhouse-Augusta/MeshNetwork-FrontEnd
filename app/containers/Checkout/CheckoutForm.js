@@ -1,17 +1,19 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
-import { injectStripe } from 'react-stripe-elements';
-import CardSection from './CardSection';
-import Header from '../../components/Header';
 import { FormControl } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItemText } from 'material-ui/List';
+
+import { injectStripe } from 'react-stripe-elements';
+import CardSection from './CardSection';
+import Header from '../../components/Header';
 
 import Logger from '../../utils/Logger';
 
@@ -30,19 +32,20 @@ const MenuProps = {
     },
 };
 
+// const loadedTags = ['one', 'two', 'three'];
 
-class CheckoutForm extends React.Component {
+
+class CheckoutForm extends React.PureComponent {
     state = {
         space: '',
         multi: true,
-        multiValue: [],
         options: [],
         value: undefined,
         name: "",
         email: "",
         password: "",
         bio: "",
-        selectedTags: new Set(),
+        selectedTags: [],
         loadedTags: [],
         loadedPlans: [],
         avatar: '',
@@ -51,7 +54,7 @@ class CheckoutForm extends React.Component {
         snack: false,
         focused: false,
         planFocused: false,
-        plan: "free"
+        plan: "free",
     };
 
     componentDidMount() {
@@ -63,7 +66,7 @@ class CheckoutForm extends React.Component {
     }
 
     getSpace = () => {
-        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -77,7 +80,7 @@ class CheckoutForm extends React.Component {
     }
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
@@ -85,32 +88,17 @@ class CheckoutForm extends React.Component {
     }
 
     loadPlans = () => {
-        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
+        fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
-            .then(json => { this.setState({ loadedPlans: json.data }) })
+            .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
             .catch(error => Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`));
     }
-
-    /*handleSkillTags = event => {
-        this.setState({ selectedTags: event.target.value });
-    };*/
 
     selectPlan = (e, selected) => {
         e.preventDefault();
         console.log('s', selected);
         this.setState({ plan: selected });
-    }
-
-    handleOnChange = (value) => {
-        let { options } = this.state;
-        console.log('o', options);
-        const { multi } = this.state;
-        if (multi) {
-            this.setState({ multiValue: value });
-        } else {
-            this.setState({ value });
-        }
     }
 
     handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
@@ -135,7 +123,7 @@ class CheckoutForm extends React.Component {
     };
 
     handleSkillTags = event => {
-        this.setState({ selectedTags: new Set(event.target.value) });
+        this.setState({ selectedTags: event.target.value });
     };
 
 
@@ -161,7 +149,6 @@ class CheckoutForm extends React.Component {
     }
     onFocus = () => this.setState({ focused: true });
     onBlur = () => this.setState({ focused: false });
-
     onFocusPlan = () => this.setState({ planFocused: true });
     onBlurPlan = () => this.setState({ planFocused: false });
 
@@ -169,21 +156,18 @@ class CheckoutForm extends React.Component {
         e.preventDefault();
         let data = new FormData();
         let {
-      name,
+            name,
             email,
             password,
             bio,
             selectedTags,
             avatar,
-            multiValue,
             plan
-    } = this.state;
+        } = this.state;
         this.props.stripe.createToken({ name: name }).then(({ token }) => {
             data.append('name', name.trim());
             if (selectedTags.length) {
-                data.append('tags', JSON.stringify(selectedTags));
-            } else {
-                data.append('tags', JSON.stringify(multiValue));
+                data.append('tags', selectedTags);
             }
             data.append('email', email.trim());
             data.append('password', password.trim());
@@ -196,7 +180,7 @@ class CheckoutForm extends React.Component {
             data.append('plan', plan);
             data.append('username', name);
 
-            fetch("https://innovationmesh.com/api/signUp", {
+            fetch("http://localhost:8000/api/signUp", {
                 method: 'POST',
                 body: data,
             })
@@ -220,17 +204,19 @@ class CheckoutForm extends React.Component {
         let _this = this;
         let data = new FormData();
         let {
-      name,
+            name,
             email,
             password,
             bio,
             selectedTags,
             avatar,
-            multiValue,
             plan
-    } = this.state;
+        } = this.state;
+
         data.append('name', name.trim());
-        data.append('tags', JSON.stringify(selectedTags));
+        if (!!selectedTags.length) {
+            data.append('tags', selectedTags);
+        }
         data.append('email', email.trim());
         data.append('password', password.trim());
         data.append('bio', bio.trim());
@@ -238,8 +224,9 @@ class CheckoutForm extends React.Component {
         data.append('avatar', avatar);
         data.append('plan', plan);
         data.append('username', name);
+        return $tags;
 
-        fetch("https://innovationmesh.com/api/signUp", {
+        fetch("http://localhost:8000/api/signUp", {
             method: 'POST',
             body: data,
         })
@@ -252,13 +239,13 @@ class CheckoutForm extends React.Component {
                         method: 'POST',
                         body: data
                     })
-
+    
                     fetch('http://challenges.innovationmesh.com/api/signUp', {
                         method: 'POST',
                         body: data
                     })*/
                     localStorage.setItem('token', user.token);
-                    fetch("https://innovationmesh.com/api/getUser", {
+                    fetch("http://localhost:8000/api/user/auth", {
                         method: 'GET',
                         headers: { "Authorization": "Bearer " + user.token }
                     })
@@ -282,12 +269,11 @@ class CheckoutForm extends React.Component {
     }
 
     render() {
-        let {
+        const {
             selectedTags,
             loadedTags,
             focused,
             plan,
-            multiValue,
             options,
             loadedPlans,
     } = this.state;
@@ -335,20 +321,21 @@ class CheckoutForm extends React.Component {
                                 margin="normal"
                             />
 
-                            {loadedTags &&
+
+                            {!!loadedTags.length &&
                                 <FormControl style={{ marginTop: 24 }}>
-                                    <InputLabel htmlFor="tags-multiple">Relevant Tags</InputLabel>
+                                    <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
                                     <Select
                                         multiple
-                                        value={[...this.state.selectedTags]}
+                                        value={this.state.selectedTags}
                                         onChange={this.handleSkillTags}
                                         input={<Input id="tag-multiple" />}
                                         renderValue={selected => selected.join(', ')}
                                         MenuProps={MenuProps}
                                     >
-                                        {loadedTags.map(tag => (
-                                            <MenuItem key={tag} value={tag}>
-                                                <Checkbox checked={this.state.selectedTags.has(tag)} />
+                                        {loadedTags.map((tag, key) => (
+                                            <MenuItem key={`${key}tag`} value={tag}>
+                                                <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
                                                 <ListItemText primary={tag} />
                                             </MenuItem>
                                         ))}
@@ -357,25 +344,6 @@ class CheckoutForm extends React.Component {
                             }
 
 
-                            {/*<FormControl>
-                                <InputLabel htmlFor="tags-select">Skills & Interests</InputLabel>
-                                <Select
-                                    multiple
-                                    value={this.state.selectedTags}
-                                    onChange={this.handleSkillTags}
-                                    input={<Input id="tags-select" />}
-                                    MenuProps={MenuProps}
-                                >
-                                    {this.state.loadedTags.map(tag => (
-                                        <MenuItem
-                                            key={tag.id}
-                                            value={tag.label}
-                                        >
-                                            {tag.value}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>*/}
 
 
                             {this.props.pubkey &&

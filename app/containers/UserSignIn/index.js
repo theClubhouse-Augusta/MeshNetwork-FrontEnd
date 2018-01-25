@@ -44,7 +44,7 @@ export default class UserSignIn extends React.PureComponent {
         data.append('email', this.state.email);
         data.append('password', this.state.password);
 
-        fetch("https://innovationmesh.com/api/login", {
+        fetch("http://localhost:8000/api/login", {
             method: 'POST',
             body: data
         })
@@ -57,7 +57,7 @@ export default class UserSignIn extends React.PureComponent {
                 }
                 else if (json.token) {
                     localStorage.setItem('token', json.token);
-                    fetch("https://innovationmesh.com/api/getUser", {
+                    fetch("http://localhost:8000/api/user/auth", {
                         method: 'GET',
                         headers: { "Authorization": "Bearer " + json.token }
                     })

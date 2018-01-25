@@ -51,7 +51,7 @@ export default class UserProfile extends React.Component {
     }
 
     getUser = () => {
-        fetch('https://innovationmesh.com/api/user/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/user/profile/' + this.props.match.params.id, {
             method: 'GET',
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
@@ -95,33 +95,33 @@ export default class UserProfile extends React.Component {
     }
 
     renderSocial = () => {
-      let mail = <a href={'mailto:'+this.state.user.email}><MailIcon className="profileIconStyle" /></a>;
-      let facebook = <a href={this.state.user.facebook}><FacebookIcon className="profileIconStyle" /></a>;
-      let twitter = <a href={this.state.user.twitter}><TwitterIcon className="profileIconStyle" /></a>;
-      let instagram = <a href={this.state.user.instagram}><InstagramIcon className="profileIconStyle" /></a>;
-      let linkedin = <a href={this.state.user.linkedin}><LinkedInIcon className="profileIconStyle" /></a>;
-      let github = <a href={this.state.user.github}><GithubIcon className="profileIconStyle" /></a>;
-      let behance = <a href={this.state.user.behance}><BehanceIcon className="profileIconStyle" /></a>;
+        let mail = <a href={'mailto:' + this.state.user.email}><MailIcon className="profileIconStyle" /></a>;
+        let facebook = <a href={this.state.user.facebook}><FacebookIcon className="profileIconStyle" /></a>;
+        let twitter = <a href={this.state.user.twitter}><TwitterIcon className="profileIconStyle" /></a>;
+        let instagram = <a href={this.state.user.instagram}><InstagramIcon className="profileIconStyle" /></a>;
+        let linkedin = <a href={this.state.user.linkedin}><LinkedInIcon className="profileIconStyle" /></a>;
+        let github = <a href={this.state.user.github}><GithubIcon className="profileIconStyle" /></a>;
+        let behance = <a href={this.state.user.behance}><BehanceIcon className="profileIconStyle" /></a>;
 
-      if(!this.state.user.email || this.state.user.email == "null") { mail = "";}
-      if(!this.state.user.facebook || this.state.user.facebook == "null") { facebook = "";}
-      if(!this.state.user.twitter || this.state.user.twitter == "null") { twitter = "";}
-      if(!this.state.user.instagram || this.state.user.instagram == "null") { instagram = "";}
-      if(!this.state.user.linkedin || this.state.user.linkedin == "null") { linkedin = "";}
-      if(!this.state.user.github || this.state.user.github == "null") { github = "";}
-      if(!this.state.user.behance || this.state.user.behance == "null") { behance = "";}
+        if (!this.state.user.email || this.state.user.email == "null") { mail = ""; }
+        if (!this.state.user.facebook || this.state.user.facebook == "null") { facebook = ""; }
+        if (!this.state.user.twitter || this.state.user.twitter == "null") { twitter = ""; }
+        if (!this.state.user.instagram || this.state.user.instagram == "null") { instagram = ""; }
+        if (!this.state.user.linkedin || this.state.user.linkedin == "null") { linkedin = ""; }
+        if (!this.state.user.github || this.state.user.github == "null") { github = ""; }
+        if (!this.state.user.behance || this.state.user.behance == "null") { behance = ""; }
 
-      return(
-        <div className="profileSocialList">
-          {mail}
-          {facebook}
-          {twitter}
-          {instagram}
-          {linkedin}
-          {github}
-          {behance}
-        </div>
-      )
+        return (
+            <div className="profileSocialList">
+                {mail}
+                {facebook}
+                {twitter}
+                {instagram}
+                {linkedin}
+                {github}
+                {behance}
+            </div>
+        )
 
     }
 
@@ -141,7 +141,7 @@ export default class UserProfile extends React.Component {
                         <div className="profileHeader">
                             <img src={this.state.user.avatar} className="profileHeaderImg" />
                             <div className="profileHeaderTitle">{this.state.user.name}</div>
-                            <div className="profileSubTitle">{this.state.user.title}</div>
+                            <div className="profileSubTitle">{!!this.state.user.title !== "null" ? this.state.user.title : false}</div>
                         </div>
                         <div className="profileContact">
                             <div style={{ display: 'flex', flexDirection: 'row' }}>

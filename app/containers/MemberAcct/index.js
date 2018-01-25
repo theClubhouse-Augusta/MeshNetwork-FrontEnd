@@ -50,7 +50,7 @@ export default class MemberAcct extends React.PureComponent {
         password: '',
         passwordConfirm: '',
         phoneNumber: '',
-        selectedTags: new Set(),
+        selectedTags: [],
         loadedTags: [],
         //emailError: false,
         passwordError: false,
@@ -61,26 +61,36 @@ export default class MemberAcct extends React.PureComponent {
         github: '',
         behance: '',
         loading: true,
-        msg: "",
+        msg: '',
         snack: false,
     };
 
-    /* async componentWillMount() {
+    async componentDidMount() {
          const authorized = await authenticate(localStorage['token'], this.props.history);
          if (!authorized.error) {
+
+        this.getUserInfo();
+        this.loadSkills();
              this.setState({ loading: false });
          } else {
              this.props.history.push('/');
          }
-     } */
+     } 
+
+    // componentDidMount() {
+    // }
+
+    loadSkills = () => {
+        fetch('http://localhost:8000/api/skills/all', {
+        })
+            .then(response => response.json())
+            .then(json => { this.setState({ loadedTags: json }) })
+            .catch(error => Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`));
+    }
 
     handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-    componentWillMount() {
-        this.getUserInfo();
-        this.loadSkills();
-    }
 
     handleInputChange = name => event => {
         this.setState({
@@ -132,7 +142,7 @@ export default class MemberAcct extends React.PureComponent {
     }
 
     getUserInfo = () => {
-        fetch('https://innovationmesh.com/api/getUser', {
+        fetch(`http://localhost:8000/api/user/auth`, {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + this.state.token },
         })
@@ -152,7 +162,7 @@ export default class MemberAcct extends React.PureComponent {
                     linkedin: json.user.linkedin,
                     github: json.user.github,
                     behance: json.user.behance,
-                    selectedTags: new Set(json.skills)
+                    selectedTags: json.user.skills.split(',')
                 }, function () {
                     console.log(this.state);
                 })
@@ -176,7 +186,7 @@ export default class MemberAcct extends React.PureComponent {
         data.append('password', this.state.password);
         data.append('passwordConfirm', this.state.passwordConfirm);
 
-        fetch(`https://innovationmesh.com/api/updateUser`, {
+        fetch(`http://localhost:8000/api/user/update`, {
             headers: { 'Authorization': 'Bearer ' + this.state.token },
             method: 'POST',
             body: data,
@@ -194,88 +204,29 @@ export default class MemberAcct extends React.PureComponent {
             })
     }
 
-
-    loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
-            headers: { Authorization: `Bearer ${localStorage['token']}` },
-        })
-            .then(response => response.json())
-            .then(json => this.setState({ loadedTags: json }))
-            .catch(error => {
-                alert(`error in fetching data from server: ${error}`);
-            });
-    }
-
-    loadUserSkills = () => {
-        fetch('https://innovationmesh.com/api/userskills', {
-            headers: { Authorization: `Bearer ${localStorage['token']}` },
-        })
-            .then(response => response.json())
-            .then(json => { this.setState({ selectedTags: json }) })
-            .catch(error => {
-                alert(`error in fetching data from server: ${error}`);
-            });
-    }
-
-
-
-    /*selectTag = selectedTag => {
-      const selectedTags = selectedTag.slice(0, (selectedTag.length - 1));
-      const selected = selectedTag.slice(-1)[0];
-
-      const loaded = this.state.loadedTags.slice(1);
-      const s = this.state.selectedTags.slice();
-
-      if (!!selected.id) {
-        this.setState({ selectedTags: selectedTag });
-      } else {
-        selected.value = selected.value.replace(/\s\s+/g, ' ').trim();
-        selected.label = selected.label.replace(/\s\s+/g, ' ').trim();
-        const duplicateLoaded = loaded.findIndex(tag => tag.label === selected.label);
-        const duplicateSelected = s.findIndex(tag => tag.label === selected.label);
-        if (duplicateLoaded === -1 && duplicateSelected === -1) {
-          selectedTags.push(selected);
-          this.setState({	selectedTags: selectedTags });
-        } else {
-          this.setState({	selectedTags: selectedTags });
-        }
-      }
-      // else {
-        // this.setState({ selectedTags: selectedTag });
-      // }
-    }*/
-
-    /*onTagsSubmit = e => {
-      e.preventDefault();
-      let data = new FormData();
-      let { selectedTags } = this.state;
-      data.append('tags', JSON.stringify(selectedTags));
-
-      fetch(`https://innovationmesh.com/api/updateUser`, {
-        headers: { Authorization: `Bearer ${localStorage['token']}` },
-        method: 'post',
-        body: data,
-      })
-      .then(response => response.json())
-      .then(json => {
-        if (json.success) {
-          this.showSnack(json.success);
-        } else {
-          this.showSnack(json.error);
-        }
-      })
-      .catch(error => {
-        this.showSnack(JSON.stringify(error));
-      })
-    }*/
+    handleSkillTags = event => {
+        this.setState({ selectedTags: event.target.value });
+    };
 
     render() {
+        const { 
+            loadedTags,
+            name,
+            title,
+            avatar,
+            avatarPreview,
+            phoneNumber,
+            facebook,
+            twitter,
+            instagram,
+            linkedin,
+            github,
+            behance,
+        } = this.state;
         return (
-            //this.state.loading
-            // ?
-            //<Spinner loading={this.state.loading} />
-            // :
-            <div className="accountContainer">
+            this.state.loading 
+            ? <Spinner loading={this.state.loading} />
+            : <div className="accountContainer">
                 <Helmet title="MemberAcct" meta={[{ name: 'description', content: 'Description of MemberAcct' }]} />
                 <header style={{ background: '#FFFFFF' }}>
                     <Header />
@@ -297,14 +248,14 @@ export default class MemberAcct extends React.PureComponent {
                                     <TextField
                                         label={'Name'}
                                         margin='normal'
-                                        value={`${this.state.name}`}
-                                        placeholder={`${this.state.name}`} onChange={this.handleInputChange('name')}
+                                        value={name}
+                                        placeholder={name} onChange={this.handleInputChange('name')}
                                     />
                                     <TextField
                                         label={'Title'}
                                         margin='normal'
-                                        value={`${this.state.title}`}
-                                        placeholder={`${this.state.title}`} onChange={this.handleInputChange('title')}
+                                        value={title}
+                                        placeholder={title} onChange={this.handleInputChange('title')}
                                     />
                                     {/*<TextField
                                         label={'E-mail'}
@@ -342,43 +293,43 @@ export default class MemberAcct extends React.PureComponent {
                                     <TextField
                                         label={'Facebook'}
                                         margin='normal'
-                                        value={`${this.state.facebook}`}
-                                        placeholder={`${this.state.facebook}`}
+                                        value={this.state.facebook}
+                                        placeholder={facebook}
                                         onChange={this.handleInputChange('facebook')}
                                     />
                                     <TextField
                                         label={'Twitter'}
                                         margin='normal'
-                                        value={`${this.state.twitter}`}
-                                        placeholder={`${this.state.twitter}`}
+                                        value={twitter}
+                                        placeholder={twitter}
                                         onChange={this.handleInputChange('twitter')}
                                     />
                                     <TextField
                                         label={'Instagram'}
                                         margin='normal'
-                                        value={`${this.state.instagram}`}
-                                        placeholder={`${this.state.instagram}`}
+                                        value={instagram}
+                                        placeholder={instagram}
                                         onChange={this.handleInputChange('instagram')}
                                     />
                                     <TextField
                                         label={'LinkedIn'}
                                         margin='normal'
-                                        value={`${this.state.linkedin}`}
-                                        placeholder={`${this.state.linkedin}`}
+                                        value={linkedin}
+                                        placeholder={linkedin}
                                         onChange={this.handleInputChange('linkedin')}
                                     />
                                     <TextField
                                         label={'Github'}
                                         margin='normal'
-                                        value={`${this.state.github}`}
-                                        placeholder={`${this.state.github}`}
+                                        value={github}
+                                        placeholder={github}
                                         onChange={this.handleInputChange('github')}
                                     />
                                     <TextField
                                         label={'Behance'}
                                         margin='normal'
-                                        value={`${this.state.behance}`}
-                                        placeholder={`${this.state.behance}`}
+                                        value={behance}
+                                        placeholder={behance}
                                         onChange={this.handleInputChange('behance')}
                                     />
                                 </div>
@@ -388,39 +339,27 @@ export default class MemberAcct extends React.PureComponent {
 
                         <div className="acctTagSelection">
                             <h3> Skills </h3>
-                            {this.state.loadedTags &&
-                                <FormControl style={{ width:'50%' }}>
-                                    <InputLabel htmlFor="tags-multiple">Relevant Tags</InputLabel>
+
+                            {!!loadedTags.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
                                     <Select
                                         multiple
-                                        value={[...this.state.selectedTags]}
+                                        value={this.state.selectedTags}
                                         onChange={this.handleSkillTags}
                                         input={<Input id="tag-multiple" />}
                                         renderValue={selected => selected.join(', ')}
                                         MenuProps={MenuProps}
                                     >
-                                        {this.state.loadedTags.map(tag => (
-                                            <MenuItem key={tag} value={tag}>
-                                                <Checkbox checked={this.state.selectedTags.has(tag)} />
+                                        {loadedTags.map((tag, key) => (
+                                            <MenuItem key={`${key}tag`} value={tag}>
+                                                <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
                                                 <ListItemText primary={tag} />
                                             </MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                             }
-                            {/*<div className="acctTagSelectWrapper" >
-                              {!!this.state.loadedTags.length && [
-                              <label key="skillLabel"> Skills and interests </label>,
-                              <Select.Creatable
-                                key="skillSelect"
-                                multi
-                                options={this.state.loadedTags}
-                                onChange={this.state.selectTag}
-                                value={this.state.selectedTags}
-                              />
-                              ]}
-                            </div>*/}
-                            {/*<Button style={{ backgroundColor: '#00c355', padding: '10px', marginTop: '15px', color: '#FFFFFF', width: '40%' }}> Submit </Button>*/}
                         </div>
 
                         <Divider />

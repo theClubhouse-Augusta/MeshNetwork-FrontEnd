@@ -28,7 +28,7 @@ export class AllJoins extends React.PureComponent {
     }
 
     loadJoins = () => {
-        fetch(`https://innovationmesh.com/api/joins/${this.props.match.params.id}`, {
+        fetch(`http://localhost:8000/api/joins/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ data: json }))
