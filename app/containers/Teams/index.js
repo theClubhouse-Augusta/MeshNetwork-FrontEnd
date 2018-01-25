@@ -98,7 +98,7 @@ export default class Teams extends React.PureComponent {
     var teams = this.state.teams;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("http://challenges.innovationmesh.com/api/getTeams/30?page=" + this.state.nextPage, {
+      fetch("https://challenges.innovationmesh.com/api/getTeams/30?page=" + this.state.nextPage, {
         method:'GET'
       })
       .then(function(response) {
@@ -132,7 +132,7 @@ export default class Teams extends React.PureComponent {
     data.append('teamContent', draftToHtml(convertToRaw(this.state.teamContent.getCurrentContent())));
     data.append('teamImage', this.state.teamImage);
 
-    fetch("http://challenges.innovationmesh.com/api/storeTeam", {
+    fetch("https://challenges.innovationmesh.com/api/storeTeam", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -162,7 +162,7 @@ export default class Teams extends React.PureComponent {
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("http://challenges.innovationmesh.com/api/searchTeams", {
+    fetch("https://challenges.innovationmesh.com/api/searchTeams", {
       method:'POST',
       body:data
     })

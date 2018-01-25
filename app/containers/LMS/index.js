@@ -41,7 +41,7 @@ export default class LMS extends React.PureComponent {
 
   getCourses = () => {
 
-    fetch("http://houseofhackers.me:81/getCourses/0/6/1/", {
+    fetch("https://houseofhackers.me:81/getCourses/0/6/1/", {
       method:'GET',
     })
     .then(function(response) {
@@ -82,7 +82,7 @@ export default class LMS extends React.PureComponent {
                 <Card style={{height:'385px'}}>
                   <CardMedia
                     style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                    image={'http://houseofhackers.me/media/' + course.courseImage}
+                    image={'https://houseofhackers.me/media/' + course.courseImage}
                   />
                   <CardContent>
                     <Typography type="headline" component="h2">

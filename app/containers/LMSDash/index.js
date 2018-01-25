@@ -84,7 +84,7 @@ export default class LMSDash extends React.PureComponent {
   getCourses = (category = 0) => {
     let _this = this;
 
-    fetch('http://houseofhackers.me:81/myCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
+    fetch('https://houseofhackers.me:81/myCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
       method:'GET',
       headers: {
         'Authorization': 'JWT ' + this.state.token
@@ -131,7 +131,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("http://houseofhackers.me:81/getCategories/", {
+    fetch("https://houseofhackers.me:81/getCategories/", {
       method:'GET'
     })
     .then(function(response) {
@@ -147,7 +147,7 @@ export default class LMSDash extends React.PureComponent {
   createCourse = () => {
     let _this = this;
 
-    fetch('http://houseofhackers.me:81/storeCourse/', {
+    fetch('https://houseofhackers.me:81/storeCourse/', {
       method:'POST',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
@@ -160,7 +160,7 @@ export default class LMSDash extends React.PureComponent {
         _this.props.app.handleAuth();
       }
       else {
-        _this.context.router.history.push('/update/'+json.course)
+        _this.props.history.push('/update/'+json.course)
       }
     }.bind(this))
   }
@@ -168,7 +168,7 @@ export default class LMSDash extends React.PureComponent {
   deleteCourse = () => {
     let _this = this;
     let course = this.state.courses;
-    fetch("http://houseofhackers.me:81/deleteCourse/"+this.state.activeCourse+"/", {
+    fetch("https://houseofhackers.me:81/deleteCourse/"+this.state.activeCourse+"/", {
       method:'POST',
       headers:{'Authorization':'JWT '+ this.state.token}
     })
@@ -296,7 +296,7 @@ export default class LMSDash extends React.PureComponent {
                     <Card style={{height:'385px'}}>
                       <CardMedia
                         style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                        image={'http://houseofhackers.me/media/' + course.courseImage}
+                        image={'https://houseofhackers.me/media/' + course.courseImage}
                       />
                       <CardContent>
                         <Typography type="headline" component="h2">

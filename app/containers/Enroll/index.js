@@ -37,7 +37,7 @@ export default class Enroll extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("http://houseofhackers.me:81/showCourse/"+id+"/", {
+    fetch("https://houseofhackers.me:81/showCourse/"+id+"/", {
       method:'GET'
     })
     .then(function(response) {
@@ -52,7 +52,7 @@ export default class Enroll extends React.PureComponent {
 
   storeEnroll = () => {
     let _this = this;
-    fetch("http://houseofhackers.me:81/enrollCourse/" + this.props.courseID + "/", {
+    fetch("https://houseofhackers.me:81/enrollCourse/" + this.props.courseID + "/", {
       method:'POST',
       body:data,
       headers: { 'Authorization': 'JWT ' + this.state.token}
@@ -146,7 +146,7 @@ export default class Enroll extends React.PureComponent {
                   <div className="lmsEnrollSummaryMain">
                     <div className="lmsEnrollCourse">
                       <div className="lmsEnrollCourseImageContainer">
-                        <img src={'http://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
+                        <img src={'https://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
                       </div>
                       <div className="lmsEnrollCourseName">{this.state.course.courseName}</div>
                       {this.renderPrice()}

@@ -44,7 +44,7 @@ class LMSPayment extends React.Component {
       console.log(token);
       let data = new FormData();
       data.append('stripeToken', token.id);
-      fetch("http://houseofhackers.me:81/enrollCourse/" + this.props.courseID + "/", {
+      fetch("https://houseofhackers.me:81/enrollCourse/" + this.props.courseID + "/", {
         method:'POST',
         body:data,
         headers: { 'Authorization': 'JWT ' + this.state.token}

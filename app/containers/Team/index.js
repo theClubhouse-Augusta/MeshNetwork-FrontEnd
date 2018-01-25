@@ -44,7 +44,7 @@ export default class Team extends React.PureComponent {
   }
 
   getDetail = () => {
-    fetch("http://challenges.innovationmesh.com/api/showTeam/"+this.props.match.params.id, {
+    fetch("https://challenges.innovationmesh.com/api/showTeam/"+this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -59,7 +59,7 @@ export default class Team extends React.PureComponent {
   }
 
   joinTeam = () => {
-    fetch("http://challenges.innovationmesh.com/api/joinTeam/" + this.state.team.id, {
+    fetch("https://challenges.innovationmesh.com/api/joinTeam/" + this.state.team.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })

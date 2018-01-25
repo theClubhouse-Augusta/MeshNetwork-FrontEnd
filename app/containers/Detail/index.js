@@ -46,7 +46,7 @@ export default class Detail extends React.PureComponent {
   }*/
 
   getDetail = () => {
-    fetch("http://challenges.innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
+    fetch("https://challenges.innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -64,7 +64,7 @@ export default class Detail extends React.PureComponent {
   }
 
   joinChallenge = () => {
-    fetch("http://challenges.innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
+    fetch("https://challenges.innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })

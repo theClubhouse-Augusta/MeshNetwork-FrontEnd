@@ -210,36 +210,149 @@
 /* Teams Styles */
 
 .container {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .challenges_myTeamBlock {
-  border:1px solid #E8E8E8;
-  display:flex;
-  flex-direction:row;
+  border: 1px solid #E8E8E8;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items:center;
-  padding:10px;
-  font-family:'Noto Sans';
-  font-size:1.5em;
-  color:#555555;
-  font-variant:small-caps;
-  background:#FFFFFF;
+  align-items: center;
+  padding: 10px;
+  font-family: 'Noto Sans';
+  font-size: 1.challenges_5em;
+  color: #555555;
+  font-variant: small-caps;
+  background: #FFFFFF;
 }
 
 .challenges_teamList {
-  display:flex;
-  flex-direction:column;
-  margin-top:15px;
-  background:#FFFFFF;
-  border:1px solid #E8E8E8;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  background: #FFFFFF;
+  border: 1px solid #E8E8E8;
 }
 
 .challenges_memberAvatar {
-  height:40px;
-  width:40px;
-  border-radius:50%;
-  margin-left:10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+.challenges_mainContainer {
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  min-height: 100vh;
+}
+
+.challenges_newChallengeImagePreview {
+  max-height: 200px;
+  max-width: 100%;
+}
+
+.challenges_contentContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.challenges_sideBar {
+  width: 20%;
+}
+
+.challenges_categoryContainer {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+.challenges_challengeFeed {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 60%;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.challenges_feedBlock {
+  min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  border-top: 1px solid #E8E8E8;
+  text-decoration: none;
+}
+
+.challenges_feedImage {
+  width: 150px;
+  height: 100px;
+}
+
+.challenges_feedInfo {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.challenges_feedTitle {
+  font-family: 'Lato';
+  font-size: 1.5em;
+  font-weight: 300;
+  color: #333333;
+}
+
+.challenges_feedContent {
+  font-family: 'Lato';
+  font-weight: 300;
+  color: #999999;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.challenges_challengeImageBlock {
+  min-height: 100px;
+  border: 4px dashed #DDDDDD;
+  font-family: 'Noto Sans';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  color: #BBBBBB;
+  margin-top: 15px;
+}
+
+.challenges_hquestion-toolbar {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #DDDDDD;
+  display: flex;
+  width: 100%;
+}
+
+.challenges_hquestion-wrapper {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.challenges_question-editor-main {
+  min-height: 200px;
+  font-family: 'Noto Sans';
+  font-weight: 400;
+  font-size: 1.1em;
+  color: #333333;
+  line-height: 30px;
+  letter-spacing: 1px;
 }

@@ -9,6 +9,7 @@ import '!file-loader?name=[name].[ext]!./manifest.json';
 import App from 'containers/App';
 import './app.css';
 import './lms.css';
+import './challenges.css';
 
 ReactDOM.render((
     <BrowserRouter>
