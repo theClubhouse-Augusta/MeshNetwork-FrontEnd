@@ -1,0 +1,130 @@
+/* RightBar Styles */
+
+.challenges_questionTitleInput {
+  display:flex;
+  width:100%;
+  font-size:1.5em;
+  padding:5px;
+  background:#EEEEEE;
+  border:none;
+  outline:none;
+}
+
+.challenges_drawerContainer {
+   display:flex;
+   flex-direction:row;
+   justify-content:space-between;
+}
+
+.challenges_replyEditor {
+  width:80%;
+}
+
+.challenges_replyDrawerOptions {
+  width:20%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+}
+
+.challenges_hquestion-toolbar {
+  background:transparent;
+  border:none;
+  border-bottom:1px solid #DDDDDD;
+  display:flex;
+  width:100%;
+}
+
+.challenges_hquestion-wrapper {
+  width:100%;
+  margin-top:15px;
+}
+
+.challenges_question-editor-main {
+  min-height:200px;
+  font-family:'Noto Sans';
+  font-weight:400;
+  font-size:1.1em;
+  color:#333333;
+  line-height:30px;
+  letter-spacing: 1px;
+}
+
+.challenges_home-toolbar {
+  background:transparent;
+  border:none;
+  border-bottom:1px solid #DDDDDD;
+  display:flex;
+  width:100%;
+}
+
+.challenges_home-wrapper {
+  width:100%;
+  margin-top:15px;
+}
+
+.challenges_rdw-editor-main {
+  min-height:500px;
+  font-family:'Noto Sans';
+  font-weight:400;
+  font-size:1.1em;
+  color:#333333;
+  line-height:30px;
+  letter-spacing: 1px;
+}
+
+.challenges_toolbarHidden {
+  display:none;
+}
+
+.challenges_newFileList {
+  display:flex;
+  flex-direction:column;
+}
+
+.challenges_newFileAdd {
+  min-height:30px;
+  border:2px dashed #DDDDDD;
+  font-family:'Noto Sans';
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+  font-size:1.2em;
+  color:#BBBBBB;
+  margin-top:15px;
+}
+
+.challenges_newFileBlock {
+  width:100%;
+  height:35px;
+  background:#FFFFFF;
+  box-shadow:0 0 10px 0 rgba(0, 0, 0, 0.2);
+  font-family:'Noto Sans';
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content: space-between;
+  font-size:1.2em;
+  color:#BBBBBB;
+  margin-top:15px;
+}
+
+.challenges_newChallengeImagePreview {
+  max-height:200px;
+  max-width:100%;
+}
+
+.challenges_challengeImageBlock {
+  min-height:100px;
+  border:4px dashed #DDDDDD;
+  font-family:'Noto Sans';
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+  font-size:1.5em;
+  color:#BBBBBB;
+  margin-top:15px;
+}

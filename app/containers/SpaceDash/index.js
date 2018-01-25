@@ -10,7 +10,8 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import SpaceInformation from '../../components/SpaceInformation';
+
+import SpaceInformation from 'components/SpaceInformation';
 
 import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear';
 import { AllAppearances } from '../../components/DataViz/AllAppearances';

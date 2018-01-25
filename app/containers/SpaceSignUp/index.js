@@ -167,12 +167,12 @@ export default class SpaceSignUp extends React.PureComponent {
             })
             .then(function (json) {
                 if (json.error) {
-                    _this.showSnack('There was a problem creating this space. Please review your data and ensure it is valid.');
+                    _this.showSnack(json.error);
                 }
                 else {
                     _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
                     setTimeout(() => {
-                        _this.props.history.push(`/space/${spaceID}`)
+                        _this.props.history.push(`/space/${json}`)
                     }, 2000);
                 }
 

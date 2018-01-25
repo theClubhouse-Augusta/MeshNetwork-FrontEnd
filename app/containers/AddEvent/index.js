@@ -14,7 +14,6 @@ import { ListItemText } from 'material-ui/List';
 
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 import Header from '../../components/Header';
-import Footer from 'components/Footer';
 import { MdInsertDriveFile } from 'react-icons/lib/md';
 import DateTimeSelect from '../../components/DateTimeSelect';
 import { SelectedSponsors } from './SelectedSponsors';

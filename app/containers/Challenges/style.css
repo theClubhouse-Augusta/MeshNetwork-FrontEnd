@@ -1,0 +1,245 @@
+/* Home Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.challenges_mainContainer {
+  display:flex;
+  flex-direction:column;
+  background:#f9f9f9;
+  min-height:100vh;
+}
+
+.challenges_contentContainer {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  margin-top:20px;
+}
+
+.challenges_categoryContainer {
+  display:flex;
+  flex-direction:column;
+  width:20%;
+}
+
+.challenges_challengeFeed {
+  display:flex;
+  flex-direction:column;
+  flex-grow:1;
+  max-width:60%;
+  padding-left:2%;
+  padding-right:2%;
+}
+
+.challenges_sideBar {
+  width:20%;
+}
+
+
+.challenges_categoryHeader {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  color:#555555;
+}
+
+.challenges_searchInput {
+  border:1px solid #E8E8E8;
+  border-radius:5px;
+  padding-top:5px;
+  padding-bottom:5px;
+  outline:none;
+  color:#222222;
+  font-size:1.05em;
+  width:100%;
+}
+
+.challenges_newsLetterBlock {
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  background:#FFFFFF;
+  border:1px solid #e8e8e8;
+  padding:5px;
+}
+
+.challenges_newsLetterImage {
+  height:200px;
+  background:#EEEEEE;
+}
+
+.challenges_newsLetterInput {
+  width:90%;
+  margin:0 auto;
+  padding:2%;
+  outline:none;
+  border:1px solid #DDDDDD;
+}
+
+.challenges_feedContainer {
+  width:100%;
+  border:1px solid #e8e8e8;
+  margin-bottom:15px;
+  background:#FFFFFF;
+}
+
+.challenges_feedHeader {
+  font-size:2em;
+  font-family:'Lato';
+  font-weight:300;
+  font-variant:small-caps;
+  color:#777777;
+  padding-left:10px;
+  padding-bottom:5px;
+}
+
+.challenges_feedList {
+  display:flex;
+  flex-direction:column;
+}
+
+.challenges_feedBlock {
+  min-height:100px;
+  display:flex;
+  flex-direction:row;
+  padding:10px;
+  border-top:1px solid #E8E8E8;
+  text-decoration:none;
+}
+
+.challenges_feedImage {
+  width:150px;
+  height:100px;
+}
+
+.challenges_feedInfo {
+  display:flex;
+  flex-direction:column;
+  padding-left:10px;
+  padding-right:10px;
+}
+
+.challenges_feedTitle {
+  font-family:'Lato';
+  font-size:1.5em;
+  font-weight:300;
+  color:#333333;
+}
+
+.challenges_feedContent {
+  font-family:'Lato';
+  font-weight:300;
+  color:#999999;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+.challenges_feedTags {
+  display:flex;
+  flex-direction:row;
+  margin-top:5px
+}
+
+.challenges_tagBlock {
+  font-family:'Noto Sans';
+  font-weight:600;
+  font-size:0.8em;
+  color:#999999;
+  padding:5px;
+  border:1px solid #e8e8e8;
+  background:#F4F4F4;
+  margin-right:10px;
+}
+
+/* Challenges Styles */
+
+.challenges_container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.challenges_questionContainer {
+
+}
+
+.challenges_questionBlock {
+  min-height:100px;
+  display:flex;
+  flex-direction:column;
+  padding:10px;
+  border-top:1px solid #E8E8E8;
+  text-decoration:none;
+}
+
+.challenges_questionHeader {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  margin-left:10px;
+}
+
+.challenges_questionAvatarImg {
+  height:40px;
+  width:40px;
+  border-radius:50%;
+}
+
+.challenges_questionName {
+  margin-left:10px;
+  font-family:'Noto Sans';
+  font-weight:600;
+  color:#555555;
+  font-size:0.challenges_9em;
+}
+
+.challenges_questionWho {
+  margin-left:10px;
+  font-size:0.9em;
+  font-family:'Noto Sans';
+  color:#999999;
+}
+
+/* Teams Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.challenges_myTeamBlock {
+  border:1px solid #E8E8E8;
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items:center;
+  padding:10px;
+  font-family:'Noto Sans';
+  font-size:1.challenges_5em;
+  color:#555555;
+  font-variant:small-caps;
+  background:#FFFFFF;
+}
+
+.challenges_teamList {
+  display:flex;
+  flex-direction:column;
+  margin-top:15px;
+  background:#FFFFFF;
+  border:1px solid #E8E8E8;
+}
+
+.challenges_memberAvatar {
+  height:40px;
+  width:40px;
+  border-radius:50%;
+  margin-left:10px;
+}

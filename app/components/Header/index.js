@@ -72,6 +72,19 @@ export default class Header extends React.PureComponent {
     }
   };
 
+  renderSignOut = () => {
+    if(this.state.user && this.state.token)
+    {
+      return(
+        <div style={{display:'flex', flexDirection:'row'}}>
+          <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>Workspace</Link>
+          <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
+          <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
+        </div>
+      )
+    }
+  }
+
   renderMenu() {
     if (this.state.menuOpen === true) {
       return (
@@ -101,16 +114,14 @@ export default class Header extends React.PureComponent {
             <span className="navLink">Search</span>
           </Link>
           {/*<Link to="/events" className="navButton">Events</Link>*/}
-          <a
-            href="http://challenges.innovationmesh.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to={'/Challenges'}
             className="navMenuButton"
-            style={{ color: "#000000" }}
+            style={{ color: this.state.textColor}}
           >
             <MdAssessment className="navIcon" />
             <span className="navLink"> Challenges</span>
-          </a>
+          </Link>
           <a
             href="http://lms.innovationmesh.com"
             target="_blank"
@@ -121,7 +132,7 @@ export default class Header extends React.PureComponent {
             <MdSchool className="navIcon" />
             <span className="navLink">Education</span>
           </a>
-          {this.renderSignOut()}
+          {this.renderMobileSignOut()}
         </nav>
       );
     }
@@ -145,7 +156,8 @@ export default class Header extends React.PureComponent {
     );
   };
 
-  renderSignOut = () => {
+
+  renderMobileSignOut = () => {
     if (this.state.user && this.state.token) {
       return (
         <div style={{ display: "flex", flexDirection: "row" }}>
@@ -173,16 +185,17 @@ export default class Header extends React.PureComponent {
   };
 
   render() {
-    let headerTitle = (
-      <Link to="/" className="logoNav" style={{ color: "white" }}>
+    let headerTitle = <Link to="/" style={{color:this.state.textColor}}>Mesh <span style={{color:'#ff4d58'}}> Network</span></Link>;
+        if(this.state.headerTitle != "Mesh Network") {
+            headerTitle = this.state.headerTitle;
+        }
+    /*let headerTitle = (
+      <Link to="/" className="logoNav" style={{ color: "#000000" }}>
         <h1 style={{ fontSize: "1em" }}>
           Mesh <span style={{ color: "#ff4d58" }}> Network</span>
         </h1>
       </Link>
-    );
-    if (this.state.headerTitle != "Mesh Network") {
-      headerTitle = this.state.headerTitle;
-    }
+    );*/
     return (
       <div
         className="headerComponent"
@@ -194,6 +207,7 @@ export default class Header extends React.PureComponent {
           </div>
 
           <nav className="nav">
+            <Link to="/" className="navButton" style={{color:this.state.textColor}}>Home</Link>
             <Link
               to="/spaces"
               className="navButton"
@@ -219,16 +233,14 @@ export default class Header extends React.PureComponent {
               <span className="navLink">Search</span>
             </Link>
             {/*<Link to="/events" className="navButton">Events</Link>*/}
-            <a
-              href="http://challenges.innovationmesh.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/Challenges"
               className="navButton"
               style={{ color: this.state.textColor }}
             >
               <MdAssessment className="navIcon" />
               <span className="navLink"> Challenges</span>
-            </a>
+            </Link>
             <a
               href="http://lms.innovationmesh.com"
               target="_blank"

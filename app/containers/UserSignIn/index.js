@@ -52,26 +52,46 @@ export default class UserSignIn extends React.PureComponent {
                 return response.json();
             })
             .then(function (json) {
-                if (json.error) {
-                    _this.showSnack(json.error);
-                }
-                else if (json.token) {
-                    localStorage.setItem('token', json.token);
-                    fetch("https://innovationmesh.com/api/user/auth", {
-                        method: 'GET',
-                        headers: { "Authorization": "Bearer " + json.token }
-                    })
-                        .then(function (response) {
-                            return response.json();
-                        })
-                        .then(function (json) {
-                            localStorage.setItem('user', JSON.stringify(json.user));
-                            _this.showSnack('Welcome back!');
-                            setTimeout(() => {
-                                _this.props.history.push(`/user/${json.user.id}`)
-                            }, 2000);
-                        })
-                }
+              if (json.error) {
+                  _this.showSnack(json.error);
+              }
+              else if (json.token) {
+                let mainToken = json.token;
+                localStorage.setItem('token', mainToken);
+                fetch("https://innovationmesh.com/api/user/auth", {
+                    method: 'GET',
+                    headers: { "Authorization": "Bearer " + mainToken }
+                })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (json) {
+                  let mainUser = json.user;
+                  localStorage.setItem('user', JSON.stringify(mainUser));
+                  fetch('http://challenges.innovationmesh.com/api/signIn', {
+                    method:'POST',
+                    body:data
+                  })
+                  .then(function(response) {
+                    return response.json();
+                  })
+                  .then(function(json) {
+                    if(json.error)
+                    {
+                      _this.showSnack(json.error);
+                    }
+                    else if(json.token)
+                    {
+                      localStorage.setItem('challengeToken', json.token);
+                      //Add the next one here. Remove below and set it in the final promise.
+                      _this.showSnack('Welcome back!');
+                      setTimeout(() => {
+                          _this.props.history.push(`/user/${mainUser.id}`)
+                      }, 2000);
+                    }
+                  })
+                })
+              }
             }.bind(this));
     };
     render() {
