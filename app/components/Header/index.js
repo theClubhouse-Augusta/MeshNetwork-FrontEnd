@@ -76,32 +76,52 @@ export default class Header extends React.PureComponent {
     if (this.state.menuOpen === true) {
       return (
         <nav className="navMobile">
-          <Link to="/" className="navButton">
-            Home
+          <Link
+            to="/spaces"
+            className="navMenuButton"
+            style={{ color: this.state.textColor }}
+          >
+            <MdExplore className="navIcon" />
+            <span className="navLink">Explore</span>
           </Link>
-          <Link to="/spaces" className="navButton">
-            Discover
+          <Link
+            to="/about"
+            className="navMenuButton"
+            style={{ color: this.state.textColor }}
+          >
+            <MdInfoOutline className="navIcon" />
+            <span className="navLink">About</span>
           </Link>
-          <Link to="/about" className="navButton">
-            About
+          <Link
+            to="/members"
+            className="navMenuButton"
+            style={{ color: this.state.textColor }}
+          >
+            <MdSearch className="navIcon" />
+            <span className="navLink">Search</span>
           </Link>
           {/*<Link to="/events" className="navButton">Events</Link>*/}
           <a
             href="http://challenges.innovationmesh.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="navButton"
+            className="navMenuButton"
+            style={{ color: "#000000" }}
           >
-            Challenges
+            <MdAssessment className="navIcon" />
+            <span className="navLink"> Challenges</span>
           </a>
           <a
             href="http://lms.innovationmesh.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="navButton"
+            className="navMenuButton"
+            style={{ color: this.state.textColor }}
           >
-            Education
+            <MdSchool className="navIcon" />
+            <span className="navLink">Education</span>
           </a>
+          {this.renderSignOut()}
         </nav>
       );
     }
@@ -131,15 +151,17 @@ export default class Header extends React.PureComponent {
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Link
             to={"/user/" + this.state.user.id}
-            className="navButton"
+            className="navMenuProfButton"
             style={{ color: this.state.textColor }}
           >
             <MdPerson className="navIcon" />
-            <span className="navLink">Profile</span>
+            <span className="navLink" style={{ marginLeft: ".5em" }}>
+              Profile
+            </span>
           </Link>
           <div
             onClick={this.signOut}
-            className="navButton"
+            className="navMenuProfButton"
             style={{ color: this.state.textColor }}
           >
             <MdExitToApp className="navIcon" />

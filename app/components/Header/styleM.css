@@ -17,7 +17,8 @@
   }
 
   .navIcon {
-    display: none;
+    display: flex;
+    color: #000000;
   }
 
   .navMobile {
@@ -25,19 +26,42 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    background: #ffffff;
+    z-index: 2;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    padding-top: 5vh;
   }
 
-  .navButton {
+  .navLink {
+    display: flex;
+    color: #000000;
+    margin-left: 1em;
+  }
+
+  .navMenuButton {
+    display: flex;
+    flex-direction: row;
     padding: 10px;
     margin: 0 auto;
     margin-top: 10px;
-    background: #cccccc;
     width: 90%;
-    border-radius: 5px;
+    font-size: 2em;
+    font-family: "Encode Sans", sans-serif;
+  }
+
+  .navMenuProfButton {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #signOutLink {
+    margin-left: -0.45em;
   }
 }
 
-@media (max-width: 1024px) and (orientation: portrait) {
+@media (max-width: 1024px) and (min-width: 426px) and (orientation: portrait) {
   .logoNav {
     color: #ffffff;
   }
