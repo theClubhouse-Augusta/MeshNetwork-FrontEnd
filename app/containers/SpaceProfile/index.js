@@ -16,6 +16,12 @@ import InstagramIcon from 'react-icons/lib/fa/instagram';
 import MailIcon from 'react-icons/lib/fa/envelope-o';
 import LinkIcon from 'react-icons/lib/fa/chain';
 
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+
 
 import './style.css';
 import './styleM.css';
@@ -58,7 +64,7 @@ export default class SpaceProfile extends React.PureComponent {
     }
 
     getSpaceEvents = (id) => {
-        fetch('https://innovationmesh.com/api/workevents/' + id, {
+        fetch('https://innovationmesh.com/api/spaceEvents/' + id, {
             method: 'GET'
         })
             .then(function (response) {
@@ -66,7 +72,7 @@ export default class SpaceProfile extends React.PureComponent {
             })
             .then(function (json) {
                 this.setState({
-                    events: json.data
+                    events: json
                 })
             }.bind(this))
     }
@@ -107,6 +113,31 @@ export default class SpaceProfile extends React.PureComponent {
                 )
             }
         }
+    }
+
+    eventStyleGetter = (event, start, end, isSelected) => {
+      console.log(event);
+      var backgroundColor = '#ff4d58';
+      var style = {
+          background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url('+event.image+')',
+          backgroundRepeat:'no-repeat',
+          backgroundSize:'cover',
+          backgroundPosition:'center center',
+          fontWeight:'bold',
+          borderRadius:'0px',
+          border:'none',
+          fontFamily:'Noto Sans',
+          display: 'flex',
+          flexDirection:'column',
+          minHeight:'40px'
+      };
+      return {
+          style: style
+      };
+    };
+
+    eventRoute = (event) => {
+      this.props.history.push('/event/'+event.id);
     }
 
 
@@ -162,7 +193,7 @@ export default class SpaceProfile extends React.PureComponent {
                                 <div className="spaceShare"></div>
                                 <div className="spaceMainDescription" dangerouslySetInnerHTML={{ __html: this.state.spaceProfile.description }} />
                                 <div className="spaceFeatures"></div>
-                                <div className="spaceEvents">
+                                {/*<div className="spaceEvents">
                                     {this.state.events.map((event, i) => (
                                         <Link to={'/event/' + event.id} className="spaceEventBlock">
                                             <div className="spaceEventBlockImage">
@@ -174,7 +205,7 @@ export default class SpaceProfile extends React.PureComponent {
                                             </div>
                                         </Link>
                                     ))}
-                                </div>
+                                </div>*/}
                             </div>
                             <div className="spaceMainTwo">
                                 <div className="spaceOptions">
@@ -206,6 +237,19 @@ export default class SpaceProfile extends React.PureComponent {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div style={{width:'100%', background:'#FFFFFF'}}>
+                          <BigCalendar
+                            style={{minHeight:'100vh', fontFamily:'Noto Sans', padding:'15px'}}
+                            defaultView="month"
+                            {...this.props}
+                            events={this.state.events}
+                            onSelectEvent={event => this.eventRoute(event)}
+                            views={['month']}
+                            step={30}
+                            defaultDate={new Date()}
+                            eventPropGetter={(this.eventStyleGetter)}
+                          />
                         </div>
                     </div>
                 </main>

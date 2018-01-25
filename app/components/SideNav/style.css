@@ -1,0 +1,36 @@
+/* SideNav Styles */
+
+.challenges_categoryBlock {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  cursor:pointer;
+  padding:5px;
+  text-decoration:none;
+}
+
+.challenges_categoryIcon {
+  width:30px;
+  height:30px;
+  background:#000000;
+  margin-right:10px;
+}
+
+.challenges_categoryName {
+  font-family:'Noto Sans';
+  font-size:0.8em;
+  font-weight:bold;
+  color:#555555;
+}
+
+.challenges_categoryBlock:hover {
+  background:#EEEEEE;
+}
+
+.challenges_categoryTitle {
+  font-family:'Noto Sans';
+  font-size:0.9em;
+  font-weight:600;
+  color:#888888;
+  margin-bottom:5px;
+}

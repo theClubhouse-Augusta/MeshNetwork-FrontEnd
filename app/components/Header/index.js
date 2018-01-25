@@ -96,6 +96,7 @@ export default class Header extends React.PureComponent {
       {
         return(
           <div style={{display:'flex', flexDirection:'row'}}>
+            <Link to={'/user/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>Workspace</Link>
             <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
             <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
           </div>
@@ -121,7 +122,7 @@ export default class Header extends React.PureComponent {
                         <Link to="/about" className="navButton" style={{color:this.state.textColor}}>About</Link>
                         <Link to="/members" className="navButton" style={{color:this.state.textColor}}>Search</Link>
                         {/*<Link to="/events" className="navButton">Events</Link>*/}
-                        <a href="http://challenges.innovationmesh.com" target="_blank" rel="noopener noreferrer" className="navButton" style={{ color: this.state.textColor }}>Challenges</a>
+                        <Link to="/Challenges" className="navButton" style={{ color: this.state.textColor }}>Challenges</Link>
                         <a href="http://lms.innovationmesh.com" target="_blank" rel="noopener noreferrer" className="navButton" style={{ color: this.state.textColor }}>Education</a>
                         {this.renderSignOut()}
                       </nav>

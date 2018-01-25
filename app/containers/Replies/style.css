@@ -1,0 +1,216 @@
+/* Replies Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.challenges_questionTopicContainer {
+  background:#FFFFFF;
+  width:100%;
+  min-height:175px;
+  border-bottom:1px solid #E8E8E8;
+  display:flex;
+  flex-direction:row;
+  justify-content: center;
+}
+
+.challenges_questionTopic {
+  width:1000px;
+  display:flex;
+  flex-direction:row;
+}
+
+.challenges_questionTopicAvatar {
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+  min-height:175px;
+  overflow:hidden;
+}
+
+.challenges_questionTopicAvatarImg {
+  width:100%;
+  max-width:120px;
+  height:auto;
+}
+
+.challenges_questionAvatarName {
+  font-family:"Noto Sans";
+  font-size:0.8em;
+  color:#0098ff;
+  font-weight:bold;
+  margin-top:3px;
+}
+
+.challenges_questionTopicInfo {
+  display:flex;
+  flex-direction:column;
+  justify-content: space-between;
+  flex-grow:1;
+  padding:25px;
+}
+
+.challenges_questionTopicContent {
+  font-family:'Noto Sans';
+  font-size:0.9em;
+  color:#333333;
+}
+
+.challenges_questionTopicStats {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  font-family:"Noto Sans";
+  font-size:0.8em;
+  color:#0098ff;
+  font-weight:bold;
+}
+
+.challenges_questionTopicButtons {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+}
+
+.challenges_questionTopicButton {
+  margin-right:10px;
+}
+
+.challenges_detailReplyContainer {
+  width:100%;
+  max-width:900px;
+  margin:0 auto;
+  margin-top:30px;
+}
+
+.challenges_replyBlockContainer {
+  background:#FFFFFF;
+  display:flex;
+  flex-direction:column;
+  border:1px solid #e1e8ed;
+  margin-bottom:15px;
+}
+
+.challenges_replyBlock {
+  min-height:75px;
+  display:flex;
+  flex-direction:row;
+}
+
+.challenges_replyChildContainer {
+  display:flex;
+  flex-direction:column;
+  margin-left:30px;
+}
+
+.challenges_replyBlockChild {
+  min-height:75px;
+  display:flex;
+  flex-direction:row;
+  margin-top:10px;
+  margin-left:30px;
+  background:#F2F2F2;
+}
+
+.challenges_replyAvatar {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:60px;
+  width:60px;
+  margin:5px;
+  overflow:hidden;
+}
+
+.challenges_replyAvatarImg {
+  width:100%;
+  max-width:60px;
+}
+
+.challenges_replyInfo {
+  display:flex;
+  flex-direction:column;
+  flex-grow:1;
+}
+
+.challenges_replyTop {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  border-bottom:1px solid #DDDDDD;
+  align-items:center;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+.challenges_replyTopInfo {
+  display:flex;
+  flex-direction:row;
+}
+
+.challenges_replyName {
+  font-family:"Noto Sans";
+  font-size:0.8em;
+  color:#0098ff;
+  font-weight:bold;
+  margin-left:5px;
+}
+
+.challenges_replyDate {
+  font-family:"Noto Sans";
+  font-weight:bold;
+  font-size:0.7em;
+  color:#888888;
+  margin-left:10px;
+}
+
+.challenges_replyContent {
+  padding:5px;
+  font-family:'Noto Sans';
+  font-size:0.8em;
+  color:#333333;
+}
+
+.challenges_replyModBlock {
+  background:#0098ff;
+  border-radius:3px;
+  font-family:'Noto Sans';
+  font-size:0.65em;
+  color:#FFFFFF;
+  padding-left:3px;
+  padding-right:3px;
+  padding-top:1px;
+  padding-bottom:1px;
+  margin-left:5px;
+  font-weight:bold;
+}
+
+.challenges_replyOptions {
+  display:flex;
+  flex-direction:row;
+}
+
+.challenges_replyButton {
+  font-family:"Noto Sans";
+  font-size:0.8em;
+  color:#0098ff;
+  font-weight:bold;
+  margin-right:10px;
+  cursor:pointer;
+}
+
+.challenges_replyEditor {
+  width:60%;
+}
+
+.challenges_replyDrawerOptions {
+  width:40%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content: center;
+}

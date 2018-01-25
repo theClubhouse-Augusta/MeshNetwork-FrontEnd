@@ -33,6 +33,8 @@ const MenuProps = {
 
 class CheckoutForm extends React.Component {
     state = {
+        token:localStorage.getItem('token'),
+        user:JSON.parse(localStorage.getItem('user')),
         space: '',
         multi: true,
         multiValue: [],
@@ -55,11 +57,15 @@ class CheckoutForm extends React.Component {
     };
 
     componentDidMount() {
+      if(this.state.token && this.state.user) {
+        this.props.history.push('/user/'+this.state.user.id);
+      } else{
         this.getSpace();
         this.loadSkills();
         if (this.props.pubkey) {
             this.loadPlans();
         }
+      }
     }
 
     getSpace = () => {
@@ -202,12 +208,26 @@ class CheckoutForm extends React.Component {
             })
                 .then(response => response.json())
                 .then(user => {
-                    if (user.error) {
-                        this.showSnack(user.error);
-                    }
-                    // setTimeout(() => {
-                    //   this.props.history.push(`/user/${user.id}`)
-                    // }, 2000);
+                  if (user.error) {
+                      this.showSnack(user.error);
+                  } else if (user.token) {
+                      localStorage.setItem('token', user.token);
+                      fetch("https://innovationmesh.com/api/getUser", {
+                          method: 'GET',
+                          headers: { "Authorization": "Bearer " + user.token }
+                      })
+                      .then(function (response) {
+                          return response.json();
+                      })
+                      .then(function (json) {
+                          localStorage.setItem('user', JSON.stringify(json.user));
+                          _this.showSnack("Account created successfully!");
+                          setTimeout(() => {
+                              _this.props.history.push(`/user/${json.user.id}`)
+                          }, 2000);
+                      })
+
+                  }
                 })
                 .catch(error => Logger(`front-end: CheckoutForm@storeUser: ${error.message}`));
         });
@@ -248,15 +268,6 @@ class CheckoutForm extends React.Component {
                 if (user.error) {
                     this.showSnack(user.error);
                 } else if (user.token) {
-                    /*fetch('http://houseofhackers.me:81/signUp/', {
-                        method: 'POST',
-                        body: data
-                    })
-
-                    fetch('http://challenges.innovationmesh.com/api/signUp', {
-                        method: 'POST',
-                        body: data
-                    })*/
                     localStorage.setItem('token', user.token);
                     fetch("https://innovationmesh.com/api/getUser", {
                         method: 'GET',

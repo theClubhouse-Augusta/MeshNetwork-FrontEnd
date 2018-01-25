@@ -18,7 +18,7 @@ import './style.css';
 import './styleM.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 export default class Booking extends React.PureComponent {
     constructor(props) {

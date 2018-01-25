@@ -1,0 +1,36 @@
+/* Teams Styles */
+
+.container {
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.challenges_myTeamBlock {
+  border:1px solid #E8E8E8;
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items:center;
+  padding:10px;
+  font-family:'Noto Sans';
+  font-size:1.challenges_5em;
+  color:#555555;
+  font-variant:small-caps;
+  background:#FFFFFF;
+}
+
+.challenges_teamList {
+  display:flex;
+  flex-direction:column;
+  margin-top:15px;
+  background:#FFFFFF;
+  border:1px solid #E8E8E8;
+}
+
+.challenges_memberAvatar {
+  height:40px;
+  width:40px;
+  border-radius:50%;
+  margin-left:10px;
+}

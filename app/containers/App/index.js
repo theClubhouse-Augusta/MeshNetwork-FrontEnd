@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import asyncComponent from '../../components/AsyncComponent';
+
 const Home = asyncComponent(() => import('../Home'));
 const About = asyncComponent(() => import('../About'));
 const Booking = asyncComponent(() => import('../Booking'));
@@ -8,7 +9,6 @@ const EventDetail = asyncComponent(() => import('../EventDetail'));
 const Spaces = asyncComponent(() => import('../Spaces'));
 const MemberAcct = asyncComponent(() => import('../MemberAcct'));
 const MemberSearch = asyncComponent(() => import('../MemberSearch'));
-const MemberDash = asyncComponent(() => import('../MemberDash'));
 const AddEvent = asyncComponent(() => import('../AddEvent'));
 const SpaceProfile = asyncComponent(() => import('../SpaceProfile'));
 const UserProfile = asyncComponent(() => import('../UserProfile'));
@@ -19,7 +19,24 @@ const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
 
+
+const Challenges = asyncComponent(() => import('containers/Challenges'));
+const Discover = asyncComponent(() => import('containers/Discover'));
+const Ask = asyncComponent(() => import('containers/Ask'));
+const Replies = asyncComponent(() => import('containers/Replies'));
+const Detail = asyncComponent(() => import('containers/Detail'));
+const Team = asyncComponent(() => import('containers/Team'));
+const Teams = asyncComponent(() => import('containers/Teams'));
+
 export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      token:localStorage.getItem('token'),
+      user:JSON.parse(localStorage.getItem('user')),
+    };
+  }
+
     render() {
         return (
             <Switch>
@@ -73,11 +90,6 @@ export default class App extends Component {
                 />
 
                 <Route
-                    path="/dashboard"
-                    component={MemberDash}
-                />
-
-                <Route
                     path="/members"
                     render={(props) =>
                         <MemberSearch
@@ -116,6 +128,15 @@ export default class App extends Component {
                     path="/spacedash/:id"
                     render={(props) => <SpaceDash {...props} />}
                 />
+
+                <Route exact path='/Challenges' render={() => <Challenges app={this}/> } />
+                <Route path='/Challenges/Discover' render={() => <Discover app={this}/> } />
+                <Route path='/Challenges/Discover/:id' render={(props) => <Discover {...props} app={this}/> } />
+                <Route path='/Challenges/Challenge/:id' render={(props) => <Detail {...props}/> } />
+                <Route path='/Challenges/Ask' render={() => <Ask app={this}/> } />
+                <Route path='/Challenges/Ask/:id' render={(props) => <Replies {...props} app={this}/> } />
+                <Route path='/Challenges/Teams' render={() => <Teams app={this}/> } />
+                <Route path='/Challenges/Team/:id' render={(props) => <Team {...props} app={this}/> } />
 
                 <Route component={NotFound} />
             </Switch>
