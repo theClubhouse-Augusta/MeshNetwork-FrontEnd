@@ -208,6 +208,18 @@ export default class Header extends React.PureComponent {
     }
   };
 
+  renderMyCourses = () => {
+    if(this.state.token) {
+      return(
+        <Link to={'/LMS/MyLMS'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+      )
+    } else {
+      return(
+        <Link to={'/signIn'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+      )
+    }
+  }
+
   render() {
     let headerTitle = <Link to="/" style={{color:this.state.textColor}}>Mesh <span style={{color:'#ff4d58'}}> Network</span></Link>;
         if(this.state.headerTitle != "Mesh Network") {
@@ -278,7 +290,8 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.challengeMenu)}
                 onClose={this.handleChallengeMenuClose}
               >
-                <Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>
+                {/*<Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>*/}
+                <Link to={'/Challenges'}><MenuItem onClick={this.handleChallengeMenuClose}>Browse</MenuItem></Link>
                 <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
               </Menu>
             </span>
@@ -304,7 +317,7 @@ export default class Header extends React.PureComponent {
                 onClose={this.handleEducationMenuClose}
               >
                 <Link to={'/LMS/Courses'}><MenuItem onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
-                <Link to={'/LMS/MyLMS'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+                {this.renderMyCourses()}
               </Menu>
             </span>
 
