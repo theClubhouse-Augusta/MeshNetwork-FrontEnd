@@ -41,7 +41,7 @@ export default class LMS extends React.PureComponent {
 
   getCourses = () => {
 
-    fetch("https://houseofhackers.me:81/getCourses/0/6/1/", {
+    fetch("https://lms.innovationmesh.com/getCourses/0/6/1/", {
       method:'GET',
     })
     .then(function(response) {

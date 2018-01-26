@@ -49,7 +49,7 @@ export default class Course extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://houseofhackers.me:81/showCourse/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/showCourse/"+id+"/", {
       method:'GET'
     })
     .then(function(response) {

@@ -37,7 +37,7 @@ export default class Enroll extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://houseofhackers.me:81/showCourse/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/showCourse/"+id+"/", {
       method:'GET'
     })
     .then(function(response) {
@@ -52,7 +52,7 @@ export default class Enroll extends React.PureComponent {
 
   storeEnroll = () => {
     let _this = this;
-    fetch("https://houseofhackers.me:81/enrollCourse/" + this.props.courseID + "/", {
+    fetch("https://lms.innovationmesh.com/enrollCourse/" + this.props.courseID + "/", {
       method:'POST',
       body:data,
       headers: { 'Authorization': 'JWT ' + this.state.token}

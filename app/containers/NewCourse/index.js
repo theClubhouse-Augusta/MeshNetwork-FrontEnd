@@ -72,7 +72,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://houseofhackers.me:81/editCourse/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/editCourse/"+id+"/", {
       method:'GET',
       headers:{'Authorization': 'JWT '+this.state.token}
     })
@@ -133,8 +133,8 @@ export default class NewCourse extends React.PureComponent {
           courseInformation: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(json.course.courseInformation))),
           courseInstructorName:json.course.courseInstructorName,
           courseInstructorInfo:json.course.courseInstructorInfo,
-          courseInstructorAvatarPreview:'https://houseofhackers.me:81/media/' + json.course.courseInstructorAvatar,
-          courseImagePreview:'https://houseofhackers.me:81/media/' + json.course.courseImage,
+          courseInstructorAvatarPreview:'https://lms.innovationmesh.com/media/' + json.course.courseInstructorAvatar,
+          courseImagePreview:'https://lms.innovationmesh.com/media/' + json.course.courseImage,
           coursePrice:json.course.coursePrice,
           courseStatus:json.course.courseStatus,
           lessons:lessons
@@ -146,7 +146,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("https://houseofhackers.me:81/getCategories/", {
+    fetch("https://lms.innovationmesh.com/getCategories/", {
       method:'GET'
     })
     .then(function(response) {
@@ -324,7 +324,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('questionContent', "");
       data.append('questionType', type);
 
-      fetch("https://houseofhackers.me:81/storeQuestion/", {
+      fetch("https://lms.innovationmesh.com/storeQuestion/", {
         method:'POST',
         body:data,
         headers:{'Authorization':'JWT ' + this.state.token}
@@ -362,7 +362,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('questionContent', event.target.value);
 
-    fetch("https://houseofhackers.me:81/updateQuestion/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/updateQuestion/"+id+"/", {
       method:'PUT',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -399,7 +399,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('answerContent', "");
       data.append('isCorrect', false);
 
-      fetch("https://houseofhackers.me:81/storeAnswer/", {
+      fetch("https://lms.innovationmesh.com/storeAnswer/", {
         method:'POST',
         body:data,
         headers:{'Authorization':'JWT ' + this.state.token}
@@ -435,7 +435,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('answerContent', event.target.value);
 
-    fetch("https://houseofhackers.me:81/updateAnswer/" + id + "/", {
+    fetch("https://lms.innovationmesh.com/updateAnswer/" + id + "/", {
       method:'PUT',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -511,7 +511,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('coursePrice', coursePrice);
     data.append('courseStatus', courseStatus);
 
-    fetch("https://houseofhackers.me:81/updateCourse/"+this.props.match.params.id+"/", {
+    fetch("https://lms.innovationmesh.com/updateCourse/"+this.props.match.params.id+"/", {
       method:'PUT',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -542,7 +542,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseImage', this.state.courseImage);
 
-    fetch("https://houseofhackers.me:81/updateCourseImage/"+this.props.match.params.id+"/", {
+    fetch("https://lms.innovationmesh.com/updateCourseImage/"+this.props.match.params.id+"/", {
       method:'PUT',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -573,7 +573,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
 
-    fetch("https://houseofhackers.me:81/updateCourseInstructorAvatar/"+this.props.match.params.id+"/", {
+    fetch("https://lms.innovationmesh.com/updateCourseInstructorAvatar/"+this.props.match.params.id+"/", {
       method:'PUT',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -602,7 +602,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('courseID', this.props.match.params.id);
     data.append('lessonName', "Lesson Title");
 
-    fetch("https://houseofhackers.me:81/storeLesson/", {
+    fetch("https://lms.innovationmesh.com/storeLesson/", {
       method:'POST',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -634,7 +634,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('lessonName', lessonName);
 
-    fetch("https://houseofhackers.me:81/updateLesson/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/updateLesson/"+id+"/", {
       method:'PUT',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -664,7 +664,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('lectureType', lessons[i].lectures[j].lectureType);
       data.append('lectureVideo', lessons[i].lectures[j].lectureVideo);
 
-    fetch("https://houseofhackers.me:81/updateLecture/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/updateLecture/"+id+"/", {
       method:'PUT',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -691,7 +691,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureType', "Text");
     data.append('lectureVideo', "");
 
-    fetch("https://houseofhackers.me:81/storeLecture/", {
+    fetch("https://lms.innovationmesh.com/storeLecture/", {
       method:'POST',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -725,7 +725,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('fileContent', file.fileData);
 
-    fetch("https://houseofhackers.me:81/storeFiles/", {
+    fetch("https://lms.innovationmesh.com/storeFiles/", {
       method:'POST',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
@@ -757,7 +757,7 @@ export default class NewCourse extends React.PureComponent {
     let _this = this;
     let lessons = this.state.lessons;
 
-    fetch("https://houseofhackers.me:81/deleteLesson/" + id + "/", {
+    fetch("https://lms.innovationmesh.com/deleteLesson/" + id + "/", {
       method:'DELETE',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
@@ -783,7 +783,7 @@ export default class NewCourse extends React.PureComponent {
     let _this = this;
     let lessons = this.state.lessons;
 
-    fetch("https://houseofhackers.me:81/deleteLecture/" + id + "/", {
+    fetch("https://lms.innovationmesh.com/deleteLecture/" + id + "/", {
       method:'DELETE',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
@@ -810,7 +810,7 @@ export default class NewCourse extends React.PureComponent {
     let _this = this;
     let lessons = this.state.lessons;
 
-    fetch("https://houseofhackers.me:81/deleteQuestion/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/deleteQuestion/"+id+"/", {
       method:'DELETE',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
@@ -837,7 +837,7 @@ export default class NewCourse extends React.PureComponent {
     let _this = this;
     let lessons = this.state.lessons;
 
-    fetch("https://houseofhackers.me:81/deleteAnswer/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/deleteAnswer/"+id+"/", {
       method:'DELETE',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
@@ -864,7 +864,7 @@ export default class NewCourse extends React.PureComponent {
     let _this = this;
     let lessons = this.state.lessons;
 
-    fetch("https://houseofhackers.me:81/deleteFile/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/deleteFile/"+id+"/", {
       method:'DELETE',
       headers:{'Authorization':'JWT ' + this.state.token}
     })

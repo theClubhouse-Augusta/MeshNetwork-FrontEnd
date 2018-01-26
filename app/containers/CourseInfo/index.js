@@ -48,7 +48,7 @@ export default class CourseInfo extends React.PureComponent {
   getCourse = (id) => {
     let _this = this;
 
-    fetch("https://houseofhackers.me:81/showCourse/"+id + "/", {
+    fetch("https://lms.innovationmesh.com/showCourse/"+id + "/", {
       method:'GET',
       headers: { 'Authorization': 'JWT ' + this.state.token }
     })

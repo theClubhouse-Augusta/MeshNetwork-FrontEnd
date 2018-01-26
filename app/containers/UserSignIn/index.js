@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
+import { LinearProgress } from 'material-ui/Progress';
 
 import './style.css';
 import './styleM.css';
@@ -23,6 +24,7 @@ export default class UserSignIn extends React.PureComponent {
             password: "",
             msg: "",
             snack: false,
+            isLoading:false
         }
     }
 
@@ -39,6 +41,9 @@ export default class UserSignIn extends React.PureComponent {
     handlePassword = (event) => { this.setState({ password: event.target.value }) };
 
     signIn = () => {
+      this.setState({
+        isLoading:true
+      })
         let _this = this;
         let data = new FormData();
         data.append('email', this.state.email);
@@ -68,7 +73,7 @@ export default class UserSignIn extends React.PureComponent {
                 .then(function (json) {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
-                  fetch('http://challenges.innovationmesh.com/api/signIn', {
+                  fetch('https://challenges.innovationmesh.com/api/signIn', {
                     method:'POST',
                     body:data
                   })
@@ -86,7 +91,7 @@ export default class UserSignIn extends React.PureComponent {
                       let newData = new FormData();
                       newData.append('username', _this.state.email);
                       newData.append('password', _this.state.password);
-                      fetch('http://houseofhackers.me:81/signIn/', {
+                      fetch('https://lms.innovationmesh.com/signIn/', {
                         method:'POST',
                         body:newData
                       })
@@ -101,7 +106,7 @@ export default class UserSignIn extends React.PureComponent {
                         else if(json.token)
                         {
                           localStorage.setItem('lmsToken', json.token);
-                          fetch('http://houseofhackers.me:81/getUser/', {
+                          fetch('https://lms.innovationmesh.com/getUser/', {
                             method:'GET',
                             headers: {'Authorization' : 'JWT ' + json.token}
                           })
@@ -109,6 +114,9 @@ export default class UserSignIn extends React.PureComponent {
                             return response.json();
                           })
                           .then(function(json) {
+                            this.setState({
+                              isLoading:false
+                            })
                             localStorage.setItem('lmsUser', JSON.stringify(json.user));
                             _this.showSnack('Welcome back!');
                             setTimeout(() => {
@@ -123,17 +131,28 @@ export default class UserSignIn extends React.PureComponent {
               }
             }.bind(this));
     };
+
+    renderLoading = () => {
+      if(this.state.isLoading)
+      {
+        return(
+          <LinearProgress color="accent" style={{ width:'100%', position:'fixed', top:'0', left:'0', right:'0'}}/>
+        )
+      }
+    }
+
     render() {
         return (
             <div className="userSignIncontainer">
                 <Helmet title="UserSignIn" meta={[{ name: 'description', content: 'Description of UserSignIn' }]} />
 
                 <header style={{ background: '#FFFFFF' }}>
-                    <Header />
-                    <div className="userSignUpBanner">
-                        <div className="homeHeaderContentTitle">Welcome Back, Fellow Coworker</div>
-                        <div className="homeHeaderContentSubtitle">Find out what you have been missing</div>
-                    </div>
+                  {this.renderLoading()}
+                  <Header />
+                  <div className="userSignUpBanner">
+                      <div className="homeHeaderContentTitle">Welcome Back, Fellow Coworker</div>
+                      <div className="homeHeaderContentSubtitle">Find out what you have been missing</div>
+                  </div>
                 </header>
 
                 <main className="userSignInMain">

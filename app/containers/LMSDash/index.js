@@ -84,7 +84,7 @@ export default class LMSDash extends React.PureComponent {
   getCourses = (category = 0) => {
     let _this = this;
 
-    fetch('https://houseofhackers.me:81/myCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
+    fetch('https://lms.innovationmesh.com/myCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
       method:'GET',
       headers: {
         'Authorization': 'JWT ' + this.state.token
@@ -131,7 +131,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("https://houseofhackers.me:81/getCategories/", {
+    fetch("https://lms.innovationmesh.com/getCategories/", {
       method:'GET'
     })
     .then(function(response) {
@@ -147,7 +147,7 @@ export default class LMSDash extends React.PureComponent {
   createCourse = () => {
     let _this = this;
 
-    fetch('https://houseofhackers.me:81/storeCourse/', {
+    fetch('https://lms.innovationmesh.com/storeCourse/', {
       method:'POST',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
@@ -168,7 +168,7 @@ export default class LMSDash extends React.PureComponent {
   deleteCourse = () => {
     let _this = this;
     let course = this.state.courses;
-    fetch("https://houseofhackers.me:81/deleteCourse/"+this.state.activeCourse+"/", {
+    fetch("https://lms.innovationmesh.com/deleteCourse/"+this.state.activeCourse+"/", {
       method:'POST',
       headers:{'Authorization':'JWT '+ this.state.token}
     })

@@ -51,7 +51,7 @@ export default class Lessons extends React.PureComponent {
 
   getCourse = (id) => {
     let _this = this;
-    fetch("https://houseofhackers.me:81/showCourse/"+id+"/", {
+    fetch("https://lms.innovationmesh.com/showCourse/"+id+"/", {
       method:'GET',
       headers:{'Authorization': 'JWT ' + this.state.token}
     })
@@ -153,7 +153,7 @@ export default class Lessons extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('answers', this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers);
 
-    fetch("https://houseofhackers.me:81/completeLecture/", {
+    fetch("https://lms.innovationmesh.com/completeLecture/", {
       method:'POST',
       body:data,
       headers:{'Authorization': 'JWT '+this.state.token}

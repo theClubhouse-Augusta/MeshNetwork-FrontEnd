@@ -87,7 +87,7 @@ export default class Courses extends React.PureComponent {
       })
     }
 
-    fetch('https://houseofhackers.me:81/getCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
+    fetch('https://lms.innovationmesh.com/getCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
       method:'GET'
     })
     .then(function(response) {
@@ -130,7 +130,7 @@ export default class Courses extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("https://houseofhackers.me:81/getCategories/", {
+    fetch("https://lms.innovationmesh.com/getCategories/", {
       method:'GET'
     })
     .then(function(response) {
@@ -157,7 +157,7 @@ export default class Courses extends React.PureComponent {
     let data = new FormData();
     data.append('searchContent', this.state.searchContent);
 
-    fetch('https://houseofhackers.me:81/searchCourse/'+this.state.count+'/'+this.state.page+'/', {
+    fetch('https://lms.innovationmesh.com/searchCourse/'+this.state.count+'/'+this.state.page+'/', {
       method:'POST',
       body:data
     })
