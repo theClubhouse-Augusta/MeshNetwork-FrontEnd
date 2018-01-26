@@ -14,6 +14,13 @@ import { EditorState, convertToRaw } from 'draft-js';
 import drafToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import IconButton from 'material-ui/IconButton';
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Visibility from 'material-ui-icons/Visibility';
+import VisibilityOff from 'material-ui-icons/VisibilityOff';
+
+import { LinearProgress } from 'material-ui/Progress';
 
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
@@ -43,8 +50,21 @@ export default class SpaceSignUp extends React.PureComponent {
             logoPreview: "",
             msg: "",
             snack: false,
+            isLoading:false,
+            showPassword:false,
+            passwordError:'',
         }
     }
+
+    handleMouseDownPassword = event => {
+      event.preventDefault();
+    };
+
+
+    handleClickShowPasssword = () => {
+      this.setState({ showPassword: !this.state.showPassword });
+    };
+
 
     handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
@@ -76,7 +96,19 @@ export default class SpaceSignUp extends React.PureComponent {
 
     handleUserName = (event) => { this.setState({ userName: event.target.value }) };
     handleUserEmail = (event) => { this.setState({ userEmail: event.target.value }) };
-    handleUserPassword = (event) => { this.setState({ userPassword: event.target.value }) };
+    handleUserPassword = (event) => {
+      this.setState({ userPassword: event.target.value }, function() {
+        if(this.state.userPassword.length < 6) {
+          this.setState({
+            passwordError:'Password Too Short'
+          })
+        } else {
+          this.setState({
+            passwordError:''
+          })
+        }
+      })
+    };
     handleAvatar = (event) => {
         event.preventDefault();
         let reader = new FileReader();
@@ -92,39 +124,10 @@ export default class SpaceSignUp extends React.PureComponent {
         reader.readAsDataURL(file);
     };
 
-    storeUser = spaceID => {
-        let data = new FormData();
-        let {
-      userName,
-            userEmail,
-            userPassword,
-            avatar
-    } = this.state;
-
-        data.append('name', userName.trim());
-        data.append('email', userEmail.trim());
-        data.append('password', userPassword.trim());
-        data.append('spaceID', spaceID);
-        data.append('avatar', avatar);
-
-        fetch("https://innovationmesh.com/api/signUp", {
-            method: 'POST',
-            body: data,
-        })
-            .then(response => response.json())
-            .then(user => {
-                if (user.error) {
-                    this.showSnack(user.error);
-                } else {
-                    localStorage['token'] = user.token;
-                }
-            })
-            .catch(error => {
-                alert(`signUp ${error}`);
-            })
-    }
-
     storeSpace = () => {
+      this.setState({
+        isLoading:true
+      })
         let data = new FormData();
         let _this = this;
         let {
@@ -170,13 +173,16 @@ export default class SpaceSignUp extends React.PureComponent {
                     _this.showSnack(json.error);
                 }
                 else {
-                    _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
-                    setTimeout(() => {
-                        _this.props.history.push(`/space/${json}`)
-                    }, 2000);
-                }
 
-            })
+                  _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
+                  setTimeout(() => {
+                      _this.props.history.push(`/space/${json}`)
+                  }, 2000);
+                }
+                _this.setState({
+                  isLoading:false
+                })
+            }.bind(this))
     }
 
     renderLogoImage = () => {
@@ -217,6 +223,15 @@ export default class SpaceSignUp extends React.PureComponent {
         }
     }
 
+    renderLoading = () => {
+      if(this.state.isLoading)
+      {
+        return(
+          <LinearProgress color="accent" style={{ width:'100%', position:'fixed', top:'0', left:'0', right:'0'}}/>
+        )
+      }
+    }
+
     render() {
         return (
             <div className="spaceSignUpcontainer">
@@ -227,11 +242,12 @@ export default class SpaceSignUp extends React.PureComponent {
                 </Helmet>
 
                 <header>
+                  {this.renderLoading()}
                     <Header />
                     <div className="spaceSignUpBanner">
                         <div className="homeHeaderContentTitle">Add your CoWorking Space</div>
                         <div className="homeHeaderContentSubtitle">Join our Mesh Network of Innovation</div>
-                    </div>
+                    </div>9
                 </header>
 
                 <main className="spaceSignUpMain">
@@ -239,7 +255,26 @@ export default class SpaceSignUp extends React.PureComponent {
                         <div className="spaceSignUpTitle">Create a Founder</div>
                         <TextField label="Founder Full Name" value={this.state.userName} onChange={this.handleUserName} margin="normal" />
                         <TextField label="Founder E-mail" value={this.state.userEmail} onChange={this.handleUserEmail} margin="normal" />
-                        <TextField type="password" label="Founder Password" value={this.state.userPassword} onChange={this.handleUserPassword} margin="normal" />
+                        <FormControl error={this.state.passwordError ? 'true' : ''}>
+                          <InputLabel htmlFor="password">Founder Password</InputLabel>
+                          <Input
+                            id="adornment-password"
+                            type={this.state.showPassword ? 'text' : 'password'}
+                            value={this.state.userPassword}
+                            onChange={this.handleUserPassword}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={this.handleClickShowPasssword}
+                                  onMouseDown={this.handleMouseDownPassword}
+                                >
+                                  {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                          />
+                          <FormHelperText id="password-helper-text">{this.state.passwordError}</FormHelperText>
+                        </FormControl>
                         <div className="spaceLogoMainImageRow">
                             <label htmlFor="avatar-image" className="spaceLogoMainImageBlock">
                                 {this.renderAvatarImageText()}

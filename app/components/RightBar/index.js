@@ -29,6 +29,7 @@ export default class RightBar extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       challengeOpen:false,
       challengeTitle:"",
       challengeCategories:'',
@@ -101,6 +102,7 @@ export default class RightBar extends React.PureComponent {
         this.setState({
           challengeFiles:challengeFiles
         }, function() {
+          console.log(this.state.challengeFiles);
           this.forceUpdate();
         })
       }
@@ -112,7 +114,7 @@ export default class RightBar extends React.PureComponent {
   handleQuestionContent = (editorState) => {this.setState({questionContent: editorState, editorState: editorState})};
 
   getCategories = () => {
-    fetch("http://challenges.innovationmesh.com/api/selectCategories", {
+    fetch("https://challenges.innovationmesh.com/api/selectCategories", {
       method:'GET'
     })
     .then(function(response) {
@@ -149,13 +151,14 @@ export default class RightBar extends React.PureComponent {
     data.append('challengeContent', draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent())));
     data.append('challengeCategories', JSON.stringify(this.state.challengeCategories));
     data.append('challengeImage', this.state.challengeImage);
+    data.append('challengeFiles', this.state.challengeFiles);
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("http://challenges.innovationmesh.com/api/storeChallenge", {
+    fetch("https://challenges.innovationmesh.com/api/storeChallenge", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -163,14 +166,42 @@ export default class RightBar extends React.PureComponent {
     .then(function(json) {
       if(json.error) {
         if(json.error === 'token_expired') {
-          _this.props.app.signOut(0, 'Your session has expired.');
-          _this.props.app.handleAuth();
+          //_this.props.app.signOut(0, 'Your session has expired.');
         } else {
           _this.showSnack(json.error);
+          _this.setState({
+            confirmStatus:"Confirm"
+          })
         }
       }
-      else if(json.success || json.challenge) {
-        _this.showSnack(json.success);
+      else if(json.challenge) {
+        console.log(_this.state.challengeFiles.length);
+        if(_this.state.challengeFiles.length > 0) {
+          for(let i = 0; i < _this.state.challengeFiles.length; i++)
+          {
+            let fileData = new FormData();
+            fileData.append('challengeID', json.challenge);
+            fileData.append('challengeFile', _this.state.challengeFiles[i].fileData);
+
+            fetch("https://challenges.innovationmesh.com/api/uploadFile", {
+              method:'POST',
+              body:fileData,
+              headers:{'Authorization':'Bearer ' + _this.state.token}
+            })
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(json) {
+              if(json.error) {
+                _this.showSnack(json.error);
+                _this.setState({
+                  confirmStatus:"Confirm"
+                })
+              }
+            })
+          }
+        }
+        _this.showSnack("Challenge Saved");
         _this.challengeDialog();
       }
     }.bind(this))
@@ -183,10 +214,10 @@ export default class RightBar extends React.PureComponent {
     data.append('questionTitle', this.state.questionTitle);
     data.append('questionContent', draftToHtml(convertToRaw(this.state.questionContent.getCurrentContent())));
 
-    fetch("http://challenges.innovationmesh.com/api/storeQuestion", {
+    fetch("https://challenges.innovationmesh.com/api/storeQuestion", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -233,12 +264,12 @@ export default class RightBar extends React.PureComponent {
   }
 
   renderCreateButtons = () => {
-    if(this.state.app.state.token)
+    if(this.state.token)
     {
       return(
         <div>
           <FlatButton onClick={this.challengeDialog} style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Challenge</FlatButton>
-          <FlatButton onClick={this.questionDialog} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>
+          {/*<FlatButton onClick={this.questionDialog} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>*/}
         </div>
       )
     }
@@ -246,7 +277,7 @@ export default class RightBar extends React.PureComponent {
       return(
         <div>
           <FlatButton onClick={this.props.app.handleAuth} style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Challenge</FlatButton>
-          <FlatButton onClick={this.props.app.handleAuth} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>
+          {/*<FlatButton onClick={this.props.app.handleAuth} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>*/}
         </div>
       )
     }
@@ -262,17 +293,17 @@ export default class RightBar extends React.PureComponent {
         {this.renderCreateButtons()}
         <div style={{display:'flex', flexDirection:'column', borderTop:'1px solid #DDDDDD'}}></div>
         {/*<div className="challenges_newsLetterBlock">
-          <img className="challenges_newsLetterImage" src="http://challenges.innovationmesh.com/assets/newsletter.png"/>
+          <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/newsletter.png"/>
           <div className="challenges_categoryTitle" style={{width:'100%', textAlign:'center', marginTop:'5px', marginBottom:'7px'}}>Join our Monthly Newsletter</div>
           <input type="text" placeholder="Your E-mail" className="challenges_newsLetterInput"/>
           <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Subscribe</FlatButton>
         </div>*/}
         <div className="challenges_newsLetterBlock">
-          <img className="challenges_newsLetterImage" src="http://challenges.innovationmesh.com/assets/guide.png"/>
+          <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/guide.png"/>
           <div className="challenges_categoryTitle" style={{width:'100%', textAlign:'center', marginTop:'5px', marginBottom:'7px'}}>Creating a Challenge</div>
           <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Download</FlatButton>
         </div>
-        <Dialog onRequestClose={this.challengeDialog} open={this.state.challengeOpen} fullScreen transition={this.transition}>
+        <Dialog onClose={this.challengeDialog} open={this.state.challengeOpen} fullScreen transition={this.transition}>
           <div style={{display:'flex', flexDirection:'row'}}>
             <div style={{width:'30%', display:'flex', flexDirection:'column', padding:'15px'}} >
               <TextField
@@ -336,7 +367,7 @@ export default class RightBar extends React.PureComponent {
             </div>
           </div>
         </Dialog>
-        <Dialog open={this.state.questionOpen} onRequestClose={this.questionDialog}>
+        <Dialog open={this.state.questionOpen} onClose={this.questionDialog}>
           <div style={{display:'flex', flexDirection:'column', padding:'15px'}}>
             <TextField style={{marginBottom:'15px'}} value={this.state.questionTitle} placeholder="Question Title" onChange={this.handleQuestionTitle}/>
             <Editor

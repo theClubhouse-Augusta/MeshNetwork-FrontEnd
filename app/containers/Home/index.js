@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Header from "components/Header";
 import FlatButton from "material-ui/Button";
 
+import "./style.css";
 import "./styleM.css";
 
 export default class Home extends React.PureComponent {
