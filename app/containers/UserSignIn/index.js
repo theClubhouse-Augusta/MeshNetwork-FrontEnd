@@ -114,7 +114,7 @@ export default class UserSignIn extends React.PureComponent {
                             return response.json();
                           })
                           .then(function(json) {
-                            this.setState({
+                            _this.setState({
                               isLoading:false
                             })
                             localStorage.setItem('lmsUser', JSON.stringify(json.user));
