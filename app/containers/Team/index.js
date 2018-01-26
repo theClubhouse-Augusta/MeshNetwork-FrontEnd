@@ -18,6 +18,7 @@ export default class Team extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       team:"",
       members:[],
       challenges:[],
@@ -43,7 +44,7 @@ export default class Team extends React.PureComponent {
   }
 
   getDetail = () => {
-    fetch("http://challenges.innovationmesh.com/api/showTeam/"+this.props.match.params.id, {
+    fetch("https://challenges.innovationmesh.com/api/showTeam/"+this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -58,9 +59,9 @@ export default class Team extends React.PureComponent {
   }
 
   joinTeam = () => {
-    fetch("http://challenges.innovationmesh.com/api/joinTeam/" + this.state.team.id, {
+    fetch("https://challenges.innovationmesh.com/api/joinTeam/" + this.state.team.id, {
       method:'GET',
-      headers: {'Authorization':'Bearer ' + this.state.app.state.token}
+      headers: {'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -76,7 +77,7 @@ export default class Team extends React.PureComponent {
   }
 
   renderJoinButton = () => {
-    if(this.state.app.state.token)
+    if(this.state.token)
     {
       return(
         <FlatButton onClick={this.joinTeam} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Team</FlatButton>

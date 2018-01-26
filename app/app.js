@@ -8,6 +8,8 @@ import '!file-loader?name=[name].[ext]!./manifest.json';
 
 import App from 'containers/App';
 import './app.css';
+import './lms.css';
+import './challenges.css';
 
 ReactDOM.render((
     <BrowserRouter>
@@ -40,5 +42,3 @@ if (process.env.NODE_ENV === 'production') {
 // if (process.env.NODE_ENV === 'production') {
 //   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
 // }
-
-

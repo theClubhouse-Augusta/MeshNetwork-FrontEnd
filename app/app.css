@@ -90,17 +90,6 @@ textarea {
   font-size: 18px;
 }
 
-.homeHeaderContainer {
-  width: 100%;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url("https://h4z.it/Image/88b757_banner.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-}
-
 .homeHeaderContent {
   display: flex;
   height: 100%;

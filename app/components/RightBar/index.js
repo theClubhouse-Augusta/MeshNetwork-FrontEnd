@@ -29,6 +29,7 @@ export default class RightBar extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       challengeOpen:false,
       challengeTitle:"",
       challengeCategories:'',
@@ -112,7 +113,7 @@ export default class RightBar extends React.PureComponent {
   handleQuestionContent = (editorState) => {this.setState({questionContent: editorState, editorState: editorState})};
 
   getCategories = () => {
-    fetch("http://challenges.innovationmesh.com/api/selectCategories", {
+    fetch("https://challenges.innovationmesh.com/api/selectCategories", {
       method:'GET'
     })
     .then(function(response) {
@@ -152,10 +153,10 @@ export default class RightBar extends React.PureComponent {
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("http://challenges.innovationmesh.com/api/storeChallenge", {
+    fetch("https://challenges.innovationmesh.com/api/storeChallenge", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -183,10 +184,10 @@ export default class RightBar extends React.PureComponent {
     data.append('questionTitle', this.state.questionTitle);
     data.append('questionContent', draftToHtml(convertToRaw(this.state.questionContent.getCurrentContent())));
 
-    fetch("http://challenges.innovationmesh.com/api/storeQuestion", {
+    fetch("https://challenges.innovationmesh.com/api/storeQuestion", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -233,7 +234,7 @@ export default class RightBar extends React.PureComponent {
   }
 
   renderCreateButtons = () => {
-    if(this.state.app.state.token)
+    if(this.state.token)
     {
       return(
         <div>
@@ -262,13 +263,13 @@ export default class RightBar extends React.PureComponent {
         {this.renderCreateButtons()}
         <div style={{display:'flex', flexDirection:'column', borderTop:'1px solid #DDDDDD'}}></div>
         {/*<div className="challenges_newsLetterBlock">
-          <img className="challenges_newsLetterImage" src="http://challenges.innovationmesh.com/assets/newsletter.png"/>
+          <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/newsletter.png"/>
           <div className="challenges_categoryTitle" style={{width:'100%', textAlign:'center', marginTop:'5px', marginBottom:'7px'}}>Join our Monthly Newsletter</div>
           <input type="text" placeholder="Your E-mail" className="challenges_newsLetterInput"/>
           <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Subscribe</FlatButton>
         </div>*/}
         <div className="challenges_newsLetterBlock">
-          <img className="challenges_newsLetterImage" src="http://challenges.innovationmesh.com/assets/guide.png"/>
+          <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/guide.png"/>
           <div className="challenges_categoryTitle" style={{width:'100%', textAlign:'center', marginTop:'5px', marginBottom:'7px'}}>Creating a Challenge</div>
           <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Download</FlatButton>
         </div>

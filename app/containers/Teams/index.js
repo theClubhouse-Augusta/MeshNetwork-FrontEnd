@@ -30,6 +30,7 @@ export default class Teams extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       teams:[],
       snack: false,
       msg: "",
@@ -97,7 +98,7 @@ export default class Teams extends React.PureComponent {
     var teams = this.state.teams;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("http://challenges.innovationmesh.com/api/getTeams/30?page=" + this.state.nextPage, {
+      fetch("https://challenges.innovationmesh.com/api/getTeams/30?page=" + this.state.nextPage, {
         method:'GET'
       })
       .then(function(response) {
@@ -131,10 +132,10 @@ export default class Teams extends React.PureComponent {
     data.append('teamContent', draftToHtml(convertToRaw(this.state.teamContent.getCurrentContent())));
     data.append('teamImage', this.state.teamImage);
 
-    fetch("http://challenges.innovationmesh.com/api/storeTeam", {
+    fetch("https://challenges.innovationmesh.com/api/storeTeam", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -161,7 +162,7 @@ export default class Teams extends React.PureComponent {
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("http://challenges.innovationmesh.com/api/searchTeams", {
+    fetch("https://challenges.innovationmesh.com/api/searchTeams", {
       method:'POST',
       body:data
     })
@@ -251,7 +252,7 @@ export default class Teams extends React.PureComponent {
           </div>
         </main>
 
-        <Dialog open={this.state.teamOpen} onRequestClose={this.teamDialog}>
+        <Dialog open={this.state.teamOpen} onClose={this.teamDialog}>
           <div style={{display:'flex', flexDirection:'column', padding:'15px'}}>
             <TextField style={{marginBottom:'15px'}} value={this.state.teamName} placeholder="Team Name" onChange={this.handleTeamName}/>
             <TextField style={{marginBottom:'15px'}} value={this.state.teamLocation} placeholder="Team Location" onChange={this.handleTeamLocation}/>
@@ -292,7 +293,7 @@ export default class Teams extends React.PureComponent {
           open={this.state.snack}
           message={this.state.msg}
           autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
         />
 
       </div>

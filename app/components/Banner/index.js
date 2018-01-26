@@ -15,6 +15,7 @@ export default class Banner extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       app:this.props.app
     }
   }
@@ -28,7 +29,7 @@ export default class Banner extends React.PureComponent {
   }
 
   renderJoinButton = () => {
-    if(!this.state.app.state.token)
+    if(!this.state.token)
     {
       return(
         <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', maxWidth:'200px'}}>Sign Up</FlatButton>
@@ -47,7 +48,7 @@ export default class Banner extends React.PureComponent {
             {this.renderJoinButton()}
           </div>
           <div className="challenges_bannerGraphic">
-            <img className="challenges_bannerImg" src="http://challenges.innovationmesh.com/assets/bunlogo.png"/>
+            <img className="challenges_bannerImg" src="https://challenges.innovationmesh.com/assets/bunlogo.png"/>
           </div>
         </div>
       </div>

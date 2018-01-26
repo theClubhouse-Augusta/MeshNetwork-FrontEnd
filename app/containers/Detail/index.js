@@ -46,7 +46,7 @@ export default class Detail extends React.PureComponent {
   }*/
 
   getDetail = () => {
-    fetch("http://challenges.innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
+    fetch("https://challenges.innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -64,7 +64,7 @@ export default class Detail extends React.PureComponent {
   }
 
   joinChallenge = () => {
-    fetch("http://challenges.innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
+    fetch("https://challenges.innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
@@ -81,8 +81,8 @@ export default class Detail extends React.PureComponent {
     })
   }
 
-  /*renderJoinButton = () => {
-    if(this.state.app.state.token)
+  renderJoinButton = () => {
+    if(this.state.token)
     {
       return(
         <FlatButton onClick={this.joinChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton>
@@ -91,7 +91,7 @@ export default class Detail extends React.PureComponent {
     else {
       <FlatButton onClick={this.props.app.handleAuth} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton>
     }
-  }*/
+  }
 
   render() {
     return (
@@ -149,7 +149,7 @@ export default class Detail extends React.PureComponent {
           open={this.state.snack}
           message={this.state.msg}
           autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
         />
       </div>
     );
