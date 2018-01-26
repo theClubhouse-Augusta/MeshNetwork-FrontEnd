@@ -173,7 +173,7 @@ export default class SpaceSignUp extends React.PureComponent {
                     _this.showSnack(json.error);
                 }
                 else {
-                  this.setState({
+                  _this.setState({
                     isLoading:false
                   })
                   _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
@@ -247,7 +247,7 @@ export default class SpaceSignUp extends React.PureComponent {
                     <div className="spaceSignUpBanner">
                         <div className="homeHeaderContentTitle">Add your CoWorking Space</div>
                         <div className="homeHeaderContentSubtitle">Join our Mesh Network of Innovation</div>
-                    </div>
+                    </div>9
                 </header>
 
                 <main className="spaceSignUpMain">
