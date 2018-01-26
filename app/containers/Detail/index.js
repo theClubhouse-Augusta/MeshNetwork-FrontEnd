@@ -6,6 +6,7 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
 import Header from 'components/Header';
 
 import FlatButton from 'material-ui/Button';
@@ -64,6 +65,7 @@ export default class Detail extends React.PureComponent {
   }
 
   joinChallenge = () => {
+    let _this = this;
     fetch("https://challenges.innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
@@ -89,7 +91,7 @@ export default class Detail extends React.PureComponent {
       )
     }
     else {
-      <FlatButton onClick={this.props.app.handleAuth} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton>
+      <Link to={'/spaces'} style={{textDecoration:'none', width:'100%'}}><FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton></Link>
     }
   }
 
@@ -125,11 +127,11 @@ export default class Detail extends React.PureComponent {
               <div className="challenges_detailContent" dangerouslySetInnerHTML={{ __html: this.state.challenge.challengeContent }} />
             </div>
             <div className="challenges_detailColumnTwo">
-              {/*this.renderJoinButton()*/}
+              {this.renderJoinButton()}
               <div className="challenges_detailSideBlock">
                 <div className="challenges_categoryTitle">Uploads</div>
                 {this.state.uploads.map((u, i) => (
-                  <Link to={u.filePath} className="challenges_uploadBlock">{u.fileName}</Link>
+                  <a href={u.fileData} target="_blank" className="challenges_uploadBlock">{u.fileName}</a>
                 ))}
               </div>
               <div className="challenges_detailSideBlock">

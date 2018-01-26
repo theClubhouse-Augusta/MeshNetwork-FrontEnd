@@ -114,9 +114,6 @@ export default class UserSignIn extends React.PureComponent {
                             return response.json();
                           })
                           .then(function(json) {
-                            _this.setState({
-                              isLoading:false
-                            })
                             localStorage.setItem('lmsUser', JSON.stringify(json.user));
                             _this.showSnack('Welcome back!');
                             setTimeout(() => {
@@ -129,6 +126,9 @@ export default class UserSignIn extends React.PureComponent {
                   })
                 })
               }
+              _this.setState({
+                isLoading:false
+              })
             }.bind(this));
     };
 

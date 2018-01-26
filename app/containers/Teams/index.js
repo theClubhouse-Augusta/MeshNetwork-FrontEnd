@@ -237,9 +237,11 @@ export default class Teams extends React.PureComponent {
                     <div className="challenges_feedInfo">
                       <div className="challenges_feedTitle">{t.teamName}</div>
                       <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: t.teamContent }} />
-                      {t.members.map((m, j) => (
-                        <img className="challenges_memberAvatar" key={j} src={m.avatar}/>
-                      ))}
+                      <div style={{display:'flex', flexDirection:'row'}}>
+                        {t.members.map((m, j) => (
+                          <img className="challenges_memberAvatar" key={j} src={m.avatar}/>
+                        ))}
+                      </div>
                     </div>
                   </Link>
                 ))}
@@ -254,8 +256,18 @@ export default class Teams extends React.PureComponent {
 
         <Dialog open={this.state.teamOpen} onClose={this.teamDialog}>
           <div style={{display:'flex', flexDirection:'column', padding:'15px'}}>
-            <TextField style={{marginBottom:'15px'}} value={this.state.teamName} placeholder="Team Name" onChange={this.handleTeamName}/>
-            <TextField style={{marginBottom:'15px'}} value={this.state.teamLocation} placeholder="Team Location" onChange={this.handleTeamLocation}/>
+            <TextField
+                label="Team Name"
+                value={this.state.teamName}
+                onChange={this.handleTeamName}
+                margin="normal"
+            />
+            <TextField
+                label="Team Location"
+                value={this.state.teamLocation}
+                onChange={this.handleTeamLocation}
+                margin="normal"
+            />
             <div>
               <label htmlFor="team-image" className="challenges_challengeImageBlock">
                 {this.renderTeamImageText()}

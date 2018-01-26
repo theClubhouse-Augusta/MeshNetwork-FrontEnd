@@ -163,6 +163,9 @@ export default class Header extends React.PureComponent {
     let _this = this;
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("lmsToken");
+    localStorage.removeItem("lmsUser");
+    localStorage.removeItem("challengeToken");
     this.showSnack("Thanks for Visiting!");
     this.setState(
       {
@@ -275,7 +278,6 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.challengeMenu)}
                 onClose={this.handleChallengeMenuClose}
               >
-                <Link to={'/Challenges/Discover'}><MenuItem onClick={this.handleChallengeMenuClose}>Discover</MenuItem></Link>
                 <Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>
                 <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
               </Menu>
@@ -302,7 +304,7 @@ export default class Header extends React.PureComponent {
                 onClose={this.handleEducationMenuClose}
               >
                 <Link to={'/LMS/Courses'}><MenuItem onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
-                <Link to={'/LMS/Courses'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+                <Link to={'/LMS/MyLMS'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
               </Menu>
             </span>
 

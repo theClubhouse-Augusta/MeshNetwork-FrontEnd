@@ -209,7 +209,7 @@ export default class Courses extends React.PureComponent {
         <main className="lmsHomeMain">
           <div className="lmsHomeMainContainer">
             <div className="lmsBrowseSearch">
-            <FormControl style={{width:'20%'}}>
+            {/*<FormControl style={{width:'20%'}}>
               <InputLabel htmlFor="category-select">Select Category</InputLabel>
               <SelectField
                 label="Category"
@@ -225,7 +225,7 @@ export default class Courses extends React.PureComponent {
                   <MenuItem value={category.id} key={index}>{category.categoryName}</MenuItem>
                 ))}
               </SelectField>
-            </FormControl>
+            </FormControl>*/}
             <TextField placeholder="Search" value={this.state.searchContent} onChange={this.handleSearch}/>
             </div>
             <div className="lmsHomeMainList">
@@ -234,7 +234,7 @@ export default class Courses extends React.PureComponent {
                   <Card style={{height:'385px'}}>
                     <CardMedia
                       style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                      image={'https://houseofhackers.me/media/' + course.courseImage}
+                      image={'http://houseofhackers.me/media/' + course.courseImage}
                     />
                     <CardContent>
                       <Typography type="headline" component="h2">

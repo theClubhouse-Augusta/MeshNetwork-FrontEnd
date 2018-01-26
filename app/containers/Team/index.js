@@ -59,6 +59,7 @@ export default class Team extends React.PureComponent {
   }
 
   joinTeam = () => {
+    let _this = this;
     fetch("https://challenges.innovationmesh.com/api/joinTeam/" + this.state.team.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
