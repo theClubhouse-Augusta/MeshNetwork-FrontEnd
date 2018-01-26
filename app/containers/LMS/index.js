@@ -21,6 +21,7 @@ export default class LMS extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('lmsToken'),
       courses:[],
       //app:this.props.app
     }
@@ -54,6 +55,18 @@ export default class LMS extends React.PureComponent {
     }.bind(this))
   };
 
+  renderJoinButton = () => {
+    if(!this.state.token) {
+      return(
+        <Link to={"/spaces"} style={{marginTop:'15px', width:'20%', maxWidth:'200px'}}>
+          <FlatButton style={{background:"#6fc13e", color:'#FFFFFF', fontWeight:'Bold', width:'100%'}}>
+            Join Now
+          </FlatButton>
+        </Link>
+      )
+    }
+  };
+
   render() {
     return (
       <div className="container">
@@ -66,11 +79,7 @@ export default class LMS extends React.PureComponent {
           <div className="lmsHomeHeaderText">
             Welcome to the resource & learning destination for all students! Powering courses across different skills and goals.
           </div>
-          <Link to={"/spaces"} style={{marginTop:'15px', width:'20%', maxWidth:'200px'}}>
-            <FlatButton style={{background:"#6fc13e", color:'#FFFFFF', fontWeight:'Bold', width:'100%'}}>
-              Join Now
-            </FlatButton>
-          </Link>
+          {this.renderJoinButton()}
         </header>
 
         <main className="lmsHomeMain">
@@ -82,7 +91,7 @@ export default class LMS extends React.PureComponent {
                 <Card style={{height:'385px'}}>
                   <CardMedia
                     style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                    image={'https://houseofhackers.me/media/' + course.courseImage}
+                    image={'http://houseofhackers.me/media/' + course.courseImage}
                   />
                   <CardContent>
                     <Typography type="headline" component="h2">

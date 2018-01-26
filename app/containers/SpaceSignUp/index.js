@@ -173,16 +173,16 @@ export default class SpaceSignUp extends React.PureComponent {
                     _this.showSnack(json.error);
                 }
                 else {
-                  _this.setState({
-                    isLoading:false
-                  })
+
                   _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
                   setTimeout(() => {
                       _this.props.history.push(`/space/${json}`)
                   }, 2000);
                 }
-
-            })
+                _this.setState({
+                  isLoading:false
+                })
+            }.bind(this))
     }
 
     renderLogoImage = () => {

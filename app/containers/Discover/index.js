@@ -34,6 +34,9 @@ export default class Discover extends React.PureComponent {
   }
 
   componentWillMount() {
+    /*if(this.props.match.params.id) {
+      this.showCategories(this.props.match.params.id);
+    }*/
     //this.getChallenges();
   }
 
@@ -53,6 +56,20 @@ export default class Discover extends React.PureComponent {
         this.search();
       }
     })
+  }
+
+  showCategories = (categoryID) => {
+    fetch("https://challenges.innovationmesh.com/api/showCategory/"+categoryID+"/Challenges" , {
+      method:'GET',
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        challenges:json.challenges
+      })
+    }.bind(this))
   }
 
   getChallenges = () => {
@@ -112,9 +129,16 @@ export default class Discover extends React.PureComponent {
   renderWaypoint = () => {
     if(this.state.searchContent < 3)
     {
-      return(
-        <Waypoint onEnter={this.getChallenges} />
-      )
+      if(this.props.match.params.id) {
+        return(
+          <Waypoint onEnter={() => this.showCategories(this.props.match.params.id)} />
+        )
+      } else {
+        return(
+          <Waypoint onEnter={this.getChallenges} />
+        )
+      }
+
     }
   }
 

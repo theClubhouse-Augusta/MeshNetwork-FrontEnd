@@ -133,8 +133,8 @@ export default class NewCourse extends React.PureComponent {
           courseInformation: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(json.course.courseInformation))),
           courseInstructorName:json.course.courseInstructorName,
           courseInstructorInfo:json.course.courseInstructorInfo,
-          courseInstructorAvatarPreview:'https://lms.innovationmesh.com/media/' + json.course.courseInstructorAvatar,
-          courseImagePreview:'https://lms.innovationmesh.com/media/' + json.course.courseImage,
+          courseInstructorAvatarPreview:'http://houseofhackers.me/media/' + json.course.courseInstructorAvatar,
+          courseImagePreview:'http://houseofhackers.me/media/' + json.course.courseImage,
           coursePrice:json.course.coursePrice,
           courseStatus:json.course.courseStatus,
           lessons:lessons
@@ -1218,7 +1218,7 @@ export default class NewCourse extends React.PureComponent {
     if(this.state.courseImage === "")
     {
       return(
-        <img src={'https://houseofhackers.me/media/' + this.state.courseImagePreview} className="lmsNewCourseImagePreview"/>
+        <img src={'http://houseofhackers.me/media/' + this.state.courseImagePreview} className="lmsNewCourseImagePreview"/>
       )
     }
     else {

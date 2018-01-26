@@ -11,7 +11,6 @@ import Dialog from 'material-ui/Dialog';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import { FormControl} from 'material-ui/Form';
@@ -239,15 +238,15 @@ export default class LMSDash extends React.PureComponent {
     if(this.state.user) {
       if(this.state.user.roleID !== 3) {
         return(
-          <CardText>
-            <span className="lmsProgressHeader">Completed: {course.complete}</span>
+          <div style={{marginTop:'10px'}}>
+            <span className="lmsProgressHeader" style={{fontFamily:'Noto Sans'}}>Completed: {course.complete}</span>
             <LinearProgress mode="determinate" value={course.percent} />
-          </CardText>
+          </div>
         )
       }
     } else {
       return(
-        <CardText></CardText>
+        <div></div>
       )
     }
   }
@@ -286,27 +285,24 @@ export default class LMSDash extends React.PureComponent {
           <Header/>
         </header>
 
-        <main className="lmsHomeMain" style={{marginTop:'50px'}}>
+        <main className="lmsHomeMain">
           <div className="lmsHomeMainContainer">
             <div className="lmsHomeMainList">
               {this.renderNewCourse()}
               {this.state.courses.map((course, index) => (
                 <div className="lmsHomeMainBlock" key={index}>
-                  <Link style={{textDecoration:'none'}} to={'/LMS/Course/'+course.id}>
+                  <Link style={{textDecoration:'none'}} to={'/LMS/CourseInfo/'+course.id}>
                     <Card style={{height:'385px'}}>
                       <CardMedia
                         style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                        image={'https://houseofhackers.me/media/' + course.courseImage}
+                        image={'http://houseofhackers.me/media/' + course.courseImage}
                       />
                       <CardContent>
                         <Typography type="headline" component="h2">
                           {course.courseName}
                         </Typography>
-                        <Typography component="p">
-                          {course.courseSummary}
-                        </Typography>
+                        {this.renderProgress(course)}
                       </CardContent>
-                      {this.renderProgress(course)}
                     </Card>
                   </Link>
                   <Card>
@@ -318,7 +314,6 @@ export default class LMSDash extends React.PureComponent {
             {this.renderPageButtons()}
           </div>
         </main>
-        <Footer/>
 
         <Dialog
           title="Delete Course"

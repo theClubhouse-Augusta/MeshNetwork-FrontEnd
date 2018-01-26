@@ -7,6 +7,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import {StripeProvider, Elements, injectStripe, CardNumberElement, CardExpiryElement, CardCVCElement, PostalCodeElement, PaymentRequestButtonElement} from 'react-stripe-elements';
+import FlatButton from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
 
 import Header from 'components/Header';
 import Payment from 'components/LMSPayment';
@@ -21,8 +23,13 @@ export default class Enroll extends React.PureComponent {
       course:"",
       token:localStorage.getItem('lmsToken'),
       app:this.props.app,
+      msg: "",
+      snack: false,
     }
   }
+
+  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
   componentWillMount() {
     this.getCourse(this.props.match.params.id)
@@ -52,9 +59,8 @@ export default class Enroll extends React.PureComponent {
 
   storeEnroll = () => {
     let _this = this;
-    fetch("https://lms.innovationmesh.com/enrollCourse/" + this.props.courseID + "/", {
+    fetch("https://lms.innovationmesh.com/enrollCourse/" + this.props.match.params.id + "/", {
       method:'POST',
-      body:data,
       headers: { 'Authorization': 'JWT ' + this.state.token}
     })
     .then(function(response) {
@@ -65,8 +71,7 @@ export default class Enroll extends React.PureComponent {
         _this.showSnack(json.error);
       }
       else if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+        //_this.props.app.signOut();
       }
       else if(json.success) {
         _this.showSnack(json.success);
@@ -123,7 +128,7 @@ export default class Enroll extends React.PureComponent {
       )
     } else {
       return(
-        <FlatButton onClick={this.storeEnroll}>Confirm Enroll</FlatButton>
+        <FlatButton onClick={this.storeEnroll} style={{background:"#6fc13e", color:'#FFFFFF', fontWeight:'Bold', width:'100%'}}>Confirm Enroll</FlatButton>
       )
     }
   }
@@ -146,7 +151,7 @@ export default class Enroll extends React.PureComponent {
                   <div className="lmsEnrollSummaryMain">
                     <div className="lmsEnrollCourse">
                       <div className="lmsEnrollCourseImageContainer">
-                        <img src={'https://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
+                        <img src={'http://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
                       </div>
                       <div className="lmsEnrollCourseName">{this.state.course.courseName}</div>
                       {this.renderPrice()}
@@ -167,6 +172,12 @@ export default class Enroll extends React.PureComponent {
               </div>
             </div>
           </main>
+          <Snackbar
+            open={this.state.snack}
+            message={this.state.msg}
+            autoHideDuration={3000}
+            onClose={this.handleRequestClose}
+          />
         </div>
       </StripeProvider>
     );

@@ -35,6 +35,7 @@ const CourseInfo = asyncComponent(() => import('containers/CourseInfo'));
 const NewCourse = asyncComponent(() => import('containers/NewCourse'));
 const Lessons = asyncComponent(() => import('containers/Lessons'));
 const Enroll = asyncComponent(() => import('containers/Enroll'));
+const LMSDash = asyncComponent(() => import('containers/LMSDash'));
 
 export default class App extends Component {
     constructor() {
@@ -137,9 +138,9 @@ export default class App extends Component {
                     render={(props) => <SpaceDash {...props} />}
                 />
 
-                <Route exact path='/Challenges' render={() => <Challenges app={this} />} />
-                <Route exact path='/Challenges/Discover' render={() => <Discover app={this} />} />
-                <Route path='/Challenges/Discover/:id' render={(props) => <Discover {...props} app={this} />} />
+                {/*<Route exact path='/Challenges' render={() => <Challenges app={this} />} />*/}
+                <Route exact path='/Challenges' render={(props) => <Discover {...props} app={this} />} />
+                <Route path='/Challenges/Category/:id' render={(props) => <Discover {...props} app={this} />} />
                 <Route path='/Challenges/Challenge/:id' render={(props) => <Detail {...props} />} />
                 <Route exact path='/Challenges/Ask' render={() => <Ask app={this} />} />
                 <Route path='/Challenges/Ask/:id' render={(props) => <Replies {...props} app={this} />} />
@@ -155,6 +156,7 @@ export default class App extends Component {
                 <Route path='/LMS/Lesson/:id/:lid' render={(props) => <Lessons {...props}  app={this}/>}/>
                 <Route path='/LMS/Update/:id' render={(props) => <New {...props}  app={this}/>}/>
                 <Route path='/LMS/Enroll/:id' render={(props) => <Enroll {...props}  app={this}/>}/>
+                <Route path='/LMS/MyLMS' render={(props) => <LMSDash {...props}  app={this}/>}/>
 
                 <Route component={NotFound} />
             </Switch>

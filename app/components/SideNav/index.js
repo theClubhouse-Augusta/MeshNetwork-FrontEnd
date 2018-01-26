@@ -157,10 +157,10 @@ export default class SideNav extends React.PureComponent {
           {this.renderAdd()}
         </div>
         {this.state.categories.map((c, i) => (
-          <Link to={'/Challenges/Discover/' + c.categorySlug} className="challenges_categoryBlock" key={i}>
+          <a href={'/Challenges/Category/' + c.categorySlug} className="challenges_categoryBlock" key={i}>
             <img src={c.categoryImage} className="challenges_categoryIcon"/>
             <div className="challenges_categoryName">{c.categoryName}</div>
-          </Link>
+          </a>
         ))}
 
         <Dialog onRequestClose={this.categoryDialog} open={this.state.categoryOpen}>

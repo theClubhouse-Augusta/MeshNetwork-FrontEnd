@@ -104,9 +104,9 @@ export default class CourseInfo extends React.PureComponent {
           <div className="lmsLessonBlockItem" onClick={() => this.changeView("Students")}>
             <div className="lmsLessonBlockTitle">Students</div>
           </div>
-          <div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
+          {/*<div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
             <div className="lmsLessonBlockTitle">Discussion</div>
-          </div>
+          </div>*/}
         </div>
       )
     }
@@ -126,9 +126,9 @@ export default class CourseInfo extends React.PureComponent {
           <div className="lmsLessonBlockItem" onClick={() => this.changeView("Students")}>
             <div className="lmsLessonBlockTitle">Students</div>
           </div>
-          <div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
+          {/*<div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
             <div className="lmsLessonBlockTitle">Discussion</div>
-          </div>
+          </div>*/}
         </div>
       )
     }
@@ -148,9 +148,9 @@ export default class CourseInfo extends React.PureComponent {
           <div className="lmsLessonBlockItem" onClick={() => this.changeView("Students")}>
             <div className="lmsLessonBlockTitle">Students</div>
           </div>
-          <div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
+          {/*<div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
             <div className="lmsLessonBlockTitle">Discussion</div>
-          </div>
+          </div>*/}
         </div>
       )
     }
@@ -170,9 +170,9 @@ export default class CourseInfo extends React.PureComponent {
           <div className="lmsLessonBlockItem" style={{borderLeft:'5px solid #6fc13e'}}  onClick={() => this.changeView("Students")}>
             <div className="lmsLessonBlockTitle">Students</div>
           </div>
-          <div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
+          {/*<div className="lmsLessonBlockItem" onClick={() => this.changeView("Discussion")}>
             <div className="lmsLessonBlockTitle">Discussion</div>
-          </div>
+          </div>*/}
         </div>
       )
     }
@@ -201,16 +201,16 @@ export default class CourseInfo extends React.PureComponent {
   }
 
   renderCurrentStudent = (student, index) => {
-    if(student.status === 'Current') {
+    if(student.status === 'Ongoing') {
       return(
         <div className="lmsDetailStudentBlock" key={index}>
           <div className="lmsDetailStudentBlockLeft">
-            <img  className="lmsDetailStudentAvatar" src={'https://houseofhackers.me/media/' + student.profile.avatar_thumbnail}/>
+            <img  className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
           </div>
           <div className="lmsDetailStudentBlockRight">
             <div className="lmsDetailStudentProgressValue">{student.complete}</div>
-            <LinearProgress mode="determinate" value={student.percent} />
+            <LinearProgress color="accent" mode="determinate" value={student.percent} style={{width:'100%'}}/>
           </div>
         </div>
       )
@@ -222,12 +222,12 @@ export default class CourseInfo extends React.PureComponent {
       return(
         <div className="lmsDetailStudentBlock" key={index}>
           <div className="lmsDetailStudentBlockLeft">
-            <img  className="lmsDetailStudentAvatar" src={'https://houseofhackers.me/media/' + student.profile.avatar_thumbnail}/>
+            <img  className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
           </div>
           <div className="lmsDetailStudentBlockRight">
             <div className="lmsDetailStudentProgressValue">{student.complete}</div>
-            <LinearProgress mode="determinate" value={student.percent} />
+            <LinearProgress color="accent" mode="determinate" value={student.percent}  style={{width:'100%'}}/>
           </div>
         </div>
       )
@@ -294,7 +294,7 @@ export default class CourseInfo extends React.PureComponent {
         <div className="lmsDetailAuthor">
           <div className="lmsDetailAuthorContainer">
             <div className="lmsDetailAuthorAvatar">
-              <img className="lmsDetailAuthorAvatarImg" src={'https://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
+              <img className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
             </div>
             <div className="lmsDetailAuthorInfo">
               <div className="lmsDetailAuthorName">{this.state.course.courseInstructorName}</div>
@@ -350,11 +350,11 @@ export default class CourseInfo extends React.PureComponent {
         <main className="lmsLessonMain">
           <div className="lmsLessonColumnOne">
             <div className="lmsLessonColumnOneHeader">
-              <Link to="/LMS/LMSDash"><BackIcon color="#FFFFFF" style={{padding:'5px'}} size={30}/></Link>
+              <Link to="/LMS/MyLMS"><BackIcon color="#FFFFFF" style={{padding:'5px'}} size={30}/></Link>
             </div>
             <div className="lmsLessonColumnOneContent">
               <div className="lmsSingleLessonImageContainer">
-                <img className="lmsSingleLessonImage" src={'https://houseofhackers.me/media/' + this.state.course.courseImage} />
+                <img className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
               </div>
               <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
               <div className="lmsLessonList">

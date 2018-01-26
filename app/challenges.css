@@ -328,6 +328,7 @@
 
 .challenges_feedBlock {
   min-height:100px;
+  overflow:hidden;
   display:flex;
   flex-direction:row;
   padding:10px;

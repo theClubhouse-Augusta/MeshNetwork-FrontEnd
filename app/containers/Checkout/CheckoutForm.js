@@ -238,21 +238,67 @@ class CheckoutForm extends React.PureComponent {
                     return response.json();
                 })
                 .then(function (json) {
-                  _this.setState({
-                    isLoading:false
+                  let mainUser = json.user;
+                  localStorage.setItem('user', JSON.stringify(mainUser));
+                  fetch('https://challenges.innovationmesh.com/api/signIn', {
+                    method:'POST',
+                    body:data
                   })
-                  localStorage.setItem('user', JSON.stringify(json.user));
-                  _this.showSnack("Account created successfully!");
-                  setTimeout(() => {
-                      _this.props.history.push(`/user/${json.user.id}`)
-                  }, 2000);
+                  .then(function(response) {
+                    return response.json();
+                  })
+                  .then(function(json) {
+                    if(json.error)
+                    {
+                      _this.showSnack(json.error);
+                    }
+                    else if(json.token)
+                    {
+                      localStorage.setItem('challengeToken', json.token);
+                      let newData = new FormData();
+                      newData.append('username', _this.state.email);
+                      newData.append('password', _this.state.password);
+                      fetch('https://lms.innovationmesh.com/signIn/', {
+                        method:'POST',
+                        body:newData
+                      })
+                      .then(function(response) {
+                        return response.json();
+                      })
+                      .then(function(json) {
+                        if(json.non_field_errors)
+                        {
+                          _this.showSnack("Invalid Credentials");
+                        }
+                        else if(json.token)
+                        {
+                          localStorage.setItem('lmsToken', json.token);
+                          fetch('https://lms.innovationmesh.com/getUser/', {
+                            method:'GET',
+                            headers: {'Authorization' : 'JWT ' + json.token}
+                          })
+                          .then(function(response) {
+                            return response.json();
+                          })
+                          .then(function(json) {
+                            localStorage.setItem('lmsUser', JSON.stringify(json.user));
+                            _this.showSnack('Welcome to '+this.state.space.name+'!');
+                            setTimeout(() => {
+                                _this.props.history.push(`/user/${mainUser.id}`)
+                            }, 2000);
+                          })
+                        }
+                      })
+                    }
+                  })
                 })
               }
-            }.bind(this))
-        });
-        // However, this line of code will do the same thing:
-        // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
-    }
+              _this.setState({
+                isLoading:false
+              })
+            }.bind(this));
+          })
+        }
 
     storeFreeUser = e => {
       this.setState({
@@ -348,9 +394,6 @@ class CheckoutForm extends React.PureComponent {
                         return response.json();
                       })
                       .then(function(json) {
-                        _this.setState({
-                          isLoading:false
-                        })
                         localStorage.setItem('lmsUser', JSON.stringify(json.user));
                         _this.showSnack('Welcome to '+this.state.space.name+'!');
                         setTimeout(() => {
@@ -363,6 +406,9 @@ class CheckoutForm extends React.PureComponent {
               })
             })
           }
+          _this.setState({
+            isLoading:false
+          })
         }.bind(this));
       }
 
