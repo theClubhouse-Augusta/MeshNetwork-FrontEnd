@@ -23,6 +23,7 @@ export default class UserSignIn extends React.PureComponent {
             password: "",
             msg: "",
             snack: false,
+            forgotPassword: false
         }
     }
 
@@ -94,6 +95,27 @@ export default class UserSignIn extends React.PureComponent {
               }
             }.bind(this));
     };
+
+    resetPassword = () => this.setState({ forgotPassword: true });
+    sendResetEmail = () => {
+        let data = new FormData();
+        data.append('email', this.state.email);
+        fetch(`http://localhost:8000/api/forgotpassword`, {
+            method: 'POST',
+            body: data
+        })
+        .then(response => response.json)
+        .then(json => {
+            console.log(json);
+            if (json.success)
+                this.showSnack('Check your email for your temporary password.');
+            else     
+                this.showSnack(json)    
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
     render() {
         return (
             <div className="userSignIncontainer">
@@ -108,9 +130,20 @@ export default class UserSignIn extends React.PureComponent {
                 </header>
 
                 <main className="userSignInMain">
-                    <TextField style={{ width: '100%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
-                    <TextField style={{ width: '100%', marginBottom: '15px' }} label="Password" value={this.state.password} onChange={this.handlePassword} type="password" />
-                    <FlatButton style={{ width: '80%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.signIn}>Sign In</FlatButton>
+                    {!this.state.forgotPassword &&
+                        <React.Fragment>
+                            <TextField style={{ width: '100%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
+                            <TextField style={{ width: '100%', marginBottom: '15px' }} label="Password" value={this.state.password} onChange={this.handlePassword} type="password" />
+                            <FlatButton style={{ width: '80%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.signIn}>Sign In</FlatButton>
+                            <FlatButton style={{ width: '80%', backgroundColor: "#fff", margin: '15px', color: '#000' }} onClick={this.resetPassword}>Forgot Password</FlatButton>
+                        </React.Fragment>
+                    }
+                    {this.state.forgotPassword &&
+                        <React.Fragment>
+                            <TextField style={{ width: '100%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
+                            <FlatButton style={{ width: '80%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.sendResetEmail}>Reset Password</FlatButton>
+                        </React.Fragment>
+                    }
                 </main>
 
                 <footer className="homeFooterContainer">

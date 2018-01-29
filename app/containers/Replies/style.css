@@ -214,3 +214,54 @@
   align-items:center;
   justify-content: center;
 }
+
+.challenges_feedTitle {
+  font-family:'Lato';
+  font-size:1.5em;
+  font-weight:300;
+  color:#333333;
+}
+
+.challenges_feedContent {
+  font-family:'Lato';
+  font-weight:300;
+  color:#999999;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+.challenges_mainContainer {
+  display:flex;
+  flex-direction:column;
+  background:#f9f9f9;
+  min-height:100vh;
+}
+
+.challenges_drawerContainer {
+   display:flex;
+   flex-direction:row;
+   justify-content:space-between;
+}
+
+.challenges_home-toolbar {
+  background:transparent;
+  border:none;
+  border-bottom:1px solid #DDDDDD;
+  display:flex;
+  width:100%;
+}
+
+.challenges_home-wrapper {
+  width:100%;
+  margin-top:15px;
+}
+
+.challenges_rdw-editor-main {
+  min-height:500px;
+  font-family:'Noto Sans';
+  font-weight:400;
+  font-size:1.1em;
+  color:#333333;
+  line-height:30px;
+  letter-spacing: 1px;
+}

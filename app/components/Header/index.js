@@ -82,6 +82,12 @@ export default class Header extends React.PureComponent {
           <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
         </div>
       )
+    } else {
+        return (
+        <div style={{display:'flex', flexDirection:'row'}}>
+          <Link to={'/signIn'} className="navButton" style={{color:this.state.textColor}}>Sign In</Link>
+        </div>
+        )
     }
   }
 
