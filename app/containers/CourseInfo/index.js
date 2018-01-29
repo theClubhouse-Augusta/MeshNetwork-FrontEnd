@@ -294,7 +294,7 @@ export default class CourseInfo extends React.PureComponent {
         <div className="lmsDetailAuthor">
           <div className="lmsDetailAuthorContainer">
             <div className="lmsDetailAuthorAvatar">
-              <img className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
+              <img className="lmsDetailAuthorAvatarImg" src={'https://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
             </div>
             <div className="lmsDetailAuthorInfo">
               <div className="lmsDetailAuthorName">{this.state.course.courseInstructorName}</div>
@@ -354,7 +354,7 @@ export default class CourseInfo extends React.PureComponent {
             </div>
             <div className="lmsLessonColumnOneContent">
               <div className="lmsSingleLessonImageContainer">
-                <img className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
+                <img className="lmsSingleLessonImage" src={'https://houseofhackers.me/media/' + this.state.course.courseImage} />
               </div>
               <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
               <div className="lmsLessonList">

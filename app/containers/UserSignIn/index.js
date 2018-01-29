@@ -24,8 +24,9 @@ export default class UserSignIn extends React.PureComponent {
             password: "",
             msg: "",
             snack: false,
-            forgotPassword: false
-            isLoading:false
+            forgotPassword: false,
+            isLoading:false,
+            emailSent: false,
         }
     }
 
@@ -137,17 +138,19 @@ export default class UserSignIn extends React.PureComponent {
     sendResetEmail = () => {
         let data = new FormData();
         data.append('email', this.state.email);
-        fetch(`http://localhost:8000/api/forgotpassword`, {
+        fetch(`https://innovationmesh.com/api/forgotpassword`, {
             method: 'POST',
             body: data
         })
         .then(response => response.json)
         .then(json => {
-            console.log(json);
-            if (json.success)
-                this.showSnack('Check your email for your temporary password.');
-            else     
-                this.showSnack(json)    
+            this.setState({ emailSent: true }, () => {
+                console.log(JSON.stringify(json));
+                // if (json.success)
+                //     this.showSnack('Check your email for your temporary password.');
+                // else     
+                //     this.showSnack(json)    
+            });
         })
         .catch(error => {
             console.log(error);
@@ -189,6 +192,7 @@ export default class UserSignIn extends React.PureComponent {
                         <React.Fragment>
                             <TextField style={{ width: '100%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
                             <FlatButton style={{ width: '80%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.sendResetEmail}>Reset Password</FlatButton>
+                            {this.state.emailSent && <p>Check your email for you temporary password</p>}
                         </React.Fragment>
                     }
                 </main>

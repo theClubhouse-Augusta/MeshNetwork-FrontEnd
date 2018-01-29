@@ -295,7 +295,7 @@ export default class LMSDash extends React.PureComponent {
                     <Card style={{height:'385px'}}>
                       <CardMedia
                         style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                        image={'http://houseofhackers.me/media/' + course.courseImage}
+                        image={'https://houseofhackers.me/media/' + course.courseImage}
                       />
                       <CardContent>
                         <Typography type="headline" component="h2">
