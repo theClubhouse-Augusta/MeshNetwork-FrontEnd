@@ -5,14 +5,26 @@
     width: auto;
   }
 
+  .aboutMainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .aboutMainRow {
     flex-direction: column;
+    justify-content: center;
     max-width: 90%;
   }
 
   .aboutMainMiddleRow {
     flex-direction: column-reverse;
+    justify-content: center;
     max-width: 90%;
+  }
+
+  .aboutMainContent {
+    margin: 0 auto;
   }
 
   img.aboutMainContent {
