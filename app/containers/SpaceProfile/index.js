@@ -115,6 +115,16 @@ export default class SpaceProfile extends React.PureComponent {
         }
     }
 
+    renderJoin = () => {
+      if(!this.state.user) {
+        return(
+          <Link to={'/join/' + this.state.spaceProfile.slug} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Join This Space</FlatButton></Link>
+        )
+      } else {
+        <Link to={'/user/' + this.state.user.id} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>My Profile</FlatButton></Link>
+      }
+    }
+
     eventStyleGetter = (event, start, end, isSelected) => {
       console.log(event);
       var backgroundColor = '#ff4d58';
@@ -210,7 +220,7 @@ export default class SpaceProfile extends React.PureComponent {
                             <div className="spaceMainTwo">
                                 <div className="spaceOptions">
                                     <Link to={'/booking/' + this.state.spaceProfile.slug} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#ff4d58', color: '#FFFFFF', width: '100%' }}>Bookings </FlatButton></Link>
-                                    <Link to={'/join/' + this.state.spaceProfile.slug} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#FFFFFF', color: '#ff4d58', width: '100%', border: '1px solid #CCCCCC' }}>Join This Space </FlatButton></Link>
+                                    {this.renderJoin()}
                                     <Link to={'/kiosk/' + this.state.spaceProfile.slug} style={{ width: '100%', marginBottom: '15px' }}><FlatButton style={{ background: '#ff4d58', color: '#FFFFFF', width: '100%' }}>Check-In</FlatButton></Link>
                                     {this.renderDashboard()}
                                 </div>

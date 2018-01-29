@@ -14,6 +14,9 @@ import MdAssessment from "react-icons/lib/md/assessment";
 import MdSchool from "react-icons/lib/md/school";
 import MdPerson from "react-icons/lib/md/person";
 import MdExitToApp from "react-icons/lib/md/exit-to-app";
+import DownArrow from 'react-icons/lib/fa/caret-down';
+
+import Menu, { MenuItem } from 'material-ui/Menu';
 
 import Snackbar from "material-ui/Snackbar";
 
@@ -30,6 +33,8 @@ export default class Header extends React.PureComponent {
       textColor: "#000000",
       backgroundColor: "transparent",
       headerTitle: "Mesh Network",
+      challengeMenu:null,
+      educationMenu:null,
       msg: "",
       snack: false
     };
@@ -40,6 +45,22 @@ export default class Header extends React.PureComponent {
   };
   showSnack = msg => {
     this.setState({ snack: true, msg: msg });
+  };
+
+  handleChallengeMenu = event => {
+    this.setState({ challengeMenu: event.currentTarget });
+  };
+
+  handleChallengeMenuClose = () => {
+    this.setState({ challengeMenu: null });
+  };
+
+  handleEducationMenu = event => {
+    this.setState({ educationMenu: event.currentTarget });
+  };
+
+  handleEducationMenuClose = () => {
+    this.setState({ educationMenu: null });
   };
 
   componentWillMount() {
@@ -148,6 +169,9 @@ export default class Header extends React.PureComponent {
     let _this = this;
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("lmsToken");
+    localStorage.removeItem("lmsUser");
+    localStorage.removeItem("challengeToken");
     this.showSnack("Thanks for Visiting!");
     this.setState(
       {
@@ -239,24 +263,57 @@ export default class Header extends React.PureComponent {
               <span className="navLink">Search</span>
             </Link>
             {/*<Link to="/events" className="navButton">Events</Link>*/}
-            <Link
-              to="/Challenges"
-              className="navButton"
-              style={{ color: this.state.textColor }}
-            >
-              <MdAssessment className="navIcon" />
-              <span className="navLink"> Challenges</span>
-            </Link>
-            <a
-              href="http://lms.innovationmesh.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="navButton"
-              style={{ color: this.state.textColor }}
-            >
-              <MdSchool className="navIcon" />
-              <span className="navLink">Education</span>
-            </a>
+
+            <span className="navButton">
+              <Link
+                to="/Challenges"
+                style={{ color: this.state.textColor, marginRight:'5px' }}
+              >
+                <MdAssessment className="navIcon" />
+                <span className="navLink">Challenges</span>
+              </Link>
+              <DownArrow
+                aria-owns={this.state.challengeMenu ? 'challenge-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleChallengeMenu}
+                style={{color:this.state.textColor}}
+              />
+              <Menu
+                id="challenge-menu"
+                anchorEl={this.state.challengeMenu}
+                open={Boolean(this.state.challengeMenu)}
+                onClose={this.handleChallengeMenuClose}
+              >
+                <Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>
+                <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
+              </Menu>
+            </span>
+
+            <span className="navButton">
+              <Link
+                to="/LMS"
+                style={{ color: this.state.textColor, marginRight:'5px' }}
+              >
+                <MdAssessment className="navIcon" />
+                <span className="navLink">Education</span>
+              </Link>
+              <DownArrow
+                aria-owns={this.state.educationMenu ? 'education-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleEducationMenu}
+                style={{color:this.state.textColor}}
+              />
+              <Menu
+                id="education-menu"
+                anchorEl={this.state.educationMenu}
+                open={Boolean(this.state.educationMenu)}
+                onClose={this.handleEducationMenuClose}
+              >
+                <Link to={'/LMS/Courses'}><MenuItem onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
+                <Link to={'/LMS/MyLMS'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+              </Menu>
+            </span>
+
             {this.renderSignOut()}
           </nav>
 

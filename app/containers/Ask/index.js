@@ -59,7 +59,7 @@ export default class Ask extends React.PureComponent {
     var questions = this.state.questions;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("http://challenges.innovationmesh.com/api/getQuestions/30?page=" + this.state.nextPage, {
+      fetch("https://challenges.innovationmesh.com/api/getQuestions/30?page=" + this.state.nextPage, {
         method:'GET',
       })
       .then(function(response) {
@@ -90,7 +90,7 @@ export default class Ask extends React.PureComponent {
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("http://challenges.innovationmesh.com/api/searchQuestions", {
+    fetch("https://challenges.innovationmesh.com/api/searchQuestions", {
       method:'POST',
       body:data
     })

@@ -28,6 +28,7 @@ export default class Replies extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('challengeToken'),
       snack: false,
       msg: "",
       replyOpen:false,
@@ -61,7 +62,7 @@ export default class Replies extends React.PureComponent {
   }
 
   getQuestion = () => {
-    fetch("http://challenges.innovationmesh.com/api/showQuestion/" + this.props.match.params.id, {
+    fetch("https://challenges.innovationmesh.com/api/showQuestion/" + this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -79,7 +80,7 @@ export default class Replies extends React.PureComponent {
     var replies = this.state.replies;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("http://challenges.innovationmesh.com/api/getReplies/" + this.props.match.params.id + '?page=' + this.state.nextPage, {
+      fetch("https://challenges.innovationmesh.com/api/getReplies/" + this.props.match.params.id + '?page=' + this.state.nextPage, {
         method:'GET'
       })
       .then(function(response) {
@@ -111,10 +112,10 @@ export default class Replies extends React.PureComponent {
     data.append('questionID', this.state.question.id);
     data.append('replyContent', draftToHtml(convertToRaw(this.state.replyContent.getCurrentContent())));
 
-    fetch("http://challenges.innovationmesh.com/api/storeReply/", {
+    fetch("https://challenges.innovationmesh.com/api/storeReply/", {
       method:'POST',
       body:data,
-      headers:{'Authorization':'Bearer ' + this.state.app.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -136,7 +137,7 @@ export default class Replies extends React.PureComponent {
   }
 
   renderQuestionReply = () => {
-    if(this.state.app.state.token) {
+    if(this.state.token) {
       return(
         <div className="challenges_questionTopicButton" onClick={() => this.replyDrawer()}>Reply <CommentIcon style={{marginLeft:'5px'}}/></div>
       )
@@ -234,7 +235,7 @@ export default class Replies extends React.PureComponent {
           open={this.state.snack}
           message={this.state.msg}
           autoHideDuration={3000}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
         />
       </div>
     );
