@@ -54,7 +54,7 @@ export default class About extends React.PureComponent {
                 Coworking Spaces, Business Incubators.
               </div>
             </div>
-            <div className="aboutMainRow">
+            <div className="aboutMainRow" id="aboutMainMiddleRow">
               <div className="aboutMainContent">
                 <div className="aboutMainContentTitle">
                   Why do Entrepreneurs need Collaborative Incubators?

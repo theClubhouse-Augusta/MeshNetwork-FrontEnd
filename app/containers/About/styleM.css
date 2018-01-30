@@ -1,7 +1,53 @@
 /* About Mobile Styles */
 
 @media (max-width: 425px) {
+  .aboutMainTitle {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .aboutMainRow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #aboutMainMiddleRow {
+    flex-direction: column-reverse;
+  }
+
+  img.aboutMainContent {
+    max-width: 50%;
+  }
+
+  .homeFooterContainer {
+    text-align: center;
+    padding: 10px;
+  }
 }
 
 @media (max-width: 1024px) and (min-width: 426px) {
+  .aboutMainTitle {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .aboutMainRow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #aboutMainMiddleRow {
+    flex-direction: column-reverse;
+  }
+
+  img.aboutMainContent {
+    max-width: 50%;
+  }
+
+  .homeFooterContainer {
+    text-align: center;
+    padding: 15px;
+  }
 }
