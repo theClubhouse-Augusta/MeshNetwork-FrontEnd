@@ -14,7 +14,7 @@ npm install
 
 From there you should go ahead and generate a new Container for Home `npm run generate container`. Next, you should uncomment the Home route in the routes.js file.
 
-To run the server, simply do `npm run start` and your development website will be on http://localhost:3000.
+To run the server, simply do `npm run start` and your development website will be on https://localhost:3000.
 
 ## Commands
 To generate Containers:
