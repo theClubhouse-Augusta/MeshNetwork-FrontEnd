@@ -106,12 +106,15 @@ export default class Header extends React.PureComponent {
     if (this.state.user && this.state.token) {
       return (
         <span
-          style={{ display: "flex", flexDirection: "row", marginLeft: "15px" }}
+          style={{ display: "flex", flexDirection: "row", marginLeft: "2.5%" }}
         >
           <Link
             to={"/space/" + this.state.user.spaceID}
             className="navButton"
-            style={{ color: this.state.textColor }}
+            style={{
+              color: this.state.textColor,
+              fontSize: "75%"
+            }}
           >
             Homespace
           </Link>

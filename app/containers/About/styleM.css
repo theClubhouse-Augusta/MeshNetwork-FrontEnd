@@ -2,7 +2,7 @@
 
 @media (max-width: 425px) {
   .aboutBlock {
-    width: auto;
+    /* width: auto; */
   }
 
   .aboutMainContainer {
@@ -19,7 +19,6 @@
 
   .aboutMainMiddleRow {
     flex-direction: column-reverse;
-    justify-content: center;
     max-width: 90%;
   }
 

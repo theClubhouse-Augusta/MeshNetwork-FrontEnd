@@ -7,7 +7,7 @@
 }
 
 .aboutMain {
-  max-width: 100%;
+  width: 100%;
 }
 
 .aboutBanner {
@@ -32,7 +32,6 @@
 
 .aboutBlock {
   min-height: 100vh;
-  max-width: 800px;
   margin: 0 auto;
   padding: 15px;
 }
