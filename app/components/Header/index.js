@@ -14,9 +14,9 @@ import MdAssessment from "react-icons/lib/md/assessment";
 import MdSchool from "react-icons/lib/md/school";
 import MdPerson from "react-icons/lib/md/person";
 import MdExitToApp from "react-icons/lib/md/exit-to-app";
-import DownArrow from 'react-icons/lib/fa/caret-down';
+import DownArrow from "react-icons/lib/fa/caret-down";
 
-import Menu, { MenuItem } from 'material-ui/Menu';
+import Menu, { MenuItem } from "material-ui/Menu";
 
 import Snackbar from "material-ui/Snackbar";
 
@@ -33,8 +33,9 @@ export default class Header extends React.PureComponent {
       textColor: "#000000",
       backgroundColor: "transparent",
       headerTitle: "Mesh Network",
-      challengeMenu:null,
-      educationMenu:null,
+      challengeMenu: null,
+      educationMenu: null,
+      accountMenu: null,
       msg: "",
       snack: false
     };
@@ -61,6 +62,14 @@ export default class Header extends React.PureComponent {
 
   handleEducationMenuClose = () => {
     this.setState({ educationMenu: null });
+  };
+
+  handleAccountMenu = event => {
+    this.setState({ accountMenu: event.currentTarget });
+  };
+
+  handleAccountMenuClose = event => {
+    this.setState({ accountMenu: null });
   };
 
   componentWillMount() {
@@ -93,24 +102,72 @@ export default class Header extends React.PureComponent {
     }
   };
 
-  renderSignOut = () => {
-    if(this.state.user && this.state.token)
-    {
-      return(
-        <div style={{display:'flex', flexDirection:'row'}}>
-          <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>Workspace</Link>
-          <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
-          <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
-        </div>
-      )
-    } else {
-        return (
-        <div style={{display:'flex', flexDirection:'row'}}>
-          <Link to={'/signIn'} className="navButton" style={{color:this.state.textColor}}>Sign In</Link>
-        </div>
-        )
+  renderAccountMenu = () => {
+    if (this.state.user && this.state.token) {
+      return (
+        <span
+          style={{ display: "flex", flexDirection: "row", marginLeft: "2.5%" }}
+        >
+          <Link
+            to={"/space/" + this.state.user.spaceID}
+            className="navButton"
+            style={{
+              color: this.state.textColor,
+              fontSize: "75%"
+            }}
+          >
+            Homespace
+          </Link>
+          <div
+            className="navMemberAcct"
+            style={{
+              display: "flex",
+              flexDirection: "row"
+            }}
+          >
+            <MdPerson
+              aria-owns={this.state.accountMenu ? "account-menu" : null}
+              aria-haspopup="true"
+              onClick={this.handleAccountMenu}
+              style={{
+                color: this.state.textColor,
+                height: "1.25em",
+                width: "1.25em"
+              }}
+            />
+            <Menu
+              id="account-menu"
+              anchorEl={this.state.accountMenu}
+              open={Boolean(this.state.accountMenu)}
+              onClose={this.handleAccountMenuClose}
+            >
+              <Link
+                to={"/user/" + this.state.user.id}
+                className="navButton"
+                style={{ color: this.state.textColor }}
+              >
+                <MenuItem onClick={this.handleAccountMenuClose}>
+                  Profile
+                </MenuItem>
+              </Link>
+              <Link
+                to=""
+                style={{ color: this.state.textColor }}
+                onClick={this.signOut}
+              >
+                <MenuItem
+                  className="navButton"
+                  onClick={this.handleAccountMenuClose}
+                >
+                  Sign Out
+                </MenuItem>
+              </Link>
+            </Menu>
+          </div>
+        </span>
+      );
     }
-  }
+  };
 
   renderMenu() {
     if (this.state.menuOpen === true) {
@@ -142,9 +199,9 @@ export default class Header extends React.PureComponent {
           </Link>
           {/*<Link to="/events" className="navButton">Events</Link>*/}
           <Link
-            to={'/Challenges'}
+            to={"/Challenges"}
             className="navMenuButton"
-            style={{ color: this.state.textColor}}
+            style={{ color: this.state.textColor }}
           >
             <MdAssessment className="navIcon" />
             <span className="navLink"> Challenges</span>
@@ -186,7 +243,6 @@ export default class Header extends React.PureComponent {
     );
   };
 
-
   renderMobileSignOut = () => {
     if (this.state.user && this.state.token) {
       return (
@@ -215,10 +271,14 @@ export default class Header extends React.PureComponent {
   };
 
   render() {
-    let headerTitle = <Link to="/" style={{color:this.state.textColor}}>Mesh <span style={{color:'#ff4d58'}}> Network</span></Link>;
-        if(this.state.headerTitle != "Mesh Network") {
-            headerTitle = this.state.headerTitle;
-        }
+    let headerTitle = (
+      <Link to="/" style={{ color: this.state.textColor }}>
+        Mesh <span style={{ color: "#ff4d58" }}> Network</span>
+      </Link>
+    );
+    if (this.state.headerTitle != "Mesh Network") {
+      headerTitle = this.state.headerTitle;
+    }
     /*let headerTitle = (
       <Link to="/" className="logoNav" style={{ color: "#000000" }}>
         <h1 style={{ fontSize: "1em" }}>
@@ -237,7 +297,6 @@ export default class Header extends React.PureComponent {
           </div>
 
           <nav className="nav">
-            <Link to="/" className="navButton" style={{color:this.state.textColor}}>Home</Link>
             <Link
               to="/spaces"
               className="navButton"
@@ -267,16 +326,16 @@ export default class Header extends React.PureComponent {
             <span className="navButton">
               <Link
                 to="/Challenges"
-                style={{ color: this.state.textColor, marginRight:'5px' }}
+                style={{ color: this.state.textColor, marginRight: "5px" }}
               >
                 <MdAssessment className="navIcon" />
                 <span className="navLink">Challenges</span>
               </Link>
               <DownArrow
-                aria-owns={this.state.challengeMenu ? 'challenge-menu' : null}
+                aria-owns={this.state.challengeMenu ? "challenge-menu" : null}
                 aria-haspopup="true"
                 onClick={this.handleChallengeMenu}
-                style={{color:this.state.textColor}}
+                style={{ color: this.state.textColor }}
               />
               <Menu
                 id="challenge-menu"
@@ -284,24 +343,32 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.challengeMenu)}
                 onClose={this.handleChallengeMenuClose}
               >
-                <Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>
-                <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
+                <Link to={"/Challenges/Ask"}>
+                  <MenuItem onClick={this.handleChallengeMenuClose}>
+                    Ask
+                  </MenuItem>
+                </Link>
+                <Link to={"/Challenges/Teams"}>
+                  <MenuItem onClick={this.handleChallengeMenuClose}>
+                    Teams
+                  </MenuItem>
+                </Link>
               </Menu>
             </span>
 
             <span className="navButton">
               <Link
                 to="/LMS"
-                style={{ color: this.state.textColor, marginRight:'5px' }}
+                style={{ color: this.state.textColor, marginRight: "5px" }}
               >
-                <MdAssessment className="navIcon" />
+                <MdSchool className="navIcon" />
                 <span className="navLink">Education</span>
               </Link>
               <DownArrow
-                aria-owns={this.state.educationMenu ? 'education-menu' : null}
+                aria-owns={this.state.educationMenu ? "education-menu" : null}
                 aria-haspopup="true"
                 onClick={this.handleEducationMenu}
-                style={{color:this.state.textColor}}
+                style={{ color: this.state.textColor }}
               />
               <Menu
                 id="education-menu"
@@ -309,12 +376,20 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.educationMenu)}
                 onClose={this.handleEducationMenuClose}
               >
-                <Link to={'/LMS/Courses'}><MenuItem onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
-                <Link to={'/LMS/MyLMS'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+                <Link to={"/LMS/Courses"}>
+                  <MenuItem onClick={this.handleEducationMenuClose}>
+                    Courses
+                  </MenuItem>
+                </Link>
+                <Link to={"/LMS/MyLMS"}>
+                  <MenuItem onClick={this.handleEducationMenuClose}>
+                    My Courses
+                  </MenuItem>
+                </Link>
               </Menu>
             </span>
 
-            {this.renderSignOut()}
+            {this.renderAccountMenu()}
           </nav>
 
           <Bars className="menuIcon" onClick={this.handleMenu} />

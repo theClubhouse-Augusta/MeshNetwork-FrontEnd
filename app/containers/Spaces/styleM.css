@@ -1,1 +1,8 @@
 /* Spaces Mobile Styles */
+
+@media (max-width: 425px) {
+  .spacesMain {
+    display: flex;
+    flex-direction: column;
+  }
+}

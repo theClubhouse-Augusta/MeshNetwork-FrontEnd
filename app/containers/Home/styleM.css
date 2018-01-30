@@ -6,6 +6,10 @@
     font-size: 0.8em;
   }
 
+  .homeHeaderContentTitle {
+    text-align: center;
+  }
+
   .homeHeaderContentSubtitle {
     font-size: 1.15em;
     /* some font alignment hackyness */
@@ -45,11 +49,8 @@
     margin: 15px auto;
   }
 
-  .homeMainSectionTitleThree {
-    font-family: "HankenBook";
-    color: #222222;
-    font-size: 2em;
-    align-self: flex-start;
+  .homeMainSectionTitle {
+    text-align: center;
   }
 
   .homeFooterContainer {
@@ -68,7 +69,7 @@
   }
 
   .homeMainSectionBlockTwo {
-    width: 40%;
+    width: 80%;
     margin: 15px;
   }
 }

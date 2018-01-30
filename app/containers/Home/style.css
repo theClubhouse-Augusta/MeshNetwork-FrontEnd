@@ -98,7 +98,8 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(https://h4z.it/Image/88b757_banner.jpg);
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+    url(http://h4z.it/Image/88b757_banner.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;

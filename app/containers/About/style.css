@@ -1,117 +1,115 @@
 /* About Styles */
 
 .container {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .aboutBanner {
-  height:300px;
-  width:100%;
-  background:linear-gradient(rgba(0, 0, 0, 0.7),rgba(0, 0, 0, 0.7)),url('https://h4z.it/Image/6d4ad4_e-full-width.jpg');
-  background-size:cover;
-  background-position:center center;
-  text-align:center;
-  color:#FFFFFF;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+  height: 300px;
+  width: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("http://h4z.it/Image/6d4ad4_e-full-width.jpg");
+  background-size: cover;
+  background-position: center center;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .mainProfile {
-  width:100%;
-  margin:0 auto;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .aboutBlock {
-  min-height:100vh;
-  width:100%;
-  max-width:800px;
+  min-height: 100vh;
+  width: 80%;
   margin: 0 auto;
-  padding:15px;
+  padding: 15px;
 }
 
-
 .aboutTextHeader {
-  font-family: 'HankenBook';
-  color:#333333;
-  font-size:1.3em;
-  margin-bottom:10px;
+  font-family: "HankenBook";
+  color: #333333;
+  font-size: 1.3em;
+  margin-bottom: 10px;
 }
 
 .aboutContent {
-  font-family: 'Noto Sans', serif;
-  display:flex;
-  flex-direction:column;
-  margin-bottom:30px;
+  font-family: "Noto Sans", serif;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
 }
 
 .aboutFaq {
-  background:#CCCCCC;
-  display:flex;
-  height:400px;
-  margin:15px;
+  background: #cccccc;
+  display: flex;
+  height: 400px;
+  margin: 15px;
 }
 
-
 .aboutButtons {
-  min-height:100px;
-  display:flex;
-  align-items:center;
-  flex-direction:row;
-  justify-content:space-between;
-  padding:15px;
-  background:linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),url('https://hackaugusta.net/wp-content/uploads/2014/10/Academy-Front.png');
-  background-size:cover;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("https://hackaugusta.net/wp-content/uploads/2014/10/Academy-Front.png");
+  background-size: cover;
 }
 
 .aboutButtonText {
-  font-family: 'Encode Sans', sans-serif;
-  font-size:2em;
-  font-weight:800;
+  font-family: "Encode Sans", sans-serif;
+  font-size: 2em;
+  font-weight: 800;
 
-  color:#FFFFFF;
+  color: #ffffff;
 }
 
-
 .aboutMainTitle {
-  font-family: 'HankenBook';
-  color:#333333;
-  font-size:1.5em;
-  padding:30px;
+  font-family: "HankenBook";
+  color: #333333;
+  font-size: 1.5em;
+  padding: 30px;
 }
 
 .aboutMainContainer {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
 }
 
 .aboutMainRow {
-  display:flex;
-  flex-direction:row;
-  align-items:center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .aboutMainContentTitle {
-  font-family: 'HankenBook';
-  color:#333333;
-  font-size:1.3em;
-  margin-bottom:10px;
+  font-family: "HankenBook";
+  color: #333333;
+  font-size: 1.3em;
+  margin-bottom: 10px;
 }
 
 .aboutMainContent {
-  padding:15px;
-  font-family:'Noto Sans';
-  display:flex;
-  flex-direction:column;
+  padding: 15px;
+  font-family: "Noto Sans";
+  display: flex;
+  flex-direction: column;
 }
 
 .aboutCallToAction {
-  font-family: 'HankenBook';
-  color:#AAAAAA;
-  text-align:center;
-  font-size:1.3em;
-  margin-bottom:15px;
+  font-family: "HankenBook";
+  color: #aaaaaa;
+  text-align: center;
+  font-size: 1.3em;
+  margin-bottom: 15px;
 }
