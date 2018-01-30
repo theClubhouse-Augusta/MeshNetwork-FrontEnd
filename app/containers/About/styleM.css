@@ -2,7 +2,7 @@
 
 @media (max-width: 425px) {
   .aboutBlock {
-    /* width: auto; */
+    width: auto;
   }
 
   .aboutMainContainer {

@@ -27,27 +27,26 @@ export default class About extends React.PureComponent {
             <div className="aboutHeaderContentTitle">
               About the Mesh Network
             </div>
-            <div className="aboutHeaderContentSubtitle">
-              Learn more about the Collaborative Ecosystem
-            </div>
-          </div>
-        </header>
-
-        <div className="aboutBlock">
-          <div className="aboutMainTitle">
-            The Mesh Network of Innovation connects organizers of collaborative
-            incubators to help them succeed in growing and sustaining their
-            communities.
-          </div>
-          <div className="aboutMainContainer">
-            <div className="aboutMainRow">
-              <img
-                className="aboutMainContent"
-                src="http://h4z.it/Image/71722e_w-it-works-1.png"
-              />
-              <div className="aboutMainContent">
-                <div className="aboutMainContentTitle">
-                  What is a Collaborative Incubator?
+                        <div className="aboutMainContainer">
+                            <div className="aboutMainRow">
+                                <img className="aboutMainContent" src="https://h4z.it/Image/71722e_w-it-works-1.png"/>
+                                <div className="aboutMainContent">
+                                    <div className="aboutMainContentTitle">What is a Collaborative Incubator?</div>
+                                    Collaborative Incubators are community driven spaces to grow innovation, learning, and venture creation. There are several models with different focuses. These models include Makerspaces, Coworking Spaces, Business Incubators.
+                </div>
+                            </div>
+                            <div className="aboutMainRow">
+                                <div className="aboutMainContent">
+                                    <div className="aboutMainContentTitle">Why do Entrepreneurs need Collaborative Incubators?</div>
+                                    Most of our success is the result of the connections we have to people and resources. The Mesh Network helps local organizers grow larger communities, and helps connect entrepreneurs to resources across a much larger network.
+                </div>
+                                <img className="aboutMainContent" src="https://h4z.it/Image/3f32a2_w-it-works-2.png"/>
+                            </div>
+                            <div className="aboutMainRow">
+                                <img className="aboutMainContent" src="https://h4z.it/Image/6e6b2e_w-it-works-3.png"/>
+                                <div className="aboutMainContent">
+                                    <div className="aboutMainContentTitle">How do economic developers benefit from the Mesh Network?</div>
+                                    Collaborative Incubators in within the mesh network contribute $20,000,000 per year in economic activity. On average, each incubator is responsible for creating 30 new jobs per year in their community.
                 </div>
                 Collaborative Incubators are community driven spaces to grow
                 innovation, learning, and venture creation. There are several
