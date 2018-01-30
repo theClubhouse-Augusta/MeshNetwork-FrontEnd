@@ -6,15 +6,11 @@
   min-height: 100vh;
 }
 
-.aboutMain {
-  width: 100%;
-}
-
 .aboutBanner {
   height: 300px;
   width: 100%;
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url("https://h4z.it/Image/6d4ad4_e-full-width.jpg");
+    url("http://h4z.it/Image/6d4ad4_e-full-width.jpg");
   background-size: cover;
   background-position: center center;
   text-align: center;
@@ -32,6 +28,8 @@
 
 .aboutBlock {
   min-height: 100vh;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   padding: 15px;
 }
@@ -41,19 +39,6 @@
   color: #333333;
   font-size: 1.3em;
   margin-bottom: 10px;
-}
-
-.aboutHeaderContentTitle {
-  font-family: "HankenBook";
-  color: #ffffff;
-  font-size: 3em;
-  margin: 0 15px;
-}
-
-.aboutHeaderContentSubtitle {
-  font-family: "Noto Sans";
-  color: #cccccc;
-  margin: 15px 0;
 }
 
 .aboutContent {
@@ -103,12 +88,6 @@
 }
 
 .aboutMainRow {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.aboutMainMiddleRow {
   display: flex;
   flex-direction: row;
   align-items: center;

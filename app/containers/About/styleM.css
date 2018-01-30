@@ -1,40 +1,7 @@
 /* About Mobile Styles */
 
 @media (max-width: 425px) {
-  .aboutBlock {
-    width: auto;
-  }
-
-  .aboutMainContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .aboutMainRow {
-    flex-direction: column;
-    justify-content: center;
-    max-width: 90%;
-  }
-
-  .aboutMainMiddleRow {
-    flex-direction: column-reverse;
-    max-width: 90%;
-  }
-
-  .aboutMainContent {
-    margin: 0 auto;
-  }
-
-  img.aboutMainContent {
-    margin: 0 auto;
-    max-width: 80vw;
-  }
 }
 
 @media (max-width: 1024px) and (min-width: 426px) {
-  .aboutBlock {
-    margin: 0 auto;
-    max-width: 600px;
-  }
 }
