@@ -17,7 +17,7 @@ import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMont
 import { AllAppearances } from '../../components/DataViz/AllAppearances';
 import { AllJoins } from '../../components/DataViz/AllJoins';
 
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import Table, { TableBody, TableCell, TableHead, TableRow, TablePagination, TableFooter } from 'material-ui/Table';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
@@ -52,6 +52,14 @@ export default class SpaceDash extends React.PureComponent {
         snack: false,
         loading: true,
         thisMonthCheckIns: 0,
+        userPage: 0,
+        userRowsPerPage: 10,
+        eventPage: 0,
+        eventRowsPerPage:10,
+        resourceStartDay:'',
+        resourceEndDay:'',
+        resourceStartTime:'',
+        resourceEndTime:'',
     }
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
@@ -127,7 +135,7 @@ export default class SpaceDash extends React.PureComponent {
             })
             .then(function (json) {
                 this.setState({
-                    spaceEvents: json.data
+                    spaceEvents: json
                 })
             }.bind(this))
     }
@@ -236,6 +244,30 @@ export default class SpaceDash extends React.PureComponent {
         })
     };
 
+    handleStartDay = (event) => {
+        this.setState({
+            resourceStartDay: event.target.value
+        })
+    };
+
+    handleEndDay = (event) => {
+        this.setState({
+            resourceEndDay: event.target.value
+        })
+    };
+
+    handleStartTime = (event) => {
+        this.setState({
+            resourceStartTime: event.target.value
+        })
+    };
+
+    handleStartEnd = (event) => {
+        this.setState({
+            resourceStartEnd: event.target.value
+        })
+    };
+
     getResources = (id) => {
         fetch('https://innovationmesh.com/api/resources/' + id, {
             method: 'GET',
@@ -257,6 +289,10 @@ export default class SpaceDash extends React.PureComponent {
         data.append('spaceID', this.state.spaceID);
         data.append('resourceName', this.state.resourceName);
         data.append('resourceEmail', this.state.resourceEmail);
+        data.append('resourceStartDay', this.state.resourceStartDay);
+        data.append('resourceEndDay', this.state.resourceEndDay);
+        data.append('resourceStartTime', this.state.resourceStartTime);
+        data.append('resourceEndTime', this.state.resourceEndTime);
 
         fetch('https://innovationmesh.com/api/resource', {
             method: 'POST',
@@ -307,6 +343,22 @@ export default class SpaceDash extends React.PureComponent {
             }.bind(this))
     }
 
+    handleUserChangePage = (event, page) => {
+      this.setState({ userPage:page });
+    };
+
+     handleUserChangeRowsPerPage = event => {
+      this.setState({ userRowsPerPage: event.target.value });
+    };
+
+    handleEventChangePage = (event, page) => {
+      this.setState({ eventPage:page });
+    };
+
+     handleEventChangeRowsPerPage = event => {
+      this.setState({ eventRowsPerPage: event.target.value });
+    };
+
 
     renderDashContent = () => {
         if (this.state.activeMenu === 0) {
@@ -332,28 +384,26 @@ export default class SpaceDash extends React.PureComponent {
                         </div>
                     </div>
                     <div className="spaceDashMetricsContainer">
-                        <h2 className="spaceDashDataTitleGraph">Check-ins range</h2>
+                        <div className="spaceDashDataTitleGraph">Check-ins range</div>
                         <AppearanceByMonthYear {...this.props} />
 
                         <div className="spaceDashTotalGraphs">
                             <div className="spaceDashTotalGraphsSection">
-
-                                <h2 className="spaceDashDataTitleGraph">Total Check-ins</h2>
+                                <div className="spaceDashDataTitleGraph">Member Engagement</div>
                                 <AllAppearances height={600} width={600} {...this.props} />
                             </div>
 
                             <div className="spaceDashTotalGraphsSection">
-                                <div className="spaceDashDataTitleGraph">member sign-ups</div>
+                                <div className="spaceDashDataTitleGraph">Member Onboarding</div>
                                 <AllJoins height={600} width={600} {...this.props} />
                             </div>
 
                         </div>
                     </div>
-                    <div className="spaceDashOptions">
-                        <Link to={'/addEvent'} style={{ width: '10%', margin: '10px' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Add an Event</FlatButton></Link>
-                    </div>
+
                     <div className="spaceDashColumnsContainer">
                         <div className="spaceDashColumn">
+                        <div className="spaceDashDataTitleGraph">Members</div>
                             <Table>
                                 <TableHead>
                                     <TableRow>
@@ -363,17 +413,38 @@ export default class SpaceDash extends React.PureComponent {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state.spaceUsers.map((user, i) => (
-                                        <TableRow key={i}>
-                                            <TableCell>{user.name}</TableCell>
-                                            <TableCell>{user.email}</TableCell>
-                                            <TableCell>{user.title}</TableCell>
-                                        </TableRow>
-                                    ))}
+                                  {this.state.spaceUsers.slice(this.state.userPage * this.state.userRowsPerPage, this.state.userPage * this.state.userRowsPerPage + this.state.userRowsPerPage).map(user => {
+                                    return(
+                                      <TableRow>
+                                          <TableCell>{user.name}</TableCell>
+                                          <TableCell>{user.email}</TableCell>
+                                          <TableCell>{user.title}</TableCell>
+                                      </TableRow>
+                                    )
+                                  })}
                                 </TableBody>
+                                <TableFooter>
+                                  <TableRow>
+                                    <TablePagination
+                                      colSpan={6}
+                                      count={this.state.spaceUsers.length}
+                                      rowsPerPage={this.state.userRowsPerPage}
+                                      page={this.state.userPage}
+                                      backIconButtonProps={{
+                                        'aria-label': 'Previous Page',
+                                      }}
+                                      nextIconButtonProps={{
+                                        'aria-label': 'Next Page',
+                                      }}
+                                      onChangePage={this.handleUserChangePage}
+                                      onChangeRowsPerPage={this.handleUserChangeRowsPerPage}
+                                    />
+                                  </TableRow>
+                                </TableFooter>
                             </Table>
                         </div>
                         <div className="spaceDashColumn">
+                        <div className="spaceDashDataTitleGraph">Events</div>
                             <Table>
                                 <TableHead>
                                     <TableRow>
@@ -383,14 +454,35 @@ export default class SpaceDash extends React.PureComponent {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state.spaceEvents.map((e, i) => (
-                                        <TableRow>
-                                            <TableCell>{e.title}</TableCell>
-                                            <TableCell>{e.space.city}, {e.space.state}</TableCell>
-                                            <TableCell>{e.date.start}</TableCell>
-                                        </TableRow>
-                                    ))}
+                                  {this.state.spaceEvents.slice(this.state.eventPage * this.state.eventRowsPerPage, this.state.eventPage * this.state.eventRowsPerPage + this.state.eventRowsPerPage).map(e => {
+                                    return(
+                                      <TableRow>
+                                        <TableCell>{e.title}</TableCell>
+                                        <TableCell>{e.space.city}, {e.space.state}</TableCell>
+                                        <TableCell>{e.date}</TableCell>
+                                      </TableRow>
+                                    )
+                                  })}
                                 </TableBody>
+                                <TableFooter>
+                                  <TableRow>
+                                    <TablePagination
+                                      colSpan={6}
+                                      count={this.state.spaceEvents.length}
+                                      rowsPerPage={this.state.eventRowsPerPage}
+                                      page={this.state.eventPage}
+                                      backIconButtonProps={{
+                                        'aria-label': 'Previous Page',
+                                      }}
+                                      nextIconButtonProps={{
+                                        'aria-label': 'Next Page',
+                                      }}
+                                      onChangePage={this.handleEventChangePage}
+                                      onChangeRowsPerPage={this.handleEventChangeRowsPerPage}
+                                    />
+                                  </TableRow>
+                                </TableFooter>
+
                             </Table>
                         </div>
                     </div>
@@ -450,6 +542,10 @@ export default class SpaceDash extends React.PureComponent {
                     <div className="spaceDashOptions">
                         <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px' }} />
                         <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px' }} />
+                        <TextField value={this.state.resourceStartDay} onChange={this.handleStartDay} label="Start Day" placeholder="Monday" style={{ marginRight: '10px' }} />
+                        <TextField value={this.state.resourceEndDay} onChange={this.handleEndDay} label="End Day" placeholder="Friday" style={{ marginRight: '10px' }} />
+                        <TextField value={this.state.resourceStartTime} onChange={this.handleStartTime} label="Start Time" placeholder="8:00am" style={{ marginRight: '10px' }} />
+                        <TextField value={this.state.resourceEndTime} onChange={this.handleEndTime} label="End Time" placeholder="8:00pm" style={{ marginRight: '10px' }} />
                         <label style={{ width: '10%', margin: '10px' }}>
                             <div onClick={this.storeResource} style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold', cursor: 'pointer' }} >Add Resource</div>
                         </label>
@@ -490,6 +586,7 @@ export default class SpaceDash extends React.PureComponent {
                             <div className="spaceDashMenuItem" onClick={() => this.changeMenu(1)}>Space Information</div>
                             <div className="spaceDashMenuItem" onClick={() => this.changeMenu(2)}>Photo Gallery</div>
                             <div className="spaceDashMenuItem" onClick={() => this.changeMenu(3)}>Resources</div>
+                            <Link to={'/addEvent'}><div className="spaceDashMenuItem">Add an Event</div></Link>
                         </div>
                         {this.renderDashContent()}
 
