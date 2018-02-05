@@ -1,1 +1,10 @@
 /* SpaceProfile Mobile Styles */
+@media (max-width: 425px) {
+  .spaceMainContainer {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 426) {
+}

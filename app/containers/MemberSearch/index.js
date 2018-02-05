@@ -11,6 +11,9 @@ import PropTypes from "prop-types";
 import Chip from "material-ui/Chip";
 import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
+import { MenuItem } from "material-ui/Menu";
+import Input, { InputLabel } from "material-ui/Input";
+import Select from "material-ui/Select";
 
 /* Components */
 import Helmet from "react-helmet";
@@ -143,7 +146,7 @@ export default class MemberSearch extends PureComponent {
     return this.state.loading ? (
       <Spinner />
     ) : (
-      <div className="membersContainer">
+      <div className="memberSearchContainer">
         <Helmet
           title="MemberSearch"
           meta={[
@@ -153,52 +156,70 @@ export default class MemberSearch extends PureComponent {
 
         <header style={{ background: "#FFFFFF", width: "100%" }}>
           <Header />
-          <div className="membersBanner">
-            <div className="homeHeaderContentTitle">Connect with People</div>
-            <div className="homeHeaderContentSubtitle">
+          <div className="memberSearchBanner">
+            <div className="memberSearchHeaderTitle">Connect with People</div>
+            <div className="memberSearchHeaderSubtitle">
               Discover new and innovative members
             </div>
           </div>
         </header>
 
         <main className="memberSearchMain">
-          <div className="" />
-          <TextField
-            style={{
-              width: "100%",
-              maxWidth: "700px",
-              textAlign: "center",
-              marginBottom: "10px",
-              color: "#FFFFFF"
-            }}
-            label="Member Search"
-            value={this.state.query}
-            onChange={this.searchQuery}
-            onKeyDown={e => {
-              this.checkKey(e);
-            }}
-          />
-
-          <div className="membersSubTitle">Popular Skills</div>
-
-          <div className="tagsBox">
-            {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
+          <div className="memberSearchBar">
+            <TextField
+              style={{
+                width: "100%",
+                maxWidth: "700px",
+                textAlign: "center",
+                marginBottom: "10px",
+                color: "#FFFFFF"
+              }}
+              label="Member Search"
+              value={this.state.query}
+              onChange={this.searchQuery}
+              onKeyDown={e => {
+                this.checkKey(e);
+              }}
+            />
           </div>
+
+          {/*  <div className="memberSearchByPopularTags">
+            <h3 className="memberSearchTagTitle">Popular Skills</h3>
+
+            <div className="memberSearchTagSelect">
+                
+               <Select
+                value={1}
+                input={<Input id="tag-multiple" />}
+                onChange={() => {
+                  this.tagClick(skill.id);
+                }}
+              >
+                {this.state.skills.map((skill, i) => (
+                  <MenuItem key={i} value={skill} />
+                ))}
+              </Select>             
+              
+            {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
+            
+           
+            </div>
+          </div>  */}
 
           <div className="memberSearchResults">
             {this.state.results.map((user, index) => (
               <Link
                 key={`results${index}`}
                 to={"/user/" + user.id}
-                className="eventBlock"
+                className="memberBlock"
               >
-                <div className="eventBlockImage">
+                <div className="memberBlockImage">
                   <img
                     src={user.avatar}
                     style={{ width: "100%", height: "auto" }}
                   />
                 </div>
-                <div className="eventBlockInfo">
+                <div className="memberBlockInfo">
                   <div className="searchBlockTitle">{user.name}</div>
                   <div className="searchBlockDesc">{user.title}</div>
                 </div>
@@ -206,7 +227,7 @@ export default class MemberSearch extends PureComponent {
             ))}
           </div>
         </main>
-        <footer className="homeFooterContainer">
+        <footer className="pageFooterContainer">
           Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
           723-5782
         </footer>

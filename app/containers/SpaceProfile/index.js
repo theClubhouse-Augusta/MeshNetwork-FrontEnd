@@ -170,8 +170,10 @@ export default class SpaceProfile extends React.PureComponent {
                     </div>
                     <div className="spaceMainHeader">
                         <div className="spaceMainContainer" style={{ alignItems: 'center' }}>
-                            <div className="spaceMainOne">
+                           
+                        <div className="spaceMainOne">
                                 <div className="spaceMainBread">MeshNetwork<DoubleArrow size={10} style={{ marginLeft: '5px', marginRight: '5px' }} /> WorkSpace <DoubleArrow size={10} style={{ marginLeft: '5px', marginRight: '5px' }} /> Home </div>
+
                                 <div className="spaceMainTitle">{this.state.spaceProfile.name}</div>
                                 <div className="spaceMainSlogan">{this.state.spaceProfile.city}&#39;s Collaborative Workspace</div>
                                 <div className="spaceContact">
@@ -192,6 +194,7 @@ export default class SpaceProfile extends React.PureComponent {
                                     </a>
                                 </div>
                             </div>
+                           
                             <div className="spaceMainTwo">
                                 <img src={this.state.spaceProfile.logo} className="spaceMainLogo" />
                             </div>
