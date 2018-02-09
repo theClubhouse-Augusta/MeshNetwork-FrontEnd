@@ -104,6 +104,11 @@ div#dude {
   z-index: 0;
 }
 
+.spacesMapElement {
+  height: 100vh;
+  width: 100%;
+}
+
 .spacesBlock {
   width: 45%;
   margin: 2%;

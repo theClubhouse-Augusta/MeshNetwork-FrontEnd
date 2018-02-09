@@ -516,7 +516,7 @@ class CheckoutForm extends React.PureComponent {
 
                             {this.props.pubkey &&
                                 <React.Fragment>
-                                    <label style={{ marginBottom: 12, marginTop: '20px' }}>
+                                    <label style={{ marginBottom: 12, marginTop: '60px' }}>
                                         Select a Plan
                   </label>
 

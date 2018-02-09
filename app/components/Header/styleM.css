@@ -1,26 +1,25 @@
 /* NavBar Mobile Styles */
 
 @media (max-width: 600px) {
+  /* body {
+    overflow: hidden;
+  } */
   .siteName {
     width: 90%;
   }
-
   .menuIcon {
     display: flex;
     margin-right: 15px;
     font-size: 1.5em;
     color: #ff4d58;
   }
-
   .nav {
     display: none;
   }
-
   .navIcon {
     display: flex;
     color: #000000;
   }
-
   .navMobile {
     display: flex;
     flex-direction: column;
@@ -33,13 +32,11 @@
     width: 100vw;
     padding-top: 5vh;
   }
-
   .navLink {
     display: flex;
     color: #000000;
     margin-left: 1em;
   }
-
   .navMenuButton {
     display: flex;
     flex-direction: row;
@@ -50,12 +47,19 @@
     font-size: 2em;
     font-family: "Encode Sans", sans-serif;
   }
-
-  .navMenuProfButton {
+  .navMobileSignOut {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    font-size: 1.5em;
+    margin: 30px;
   }
-
+  .navMenuProfButton {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  }
   #signOutLink {
     margin-left: -0.45em;
   }
@@ -65,7 +69,6 @@
   .logoNav {
     color: #ffffff;
   }
-
   .navIcon {
     display: flex;
     flex-direction: row;
@@ -73,7 +76,6 @@
     width: 32px;
     margin: 0 10px;
   }
-
   .navLink {
     display: none;
   }

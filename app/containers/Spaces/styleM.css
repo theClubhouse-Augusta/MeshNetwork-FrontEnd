@@ -2,7 +2,60 @@
 
 @media (max-width: 425px) {
   .spacesMain {
-    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .spacesMainContainer {
     flex-direction: column;
+    width: auto;
+    margin-top: 30px;
+  }
+
+  .spacesBlock {
+    width: auto;
+  }
+
+  .spacesBlockImage img {
+    max-height: 90%;
+    width: auto;
+    max-width: 90%;
+    margin-top: 10px;
+  }
+
+  .spacesMapContainer {
+    position: unset;
+    width: 100%;
+    height: 60vh;
+  }
+
+  .spacesMapElement {
+    height: 60vh;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 426px) {
+  .spacesMain {
+    flex-direction: column-reverse;
+  }
+
+  .spacesMainContainer {
+    flex-direction: row;
+    width: auto;
+  }
+
+  .spacesBlockImage img {
+    max-height: 90%;
+    width: auto;
+    max-width: 90%;
+  }
+
+  .spacesMapContainer {
+    position: unset;
+    width: 100%;
+    height: 50vh;
+  }
+
+  .spacesMapElement {
+    height: 50vh;
   }
 }
