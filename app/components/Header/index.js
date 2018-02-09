@@ -137,6 +137,17 @@ export default class Header extends React.PureComponent {
               onClose={this.handleAccountMenuClose}
             >
               <Link
+                to={"/account"}
+                className="navButton"
+                style={{
+                  color: this.state.textColor
+                }}
+              >
+                <MenuItem onClick={this.handleAccountMenuClose}>
+                  Account Settings
+                </MenuItem>
+              </Link>
+              <Link
                 to={"/user/" + this.state.user.id}
                 className="navButton"
                 style={{
@@ -149,15 +160,13 @@ export default class Header extends React.PureComponent {
               </Link>
               <Link
                 to=""
+                className="navButton"
                 style={{
                   color: this.state.textColor
                 }}
                 onClick={this.signOut}
               >
-                <MenuItem
-                  className="navButton"
-                  onClick={this.handleAccountMenuClose}
-                >
+                <MenuItem onClick={this.handleAccountMenuClose}>
                   Sign Out
                 </MenuItem>
               </Link>

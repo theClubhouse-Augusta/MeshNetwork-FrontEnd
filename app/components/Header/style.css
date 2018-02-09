@@ -50,6 +50,11 @@
   align-items: center;
 }
 
+.navButton > li {
+  font-size: 0.85em;
+  width: 100%;
+}
+
 .navButton:hover {
   color: #3399cc;
 }
