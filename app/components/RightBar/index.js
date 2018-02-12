@@ -5,6 +5,7 @@
 */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Snackbar from 'material-ui/Snackbar';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
@@ -275,10 +276,10 @@ export default class RightBar extends React.PureComponent {
     }
     else {
       return(
-        <div>
-          <FlatButton onClick={this.props.app.handleAuth} style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Challenge</FlatButton>
+        <Link to={'/signIn'}>
+          <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Challenge</FlatButton>
           {/*<FlatButton onClick={this.props.app.handleAuth} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>*/}
-        </div>
+        </Link>
       )
     }
   }
@@ -337,7 +338,7 @@ export default class RightBar extends React.PureComponent {
               ))}
               <div>
                 <label htmlFor="challenge-file" className="challenges_newFileAdd">
-                  Upload New File
+                  Upload New Resource (Excel, JSON, Word)
                 </label>
                 <input type="file" onChange={this.handleChallengeFile} id="challenge-file" style={{display:'none'}}/>
               </div>
@@ -354,14 +355,14 @@ export default class RightBar extends React.PureComponent {
                 placeholder="Type the Challenge Information Here..."
                 toolbar={{
                   inline: { inDropdown: true },
-                  fontSize:{ className: "toolbarHidden",},
-                  fontFamily:{className: "toolbarHidden",},
+                  fontSize:{ className: "challenges_toolbarHidden",},
+                  fontFamily:{className: "challenges_toolbarHidden",},
                   list: { inDropdown: true, options: ['unordered', 'ordered'] },
                   textAlign: { inDropdown: true,  options: ['left', 'center', 'right'] },
                   link: { inDropdown: true },
-                  remove:{className: "toolbarHidden",},
-                  emoji: {className: "toolbarHidden",},
-                  history: {className: "toolbarHidden",},
+                  remove:{className: "challenges_toolbarHidden",},
+                  emoji: {className: "challenges_toolbarHidden",},
+                  history: {className: "challenges_toolbarHidden",},
                 }}
               />
             </div>

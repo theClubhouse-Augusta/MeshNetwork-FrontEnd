@@ -17,10 +17,10 @@ export default class Home extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token:localStorage.getItem('token'),
-      user:JSON.parse(localStorage.getItem('user')),
-      quote:""
-    }
+      token: localStorage.getItem("token"),
+      user: JSON.parse(localStorage.getItem("user")),
+      quote: ""
+    };
   }
 
   componentWillMount() {
@@ -28,25 +28,30 @@ export default class Home extends React.PureComponent {
   }
 
   getQuote = () => {
-    fetch('https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous&count=1', {
-      method:'GET',
-      headers: {
-        'X-Mashape-Key': '3q4u3rgPbBmsh9W05tFAIGURztVzp1EQKTQjsn7MOO0DmFOcqn'
+    fetch(
+      "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous&count=1",
+      {
+        method: "GET",
+        headers: {
+          "X-Mashape-Key": "3q4u3rgPbBmsh9W05tFAIGURztVzp1EQKTQjsn7MOO0DmFOcqn"
+        }
       }
-    })
-    .then(function(response){
-      return response.json();
-    })
-    .then(function(json) {
-      this.setState({
-        quote:json
+    )
+      .then(function(response) {
+        return response.json();
       })
-    }.bind(this))
-  }
+      .then(
+        function(json) {
+          this.setState({
+            quote: json
+          });
+        }.bind(this)
+      );
+  };
 
   renderSignIn = () => {
-    if(!this.state.token && !this.state.user) {
-      return(
+    if (!this.state.token && !this.state.user) {
+      return (
         <div className="homeHeaderContent">
           <div className="homeHeaderContentTitle">
             Discover Great Collaborative Spaces
@@ -56,7 +61,7 @@ export default class Home extends React.PureComponent {
           </div>
           <div className="homeHeaderContentSearchBar">
             <div className="homeSignButtons">
-              <Link to={"/newSpace"} style={{ margin: "15px", width:'48%' }}>
+              <Link to={"/newSpace"} style={{ margin: "15px", width: "48%" }}>
                 <FlatButton
                   style={{
                     width: "100%",
@@ -70,10 +75,10 @@ export default class Home extends React.PureComponent {
                   Sign Up
                 </FlatButton>
               </Link>
-              <Link to={"/signIn"} style={{ margin: "15px", width:'48%' }}>
+              <Link to={"/signIn"} style={{ margin: "15px", width: "48%" }}>
                 <FlatButton
                   style={{
-                    width:'100%',
+                    width: "100%",
                     background: "#ff4d58",
                     paddingTop: "10px",
                     paddingBottom: "10px",
@@ -87,20 +92,33 @@ export default class Home extends React.PureComponent {
             </div>
           </div>
         </div>
-      )
+      );
     } else {
-      return(
+      return (
         <div className="homeHeaderContent">
           <div className="homeHeaderContentTitle">
-            Hey There, <span style={{color:"#ff4d58"}}>{this.state.user.name}!</span>
+            Hey There,{" "}
+            <span style={{ color: "#ff4d58" }}>{this.state.user.name}!</span>
           </div>
-          <div className="homeHeaderContentSubtitle">
-            {this.state.quote.quote} <span style={{marginLeft:'10px', fontSize:'0.9em', fontStyle:'italic'}}>- {this.state.quote.author}</span>
+          <div
+            className="homeHeaderContentSubtitle"
+            style={{ margin: "1em 2em", textAlign: "center" }}
+          >
+            {this.state.quote.quote}
+            <span
+              style={{
+                marginLeft: "10px",
+                fontSize: "0.9em",
+                fontStyle: "italic"
+              }}
+            >
+              - {this.state.quote.author}
+            </span>
           </div>
         </div>
-      )
+      );
     }
-  }
+  };
   render() {
     return (
       <div className="container">
@@ -210,7 +228,7 @@ export default class Home extends React.PureComponent {
             <div className="homeMainSectionContent" />
           </div>
           <div className="homeMainSection">
-            <div className="homeMainSectionTitleThree">See How It Works</div>
+            <div className="homeMainSectionTitle">See How It Works</div>
             <div className="homeMainSectionSubtitle">
               Discover how the Mesh Network can help you find everything you
               want.

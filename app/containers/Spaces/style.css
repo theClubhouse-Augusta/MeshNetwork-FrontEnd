@@ -1,54 +1,54 @@
 /* Spaces Styles */
 
 .spacesContainer {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  background:#EEEEEE;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #eeeeee;
 }
 
 .spacesHeader {
   width: 100%;
   margin: 0 auto;
-  background:#222222;
-  height:300px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  background: #222222;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  font-family: 'Anton', sans-serif;
-  font-size:3em;
-  text-align:center;
-  color:#FFFFFF;
+  font-family: "Anton", sans-serif;
+  font-size: 3em;
+  text-align: center;
+  color: #ffffff;
 }
 
 .spacesTitle {
-  border-bottom:1px solid #FFFFFF;
+  border-bottom: 1px solid #ffffff;
 }
 
 .spacesList {
   justify-content: space-around;
   display: flex;
   flex-wrap: wrap;
-  max-width:1500px;
-  margin:0 auto;
-  padding:15px;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 15px;
 }
 
-  .spaceListing {
-    max-width: 23%;
-    padding: 15px;
-    margin: 15px auto;
-    text-decoration:none;
-  }
+.spaceListing {
+  max-width: 23%;
+  padding: 15px;
+  margin: 15px auto;
+  text-decoration: none;
+}
 
-    .spaceNameHeader {
-      padding: 16px;
-    }
+.spaceNameHeader {
+  padding: 16px;
+}
 
-    .spaceDescription {
-        margin: 2em 0;
-      }
+.spaceDescription {
+  margin: 2em 0;
+}
 
 .spaceJoinInterest {
   margin: 10vh auto;
@@ -57,98 +57,98 @@
   align-content: center;
   flex-direction: column;
   max-width: 90vw;
-  background: #DDDDDD;
+  background: #dddddd;
 }
 
-  .joinInterestButton {
-    width: 20%;
-    margin: 2vh auto;
-  }
+.joinInterestButton {
+  width: 20%;
+  margin: 2vh auto;
+}
 
-  div#dude {
-    /* flex-grow: 1; */
-    box-sizing: border-box;
-  }
+div#dude {
+  /* flex-grow: 1; */
+  box-sizing: border-box;
+}
 
 .spaceListHeader {
-  font-size:2.5em;
-  font-variant:small-caps;
-  border-bottom:1px solid #777777;
-  text-align:center;
-  max-width:600px;
-  margin:0 auto;
-  margin-top:20px;
+  font-size: 2.5em;
+  font-variant: small-caps;
+  border-bottom: 1px solid #777777;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
 }
 
 .spacesMain {
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
 }
 
 .spacesMainContainer {
-  width:38%;
-  min-height:100vh;
-  background:#EEEEEE;
-  display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
-  margin-top:60px;
+  width: 38%;
+  min-height: 100vh;
+  background: #eeeeee;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 60px;
 }
 
 .spacesMapContainer {
-  width:62%;
-  height:100vh;
-  position:fixed;
-  top:0;
-  right:0;
-  z-index:0;
+  width: 62%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 0;
 }
 
 .spacesBlock {
-  width:45%;
-  margin:2%;
-  border:1px solid #CCCCCC;
-  border-radius:5px;
-  background:#FFFFFF;
-  box-shadow:0 0 5px 0 rgba(0, 0, 0, 0.1);
+  width: 45%;
+  margin: 2%;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background: #ffffff;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .spacesBlockImage {
-  width:100%;
-  height:200px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items:center;
-  border-radius:5px 5px 0px 0px;
+  align-items: center;
+  border-radius: 5px 5px 0px 0px;
 }
 
 .spacesBlockImage img {
-  width:100%;
-  height:auto;
+  width: 100%;
+  height: auto;
 }
 
 .spacesBlockTitle {
-  padding:10px;
-  font-family: 'HankenBook';
-  color:#ff4d58;
-  font-size:1.5em;
-  margin-top:10px;
-  margin-bottom:10px;
+  padding: 10px;
+  font-family: "HankenBook";
+  color: #ff4d58;
+  font-size: 1.5em;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .spacesBlockContent {
-  padding-left:10px;
-  padding-right:10px;
-  padding-bottom:10px;
-  font-family:'Noto Sans';
-  color:#999999;
-  font-size:0.8em;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  font-family: "Noto Sans";
+  color: #999999;
+  font-size: 0.8em;
 }
 
 .spacesHeaderContainer {
-  width:100%;
-  position:fixed;
-  z-index:99;
+  width: 100%;
+  position: fixed;
+  z-index: 99;
 }

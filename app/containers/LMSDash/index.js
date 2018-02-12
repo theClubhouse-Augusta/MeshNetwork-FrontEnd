@@ -11,7 +11,7 @@ import Dialog from 'material-ui/Dialog';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
-import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
+import Card, { CardTitle, CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import { FormControl} from 'material-ui/Form';
 import Input, { InputLabel } from 'material-ui/Input';
@@ -94,11 +94,10 @@ export default class LMSDash extends React.PureComponent {
     })
     .then(function(json) {
       if(json.error) {
-
+        _this.props.history.push('/signIn');
       }
       else if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+        _this.props.history.push('/signIn');
       }
       else {
         this.setState({

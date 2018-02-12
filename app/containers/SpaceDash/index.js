@@ -60,6 +60,7 @@ export default class SpaceDash extends React.PureComponent {
         resourceEndDay:'',
         resourceStartTime:'',
         resourceEndTime:'',
+        resourceIncrement:0,
     }
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
@@ -265,6 +266,12 @@ export default class SpaceDash extends React.PureComponent {
     handleStartEnd = (event) => {
         this.setState({
             resourceStartEnd: event.target.value
+        })
+    };
+
+    handleIncrement = (event) => {
+        this.setState({
+            resourceIncrement: event.target.value
         })
     };
 
@@ -546,6 +553,7 @@ export default class SpaceDash extends React.PureComponent {
                         <TextField value={this.state.resourceEndDay} onChange={this.handleEndDay} label="End Day" placeholder="Friday" style={{ marginRight: '10px' }} />
                         <TextField value={this.state.resourceStartTime} onChange={this.handleStartTime} label="Start Time" placeholder="8:00am" style={{ marginRight: '10px' }} />
                         <TextField value={this.state.resourceEndTime} onChange={this.handleEndTime} label="End Time" placeholder="8:00pm" style={{ marginRight: '10px' }} />
+                        <TextField value={this.state.resourceIncrement} onChange={this.handleIncrement} label="Increments" placeholder="Minutes" style={{ marginRight: '10px' }} />
                         <label style={{ width: '10%', margin: '10px' }}>
                             <div onClick={this.storeResource} style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold', cursor: 'pointer' }} >Add Resource</div>
                         </label>
