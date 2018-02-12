@@ -5,7 +5,6 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
 import FlatButton from 'material-ui/Button';
 import {
     XAxis,
@@ -76,7 +75,6 @@ export class AppearanceByMonthYear extends React.PureComponent {
         const { error, month, year, dataTwo, month2, year2 } = this.state;
         return (
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '80vw' }}>
-                <Helmet title="DataViz" meta={[{ name: 'description', content: 'Description of DataViz' }]} />
                 <section style={{ marginRight: 36 }}>
                     <h3>From</h3>
                     <DateRangePicker

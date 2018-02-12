@@ -222,8 +222,8 @@ export default class Header extends React.PureComponent {
             <MdAssessment className="navIcon" />
             <span className="navLink">Challenges</span>
           </Link>
-          <a
-            href="/LMS"
+          <Link
+            to={"/LMS"}
             className="navMenuButton"
             style={{
               color: this.state.textColor
@@ -231,13 +231,7 @@ export default class Header extends React.PureComponent {
           >
             <MdSchool className="navIcon" />
             <span className="navLink">Education</span>
-          </a>
-          <Divider
-            style={{
-              width: "80%",
-              margin: "2em 0 0 0"
-            }}
-          />{" "}
+          </Link>
           {this.renderMobileSignOut()}
         </nav>
       );
@@ -293,6 +287,31 @@ export default class Header extends React.PureComponent {
       );
     }
   };
+
+  renderMyCourses = () => {
+    if(this.state.token) {
+      return(
+        <Link to={'/LMS/MyLMS'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+      )
+    } else {
+      return(
+        <Link to={'/signIn'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+      )
+    }
+  }
+
+  renderSignOut = () => {
+   if(this.state.user && this.state.token)
+   {
+     return(
+       <div style={{display:'flex', flexDirection:'row'}}>
+         <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>Workspace</Link>
+         <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
+         <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
+       </div>
+     )
+   }
+  }
 
   render() {
     let headerTitle = (
@@ -370,9 +389,17 @@ export default class Header extends React.PureComponent {
               <MdSearch className="navIcon" />
               <span className="navLink">Search</span>
             </Link>
+            <Link
+              to="/Challenges"
+              className="navButton"
+              style={{ color: this.state.textColor }}
+            >
+              <MdAssessment className="navIcon" />
+              <span className="navLink">Challenges</span>
+            </Link>
             {/*<Link to="/events" className="navButton">Events</Link>*/}
 
-            <span className="navButton">
+            {/*<span className="navButton">
               <Link
                 to="/Challenges"
                 style={{
@@ -397,18 +424,11 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.challengeMenu)}
                 onClose={this.handleChallengeMenuClose}
               >
-                <Link to={"/Challenges/Ask"}>
-                  <MenuItem onClick={this.handleChallengeMenuClose}>
-                    Ask
-                  </MenuItem>
-                </Link>
-                <Link to={"/Challenges/Teams"}>
-                  <MenuItem onClick={this.handleChallengeMenuClose}>
-                    Teams
-                  </MenuItem>
-                </Link>
+                <Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>
+                <Link to={'/Challenges'}><MenuItem onClick={this.handleChallengeMenuClose}>Browse</MenuItem></Link>
+                <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
               </Menu>
-            </span>
+            </span>*/}
 
             <span className="navButton">
               <Link
@@ -435,20 +455,12 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.educationMenu)}
                 onClose={this.handleEducationMenuClose}
               >
-                <Link to={"/LMS/Courses"}>
-                  <MenuItem onClick={this.handleEducationMenuClose}>
-                    Courses
-                  </MenuItem>
-                </Link>
-                <Link to={"/LMS/MyLMS"}>
-                  <MenuItem onClick={this.handleEducationMenuClose}>
-                    My Courses
-                  </MenuItem>
-                </Link>
+                <Link to={'/LMS/Courses'}><MenuItem onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
+                {this.renderMyCourses()}
               </Menu>
             </span>
-
-            {this.renderAccountMenu()}
+            {/*this.renderAccountMenu()*/}
+            {this.renderSignOut()}
           </nav>
 
           <Bars className="menuIcon" onClick={this.handleMenu} />

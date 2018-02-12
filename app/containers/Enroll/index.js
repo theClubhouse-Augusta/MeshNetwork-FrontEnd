@@ -151,7 +151,7 @@ export default class Enroll extends React.PureComponent {
                   <div className="lmsEnrollSummaryMain">
                     <div className="lmsEnrollCourse">
                       <div className="lmsEnrollCourseImageContainer">
-                        <img src={'https://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
+                        <img src={'http://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
                       </div>
                       <div className="lmsEnrollCourseName">{this.state.course.courseName}</div>
                       {this.renderPrice()}
