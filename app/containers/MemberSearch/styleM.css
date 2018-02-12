@@ -1,19 +1,62 @@
 /* MemberSearch Mobile Styles */
 @media (max-width: 425px) {
-  .membersContainer {
+  .memberSearchContainer {
     max-width: 100%;
+  }
+
+  .memberSearchHeaderTitle {
+    text-align: center;
+    font-family: "HankenBook";
+    color: #ffffff;
+    font-size: 2em;
   }
 
   .memberSearchMain {
     padding: 0;
+    max-width: 90%;
+    margin: -90px auto 0 auto;
+  }
+
+  .memberSearchBar {
+    margin: 1em 0.5em 2em 0.5em;
+    min-width: 80%;
+  }
+
+  .memberBlock {
+    width: 90%;
+    margin: 15px auto;
+  }
+
+  .pageFooterContainer {
+    text-align: center;
+    padding: 15px;
   }
 }
 
 @media (max-width: 1024px) and (min-width: 426px) {
-  .membersContainer {
+  .memberSearchContainer {
     max-width: 100%;
   }
+
+  .memberSearchHeaderTitle {
+    text-align: center;
+    font-family: "HankenBook";
+    color: #ffffff;
+    font-size: 2em;
+  }
+
   .memberSearchMain {
     padding: 0;
+    max-width: 90%;
+  }
+
+  .memberBlock {
+    width: 90%;
+    margin: 15px auto;
+  }
+
+  .pageFooterContainer {
+    text-align: center;
+    padding: 15px;
   }
 }

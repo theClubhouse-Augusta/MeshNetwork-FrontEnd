@@ -2,14 +2,14 @@
 * MemberSearch Styles
 */
 
-.membersContainer {
+.memberSearchContainer {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #F8F8F8;
+  background: #f8f8f8;
 }
 
-.membersBanner {
+.memberSearchBanner {
   width: 100%;
   height: 300px;
   background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('http://h4z.it/Image/20d733_885-1256x800.jpg');
@@ -20,10 +20,22 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-.membersMain {
+.memberSearchHeaderTitle {
+  font-family: "HankenBook";
+  color: #ffffff;
+  font-size: 3em;
+}
+
+.memberSearchHeaderSubtitle {
+  font-family: "Noto Sans";
+  color: #cccccc;
+  margin: 15px 0;
+}
+
+.memberSearchMain {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -34,8 +46,12 @@
   min-height: calc(100vh - 255px);
 }
 
-
 /* search bar */
+
+.memberSearchBar {
+  width: 70%;
+  max-width: 400px;
+}
 
 div#MS-SearchForm {
   /* flex */
@@ -49,14 +65,13 @@ div#MS-SearchForm {
   border: 1px solid black;
   /* formatting */
   margin-top: 1.5em;
-  margin-bottom: .30em;
+  margin-bottom: 0.3em;
 }
 
 .memberSearchForm {
   display: flex;
   flex-direction: row;
 }
-
 
 /* search results container */
 
@@ -66,13 +81,12 @@ div#MS-postSearchContainer ul {
   margin-top: 3vh;
 }
 
-
 /* User Cards */
 
 div#MS-postSearchContainer li {
   display: flex;
   flex-direction: row;
-  border: .5px solid silver;
+  border: 0.5px solid silver;
   padding: 1em;
   width: 100%;
 }
@@ -81,13 +95,11 @@ div#MS-postSearchContainer li:hover {
   cursor: pointer;
 }
 
-
 /* User Avatar */
 
 div#MS-postSearchContainer img {
   border-radius: 50%;
 }
-
 
 /* User Description List */
 
@@ -101,10 +113,9 @@ dl#MS-userInfo {
   overflow: hidden;
   padding: 0;
   margin: 0;
-  font-family: 'Encode Sans Condensed';
+  font-family: "Encode Sans Condensed";
   margin-left: 3em;
 }
-
 
 /* put all <dt> <dd> pairs in row */
 
@@ -112,13 +123,11 @@ dl#MS-userInfo div {
   display: flex;
 }
 
-
 /* make all <dt> bold */
 
 dl#MS-userInfo dt {
   font-weight: 700;
 }
-
 
 /* search input */
 
@@ -128,26 +137,23 @@ div#MS-SearchForm input {
   border: none;
 }
 
-
 /* mozzilla - position/style cursor in searchbar */
 
-div#MS-SearchForm>input:placeholder-shown {
+div#MS-SearchForm > input:placeholder-shown {
   padding-left: 1.5em;
   /* text */
   color: black;
   font-weight: 200;
 }
 
-
 /* safari - position/style cursor in searchbar */
 
-div#MS-SearchForm>input::-webkit-input-placeholder {
-  padding-left: .30em;
+div#MS-SearchForm > input::-webkit-input-placeholder {
+  padding-left: 0.3em;
   /* text */
   color: black;
   font-weight: 200;
 }
-
 
 /* icon in search bar */
 
@@ -156,15 +162,16 @@ div#MS-SearchForm>input::-webkit-input-placeholder {
   align-self: center;
 }
 
-.membersSubTitle {
+.memberSearchTagTitle {
   font-variant: small-caps;
-  font-size: 2.2em;
+  font-size: 2em;
   color: #444444;
-  margin-top: 15px;
-  font-family: 'Noto Sans';
+  text-align: center;
+  margin: 15px auto;
+  font-family: "Noto Sans";
 }
 
-.tagsBox {
+.memberSearchTagSelect {
   width: 100%;
   max-width: 700px;
   margin: 0 auto;
@@ -188,10 +195,10 @@ div#MS-SearchForm>input::-webkit-input-placeholder {
   flex-direction: column;
   align-items: center;
   padding: 30px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 5px;
   min-height: calc(100vh - 90px);
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   margin-top: -40px;
 }
 
@@ -200,20 +207,33 @@ div#MS-SearchForm>input::-webkit-input-placeholder {
     background: rgba(0, 0, 0, 0.5);
   }
   100% {
-    background: rgba(0, 0, 0, 0.1)
+    background: rgba(0, 0, 0, 0.1);
   }
 }
 
 .searchBlockTitle {
-  font-family:'Noto Sans';
-  font-size:2em;
-  color:#222222;
-  margin-left:10px;
+  font-family: "Noto Sans";
+  font-size: 2em;
+  color: #222222;
+  margin-left: 10px;
 }
 
 .searchBlockDesc {
-  font-family:'Noto Sans';
-  font-size:0.9em;
-  color:#777777;
-  margin-left:10px;
+  font-family: "Noto Sans";
+  font-size: 0.9em;
+  color: #777777;
+  margin-left: 10px;
+}
+
+.pageFooterContainer {
+  background: #261e1e;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #bbbbbb;
+  font-family: "Noto Sans";
+  font-size: 0.8em;
+  margin-top: 30px;
 }

@@ -1,1 +1,40 @@
 /* SpaceProfile Mobile Styles */
+@media (max-width: 425px) {
+  .spaceMainHeader {
+    height: auto;
+  }
+
+  .spaceMainTwo {
+    width: auto;
+  }
+
+  .spaceMainContainer {
+    flex-direction: column-reverse;
+  }
+
+  .spaceMainOne {
+    width: auto;
+    margin: 15px;
+  }
+
+  .agendaCalendar {
+    display: block;
+  }
+
+  .fullCalendar {
+    display: none;
+  }
+
+  .spaceMainLogo {
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 426px) and (orientation: portrait) {
+  .spaceMainContainer {
+    width: auto;
+  }
+
+  .spaceMainHeader {
+    padding: 0 15px;
+  }
+}

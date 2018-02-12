@@ -1,28 +1,27 @@
 /* SpaceProfile Styles */
 
 .container {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .spaceProfileMain {
-
 }
 
 .spaceProfileBanner {
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  background: #EEEEEE;
-  height:300px;
-  margin:0 auto;
+  background: #eeeeee;
+  height: 300px;
+  margin: 0 auto;
 }
 
 .spaceProfileBannerColumnLeft {
   width: 60%;
   padding: 30px 10% 0 30px;
-  background: #DDDDDD;
+  background: #dddddd;
 }
 
 .spaceProfileHeader {
@@ -60,10 +59,9 @@
 }
 
 .spaceProfileMap {
-  background: #CCCCCC;
-  max-width:40%;
+  background: #cccccc;
+  max-width: 40%;
 }
-
 
 .spaceProfileBody {
   max-width: 1000px;
@@ -89,7 +87,6 @@ a.spaceProfileActions {
 .spaceProfileMembership {
   margin: 0 auto;
   padding: 30px;
-
 }
 
 .spaceProfileMemberships {
@@ -103,7 +100,6 @@ a.spaceProfileActions {
 .spaceProfileMembAddContact {
   max-width: 600px;
   margin: 0 auto;
-
 }
 
 .spaceProfileMemConLinks {
@@ -140,15 +136,15 @@ a.spaceProfileActions {
   flex-direction: row;
   justify-content: space-between;
   max-width: 800px;
- }
+}
 
-   /* Material UI inserts a div between eventCard and CardImage + CardContent - has to be handled thru inline prop */
+/* Material UI inserts a div between eventCard and CardImage + CardContent - has to be handled thru inline prop */
 
 .spaceEventImage {
   background: orangered;
   width: 250px;
   height: 200px;
- }
+}
 
 .spaceEventCardContent {
   margin: 0 0 0 30px;
@@ -157,22 +153,22 @@ a.spaceProfileActions {
 }
 
 .spaceEventCardDetails {
-   display: flex;
-   flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-   justify-content: space-between;
-   flex-wrap: wrap;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .spaceEventCardDescription {
-   font-size: 16px;
-   margin: 1em 0;
+  font-size: 16px;
+  margin: 1em 0;
 }
 
 .spaceProfileSpaceMembers {
   margin: 0 auto;
   padding: 30px;
-  width:100%;
+  width: 100%;
   max-width: 1200px;
 }
 
@@ -190,223 +186,227 @@ a.spaceProfileActions {
 }
 
 .spaceProfileUser {
-  display:flex;
-  flex-direction:row;
-  background:#F8F8F8;
-  margin-top:5px;
-  border-radius:3px;
+  display: flex;
+  flex-direction: row;
+  background: #f8f8f8;
+  margin-top: 5px;
+  border-radius: 3px;
 }
 
 .spaceProfileUserAvatar {
-  width:50px;
-  height:50px;
-  border-radius:3px;
+  width: 50px;
+  height: 50px;
+  border-radius: 3px;
 }
 
 .spaceProfileUserContent {
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  font-family:'Noto Sans';
-  font-size:1em;
-  flex-grow:1;
-  margin-left:15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: "Noto Sans";
+  font-size: 1em;
+  flex-grow: 1;
+  margin-left: 15px;
 }
 
 .spaceProfileEventsWrapper {
-  margin:0 auto;
-  width:100%;
-  max-width:800px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
 }
 
 .spaceGalleryContainer {
-  width:100%;
-  height:340px;
-  background:#EEEEEE;
-  display:flex;
-  flex-direction:row;
-  overflow-x:auto;
-  align-items:center;
+  width: 100%;
+  height: 340px;
+  background: #eeeeee;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  align-items: center;
 }
 
 .spaceGalleryPhotoBlock {
-  margin-right:2.5px;
+  margin-right: 2.5px;
 }
 
 .spaceMainContainer {
-  width:100%;
-  max-width:1000px;
-  margin:20px auto;
-  display:flex;
-  flex-direction:row;
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: row;
 }
 
 .spaceMainHeader {
-  height:210px;
-  display:flex;
-  align-items:center;
-  border-bottom:1px solid #DDDDDD;
+  height: 210px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dddddd;
 }
 
 .spaceMainOne {
-  width:68%;
-  display:flex;
-  flex-direction:column;
-  margin-right:2%;
+  width: 68%;
+  display: flex;
+  flex-direction: column;
+  margin-right: 2%;
 }
 
 .spaceMainTwo {
-  width:30%;
+  width: 30%;
 }
 
 .spaceMainBread {
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  font-family:'Noto Sans';
-  color:#999999;
-  font-size:0.9em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: "Noto Sans";
+  color: #999999;
+  font-size: 0.9em;
 }
 
 .spaceMainTitle {
-  font-family: 'HankenBook';
-  color:#ff4d58;
-  font-size:3em;
-  margin-top:15px;
-  margin-bottom:10px;
+  font-family: "HankenBook";
+  color: #ff4d58;
+  font-size: 3em;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .spaceMainSlogan {
-  font-family: 'HankenBook';
-  color:#BBBBBB;
-  font-size:1.2em;
-  margin-bottom:15px;
+  font-family: "HankenBook";
+  color: #bbbbbb;
+  font-size: 1.2em;
+  margin-bottom: 15px;
 }
 
 .spaceContact {
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
 }
 
 .spaceContactBlock {
-  text-decoration:none;
-  margin-right:15px;
-  color:#999999;
+  text-decoration: none;
+  margin-right: 15px;
+  color: #999999;
 }
 
 .spaceMainContent {
-  display:flex;
-  flex-direction:column;
-  background:#F8F8F8;
+  display: flex;
+  flex-direction: column;
+  background: #f8f8f8;
 }
 
 .spaceMainDescription {
-  font-family:'Noto Sans';
-  letter-spacing:1px;
-  line-height:30px;
-  background:#FFFFFF;
-  border-radius:3px;
-  padding:15px;
-  color:#777777;
-  border:1px solid #DDDDDD;
+  font-family: "Noto Sans";
+  letter-spacing: 1px;
+  line-height: 30px;
+  background: #ffffff;
+  border-radius: 3px;
+  padding: 15px;
+  color: #777777;
+  border: 1px solid #dddddd;
 }
 
 .spaceMainLogo {
-  max-width:100%;
-  max-height:190px;
+  max-width: 100%;
+  max-height: 190px;
 }
 
 .spaceOptions {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:15px;
-  border-radius:3px;
-  border:1px solid #DDDDDD;
-  background:#FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border-radius: 3px;
+  border: 1px solid #dddddd;
+  background: #ffffff;
 }
 
 .spaceLocation {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:15px;
-  border-radius:3px;
-  border:1px solid #DDDDDD;
-  background:#FFFFFF;
-  margin-top:15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border-radius: 3px;
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  margin-top: 15px;
 }
 
 .spaceLocation img {
-  width:100%;
+  width: 100%;
 }
 
 .spaceLocationContent {
-  font-family:'Noto Sans';
-  color:#999999;
-  font-size:0.8em;
+  font-family: "Noto Sans";
+  color: #999999;
+  font-size: 0.8em;
 }
 
 .spaceMembers {
-  display:flex;
-  flex-direction:column;
-  padding:15px;
-  border-radius:3px;
-  border:1px solid #DDDDDD;
-  background:#FFFFFF;
-  margin-top:15px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 3px;
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  margin-top: 15px;
 }
 
 .spaceMembersTitle {
-  font-family:'Noto Sans';
-  font-size:0.9em;
-  color:#666666;
+  font-family: "Noto Sans";
+  font-size: 0.9em;
+  color: #666666;
 }
 
 .spaceEvents {
-  display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .spaceEventBlock {
-  width:45%;
-  margin:2%;
-  border:1px solid #CCCCCC;
-  border-radius:3px;
-  background:#FFFFFF;
+  width: 45%;
+  margin: 2%;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background: #ffffff;
 }
 
 .spaceEventBlockImage {
-  width:100%;
-  height:200px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items:center;
-  border-radius:3px 3px 0px 0px;
+  align-items: center;
+  border-radius: 3px 3px 0px 0px;
 }
 
 .spacesBlockImage img {
-  width:100%;
-  height:auto;
+  width: 100%;
+  height: auto;
 }
 
 .spaceEventBlockTitle {
-  padding:10px;
-  font-family: 'HankenBook';
-  color:#ff4d58;
-  font-size:1.5em;
-  margin-top:10px;
-  margin-bottom:10px;
+  padding: 10px;
+  font-family: "HankenBook";
+  color: #ff4d58;
+  font-size: 1.5em;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .spaceEventBlockContent {
-  padding-left:10px;
-  padding-right:10px;
-  padding-bottom:10px;
-  font-family:'Noto Sans';
-  color:#999999;
-  font-size:0.8em;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  font-family: "Noto Sans";
+  color: #999999;
+  font-size: 0.8em;
+}
+
+.agendaCalendar {
+  display: none;
 }

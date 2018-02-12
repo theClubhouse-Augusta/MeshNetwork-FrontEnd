@@ -1,18 +1,18 @@
 /* MemberAcct Styles */
 
 .accountContainer {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  background:#EEEEEE;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #eeeeee;
 }
 
 .acctBanner {
   width: 100%;
   margin: 0 auto;
-  height:300px;
-  display:flex;
-  flex-direction:column;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items:center;
   color:#FFFFFF;
@@ -23,93 +23,95 @@
 }
 
 .acctBody {
-  min-height:100vh;
-  width:80%;
+  min-height: 100vh;
+  width: 80%;
   max-width: 800px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   align-content: space-around;
-  padding:30px;
-  background:#FFFFFF;
-  border-radius:5px;
-  min-height:calc(100vh - 90px);
-  border:1px solid #DDDDDD;
-  margin-top:-50px;
+  justify-content: center;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 5px;
+  min-height: calc(100vh - 90px);
+  border: 1px solid #dddddd;
+  margin-top: -50px;
 }
 
 .acctMainInfo {
   padding: 30px;
 }
 
-  .acctProfileInfo {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    padding: 15px;
-  }
+.acctProfileInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  padding: 15px;
+}
 
-    .acctProfileMain {
-      display: flex;
-      flex-direction: column;
-      margin: 0 15px 15px 0;
-    }
+.acctProfileMain {
+  display: flex;
+  flex-direction: column;
+  margin: 0 15px 15px 0;
+}
 
-    .acctProfilePicture {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-content: space-between;
-      margin: 0 15px;
-    }
+.acctProfilePicture {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: space-between;
+}
 
-      .acctProfilePicturePreview {
-        width: 250px;
-        height: 250px;
-        align-self: center;
-        margin: 0 auto;
-      }
+.acctProfilePicturePreview {
+  width: 250px;
+  height: 250px;
+  align-self: center;
+  margin: 0 auto;
+}
 
 .acctSocialMediaWrapper {
-  padding: 15px;
+  padding: 15px 0;
   margin: 0 auto;
-
 }
-  .acctSocialMedia {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: center;
-    margin: 15px auto;
-  }
+.acctSocialMedia {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: center;
+
+  max-width: 600px;
+}
 
 .acctTagSelection {
   padding: 30px;
-  width:100%;
+  min-width: 200px;
 }
 
-  .acctTagSelectWrapper {
-    border: 1px solid black;
-  }
+.acctSkillSelect {
+  min-width: 100%;
+}
 
 .acctManagement {
   padding: 30px;
 }
 
-  .acctChangePassForm, .acctChangeEmailForm {
-    display: flex;
-    flex-direction: column;
-    margin: 15px 0;
-    padding: 15px;
-  }
+.acctChangePassForm,
+.acctChangeEmailForm {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  padding: 15px 0;
+}
 
-  .acctDeleteAcctForm {
-    margin: 15px 0;
-    padding: 15px;
-  }
+.acctDeleteAcctForm {
+  margin: 15px 0;
+  padding: 15px;
+}
 
 .acctSubmitButton {
   width: 100px;
@@ -124,4 +126,8 @@
   display: flex;
   justify-content: space-between;
   margin: 1em 0;
+}
+
+.homeHeaderContentTitle {
+  text-align: center;
 }
