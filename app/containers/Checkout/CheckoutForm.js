@@ -483,17 +483,17 @@ class CheckoutForm extends React.PureComponent {
         </header>
 
         <main className="userSignUpMain">
-          <div className="userSignUpForm">
-            <div
+          <div className="userSignUpContainer">
+            <img
+              src={this.state.space.logo}
+              height="auto"
+              width="300px"
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center"
+                margin: "0 auto"
               }}
-            >
-              <img src={this.state.space.logo} height="auto" width="300px" />
-            </div>
-            <div className="spaceSignUpContainer">
+            />
+
+            <div className="spaceSignUpForm">
               <TextField
                 label="Full Name"
                 value={this.state.name}

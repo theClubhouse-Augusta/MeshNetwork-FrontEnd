@@ -662,8 +662,8 @@ export default class AddEvent extends PureComponent {
           </div>
         </div>
         <main className="addEventMain">
-          <div className="spaceSignUpTitle">Submit an Event</div>
-          <div className="spaceSignUpContainer">
+          <div className="addEventFormContainer">
+            <div className="spaceSignUpTitle">Submit an Event</div>
             <TextField
               label="Event name"
               onChange={this.eventName}
