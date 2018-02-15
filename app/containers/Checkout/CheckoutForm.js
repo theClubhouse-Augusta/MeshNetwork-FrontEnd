@@ -209,7 +209,7 @@ class CheckoutForm extends React.PureComponent {
             }
             data.append('email', email.trim());
             data.append('password', password.trim());
-            data.append('bio', bio.trim());
+            data.append('bio', bio);
             data.append('spaceID', this.state.space.id);
             data.append('avatar', avatar);
             if (token.id) {
@@ -240,7 +240,7 @@ class CheckoutForm extends React.PureComponent {
                 .then(function (json) {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
-                  fetch('https://challenges.innovationmesh.com/api/signIn', {
+                  fetch('https://innovationmesh.com/api/signIn', {
                     method:'POST',
                     body:data
                   })
@@ -353,57 +353,40 @@ class CheckoutForm extends React.PureComponent {
             .then(function (json) {
               let mainUser = json.user;
               localStorage.setItem('user', JSON.stringify(mainUser));
-              fetch('https://challenges.innovationmesh.com/api/signIn', {
-                method:'POST',
-                body:data
-              })
-              .then(function(response) {
+            let newData = new FormData();
+            newData.append('username', _this.state.email);
+            newData.append('password', _this.state.password);
+            fetch('https://lms.innovationmesh.com/signIn/', {
+            method:'POST',
+            body:newData
+            })
+            .then(function(response) {
+            return response.json();
+            })
+            .then(function(json) {
+            if(json.non_field_errors)
+            {
+                _this.showSnack("Invalid Credentials");
+            }
+            else if(json.token)
+            {
+                localStorage.setItem('lmsToken', json.token);
+                fetch('https://lms.innovationmesh.com/getUser/', {
+                method:'GET',
+                headers: {'Authorization' : 'JWT ' + json.token}
+                })
+                .then(function(response) {
                 return response.json();
-              })
-              .then(function(json) {
-                if(json.error)
-                {
-                  _this.showSnack(json.error);
-                }
-                else if(json.token)
-                {
-                  localStorage.setItem('challengeToken', json.token);
-                  let newData = new FormData();
-                  newData.append('username', _this.state.email);
-                  newData.append('password', _this.state.password);
-                  fetch('https://lms.innovationmesh.com/signIn/', {
-                    method:'POST',
-                    body:newData
-                  })
-                  .then(function(response) {
-                    return response.json();
-                  })
-                  .then(function(json) {
-                    if(json.non_field_errors)
-                    {
-                      _this.showSnack("Invalid Credentials");
-                    }
-                    else if(json.token)
-                    {
-                      localStorage.setItem('lmsToken', json.token);
-                      fetch('https://lms.innovationmesh.com/getUser/', {
-                        method:'GET',
-                        headers: {'Authorization' : 'JWT ' + json.token}
-                      })
-                      .then(function(response) {
-                        return response.json();
-                      })
-                      .then(function(json) {
-                        localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                        _this.showSnack('Welcome to '+this.state.space.name+'!');
-                        setTimeout(() => {
-                            _this.props.history.push(`/user/${mainUser.id}`)
-                        }, 2000);
-                      })
-                    }
-                  })
-                }
-              })
+                })
+                .then(function(json) {
+                localStorage.setItem('lmsUser', JSON.stringify(json.user));
+                _this.showSnack('Welcome to '+this.state.space.name+'!');
+                setTimeout(() => {
+                    _this.props.history.push(`/user/${mainUser.id}`)
+                }, 2000);
+                })
+            }
+            })
             })
           }
           _this.setState({
@@ -483,11 +466,11 @@ class CheckoutForm extends React.PureComponent {
                               <FormHelperText id="password-helper-text">{this.state.passwordError}</FormHelperText>
                             </FormControl>
 
-                            <TextField label="Bio"
+                            {/*<TextField label="Bio"
                                 value={this.state.bio}
                                 onChange={this.handleBio}
                                 margin="normal"
-                            />
+                            />*/}
 
 
                             {!!loadedTags.length &&

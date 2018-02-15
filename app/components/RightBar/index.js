@@ -30,7 +30,7 @@ export default class RightBar extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token:localStorage.getItem('challengeToken'),
+      token:localStorage.getItem('token'),
       challengeOpen:false,
       challengeTitle:"",
       challengeCategories:'',
@@ -72,7 +72,7 @@ export default class RightBar extends React.PureComponent {
   handleChallengeCategories = (challengeCategories) => {
     this.setState({ challengeCategories });
   }
-  handleStartDate = (value) => {this.setState({startDate:event.target.value})}
+  handleStartDate = (event) => {this.setState({startDate:event.target.value})}
   handleEndDate = (event) => {this.setState({endDate:event.target.value})}
   handleChallengeImage = (event) => {
     event.preventDefault();
@@ -115,7 +115,7 @@ export default class RightBar extends React.PureComponent {
   handleQuestionContent = (editorState) => {this.setState({questionContent: editorState, editorState: editorState})};
 
   getCategories = () => {
-    fetch("https://challenges.innovationmesh.com/api/selectCategories", {
+    fetch("https://innovationmesh.com/api/selectCategories", {
       method:'GET'
     })
     .then(function(response) {
@@ -156,7 +156,7 @@ export default class RightBar extends React.PureComponent {
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("https://challenges.innovationmesh.com/api/storeChallenge", {
+    fetch("https://innovationmesh.com/api/storeChallenge", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -184,7 +184,7 @@ export default class RightBar extends React.PureComponent {
             fileData.append('challengeID', json.challenge);
             fileData.append('challengeFile', _this.state.challengeFiles[i].fileData);
 
-            fetch("https://challenges.innovationmesh.com/api/uploadFile", {
+            fetch("https://innovationmesh.com/api/uploadFile", {
               method:'POST',
               body:fileData,
               headers:{'Authorization':'Bearer ' + _this.state.token}
@@ -215,7 +215,7 @@ export default class RightBar extends React.PureComponent {
     data.append('questionTitle', this.state.questionTitle);
     data.append('questionContent', draftToHtml(convertToRaw(this.state.questionContent.getCurrentContent())));
 
-    fetch("https://challenges.innovationmesh.com/api/storeQuestion", {
+    fetch("https://innovationmesh.com/api/storeQuestion", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -302,7 +302,7 @@ export default class RightBar extends React.PureComponent {
         <div className="challenges_newsLetterBlock">
           <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/guide.png"/>
           <div className="challenges_categoryTitle" style={{width:'100%', textAlign:'center', marginTop:'5px', marginBottom:'7px'}}>Creating a Challenge</div>
-          <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Download</FlatButton>
+          <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Coming Soon</FlatButton>
         </div>
         <Dialog onClose={this.challengeDialog} open={this.state.challengeOpen} fullScreen transition={this.transition}>
           <div style={{display:'flex', flexDirection:'row'}}>

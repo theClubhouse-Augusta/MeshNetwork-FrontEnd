@@ -35,7 +35,7 @@ const GenerateMarkers = (props) => (
           onClick={() => { props.clickMarker(props.spaces[index].id)}}
         >
           <InfoWindow>
-            <p>{props.spaces[index].name}</p>
+            <span>{props.spaces[index].name}</span>
           </InfoWindow>
         </Marker>
     )}

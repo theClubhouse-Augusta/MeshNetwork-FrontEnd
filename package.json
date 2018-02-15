@@ -117,6 +117,8 @@
     "draftjs-to-html": "^0.8.1",
     "emotion": "^8.0.12",
     "express": "4.15.2",
+    "fullcalendar": "^3.8.2",
+    "fullcalendar-reactwrapper": "^1.0.7",
     "immutable": "4.0.0-rc.2",
     "install": "^0.10.2",
     "invariant": "2.2.2",
