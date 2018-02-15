@@ -183,28 +183,16 @@ export default class MemberSearch extends PureComponent {
             />
           </div>
 
-          {/*  <div className="memberSearchByPopularTags">
+          <div className="memberSearchByPopularTags">
             <h3 className="memberSearchTagTitle">Popular Skills</h3>
 
-            <div className="memberSearchTagSelect">
-                
-               <Select
-                value={1}
-                input={<Input id="tag-multiple" />}
-                onChange={() => {
-                  this.tagClick(skill.id);
-                }}
-              >
-                {this.state.skills.map((skill, i) => (
-                  <MenuItem key={i} value={skill} />
-                ))}
-              </Select>             
+            <div className="memberSearchTagSelect">       
               
             {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
             
            
             </div>
-          </div>  */}
+          </div> 
 
           <div className="memberSearchResults">
             {this.state.results.map((user, index) => (
@@ -213,7 +201,7 @@ export default class MemberSearch extends PureComponent {
                 to={"/user/" + user.id}
                 className="memberBlock"
               >
-                <div className="memberBlockImage">
+                <div className="memberBlockImage" style={{overflow:'hidden'}}>
                   <img
                     src={user.avatar}
                     style={{ width: "100%", height: "auto" }}

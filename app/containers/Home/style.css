@@ -12,50 +12,6 @@ In the case of multiple components of the same type the first component ex HomeB
   /*  background:url('https://innovationmesh.com/assets/tiles.jpg');*/
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: "Encode Sans", sans-serif;
-}
-
-body {
-  font-family: "Spectral", serif;
-}
-
-a {
-  color: #ab4c9d;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-li {
-  display: inline;
-}
-
-ol,
-ul {
-  /* no bullets in lists */
-  list-style: none;
-}
-
-button,
-input {
-  border: 0;
-  /* inherit font from body */
-  font: inherit;
-}
-
-label {
-  font-family: "Encode Sans", sans-serif;
-}
-
-button {
-  cursor: pointer;
-  background-color: transparent;
-}
-
 .homeSection {
   height: calc(100vh - 55px);
   background: #555555;

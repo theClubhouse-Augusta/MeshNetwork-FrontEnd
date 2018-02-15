@@ -19,12 +19,13 @@ export default class Detail extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token:localStorage.getItem('challengeToken'),
+      token:localStorage.getItem('token'),
       challenge:"",
       categories:[],
       uploads:[],
       teams:[],
       participant:false,
+      space:"",
       snack: false,
       msg: "",
     }
@@ -47,7 +48,7 @@ export default class Detail extends React.PureComponent {
   }*/
 
   getDetail = () => {
-    fetch("https://challenges.innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
+    fetch("https://innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
       method:'GET'
     })
     .then(function(response) {
@@ -60,13 +61,32 @@ export default class Detail extends React.PureComponent {
         uploads:json.uploads,
         teams:json.teams,
         participant:json.participant
+      }, function() {
+        this.getSpace();
       })
     }.bind(this))
   }
 
+  getSpace = () => {
+    fetch("https://innovationmesh.com/api/workspace/" + this.state.challenge.spaceID, {
+        method: "GET"
+      }
+    )
+    .then(function(response) {
+      return response.json();
+    })
+    .then(
+      function(json) {
+        this.setState({
+          space: json
+        });
+      }.bind(this)
+    );
+  }
+
   joinChallenge = () => {
     let _this = this;
-    fetch("https://challenges.innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
+    fetch("https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
@@ -91,14 +111,21 @@ export default class Detail extends React.PureComponent {
       )
     }
     else {
-      <Link to={'/spaces'} style={{textDecoration:'none', width:'100%'}}><FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton></Link>
+      return(
+       <Link to={'/join/'+this.state.space.slug} style={{textDecoration:'none', width:'100%'}}><FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton></Link>
+      )
     }
+  }
+
+  createMarkup() {
+    let content = this.state.challenge.challengeContent;
+    return {__html: content};
   }
 
   render() {
     return (
       <div className="container">
-        <Helmet title="Detail" meta={[ { name: 'description', content: 'Description of Detail' }]}/>
+        <Helmet title={this.state.challenge.challengeTitle} meta={[ { name: 'description', content: 'Description of Detail' }]}/>
 
         <header>
           <Header/>
@@ -108,9 +135,9 @@ export default class Detail extends React.PureComponent {
           <div className="challenges_contentContainer">
             <div className="challenges_detailColumnOne">
               <div className="challenges_detailBlock">
-                <div className="challenges_detailAvatarContainer">
+                {/*<div className="challenges_detailAvatarContainer">
                   <img className="challenges_detailAvatar" src={this.state.challenge.avatar}/>
-                </div>
+    </div>*/}
                 <div className="challenges_detailInfo">
                   <div className="challenges_detailTitle">{this.state.challenge.challengeTitle}</div>
 
@@ -124,7 +151,7 @@ export default class Detail extends React.PureComponent {
               <div className="challenges_detailImageContainer">
                 <img className="challenges_detailImage" src={this.state.challenge.challengeImage} />
               </div>
-              <div className="challenges_detailContent" dangerouslySetInnerHTML={{ __html: this.state.challenge.challengeContent }} />
+              <div style={{fontFamily:'Noto Sans', fontWeight:'200', color:'#555555', paddingTop:'5px', paddingBottom:'5px', lineHeight:'35px'}} className="challenges_detailContent" dangerouslySetInnerHTML={this.createMarkup()} />
             </div>
             <div className="challenges_detailColumnTwo">
               {this.renderJoinButton()}
@@ -146,6 +173,10 @@ export default class Detail extends React.PureComponent {
             </div>
           </div>
         </main>
+
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+      </footer>
 
         <Snackbar
           open={this.state.snack}

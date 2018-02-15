@@ -148,7 +148,7 @@ export default class SpaceProfile extends React.PureComponent {
       return (
         <Link
           to={"/join/" + this.state.spaceProfile.slug}
-          style={{ width: "100%", marginBottom: "15px" }}
+          style={{ width: "100%" }}
         >
           <FlatButton
             style={{
@@ -165,7 +165,7 @@ export default class SpaceProfile extends React.PureComponent {
     } else {
       <Link
         to={"/user/" + this.state.user.id}
-        style={{ width: "100%", marginBottom: "15px" }}
+        style={{ width: "100%" }}
       >
         <FlatButton
           style={{
@@ -324,7 +324,7 @@ export default class SpaceProfile extends React.PureComponent {
                 <div className="spaceOptions">
                   <Link
                     to={"/booking/" + this.state.spaceProfile.slug}
-                    style={{ width: "100%", marginBottom: "15px" }}
+                    style={{ width: "100%" }}
                   >
                     <FlatButton
                       style={{
@@ -341,7 +341,7 @@ export default class SpaceProfile extends React.PureComponent {
                   {this.renderJoin()}
                   <Link
                     to={"/kiosk/" + this.state.spaceProfile.slug}
-                    style={{ width: "100%", marginBottom: "15px" }}
+                    style={{ width: "100%" }}
                   >
                     <FlatButton
                       style={{

@@ -59,7 +59,7 @@ export default class Discover extends React.PureComponent {
   }
 
   showCategories = (categoryID) => {
-    fetch("https://challenges.innovationmesh.com/api/showCategory/"+categoryID+"/Challenges" , {
+    fetch("https://innovationmesh.com/api/showCategory/"+categoryID+"/Challenges" , {
       method:'GET',
     })
     .then(function(response) {
@@ -78,7 +78,7 @@ export default class Discover extends React.PureComponent {
 
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("https://challenges.innovationmesh.com/api/getChallenges/30?page="+this.state.nextPage , {
+      fetch("https://innovationmesh.com/api/getChallenges/30?page="+this.state.nextPage , {
         method:'GET',
       })
       .then(function(response) {
@@ -109,7 +109,7 @@ export default class Discover extends React.PureComponent {
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("https://challenges.innovationmesh.com/api/searchChallenges", {
+    fetch("https://innovationmesh.com/api/searchChallenges", {
       method:'POST',
       body:data
     })

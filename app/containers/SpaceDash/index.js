@@ -21,6 +21,8 @@ import Table, { TableBody, TableCell, TableHead, TableRow, TablePagination, Tabl
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import Checkbox from 'material-ui/Checkbox';
 
 import Header from 'components/Header';
 import Spinner from '../../components/Spinner';
@@ -56,8 +58,12 @@ export default class SpaceDash extends React.PureComponent {
         userRowsPerPage: 10,
         eventPage: 0,
         eventRowsPerPage:10,
-        resourceStartDay:'',
-        resourceEndDay:'',
+        resourceDays:'',
+        resourceMonday:0,
+        resourceTuesday:0,
+        resourceWednesday:0,
+        resourceThursday:0,
+        resourceFriday:0,
         resourceStartTime:'',
         resourceEndTime:'',
         resourceIncrement:0,
@@ -289,17 +295,50 @@ export default class SpaceDash extends React.PureComponent {
             }.bind(this))
     };
 
+    handleResourceMonday = (event) => {
+        this.setState({ resourceMonday: event.target.checked });
+    }
+    handleResourceTuesday = (event) => {
+        this.setState({ resourceTuesday: event.target.checked });
+    }
+    handleResourceWednesday = (event) => {
+        this.setState({ resourceWednesday: event.target.checked });
+    }
+    handleResourceThursday = (event) => {
+        this.setState({ resourceThursday: event.target.checked });
+    }
+    handleResourceFriday = (event) => {
+        this.setState({ resourceFriday: event.target.checked });
+    }
+
     storeResource = () => {
         let _this = this;
         let resources = this.state.resources;
+        let resourceDays = [];
+
+        if(this.state.resourceMonday === 1) {
+            resourceDays.push(this.state.resourceMonday);
+        }
+        if(this.state.resourceTuesday === 2) {
+            resourceDays.push(this.state.resourceTuesday);
+        }
+        if(this.state.resourceWednesday === 3) {
+            resourceDays.push(this.state.resourceWednesday);
+        }
+        if(this.state.resourceThursday === 4) {
+            resourceDays.push(this.state.resourceThursday);
+        } 
+        if(this.state.resourceFriday === 5) {
+            resourceDays.push(this.state.resourceFriday);
+        } 
+
         let data = new FormData();
         data.append('spaceID', this.state.spaceID);
         data.append('resourceName', this.state.resourceName);
         data.append('resourceEmail', this.state.resourceEmail);
-        data.append('resourceStartDay', this.state.resourceStartDay);
-        data.append('resourceEndDay', this.state.resourceEndDay);
         data.append('resourceStartTime', this.state.resourceStartTime);
         data.append('resourceEndTime', this.state.resourceEndTime);
+        data.append('resourceDays', JSON.stringify(resourceDays));
 
         fetch('https://innovationmesh.com/api/resource', {
             method: 'POST',
@@ -549,8 +588,58 @@ export default class SpaceDash extends React.PureComponent {
                     <div className="spaceDashOptions">
                         <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px' }} />
                         <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceStartDay} onChange={this.handleStartDay} label="Start Day" placeholder="Monday" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceEndDay} onChange={this.handleEndDay} label="End Day" placeholder="Friday" style={{ marginRight: '10px' }} />
+                        <FormGroup row>
+                            <FormControlLabel
+                            control={
+                                <Checkbox
+                                checked={this.state.resourceMonday}
+                                onChange={this.handleResourceMonday}
+                                value={1}
+                                />
+                            }
+                            label="Monday"
+                            />
+                            <FormControlLabel
+                            control={
+                                <Checkbox
+                                checked={this.state.resourceTuesday}
+                                onChange={this.handleResourceTuesday}
+                                value={2}
+                                />
+                            }
+                            label="Tuesday"
+                            />
+                            <FormControlLabel
+                            control={
+                                <Checkbox
+                                checked={this.state.resourceWednesday}
+                                onChange={this.handleResourceWednesday}
+                                value={3}
+                                />
+                            }
+                            label="Wednesday"
+                            />
+                            <FormControlLabel
+                            control={
+                                <Checkbox
+                                checked={this.state.resourceThursday}
+                                onChange={this.handleResourceThursday}
+                                value={4}
+                                />
+                            }
+                            label="Thursday"
+                            />
+                            <FormControlLabel
+                            control={
+                                <Checkbox
+                                checked={this.state.resourceFriday}
+                                onChange={this.handleResourceFriday}
+                                value={5}
+                                />
+                            }
+                            label="Friday"
+                            />
+                        </FormGroup>
                         <TextField value={this.state.resourceStartTime} onChange={this.handleStartTime} label="Start Time" placeholder="8:00am" style={{ marginRight: '10px' }} />
                         <TextField value={this.state.resourceEndTime} onChange={this.handleEndTime} label="End Time" placeholder="8:00pm" style={{ marginRight: '10px' }} />
                         <TextField value={this.state.resourceIncrement} onChange={this.handleIncrement} label="Increments" placeholder="Minutes" style={{ marginRight: '10px' }} />
