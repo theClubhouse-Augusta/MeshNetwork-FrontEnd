@@ -31,8 +31,8 @@ export default class Challenges extends React.PureComponent {
 
   componentWillMount() {
     this.getChallenges();
-    this.getQuestions();
-    this.getTeams();
+    //this.getQuestions();
+    //this.getTeams();
   }
 
   componentWillReceiveProps(app) {
@@ -44,7 +44,7 @@ export default class Challenges extends React.PureComponent {
   }
 
   getChallenges = () => {
-    fetch("https://challenges.innovationmesh.com/api/getChallenges/5", {
+    fetch("https://innovationmesh.com/api/getChallenges/5", {
       method:'GET',
     })
     .then(function(response) {
@@ -58,7 +58,7 @@ export default class Challenges extends React.PureComponent {
   }
 
   getQuestions = () => {
-    fetch("https://challenges.innovationmesh.com/api/getQuestions/5", {
+    fetch("https://innovationmesh.com/api/getQuestions/5", {
       method:'GET',
     })
     .then(function(response) {
@@ -72,7 +72,7 @@ export default class Challenges extends React.PureComponent {
   }
 
   getTeams = () => {
-    fetch("https://challenges.innovationmesh.com/api/getTeams/5", {
+    fetch("https://innovationmesh.com/api/getTeams/5", {
       method:'GET',
     })
     .then(function(response) {

@@ -11,12 +11,14 @@ import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
+import FullCalendar from 'fullcalendar-reactwrapper';
 
 import Header from 'components/Header';
 
 import './style.css';
 import './styleM.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'fullcalendar-reactwrapper/dist/css/fullcalendar.min.css';
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -34,9 +36,12 @@ export default class Booking extends React.PureComponent {
             resources: [],
             activeType: 0,
             activeTimes: [],
+            increment:60,
             events: [],
             start: "",
             end: "",
+            activeDays:"",
+            activeResource:"",
             types: ['Private Office', 'Mentor', 'Tour', 'Meeting Room'],
             days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             times: [{ time: "08:00", active: 0 }, { time: "09:00", active: 0 }, { time: "10:00", active: 0 }, { time: "11:00", active: 0 }, { time: "12:00", active: 0 }, { time: "13:00", active: 0 }, { time: "14:00", active: 0 }, { time: "15:00", active: 0 }, { time: "16:00", active: 0 }, { time: "17:00", active: 0 }, { time: "18:00", active: 0 }],
@@ -80,6 +85,8 @@ export default class Booking extends React.PureComponent {
             events: events,
             start: "",
             end: "",
+            acitveDays:[1,2,3,4,5],
+            increments:60,
             times: times
         }, function () {
             fetch('https://innovationmesh.com/api/bookings/' + type, {
@@ -95,7 +102,10 @@ export default class Booking extends React.PureComponent {
                         events[i].end = new Date(events[i].end);
                     }
                     _this.setState({
-                        events: events
+                        events: json.bookings,
+                        activeResource:json.resource,
+                        activeDays:JSON.parse(json.resource.resourceDays),
+                        increment: json.resource.resourceIncrement
                     }, function () {
                         _this.forceUpdate();
                         console.log(this.state.events);
@@ -306,6 +316,10 @@ export default class Booking extends React.PureComponent {
         };
     };
 
+    testSlot = (start, end, event) => {
+        console.log(start._d);
+    }
+
 
     render() {
 
@@ -328,7 +342,7 @@ export default class Booking extends React.PureComponent {
                         <FlatButton style={{ width: '100%', background: '#ff4d58', color: '#FFFFFF', marginTop: '15px' }} onClick={this.storeBooking}>Confirm Booking</FlatButton>
                     </div>
                     <div style={{ width: '100%', background: '#FFFFFF', padding: '10px' }}>
-                        <BigCalendar
+                        {/*<BigCalendar
                             selectable
                             onSelectEvent={event => this.bookedSlot(event)}
                             defaultView="work_week"
@@ -339,7 +353,32 @@ export default class Booking extends React.PureComponent {
                             defaultDate={new Date()}
                             onSelectSlot={slotInfo => this.handleNewDate(slotInfo)}
                             eventPropGetter={(this.eventStyleGetter)}
-                        />
+                        />*/}
+                        <FullCalendar
+                            id = "bookingCal"
+                        header = {{
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'agendaWeek'
+                        }}
+                        defaultDate={new Date()}
+                        selectable={true}
+                        slotDuration={'00:'+this.state.increment+':00'}
+                        allDaySlot={false}
+                        select={(event) => this.testSlot(event)}
+                        businessHours={{
+                            dow:this.state.activeDays,
+                            start:this.state.activeResource.startTime,
+                            end:this.state.activeResource.endTime
+                        }}
+                        slotEventOverlap={false}
+                        weekends={false}
+                        defaultView='agendaWeek'
+                        navLinks= {true} // can click day/week names to navigate views
+                        editable= {true}
+                        eventLimit= {true} // allow "more" link when too many events
+                        events = {this.state.events}	
+                    />
                     </div>
                     {/*<div className="bookingTimeContainer">
                       <div className="bookingColumnTitle">Schedule Times</div>

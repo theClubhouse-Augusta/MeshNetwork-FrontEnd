@@ -291,11 +291,11 @@ export default class Header extends React.PureComponent {
   renderMyCourses = () => {
     if(this.state.token) {
       return(
-        <Link to={'/LMS/MyLMS'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+        <Link to={'/LMS/MyLMS'}><MenuItem style={{margin:'0'}} onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
       )
     } else {
       return(
-        <Link to={'/signIn'}><MenuItem onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+        <Link to={'/signIn'}><MenuItem style={{margin:'0'}} onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
       )
     }
   }
@@ -309,6 +309,10 @@ export default class Header extends React.PureComponent {
          <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
          <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
        </div>
+     )
+   } else {
+     return(
+      <Link to={'/signIn'} className="navButton" style={{background:'#ff4d58', color:'#FFFFFF', paddingTop:'5px', paddingBottom:'5px', paddingLeft:'10px', paddingRight:'10px', borderRadius:'3px'}}>Sign In</Link>
      )
    }
   }
@@ -389,14 +393,14 @@ export default class Header extends React.PureComponent {
               <MdSearch className="navIcon" />
               <span className="navLink">Search</span>
             </Link>
-            <Link
-              to="/Challenges"
+            <a
+              href="/Challenges"
               className="navButton"
               style={{ color: this.state.textColor }}
             >
               <MdAssessment className="navIcon" />
               <span className="navLink">Challenges</span>
-            </Link>
+            </a>
             {/*<Link to="/events" className="navButton">Events</Link>*/}
 
             {/*<span className="navButton">
@@ -455,7 +459,7 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.educationMenu)}
                 onClose={this.handleEducationMenuClose}
               >
-                <Link to={'/LMS/Courses'}><MenuItem onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
+                <Link to={'/LMS/Courses'}><MenuItem style={{margin:'0'}} onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
                 {this.renderMyCourses()}
               </Menu>
             </span>

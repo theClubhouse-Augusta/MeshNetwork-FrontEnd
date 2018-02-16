@@ -15,27 +15,22 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: "Encode Sans", sans-serif;
+  padding-top:15px;
+  padding-bottom:15px;
 }
 
 body {
-  font-family: "Spectral", serif;
+  font-family: "Noto Sans";
 }
 
 a {
-  color: #ab4c9d;
+  color: #ff4d58;
   text-decoration: none;
   font-weight: 500;
 }
 
 li {
-  display: inline;
-}
-
-ol,
-ul {
-  /* no bullets in lists */
-  list-style: none;
+  margin-left:60px;
 }
 
 button,
@@ -46,12 +41,17 @@ input {
 }
 
 label {
-  font-family: "Encode Sans", sans-serif;
+  font-family: "Noto Sans";
 }
 
 button {
   cursor: pointer;
   background-color: transparent;
+}
+
+p {
+  margin-top:15px;
+  margin-bottom:15px;
 }
 
 .homeSection {

@@ -291,7 +291,7 @@ export default class LMSDash extends React.PureComponent {
               {this.state.courses.map((course, index) => (
                 <div className="lmsHomeMainBlock" key={index}>
                   <Link style={{textDecoration:'none'}} to={'/LMS/CourseInfo/'+course.id}>
-                    <Card style={{height:'385px'}}>
+                    <Card style={{height:'435px'}}>
                       <CardMedia
                         style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
                         image={'http://houseofhackers.me/media/' + course.courseImage}
