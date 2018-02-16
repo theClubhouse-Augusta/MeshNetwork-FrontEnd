@@ -61,7 +61,7 @@ export default class Home extends React.PureComponent {
           </div>
           <div className="homeHeaderContentSearchBar">
             <div className="homeSignButtons">
-              <Link to={"/newSpace"} style={{ margin: "15px", width: "48%" }}>
+              <Link to={"/spaces"} style={{ margin: "15px", width: "48%" }}>
                 <FlatButton
                   style={{
                     width: "100%",

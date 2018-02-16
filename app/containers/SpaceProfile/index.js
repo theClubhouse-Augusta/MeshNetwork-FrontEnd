@@ -155,6 +155,7 @@ export default class SpaceProfile extends React.PureComponent {
               background: "#FFFFFF",
               color: "#ff4d58",
               width: "100%",
+              marginTop:'15px',
               border: "1px solid #CCCCCC"
             }}
           >
@@ -331,7 +332,6 @@ export default class SpaceProfile extends React.PureComponent {
                         background: "#ff4d58",
                         color: "#FFFFFF",
                         width: "100%",
-                        margin: "15px 0",
                         padding: "10px 0"
                       }}
                     >
