@@ -97,7 +97,7 @@ export default class SpaceSignUp extends React.PureComponent {
     handleUserName = (event) => { this.setState({ userName: event.target.value }) };
     handleUserEmail = (event) => { this.setState({ userEmail: event.target.value }) };
     handleUserPassword = (event) => {
-      this.setState({ userPassword: event.target.value }, function() {
+      this.setState({ userPassword: event.target.value }, () => {
         if(this.state.userPassword.length < 6) {
           this.setState({
             passwordError:'Password Too Short'
@@ -129,7 +129,6 @@ export default class SpaceSignUp extends React.PureComponent {
         isLoading:true
       })
         let data = new FormData();
-        let _this = this;
         let {
             name,
             city,
@@ -161,28 +160,26 @@ export default class SpaceSignUp extends React.PureComponent {
         data.append('password', userPassword.trim());
         data.append('avatar', avatar);
 
-        fetch("https://innovationmesh.com/api/workspaces", {
+        fetch("http://localhost:8000/api/workspaces", {
             method: 'POST',
             body: data,
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
-                if (json.error) {
-                    _this.showSnack(json.error);
+            .then(response => response.json())
+            .then(spaceID => {
+                if (spaceID.error) {
+                    this.showSnack(spaceID.error);
                 }
                 else {
 
-                  _this.showSnack("Thanks! We will review your workspace and be in contact soon.");
+                  this.showSnack("Thanks! We will review your workspace and be in contact soon.");
                   setTimeout(() => {
-                      _this.props.history.push(`/space/${json}`)
+                      this.props.history.push(`/space/${spaceID}`)
                   }, 2000);
                 }
-                _this.setState({
+                this.setState({
                   isLoading:false
                 })
-            }.bind(this))
+            })
     }
 
     renderLogoImage = () => {

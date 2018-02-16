@@ -10,7 +10,12 @@ import Helmet from 'react-helmet';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/Button';
 import Drawer from 'material-ui/Drawer';
-import {EditorState, ContentState, convertFromHTML, convertToRaw} from 'draft-js';
+import {
+  EditorState, 
+  // ContentState, 
+  // convertFromHTML, 
+  convertToRaw
+} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -56,23 +61,21 @@ export default class Replies extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
 
   getQuestion = () => {
-    fetch("https://innovationmesh.com/api/showQuestion/" + this.props.match.params.id, {
+    fetch("http://localhost:8000/api/showQuestion/" + this.props.match.params.id, {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         question:json.question
       })
-    }.bind(this))
+    })
   }
 
   getReplies = () => {
@@ -80,13 +83,11 @@ export default class Replies extends React.PureComponent {
     var replies = this.state.replies;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("https://innovationmesh.com/api/getReplies/" + this.props.match.params.id + '?page=' + this.state.nextPage, {
+      fetch("http://localhost:8000/api/getReplies/" + this.props.match.params.id + '?page=' + this.state.nextPage, {
         method:'GET'
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
+      .then(response =>  response.json())
+      .then(json => {
         if(json.replies.current_page !== json.replies.last_page)
         {
            nextPage = nextPage + 1;
@@ -101,39 +102,36 @@ export default class Replies extends React.PureComponent {
           currentPage: json.replies.current_page,
           replies: replies,
         })
-      }.bind(this))
+      })
     }
   }
 
   storeReply = () => {
-    let _this = this;
     let data = new FormData();
 
     data.append('questionID', this.state.question.id);
     data.append('replyContent', draftToHtml(convertToRaw(this.state.replyContent.getCurrentContent())));
 
-    fetch("https://innovationmesh.com/api/storeReply/", {
+    fetch("http://localhost:8000/api/storeReply/", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
         if(json.error === 'token_expired' || json.error === 'token_not_provided') {
-          _this.props.app.signOut(0, 'Your session has expired.');
-          _this.props.app.handleAuth();
+          this.props.app.signOut(0, 'Your session has expired.');
+          this.props.app.handleAuth();
         } else {
-          _this.showSnack(json.error);
+          this.showSnack(json.error);
         }
       }
       else if(json.success) {
-        _this.showSnack(json.success);
-        _this.replyDrawer();
+        this.showSnack(json.success);
+        this.replyDrawer();
       }
-    }.bind(this))
+    })
   }
 
   renderQuestionReply = () => {
@@ -142,7 +140,9 @@ export default class Replies extends React.PureComponent {
         <div className="challenges_questionTopicButton" onClick={() => this.replyDrawer()}>Reply <CommentIcon style={{marginLeft:'5px'}}/></div>
       )
     } else {
-      <div className="challenges_questionTopicButton" onClick={() => this.props.app.handleAuth()}>Reply <CommentIcon style={{marginLeft:'5px'}}/></div>
+      return (
+        <div className="challenges_questionTopicButton" onClick={() => this.props.app.handleAuth()}>Reply <CommentIcon style={{marginLeft:'5px'}}/></div>
+      );
     }
   }
 
@@ -160,7 +160,7 @@ export default class Replies extends React.PureComponent {
             <div className="challenges_questionTopic">
               <div className="challenges_questionTopicAvatar">
                 <div style={{maxHeight:'120px', overflow:'hidden', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-                  <img className="challenges_questionTopicAvatarImg" src={this.state.question.avatar}/>
+                  <img alt="" className="challenges_questionTopicAvatarImg" src={this.state.question.avatar}/>
                 </div>
                 <div className="challenges_questionName">{this.state.question.profileName}</div>
               </div>
@@ -182,7 +182,7 @@ export default class Replies extends React.PureComponent {
                 <div className="challenges_replyBlockContainer" key={i}>
                   <div className="challenges_replyBlock">
                     <div className="challenges_replyAvatar">
-                      <img className="challenges_replyAvatarImg" src={reply.avatar}/>
+                      <img alt="" className="challenges_replyAvatarImg" src={reply.avatar}/>
                     </div>
                     <div className="challenges_replyInfo">
                       <div className="challenges_replyTop">

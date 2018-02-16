@@ -42,63 +42,54 @@ export default class Detail extends React.PureComponent {
   /*componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }*/
 
   getDetail = () => {
-    fetch("https://innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/showChallenge/"+this.props.match.params.id, {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         challenge:json.challenge,
         categories:json.challenge.categories,
         uploads:json.uploads,
         teams:json.teams,
         participant:json.participant
-      }, function() {
+      }, () => {
         this.getSpace();
       })
-    }.bind(this))
+    })
   }
 
   getSpace = () => {
-    fetch("https://innovationmesh.com/api/workspace/" + this.state.challenge.spaceID, {
+    fetch("http://localhost:8000/api/workspace/" + this.state.challenge.spaceID, {
         method: "GET"
       }
     )
-    .then(function(response) {
-      return response.json();
-    })
-    .then(
-      function(json) {
+    .then(response => response.json())
+    .then(json => {
         this.setState({
           space: json
         });
-      }.bind(this)
-    );
+    });
   }
 
   joinChallenge = () => {
-    let _this = this;
-    fetch("https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
+    fetch("http://localhost:8000/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
-        _this.showSnack(json.error);
+        this.showSnack(json.error);
       }
       else {
-        _this.showSnack(json.success);
+        this.showSnack(json.success);
       }
     })
   }
@@ -149,7 +140,7 @@ export default class Detail extends React.PureComponent {
                 </div>
               </div>
               <div className="challenges_detailImageContainer">
-                <img className="challenges_detailImage" src={this.state.challenge.challengeImage} />
+                <img alt="" className="challenges_detailImage" src={this.state.challenge.challengeImage} />
               </div>
               <div style={{fontFamily:'Noto Sans', fontWeight:'200', color:'#555555', paddingTop:'5px', paddingBottom:'5px', lineHeight:'35px'}} className="challenges_detailContent" dangerouslySetInnerHTML={this.createMarkup()} />
             </div>
@@ -165,7 +156,7 @@ export default class Detail extends React.PureComponent {
                 <div className="challenges_categoryTitle">Participants</div>
                 {this.state.teams.map((t, i) => (
                   <div className="challenges_participantBlock">
-                    <img className="challenges_participantImage" src={t.teamImage}/>
+                    <img alt="" className="challenges_participantImage" src={t.teamImage}/>
                     <div className="challenges_participantName">{t.teamName}</div>
                   </div>
                 ))}

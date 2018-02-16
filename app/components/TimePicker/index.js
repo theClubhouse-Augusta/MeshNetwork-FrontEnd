@@ -3,9 +3,8 @@
 * TimePicker
 *
 */
-
 import React from 'react';
-import PropTypes, { oneOfType } from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 

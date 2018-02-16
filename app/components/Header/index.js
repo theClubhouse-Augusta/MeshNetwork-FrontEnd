@@ -15,7 +15,7 @@ import MdSchool from "react-icons/lib/md/school";
 import MdPerson from "react-icons/lib/md/person";
 import MdExitToApp from "react-icons/lib/md/exit-to-app";
 import DownArrow from "react-icons/lib/fa/caret-down";
-import Divider from "material-ui/Divider";
+// import Divider from "material-ui/Divider";
 
 import Menu, { MenuItem } from "material-ui/Menu";
 
@@ -239,7 +239,6 @@ export default class Header extends React.PureComponent {
   }
 
   signOut = () => {
-    let _this = this;
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("lmsToken");
@@ -251,9 +250,9 @@ export default class Header extends React.PureComponent {
         token: "",
         user: ""
       },
-      function() {
-        setTimeout(function() {
-          _this.props.history.push("/");
+      () => {
+        setTimeout(() => {
+          this.props.history.push("/");
         }, 2000);
       }
     );
@@ -305,7 +304,7 @@ export default class Header extends React.PureComponent {
    {
      return(
        <div style={{display:'flex', flexDirection:'row'}}>
-         <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>Workspace</Link>
+         <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>{this.props.space}</Link>
          <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
          <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
        </div>
@@ -335,7 +334,7 @@ export default class Header extends React.PureComponent {
         </span>
       </Link>
     );
-    if (this.state.headerTitle != "Mesh Network") {
+    if (this.state.headerTitle !== "Mesh Network") {
       headerTitle = this.state.headerTitle;
     }
     /*let headerTitle = (

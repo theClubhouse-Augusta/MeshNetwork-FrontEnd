@@ -8,6 +8,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import Header from 'components/Header';
 
+import { Link } from 'react-router-dom';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
@@ -38,41 +39,40 @@ export default class Team extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
 
   getDetail = () => {
-    fetch("https://innovationmesh.com/api/showTeam/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/showTeam/"+this.props.match.params.id, {
       method:'GET'
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       this.setState({
         team:json.team,
         members:json.members
       })
-    }.bind(this))
+    })
   }
 
   joinTeam = () => {
-    let _this = this;
-    fetch("https://innovationmesh.com/api/joinTeam/" + this.state.team.id, {
+    fetch("http://localhost:8000/api/joinTeam/" + this.state.team.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack(json.error);
+        this.showSnack(json.error);
       }
       else {
-        _this.showSnack(json.success);
+        this.showSnack(json.success);
       }
     })
   }
@@ -85,7 +85,9 @@ export default class Team extends React.PureComponent {
       )
     }
     else {
-      <FlatButton onClick={this.props.app.handleAuth} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Team</FlatButton>
+      return (
+        <FlatButton onClick={this.props.app.handleAuth} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Team</FlatButton>
+      );
     }
   }
 
@@ -103,7 +105,7 @@ export default class Team extends React.PureComponent {
             <div className="challenges_detailColumnOne">
               <div className="challenges_detailBlock">
                 <div className="challenges_detailAvatarContainer">
-                  <img className="challenges_detailAvatar" src={this.state.team.teamImage}/>
+                  <img alt="" className="challenges_detailAvatar" src={this.state.team.teamImage}/>
                 </div>
                 <div className="challenges_detailInfo" style={{justifyContent:'center'}}>
                   <div className="challenges_detailTitle">{this.state.team.teamName}</div>
@@ -117,7 +119,7 @@ export default class Team extends React.PureComponent {
                   <div className="challenges_feedList">
                     {this.state.challenges.map((u, i) => (
                       <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={i}>
-                        <img className="challenges_feedImage" src={u.challengeImage}/>
+                        <img alt="" className="challenges_feedImage" src={u.challengeImage}/>
                         <div className="challenges_feedInfo">
                           <div className="challenges_feedTitle">{u.challengeTitle}</div>
                           <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: u.challengeContent }} />
@@ -139,7 +141,7 @@ export default class Team extends React.PureComponent {
                 <div className="challenges_categoryTitle">Members</div>
                 {this.state.members.map((m, i) => (
                   <div className="challenges_participantBlock" key={i}>
-                    <img className="challenges_participantImage" src={m.avatar} />
+                    <img  alt="" className="challenges_participantImage" src={m.avatar} />
                     <div className="challenges_participantName">{m.profileName}</div>
                   </div>
                 ))}

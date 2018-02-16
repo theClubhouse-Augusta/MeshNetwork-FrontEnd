@@ -8,15 +8,11 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
-
 import SpaceInformation from 'components/SpaceInformation';
-
 import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear';
 import { AllAppearances } from '../../components/DataViz/AllAppearances';
 import { AllJoins } from '../../components/DataViz/AllJoins';
-
 import Table, { TableBody, TableCell, TableHead, TableRow, TablePagination, TableFooter } from 'material-ui/Table';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
@@ -31,9 +27,9 @@ import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
 
-const getUsersAPI = 'https://innovationmesh.com/api/users/';
+const getUsersAPI = 'http://localhost:8000/api/users/';
 
-const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/';
+const spaceInfoAPI = 'http://localhost:8000/api/workspace/';
 
 export default class SpaceDash extends React.PureComponent {
     state = {
@@ -85,66 +81,66 @@ export default class SpaceDash extends React.PureComponent {
         fetch(getUsersAPI + id, {
             method: 'GET'
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     spaceUsers: json
                 });
-            }.bind(this))
+            })
     }
 
     loadSpaceDescription = () => {
         fetch(spaceInfoAPI + this.props.match.params.id, {
             method: 'GET'
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     spaceDescription: json.description,
                     spaceID: json.id
-                }, function () {
+                },  () => {
                     this.loadSpaceUsers(json.id);
                     this.getSpaceStats(json.id);
                     this.getSpaceEvents(json.id);
                     this.getPhotoGallery(json.id);
                     this.getResources(json.id);
                 })
-            }.bind(this))
+            })
     }
 
     getSpaceStats = (id) => {
-        fetch('https://innovationmesh.com/api/space/metrics/' + id, {
+        fetch('http://localhost:8000/api/space/metrics/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     memberCount: json.memberCount,
                     eventCount: json.eventCount,
                     checkinCount: json.checkinCount,
                     thisMonthCheckIns: json.thisMonthCheckIns,
                 })
-            }.bind(this))
+            })
     }
 
     getSpaceEvents = (id) => {
-        fetch('https://innovationmesh.com/api/events/' + id, {
+        fetch('http://localhost:8000/api/events/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     spaceEvents: json
                 })
-            }.bind(this))
+            })
     }
 
     changeMenu = (id) => {
@@ -154,17 +150,17 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getPhotoGallery = (id) => {
-        fetch('https://innovationmesh.com/api/photos/' + id, {
+        fetch('http://localhost:8000/api/photos/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     photoGallery: json.photos
                 })
-            }.bind(this))
+            })
     }
 
     handleGalleryPhoto = (event) => {
@@ -179,32 +175,31 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     storePhoto = (file) => {
-        let _this = this;
         let photoGallery = this.state.photoGallery;
         let data = new FormData();
 
         data.append('spaceID', this.state.spaceID);
         data.append('photo', file);
-        fetch('https://innovationmesh.com/api/photos', {
+        fetch('http://localhost:8000/api/photos', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 }
                 else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                     photoGallery.push(json.photo);
-                    _this.setState({
+                    this.setState({
                         photoGallery: photoGallery
                     })
                 }
-            }.bind(this))
+            })
     }
 
     deletePhoto = (id, i, spaceID) => {
@@ -213,7 +208,7 @@ export default class SpaceDash extends React.PureComponent {
         let data = new FormData();
         data.append("_method", "DELETE");
         // data.append("spaceID", spaceID);
-        fetch(`https://innovationmesh.com/api/photos/${id}`, {
+        fetch(`http://localhost:8000/api/photos/${id}`, {
             headers: { 'Authorization': 'Bearer ' + this.state.token },
             method: "POST",
             body: data,
@@ -227,7 +222,7 @@ export default class SpaceDash extends React.PureComponent {
                     // if (remove !== -1 && photoGallery.length !== 1) {
                     // this.showSnack(json.success);
                     //this.setState({ photoGallery: photoGallery.splice(-i, 1) });
-                    this.setState({ photoGallery: photoGallery }, function () {
+                    this.setState({ photoGallery: photoGallery }, () => {
                         this.forceUpdate();
                     })
                     // } else {
@@ -282,17 +277,17 @@ export default class SpaceDash extends React.PureComponent {
     };
 
     getResources = (id) => {
-        fetch('https://innovationmesh.com/api/resources/' + id, {
+        fetch('http://localhost:8000/api/resources/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     resources: json
                 })
-            }.bind(this))
+            })
     };
 
     handleResourceMonday = (event) => {
@@ -312,7 +307,6 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     storeResource = () => {
-        let _this = this;
         let resources = this.state.resources;
         let resourceDays = [];
 
@@ -340,20 +334,20 @@ export default class SpaceDash extends React.PureComponent {
         data.append('resourceEndTime', this.state.resourceEndTime);
         data.append('resourceDays', JSON.stringify(resourceDays));
 
-        fetch('https://innovationmesh.com/api/resource', {
+        fetch('http://localhost:8000/api/resource', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 }
                 else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                     resources.push(json.resource);
                     this.setState({
                         resources: resources,
@@ -361,32 +355,31 @@ export default class SpaceDash extends React.PureComponent {
                         resourceEmail: ""
                     })
                 }
-            }.bind(this))
+            })
     };
 
     deleteResource = (id, i) => {
-        let _this = this;
         let resource = this.state.resources;
 
-        fetch('https://innovationmesh.com/api/resource/' + id, {
+        fetch('http://localhost:8000/api/resource/' + id, {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 }
                 else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                     resource.splice(i, 1);
                     this.setState({
                         resource: resource
                     })
                 }
-            }.bind(this))
+            })
     }
 
     handleUserChangePage = (event, page) => {
@@ -459,9 +452,9 @@ export default class SpaceDash extends React.PureComponent {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {this.state.spaceUsers.slice(this.state.userPage * this.state.userRowsPerPage, this.state.userPage * this.state.userRowsPerPage + this.state.userRowsPerPage).map(user => {
+                                  {this.state.spaceUsers.slice(this.state.userPage * this.state.userRowsPerPage, this.state.userPage * this.state.userRowsPerPage + this.state.userRowsPerPage).map((user, key) => {
                                     return(
-                                      <TableRow>
+                                      <TableRow key={`user${key}`}>
                                           <TableCell>{user.name}</TableCell>
                                           <TableCell>{user.email}</TableCell>
                                           <TableCell>{user.title}</TableCell>
@@ -500,13 +493,16 @@ export default class SpaceDash extends React.PureComponent {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {this.state.spaceEvents.slice(this.state.eventPage * this.state.eventRowsPerPage, this.state.eventPage * this.state.eventRowsPerPage + this.state.eventRowsPerPage).map(e => {
+                                  {this.state.spaceEvents.slice(
+                                      this.state.eventPage * this.state.eventRowsPerPage, 
+                                      this.state.eventPage * this.state.eventRowsPerPage + this.state.eventRowsPerPage
+                                    ).map((e, key) => {
                                     return(
-                                      <TableRow>
-                                        <TableCell>{e.title}</TableCell>
-                                        <TableCell>{e.space.city}, {e.space.state}</TableCell>
-                                        <TableCell>{e.date}</TableCell>
-                                      </TableRow>
+                                      <TableRow key={`event${key}`}>
+                                            <TableCell><a href={`/event/${e.id}`}>{e.title}</a></TableCell>
+                                            <TableCell>{e.space.city}, {e.space.state}</TableCell>
+                                            <TableCell>{e.date}</TableCell>
+                                        </TableRow>
                                     )
                                   })}
                                 </TableBody>
@@ -555,9 +551,8 @@ export default class SpaceDash extends React.PureComponent {
                     </div>
                     <div className="spaceDashPhotoGallery">
                         {this.state.photoGallery.map((photo, i) => (
-                            <React.Fragment key={`gallery${i}`} >
-                                <div className="spaceDashPhotoBlock">
-                                    <img src={photo.photoThumbnail} />
+                                <div key={`photoGallery${i}`} className="spaceDashPhotoBlock">
+                                    <img alt="" src={photo.photoThumbnail} />
 
                                     <FlatButton
                                         style={{
@@ -575,7 +570,6 @@ export default class SpaceDash extends React.PureComponent {
                                     </FlatButton>
 
                                 </div>
-                            </React.Fragment>
                         ))}
                     </div>
                 </div>
@@ -649,7 +643,7 @@ export default class SpaceDash extends React.PureComponent {
                     </div>
                     <div className="spaceDashResources">
                         {this.state.resources.map((res, i) => (
-                            <div className="spaceDashResourceBlock">
+                            <div key={`resources${i}`} className="spaceDashResourceBlock">
                                 <div className="spaceDashResourceTitle">{res.resourceName}</div>
                                 <div className="spaceDashResourceContact">
                                     {res.resourceEmail}

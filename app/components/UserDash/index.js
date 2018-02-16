@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import { EditingState } from '@devexpress/dx-react-grid';
 import {
     Grid, Table, TableHeaderRow,
@@ -16,16 +16,16 @@ import {
 } from '@devexpress/dx-react-grid-material-ui';
 import {
     TableCell,
-    Button,
+    // Button,
     IconButton,
-    Input,
+    // Input,
     Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    MenuItem,
-    Select,
+    // DialogActions,
+    // DialogContent,
+    // DialogContentText,
+    // DialogTitle,
+    // MenuItem,
+    // Select,
 } from 'material-ui';
 import BlockIcon from 'material-ui-icons/Block';
 import ThumbDownIcon from 'material-ui-icons/ThumbDown';
@@ -43,7 +43,7 @@ TO DO
 
 import './style.css';
 import './styleM.css';
-import { ThumbUp } from 'material-ui-icons';
+// import { ThumbUp } from 'material-ui-icons';
 
 const Cell = (props) => {
     if (props.column.name === 'ban') {
@@ -62,21 +62,21 @@ const RoleStatusCell = ({ value }) => {
     } return (<div style={{ color: 'orange', padding: '16px 8px' }}> Member </div>)
 }
 
-const RoleEditSelect = ({ value, onValueChange }) => (
-    <TableCell>
-        <Select
-            value={value}
-            onChange={event => onValueChange(event.target.value)}
-            input={
-                <Input />
-            }
-        >
-            {roleValues.map(item => (
-                <MenuItem key={item} value={item}>{item}</MenuItem>
-            ))}
-        </Select>
-    </TableCell>
-)
+// const RoleEditSelect = ({ value, onValueChange }) => (
+//     <TableCell>
+//         <Select
+//             value={value}
+//             onChange={event => onValueChange(event.target.value)}
+//             input={
+//                 <Input />
+//             }
+//         >
+//             {roleValues.map(item => (
+//                 <MenuItem key={item} value={item}>{item}</MenuItem>
+//             ))}
+//         </Select>
+//     </TableCell>
+// )
 
 /* const onValueChange - 
 label change = role id value change */
@@ -100,7 +100,7 @@ const BanButton = ({ onBanExecute }) => (
 /* onBanExecute = () => {this.setState({ban: 1}); function() {console.log('banned')}} */
 
 
-const userUpdateAPI = 'https://www.innovationmesh.com/api/user';
+// const userUpdateAPI = 'https://www.innovationmesh.com/api/user';
 
 
 export default class UserDash extends React.PureComponent {
@@ -150,12 +150,14 @@ export default class UserDash extends React.PureComponent {
     }
 
     render() {
-        const { rows,
+        const { 
+            rows,
             columns,
             editingRows,
             addedRows,
             changedRows,
-            deletingRows } = this.state;
+            // deletingRows 
+        } = this.state;
 
         return (
             <div className="userDashContainer">

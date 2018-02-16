@@ -39,7 +39,7 @@ export default class Ask extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -47,7 +47,7 @@ export default class Ask extends React.PureComponent {
   handleSearch = (event) => {
     this.setState({
       searchContent:event.target.value
-    }, function() {
+    }, () => {
       if(this.state.searchContent.length >= 3) {
         this.search();
       }
@@ -59,13 +59,11 @@ export default class Ask extends React.PureComponent {
     var questions = this.state.questions;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("https://innovationmesh.com/api/getQuestions/30?page=" + this.state.nextPage, {
+      fetch("http://localhost:8000/api/getQuestions/30?page=" + this.state.nextPage, {
         method:'GET',
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
+      .then(response => response.json())
+      .then(json => {
         if(json.questions.current_page !== json.questions.last_page)
         {
            nextPage = nextPage + 1;
@@ -80,31 +78,28 @@ export default class Ask extends React.PureComponent {
           currentPage: json.questions.current_page,
           questions: questions,
         })
-      }.bind(this))
+      })
     }
   }
 
   search = () => {
-    let _this = this;
     let data = new FormData();
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("https://innovationmesh.com/api/searchQuestions", {
+    fetch("http://localhost:8000/api/searchQuestions", {
       method:'POST',
       body:data
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         nextPage:1,
         currentPage:0,
         lastPage:1,
         questions: json.questions,
       })
-    }.bind(this))
+    })
   }
 
   renderWaypoint = () => {
@@ -140,7 +135,7 @@ export default class Ask extends React.PureComponent {
                     <Link to={'/Challenges/Ask/' + q.questionSlug} className="challenges_questionBlock" key={i}>
                       <div className="challenges_questionHeader">
                         <div className="challenges_questionAvatar">
-                          <img className="challenges_questionAvatarImg" src={q.avatar} />
+                          <img alt="" className="challenges_questionAvatarImg" src={q.avatar} />
                         </div>
                         <div className="challenges_questionName">{q.profileName}</div>
                         <div className="challenges_questionWho">{q.profileTitle}</div>

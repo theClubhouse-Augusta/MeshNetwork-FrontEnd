@@ -19,7 +19,7 @@ const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
 
-const Challenges = asyncComponent(() => import('../Challenges'));
+// const Challenges = asyncComponent(() => import('../Challenges'));
 const Discover = asyncComponent(() => import('../Discover'));
 const Ask = asyncComponent(() => import('../Ask'));
 const Replies = asyncComponent(() => import('../Replies'));
@@ -154,7 +154,7 @@ export default class App extends Component {
                 <Route path='/LMS/NewCourse' render={(props) => <NewCourse {...props} app={this}/> } />
                 <Route exact path='/LMS/Lesson/:id' render={(props) => <Lessons {...props} app={this}/> } />
                 <Route path='/LMS/Lesson/:id/:lid' render={(props) => <Lessons {...props}  app={this}/>}/>
-                <Route path='/LMS/Update/:id' render={(props) => <New {...props}  app={this}/>}/>
+                {/* <Route path='/LMS/Update/:id' render={(props) => <New {...props}  app={this}/>}/> */}
                 <Route path='/LMS/Enroll/:id' render={(props) => <Enroll {...props}  app={this}/>}/>
                 <Route path='/LMS/MyLMS' render={(props) => <LMSDash {...props}  app={this}/>}/>
 

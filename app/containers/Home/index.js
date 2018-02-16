@@ -28,25 +28,19 @@ export default class Home extends React.PureComponent {
   }
 
   getQuote = () => {
-    fetch(
-      "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous&count=1",
-      {
+    fetch("https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous&count=1", {
         method: "GET",
         headers: {
           "X-Mashape-Key": "3q4u3rgPbBmsh9W05tFAIGURztVzp1EQKTQjsn7MOO0DmFOcqn"
         }
       }
     )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            quote: json
-          });
-        }.bind(this)
-      );
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        quote: json
+      });
+    })
   };
 
   renderSignIn = () => {
@@ -153,7 +147,7 @@ export default class Home extends React.PureComponent {
                   backgroundPosition: "center center"
                 }}
               >
-                <img src="http://h4z.it/Image/093903_cowork.PNG" />
+                <img alt="" src="http://h4z.it/Image/093903_cowork.PNG" />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}
@@ -171,7 +165,7 @@ export default class Home extends React.PureComponent {
                   backgroundPosition: "center center"
                 }}
               >
-                <img src="http://h4z.it/Image/2b608a_hack.PNG" />
+                <img alt="" src="http://h4z.it/Image/2b608a_hack.PNG" />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}
@@ -189,7 +183,7 @@ export default class Home extends React.PureComponent {
                   backgroundPosition: "center center"
                 }}
               >
-                <img src="http://h4z.it/Image/6d9807_3Dprinting.PNG" />
+                <img alt="" src="http://h4z.it/Image/6d9807_3Dprinting.PNG" />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}
@@ -207,7 +201,7 @@ export default class Home extends React.PureComponent {
                   backgroundPosition: "center center"
                 }}
               >
-                <img src="http://h4z.it/Image/0cf50f_studio.PNG" />
+                <img alt="" src="http://h4z.it/Image/0cf50f_studio.PNG" />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}
@@ -235,7 +229,7 @@ export default class Home extends React.PureComponent {
             </div>
             <div className="homeMainSectionContentTwo">
               <div className="homeMainSectionBlockTwo">
-                <img src="http://h4z.it/Image/af1a08_how1.PNG" />
+                <img alt="" src="http://h4z.it/Image/af1a08_how1.PNG" />
                 <div className="homeMainSectionBlockTitle">
                   Choose What You Do
                 </div>
@@ -246,7 +240,7 @@ export default class Home extends React.PureComponent {
                 </div>
               </div>
               <div className="homeMainSectionBlockTwo">
-                <img src="http://h4z.it/Image/3889d9_how2.PNG" />
+                <img alt="" src="http://h4z.it/Image/3889d9_how2.PNG" />
                 <div className="homeMainSectionBlockTitle">
                   Find What You Want
                 </div>
@@ -256,7 +250,7 @@ export default class Home extends React.PureComponent {
                 </div>
               </div>
               <div className="homeMainSectionBlockTwo">
-                <img src="http://h4z.it/Image/79caa9_how3.PNG" />
+                <img alt="" src="http://h4z.it/Image/79caa9_how3.PNG" />
                 <div className="homeMainSectionBlockTitle">
                   Explore Awesome Places
                 </div>

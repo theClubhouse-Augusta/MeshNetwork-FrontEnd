@@ -46,82 +46,73 @@ export default class UserSignIn extends React.PureComponent {
       this.setState({
         isLoading:true
       })
-        let _this = this;
         let data = new FormData();
         data.append('email', this.state.email);
         data.append('password', this.state.password);
 
-        fetch("https://innovationmesh.com/api/login", {
+        fetch("http://localhost:8000/api/login", {
             method: 'POST',
             body: data
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
               if (json.error) {
-                  _this.showSnack(json.error);
+                  this.showSnack(json.error);
               }
               else if (json.token) {
                 let mainToken = json.token;
                 localStorage.setItem('token', mainToken);
-                fetch("https://innovationmesh.com/api/user/auth", {
+                fetch("http://localhost:8000/api/user/auth", {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + mainToken }
                 })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (json) {
+                .then(response => response.json())
+                .then(json => {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
-                    let newData = new FormData();
-                    newData.append('username', _this.state.email);
-                    newData.append('password', _this.state.password);
-                    fetch('https://lms.innovationmesh.com/signIn/', {
-                    method:'POST',
-                    body:newData
-                    })
-                    .then(function(response) {
-                    return response.json();
-                    })
-                    .then(function(json) {
-                        if(json.non_field_errors)
-                        {
-                            _this.showSnack("Invalid Credentials");
-                        }
-                        else if(json.token)
-                        {
-                            localStorage.setItem('lmsToken', json.token);
-                            fetch('https://lms.innovationmesh.com/getUser/', {
-                            method:'GET',
-                            headers: {'Authorization' : 'JWT ' + json.token}
-                            })
-                            .then(function(response) {
-                            return response.json();
-                            })
-                            .then(function(json) {
-                            localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                            _this.showSnack('Welcome back!');
+                    // let newData = new FormData();
+                    // newData.append('username', this.state.email);
+                    // newData.append('password', this.state.password);
+                    // fetch('https://lms.innovationmesh.com/signIn/', {
+                    // method:'POST',
+                    // body:newData
+                    // })
+                    // .then(response => response.json())
+                    // .then(json => {
+                        // if(json.non_field_errors)
+                        // {
+                            // this.showSnack("Invalid Credentials");
+                        // }
+                        // else if(json.token)
+                        // {
+                            // localStorage.setItem('lmsToken', json.token);
+                            // fetch('https://lms.innovationmesh.com/getUser/', {
+                            // method:'GET',
+                            // headers: {'Authorization' : 'JWT ' + json.token}
+                            // })
+                            // .then(response => response.json())
+                            // .then(json => {
+                            // localStorage.setItem('lmsUser', JSON.stringify(json.user));
+                            // this.showSnack('Welcome back!');
                             setTimeout(() => {
-                                _this.props.history.push(`/user/${mainUser.id}`)
+                                this.props.history.push(`/user/${mainUser.id}`)
                             }, 2000);
                             })
-                        }
-                    })
-                })
+                        // }
+                    // })
+                // })
               }
-              _this.setState({
+              this.setState({
                 isLoading:false
               })
-            }.bind(this));
+            });
     };
 
     resetPassword = () => this.setState({ forgotPassword: true });
     sendResetEmail = () => {
         let data = new FormData();
         data.append('email', this.state.email);
-        fetch(`https://innovationmesh.com/api/forgotpassword`, {
+        fetch(`http://localhost:8000/api/forgotpassword`, {
             method: 'POST',
             body: data
         })

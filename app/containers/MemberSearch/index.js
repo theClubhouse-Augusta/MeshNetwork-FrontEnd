@@ -11,9 +11,9 @@ import PropTypes from "prop-types";
 import Chip from "material-ui/Chip";
 import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
-import { MenuItem } from "material-ui/Menu";
-import Input, { InputLabel } from "material-ui/Input";
-import Select from "material-ui/Select";
+// import { MenuItem } from "material-ui/Menu";
+// import Input, { InputLabel } from "material-ui/Input";
+// import Select from "material-ui/Select";
 
 /* Components */
 import Helmet from "react-helmet";
@@ -60,7 +60,7 @@ export default class MemberSearch extends PureComponent {
   }
 
   loadSkills = () => {
-    fetch("https://innovationmesh.com/api/skills", {
+    fetch("http://localhost:8000/api/skills", {
       //headers: { Authorization: `Bearer ${this.token}` },
     })
       .then(response => response.json())
@@ -79,7 +79,7 @@ export default class MemberSearch extends PureComponent {
       let data = new FormData();
       data.append("query", this.state.query);
 
-      fetch("https://innovationmesh.com/api/search/", {
+      fetch("http://localhost:8000/api/search/", {
         method: "POST",
         body: data
         //headers: { Authorization: `Bearer ${this.token}` },
@@ -100,22 +100,18 @@ export default class MemberSearch extends PureComponent {
 
     data.append("tag", tag);
 
-    fetch("https://innovationmesh.com/api/search", {
+    fetch("http://localhost:8000/api/search", {
       method: "POST",
       body: data
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
+      .then(response => response.json())
+      .then(json => {
           if (json.error) {
             this.showSnack(json.error);
           } else {
             this.setState({ results: json });
           }
-        }.bind(this)
-      );
+        });
   };
 
   renderTag = (skill, i) => {
@@ -203,6 +199,8 @@ export default class MemberSearch extends PureComponent {
               >
                 <div className="memberBlockImage" style={{overflow:'hidden'}}>
                   <img
+                    alt=""
+                    
                     src={user.avatar}
                     style={{ width: "100%", height: "auto" }}
                   />

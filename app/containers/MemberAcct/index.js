@@ -83,7 +83,7 @@ export default class MemberAcct extends React.PureComponent {
   // }
 
   loadSkills = () => {
-    fetch("https://innovationmesh.com/api/skills/all", {})
+    fetch("http://localhost:8000/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
@@ -105,7 +105,7 @@ export default class MemberAcct extends React.PureComponent {
       {
         [name]: event.target.value
       }
-      //function() {
+      //() => {
       //console.log(this.state);
       //}
     );
@@ -130,19 +130,21 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   renderAvatarPreview = () => {
-    if (this.state.avatarPreview == "") {
+    if (this.state.avatarPreview === "") {
       return (
         <img
+          alt=""
           src={this.state.avatar}
           className="acctProfilePicturePreview"
           height="200px"
           width="200px"
         />
       );
-    } else this.state.avatar !== this.state.avatarPreview;
+    } else if (this.state.avatar !== this.state.avatarPreview)
     {
       return (
         <img
+          alt=""
           src={this.state.avatarPreview}
           className="acctProfilePicturePreview"
           height="200px"
@@ -161,15 +163,12 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   getUserInfo = () => {
-    fetch(`https://innovationmesh.com/api/user/auth`, {
+    fetch(`http://localhost:8000/api/user/auth`, {
       method: "GET",
       headers: { Authorization: "Bearer " + this.state.token }
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
+      .then(response => response.json())
+      .then(json => {
           this.setState(
             {
               name: json.user.name,
@@ -184,12 +183,10 @@ export default class MemberAcct extends React.PureComponent {
               behance: json.user.behance,
               selectedTags: json.user.skills.split(",")
             },
-            function() {
+            () => {
               console.log(this.state);
-            }
-          );
-        }.bind(this)
-      );
+            });
+        });
   };
 
   updateUser = e => {
@@ -209,7 +206,7 @@ export default class MemberAcct extends React.PureComponent {
     data.append("password", this.state.password);
     data.append("passwordConfirm", this.state.passwordConfirm);
 
-    fetch(`https://innovationmesh.com/api/user/update`, {
+    fetch(`http://localhost:8000/api/user/update`, {
       headers: { Authorization: "Bearer " + this.state.token },
       method: "POST",
       body: data
@@ -236,9 +233,9 @@ export default class MemberAcct extends React.PureComponent {
       loadedTags,
       name,
       title,
-      avatar,
-      avatarPreview,
-      phoneNumber,
+      // avatar,
+      // avatarPreview,
+      // phoneNumber,
       facebook,
       twitter,
       instagram,

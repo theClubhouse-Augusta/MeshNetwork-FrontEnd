@@ -98,7 +98,6 @@ export default class AddEvent extends PureComponent {
         eventImgPreview: '',
         tag: [],
         selectedOrganizers: [],
-        selectedSponsors: [],
     };
 
     async componentDidMount() {
@@ -114,7 +113,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getSponsors = () => {
-        fetch(`https://innovationmesh.com/api/sponsors`, {
+        fetch(`http://localhost:8000/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -128,7 +127,7 @@ export default class AddEvent extends PureComponent {
     }
 
     getOrganizers = () => {
-        fetch(`https://innovationmesh.com/api/organizers/events`, {
+        fetch(`http://localhost:8000/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -143,7 +142,7 @@ export default class AddEvent extends PureComponent {
     }
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -238,7 +237,7 @@ export default class AddEvent extends PureComponent {
     selectStartMulti = (e, index) => {
         if (typeof index === 'number') {
             const startTimes = this.state.startMulti.slice();
-            const endTimes = this.state.endMulti.slice();
+            // const endTimes = this.state.endMulti.slice();
             const time = { start: e.target.value, index: index, };
             const removeTime = removeDuplicateStart(startTimes, time);
             if (typeof removeTime !== 'number') {
@@ -266,7 +265,7 @@ export default class AddEvent extends PureComponent {
 
     selectEndMulti = (e, index) => {
         if (typeof index === 'number') {
-            const startTimes = this.state.startMulti.slice();
+            // const startTimes = this.state.startMulti.slice();
             const endTimes = this.state.endMulti.slice();
             const time = { end: e.target.value, index: index, };
             const removeTime = removeDuplicateEnd(endTimes, time);
@@ -355,7 +354,7 @@ export default class AddEvent extends PureComponent {
             snackBarMessage: message
         });
 
-    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    handleRequestClose = () => { this.setState({ snackBar: false, snackBarMessage: "" }); };
 
     sponsorName = event => this.setState({ sponsorNames: event.target.value });
     sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
@@ -425,15 +424,18 @@ export default class AddEvent extends PureComponent {
             }
         }
 
-        fetch(`https://innovationmesh.com/api/event`, {
+        fetch(`http://localhost:8000/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
         })
             .then(response => response.json())
             .then(eventID => {
-                console.log('foo', JSON.stringify(eventID))
-                this.props.history.push(`/event/${eventID}`)
+                if (eventID.error) {
+                   this.toggleSnackBar(eventID.error); 
+                } else {
+                    this.props.history.push(`/event/${eventID}`)
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -444,7 +446,7 @@ export default class AddEvent extends PureComponent {
 
     renderLogoImage = () => {
         if (this.state.logo !== "")
-            return <img src={this.state.logoPreview} className="spaceLogoImagePreview" />
+            return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
     }
 
     renderLogoImageText = () => {
@@ -461,7 +463,7 @@ export default class AddEvent extends PureComponent {
     renderEventImage = () => {
         if (this.state.eventImg !== "") {
             return (
-                <img src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
+                <img alt="" src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
             )
         }
     }
@@ -522,11 +524,8 @@ export default class AddEvent extends PureComponent {
             snackBarMessage,
             dateError,
             snackBar,
-            selectedTags,
-            selectedSponsors,
             newSponsors, eventFiles,
             organizers,
-            selectedOrganizers,
             sponsors,
             checkNewSponsors,
             loadedTags,
@@ -643,7 +642,7 @@ export default class AddEvent extends PureComponent {
                                     height: 50,
                                     color: 'rgba(0,0,0,0.54)',
                                     justifyContent: 'space-between',
-                                    marginBottom: parseInt(this.state.checkedRadio) === 1 ? 32 : '',
+                                    marginBottom: parseInt(this.state.checkedRadio, 10) === 1 ? 32 : '',
                                     marginTop: 32
                                 }}
                             >
@@ -651,18 +650,18 @@ export default class AddEvent extends PureComponent {
                                     <label key={`l${item.id}`} className="radio-inline">
                                         <input
                                             type="radio"
-                                            checked={this.state.checkedRadio == i}
+                                            checked={this.state.checkedRadio === i.toString()}
                                             ref={(el) => this["myRadioRef" + i] = el}
                                             value={item.id}
                                             onChange={this.changeRadio}
-                                            onKeyDown={(e) => e.keyCode === 13 ? this.changeRadio() : null}
+                                            onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
                                         />
                                         <span style={{ paddingLeft: 8 }}>{item.nm}</span>
                                     </label>
                                 )}
                             </div>
 
-                            {parseInt(this.state.checkedRadio) === 1 &&
+                            {parseInt(this.state.checkedRadio, 10) === 1 &&
                                 <TextField
                                     label="How many days?"
                                     onChange={this.eventDays}
@@ -670,7 +669,7 @@ export default class AddEvent extends PureComponent {
                                     type="text"
                                 />}
 
-                            {parseInt(this.state.checkedRadio) === 0 && [
+                            {parseInt(this.state.checkedRadio, 10) === 0 && [
                                 <label key="singleDay" className="addEventFormLabel"> date & time </label>,
                                 <DateTimeSelect
                                     key="singleDay2"
@@ -684,7 +683,7 @@ export default class AddEvent extends PureComponent {
                                 />
                             ]}
 
-                            {(parseInt(this.state.checkedRadio) === 1 && days) && this.multiDay(days)}
+                            {(parseInt(this.state.checkedRadio, 10) === 1 && days) && this.multiDay(days)}
 
                             <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
                                 <input

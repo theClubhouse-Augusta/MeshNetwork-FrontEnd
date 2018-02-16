@@ -9,7 +9,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 import Header from 'components/Header';
-import Banner from 'components/Banner';
+// import Banner from 'components/Banner';
 import SideNav from 'components/SideNav';
 import RightBar from 'components/RightBar';
 
@@ -43,7 +43,7 @@ export default class Discover extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -51,7 +51,7 @@ export default class Discover extends React.PureComponent {
   handleSearch = (event) => {
     this.setState({
       searchContent:event.target.value
-    }, function() {
+    }, () => {
       if(this.state.searchContent.length >= 3) {
         this.search();
       }
@@ -59,17 +59,15 @@ export default class Discover extends React.PureComponent {
   }
 
   showCategories = (categoryID) => {
-    fetch("https://innovationmesh.com/api/showCategory/"+categoryID+"/Challenges" , {
+    fetch("http://localhost:8000/api/showCategory/"+categoryID+"/Challenges" , {
       method:'GET',
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         challenges:json.challenges
       })
-    }.bind(this))
+    })
   }
 
   getChallenges = () => {
@@ -78,13 +76,11 @@ export default class Discover extends React.PureComponent {
 
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("https://innovationmesh.com/api/getChallenges/30?page="+this.state.nextPage , {
+      fetch("http://localhost:8000/api/getChallenges/30?page="+this.state.nextPage , {
         method:'GET',
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
+      .then(response => response.json())
+      .then(json => {
         if(json.challenges.current_page !== json.challenges.last_page)
         {
            nextPage = nextPage + 1;
@@ -99,31 +95,28 @@ export default class Discover extends React.PureComponent {
           currentPage: json.challenges.current_page,
           challenges: challenges,
         })
-      }.bind(this))
+      })
     }
   }
 
   search = () => {
-    let _this = this;
     let data = new FormData();
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("https://innovationmesh.com/api/searchChallenges", {
+    fetch("http://localhost:8000/api/searchChallenges", {
       method:'POST',
       body:data
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         nextPage:1,
         currentPage:0,
         lastPage:1,
         challenges: json.challenges,
       })
-    }.bind(this))
+    })
   }
 
   renderWaypoint = () => {
@@ -165,7 +158,7 @@ export default class Discover extends React.PureComponent {
                   {this.state.challenges.map((u, i) => (
                     <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={i}>
                       <div className="challenges_feedImageContainer">
-                        <img className="challenges_feedImage" src={u.challengeImage}/>
+                        <img alt="" className="challenges_feedImage" src={u.challengeImage}/>
                       </div>
                       <div className="challenges_feedInfo">
                         <div className="challenges_feedTitle">{u.challengeTitle}</div>

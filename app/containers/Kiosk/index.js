@@ -9,7 +9,7 @@ import Select from 'react-select';
 import moment from 'moment';
 import { Link } from 'react-router-dom'
 
-import Header from 'components/Header';
+// import Header from 'components/Header';
 
 import MeetIcon from 'react-icons/lib/fa/group';
 import ClassIcon from 'react-icons/lib/fa/graduation-cap';
@@ -51,7 +51,7 @@ export default class Kiosk extends React.PureComponent {
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     getProfile = () => {
-        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -66,53 +66,45 @@ export default class Kiosk extends React.PureComponent {
     }
 
     getUsers = (id) => {
-        fetch('https://innovationmesh.com/api/users/space/' + id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+        fetch('http://localhost:8000/api/users/space/' + id)
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     users: json
                 })
-            }.bind(this))
+            })
     }
 
     getReasons = () => {
-        fetch('https://innovationmesh.com/api/occasions')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+        fetch('http://localhost:8000/api/occasions')
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     reasons: json
                 })
-            }.bind(this))
+            })
     }
 
     getUpcomingEvents = () => {
-        fetch('https://innovationmesh.com/api/upcoming/' + this.props.match.params.id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+        fetch('http://localhost:8000/api/upcoming/' + this.props.match.params.id)
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     events: json
                 })
-            }.bind(this))
+            })
     }
 
     getToday = (id) => {
-        fetch('https://innovationmesh.com/api/todayevent/' + id, {
+        fetch('http://localhost:8000/api/todayevent/' + id, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     todayEvents: json
                 })
-            }.bind(this))
+            })
     }
 
     storeAppearance = () => {
@@ -122,18 +114,16 @@ export default class Kiosk extends React.PureComponent {
         data.append('spaceID', this.state.workspace.id);
         data.append('occasion', this.state.selectedReason);
 
-        fetch('https://innovationmesh.com/api/appearance', {
+        fetch('http://localhost:8000/api/appearance', {
             method: 'POST',
             body: data
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     showComplete: true
                 })
-            }.bind(this))
+            })
     }
 
     handleNameInputChange = (loggedInUser) => {
@@ -219,7 +209,7 @@ export default class Kiosk extends React.PureComponent {
                         {this.state.todayEvents.map((event, i) => (
                             <div to={'/event/' + event.id} className="spaceEventBlock" onClick={this.selectEvent(event.id)}>
                                 <div className="spaceEventBlockImage">
-                                    <img src={event.image} />
+                                    <img alt="" src={event.image} />
                                 </div>
                                 <div className="spaceEventBlockTitle">{event.title}</div>
                                 <div className="spaceEventBlockContent">
@@ -248,7 +238,7 @@ export default class Kiosk extends React.PureComponent {
 
                 </header>
                 <main className="kioskMain">
-                    <img className="kioskLogo" src={this.state.workspace.logo} style={{ width: '300px', height: 'auto', marginTop: '30px' }} />
+                    <img alt="" className="kioskLogo" src={this.state.workspace.logo} style={{ width: '300px', height: 'auto', marginTop: '30px' }} />
                     <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
                     <div className="kioskSubtitle">Check-In with Us!</div>
                     <div className="kioskContent">

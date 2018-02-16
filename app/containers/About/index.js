@@ -41,6 +41,7 @@ export default class About extends React.PureComponent {
           <div className="aboutMainContainer">
             <div className="aboutMainRow">
               <img
+                alt=""
                 className="aboutMainContent"
                 src="http://h4z.it/Image/71722e_w-it-works-1.png"
               />
@@ -65,12 +66,14 @@ export default class About extends React.PureComponent {
                 resources across a much larger network.
               </div>
               <img
+                alt=""
                 className="aboutMainContent"
                 src="http://h4z.it/Image/3f32a2_w-it-works-2.png"
               />
             </div>
             <div className="aboutMainRow">
               <img
+                alt=""
                 className="aboutMainContent"
                 src="http://h4z.it/Image/6e6b2e_w-it-works-3.png"
               />

@@ -16,7 +16,12 @@ import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/Button';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import {EditorState, ContentState, convertFromHTML, convertToRaw} from 'draft-js';
+import {
+  EditorState, 
+  // ContentState, 
+  // convertFromHTML, 
+  convertToRaw
+} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -56,7 +61,7 @@ export default class Teams extends React.PureComponent {
   handleSearch = (event) => {
     this.setState({
       searchContent:event.target.value
-    }, function() {
+    }, () => {
       if(this.state.searchContent.length >= 3) {
         this.search();
       }
@@ -88,7 +93,7 @@ export default class Teams extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -98,13 +103,13 @@ export default class Teams extends React.PureComponent {
     var teams = this.state.teams;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("https://innovationmesh.com/api/getTeams/30?page=" + this.state.nextPage, {
+      fetch("http://localhost:8000/api/getTeams/30?page=" + this.state.nextPage, {
         method:'GET'
       })
-      .then(function(response) {
+      .then((response) => {
         return response.json();
       })
-      .then(function(json) {
+      .then((json) => {
         if(json.teams.current_page !== json.teams.last_page)
         {
            nextPage = nextPage + 1;
@@ -119,12 +124,11 @@ export default class Teams extends React.PureComponent {
           currentPage: json.teams.current_page,
           teams: teams,
         })
-      }.bind(this))
+      })
     }
   }
 
   storeTeam = () => {
-    let _this = this;
     let data = new FormData();
 
     data.append('teamName', this.state.teamName);
@@ -132,51 +136,50 @@ export default class Teams extends React.PureComponent {
     data.append('teamContent', draftToHtml(convertToRaw(this.state.teamContent.getCurrentContent())));
     data.append('teamImage', this.state.teamImage);
 
-    fetch("https://innovationmesh.com/api/storeTeam", {
+    fetch("http://localhost:8000/api/storeTeam", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
         if(json.error === 'token_expired') {
-          _this.props.app.signOut(0, 'Your session has expired.');
-          _this.props.app.handleAuth();
+          this.props.app.signOut(0, 'Your session has expired.');
+          this.props.app.handleAuth();
         } else {
-          _this.showSnack(json.error);
-        }
+          this.showSnack(json.error);
+        } 
       }
       else if(json.success) {
-        _this.showSnack(json.success);
-        _this.teamDialog();
+        this.showSnack(json.success);
+        this.teamDialog();
       }
-    }.bind(this))
+    })
   }
 
   search = () => {
-    let _this = this;
     let data = new FormData();
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("https://innovationmesh.com/api/searchTeams", {
+    fetch("http://localhost:8000/api/searchTeams", {
       method:'POST',
       body:data
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       this.setState({
         nextPage:1,
         currentPage:0,
         lastPage:1,
         teams: json.teams,
       })
-    }.bind(this))
+    })
   }
 
   renderTeamImageText = () => {
@@ -194,7 +197,7 @@ export default class Teams extends React.PureComponent {
     if(this.state.teamImage !== "")
     {
       return(
-        <img src={this.state.teamImagePreview} className="challenges_newChallengeImagePreview"/>
+        <img alt="" src={this.state.teamImagePreview} className="challenges_newChallengeImagePreview"/>
       )
     }
   }
@@ -232,14 +235,14 @@ export default class Teams extends React.PureComponent {
                 {this.state.teams.map((t, i) => (
                   <Link to={'/Challenges/team/' + t.id} className="challenges_feedBlock" key={i}>
                     <div className="challenges_feedImageContainer">
-                      <img className="challenges_feedImage" src={t.teamImage}/>
+                      <img alt="" className="challenges_feedImage" src={t.teamImage}/>
                     </div>
                     <div className="challenges_feedInfo">
                       <div className="challenges_feedTitle">{t.teamName}</div>
                       <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: t.teamContent }} />
                       <div style={{display:'flex', flexDirection:'row'}}>
                         {t.members.map((m, j) => (
-                          <img className="challenges_memberAvatar" key={j} src={m.avatar}/>
+                          <img alt="" className="challenges_memberAvatar" key={j} src={m.avatar}/>
                         ))}
                       </div>
                     </div>

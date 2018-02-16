@@ -6,6 +6,10 @@
   min-height: 100vh;
 }
 
+a {
+  color: inherit;
+}
+
 .spaceDashBody {
   height: 100%;
   width: 100%;

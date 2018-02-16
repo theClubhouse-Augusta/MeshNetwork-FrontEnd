@@ -11,7 +11,7 @@ export default class NewSponsorForm extends React.Component {
     if(this.state.logo !== "")
     {
       return(
-        <img src={this.state.logoPreview} className="spaceLogoImagePreview"/>
+        <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview"/>
       )
     }
   }

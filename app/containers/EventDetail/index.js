@@ -46,13 +46,11 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`https://innovationmesh.com/api/event/${eventID}`, {
+        fetch(`http://localhost:8000/api/event/${eventID}`, {
             method: 'GET'
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     event: json.event,
                     workSpace: json.workspace,
@@ -63,7 +61,7 @@ export default class EventDetail extends React.PureComponent {
                     dates: json.dates,
                     tags: json.tags
                 })
-            }.bind(this))
+            })
     }
 
     registerForEvent = (e, eventID) => {
@@ -133,13 +131,12 @@ export default class EventDetail extends React.PureComponent {
 
     render() {
         const {
-      event,
             workSpace,
             tags
-    } = this.state;
+        } = this.state;
         // organizers.forEach(organizer => attendees.push(organizer))
-        const start = event.start;
-        const end = event.end;
+        // const start = event.start;
+        // const end = event.end;
 
         return (
             <div className="eventDetailContainer">
@@ -211,7 +208,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.organizers.map((organizer, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={organizer.avatar} style={{ width: '100px', height: '100px' }} />
+                                            <img alt="" src={organizer.avatar} style={{ width: '100px', height: '100px' }} />
                                             <div style={{ marginTop: '10px', textAlign: 'center' }}>{organizer.name}</div>
                                         </div>
                                     ))}
@@ -224,7 +221,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.sponsors.map((sponsor, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={sponsor.logo} style={{ width: '100px', height: '100px' }} />
+                                            <img alt="" src={sponsor.logo} style={{ width: '100px', height: '100px' }} />
                                         </div>
                                     ))}
                                 </div>
@@ -236,7 +233,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.attendees.map((attendee, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={attendee.avatar} style={{ width: '100px', height: '100px' }} />
+                                            <img alt="" src={attendee.avatar} style={{ width: '100px', height: '100px' }} />
                                             <div style={{ marginTop: '10px', textAlign: 'center' }}>{attendee.name}</div>
                                         </div>
                                     ))}
