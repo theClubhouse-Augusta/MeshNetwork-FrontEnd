@@ -489,7 +489,7 @@ class CheckoutForm extends React.PureComponent {
               height="auto"
               width="300px"
               style={{
-                margin: "0 auto"
+                alignSelf: "center"
               }}
             />
 

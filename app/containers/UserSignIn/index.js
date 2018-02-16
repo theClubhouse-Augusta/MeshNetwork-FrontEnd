@@ -182,16 +182,16 @@ export default class UserSignIn extends React.PureComponent {
                 <main className="userSignInMain">
                     {!this.state.forgotPassword &&
                         <React.Fragment>
-                            <TextField style={{ width: '100%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
-                            <TextField style={{ width: '100%', marginBottom: '15px' }} label="Password" value={this.state.password} onChange={this.handlePassword} type="password" />
-                            <FlatButton style={{ width: '80%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.signIn}>Sign In</FlatButton>
-                            <FlatButton style={{ width: '80%', backgroundColor: "#fff", margin: '15px', color: '#000' }} onClick={this.resetPassword}>Forgot Password</FlatButton>
+                            <TextField style={{ width: '50%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
+                            <TextField style={{ width: '50%', marginBottom: '15px' }} label="Password" value={this.state.password} onChange={this.handlePassword} type="password" />
+                            <FlatButton style={{ width: '50%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.signIn}>Sign In</FlatButton>
+                            <FlatButton style={{ width: '50%', backgroundColor: "#fff", margin: '15px', color: '#000' }} onClick={this.resetPassword}>Forgot Password</FlatButton>
                         </React.Fragment>
                     }
                     {this.state.forgotPassword &&
                         <React.Fragment>
-                            <TextField style={{ width: '100%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
-                            <FlatButton style={{ width: '80%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.sendResetEmail}>Reset Password</FlatButton>
+                            <TextField style={{ width: '50%', marginBottom: '15px' }} label="E-mail" value={this.state.email} onChange={this.handleEmail} />
+                            <FlatButton style={{ width: '50%', backgroundColor: "#ff4d58", margin: '15px', color: '#FFFFFF' }} onClick={this.sendResetEmail}>Reset Password</FlatButton>
                             {this.state.emailSent && <p>Check your email for you temporary password</p>}
                         </React.Fragment>
                     }
