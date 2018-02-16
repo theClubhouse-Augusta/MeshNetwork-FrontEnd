@@ -12,6 +12,27 @@ import Header from 'components/Header';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
+// import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import Dialog  from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+
+import {
+  EditorState, 
+  ContentState, 
+  convertToRaw, 
+  // convertFromRaw, 
+  convertFromHTML
+} from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+// import Slide from 'material-ui/transitions/Slide';
+
+import CloseIcon from 'react-icons/lib/md/close';
+
 import './style.css';
 import './styleM.css';
 
@@ -20,7 +41,19 @@ export default class Detail extends React.PureComponent {
     super(props);
     this.state = {
       token:localStorage.getItem('token'),
+      user:JSON.parse(localStorage.getItem('user')),
+      challengeOpen:false,
       challenge:"",
+      challengeTitle:"",
+      challengeCategories:'',
+      challengeContent:EditorState.createEmpty(),
+      challengeImage:"",
+      challengeImagePreview:"",
+      challengeFiles:[],
+      confirmStatus:'Confirm',
+      startDate:"",
+      endDate:"",
+      cats:[],
       categories:[],
       uploads:[],
       teams:[],
@@ -35,9 +68,158 @@ export default class Detail extends React.PureComponent {
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
+  challengeDialog = () => {this.setState({challengeOpen:!this.state.challengeOpen}, () => { this.getCategories(); })}
+  handleChallengeTitle = (event) => {this.setState({challengeTitle:event.target.value})}
+
+  handleChallengeContent = (editorState) => {this.setState({challengeContent: editorState})};
+
+  handleChallengeCategories = (challengeCategories) => {
+    this.setState({ challengeCategories });
+  }
+
+  handleChallengeImage = (event) => {
+    event.preventDefault();
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        challengeImage: file,
+        challengeImagePreview: reader.result
+      })
+    }
+    reader.readAsDataURL(file);
+  }
+
+  handleChallengeFile = (event) => {
+    event.preventDefault();
+    let reader = new FileReader();
+    let files = event.target.files;
+
+    let challengeFiles = this.state.challengeFiles;
+
+    for(let i = 0; i < files.length; i++) {
+      let fileData = {"fileData":files[i], "id":0};
+      challengeFiles.push(fileData);
+
+      reader.onloadend = () => {
+        this.setState({
+          challengeFiles:challengeFiles
+        }, () => {
+          console.log(this.state.challengeFiles);
+          this.forceUpdate();
+        })
+      }
+      reader.readAsDataURL(files[i]);
+    }
+  }
+
+
   componentWillMount() {
     this.getDetail();
   }
+
+  getCategories = () => {
+    fetch("https://innovationmesh.com/api/selectCategories", {
+      method:'GET'
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      this.setState({
+        cats:json.categories
+      })
+    })
+  }
+
+  deleteFile = (i) => {
+    let challengeFiles = this.state.challengeFiles;
+
+    challengeFiles.splice(i, 1);
+
+    this.setState({
+      challengeFiles:challengeFiles
+    }, function() {
+      this.forceUpdate();
+    })
+  }
+
+  updateChallenge = () => {
+    this.setState({
+      confirmStatus:"Uploading..."
+    })
+
+    let data = new FormData();
+
+    data.append('challengeTitle', this.state.challengeTitle);
+    data.append('challengeContent', draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent())));
+    data.append('challengeCategories', JSON.stringify(this.state.challengeCategories));
+    data.append('challengeImage', this.state.challengeImage);
+    data.append('challengeFiles', this.state.challengeFiles);
+    data.append('startDate', this.state.startDate);
+    data.append('endDate', this.state.endDate);
+
+    fetch("https://innovationmesh.com/api/updateChallenge/"+this.state.challenge.id, {
+      method:'POST',
+      body:data,
+      headers:{'Authorization':'Bearer ' + this.state.token}
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      if(json.error) {
+        if(json.error === 'token_expired') {
+          this.showSnack("Your session has expired. Please sign back in to continue.");
+        } else {
+          this.showSnack(json.error);
+          this.setState({
+            confirmStatus:"Confirm"
+          })
+        }
+      }
+      else if(json.challenge) {
+        console.log(this.state.challengeFiles.length);
+        if(this.state.challengeFiles.length > 0) {
+          for(let i = 0; i < this.state.challengeFiles.length; i++)
+          {
+            let fileData = new FormData();
+            fileData.append('challengeID', json.challenge);
+            fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
+
+            fetch("https://innovationmesh.com/api/uploadFile", {
+              method:'POST',
+              body:fileData,
+              headers:{'Authorization':'Bearer ' + this.state.token}
+            })
+            .then((response) => {
+              return response.json();
+            })
+            .then((json) => {
+              if(json.error) {
+                this.showSnack(json.error);
+                this.setState({
+                  confirmStatus:"Confirm"
+                })
+              }
+            })
+          }
+        }
+        this.showSnack("Challenge Updated.");
+        this.challengeDialog();
+      }
+    })
+  }
+
+  deleteFile = () => {
+    
+  }
+
+  deleteChallenge = () => {
+
+  }
+
 
   /*componentWillReceiveProps(app) {
     this.setState({
@@ -58,7 +240,15 @@ export default class Detail extends React.PureComponent {
         categories:json.challenge.categories,
         uploads:json.uploads,
         teams:json.teams,
-        participant:json.participant
+        participant:json.participant,
+        challengeTitle:json.challenge.challengeTitle,
+        challengeContent: EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+              convertFromHTML(json.challenge.challengeContent)
+          )
+      ),
+        challengeCategories:json.categoriesArray,
+        challengeImagePreview:json.challenge.challengeImage
       }, () => {
         this.getSpace();
       })
@@ -108,6 +298,48 @@ export default class Detail extends React.PureComponent {
     }
   }
 
+  renderUpdateButtons = () => {
+    if(this.state.token)
+    {
+      if(this.state.user) {
+        if(this.state.user.spaceID === this.state.challenge.spaceID && this.state.user.roleID === 2)
+        {
+          return(
+            <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
+              <FlatButton onClick={this.challengeDialog} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Edit Challenge</FlatButton>
+              {/*<FlatButton onClick={this.deleteChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Delete Challenge</FlatButton>*/}
+            </div>
+          )
+        }
+      }
+    }
+  }
+
+  renderChallengeImageText = () => {
+    if(this.state.challengeImagePreview === "" || this.state.challengeImagePreview === undefined || this.state.challengeImagePreview === null) {
+      return(
+        <span style={{display:'flex', flexDirection:'column', textAlign:'center'}}>
+          Upload Challenge Image
+          <span style={{fontSize:'0.9rem', marginTop:'5px'}}>For Best Size Use: 1280 x 720</span>
+        </span>
+      )
+    }
+  }
+
+  renderChallengeImage = () => {
+    if(this.state.challengeImage === "")
+    {
+      return(
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+      )
+    }
+    else {
+      return(
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+      )
+    }
+  }
+
   createMarkup() {
     let content = this.state.challenge.challengeContent;
     return {__html: content};
@@ -145,6 +377,7 @@ export default class Detail extends React.PureComponent {
               <div style={{fontFamily:'Noto Sans', fontWeight:'200', color:'#555555', paddingTop:'5px', paddingBottom:'5px', lineHeight:'35px'}} className="challenges_detailContent" dangerouslySetInnerHTML={this.createMarkup()} />
             </div>
             <div className="challenges_detailColumnTwo">
+              {this.renderUpdateButtons()}
               {this.renderJoinButton()}
               <div className="challenges_detailSideBlock">
                 <div className="challenges_categoryTitle">Uploads</div>
@@ -168,6 +401,71 @@ export default class Detail extends React.PureComponent {
         <footer className="homeFooterContainer">
           Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
       </footer>
+
+      <Dialog onClose={this.challengeDialog} open={this.state.challengeOpen} fullScreen transition={this.transition}>
+        <div style={{display:'flex', flexDirection:'row'}}>
+          <div style={{width:'30%', display:'flex', flexDirection:'column', padding:'15px'}} >
+            <TextField
+              id="challengetitle"
+              label="Challenge Title"
+              value={this.state.challengeTitle}
+              onChange={this.handleChallengeTitle}
+              margin="normal"
+              fullWidth={true}
+              style={{marginBottom:'15px'}}
+            />
+            <Select
+              name="categories-select"
+              value={this.state.challengeCategories}
+              removeSelected={false}
+              multi={true}
+              onChange={this.handleChallengeCategories}
+              options={this.state.cats}
+            />
+            <div>
+              <label htmlFor="challenge-image" className="challenges_challengeImageBlock">
+                {this.renderChallengeImageText()}
+                {this.renderChallengeImage()}
+              </label>
+              <input type="file" onChange={this.handleChallengeImage} id="challenge-image" style={{display:'none'}}/>
+            </div>
+            {this.state.challengeFiles.map((file, index) => (
+              <div key={index}>
+                <div className="challenges_newFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={25} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(index)}/></div>
+              </div>
+            ))}
+            <div>
+              <label htmlFor="challenge-file" className="challenges_newFileAdd">
+                Upload New Resource (Excel, JSON, Word)
+              </label>
+              <input type="file" onChange={this.handleChallengeFile} id="challenge-file" style={{display:'none'}}/>
+            </div>
+            <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginTop:'15px'}} onClick={this.updateChallenge}>{this.state.confirmStatus}</FlatButton>
+            <FlatButton style={{background:'#BBBBBB', color:'#FFFFFF', margin:'0 auto', marginTop:'15px', width:'90%'}} onClick={this.challengeDialog}>Close</FlatButton>
+          </div>
+          <div style={{width:'70%', display:'flex', flexDirection:'column', padding:'15px'}}>
+            <Editor
+              editorState={this.state.challengeContent}
+              toolbarclassName="challenges_home-toolbar"
+              wrapperclassName="challenges_home-wrapper"
+              editorclassName="challenges_rdw-editor-main"
+              onEditorStateChange={this.handleChallengeContent}
+              placeholder="Type the Challenge Information Here..."
+              toolbar={{
+                inline: { inDropdown: true },
+                fontSize:{ className: "challenges_toolbarHidden",},
+                fontFamily:{className: "challenges_toolbarHidden",},
+                list: { inDropdown: true, options: ['unordered', 'ordered'] },
+                textAlign: { inDropdown: true,  options: ['left', 'center', 'right'] },
+                link: { inDropdown: true },
+                remove:{className: "challenges_toolbarHidden",},
+                emoji: {className: "challenges_toolbarHidden",},
+                history: {className: "challenges_toolbarHidden",},
+              }}
+            />
+          </div>
+        </div>
+      </Dialog>
 
         <Snackbar
           open={this.state.snack}

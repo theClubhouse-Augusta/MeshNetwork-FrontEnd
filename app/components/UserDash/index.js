@@ -97,7 +97,7 @@ const BanButton = ({ onBanExecute }) => (
     </IconButton>
 )
 
-/* onBanExecute = () => {this.setState({ban: 1}); function() {console.log('banned')}} */
+/* onBanExecute = () => {this.setState({ban: 1}); () => {console.log('banned')}} */
 
 
 // const userUpdateAPI = 'https://www.innovationmesh.com/api/user';

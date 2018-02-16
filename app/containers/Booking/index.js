@@ -307,7 +307,31 @@ export default class Booking extends React.PureComponent {
     };
 
     testSlot = (start, end, event) => {
-        console.log(start._d);
+        let startTime = start._d;
+        let endTime = end._d;
+        let dateObject = {
+            title: 'Your Booking',
+            start: startTime,
+            end: endTime
+        }
+
+        let events = this.state.events;
+        let index = events.length;
+        if (index === 0) {
+            events.push(dateObject);
+        } else {
+            if (this.state.start === "" && this.state.end === "") {
+                events.push(dateObject);
+            } else {
+                events[index - 1] = dateObject;
+            }
+        }
+
+        this.setState({
+            events: events,
+            start: startTime,
+            end: endTime
+        })
     }
 
 
@@ -352,6 +376,7 @@ export default class Booking extends React.PureComponent {
                             right: 'agendaWeek'
                         }}
                         defaultDate={new Date()}
+                        editable={false}
                         selectable={true}
                         slotDuration={'00:'+this.state.increment+':00'}
                         allDaySlot={false}
@@ -361,11 +386,11 @@ export default class Booking extends React.PureComponent {
                             start:this.state.activeResource.startTime,
                             end:this.state.activeResource.endTime
                         }}
+                        eventConstraint="businessHours"
                         slotEventOverlap={false}
                         weekends={false}
                         defaultView='agendaWeek'
                         navLinks= {true} // can click day/week names to navigate views
-                        editable= {true}
                         eventLimit= {true} // allow "more" link when too many events
                         events = {this.state.events}	
                     />

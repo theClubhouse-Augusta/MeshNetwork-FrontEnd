@@ -110,7 +110,7 @@ export default class UserProfile extends React.Component {
                 <Spinner loading={this.state.loading} />
                 :
                 <div className="container">
-                    <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
+                    <Helmet title={this.state.user.name} meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
                     <header>
                         <Header />
                     </header>
