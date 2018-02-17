@@ -51,7 +51,7 @@ export default class MemberSearch extends PureComponent {
       localStorage["token"],
       this.props.history
     );
-    if (!authorized.error) {
+    if (!authorized.error && authorized) {
       this.loadSkills();
       this.setState({ loading: false });
     } else {

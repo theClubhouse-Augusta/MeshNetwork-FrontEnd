@@ -42,7 +42,7 @@ export default class UserProfile extends React.Component {
 
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history)
-        if (!authorized.error) {
+        if (!authorized.error && authorized) {
             this.getUser();
             this.setState({ loading: false })
         } else {

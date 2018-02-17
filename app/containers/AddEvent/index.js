@@ -102,7 +102,7 @@ export default class AddEvent extends PureComponent {
 
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token']);
-        if (!authorized.error) {
+        if (!authorized.error && authorized) {
             this.getOrganizers();
             this.getSponsors();
             this.loadSkills();

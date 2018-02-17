@@ -66,7 +66,7 @@ export default class SpaceDash extends React.PureComponent {
     }
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
-        if (!authorized.error) {
+        if (!authorized.error && authorized) {
             this.loadSpaceDescription();
             this.setState({ loading: false });
         } else {

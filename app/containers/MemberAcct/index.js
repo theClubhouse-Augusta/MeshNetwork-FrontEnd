@@ -70,7 +70,7 @@ export default class MemberAcct extends React.PureComponent {
       localStorage["token"],
       this.props.history
     );
-    if (!authorized.error) {
+    if (!authorized.error && authorized) {
       this.getUserInfo();
       this.loadSkills();
       this.setState({ loading: false });

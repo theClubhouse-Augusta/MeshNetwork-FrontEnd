@@ -42,10 +42,21 @@ export default class App extends Component {
         super();
         this.state = {
             token: localStorage.getItem('token'),
-            user: JSON.parse(localStorage.getItem('user')),
+            user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
+            space: '',
         };
     }
 
+    componentDidMount() {
+        if (this.state.user)
+            this.getSpaceName(this.state.user.spaceID);
+    }
+
+    getSpaceName = spaceID => {
+        fetch(`http://localhost:8000/api/spacename/${spaceID}`)
+        .then(response => response.json())
+        .then(name => this.setState({ space: name }));
+    } 
     render() {
         return (
             <Switch>

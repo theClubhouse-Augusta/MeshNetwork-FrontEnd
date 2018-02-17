@@ -140,7 +140,7 @@ export default class Detail extends React.PureComponent {
 
     this.setState({
       challengeFiles:challengeFiles
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
