@@ -126,7 +126,7 @@ export default class MemberAcct extends React.PureComponent {
       });
     };
     reader.readAsDataURL(file);
-    console.log(this.state.avatarPreview);
+    // console.log(this.state.avatarPreview);
   };
 
   renderAvatarPreview = () => {
@@ -252,7 +252,7 @@ export default class MemberAcct extends React.PureComponent {
           meta={[{ name: "description", content: "Description of MemberAcct" }]}
         />
         <header style={{ background: "#FFFFFF" }}>
-          <Header />
+          <Header space={this.props.spaceName} />
           <div className="acctBanner">
             <div className="homeHeaderContentTitle">Update Your Profile</div>
             <div className="homeHeaderContentSubtitle">

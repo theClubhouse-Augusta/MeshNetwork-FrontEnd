@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Bars from "react-icons/lib/fa/bars";
 import MdExplore from "react-icons/lib/md/explore";
 import MdInfoOutline from "react-icons/lib/md/info-outline";
@@ -38,7 +38,8 @@ export default class Header extends React.PureComponent {
       educationMenu: null,
       accountMenu: null,
       msg: "",
-      snack: false
+      snack: false,
+      redirect: null
     };
   }
 
@@ -252,7 +253,7 @@ export default class Header extends React.PureComponent {
       },
       () => {
         setTimeout(() => {
-          this.props.history.push("/");
+          this.setState({ redirect: <Redirect to="/" /> });
         }, 2000);
       }
     );
@@ -304,7 +305,7 @@ export default class Header extends React.PureComponent {
    {
      return(
        <div style={{display:'flex', flexDirection:'row'}}>
-         <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>{this.props.space}</Link>
+         <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>{this.props.space ? this.props.space : 'Workspace'}</Link>
          <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
          <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
        </div>
@@ -351,6 +352,7 @@ export default class Header extends React.PureComponent {
           background: this.state.backgroundColor
         }}
       >
+        {this.state.redirect}
         <div className="navBar">
           <div
             className="siteName"

@@ -184,7 +184,7 @@ export default class SpaceProfile extends React.PureComponent {
   };
 
   eventStyleGetter = (event, start, end, isSelected) => {
-    console.log(event);
+    // console.log(event);
     // var backgroundColor = "#ff4d58";
     var style = {
       background:

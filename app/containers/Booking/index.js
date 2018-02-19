@@ -105,7 +105,7 @@ export default class Booking extends React.PureComponent {
                         increment: json.resource.resourceIncrement
                     },  () => {
                         this.forceUpdate();
-                        console.log(this.state.events);
+                        // console.log(this.state.events);
                     })
                 })
         })
@@ -342,7 +342,7 @@ export default class Booking extends React.PureComponent {
                 <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
 
                 <header style={{ background: '#FFFFFF' }}>
-                    <Header app={this.state.app} />
+                    <Header app={this.state.app} space={this.props.spaceName} />
                 </header>
 
                 <main className="bookingMainContainer">

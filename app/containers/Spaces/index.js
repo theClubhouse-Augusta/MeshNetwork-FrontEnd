@@ -56,7 +56,7 @@ export default class Spaces extends React.PureComponent {
           meta={[{ name: "description", content: "Description of Spaces" }]}
         />
         <header className="spacesHeaderContainer">
-          <Header backgroundColor="#FFFFFF" />
+          <Header backgroundColor="#FFFFFF" space={this.props.spaceName} />
         </header>
 
         <main className="spacesMain">

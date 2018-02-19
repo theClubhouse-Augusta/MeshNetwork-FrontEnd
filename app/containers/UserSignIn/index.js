@@ -127,7 +127,7 @@ export default class UserSignIn extends React.PureComponent {
             });
         })
         .catch(error => {
-            console.log(error);
+            // console.log(error);
         })
     }
     renderLoading = () => {
@@ -146,7 +146,7 @@ export default class UserSignIn extends React.PureComponent {
 
                 <header style={{ background: '#FFFFFF' }}>
                   {this.renderLoading()}
-                  <Header />
+                  <Header space={this.props.spaceName} />
                   <div className="userSignUpBanner">
                       <div className="homeHeaderContentTitle">Welcome Back, Fellow Coworker</div>
                       <div className="homeHeaderContentSubtitle">Find out what you have been missing</div>

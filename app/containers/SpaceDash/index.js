@@ -9,11 +9,19 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import SpaceInformation from 'components/SpaceInformation';
+import Table, {
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    TablePagination,
+    TableFooter
+} from 'material-ui/Table';
+import SpaceInformation from '../../components/SpaceInformation';
+import EventInformation from '../../components/EventInformation';
 import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear';
 import { AllAppearances } from '../../components/DataViz/AllAppearances';
 import { AllJoins } from '../../components/DataViz/AllJoins';
-import Table, { TableBody, TableCell, TableHead, TableRow, TablePagination, TableFooter } from 'material-ui/Table';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
@@ -34,7 +42,7 @@ const spaceInfoAPI = 'http://localhost:8000/api/workspace/';
 export default class SpaceDash extends React.PureComponent {
     state = {
         token: localStorage.getItem('token'),
-        activeMenu: 0,
+        activeMenu: 'main',
         spaceUsers: [],
         spaceDescription: '',
         spaceID: 0,
@@ -63,6 +71,8 @@ export default class SpaceDash extends React.PureComponent {
         resourceStartTime:'',
         resourceEndTime:'',
         resourceIncrement:0,
+        pageContent: [],
+        editEventID: '',
     }
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
@@ -143,9 +153,9 @@ export default class SpaceDash extends React.PureComponent {
             })
     }
 
-    changeMenu = (id) => {
+    changeMenu = (page) => {
         this.setState({
-            activeMenu: id
+            activeMenu: page
         })
     }
 
@@ -204,7 +214,7 @@ export default class SpaceDash extends React.PureComponent {
 
     deletePhoto = (id, i, spaceID) => {
         let photoGallery = this.state.photoGallery;
-        console.log(i);
+        // console.log(i);
         let data = new FormData();
         data.append("_method", "DELETE");
         // data.append("spaceID", spaceID);
@@ -397,13 +407,14 @@ export default class SpaceDash extends React.PureComponent {
      handleEventChangeRowsPerPage = event => {
       this.setState({ eventRowsPerPage: event.target.value });
     };
-
+    editEventID = id => this.setState({ editEventID: id });
 
     renderDashContent = () => {
-        if (this.state.activeMenu === 0) {
+        if (this.state.activeMenu === 'main') {
+
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header space={this.props.spaceName}/>
                     <div className="spaceDashDataRow">
                         <div className="spaceDashDataBlock">
                             <div className="spaceDashDataTitle">Members</div>
@@ -490,6 +501,7 @@ export default class SpaceDash extends React.PureComponent {
                                         <TableCell>Event Name</TableCell>
                                         <TableCell>Location</TableCell>
                                         <TableCell>Start Date</TableCell>
+                                        <TableCell>Edit</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -502,6 +514,15 @@ export default class SpaceDash extends React.PureComponent {
                                             <TableCell><a href={`/event/${e.id}`}>{e.title}</a></TableCell>
                                             <TableCell>{e.space.city}, {e.space.state}</TableCell>
                                             <TableCell>{e.date}</TableCell>
+                                            <TableCell 
+                                                className="editEventRow"
+                                                onClick={() => { 
+                                                    this.changeMenu('editEvent'); 
+                                                    this.editEventID(e.id); 
+                                                }}
+                                            >
+                                                update&nbsp;{e.title}
+                                            </TableCell>
                                         </TableRow>
                                     )
                                   })}
@@ -531,18 +552,18 @@ export default class SpaceDash extends React.PureComponent {
                 </div>
             )
         }
-        else if (this.state.activeMenu === 1) {
+        else if (this.state.activeMenu === 'updateSpace') {
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header  space={this.props.spaceName} />
                     <SpaceInformation id={this.props.match.params.id} spaceID={this.state.spaceID} description={this.state.spaceDescription} />
                 </div>
             )
         }
-        else if (this.state.activeMenu === 2) {
+        else if (this.state.activeMenu === 'updatePhotos') {
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header space={this.props.spaceName} />
                     <div className="spaceDashOptions">
                         <label htmlFor="photo-file" style={{ width: '10%', margin: '10px' }}>
                             <div style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }} >Upload Photo</div>
@@ -575,10 +596,10 @@ export default class SpaceDash extends React.PureComponent {
                 </div>
             )
         }
-        else if (this.state.activeMenu === 3) {
+        else if (this.state.activeMenu === 'editResources') {
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header space={this.props.spaceName} />
                     <div className="spaceDashOptions">
                         <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px' }} />
                         <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px' }} />
@@ -655,6 +676,16 @@ export default class SpaceDash extends React.PureComponent {
                 </div>
             )
         }
+        else if (this.state.activeMenu === 'editEvent') {
+            return (
+                <div className="spaceDashContent">
+                    <Header space={this.props.spaceName} />
+                    <EventInformation 
+                        id={this.state.editEventID} 
+                    />
+                </div>
+            )
+        }
     }
 
     render() {
@@ -673,10 +704,10 @@ export default class SpaceDash extends React.PureComponent {
 
                     <main className="spaceDashMain">
                         <div className="spaceDashMenu">
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(0)}>Dashboard</div>
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(1)}>Space Information</div>
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(2)}>Photo Gallery</div>
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(3)}>Resources</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('main')}>Dashboard</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('updateSpace')}>Space Information</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('updatePhotos')}>Photo Gallery</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('editResources')}>Resources</div>
                             <Link to={'/addEvent'}><div className="spaceDashMenuItem">Add an Event</div></Link>
                         </div>
                         {this.renderDashContent()}

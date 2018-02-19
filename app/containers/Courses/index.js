@@ -201,7 +201,7 @@ export default class Courses extends React.PureComponent {
       <div className="container">
         <Helmet title="Browse" meta={[ { name: 'description', content: 'Description of Browse' }]}/>
         <header>
-          <Header/>
+          <Header space={this.props.spaceName} />
         </header>
         <main className="lmsHomeMain">
           <div className="lmsHomeMainContainer">

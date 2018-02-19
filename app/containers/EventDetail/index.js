@@ -46,9 +46,7 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`http://localhost:8000/api/event/${eventID}`, {
-            method: 'GET'
-        })
+        fetch(`http://localhost:8000/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
                 this.setState({
@@ -142,7 +140,7 @@ export default class EventDetail extends React.PureComponent {
             <div className="eventDetailContainer">
                 <Helmet title="EventDetail" meta={[{ name: 'description', content: 'Description of EventDetail' }]} />
                 <header style={{ background: '#FFFFFF' }}>
-                    <Header />
+                    <Header space={this.props.spaceName} />
                     <div className="eventDetailBanner"
                         style={{
                             background: "linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(" + this.state.event.image + ")",

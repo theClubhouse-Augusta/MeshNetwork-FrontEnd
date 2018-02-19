@@ -104,7 +104,6 @@ export default class RightBar extends React.PureComponent {
         this.setState({
           challengeFiles:challengeFiles
         }, () => {
-          console.log(this.state.challengeFiles);
           this.forceUpdate();
         })
       }
@@ -172,7 +171,7 @@ export default class RightBar extends React.PureComponent {
         }
       }
       else if(json.challenge) {
-        console.log(this.state.challengeFiles.length);
+        // console.log(this.state.challengeFiles.length);
         if(this.state.challengeFiles.length > 0) {
           for(let i = 0; i < this.state.challengeFiles.length; i++)
           {

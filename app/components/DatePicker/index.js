@@ -23,26 +23,45 @@ const styles = theme => ({
 
 const DatePicker = props => {
   const { classes } = props;
-  return (
-    <div className={classes.container} noValidate>
-      <TextField
-        id="date"
-        onChange={(e) => {props.selector(e, props.index)}}
-        label={props.label}
-        type="date"
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-    </div>
-  );
+  if (!!props.value) {
+    return (
+      <div className={classes.container} noValidate>
+        <TextField
+          id="date"
+          value={props.value}
+          onChange={(e) => {props.selector(e, props.index)}}
+          label={props.label}
+          type="date"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div className={classes.container} noValidate>
+        <TextField
+          id="date"
+          onChange={(e) => {props.selector(e, props.index)}}
+          label={props.label}
+          type="date"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </div>
+    );
+  }
 }
 
 DatePicker.propTypes = {
   classes: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
   selector: PropTypes.func.isRequired,
+  value: PropTypes.string,
   index: PropTypes.oneOfType([
     PropTypes.number.isRequired,
     PropTypes.bool.isRequired

@@ -76,7 +76,7 @@ export default class Lessons extends React.PureComponent {
             lectures[j].lectureQuestions = [];
             lectures[j].pendingDelete = false;
             lectures[j].userAnswers = [];
-            console.log(lectures[j]);
+            // console.log(lectures[j]);
 
             for(let k = 0; k < files.length; k++) {
               if(lectures[j].id === files[k].lectureID) {

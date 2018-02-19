@@ -93,7 +93,7 @@ export default class Course extends React.PureComponent {
     return (
       <div className="container">
         <Helmet title="Detail" meta={[ { name: 'description', content: 'Description of Detail' }]}/>
-        <Header/>
+        <Header space={this.props.spaceName} />
         <header className="lmsDetailHeader" style={{
           background:'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(http://houseofhackers.me/media/' + this.state.course.courseImage +')',
 

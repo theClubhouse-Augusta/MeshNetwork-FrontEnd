@@ -47,7 +47,6 @@ class LMSPayment extends React.Component {
     ev.preventDefault();
 
     this.props.stripe.createToken({name: this.state.user.name}).then(({token}) => {
-      // console.log(token);
       let data = new FormData();
       data.append('stripeToken', token.id);
       fetch("https://lms.innovationmesh.com/enrollCourse/" + this.props.courseID + "/", {

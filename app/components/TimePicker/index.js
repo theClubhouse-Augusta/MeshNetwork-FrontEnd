@@ -25,29 +25,52 @@ const styles = theme => ({
 
 const TimePickers = props => {
   const { classes } = props;
-  return (
-    <div className={classes.container} noValidate>
-      <TextField
-        id="time"
-        onChange={(e) => {props.selector(e, props.index)}}
-        label={props.label}
-        type="time"
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputProps={{
-          step: 300, // 5 min
-        }}
-      />
-    </div>
-  );
+  if (!!props.startValue || props.endValue) {
+    return (
+      <div className={classes.container} noValidate>
+        <TextField
+          id="time"
+          onChange={(e) => {props.selector(e, props.index)}}
+          label={props.label}
+          type="time"
+          value={props.startValue ? props.startValue : props.endValue}
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{
+            step: 300, // 5 min
+          }}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div className={classes.container} noValidate>
+        <TextField
+          id="time"
+          onChange={(e) => {props.selector(e, props.index)}}
+          label={props.label}
+          type="time"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{
+            step: 300, // 5 min
+          }}
+        />
+      </div>
+    );
+  }
 }
 
 TimePickers.propTypes = {
   classes: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
   selector: PropTypes.func.isRequired,
+  startValue: PropTypes.string,
+  endValue: PropTypes.string,
   // multiday: PropTypes.bool.isRequired,
   index: PropTypes.oneOfType([
     PropTypes.number.isRequired,

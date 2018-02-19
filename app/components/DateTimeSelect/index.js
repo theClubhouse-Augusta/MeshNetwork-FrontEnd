@@ -18,14 +18,17 @@ const DateTimeSelect = props =>
       index={typeof props.index === 'number' ? props.index : false} 
       selector={!props.multiday ? props.selectDate : props.selectDateMulti} 
       multiday={props.multiday} 
+      value={props.value}
     />   
     <TimePicker 
-      label={props.startTimeLabel} 
+      label={props.startTimeLabel}
+      startValue={props.startValue} 
       index={typeof props.index === 'number' ? props.index : false} 
       selector={!props.multiday ? props.selectStart : props.selectStartMulti} 
     />
     <TimePicker 
       label={props.endTimeLabel} 
+      endValue={props.endValue} 
       index={typeof props.index === 'number' ? props.index : false} 
       selector={!props.multiday ? props.selectEnd : props.selectEndMulti} 
     />
@@ -40,5 +43,8 @@ DateTimeSelect.propTypes = {
   multiday: PropTypes.bool.isRequired,
   selectDate: PropTypes.func,
   selectDateMulti: PropTypes.func,
-  index: PropTypes.number
+  index: PropTypes.number,
+  value: PropTypes.string,
+  endValue: PropTypes.string,
+  startValue: PropTypes.string
 };

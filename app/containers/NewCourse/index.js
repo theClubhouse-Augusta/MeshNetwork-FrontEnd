@@ -139,7 +139,7 @@ export default class NewCourse extends React.PureComponent {
           courseStatus:json.course.courseStatus,
           lessons:lessons
         }, () => {
-          console.log(this.state.lessons)
+          // console.log(this.state.lessons)
         })
       }
     })

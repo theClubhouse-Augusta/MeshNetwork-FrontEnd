@@ -141,7 +141,7 @@ export default class Discover extends React.PureComponent {
         <Helmet title="Discover" meta={[ { name: 'description', content: 'Description of Discover' }]}/>
 
         <header>
-          <Header app={this.state.app}/>
+          <Header app={this.state.app} space={this.props.spaceName}/>
         </header>
 
         <main className="challenges_mainContainer">

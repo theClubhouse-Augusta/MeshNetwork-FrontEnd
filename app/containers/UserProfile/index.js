@@ -112,7 +112,7 @@ export default class UserProfile extends React.Component {
                 <div className="container">
                     <Helmet title={this.state.user.name} meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
                     <header>
-                        <Header />
+                        <Header space={this.props.spaceName} />
                     </header>
 
                     <main className="mainProfile">

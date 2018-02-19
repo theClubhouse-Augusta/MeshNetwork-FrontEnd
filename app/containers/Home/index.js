@@ -114,6 +114,7 @@ export default class Home extends React.PureComponent {
     }
   };
   render() {
+    const { spaceName } = this.props;
     return (
       <div className="container">
         <Helmet>
@@ -122,7 +123,7 @@ export default class Home extends React.PureComponent {
         </Helmet>
         <header className="homeHeaderContainer">
           <div className="homeHeaderBar">
-            <Header textColor="#FFFFFF" />
+            <Header textColor="#FFFFFF" space={spaceName} />
           </div>
           {this.renderSignIn()}
         </header>

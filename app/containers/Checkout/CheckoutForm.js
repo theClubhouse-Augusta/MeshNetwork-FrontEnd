@@ -115,7 +115,7 @@ class CheckoutForm extends React.PureComponent {
 
     selectPlan = (e, selected) => {
         e.preventDefault();
-        console.log('s', selected);
+        // console.log('s', selected);
         this.setState({ plan: selected });
     }
 
@@ -392,7 +392,7 @@ class CheckoutForm extends React.PureComponent {
                 <Helmet title="SpaceSignUp" meta={[{ name: 'description', content: 'Description of SpaceSignUp' }]} />
                 <header className="checkoutHeaderContainer">
                     {this.renderLoading()}
-                    <Header headerTitle={this.state.space.name} />
+                    <Header headerTitle={this.state.space.name} space={this.props.spaceName} />
                     <div className="checkoutHeaderBanner">
                         <div className="homeHeaderContentTitle">Join {this.state.space.name}</div>
                         <div className="homeHeaderContentSubtitle">Find out what all the buzz is about</div>

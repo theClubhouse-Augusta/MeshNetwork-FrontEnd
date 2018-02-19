@@ -131,7 +131,7 @@ export default class Kiosk extends React.PureComponent {
     }
 
     selectReason = (reason) => {
-        console.log(reason);
+        // console.log(reason);
         this.setState({ selectedReason: reason }, () => {
             this.storeAppearance();
         });

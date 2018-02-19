@@ -152,7 +152,7 @@ export default class Replies extends React.PureComponent {
       <div className="container">
         <Helmet title="Replies" meta={[ { name: 'description', content: 'Description of Replies' }]}/>
         <header>
-          <Header app={this.state.app}/>
+          <Header app={this.state.app} space={this.props.spaceName}/>
         </header>
 
         <main>

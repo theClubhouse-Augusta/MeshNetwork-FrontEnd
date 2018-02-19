@@ -82,7 +82,6 @@ export default class SpaceInformation extends React.PureComponent {
             });
         };
         reader.readAsDataURL(file);
-        console.log(this.state.logoPreview);
     };
 
     getSpaceInfo = () => {
@@ -113,9 +112,6 @@ export default class SpaceInformation extends React.PureComponent {
                         instagram: json.instagram,
                         stripe: json.stripe,
                         pubKey: json.pubKey
-                    },
-                    () => {
-                        console.log(this.state);
                     }
                 );
             });

@@ -144,7 +144,7 @@ export default class Enroll extends React.PureComponent {
           <Helmet title="Enroll" meta={[ { name: 'description', content: 'Description of Enroll' }]}/>
 
           <header>
-            <Header />
+            <Header space={this.props.spaceName} />
           </header>
 
           <main className="lmsEnrollMain">

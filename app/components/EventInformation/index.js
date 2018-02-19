@@ -1,28 +1,23 @@
-/*
+/**
  *
- * AddEvent
+ * EventInformation
  *
  */
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
-import RaisedButton from "./RaisedButton";
 import FlatButton from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItemText } from 'material-ui/List';
-
-import MdFileUpload from 'react-icons/lib/md/file-upload';
-import Header from '../../components/Header';
-import { MdInsertDriveFile } from 'react-icons/lib/md';
-import DateTimeSelect from '../../components/DateTimeSelect';
-import { SelectedSponsors } from './SelectedSponsors';
-import Spinner from '../../components/Spinner';
-
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+
+import RaisedButton from '../../containers/AddEvent/RaisedButton';
+import DateTimeSelect from '../DateTimeSelect';
+import { SelectedSponsors } from '../../containers/AddEvent/SelectedSponsors';
 
 import authenticate from '../../utils/Authenticate';
 import {
@@ -34,7 +29,7 @@ import {
     timeError,
     formatSelectedDate,
     formatTodaysDate
-} from './dateUtils';
+} from '../../containers/AddEvent/dateUtils';
 
 // styles
 import './style.css';
@@ -50,15 +45,9 @@ const MenuProps = {
         },
     },
 };
-// const loadedTags = [
-//     'one',
-//     'two',
-//     'three',
-// ]
 
-export default class AddEvent extends PureComponent {
+export default class EventInformation extends PureComponent {
     state = {
-        loading: true,
         dateError: '',
         modalMessage: '',
         snackBar: false,
@@ -72,12 +61,11 @@ export default class AddEvent extends PureComponent {
         selectedSponsors: [],
         day: '',
         start: '',
-        end: '',
         dateMulti: [],
+        end: '',
         startMulti: [],
         endMulti: [],
         newSponsors: [],
-        eventFiles: [],
         // organizers
         organizers: [],
         showOrganizers: false,
@@ -98,6 +86,10 @@ export default class AddEvent extends PureComponent {
         eventImgPreview: '',
         tag: [],
         selectedOrganizers: [],
+        eventSponsors: [],
+        eventOrganizers: [],
+        eventDates: [],
+        // eventDescription: '',
     };
 
     async componentDidMount() {
@@ -106,11 +98,182 @@ export default class AddEvent extends PureComponent {
             this.getOrganizers();
             this.getSponsors();
             this.loadSkills();
-            this.setState({ loading: false });
+            this.getEvent(this.props.id);
+            // this.previousOrganizers();
+            // this.previousSponsors();
+            // this.previousDates();
         } else {
             this.props.history.push('/');
         }
     }
+
+    // componentDidUpdate(prevState) {
+        // if (this.state.event !== prevState.event) {
+            // console.log('foo');
+            // this.previosOrganizers();
+            // this.previosSponsors();
+            // this.previousDates();
+        // }       
+    // }
+
+    getEvent = eventID => {
+        fetch(`http://localhost:8000/api/event/${eventID}`)
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    event: json.event,
+                    eventSponsors: json.sponsors,
+                    eventOrganizers: json.organizers,
+                    description: json.event.description,
+                    url: json.event.url,
+                    name: json.event.title,
+                    eventDates: json.dates,
+                    eventImgPreview: json.event.image,
+                    selectedTags: json.tags
+                }, () => {
+                    this.previousSponsors();
+                    this.previousOrganizers();
+                    this.previousDates();
+                });
+            })
+        }
+
+        previousSponsors = () => {
+            if (this.state.eventSponsors.length) {
+                this.state.eventSponsors.forEach(sponsor => {
+                    const selectedSponsors = this.state.selectedSponsors.slice();
+                    selectedSponsors.push(sponsor.name);
+                    this.setState({ selectedSponsors: selectedSponsors });
+                })
+            }
+        }
+
+        previousOrganizers = () => {
+            if (this.state.eventOrganizers.length) {
+                this.state.eventOrganizers.forEach(organizer => {
+                    const selectedOrganizers = this.state.selectedOrganizers.slice();
+                    selectedOrganizers.push(organizer.email);
+                    this.setState({ selectedOrganizers: selectedOrganizers });
+                })
+            }
+        }
+
+        previousDates = () => {
+            if (this.state.eventDates.length) {
+                if (this.state.eventDates.length > 1 && !!!this.state.checkedRadio) {
+                    this.setState({
+                        checkedRadio: 1, 
+                        days: this.state.eventDates.length 
+                    });
+                    this.state.eventDates.map((date, i) => {
+                        const start = date.start.split(' ');
+                        const end = date.end.split(' ');
+
+                        this.setState((prevState) => {
+                            const dateMulti = prevState.dateMulti.slice();
+                            dateMulti.push({ 
+                                day: start[0],
+                                index: i 
+                            })
+                            return {dateMulti: dateMulti};
+                        });
+
+                        this.setState((prevState) => {
+                            const startMulti = prevState.startMulti.slice();
+                            startMulti.push({
+                                start: start[1],
+                                index: i
+                            })
+                            return {startMulti: startMulti};
+                        });
+  
+                        this.setState((prevState) => {
+                            const endMulti = prevState.endMulti.slice();
+                            endMulti.push({
+                                end: end[1],
+                                index: i
+                            })
+                            return {endMulti: endMulti};
+                        });
+                    })
+                }
+            }
+        }
+
+    // getEvent = eventID => {
+    //     fetch(`http://localhost:8000/api/event/${eventID}`)
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             console.log('d', json.description)
+    //             this.setState({
+    //                 event: json.event,
+    //                 eventSponsors: json.sponsors,
+    //                 eventOrganizers: json.organizers,
+    //                 description: json.event.description,
+    //                 url: json.event.url,
+    //                 name: json.event.title,
+    //                 eventDates: json.dates,
+    //                 eventImgPreview: json.event.image,
+    //                 selectedTags: json.tags
+    //             }, () => {
+    //                 if (this.state.eventSponsors.length) {
+    //                     this.state.eventSponsors.forEach(sponsor => {
+    //                         const selectedSponsors = this.state.selectedSponsors.slice();
+    //                         selectedSponsors.push(sponsor.name);
+    //                         this.setState({ selectedSponsors: selectedSponsors });
+    //                     })
+    //                 }
+    //                 if (this.state.eventOrganizers.length) {
+    //                     this.state.eventOrganizers.forEach(organizer => {
+    //                         const selectedOrganizers = this.state.selectedOrganizers.slice();
+    //                         selectedOrganizers.push(organizer.email);
+    //                         this.setState({ selectedOrganizers: selectedOrganizers });
+    //                     })
+    //                 }
+    //                 if (this.state.eventDates.length) {
+    //                     if (this.state.eventDates.length > 1) {
+    //                         this.setState({
+    //                             checkedRadio: 1, 
+    //                             days: this.state.eventDates.length 
+    //                         });
+    //                         this.state.eventDates.forEach((date, i) => {
+    //                             console.log('count', i);
+    //                             const dateMulti = this.state.dateMulti.slice();
+    //                             console.log('dateMultiOne', dateMulti);
+    //                             const startMulti = this.state.startMulti.slice();
+    //                             console.log('startMultiOne', startMulti);
+    //                             const endMulti = this.state.endMulti.slice();
+    //                             const start = date.start.split(' ');
+    //                             const end = date.end.split(' ');
+    //                             dateMulti.push({ 
+    //                                 day: start[0],
+    //                                 index: i 
+    //                             })
+    //                             startMulti.push({
+    //                                 start: start[1],
+    //                                 index: i
+    //                             })
+    //                             endMulti.push({
+    //                                 end: end[1],
+    //                                 index: i
+    //                             })
+    //                             this.setState({
+    //                                 dateMulti: dateMulti,
+    //                                 startMulti: startMulti,
+    //                                 endMulti: endMulti
+    //                             }, () => {
+
+    //                             console.log('dateMulti', dateMulti);
+
+    //                             console.log('startMulti', startMulti);
+    //                             })
+    //                         })
+    //                     }
+    //                 }
+    //             })
+                    
+    //         })
+    // }
 
     getSponsors = () => {
         fetch(`http://localhost:8000/api/sponsors`, {
@@ -122,7 +285,7 @@ export default class AddEvent extends PureComponent {
                     this.setState({ sponsors: Sponsors });
             })
             .catch(error => {
-                alert(`error in fetching data from server: ${error}`); // eslint-disable-line
+                alert(`GetSponsors(): error in fetching data from server: ${error}`); // eslint-disable-line
             });
     }
 
@@ -137,7 +300,7 @@ export default class AddEvent extends PureComponent {
                 }
             })
             .catch(error => {
-                alert(`error in fetching data from server: ${error}`); // eslint-disable-line
+                alert(`getOrganizers(): error in fetching data from server: ${error} message: ${error.message}`); // eslint-disable-line
             });
     }
 
@@ -148,7 +311,7 @@ export default class AddEvent extends PureComponent {
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
             .catch(error => {
-                alert(`error in fetching data from server: ${error}`);
+                alert(`loadSkills(): error in fetching data from server: ${error}`);
             });
     }
 
@@ -292,9 +455,10 @@ export default class AddEvent extends PureComponent {
         }
     }
 
-    multiDay = (days) => {
+    multiDay = days => {
         const multidayComponent = [];
         for (let i = 0; i < days; i++) {
+            console.log('foo', this.state.dateMulti[i].day);
             const dayComponent =
                 <DateTimeSelect
                     key={`multiday${i}`}
@@ -307,6 +471,9 @@ export default class AddEvent extends PureComponent {
                     selectDateMulti={this.selectDateMulti}
                     selectStartMulti={this.selectStartMulti}
                     selectEndMulti={this.selectEndMulti}
+                    value={this.state.dateMulti[i].day}
+                    startValue={this.state.startMulti[i].start}
+                    endValue={this.state.endMulti[i].end}
                 />
             multidayComponent.push(dayComponent);
         }
@@ -334,17 +501,6 @@ export default class AddEvent extends PureComponent {
         this.setState({ selectedTags: event.target.value });
     };
 
-    eventFiles = event => {
-        event.preventDefault();
-        let file = event.target.files[0];
-        let reader = new FileReader();
-        const files = this.state.eventFiles.slice();
-        reader.onload = () => {
-            files.push(file)
-            this.setState({ eventFiles: files });
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
 
     toggleNewSponsors = () => this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
 
@@ -397,7 +553,6 @@ export default class AddEvent extends PureComponent {
         let data = new FormData();
         data.append('description', description);
         data.append('tags', this.state.selectedTags);
-        this.state.eventFiles.forEach((file, index) => data.append(`files${index}`, file));
         data.append('compEvent', 0);
         data.append('name', this.state.name);
         data.append('image', this.state.eventImg);
@@ -461,7 +616,7 @@ export default class AddEvent extends PureComponent {
     }
 
     renderEventImage = () => {
-        if (this.state.eventImg !== "") {
+        if (this.state.eventImg || this.state.eventImgPreview) {
             return (
                 <img alt="" src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
             )
@@ -469,7 +624,7 @@ export default class AddEvent extends PureComponent {
     }
 
     renderEventImageText = () => {
-        if (this.state.eventImgPreview === "" || this.state.eventImgPreview === undefined || this.state.eventImgPreview === null) {
+        if (!this.state.eventImgPreview) {
             return (
                 <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
                     Add an Event Image
@@ -524,35 +679,33 @@ export default class AddEvent extends PureComponent {
             snackBarMessage,
             dateError,
             snackBar,
-            newSponsors, eventFiles,
+            newSponsors, 
             organizers,
             sponsors,
             checkNewSponsors,
             loadedTags,
             days,
+            dateMulti,
+            startMulti,
+            endMulti
         } = this.state;
 
         const options = [
             {
                 id: 0,
-                nm: "one day event"
+                option: "one day event"
             },
             {
-                id: 1, nm:
-                    "multi-day event"
+                id: 1, 
+                option: "multi-day event"
             }
         ];
         return (
-            this.state.loading
-                ?
-                <Spinner loading={this.state.loading} />
-                :
                 <div className="container">
                     <Helmet>
                         <title>Create Event Form</title>
                         <meta name="description" content="Description of Create event form" />
                     </Helmet>
-                    <Header space={this.props.spaceName} />
 
                     <div className="addEventBanner">
                         <div className="homeHeaderContentTitle">Add a New Event</div>
@@ -563,8 +716,8 @@ export default class AddEvent extends PureComponent {
                         <div className="spaceSignUpTitle">Submit an Event</div>
                         <div className="spaceSignUpContainer">
 
-                            <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
-                            <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
+                            <TextField label="Event name" onChange={this.eventName} value={this.state.name} type="text" name="eventName" margin="normal" />
+                            <TextField onChange={this.eventUrl} type="url" value={this.state.url} label="Event url" margin="normal" />
                             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
                             {!!loadedTags.length &&
@@ -656,7 +809,7 @@ export default class AddEvent extends PureComponent {
                                             onChange={this.changeRadio}
                                             onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
                                         />
-                                        <span style={{ paddingLeft: 8 }}>{item.nm}</span>
+                                        <span style={{ paddingLeft: 8 }}>{item.option}</span>
                                     </label>
                                 )}
                             </div>
@@ -683,7 +836,13 @@ export default class AddEvent extends PureComponent {
                                 />
                             ]}
 
-                            {(parseInt(this.state.checkedRadio, 10) === 1 && days) && this.multiDay(days)}
+                            {(
+                                parseInt(this.state.checkedRadio, 10) === 1 
+                                    && days 
+                                    && dateMulti.length === days
+                                    && startMulti.length === days
+                                    && endMulti.length === days
+                                ) && this.multiDay(days)}
 
                             <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
                                 <input
@@ -755,28 +914,6 @@ export default class AddEvent extends PureComponent {
                                     newSponsor={true}
                                 />}
 
-                            <input multiple id="event-files" type="file" style={{ display: 'none' }} onChange={this.eventFiles} />
-                            <label htmlFor="event-files">
-                                <div style={{ display: 'flex', color: 'rgba(0,0,0,0.54)', flexDirection: 'column', marginBottom: 16, textAlign: 'center' }}>
-                                    <MdFileUpload size="40px" />
-                                    Upload any other relevant documents
-                                </div>
-                            </label>
-
-                            <div style={{ marginTop: '40px', color: 'rgba(0,0,0,0.54)', }}>
-                                {!!eventFiles.length ? [
-                                    <h4 key="fileh4" style={{ marginBottom: 10 }}> Uploaded files </h4>,
-                                    <ol key="fileol" style={{ height: '100%', display: 'flex', flexDirection: 'column', marginBottom: '60px', }}>
-                                        {eventFiles.map((file, key) => [
-                                            <li style={{ height: '30px', borderBottom: '2px solid rgba(0,0,0,0.54)', paddingBottom: 20, paddingTop: 20 }} key={`file${key}`}>
-                                                <MdInsertDriveFile size="40px" />
-                                                {file.name}
-                                            </li>
-                                        ])}
-                                    </ol>
-                                ] : null}
-                            </div>
-
                             <div className="spaceLogoMainImageRow">
                                 <label htmlFor="event-image" className="spaceLogoMainImageBlock">
                                     {this.renderEventImageText()}
@@ -809,3 +946,4 @@ export default class AddEvent extends PureComponent {
         );
     }
 }
+

@@ -269,7 +269,7 @@ export default class LMSDash extends React.PureComponent {
         <Helmet title="Dashboard" meta={[ { name: 'description', content: 'Description of Dashboard' }]}/>
 
         <header>
-          <Header/>
+          <Header space={this.props.spaceName}/>
         </header>
 
         <main className="lmsHomeMain">

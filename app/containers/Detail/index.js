@@ -106,7 +106,7 @@ export default class Detail extends React.PureComponent {
         this.setState({
           challengeFiles:challengeFiles
         }, () => {
-          console.log(this.state.challengeFiles);
+          // console.log(this.state.challengeFiles);
           this.forceUpdate();
         })
       }
@@ -180,7 +180,7 @@ export default class Detail extends React.PureComponent {
         }
       }
       else if(json.challenge) {
-        console.log(this.state.challengeFiles.length);
+        // console.log(this.state.challengeFiles.length);
         if(this.state.challengeFiles.length > 0) {
           for(let i = 0; i < this.state.challengeFiles.length; i++)
           {
@@ -351,7 +351,7 @@ export default class Detail extends React.PureComponent {
         <Helmet title={this.state.challenge.challengeTitle} meta={[ { name: 'description', content: 'Description of Detail' }]}/>
 
         <header>
-          <Header/>
+          <Header space={this.props.spaceName}/>
         </header>
 
         <main className="challenges_mainContainer">

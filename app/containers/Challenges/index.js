@@ -85,7 +85,7 @@ export default class Challenges extends React.PureComponent {
         <Helmet title="Home" meta={[ { name: 'description', content: 'Description of Home' }]}/>
 
         <header>
-          <Header app={this.state.app}/>
+          <Header app={this.state.app} space={this.props.spaceName} />
         </header>
 
         <main className="challenges_mainContainer">

@@ -23,7 +23,7 @@ export default class About extends React.PureComponent {
         </Helmet>
 
         <header>
-          <Header />
+          <Header space={this.props.spaceName} />
           <div className="aboutBanner">
             <div className="homeHeaderContentTitle">About the Mesh Network</div>
             <div className="homeHeaderContentSubtitle">

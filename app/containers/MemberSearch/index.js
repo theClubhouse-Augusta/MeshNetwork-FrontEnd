@@ -151,7 +151,7 @@ export default class MemberSearch extends PureComponent {
         />
 
         <header style={{ background: "#FFFFFF", width: "100%" }}>
-          <Header />
+          <Header space={this.props.spaceName} />
           <div className="memberSearchBanner">
             <div className="memberSearchHeaderTitle">Connect with People</div>
             <div className="memberSearchHeaderSubtitle">
