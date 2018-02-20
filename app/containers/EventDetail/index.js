@@ -6,7 +6,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Helmet from 'react-helmet';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar';
@@ -90,43 +89,6 @@ export default class EventDetail extends React.PureComponent {
             snackBarMessage: message
         });
 
-    handleDates = (start, end) => {
-        // hour:min:sec
-        const startHourMinSec = moment(start).format('hms');
-        const endHourMinSec = moment(end).format('hms');
-
-        // day of month
-        const startDay = moment(start).format('Do');
-        const endDay = moment(end).format('Do');
-
-        let timeFormat;
-        if (startHourMinSec !== endHourMinSec && startDay !== endDay) {
-            if (startDay === endDay) {
-                timeFormat = (
-                    <time>
-                        {`${moment(start).format('MMMM Do h:mm')} - ${moment(end).format('h:mm')}`}
-                    </time>
-                );
-            } else {
-                timeFormat = (
-                    <div>
-                        <time>
-                            starts:&nbsp;&nbsp;&nbsp;{`${moment(start).format(`MMMM D, h:mm A`)}`}
-                        </time>
-
-                        <br />
-
-                        <time>
-                            ends:&nbsp;&nbsp;&nbsp;{`${moment(end).format('MMMM D, h:mm A')}`}
-                        </time>
-                    </div>
-                );
-            }
-        }
-        return timeFormat;
-    }
-
-
     render() {
         const {
             workSpace,
@@ -189,7 +151,7 @@ export default class EventDetail extends React.PureComponent {
                             <div className="eventDetailSectionContent">
                                 <div className="eventDetailDates">
                                     {this.state.dates.map((date, i) => (
-                                        <div className="eventDetailsDateBlock">{date.start} -- {date.end}</div>
+                                        <div className="eventDetailsDateBlock">{date.startFormatted} -- {date.endFormatted}</div>
                                     ))}
                                 </div>
                                 <div className="eventDetailSignUpRow">

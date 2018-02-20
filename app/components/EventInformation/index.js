@@ -89,6 +89,9 @@ export default class EventInformation extends PureComponent {
         eventSponsors: [],
         eventOrganizers: [],
         eventDates: [],
+        changeDateMulti: [],
+        changeStartMulti: [],
+        changeEndMulti: [],
         // eventDescription: '',
     };
 
@@ -163,11 +166,11 @@ export default class EventInformation extends PureComponent {
                 if (this.state.eventDates.length > 1 && !!!this.state.checkedRadio) {
                     this.setState({
                         checkedRadio: 1, 
-                        days: this.state.eventDates.length 
+                        days: this.state.eventDates.length,
                     });
-                    this.state.eventDates.map((date, i) => {
-                        const start = date.start.split(' ');
-                        const end = date.end.split(' ');
+                    this.state.eventDates.forEach((date, i) => {
+                        let start = date.start.split(' ');
+                        let end = date.end.split(' ');
 
                         this.setState((prevState) => {
                             const dateMulti = prevState.dateMulti.slice();
@@ -180,8 +183,10 @@ export default class EventInformation extends PureComponent {
 
                         this.setState((prevState) => {
                             const startMulti = prevState.startMulti.slice();
+                            let seconds = start[1].lastIndexOf(':');
+                            let startTime = start[1].slice(0, seconds);
                             startMulti.push({
-                                start: start[1],
+                                start: startTime,
                                 index: i
                             })
                             return {startMulti: startMulti};
@@ -189,8 +194,10 @@ export default class EventInformation extends PureComponent {
   
                         this.setState((prevState) => {
                             const endMulti = prevState.endMulti.slice();
+                            let seconds = end[1].lastIndexOf(':');
+                            let endTime = end[1].slice(0, seconds);
                             endMulti.push({
-                                end: end[1],
+                                end: endTime,
                                 index: i
                             })
                             return {endMulti: endMulti};
@@ -374,36 +381,52 @@ export default class EventInformation extends PureComponent {
                 this.setState({ dateError: "Please check the order of your dates" });
                 return;
             } else {
-                this.setState({ dateError: '' })
-            }
-            const dates = this.state.dateMulti.slice();
-            const date = { day: e.target.value, index: index, };
-            const removeDate = removeDuplicateDate(dates, date);
+                const changeDateMulti = this.state.dateMulti.slice();
+                changeDateMulti.push({
+                    change: index 
+                })
+                this.setState({ 
+                    dateError: '',
+                   changeDateMulti: changeDateMulti 
+                })
+                const dates = this.state.dateMulti.slice();
+                const date = { day: e.target.value, index: index, };
+                const removeDate = removeDuplicateDate(dates, date);
 
-            if (typeof removeDate !== 'number') {
-                dates.push(date);
-                this.setState({ dateMulti: dates }, () => {
-                    if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
-                    else this.setState({ dateError: '' });
-                });
-            } else if (typeof removeDate === 'number') {
-                dates.splice(removeDate, 1);
-                dates.push(date);
-                this.setState({ dateMulti: dates }, () => {
-                    if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
-                    else this.setState({ dateError: '' });
-                });
+                if (typeof removeDate !== 'number') {
+                    dates.push(date);
+                    this.setState({ dateMulti: dates }, () => {
+                        if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
+                        else this.setState({ dateError: '' });
+                    });
+                } else if (typeof removeDate === 'number') {
+                    dates.splice(removeDate, 1);
+                    dates.push(date);
+                    this.setState({ dateMulti: dates }, () => {
+                        if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
+                        else this.setState({ dateError: '' });
+                    });
+                }
             }
         }
     }
 
     selectStartMulti = (e, index) => {
+        const changeStartMulti = this.state.changeStartMulti.slice();
+        changeStartMulti.push({
+            index: index 
+        })
+        this.setState({ 
+            dateError: '',
+            changeStartMulti: changeStartMulti 
+        })
         if (typeof index === 'number') {
             const startTimes = this.state.startMulti.slice();
             // const endTimes = this.state.endMulti.slice();
             const time = { start: e.target.value, index: index, };
             const removeTime = removeDuplicateStart(startTimes, time);
             if (typeof removeTime !== 'number') {
+
                 startTimes.push(time);
                 this.setState({ startMulti: startTimes }, () => {
                     if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
@@ -457,9 +480,18 @@ export default class EventInformation extends PureComponent {
 
     multiDay = days => {
         const multidayComponent = [];
+        let dayComponent;
+        const {
+            changeDateMulti,
+            changeEndMulti,
+            changeStartMulti,
+            dateMulti,
+        } = this.state;
         for (let i = 0; i < days; i++) {
-            console.log('foo', this.state.dateMulti[i].day);
-            const dayComponent =
+            console.log('dude', i)
+            if (changeEndMulti.length && !changeDateMulti.length && changeStartMulti.length) {
+                console.log('one');
+                dayComponent =
                 <DateTimeSelect
                     key={`multiday${i}`}
                     index={i}
@@ -471,11 +503,222 @@ export default class EventInformation extends PureComponent {
                     selectDateMulti={this.selectDateMulti}
                     selectStartMulti={this.selectStartMulti}
                     selectEndMulti={this.selectEndMulti}
-                    value={this.state.dateMulti[i].day}
+                    dayValue={this.state.dateMulti[i].day}
+                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
+                    endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+
+            } else if (changeDateMulti.length && changeStartMulti.length && changeEndMulti.length) {
+
+                console.log('two');
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={!!changeDateMulti[i].index ? false : this.state.dateMulti[i].day}
+                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
+                    endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+            } else if (changeDateMulti.length && changeStartMulti.length && !changeEndMulti.length) {
+
+                console.log('three');
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={!!changeDateMulti[i].index ? false : this.state.dateMulti[i].day}
+                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
+                    endValue={this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+            } else if (changeDateMulti.length &&  !changeStartMulti.length && changeEndMulti.length) {
+
+                console.log('four');
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={!!changeDateMulti[i].index ? false : this.state.dateMulti[i].day}
+                    startValue={this.state.startMulti[i].start}
+                    endValue={!!this.state.changeEndMulti[i].index ? false : this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+            } else if (changeDateMulti.length && !changeStartMulti.length && !changeEndMulti.length) {
+                        console.log(`five: i:${i} ${JSON.stringify(changeDateMulti[0])}`);
+                for (let j = 0; j < changeDateMulti.length; j++) {
+
+                    console.log(`WTF: ${changeDateMulti[j].change} ${dateMulti[i].index}`);
+                    if (changeDateMulti[j].change === dateMulti[i].index) {
+
+                        console.log(`fiveB`);
+                        dayComponent =
+                        <DateTimeSelect
+                            key={`multiday${i}`}
+                            index={i}
+                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                            dateLabel={`Day ${i + 1}`}
+                            startTimeLabel="event start"
+                            endTimeLabel="event end"
+                            multiday={true}
+                            selectDateMulti={this.selectDateMulti}
+                            selectStartMulti={this.selectStartMulti}
+                            selectEndMulti={this.selectEndMulti}
+                            dayValue={!!changeDateMulti[j].change ? false : dateMulti[i].day}
+                            startValue={this.state.startMulti[i].start}
+                            endValue={this.state.endMulti[i].end}
+                        />
+                        multidayComponent.push(dayComponent);
+                    } else {
+
+                        console.log(`fiveC`);
+                        dayComponent =
+                        <DateTimeSelect
+                            key={`multiday${i}`}
+                            index={i}
+                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                            dateLabel={`Day ${i + 1}`}
+                            startTimeLabel="event start"
+                            endTimeLabel="event end"
+                            multiday={true}
+                            selectDateMulti={this.selectDateMulti}
+                            selectStartMulti={this.selectStartMulti}
+                            selectEndMulti={this.selectEndMulti}
+                            dayValue={!!changeDateMulti[j].change ? false : dateMulti[i].day}
+                            startValue={this.state.startMulti[i].start}
+                            endValue={this.state.endMulti[i].end}
+                        />
+                        multidayComponent.push(dayComponent);
+                    }
+                }
+
+            } else if (changeDateMulti.length && !changeStartMulti.length && !changeEndMulti.length) {
+                console.log(`fiveB: i:${i} ${JSON.stringify(changeDateMulti[0])}`);
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={this.state.dateMulti[i].day}
                     startValue={this.state.startMulti[i].start}
                     endValue={this.state.endMulti[i].end}
                 />
-            multidayComponent.push(dayComponent);
+                multidayComponent.push(dayComponent);
+            } else if (!changeDateMulti.length && changeStartMulti.length && changeEndMulti.length) {
+
+                console.log('six');
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={this.state.dateMulti[i].day}
+                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
+                    endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+            } else if (!changeDateMulti.length && changeStartMulti.length && !changeEndMulti.length){
+
+                console.log('one');
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={this.state.dateMulti[i].day}
+                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
+                    endValue={this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+            } else if (!changeDateMulti.length &&  !changeStartMulti.length && changeEndMulti.length){
+
+                console.log('one');
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={this.state.dateMulti[i].day}
+                    startValue={this.state.startMulti[i].start}
+                    endValue={!!this.state.changeEndMulti[i].index ? false : this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+            } else if  (!changeDateMulti.length && !changeStartMulti.length && !changeEndMulti.length)  {
+
+                console.log('two');
+                dayComponent =
+                <DateTimeSelect
+                    key={`multiday${i}`}
+                    index={i}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+                    dateLabel={`Day ${i + 1}`}
+                    startTimeLabel="event start"
+                    endTimeLabel="event end"
+                    multiday={true}
+                    selectDateMulti={this.selectDateMulti}
+                    selectStartMulti={this.selectStartMulti}
+                    selectEndMulti={this.selectEndMulti}
+                    dayValue={this.state.dateMulti[i].day}
+                    startValue={this.state.startMulti[i].start}
+                    endValue={this.state.endMulti[i].end}
+                />
+                multidayComponent.push(dayComponent);
+            } else {
+                console.log('nooo!');
+            }
         }
         return multidayComponent;
     }
@@ -946,4 +1189,4 @@ export default class EventInformation extends PureComponent {
         );
     }
 }
-
+ 
