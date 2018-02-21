@@ -6,6 +6,10 @@
   min-height: 100vh;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .addEventBanner {
   width: 100%;
   height: 350px;

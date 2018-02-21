@@ -14,18 +14,20 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+import { DateRangePicker } from 'react-dates';
+import moment from 'moment';
 
 import RaisedButton from '../../containers/AddEvent/RaisedButton';
-import DateTimeSelect from '../DateTimeSelect';
+// import DateTimeSelect from '../DateTimeSelect';
 import { SelectedSponsors } from '../../containers/AddEvent/SelectedSponsors';
 
 import authenticate from '../../utils/Authenticate';
 import {
-    removeDuplicateDate,
-    removeDuplicateStart,
-    removeDuplicateEnd,
-    dateErrors,
-    multiDayTimeErrors,
+    // removeDuplicateDate,
+    // removeDuplicateStart,
+    // removeDuplicateEnd,
+    // dateErrors,
+    // multiDayTimeErrors,
     timeError,
     formatSelectedDate,
     formatTodaysDate
@@ -93,6 +95,9 @@ export default class EventInformation extends PureComponent {
         changeStartMulti: [],
         changeEndMulti: [],
         // eventDescription: '',
+        focusedInput: false,
+        startDate: moment(),
+        endDate: moment(),
     };
 
     async componentDidMount() {
@@ -136,7 +141,7 @@ export default class EventInformation extends PureComponent {
                 }, () => {
                     this.previousSponsors();
                     this.previousOrganizers();
-                    this.previousDates();
+                    // this.previousDates();
                 });
             })
         }
@@ -375,353 +380,139 @@ export default class EventInformation extends PureComponent {
         }
     }
 
-    selectDateMulti = (e, index) => {
-        if (typeof index === 'number') {
-            if (formatTodaysDate() > formatSelectedDate(e.target.value)) {
-                this.setState({ dateError: "Please check the order of your dates" });
-                return;
-            } else {
-                const changeDateMulti = this.state.dateMulti.slice();
-                changeDateMulti.push({
-                    change: index 
-                })
-                this.setState({ 
-                    dateError: '',
-                   changeDateMulti: changeDateMulti 
-                })
-                const dates = this.state.dateMulti.slice();
-                const date = { day: e.target.value, index: index, };
-                const removeDate = removeDuplicateDate(dates, date);
+    // selectDateMulti = (e, index) => {
+    //     if (typeof index === 'number') {
+    //         if (formatTodaysDate() > formatSelectedDate(e.target.value)) {
+    //             this.setState({ dateError: "Please check the order of your dates" });
+    //             return;
+    //         } else {
+    //             const changeDateMulti = this.state.dateMulti.slice();
+    //             changeDateMulti.push({
+    //                 change: index 
+    //             })
+    //             this.setState({ 
+    //                 dateError: '',
+    //                changeDateMulti: changeDateMulti 
+    //             })
+    //             const dates = this.state.dateMulti.slice();
+    //             const date = { day: e.target.value, index: index, };
+    //             const removeDate = removeDuplicateDate(dates, date);
 
-                if (typeof removeDate !== 'number') {
-                    dates.push(date);
-                    this.setState({ dateMulti: dates }, () => {
-                        if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
-                        else this.setState({ dateError: '' });
-                    });
-                } else if (typeof removeDate === 'number') {
-                    dates.splice(removeDate, 1);
-                    dates.push(date);
-                    this.setState({ dateMulti: dates }, () => {
-                        if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
-                        else this.setState({ dateError: '' });
-                    });
-                }
-            }
-        }
-    }
+    //             if (typeof removeDate !== 'number') {
+    //                 dates.push(date);
+    //                 this.setState({ dateMulti: dates }, () => {
+    //                     if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
+    //                     else this.setState({ dateError: '' });
+    //                 });
+    //             } else if (typeof removeDate === 'number') {
+    //                 dates.splice(removeDate, 1);
+    //                 dates.push(date);
+    //                 this.setState({ dateMulti: dates }, () => {
+    //                     if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
+    //                     else this.setState({ dateError: '' });
+    //                 });
+    //             }
+    //         }
+    //     }
+    // }
 
-    selectStartMulti = (e, index) => {
-        const changeStartMulti = this.state.changeStartMulti.slice();
-        changeStartMulti.push({
-            index: index 
-        })
-        this.setState({ 
-            dateError: '',
-            changeStartMulti: changeStartMulti 
-        })
-        if (typeof index === 'number') {
-            const startTimes = this.state.startMulti.slice();
-            // const endTimes = this.state.endMulti.slice();
-            const time = { start: e.target.value, index: index, };
-            const removeTime = removeDuplicateStart(startTimes, time);
-            if (typeof removeTime !== 'number') {
+    // selectStartMulti = (e, index) => {
+    //     const changeStartMulti = this.state.changeStartMulti.slice();
+    //     changeStartMulti.push({
+    //         index: index 
+    //     })
+    //     this.setState({ 
+    //         dateError: '',
+    //         changeStartMulti: changeStartMulti 
+    //     })
+    //     if (typeof index === 'number') {
+    //         const startTimes = this.state.startMulti.slice();
+    //         // const endTimes = this.state.endMulti.slice();
+    //         const time = { start: e.target.value, index: index, };
+    //         const removeTime = removeDuplicateStart(startTimes, time);
+    //         if (typeof removeTime !== 'number') {
 
-                startTimes.push(time);
-                this.setState({ startMulti: startTimes }, () => {
-                    if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-                        this.setState({ dateError: 'Check you start and end times', });
-                    } else {
-                        this.setState({ dateError: '' });
-                    }
-                });
-            } else if (typeof removeTime === 'number') {
-                startTimes.splice(removeTime, 1);
-                startTimes.push(time);
-                this.setState({ startMulti: startTimes }, () => {
-                    if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-                        this.setState({ dateError: 'Check your start and end times', });
-                    } else {
-                        this.setState({ dateError: '' });
-                    }
-                });
-            }
-        }
-    }
+    //             startTimes.push(time);
+    //             this.setState({ startMulti: startTimes }, () => {
+    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+    //                     this.setState({ dateError: 'Check you start and end times', });
+    //                 } else {
+    //                     this.setState({ dateError: '' });
+    //                 }
+    //             });
+    //         } else if (typeof removeTime === 'number') {
+    //             startTimes.splice(removeTime, 1);
+    //             startTimes.push(time);
+    //             this.setState({ startMulti: startTimes }, () => {
+    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+    //                     this.setState({ dateError: 'Check your start and end times', });
+    //                 } else {
+    //                     this.setState({ dateError: '' });
+    //                 }
+    //             });
+    //         }
+    //     }
+    // }
 
-    selectEndMulti = (e, index) => {
-        if (typeof index === 'number') {
-            // const startTimes = this.state.startMulti.slice();
-            const endTimes = this.state.endMulti.slice();
-            const time = { end: e.target.value, index: index, };
-            const removeTime = removeDuplicateEnd(endTimes, time);
-            if (typeof removeTime !== 'number') {
-                endTimes.push(time);
-                this.setState({ endMulti: endTimes }, () => {
-                    if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-                        this.setState({ dateError: 'Check you start and end times', });
-                    } else {
-                        this.setState({ dateError: '' });
-                    }
-                });
-            } else if (typeof removeTime === 'number') {
-                endTimes.splice(removeTime, 1);
-                endTimes.push(time);
-                this.setState({ endMulti: endTimes }, () => {
-                    if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-                        this.setState({ dateError: 'Check you start and end times', });
-                    } else {
-                        this.setState({ dateError: '' })
-                    }
-                });
-            }
-        }
-    }
+    // selectEndMulti = (e, index) => {
+    //     if (typeof index === 'number') {
+    //         // const startTimes = this.state.startMulti.slice();
+    //         const endTimes = this.state.endMulti.slice();
+    //         const time = { end: e.target.value, index: index, };
+    //         const removeTime = removeDuplicateEnd(endTimes, time);
+    //         if (typeof removeTime !== 'number') {
+    //             endTimes.push(time);
+    //             this.setState({ endMulti: endTimes }, () => {
+    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+    //                     this.setState({ dateError: 'Check you start and end times', });
+    //                 } else {
+    //                     this.setState({ dateError: '' });
+    //                 }
+    //             });
+    //         } else if (typeof removeTime === 'number') {
+    //             endTimes.splice(removeTime, 1);
+    //             endTimes.push(time);
+    //             this.setState({ endMulti: endTimes }, () => {
+    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
+    //                     this.setState({ dateError: 'Check you start and end times', });
+    //                 } else {
+    //                     this.setState({ dateError: '' })
+    //                 }
+    //             });
+    //         }
+    //     }
+    // }
 
-    multiDay = days => {
-        const multidayComponent = [];
-        let dayComponent;
-        const {
-            changeDateMulti,
-            changeEndMulti,
-            changeStartMulti,
-            dateMulti,
-        } = this.state;
-        for (let i = 0; i < days; i++) {
-            console.log('dude', i)
-            if (changeEndMulti.length && !changeDateMulti.length && changeStartMulti.length) {
-                console.log('one');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={this.state.dateMulti[i].day}
-                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
-                    endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-
-            } else if (changeDateMulti.length && changeStartMulti.length && changeEndMulti.length) {
-
-                console.log('two');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={!!changeDateMulti[i].index ? false : this.state.dateMulti[i].day}
-                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
-                    endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else if (changeDateMulti.length && changeStartMulti.length && !changeEndMulti.length) {
-
-                console.log('three');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={!!changeDateMulti[i].index ? false : this.state.dateMulti[i].day}
-                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
-                    endValue={this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else if (changeDateMulti.length &&  !changeStartMulti.length && changeEndMulti.length) {
-
-                console.log('four');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={!!changeDateMulti[i].index ? false : this.state.dateMulti[i].day}
-                    startValue={this.state.startMulti[i].start}
-                    endValue={!!this.state.changeEndMulti[i].index ? false : this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else if (changeDateMulti.length && !changeStartMulti.length && !changeEndMulti.length) {
-                        console.log(`five: i:${i} ${JSON.stringify(changeDateMulti[0])}`);
-                for (let j = 0; j < changeDateMulti.length; j++) {
-
-                    console.log(`WTF: ${changeDateMulti[j].change} ${dateMulti[i].index}`);
-                    if (changeDateMulti[j].change === dateMulti[i].index) {
-
-                        console.log(`fiveB`);
-                        dayComponent =
-                        <DateTimeSelect
-                            key={`multiday${i}`}
-                            index={i}
-                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                            dateLabel={`Day ${i + 1}`}
-                            startTimeLabel="event start"
-                            endTimeLabel="event end"
-                            multiday={true}
-                            selectDateMulti={this.selectDateMulti}
-                            selectStartMulti={this.selectStartMulti}
-                            selectEndMulti={this.selectEndMulti}
-                            dayValue={!!changeDateMulti[j].change ? false : dateMulti[i].day}
-                            startValue={this.state.startMulti[i].start}
-                            endValue={this.state.endMulti[i].end}
-                        />
-                        multidayComponent.push(dayComponent);
-                    } else {
-
-                        console.log(`fiveC`);
-                        dayComponent =
-                        <DateTimeSelect
-                            key={`multiday${i}`}
-                            index={i}
-                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                            dateLabel={`Day ${i + 1}`}
-                            startTimeLabel="event start"
-                            endTimeLabel="event end"
-                            multiday={true}
-                            selectDateMulti={this.selectDateMulti}
-                            selectStartMulti={this.selectStartMulti}
-                            selectEndMulti={this.selectEndMulti}
-                            dayValue={!!changeDateMulti[j].change ? false : dateMulti[i].day}
-                            startValue={this.state.startMulti[i].start}
-                            endValue={this.state.endMulti[i].end}
-                        />
-                        multidayComponent.push(dayComponent);
-                    }
-                }
-
-            } else if (changeDateMulti.length && !changeStartMulti.length && !changeEndMulti.length) {
-                console.log(`fiveB: i:${i} ${JSON.stringify(changeDateMulti[0])}`);
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={this.state.dateMulti[i].day}
-                    startValue={this.state.startMulti[i].start}
-                    endValue={this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else if (!changeDateMulti.length && changeStartMulti.length && changeEndMulti.length) {
-
-                console.log('six');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={this.state.dateMulti[i].day}
-                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
-                    endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else if (!changeDateMulti.length && changeStartMulti.length && !changeEndMulti.length){
-
-                console.log('one');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={this.state.dateMulti[i].day}
-                    startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
-                    endValue={this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else if (!changeDateMulti.length &&  !changeStartMulti.length && changeEndMulti.length){
-
-                console.log('one');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={this.state.dateMulti[i].day}
-                    startValue={this.state.startMulti[i].start}
-                    endValue={!!this.state.changeEndMulti[i].index ? false : this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else if  (!changeDateMulti.length && !changeStartMulti.length && !changeEndMulti.length)  {
-
-                console.log('two');
-                dayComponent =
-                <DateTimeSelect
-                    key={`multiday${i}`}
-                    index={i}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-                    dateLabel={`Day ${i + 1}`}
-                    startTimeLabel="event start"
-                    endTimeLabel="event end"
-                    multiday={true}
-                    selectDateMulti={this.selectDateMulti}
-                    selectStartMulti={this.selectStartMulti}
-                    selectEndMulti={this.selectEndMulti}
-                    dayValue={this.state.dateMulti[i].day}
-                    startValue={this.state.startMulti[i].start}
-                    endValue={this.state.endMulti[i].end}
-                />
-                multidayComponent.push(dayComponent);
-            } else {
-                console.log('nooo!');
-            }
-        }
-        return multidayComponent;
-    }
+    // multiDay = days => {
+    //     const multidayComponent = [];
+    //     let dayComponent;
+    //     const {
+    //         // changeDateMulti,
+    //         changeEndMulti,
+    //         changeStartMulti,
+    //         // dateMulti,
+    //     } = this.state;
+    //     for (let i = 0; i < days; i++) {
+    //         dayComponent =
+    //         <DateTimeSelect
+    //             key={`multiday${i}`}
+    //             index={i}
+    //             style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
+    //             dateLabel={`Day ${i + 1}`}
+    //             startTimeLabel="event start"
+    //             endTimeLabel="event end"
+    //             multiday={true}
+    //             selectDateMulti={this.selectDateMulti}
+    //             selectStartMulti={this.selectStartMulti}
+    //             selectEndMulti={this.selectEndMulti}
+    //             dayValue={this.state.dateMulti[i].day}
+    //             startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
+    //             endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
+    //         />
+    //         multidayComponent.push(dayComponent);
+    //     }
+    //     return multidayComponent;
+    // }
 
     eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
@@ -927,10 +718,10 @@ export default class EventInformation extends PureComponent {
             sponsors,
             checkNewSponsors,
             loadedTags,
-            days,
-            dateMulti,
-            startMulti,
-            endMulti
+            // days,
+            // dateMulti,
+            // startMulti,
+            // endMulti
         } = this.state;
 
         const options = [
@@ -944,249 +735,271 @@ export default class EventInformation extends PureComponent {
             }
         ];
         return (
-                <div className="container">
-                    <Helmet>
-                        <title>Create Event Form</title>
-                        <meta name="description" content="Description of Create event form" />
-                    </Helmet>
+                <div>
+                            <DateRangePicker
+                                startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                                startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                                endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                                endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                                onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                                focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                                onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                            />
 
-                    <div className="addEventBanner">
-                        <div className="homeHeaderContentTitle">Add a New Event</div>
-                        <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
-                    </div>
-                    <main className="spaceSignUpMain">
-
-                        <div className="spaceSignUpTitle">Submit an Event</div>
-                        <div className="spaceSignUpContainer">
-
-                            <TextField label="Event name" onChange={this.eventName} value={this.state.name} type="text" name="eventName" margin="normal" />
-                            <TextField onChange={this.eventUrl} type="url" value={this.state.url} label="Event url" margin="normal" />
-                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
-
-                            {!!loadedTags.length &&
-                                <FormControl style={{ marginTop: 24 }}>
-                                    <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
-                                    <Select
-                                        multiple
-                                        value={this.state.selectedTags}
-                                        onChange={this.handleSkillTags}
-                                        input={<Input id="tag-multiple" />}
-                                        renderValue={selected => selected.join(',')}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {loadedTags.map((tag, key) => (
-                                            <MenuItem key={`${key}tag`} value={tag}>
-                                                <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
-                                                <ListItemText primary={tag} />
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            }
-
-                            {!!organizers.length &&
-                                <FormControl style={{ marginTop: 24 }}>
-                                    <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
-                                    <Select
-                                        multiple
-                                        value={this.state.selectedOrganizers}
-                                        onChange={this.handleOrganizerChange}
-                                        input={<Input id="tag-multiple" />}
-                                        renderValue={selected => selected.join(',')}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {organizers.map(organizer => (
-                                            <MenuItem key={organizer} value={organizer}>
-                                                <Checkbox checked={this.state.selectedOrganizers.indexOf(organizer) > -1} />
-                                                <ListItemText primary={organizer} />
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            }
-
-                            {!!sponsors.length &&
-                                <FormControl style={{ marginTop: 24 }}>
-                                    <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
-                                    <Select
-                                        multiple
-                                        value={this.state.selectedSponsors}
-                                        onChange={this.handleSponsorChange}
-                                        input={<Input id="tag-multiple" />}
-                                        renderValue={selected => selected.join(',')}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {sponsors.map(sponsor => (
-                                            <MenuItem key={sponsor} value={sponsor}>
-                                                <Checkbox checked={this.state.selectedSponsors.indexOf(sponsor) > -1} />
-                                                <ListItemText primary={sponsor} />
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            }
-
-                            {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
-                            {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-                            {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
-                            {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: 50,
-                                    color: 'rgba(0,0,0,0.54)',
-                                    justifyContent: 'space-between',
-                                    marginBottom: parseInt(this.state.checkedRadio, 10) === 1 ? 32 : '',
-                                    marginTop: 32
-                                }}
-                            >
-                                {options.map((item, i) =>
-                                    <label key={`l${item.id}`} className="radio-inline">
-                                        <input
-                                            type="radio"
-                                            checked={this.state.checkedRadio === i.toString()}
-                                            ref={(el) => this["myRadioRef" + i] = el}
-                                            value={item.id}
-                                            onChange={this.changeRadio}
-                                            onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
-                                        />
-                                        <span style={{ paddingLeft: 8 }}>{item.option}</span>
-                                    </label>
-                                )}
-                            </div>
-
-                            {parseInt(this.state.checkedRadio, 10) === 1 &&
-                                <TextField
-                                    label="How many days?"
-                                    onChange={this.eventDays}
-                                    value={this.state.days}
-                                    type="text"
-                                />}
-
-                            {parseInt(this.state.checkedRadio, 10) === 0 && [
-                                <label key="singleDay" className="addEventFormLabel"> date & time </label>,
-                                <DateTimeSelect
-                                    key="singleDay2"
-                                    dateLabel="Start date"
-                                    startTimeLabel="event start"
-                                    endTimeLabel="event end"
-                                    multiday={false}
-                                    selectDate={this.selectDate}
-                                    selectStart={this.selectStart}
-                                    selectEnd={this.selectEnd}
-                                />
-                            ]}
-
-                            {(
-                                parseInt(this.state.checkedRadio, 10) === 1 
-                                    && days 
-                                    && dateMulti.length === days
-                                    && startMulti.length === days
-                                    && endMulti.length === days
-                                ) && this.multiDay(days)}
-
-                            <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
-                                <input
-                                    id="newSponsors"
-                                    type="checkbox"
-                                    onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null}
-                                    onChange={this.toggleNewSponsors}
-                                    checked={checkNewSponsors}
-                                />
-
-                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
-                                    &nbsp;&nbsp;Add new sponsor
-                                </label>
-
-                            </div>
-
-                            {checkNewSponsors && [
-                                <TextField
-                                    key="newSponTF1"
-                                    label="name"
-                                    onChange={this.sponsorName}
-                                    value={this.state.sponsorNames}
-                                    type="text"
-                                    margin="normal"
-                                />,
-
-                                <TextField
-                                    key="newSponTF2"
-                                    label="website"
-                                    onChange={this.sponsorUrl}
-                                    value={this.state.sponsorWebsites}
-                                    type="url"
-                                    margin="normal"
-                                />,
-
-                                <div key="newSponTF3" className="spaceLogoMainImageRow">
-                                    <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
-                                        {this.renderLogoImageText()}
-                                        {this.renderLogoImage()}
-                                        <input
-                                            type="file"
-                                            onChange={this.handleLogo}
-                                            id="logo-image"
-                                            style={{ display: 'none' }}
-                                            accept="image/png, image/jpg, image/jpeg"
-                                        />
-                                    </label>
-                                </div>,
-
-                                <RaisedButton
-                                    key="newSponTF4"
-                                    onSubmit={this.onNewSponsorSubmit}
-                                    sponsor
-                                    style={{
-                                        backgroundColor: '#3399cc',
-                                        marginBottom: 64,
-                                        padding: '10px',
-                                        marginTop: '15px',
-                                        color: 'rgba(0,0,0,0.54)',
-                                        fontWeight: 'bold'
-                                    }}
-                                />
-                            ]}
-
-                            {!!newSponsors.length &&
-                                <SelectedSponsors
-                                    selectedSponsors={newSponsors}
-                                    removeSponsor={this.removeNewSponsor}
-                                    newSponsor={true}
-                                />}
-
-                            <div className="spaceLogoMainImageRow">
-                                <label htmlFor="event-image" className="spaceLogoMainImageBlock">
-                                    {this.renderEventImageText()}
-                                    {this.renderEventImage()}
-                                    <input
-                                        type="file"
-                                        onChange={this.handleEventImage}
-                                        id="event-image"
-                                        style={{ display: 'none' }}
-                                        accept="image/png, image/jpg, image/jpeg"
-                                    />
-                                </label>
-                            </div>
-
-                            <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
-                                Submit Event
-                            </FlatButton>
-                        </div>
-                    </main>
-                    <footer className="homeFooterContainer">
-                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-                    </footer>
-                    <Snackbar
-                        open={snackBar}
-                        message={snackBarMessage}
-                        autoHideDuration={4000}
-                        onClose={this.handleRequestClose}
-                    />
                 </div>
         );
     }
 }
  
+                // {/* <div className="container">
+                //     <Helmet>
+                //         <title>Create Event Form</title>
+                //         <meta name="description" content="Description of Create event form" />
+                //     </Helmet>
+
+                //     <div className="addEventBanner">
+                //         <div className="homeHeaderContentTitle">Add a New Event</div>
+                //         <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
+                //     </div>
+                //     <main className="spaceSignUpMain">
+
+                //         <div className="spaceSignUpTitle">Submit an Event</div>
+                //         <div className="spaceSignUpContainer">
+
+                //             <TextField label="Event name" onChange={this.eventName} value={this.state.name} type="text" name="eventName" margin="normal" />
+                //             <TextField onChange={this.eventUrl} type="url" value={this.state.url} label="Event url" margin="normal" />
+                //             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
+
+                //             {!!loadedTags.length &&
+                //                 <FormControl style={{ marginTop: 24 }}>
+                //                     <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
+                //                     <Select
+                //                         multiple
+                //                         value={this.state.selectedTags}
+                //                         onChange={this.handleSkillTags}
+                //                         input={<Input id="tag-multiple" />}
+                //                         renderValue={selected => selected.join(',')}
+                //                         MenuProps={MenuProps}
+                //                     >
+                //                         {loadedTags.map((tag, key) => (
+                //                             <MenuItem key={`${key}tag`} value={tag}>
+                //                                 <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
+                //                                 <ListItemText primary={tag} />
+                //                             </MenuItem>
+                //                         ))}
+                //                     </Select>
+                //                 </FormControl>
+                //             }
+
+                //             {!!organizers.length &&
+                //                 <FormControl style={{ marginTop: 24 }}>
+                //                     <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
+                //                     <Select
+                //                         multiple
+                //                         value={this.state.selectedOrganizers}
+                //                         onChange={this.handleOrganizerChange}
+                //                         input={<Input id="tag-multiple" />}
+                //                         renderValue={selected => selected.join(',')}
+                //                         MenuProps={MenuProps}
+                //                     >
+                //                         {organizers.map(organizer => (
+                //                             <MenuItem key={organizer} value={organizer}>
+                //                                 <Checkbox checked={this.state.selectedOrganizers.indexOf(organizer) > -1} />
+                //                                 <ListItemText primary={organizer} />
+                //                             </MenuItem>
+                //                         ))}
+                //                     </Select>
+                //                 </FormControl>
+                //             }
+
+                //             {!!sponsors.length &&
+                //                 <FormControl style={{ marginTop: 24 }}>
+                //                     <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
+                //                     <Select
+                //                         multiple
+                //                         value={this.state.selectedSponsors}
+                //                         onChange={this.handleSponsorChange}
+                //                         input={<Input id="tag-multiple" />}
+                //                         renderValue={selected => selected.join(',')}
+                //                         MenuProps={MenuProps}
+                //                     >
+                //                         {sponsors.map(sponsor => (
+                //                             <MenuItem key={sponsor} value={sponsor}>
+                //                                 <Checkbox checked={this.state.selectedSponsors.indexOf(sponsor) > -1} />
+                //                                 <ListItemText primary={sponsor} />
+                //                             </MenuItem>
+                //                         ))}
+                //                     </Select>
+                //                 </FormControl>
+                //             }
+
+                //             {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
+                //             {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
+                //             {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
+                //             {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
+
+                //             <div
+                //                 style={{
+                //                     display: 'flex',
+                //                     flexDirection: 'column',
+                //                     height: 50,
+                //                     color: 'rgba(0,0,0,0.54)',
+                //                     justifyContent: 'space-between',
+                //                     marginBottom: parseInt(this.state.checkedRadio, 10) === 1 ? 32 : '',
+                //                     marginTop: 32
+                //                 }}
+                //             >
+                //                 {options.map((item, i) =>
+                //                     <label key={`l${item.id}`} className="radio-inline">
+                //                         <input
+                //                             type="radio"
+                //                             checked={this.state.checkedRadio === i.toString()}
+                //                             ref={(el) => this["myRadioRef" + i] = el}
+                //                             value={item.id}
+                //                             onChange={this.changeRadio}
+                //                             onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
+                //                         />
+                //                         <span style={{ paddingLeft: 8 }}>{item.option}</span>
+                //                     </label>
+                //                 )}
+                //             </div>
+
+                //             {/* {parseInt(this.state.checkedRadio, 10) === 1 &&
+                //                 <TextField
+                //                     label="How many days?"
+                //                     onChange={this.eventDays}
+                //                     value={this.state.days}
+                //                     type="text"
+                //                 />} */}
+
+                //             {/* {parseInt(this.state.checkedRadio, 10) === 0 && [
+                //                 <label key="singleDay" className="addEventFormLabel"> date & time </label>,
+                //                 <DateTimeSelect
+                //                     key="singleDay2"
+                //                     dateLabel="Start date"
+                //                     startTimeLabel="event start"
+                //                     endTimeLabel="event end"
+                //                     multiday={false}
+                //                     selectDate={this.selectDate}
+                //                     selectStart={this.selectStart}
+                //                     selectEnd={this.selectEnd}
+                //                 />
+                //             ]} */}
+
+                //             {/* {(
+                //                 parseInt(this.state.checkedRadio, 10) === 1 
+                //                     && days 
+                //                     && dateMulti.length === days
+                //                     && startMulti.length === days
+                //                     && endMulti.length === days
+                //                 ) && this.multiDay(days)
+                //             } */}
+                //             <DateRangePicker
+                //                 startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                //                 startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                //                 endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                //                 endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                //                 onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                //                 focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                //                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                //             />
+
+                //             <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
+                //                 <input
+                //                     id="newSponsors"
+                //                     type="checkbox"
+                //                     onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null}
+                //                     onChange={this.toggleNewSponsors}
+                //                     checked={checkNewSponsors}
+                //                 />
+
+                //                 <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                //                     &nbsp;&nbsp;Add new sponsor
+                //                 </label>
+
+                //             </div>
+
+                //             {checkNewSponsors && [
+                //                 <TextField
+                //                     key="newSponTF1"
+                //                     label="name"
+                //                     onChange={this.sponsorName}
+                //                     value={this.state.sponsorNames}
+                //                     type="text"
+                //                     margin="normal"
+                //                 />,
+
+                //                 <TextField
+                //                     key="newSponTF2"
+                //                     label="website"
+                //                     onChange={this.sponsorUrl}
+                //                     value={this.state.sponsorWebsites}
+                //                     type="url"
+                //                     margin="normal"
+                //                 />,
+
+                //                 <div key="newSponTF3" className="spaceLogoMainImageRow">
+                //                     <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
+                //                         {this.renderLogoImageText()}
+                //                         {this.renderLogoImage()}
+                //                         <input
+                //                             type="file"
+                //                             onChange={this.handleLogo}
+                //                             id="logo-image"
+                //                             style={{ display: 'none' }}
+                //                             accept="image/png, image/jpg, image/jpeg"
+                //                         />
+                //                     </label>
+                //                 </div>,
+
+                //                 <RaisedButton
+                //                     key="newSponTF4"
+                //                     onSubmit={this.onNewSponsorSubmit}
+                //                     sponsor
+                //                     style={{
+                //                         backgroundColor: '#3399cc',
+                //                         marginBottom: 64,
+                //                         padding: '10px',
+                //                         marginTop: '15px',
+                //                         color: 'rgba(0,0,0,0.54)',
+                //                         fontWeight: 'bold'
+                //                     }}
+                //                 />
+                //             ]}
+
+                //             {!!newSponsors.length &&
+                //                 <SelectedSponsors
+                //                     selectedSponsors={newSponsors}
+                //                     removeSponsor={this.removeNewSponsor}
+                //                     newSponsor={true}
+                //                 />}
+
+                //             <div className="spaceLogoMainImageRow">
+                //                 <label htmlFor="event-image" className="spaceLogoMainImageBlock">
+                //                     {this.renderEventImageText()}
+                //                     {this.renderEventImage()}
+                //                     <input
+                //                         type="file"
+                //                         onChange={this.handleEventImage}
+                //                         id="event-image"
+                //                         style={{ display: 'none' }}
+                //                         accept="image/png, image/jpg, image/jpeg"
+                //                     />
+                //                 </label>
+                //             </div>
+
+                //             <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
+                //                 Submit Event
+                //             </FlatButton>
+                //         </div>
+                //     </main>
+                //     <footer className="homeFooterContainer">
+                //         Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                //     </footer>
+                //     <Snackbar
+                //         open={snackBar}
+                //         message={snackBarMessage}
+                //         autoHideDuration={4000}
+                //         onClose={this.handleRequestClose}
+                //     />
+                // </div> */}

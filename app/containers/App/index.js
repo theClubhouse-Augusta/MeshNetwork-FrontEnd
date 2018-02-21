@@ -18,6 +18,7 @@ const SpaceDash = asyncComponent(() => import('../SpaceDash'));
 const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
+const Foo = asyncComponent(() => import('../Foo'));
 
 // const Challenges = asyncComponent(() => import('../Challenges'));
 const Discover = asyncComponent(() => import('../Discover'));
@@ -26,7 +27,6 @@ const Replies = asyncComponent(() => import('../Replies'));
 const Detail = asyncComponent(() => import('../Detail'));
 const Team = asyncComponent(() => import('..//Team'));
 const Teams = asyncComponent(() => import('../Teams'));
-
 
 const LMS = asyncComponent(() => import('containers/LMS'));
 const Courses = asyncComponent(() => import('containers/Courses'));
@@ -57,7 +57,10 @@ export default class App extends Component {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(response => response.text())
-        .then(name => this.setState({ space: name }));
+        .then(name => this.setState({ space: name }))
+        .catch(error => {
+            // do nothing
+        })
     } 
     render() {
         return (
@@ -77,6 +80,14 @@ export default class App extends Component {
                     render={() => 
                         <About 
                             spaceName={this.state.space} 
+                        />
+                    }
+                />
+
+                <Route
+                    path="/Foo"
+                    render={() => 
+                        <Foo 
                         />
                     }
                 />

@@ -4,7 +4,6 @@
  * SpaceDash
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -276,7 +275,7 @@ export default class SpaceDash extends React.PureComponent {
 
     handleStartEnd = (event) => {
         this.setState({
-            resourceStartEnd: event.target.value
+            resourceEndTime: event.target.value
         })
     };
 
@@ -341,7 +340,9 @@ export default class SpaceDash extends React.PureComponent {
         data.append('resourceName', this.state.resourceName);
         data.append('resourceEmail', this.state.resourceEmail);
         data.append('resourceStartTime', this.state.resourceStartTime);
+        data.append('resourceStartEnd', this.state.resourceStartTime);
         data.append('resourceEndTime', this.state.resourceEndTime);
+        data.append('resourceIncrement', this.state.resourceIncrement);
         data.append('resourceDays', JSON.stringify(resourceDays));
 
         fetch('http://localhost:8000/api/resource', {
@@ -601,27 +602,27 @@ export default class SpaceDash extends React.PureComponent {
                 <div className="spaceDashContent">
                     <Header space={this.props.spaceName} />
                     <div className="spaceDashOptions">
-                        <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px' }} />
-                        <FormGroup row>
+                        <TextField  value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px', marginTop: 32  }} />
+                        <TextField  value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px', marginTop: 32 }} />
+                        <FormGroup style={{marginTop: 32}} row>
                             <FormControlLabel
                             control={
                                 <Checkbox
-                                checked={this.state.resourceMonday}
-                                onChange={this.handleResourceMonday}
-                                value={1}
+                                    checked={this.state.resourceMonday}
+                                    onChange={this.handleResourceMonday}
+                                    value={1}
                                 />
                             }
                             label="Monday"
                             />
                             <FormControlLabel
-                            control={
-                                <Checkbox
-                                checked={this.state.resourceTuesday}
-                                onChange={this.handleResourceTuesday}
-                                value={2}
-                                />
-                            }
+                                control={
+                                    <Checkbox
+                                        checked={this.state.resourceTuesday}
+                                        onChange={this.handleResourceTuesday}
+                                        value={2}
+                                    />
+                                }
                             label="Tuesday"
                             />
                             <FormControlLabel
@@ -655,11 +656,45 @@ export default class SpaceDash extends React.PureComponent {
                             label="Friday"
                             />
                         </FormGroup>
-                        <TextField value={this.state.resourceStartTime} onChange={this.handleStartTime} label="Start Time" placeholder="8:00am" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceEndTime} onChange={this.handleEndTime} label="End Time" placeholder="8:00pm" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceIncrement} onChange={this.handleIncrement} label="Increments" placeholder="Minutes" style={{ marginRight: '10px' }} />
+                        <label style={{marginTop: 32}} htmlFor="startTime">Start Time</label>
+                        <TextField 
+                            id="startTime"
+                            value={this.state.resourceStartTime} 
+                            type="time"
+                            onChange={this.handleStartTime} 
+                            //label="Start Time" 
+                            placeholder="8:00am" 
+                            style={{ marginRight: '10px', marginBottom: 32 }} 
+                        />
+                        <label htmlFor="endTime">End Time </label>
+                        <TextField 
+                            id="endTime"
+                            value={this.state.resourceEndTime} 
+                            type="time"
+                            onChange={this.handleStartEnd} 
+                            //label="End Time" 
+                            placeholder="8:00pm" 
+                            style={{ marginRight: '10px', marginBottom: 32 }} 
+                        />
+                        <TextField value={this.state.resourceIncrement} onChange={this.handleIncrement} label="Max booking time in minutes" placeholder="Minutes" style={{ marginRight: '10px' }} />
                         <label style={{ width: '10%', margin: '10px' }}>
-                            <div onClick={this.storeResource} style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold', cursor: 'pointer' }} >Add Resource</div>
+                            <div 
+                                onClick={this.storeResource} 
+                                style={{ 
+                                    fontFamily: 'Noto Sans', 
+                                    textTransform: 'uppercase', 
+                                    fontSize: '0.9em', 
+                                    textAlign: 'center', 
+                                    width: '100%', 
+                                    background: '#ff4d58', 
+                                    paddingTop: '10px', 
+                                    paddingBottom: '10px', 
+                                    color: '#FFFFFF', 
+                                    fontWeight: 'bold', 
+                                    cursor: 'pointer', 
+                                    marginTop: 32,
+                                    marginLeft: '30vw'
+                                }} >Add Resource</div>
                         </label>
                     </div>
                     <div className="spaceDashResources">

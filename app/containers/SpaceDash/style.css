@@ -105,10 +105,11 @@ a {
 }
 
 .spaceDashOptions {
+  width: 75vw;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  background: #DDDDDD;
+  flex-direction: column;
+  margin: 0 auto;
+  height: 100%;
   border-bottom: 1px solid #CCCCCC;
 }
 
