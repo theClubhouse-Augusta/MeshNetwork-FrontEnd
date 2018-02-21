@@ -75,7 +75,14 @@
   }
 
   .homeMainSectionBlockTwo {
-    width: 80%;
+    width: 60%;
     margin: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .homeMainSectionBlockTwo img {
+    max-width: 80%;
   }
 }

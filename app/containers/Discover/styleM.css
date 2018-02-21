@@ -1,1 +1,11 @@
 /* Challenges Mobile Styles */
+
+@media (max-width: 425px) {
+  .challenges_contentsContainer {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 426px) {
+}
