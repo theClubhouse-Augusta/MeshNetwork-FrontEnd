@@ -23,7 +23,7 @@ const RaisedButton = props =>
     //  marginBottom: 64
     //}}
   >
-    {props.sponsor ? 'Add new Sponsor' : 'submit'}
+    {props.sponsor ? 'Confirm' : 'submit'}
   </Button>
 
 export default withStyles(styles)(RaisedButton);

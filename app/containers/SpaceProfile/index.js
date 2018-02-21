@@ -155,6 +155,7 @@ export default class SpaceProfile extends React.PureComponent {
               background: "#FFFFFF",
               color: "#ff4d58",
               width: "100%",
+              marginTop:'15px',
               border: "1px solid #CCCCCC"
             }}
           >
@@ -185,20 +186,14 @@ export default class SpaceProfile extends React.PureComponent {
     console.log(event);
     var backgroundColor = "#ff4d58";
     var style = {
-      background:
-        "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(" +
-        event.image +
-        ")",
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover",
-      backgroundPosition: "center center",
+      background: '#ff4d58',
       fontWeight: "bold",
       borderRadius: "0px",
       border: "none",
       fontFamily: "Noto Sans",
       display: "flex",
       flexDirection: "column",
-      minHeight: "40px"
+      minHeight: "28px"
     };
     return {
       style: style
@@ -331,7 +326,6 @@ export default class SpaceProfile extends React.PureComponent {
                         background: "#ff4d58",
                         color: "#FFFFFF",
                         width: "100%",
-                        margin: "15px 0",
                         padding: "10px 0"
                       }}
                     >

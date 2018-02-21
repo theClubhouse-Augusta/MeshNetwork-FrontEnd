@@ -1,0 +1,6 @@
+Ideas:
+Add Disclaimer
+Add Registration to Kiosk
+Update Event Upload 
+Update Event Image
+Add Navbar to dialogs
