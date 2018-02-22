@@ -13,7 +13,7 @@
   min-height: 100vh;
 }
 
-.challenges_contentsContainer {
+.challenges_contentContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

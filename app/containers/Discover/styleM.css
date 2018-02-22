@@ -1,9 +1,29 @@
 /* Challenges Mobile Styles */
 
 @media (max-width: 425px) {
-  .challenges_contentsContainer {
+  .challenges_contentContainer {
     display: flex;
     flex-direction: column;
+  }
+
+  .challenges_categoryContainer {
+    width: 90%;
+  }
+
+  .challenges_challengeFeed {
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+  .challenges_feedBlock {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .challenges_feedImage {
+    padding: 1em;
+    width: 200px;
+    height: 150px;
   }
 }
 

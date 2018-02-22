@@ -171,7 +171,7 @@ export default class Discover extends React.PureComponent {
         </header>
 
         <main className="challenges_mainContainer">
-          <div className="challenges_contentsContainer">
+          <div className="challenges_contentContainer">
             <div className="challenges_categoryContainer">
               <SideNav app={this.state.app} />
             </div>
