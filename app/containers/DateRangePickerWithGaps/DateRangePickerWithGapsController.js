@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { 
   SingleDatePicker 
 } from 'react-dates';
@@ -6,7 +6,7 @@ import {
 import TimePickers from './TimePickers';
 import './style.css';
 
-export default class DateRangePickerWithGapsController extends PureComponent {
+export default class DateRangePickerWithGapsController extends Component {
   constructor(props) {
     super(props);
     this.state = {
