@@ -99,8 +99,21 @@ export default class App extends Component {
                     path="/Foo"
                     render={() => 
                         <DateRangePickerWithGaps 
-                            //dates
-                            numberOfDates={4}
+                //            dates={[
+                  //              {
+                    //                day: moment(),
+                      //              position: 0
+                        //        },
+             //                   {
+               //                     day: moment().add(1,'d'),
+                 //                   position: 1
+                   //             },
+             //                   {
+               //                     day: moment().add(2, 'd'),
+          //                          position: 2
+            //                    }
+              //              ]}
+                        numberOfDates={4}
                         />
                     }
                 />

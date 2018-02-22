@@ -10,6 +10,16 @@ export default class DateRangePickerWithGaps extends PureComponent {
       times: !!props.times ? props.times : [],
       startTimes: !!props.startTimes ? props.startTimes : [],
       endTimes: !!props.endTimes ? props.endTimes : [],
+      // focused: false,
+      // date: !!props.date ? props.date : null,
+      // dates: props.dates,
+      // startTimes: props.startTimes,
+      // startTime: props.startTime,
+      // endTimes: props.endTimes,
+      // endTime: props.endTime,
+      // position: props.position,
+      isOrdered: !!props.ordered,
+      repeatsAllowed: !!props.ordered ? false : !!props.repeatsAllowed,
     };
   }
 
@@ -32,6 +42,17 @@ export default class DateRangePickerWithGaps extends PureComponent {
     if (!endTimes.length) {
       this.setEndTimesIfNoneProvidedByProps(this.props.numberOfDates);
     }
+  }
+
+  onDateChange = date => {
+    console.log('wtf', this.state.date);
+    let { 
+      position, 
+      isOrdered,
+      repeatsAllowed,
+    } = this.state;
+    const validDate = this.props.handleDates(date, position, isOrdered, repeatsAllowed);
+    if (validDate) this.setState(() => ({ date }));
   }
 
   setDatesIfNoneProvidedByProps = numberOfDates => {

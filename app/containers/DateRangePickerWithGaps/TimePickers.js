@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import moment from 'moment';
 
 export default class TimerPickers extends PureComponent {
   constructor(props) {
@@ -7,18 +8,19 @@ export default class TimerPickers extends PureComponent {
       startTime: props.startTime  ? props.startTime : [],
       endTime: props.endTime  ? props.endTime : [],
       position: props.position,
+      date: props.date ? props.date : '',
     };
   }
 
   handleStartTime = e => {
     let startTime = e.target.value;
-    this.props.handleStartTimes(startTime);
+    this.props.handleStartTimes(startTime, this.state.date, this.state.position);
     this.setState(() => ({ startTime }));
   };
 
   handleEndTime = e => {
     let endTime = e.target.value;
-    this.props.handleEndTimes(endTime);
+    this.props.handleEndTimes(endTime, this.state.date, this.state.position);
     this.setState(() => ({ endTime }));
   };
 

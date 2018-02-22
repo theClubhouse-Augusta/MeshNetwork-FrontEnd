@@ -11,7 +11,7 @@ export default class DateRangePickerWithGapsController extends PureComponent {
     super(props);
     this.state = {
       focused: false,
-      date: props.date ? props.date : null,
+      date: !!props.date ? props.date : null,
       dates: props.dates,
       startTimes: props.startTimes,
       startTime: props.startTime,
@@ -24,28 +24,14 @@ export default class DateRangePickerWithGapsController extends PureComponent {
   }
 
   onDateChange = date => {
+    // console.log('wtf', this.state.date);
     let { 
-      dates, 
       position, 
       isOrdered,
       repeatsAllowed,
-     } = this.state;
-    let daysNotSet = 0;
-    dates.forEach(date => {
-      if (!!!date.day) daysNotSet++;
-    })
-    // const noDatesSet = daysNotSet === dates.length;
-    // const allDatesSet = daysNotSet === 0;
-    // if (noDatesSet) {
-      const validDate = this.props.handleDates(date, position, isOrdered, repeatsAllowed);
-      if (validDate) this.setState(() => ({ date }));
-    // } else if (allDatesSet) {
-      // const validDate = this.props.handleDates(date, position, isOrdered, repeatsAllowed);
-      // if (validDate) this.setState(() => ({ date }));
-    // } else {
-      // const validDate = this.props.handleDates(date, position, isOrdered, repeatsAllowed);
-      // if (validDate) this.setState(() => ({ date }));
-    // }
+    } = this.state;
+    const validDate = this.props.handleDates(date, position, isOrdered, repeatsAllowed);
+    if (validDate) this.setState(() => ({ date }));
   }
 
   render() {
@@ -67,6 +53,7 @@ export default class DateRangePickerWithGapsController extends PureComponent {
           endTime={this.state.endTime}
           handleStartTimes={this.props.handleStartTimes}
           handleEndTimes={this.props.handleEndTimes}
+          date={this.state.date}
           //startTime
           //endTime
         />
