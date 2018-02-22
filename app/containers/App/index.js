@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import moment from 'moment';
 import asyncComponent from '../../components/AsyncComponent';
+
 
 const Home = asyncComponent(() => import('../Home'));
 const About = asyncComponent(() => import('../About'));
@@ -18,7 +20,8 @@ const SpaceDash = asyncComponent(() => import('../SpaceDash'));
 const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
-const Foo = asyncComponent(() => import('../Foo'));
+const DateRangePickerWithGaps = asyncComponent(() => import('../DateRangePickerWithGaps'));
+const TimePickers = asyncComponent(() => import('../DateRangePickerWithGaps/TimePickers'));
 
 // const Challenges = asyncComponent(() => import('../Challenges'));
 const Discover = asyncComponent(() => import('../Discover'));
@@ -85,9 +88,19 @@ export default class App extends Component {
                 />
 
                 <Route
+                    path="/bar"
+                    render={() => 
+                        <TimePickers 
+                        />
+                    }
+                />
+
+                <Route
                     path="/Foo"
                     render={() => 
-                        <Foo 
+                        <DateRangePickerWithGaps 
+                            //dates
+                            numberOfDates={4}
                         />
                     }
                 />
