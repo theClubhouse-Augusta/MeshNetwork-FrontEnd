@@ -15,9 +15,9 @@ export default class DateRangePickerWithGaps extends Component {
       repeatsAllowed: !!props.ordered ? false : !!props.repeatsAllowed,
       snackMsg: "",
       snack: false,
-      // validDateBefore: true,
-      // validDateAfter: true,
-      // validDateSame: true,
+      validDateBefore: true,
+      validDateAfter: true,
+      validDateSame: true,
     };
   }
   convertToMinutes = 60;
@@ -94,10 +94,11 @@ export default class DateRangePickerWithGaps extends Component {
   handleDates = (newDay, previousDay, positionOfDayPicker, isOrdered, repeatsAllowed) => {
     let { 
       dates,
+      // validDateBefore,
+      // validDateAfter,
+      // validDateSame 
     } = this.state;
-    let validDateAfter = true;
-    let validDateBefore = true;
-    let validDateSame = true;
+    let validDateAfter, validDateBefore, validDateSame = true;
 
     if (newDay === null) {
       dates.forEach((date, index) => {
@@ -115,36 +116,41 @@ export default class DateRangePickerWithGaps extends Component {
     }
 
     let previouslySetDay = null;
-    dates.forEach((date, index) => {
+    dates.forEach(date => {
       if (!!date.day && date.position < positionOfDayPicker) {
         if (date.day.isAfter(newDay) || date.day.isSame(newDay, 'day')) { 
-
           validDateBefore = false;
+          // this.setState(() => ({ validDateBefore }))
           this.showSnack('1 Invalid date');
-        if (previouslySetDay) dates[index].day = previouslySetDay;
+          if (previouslySetDay) date.day = previouslySetDay;
         }
       } else if (!!date.day && date.position > positionOfDayPicker) {
-
         if (date.day.isBefore(newDay) || date.day.isSame(newDay, 'day')) {
           this.showSnack('2 Invalid date');
           validDateAfter = false;
-         if (previouslySetDay) dates[index - 1].day = previouslySetDay;
-        // dates[index - 1].day = previousDay;
+          // this.setState(() => ({ validDateAfter }))
+          console.log('dude', previouslySetDay)
+          if (previouslySetDay) date.day = previouslySetDay;
+          else {
+            date.day = previousDay;
+            console.log('man', date.day);
+          }
         } 
       } 
       if (date.position === positionOfDayPicker && validDateBefore && validDateSame && validDateAfter) {
         if (!previouslySetDay) {
+          console.log('psd', date.day );
           previouslySetDay = date.day;
         }
-        if (validDateAfter && validDateBefore && validDateSame) {
-        date.day = newDay;
-        this.setState(() => ({ dates }));
-      }
-        }
+       date.day = newDay;
+        console.log('nd', newDay);
       
-      // }
+      }
     })
 
+    if (validDateBefore && validDateAfter && validDateSame) {
+      this.setState({ dates });
+    }
     return validDateBefore && validDateAfter && validDateSame;
   };
 
@@ -189,26 +195,6 @@ export default class DateRangePickerWithGaps extends Component {
     return validEndTime;
   };
 
-  clearStartTimes = () => {
-    let count = 0;
-    let { startTimes } = this.state;
-    while (count < startTimes.length) {
-      startTimes[count].start = null;
-      count++;
-    }
-    this.setState(() => ({ startTimes }));
-  };
-
-  clearEndTimes = () => {
-    let count = 0;
-    let { endTimes } = this.state;
-    while (count < endTimes.length) {
-      endTimes[count].end = null;
-      count++;
-    }
-    this.setState(() => ({ endTimes }));
-  };
-
   handleRequestClose = () => { this.setState({ snack: false, snackMsg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, snackMsg: msg }); };
 
@@ -244,10 +230,8 @@ export default class DateRangePickerWithGaps extends Component {
               handleDates={this.handleDates}
               handleStartTimes={this.handleStartTimes}
               handleEndTimes={this.handleEndTimes}
-              clearEndTimes={this.clearEndTimes}
-              clearStartTimes={this.clearStartTimes}
               ordered={true}
-              //repeatsAllowed
+              repeatsAllowed
              // validDate={validDateAfter  && validDateBefore && validDateSame}
             />
           )}

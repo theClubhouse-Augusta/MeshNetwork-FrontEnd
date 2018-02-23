@@ -44,6 +44,7 @@ export default class DateRangePickerWithGapsController extends Component {
       repeatsAllowed,
       dates
     } = this.state;
+      console.log('foo');
     const validDate = this.props.handleDates(date, dates[position].day, position, isOrdered, repeatsAllowed);
     if (validDate) this.setState({ date: date }, () => {
       console.log('bar');
@@ -69,8 +70,6 @@ export default class DateRangePickerWithGapsController extends Component {
           endTime={this.state.endTime}
           handleStartTimes={this.props.handleStartTimes}
           handleEndTimes={this.props.handleEndTimes}
-          clearEndTimes={this.props.clearEndTimes}
-          clearStartTimes={this.props.clearStartTimes}
           date={this.state.date}
           //startTime
           //endTime

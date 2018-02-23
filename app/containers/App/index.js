@@ -99,21 +99,50 @@ export default class App extends Component {
                     path="/Foo"
                     render={() => 
                         <DateRangePickerWithGaps 
-                //            dates={[
-                  //              {
-                    //                day: moment(),
-                      //              position: 0
-                        //        },
-             //                   {
-               //                     day: moment().add(1,'d'),
-                 //                   position: 1
-                   //             },
-             //                   {
-               //                     day: moment().add(2, 'd'),
-          //                          position: 2
-            //                    }
-              //              ]}
-                        numberOfDates={4}
+                     //       numberOfDates={4}
+                            dates={[
+                                {
+                                    day: moment(),
+                                    position: 0
+                                },
+                                {
+                                    day: moment().add(1,'d'),
+                                    position: 1
+                                },
+                                {
+                                    day: moment().add(2, 'd'),
+                                    position: 2
+                                }
+                            ]}
+
+                            startTimes={[
+                                {
+                                    start: "12:00",
+                                    position: 0
+                                },
+                                {
+                                    start: "12:00",
+                                    position: 1
+                                },
+                                {
+                                    start: "12:00",
+                                    position: 2
+                                }
+                            ]}
+                            endTimes={[
+                                {
+                                    end: "13:00",
+                                    position: 0
+                                },
+                                {
+                                    end: "13:00",
+                                    position: 1
+                                },
+                                {
+                                    end: "13:00",
+                                    position: 2
+                                }
+                            ]}
                         />
                     }
                 />

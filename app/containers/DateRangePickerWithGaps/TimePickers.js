@@ -64,32 +64,48 @@ export default class TimerPickers extends Component {
   render() {
     return (
       <div>
-        <div style={{
-          display: 'flex', 
-          width: 200,
-          justifyContent: 'space-between',
-        }}>
-          <label className="singleDpConStartLabel">start&nbsp;time</label>
-          <input 
-            type="time" 
-            value={this.state.startTime}
-            onChange={this.handleStartTime}
-//            onBlur={this.handleValidStartTimes}
-          />
-        </div>
-
-        <div style={{
-          display: 'flex', 
-          width: 200,
-          justifyContent: 'space-between',
-        }}>
-          <label>end&nbsp;time</label>
-          <input 
-            type="time" 
-            value={this.state.endTime}
-            onChange={this.handleEndTime}
-//            onBlur={this.handleValidEndTimes}
-          />
+        <div style={{display: 'flex'}}>
+          <div>
+            <div style={{
+              display: 'flex', 
+              width: 200,
+              justifyContent: 'space-around',
+            }}>
+              <label className="singleDpConStartLabel">start&nbsp;time</label>
+              <input 
+                type="time" 
+                value={this.state.startTime}
+                onChange={this.handleStartTime}
+              />
+            </div>
+            <div style={{
+              display: 'flex', 
+              width: 200,
+              justifyContent: 'space-around',
+            }}>
+              <label>end&nbsp;time</label>
+              <input 
+                type="time" 
+                value={this.state.endTime}
+                onChange={this.handleEndTime}
+    //            onBlur={this.handleValidEndTimes}
+              />
+            </div>
+          </div>
+          <div 
+            onClick={() => {
+              this.setState({
+                endTime: '',
+                startTime: '',
+                preEndTime: '',
+                preStartTime: ''  ,
+              });
+            }} 
+            style={{alignSelf: 'center'}}
+            className="fuck"
+          >
+            x
+          </div>
         </div>
       </div>
     );
