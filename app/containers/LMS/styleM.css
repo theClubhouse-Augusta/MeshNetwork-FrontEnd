@@ -1,1 +1,35 @@
 /* Home Mobile Styles */
+
+@media (max-width: 425px) {
+  .lmsHomeHeader {
+    height: 40vh;
+  }
+
+  .lmsHomeHeaderHeading {
+    font-size: 3em;
+  }
+
+  .lmsHomeHeaderText {
+    font-size: 1.25em;
+    margin-top: 30px;
+  }
+
+  .lmsHomeMainList {
+    flex-direction: column;
+  }
+
+  .lmsHomeMainBlock {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .lmsEnrollMain,
+  .lmsEnrollContent {
+    flex-direction: column;
+  }
+
+  .lmsEnrollSummary,
+  .lmsEnrollPayment {
+    width: 90%;
+  }
+}

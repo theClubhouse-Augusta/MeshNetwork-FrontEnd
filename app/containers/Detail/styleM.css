@@ -1,1 +1,16 @@
 /* Detail Mobile Styles */
+
+@media (max-width: 425px) {
+  .challenges_contentContainer {
+    flex-direction: column;
+    width: auto;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .challenges_detailColumnOne {
+    width: 85%;
+    margin: 0;
+    padding: 0;
+  }
+}

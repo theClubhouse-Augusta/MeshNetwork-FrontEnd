@@ -1,1 +1,7 @@
 /* Detail Mobile Styles */
+
+@media (max-width: 425px) {
+  .lmsDetailHeader {
+    text-align: center;
+  }
+}
