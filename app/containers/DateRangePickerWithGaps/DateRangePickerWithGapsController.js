@@ -11,8 +11,8 @@ export default class DateRangePickerWithGapsController extends Component {
       focused: false,
       date: !!props.date ? props.date : null,
       dates: props.dates,
-      startTime: props.startTime,
-      endTime: props.endTime,
+      //startTime: props.startTime,
+      //endTime: props.endTime,
       position: props.position,
       isOrdered: !!props.ordered,
       repeatsAllowed: !!props.ordered ? false : !!props.repeatsAllowed,
@@ -26,27 +26,41 @@ export default class DateRangePickerWithGapsController extends Component {
   }
 
   render() {
+    const {
+      position,
+      date,
+      focused,
+      dates,
+    } = this.state;
+    const {
+      showClearDate,
+      numberOfMonths,
+      handleStartTimes,
+      handleEndTimes,
+      clearEndTimes,
+      clearStartTimes
+    } = this.props;
     return (
       <div className="singleDpCon">
         <SingleDatePicker
-          placeholder={`Day ${this.state.position + 1}`}
-          date={this.state.date} // momentPropTypes.momentObj or null
+          placeholder={`Day ${position + 1}`}
+          date={date} // momentPropTypes.momentObj or null
           onDateChange={this.onDateChange} // PropTypes.func.isRequired
-          focused={this.state.focused} // PropTypes.bool
+          focused={focused} // PropTypes.bool
           onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-          showClearDate={this.props.showClearDate}
-          numberOfMonths={this.props.numberOfMonths}
+          showClearDate={showClearDate}
+          numberOfMonths={numberOfMonths}
           showDefaultInputIcon
         />
         <TimePickers 
-          position={this.state.position} 
-          startTime={this.state.startTime}
-          endTime={this.state.endTime}
-          handleStartTimes={this.props.handleStartTimes}
-          handleEndTimes={this.props.handleEndTimes}
-          clearEndTimes={this.props.clearEndTimes}
-          clearStartTimes={this.props.clearStartTimes}
-          date={this.state.date}
+          position={position} 
+          startTime={dates[position].start}
+          endTime={dates[position].end}
+          handleStartTimes={handleStartTimes}
+          handleEndTimes={handleEndTimes}
+          clearEndTimes={clearEndTimes}
+          clearStartTimes={clearStartTimes}
+          date={date}
           //startTime
           //endTime
         />
