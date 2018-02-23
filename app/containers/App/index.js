@@ -103,46 +103,21 @@ export default class App extends Component {
                             dates={[
                                 {
                                     day: moment(),
-                                    position: 0
+                                    start: "13:00",
+                                    end: "15:00",
                                 },
                                 {
                                     day: moment().add(1,'d'),
-                                    position: 1
+                                    start: "13:00",
+                                    end: "15:00",
                                 },
                                 {
                                     day: moment().add(2, 'd'),
-                                    position: 2
+                                    start: "13:00",
+                                    end: "15:00",
                                 }
                             ]}
 
-                            startTimes={[
-                                {
-                                    start: "12:00",
-                                    position: 0
-                                },
-                                {
-                                    start: "12:00",
-                                    position: 1
-                                },
-                                {
-                                    start: "12:00",
-                                    position: 2
-                                }
-                            ]}
-                            endTimes={[
-                                {
-                                    end: "13:00",
-                                    position: 0
-                                },
-                                {
-                                    end: "13:00",
-                                    position: 1
-                                },
-                                {
-                                    end: "13:00",
-                                    position: 2
-                                }
-                            ]}
                         />
                     }
                 />

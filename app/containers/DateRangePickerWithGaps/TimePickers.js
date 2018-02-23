@@ -22,9 +22,6 @@ export default class TimerPickers extends Component {
       const validStartTime = this.state.preStartTime.length === 5 ? this.props.handleStartTimes(this.state.preStartTime, this.state.date, this.state.position) : false;
       if (validStartTime) this.setState({ startTime: this.state.preStartTime });
     })
-    // const { validStartTime } = this.state;
-    // if (validStartTime) this.setState(() => ({ startTime }));
-    // else this.setState(() => ({ startTime: '' }))
   };
 
   handleEndTime = e => {
@@ -33,35 +30,11 @@ export default class TimerPickers extends Component {
       const validEndTime = this.state.preEndTime.length === 5 ? this.props.handleEndTimes(this.state.preEndTime, this.state.date, this.state.position) : false;
       if (validEndTime) this.setState({ endTime: this.state.preEndTime });
     })
-    // let endTime = e.target.value;
-    // // const { validEndTime } = this.state;
-    // const validEndTime = e.target.value.length === 5 ? this.props.handleEndTimes(endTime, this.state.date, this.state.position) : false;
-    // if (validEndTime) this.setState(() => ({ endTime }));
-    // // else this.setState(() => ({ endTime: '' }))
   };
 
-  handleValidEndtimes = () => {
-    let {
-      endTime,
-      date,
-      position,
-      validEndTime,
-    } = this.state;
-    validEndTime = (endTime && date && position !== undefined) ? this.props.handleEndTimes(endTime, date, position) : false;
-    this.setState(() => ({ validEndTime }));
-  };
-  handleValidStartTimes = () => {
-    let {
-      startTime,
-      date,
-      position,
-      validStartTime,
-    } = this.state;
-    validStartTime = (startTime && date && position !== undefined) ? this.props.handleStartTimes(startTime, date, position) : false;
-    this.setState(() => ({ validStartTime }));
-  };
 
   render() {
+    const { startTime, endTime, position } = this.state;
     return (
       <div>
         <div style={{display: 'flex'}}>
@@ -74,7 +47,7 @@ export default class TimerPickers extends Component {
               <label className="singleDpConStartLabel">start&nbsp;time</label>
               <input 
                 type="time" 
-                value={this.state.startTime}
+                value={startTime}
                 onChange={this.handleStartTime}
               />
             </div>
@@ -86,19 +59,19 @@ export default class TimerPickers extends Component {
               <label>end&nbsp;time</label>
               <input 
                 type="time" 
-                value={this.state.endTime}
+                value={endTime}
                 onChange={this.handleEndTime}
-    //            onBlur={this.handleValidEndTimes}
               />
             </div>
           </div>
           <div 
             onClick={() => {
               this.setState({
-                endTime: '',
-                startTime: '',
                 preEndTime: '',
                 preStartTime: ''  ,
+              }, () => {
+                this.props.clearStartTimes(position);
+                this.props.clearEndTimes(position);
               });
             }} 
             style={{alignSelf: 'center'}}

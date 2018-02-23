@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { 
-  SingleDatePicker 
-} from 'react-dates';
+import { SingleDatePicker } from 'react-dates';
 
 import TimePickers from './TimePickers';
 import './style.css';
@@ -13,9 +11,7 @@ export default class DateRangePickerWithGapsController extends Component {
       focused: false,
       date: !!props.date ? props.date : null,
       dates: props.dates,
-      startTimes: props.startTimes,
       startTime: props.startTime,
-      endTimes: props.endTimes,
       endTime: props.endTime,
       position: props.position,
       isOrdered: !!props.ordered,
@@ -23,31 +19,10 @@ export default class DateRangePickerWithGapsController extends Component {
     };
   }
 
-  // componentWillUpdate(nextProps) {
-  //   if (nextProps.date === false) {
-
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps, prevState) {
-
-    // if (this.props.validDate === false) { 
-      // this.setState(() => ({ date: prevState.date }));
-    // }
-  // }
-
   onDateChange = date => {
-    console.log('wtf')
-    let { 
-      position, 
-      isOrdered,
-      repeatsAllowed,
-      dates
-    } = this.state;
-    const validDate = this.props.handleDates(date, dates[position].day, position, isOrdered, repeatsAllowed);
-    if (validDate) this.setState({ date: date }, () => {
-      console.log('bar');
-    });
+    let { position, isOrdered, repeatsAllowed, } = this.state;
+    const validDate = this.props.handleDates(date, position, isOrdered, repeatsAllowed);
+    if (validDate) this.setState(() => ({ date }));
   }
 
   render() {
