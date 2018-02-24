@@ -91,9 +91,7 @@ export default class DateRangePickerWithGaps extends PureComponent {
     let validStartTime = true;
     if (date && currentEndTime) {
       validStartTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newStartTime}`).isBefore(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentEndTime}`))
-      validStartTime 
-        ? dates[position].start = newStartTime 
-        : this.showSnack(' 0 Invalid time');
+      validStartTime ? dates[position].start = newStartTime : this.showSnack(' 0 Invalid time');
     } else {
       dates[position].start = newStartTime;
     }
@@ -106,9 +104,7 @@ export default class DateRangePickerWithGaps extends PureComponent {
     let validEndTime = true;
     if (date && currentStartTime) {
       validEndTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newEndTime}`).isAfter(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentStartTime}`))
-      validEndTime 
-        ? dates[position].end = newEndTime 
-        : this.showSnack(' 2 invalid time');
+      validEndTime ? dates[position].end = newEndTime : this.showSnack(' 2 invalid time');
     } else {
       dates[position].end = newEndTime;
     }

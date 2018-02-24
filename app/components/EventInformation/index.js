@@ -14,11 +14,11 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
-import { DateRangePicker } from 'react-dates';
 import moment from 'moment';
 
+import DateRangePickerWithGaps from '../DateRangePickerWithGaps';
 import RaisedButton from '../../containers/AddEvent/RaisedButton';
-// import DateTimeSelect from '../DateTimeSelect';
+import DateTimeSelect from '../DateTimeSelect';
 import { SelectedSponsors } from '../../containers/AddEvent/SelectedSponsors';
 
 import authenticate from '../../utils/Authenticate';
@@ -115,15 +115,6 @@ export default class EventInformation extends PureComponent {
         }
     }
 
-    // componentDidUpdate(prevState) {
-        // if (this.state.event !== prevState.event) {
-            // console.log('foo');
-            // this.previosOrganizers();
-            // this.previosSponsors();
-            // this.previousDates();
-        // }       
-    // }
-
     getEvent = eventID => {
         fetch(`http://localhost:8000/api/event/${eventID}`)
             .then(response => response.json())
@@ -141,10 +132,10 @@ export default class EventInformation extends PureComponent {
                 }, () => {
                     this.previousSponsors();
                     this.previousOrganizers();
-                    // this.previousDates();
+                    this.previousDates();
                 });
             })
-        }
+        };
 
         previousSponsors = () => {
             if (this.state.eventSponsors.length) {
@@ -154,7 +145,7 @@ export default class EventInformation extends PureComponent {
                     this.setState({ selectedSponsors: selectedSponsors });
                 })
             }
-        }
+        };
 
         previousOrganizers = () => {
             if (this.state.eventOrganizers.length) {
@@ -175,39 +166,24 @@ export default class EventInformation extends PureComponent {
                     });
                     this.state.eventDates.forEach((date, i) => {
                         let start = date.start.split(' ');
+                        let day = moment(start[0]);
+                        let startTimeSeconds = start[1].lastIndexOf(':');
+                        let startTime = start[1].slice(0, startTimeSeconds);
+
                         let end = date.end.split(' ');
+                        let endTimeSeconds = end[1].lastIndexOf(':');
+                        let endTime = end[1].slice(0, endTimeSeconds);
 
                         this.setState((prevState) => {
                             const dateMulti = prevState.dateMulti.slice();
                             dateMulti.push({ 
-                                day: start[0],
-                                index: i 
-                            })
-                            return {dateMulti: dateMulti};
-                        });
-
-                        this.setState((prevState) => {
-                            const startMulti = prevState.startMulti.slice();
-                            let seconds = start[1].lastIndexOf(':');
-                            let startTime = start[1].slice(0, seconds);
-                            startMulti.push({
+                                day: day,
                                 start: startTime,
-                                index: i
-                            })
-                            return {startMulti: startMulti};
-                        });
-  
-                        this.setState((prevState) => {
-                            const endMulti = prevState.endMulti.slice();
-                            let seconds = end[1].lastIndexOf(':');
-                            let endTime = end[1].slice(0, seconds);
-                            endMulti.push({
                                 end: endTime,
-                                index: i
-                            })
-                            return {endMulti: endMulti};
+                            });
+                            return { dateMulti: dateMulti }    
                         });
-                    })
+                    });
                 }
             }
         }
@@ -718,10 +694,10 @@ export default class EventInformation extends PureComponent {
             sponsors,
             checkNewSponsors,
             loadedTags,
-            // days,
-            // dateMulti,
-            // startMulti,
-            // endMulti
+            days,
+            dateMulti,
+            startMulti,
+            endMulti
         } = this.state;
 
         const options = [
@@ -735,271 +711,261 @@ export default class EventInformation extends PureComponent {
             }
         ];
         return (
-                <div>
-                            <DateRangePicker
-                                startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                                startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                                endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                                endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                                onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                                focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                                onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+            <div className="container">
+                <Helmet>
+                    <title>Create Event Form</title>
+                    <meta name="description" content="Description of Create event form" />
+                </Helmet>
+
+                <div className="addEventBanner">
+                    <div className="homeHeaderContentTitle">Add a New Event</div>
+                    <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
+                </div>
+                <main className="spaceSignUpMain">
+
+                    <div className="spaceSignUpTitle">Submit an Event</div>
+                    <div className="spaceSignUpContainer">
+
+                        <TextField label="Event name" onChange={this.eventName} value={this.state.name} type="text" name="eventName" margin="normal" />
+                        <TextField onChange={this.eventUrl} type="url" value={this.state.url} label="Event url" margin="normal" />
+                        <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
+
+                        {!!loadedTags.length &&
+                            <FormControl style={{ marginTop: 24 }}>
+                                <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
+                                <Select
+                                    multiple
+                                    value={this.state.selectedTags}
+                                    onChange={this.handleSkillTags}
+                                    input={<Input id="tag-multiple" />}
+                                    renderValue={selected => selected.join(',')}
+                                    MenuProps={MenuProps}
+                                >
+                                    {loadedTags.map((tag, key) => (
+                                        <MenuItem key={`${key}tag`} value={tag}>
+                                            <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
+                                            <ListItemText primary={tag} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        }
+
+                        {!!organizers.length &&
+                            <FormControl style={{ marginTop: 24 }}>
+                                <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
+                                <Select
+                                    multiple
+                                    value={this.state.selectedOrganizers}
+                                    onChange={this.handleOrganizerChange}
+                                    input={<Input id="tag-multiple" />}
+                                    renderValue={selected => selected.join(',')}
+                                    MenuProps={MenuProps}
+                                >
+                                    {organizers.map(organizer => (
+                                        <MenuItem key={organizer} value={organizer}>
+                                            <Checkbox checked={this.state.selectedOrganizers.indexOf(organizer) > -1} />
+                                            <ListItemText primary={organizer} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        }
+
+                        {!!sponsors.length &&
+                            <FormControl style={{ marginTop: 24 }}>
+                                <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
+                                <Select
+                                    multiple
+                                    value={this.state.selectedSponsors}
+                                    onChange={this.handleSponsorChange}
+                                    input={<Input id="tag-multiple" />}
+                                    renderValue={selected => selected.join(',')}
+                                    MenuProps={MenuProps}
+                                >
+                                    {sponsors.map(sponsor => (
+                                        <MenuItem key={sponsor} value={sponsor}>
+                                            <Checkbox checked={this.state.selectedSponsors.indexOf(sponsor) > -1} />
+                                            <ListItemText primary={sponsor} />
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        }
+
+                        {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
+                        {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
+                        {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
+                        {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
+
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                height: 50,
+                                color: 'rgba(0,0,0,0.54)',
+                                justifyContent: 'space-between',
+                                marginBottom: parseInt(this.state.checkedRadio, 10) === 1 ? 32 : '',
+                                marginTop: 32
+                            }}
+                        >
+                            {options.map((item, i) =>
+                                <label key={`l${item.id}`} className="radio-inline">
+                                    <input
+                                        type="radio"
+                                        checked={this.state.checkedRadio === i.toString()}
+                                        ref={(el) => this["myRadioRef" + i] = el}
+                                        value={item.id}
+                                        onChange={this.changeRadio}
+                                        onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
+                                    />
+                                    <span style={{ paddingLeft: 8 }}>{item.option}</span>
+                                </label>
+                            )}
+                        </div>
+
+                        {parseInt(this.state.checkedRadio, 10) === 1 &&
+                            <TextField
+                                label="How many days?"
+                                onChange={this.eventDays}
+                                value={this.state.days}
+                                type="text"
+                            />} 
+
+                         {parseInt(this.state.checkedRadio, 10) === 0 && [
+                            <label key="singleDay" className="addEventFormLabel"> date & time </label>,
+                            <DateTimeSelect
+                                key="singleDay2"
+                                dateLabel="Start date"
+                                startTimeLabel="event start"
+                                endTimeLabel="event end"
+                                multiday={false}
+                                selectDate={this.selectDate}
+                                selectStart={this.selectStart}
+                                selectEnd={this.selectEnd}
+                            />
+                        ]}
+
+                         {(
+                            parseInt(this.state.checkedRadio, 10) === 1 
+                                && days 
+                                && dateMulti.length === days
+                            ) &&
+                            <DateRangePickerWithGaps 
+                                dates={dateMulti}
+                            />
+                        } 
+
+                         {(
+                            parseInt(this.state.checkedRadio, 10) === 1 
+                                && days 
+                                && dateMulti.length !== days
+                            ) &&
+                            <DateRangePickerWithGaps 
+                                numberOfDates={days}
+                            />
+                        } 
+
+                        <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
+                            <input
+                                id="newSponsors"
+                                type="checkbox"
+                                onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null}
+                                onChange={this.toggleNewSponsors}
+                                checked={checkNewSponsors}
                             />
 
-                </div>
+                            <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                                &nbsp;&nbsp;Add new sponsor
+                            </label>
+
+                        </div>
+
+                        {checkNewSponsors && [
+                            <TextField
+                                key="newSponTF1"
+                                label="name"
+                                onChange={this.sponsorName}
+                                value={this.state.sponsorNames}
+                                type="text"
+                                margin="normal"
+                            />,
+
+                            <TextField
+                                key="newSponTF2"
+                                label="website"
+                                onChange={this.sponsorUrl}
+                                value={this.state.sponsorWebsites}
+                                type="url"
+                                margin="normal"
+                            />,
+
+                            <div key="newSponTF3" className="spaceLogoMainImageRow">
+                                <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
+                                    {this.renderLogoImageText()}
+                                    {this.renderLogoImage()}
+                                    <input
+                                        type="file"
+                                        onChange={this.handleLogo}
+                                        id="logo-image"
+                                        style={{ display: 'none' }}
+                                        accept="image/png, image/jpg, image/jpeg"
+                                    />
+                                </label>
+                            </div>,
+
+                            <RaisedButton
+                                key="newSponTF4"
+                                onSubmit={this.onNewSponsorSubmit}
+                                sponsor
+                                style={{
+                                    backgroundColor: '#3399cc',
+                                    marginBottom: 64,
+                                    padding: '10px',
+                                    marginTop: '15px',
+                                    color: 'rgba(0,0,0,0.54)',
+                                    fontWeight: 'bold'
+                                }}
+                            />
+                        ]}
+
+                        {!!newSponsors.length &&
+                            <SelectedSponsors
+                                selectedSponsors={newSponsors}
+                                removeSponsor={this.removeNewSponsor}
+                                newSponsor={true}
+                            />}
+
+                        <div className="spaceLogoMainImageRow">
+                            <label htmlFor="event-image" className="spaceLogoMainImageBlock">
+                                {this.renderEventImageText()}
+                                {this.renderEventImage()}
+                                <input
+                                    type="file"
+                                    onChange={this.handleEventImage}
+                                    id="event-image"
+                                    style={{ display: 'none' }}
+                                    accept="image/png, image/jpg, image/jpeg"
+                                />
+                            </label>
+                        </div>
+
+                        <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
+                            Submit Event
+                        </FlatButton>
+                    </div>
+                </main>
+                <footer className="homeFooterContainer">
+                    Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+                </footer>
+                <Snackbar
+                    open={snackBar}
+                    message={snackBarMessage}
+                    autoHideDuration={4000}
+                    onClose={this.handleRequestClose}
+                />
+            </div>
         );
     }
 }
  
-                // {/* <div className="container">
-                //     <Helmet>
-                //         <title>Create Event Form</title>
-                //         <meta name="description" content="Description of Create event form" />
-                //     </Helmet>
-
-                //     <div className="addEventBanner">
-                //         <div className="homeHeaderContentTitle">Add a New Event</div>
-                //         <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
-                //     </div>
-                //     <main className="spaceSignUpMain">
-
-                //         <div className="spaceSignUpTitle">Submit an Event</div>
-                //         <div className="spaceSignUpContainer">
-
-                //             <TextField label="Event name" onChange={this.eventName} value={this.state.name} type="text" name="eventName" margin="normal" />
-                //             <TextField onChange={this.eventUrl} type="url" value={this.state.url} label="Event url" margin="normal" />
-                //             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
-
-                //             {!!loadedTags.length &&
-                //                 <FormControl style={{ marginTop: 24 }}>
-                //                     <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
-                //                     <Select
-                //                         multiple
-                //                         value={this.state.selectedTags}
-                //                         onChange={this.handleSkillTags}
-                //                         input={<Input id="tag-multiple" />}
-                //                         renderValue={selected => selected.join(',')}
-                //                         MenuProps={MenuProps}
-                //                     >
-                //                         {loadedTags.map((tag, key) => (
-                //                             <MenuItem key={`${key}tag`} value={tag}>
-                //                                 <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
-                //                                 <ListItemText primary={tag} />
-                //                             </MenuItem>
-                //                         ))}
-                //                     </Select>
-                //                 </FormControl>
-                //             }
-
-                //             {!!organizers.length &&
-                //                 <FormControl style={{ marginTop: 24 }}>
-                //                     <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
-                //                     <Select
-                //                         multiple
-                //                         value={this.state.selectedOrganizers}
-                //                         onChange={this.handleOrganizerChange}
-                //                         input={<Input id="tag-multiple" />}
-                //                         renderValue={selected => selected.join(',')}
-                //                         MenuProps={MenuProps}
-                //                     >
-                //                         {organizers.map(organizer => (
-                //                             <MenuItem key={organizer} value={organizer}>
-                //                                 <Checkbox checked={this.state.selectedOrganizers.indexOf(organizer) > -1} />
-                //                                 <ListItemText primary={organizer} />
-                //                             </MenuItem>
-                //                         ))}
-                //                     </Select>
-                //                 </FormControl>
-                //             }
-
-                //             {!!sponsors.length &&
-                //                 <FormControl style={{ marginTop: 24 }}>
-                //                     <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
-                //                     <Select
-                //                         multiple
-                //                         value={this.state.selectedSponsors}
-                //                         onChange={this.handleSponsorChange}
-                //                         input={<Input id="tag-multiple" />}
-                //                         renderValue={selected => selected.join(',')}
-                //                         MenuProps={MenuProps}
-                //                     >
-                //                         {sponsors.map(sponsor => (
-                //                             <MenuItem key={sponsor} value={sponsor}>
-                //                                 <Checkbox checked={this.state.selectedSponsors.indexOf(sponsor) > -1} />
-                //                                 <ListItemText primary={sponsor} />
-                //                             </MenuItem>
-                //                         ))}
-                //                     </Select>
-                //                 </FormControl>
-                //             }
-
-                //             {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
-                //             {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-                //             {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
-                //             {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-
-                //             <div
-                //                 style={{
-                //                     display: 'flex',
-                //                     flexDirection: 'column',
-                //                     height: 50,
-                //                     color: 'rgba(0,0,0,0.54)',
-                //                     justifyContent: 'space-between',
-                //                     marginBottom: parseInt(this.state.checkedRadio, 10) === 1 ? 32 : '',
-                //                     marginTop: 32
-                //                 }}
-                //             >
-                //                 {options.map((item, i) =>
-                //                     <label key={`l${item.id}`} className="radio-inline">
-                //                         <input
-                //                             type="radio"
-                //                             checked={this.state.checkedRadio === i.toString()}
-                //                             ref={(el) => this["myRadioRef" + i] = el}
-                //                             value={item.id}
-                //                             onChange={this.changeRadio}
-                //                             onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
-                //                         />
-                //                         <span style={{ paddingLeft: 8 }}>{item.option}</span>
-                //                     </label>
-                //                 )}
-                //             </div>
-
-                //             {/* {parseInt(this.state.checkedRadio, 10) === 1 &&
-                //                 <TextField
-                //                     label="How many days?"
-                //                     onChange={this.eventDays}
-                //                     value={this.state.days}
-                //                     type="text"
-                //                 />} */}
-
-                //             {/* {parseInt(this.state.checkedRadio, 10) === 0 && [
-                //                 <label key="singleDay" className="addEventFormLabel"> date & time </label>,
-                //                 <DateTimeSelect
-                //                     key="singleDay2"
-                //                     dateLabel="Start date"
-                //                     startTimeLabel="event start"
-                //                     endTimeLabel="event end"
-                //                     multiday={false}
-                //                     selectDate={this.selectDate}
-                //                     selectStart={this.selectStart}
-                //                     selectEnd={this.selectEnd}
-                //                 />
-                //             ]} */}
-
-                //             {/* {(
-                //                 parseInt(this.state.checkedRadio, 10) === 1 
-                //                     && days 
-                //                     && dateMulti.length === days
-                //                     && startMulti.length === days
-                //                     && endMulti.length === days
-                //                 ) && this.multiDay(days)
-                //             } */}
-                //             <DateRangePicker
-                //                 startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                //                 startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                //                 endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                //                 endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                //                 onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
-                //                 focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                //                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
-                //             />
-
-                //             <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
-                //                 <input
-                //                     id="newSponsors"
-                //                     type="checkbox"
-                //                     onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null}
-                //                     onChange={this.toggleNewSponsors}
-                //                     checked={checkNewSponsors}
-                //                 />
-
-                //                 <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
-                //                     &nbsp;&nbsp;Add new sponsor
-                //                 </label>
-
-                //             </div>
-
-                //             {checkNewSponsors && [
-                //                 <TextField
-                //                     key="newSponTF1"
-                //                     label="name"
-                //                     onChange={this.sponsorName}
-                //                     value={this.state.sponsorNames}
-                //                     type="text"
-                //                     margin="normal"
-                //                 />,
-
-                //                 <TextField
-                //                     key="newSponTF2"
-                //                     label="website"
-                //                     onChange={this.sponsorUrl}
-                //                     value={this.state.sponsorWebsites}
-                //                     type="url"
-                //                     margin="normal"
-                //                 />,
-
-                //                 <div key="newSponTF3" className="spaceLogoMainImageRow">
-                //                     <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
-                //                         {this.renderLogoImageText()}
-                //                         {this.renderLogoImage()}
-                //                         <input
-                //                             type="file"
-                //                             onChange={this.handleLogo}
-                //                             id="logo-image"
-                //                             style={{ display: 'none' }}
-                //                             accept="image/png, image/jpg, image/jpeg"
-                //                         />
-                //                     </label>
-                //                 </div>,
-
-                //                 <RaisedButton
-                //                     key="newSponTF4"
-                //                     onSubmit={this.onNewSponsorSubmit}
-                //                     sponsor
-                //                     style={{
-                //                         backgroundColor: '#3399cc',
-                //                         marginBottom: 64,
-                //                         padding: '10px',
-                //                         marginTop: '15px',
-                //                         color: 'rgba(0,0,0,0.54)',
-                //                         fontWeight: 'bold'
-                //                     }}
-                //                 />
-                //             ]}
-
-                //             {!!newSponsors.length &&
-                //                 <SelectedSponsors
-                //                     selectedSponsors={newSponsors}
-                //                     removeSponsor={this.removeNewSponsor}
-                //                     newSponsor={true}
-                //                 />}
-
-                //             <div className="spaceLogoMainImageRow">
-                //                 <label htmlFor="event-image" className="spaceLogoMainImageBlock">
-                //                     {this.renderEventImageText()}
-                //                     {this.renderEventImage()}
-                //                     <input
-                //                         type="file"
-                //                         onChange={this.handleEventImage}
-                //                         id="event-image"
-                //                         style={{ display: 'none' }}
-                //                         accept="image/png, image/jpg, image/jpeg"
-                //                     />
-                //                 </label>
-                //             </div>
-
-                //             <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
-                //                 Submit Event
-                //             </FlatButton>
-                //         </div>
-                //     </main>
-                //     <footer className="homeFooterContainer">
-                //         Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-                //     </footer>
-                //     <Snackbar
-                //         open={snackBar}
-                //         message={snackBarMessage}
-                //         autoHideDuration={4000}
-                //         onClose={this.handleRequestClose}
-                //     />
-                // </div> */}
