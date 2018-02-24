@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { SingleDatePicker } from 'react-dates';
 
 import TimePickers from './TimePickers';
 import './style.css';
 
-export default class DateRangePickerWithGapsController extends Component {
+export default class DateRangePickerWithGapsController extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       focused: false,
       date: !!props.date ? props.date : null,
       dates: props.dates,
-      //startTime: props.startTime,
-      //endTime: props.endTime,
       position: props.position,
       isOrdered: !!props.ordered,
       repeatsAllowed: !!props.ordered ? false : !!props.repeatsAllowed,

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import DateRangePickerWithGapsController from './DateRangePickerWithGapsController';
 import moment from 'moment';
 import Snackbar from 'material-ui/Snackbar';
 
-export default class DateRangePickerWithGaps extends Component {
+export default class DateRangePickerWithGaps extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,16 +12,12 @@ export default class DateRangePickerWithGaps extends Component {
       repeatsAllowed: !!props.ordered ? false : !!props.repeatsAllowed,
       snackMsg: "",
       snack: false,
-      clearStartTimes: false,
-      clearEndTimes: false,
     };
   }
   convertToMinutes = 60;
 
   componentDidMount() {
-    const {
-      dates,
-    } = this.state
+    const { dates } = this.state
 
     if (!dates.length) {
       this.setDatesIfNoneProvidedByProps(this.props.numberOfDates);
@@ -44,7 +40,9 @@ export default class DateRangePickerWithGaps extends Component {
 
 
   handleDates = (newDay, positionOfDayPicker, isOrdered, repeatsAllowed) => {
-    let { dates } = this.state;
+    console.log('handleDates')
+    let  dates = this.state.dates.slice();
+
     let validDateAfter = true;
     let validDateBefore = true;
     let validDateSame = true;
@@ -88,13 +86,13 @@ export default class DateRangePickerWithGaps extends Component {
     return validDateBefore && validDateAfter && validDateSame;
   };
 
-  handleStartTimes = (newStartTime, date, position) => {
-    const { dates } = this.state;
+  handleStartTimes = (newStartTime, currentEndTime, date, position) => {
+    let dates  = this.state.dates.slice();
     let validStartTime = true;
     dates.forEach((date, index) => {
       if (index === position) {
-        if (dates[index].end && date) {
-          validStartTime = moment(`${date.day.format('YYYY-MM-DD')} ${newStartTime}`).isBefore(moment(`${date.day.format('YYYY-MM-DD')} ${dates[index].end}`))
+        if (date && currentEndTime) {
+          validStartTime = moment(`${date.day.format('YYYY-MM-DD')} ${newStartTime}`).isBefore(moment(`${date.day.format('YYYY-MM-DD')} ${currentEndTime}`))
           validStartTime ? date.start = newStartTime : this.showSnack(' 0 Invalid time');
         } else {
           date.start = newStartTime;
@@ -106,7 +104,7 @@ export default class DateRangePickerWithGaps extends Component {
   };
 
   handleEndTimes = (newEndTime, date, position) => {
-    const { dates } = this.state;
+    let dates  = this.state.dates;
     let validEndTime = true;
     dates.forEach((date, index) => {
       if (index === position) {
@@ -123,57 +121,45 @@ export default class DateRangePickerWithGaps extends Component {
   };
 
   clearStartTimes = position => {
-    console.log('cstart')
-    let { dates } = this.state;
-    dates.forEach((date, index) => {
-      if (index === position) date.start = "";
-    });
-    this.setState(() => ({ dates }), () => {this.forceUpdate()});
+    let dates = this.state.date.slice();
+    dates[position].start = "";
+    this.setState(() => ({ dates }));
   };
 
   clearEndTimes = position => {
-    console.log('cend', position)
-    let { dates } = this.state;
-    dates.forEach((date, index) => {
-      if (index === position) date.end = "";
-    });
-
-    // console.log('WTF0', this.state.dates);
-    this.setState(() => ({ dates }), () => {this.forceUpdate()});
+    let dates = this.state.dates.slice();
+    dates[position].end = "";
+    this.setState(() => ({ dates }));
   };
 
   handleRequestClose = () => { this.setState({ snack: false, snackMsg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, snackMsg: msg }); };
 
   render() {
-    // let { dates } = this.state;
+    let { dates } = this.state;
     return (
       <div style={{height: '100vh'}}>
         <div style={{ display: 'flex', flexDirection: 'column', }}>
-          {this.state.dates.map((date, index) => {
-            console.log('wtfStart',date.start)
-            console.log('wtfend',date.end)
-            return (
-              <DateRangePickerWithGapsController 
-                key={`date${index}`}
-                date={date.day}
-                dates={this.state.dates}
-                //startTime={date.start}
-                //endTime={date.end}
-                position={index}
-                showClearDate
-                numberOfMonths={1}
-                handleDates={this.handleDates}
-                handleStartTimes={this.handleStartTimes}
-                handleEndTimes={this.handleEndTimes}
-                clearEndTimes={this.clearEndTimes}
-                clearStartTimes={this.clearStartTimes}
-                ordered={true}
-                //repeatsAllowed
+          {dates.map((date, index) => 
+            <DateRangePickerWithGapsController 
+              key={`date${index}`}
+              date={date.day}
+              dates={dates}
+              startTime={date.start}
+              endTime={date.end}
+              position={index}
+              showClearDate
+              numberOfMonths={1}
+              handleDates={this.handleDates}
+              handleStartTimes={this.handleStartTimes}
+              handleEndTimes={this.handleEndTimes}
+              clearEndTimes={this.clearEndTimes}
+              clearStartTimes={this.clearStartTimes}
+              ordered={true}
+              //repeatsAllowed
               // validDate={validDateAfter  && validDateBefore && validDateSame}
-              />
-            );
-          })}
+            />
+          )}
         </div>
         <Snackbar
           open={this.state.snack}

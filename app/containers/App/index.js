@@ -99,7 +99,7 @@ export default class App extends Component {
                     path="/Foo"
                     render={() => 
                         <DateRangePickerWithGaps 
-                     //       numberOfDates={4}
+                           // numberOfDates={2}
                             dates={[
                                 {
                                     day: moment(),
