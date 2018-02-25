@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import './style.css';
 // import moment from 'moment';
 
-export default class TimerPickers extends PureComponent {
+export default class TimerPickers extends Component {
   constructor(props) {
     super(props);
     this.state = {

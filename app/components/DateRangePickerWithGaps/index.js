@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import DateRangePickerWithGapsController from './DateRangePickerWithGapsController';
 import moment from 'moment';
 import Snackbar from 'material-ui/Snackbar';
 
-export default class DateRangePickerWithGaps extends PureComponent {
+export default class DateRangePickerWithGaps extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +42,6 @@ export default class DateRangePickerWithGaps extends PureComponent {
 
 
   handleDates = (newDay, positionOfDayPicker, isOrdered, repeatsAllowed) => {
-    console.log('handleDatesFoo')
     let  dates = this.state.dates.slice();
 
     let validDateAfter = true;
@@ -65,7 +64,7 @@ export default class DateRangePickerWithGaps extends PureComponent {
     }
 
     if (dates.length === 1) {
-      console.log('baz')
+      dates[0].day = newDay;
       this.setState({ dates }, () => {
         this.props.handleDate(dates);
       });
@@ -105,7 +104,6 @@ export default class DateRangePickerWithGaps extends PureComponent {
   handleStartTimes = (newStartTime, currentEndTime, date, position) => {
     let dates  = this.state.dates.slice();
     let validStartTime = true;
-    const multipleDays = dates.length > 1;
     if (date && currentEndTime) {
       validStartTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newStartTime}`).isBefore(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentEndTime}`))
       validStartTime 
@@ -122,7 +120,6 @@ export default class DateRangePickerWithGaps extends PureComponent {
 
   handleEndTimes = (newEndTime, currentStartTime, date, position) => {
     let dates  = this.state.dates.slice();
-    const multipleDays = dates.length > 1;
     let validEndTime = true;
     if (date && currentStartTime) {
       validEndTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newEndTime}`).isAfter(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentStartTime}`))

@@ -3,7 +3,7 @@
  * EventInformation
  *
  */
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
@@ -37,12 +37,11 @@ const MenuProps = {
     },
 };
 
-export default class EventInformation extends PureComponent {
+export default class EventInformation extends Component {
     state = {
         dateError: '',
         modalMessage: '',
         snackBar: false,
-        // event
         name: '',
         url: '',
         days: '',
@@ -50,25 +49,14 @@ export default class EventInformation extends PureComponent {
         selectedTag: '',
         selectedTags: [],
         selectedSponsors: [],
-        day: '',
-        start: '',
-        dateMulti: [],
-        end: '',
-        startMulti: [],
-        endMulti: [],
         newSponsors: [],
-        // organizers
         organizers: [],
         showOrganizers: false,
-        // sponsors
         sponsors: [],
         checkNewSponsors: '',
-        // add new Sponsor form values
         sponsorNames: '',
         sponsorLogos: '',
         sponsorWebsites: '',
-        // date/time
-        // tags
         loadedTags: [],
         checkedRadio: null,
         logo: '',
@@ -83,12 +71,12 @@ export default class EventInformation extends PureComponent {
         changeDateMulti: [],
         changeStartMulti: [],
         changeEndMulti: [],
-        // eventDescription: '',
         focusedInput: false,
-        startDate: moment(),
-        endDate: moment(),
-        date: [],
+        dates: [],
     };
+
+    singleDay = 0;
+    multipleDays = 1;
 
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token']);
@@ -154,52 +142,49 @@ export default class EventInformation extends PureComponent {
                     this.state.eventDates.forEach((date, i) => {
                         let start = date.start.split(' ');
                         const [ startDateString, startTimeString ] = start; 
-                        let day = moment(startDateString);
-                        let startTimeSeconds = startTimeString.lastIndexOf(':');
-                        let startTime = startTimeString.slice(0, startTimeSeconds);
+                        const day = moment(startDateString);
+                        const startTimeSeconds = startTimeString.lastIndexOf(':');
+                        start = startTimeString.slice(0, startTimeSeconds);
 
                         let end = date.end.split(' ');
                         const [, endTimeString ] = end; 
-                        let endTimeSeconds = endTimeString.lastIndexOf(':');
-                        let endTime = endTimeString.slice(0, endTimeSeconds);
+                        const endTimeSeconds = endTimeString.lastIndexOf(':');
+                        end = endTimeString.slice(0, endTimeSeconds);
 
                         this.setState((prevState) => {
-                            const dateMulti = prevState.dateMulti.slice();
-                            dateMulti.push({ 
-                                day: day,
-                                start: startTime,
-                                end: endTime,
+                            const dates = prevState.dates.slice();
+                            dates.push({ 
+                                day,
+                                start,
+                                end,
                             });
-                            return { dateMulti: dateMulti }    
+                            return { dates }    
                         });
                     });
                 } else if (this.state.eventDates.length === 1 && !!!this.state.checkedRadio) {
-                    this.setState({
-                        checkedRadio: 0, 
-                        // days: this.state.eventDates.length,
-                    });
-                    let [ date ] = this.state.eventDates.slice();
+                    this.setState({ checkedRadio: this.singleDay, });
+                    let [ dates ] = this.state.eventDates.slice();
 
 
-                    let start = date.start.split(' ');
+                    let start = dates.start.split(' ');
                     const [ dateString, startTimeString ] = start; 
                     const day = moment(dateString);
                     const startTimeWithSeconds = startTimeString.lastIndexOf(':');
                     start = startTimeString.slice(0, startTimeWithSeconds);
 
-                    let end = date.end.split(' ');
+                    let end = dates.end.split(' ');
                     const [, endTimeString ] = end; 
                     const endTimeWithSeconds = endTimeString.lastIndexOf(':');
                     end = endTimeString.slice(0, endTimeWithSeconds);
 
-                    date = [{
+                    dates = [{
                         day,
                         start,
                         end
                     }]
-                    this.setState(() => ({ date }));
+                    this.setState(() => ({ dates }));
 
-                }
+                } 
             }
         }
 
@@ -367,7 +352,6 @@ export default class EventInformation extends PureComponent {
                 }
             })
             .catch(error => {
-                // console.log(error);
             })
     }
 
@@ -409,32 +393,17 @@ export default class EventInformation extends PureComponent {
     }
     changeRadio = e => {
         const checkedRadio = parseInt(e.target.value, 10);
-        const singleDay = 0;
-        if (checkedRadio === singleDay) {
+        if (checkedRadio === this.singleDay) {
             this.setState({
                 checkedRadio,
                 days: 1,
-                dateMulti: [],
-                endMulti: [],
-                startMulti: [],
-                dateError: '',
-                day: '',
-                start: '',
-                end: '',
-                date: [],
+                dates: [],
             });
         } else {
             this.setState({
                 checkedRadio,
                 days: '',
-                dateMulti: [],
-                endMulti: [],
-                startMulti: [],
-                dateError: '',
-                day: '',
-                start: '',
-                end: '',
-                date: [],
+                dates: [],
             });
         }
 }
@@ -478,22 +447,19 @@ export default class EventInformation extends PureComponent {
             sponsors,
             checkNewSponsors,
             loadedTags,
-            days,
-            dateMulti,
-            date,
             checkedRadio,
+            days,
+            dates,
         } = this.state;
 
-        const singleDay = 0;
-        const multipleDays = 1;
 
         const options = [
             {
-                id: 0,
+                id: this.singleDay,
                 option: "one day event"
             },
             {
-                id: 1, 
+                id: this.multipleDays, 
                 option: "multi-day event"
             }
         ];
@@ -592,7 +558,7 @@ export default class EventInformation extends PureComponent {
                                 height: 50,
                                 color: 'rgba(0,0,0,0.54)',
                                 justifyContent: 'space-between',
-                                marginBottom: checkedRadio === multipleDays ? 32 : '',
+                                marginBottom: checkedRadio === this.multipleDays ? 32 : '',
                                 marginTop: 32
                             }}
                         >
@@ -611,7 +577,7 @@ export default class EventInformation extends PureComponent {
                             )}
                         </div>
 
-                        {checkedRadio === multipleDays &&
+                        {checkedRadio === this.multipleDays &&
                             <TextField
                                 label="How many days?"
                                 onChange={this.eventDays}
@@ -619,51 +585,43 @@ export default class EventInformation extends PureComponent {
                                 type="text"
                             />} 
 
-                         {checkedRadio === singleDay && 
+                         {checkedRadio === this.singleDay && 
                             <React.Fragment>
                                 <label key="singleDay" className="addEventFormLabel"> date & time </label>
                                 <DateRangePickerWithGaps 
-                                    dates={date.length ? date : [{
+                                    dates={dates.length ? dates : [{
                                         day: null,
                                         start: '',
                                         end: '',
                                     }]}
-                                    handleDate={foo => {
-                                        this.setState(() => ({ date: foo })); 
+                                    handleDate={dates => {
+                                        this.setState(() => ({ dates })); 
                                     }}
                                 />
                             </React.Fragment>
                         }
 
-                         {(
-                            checkedRadio === multipleDays 
-                                && days 
-                                && dateMulti.length === days
-                            ) &&
+                         {(checkedRadio === this.multipleDays && days && dates.length === days) &&
 
                             <React.Fragment>
                                 <h1>bar</h1>
                             <DateRangePickerWithGaps 
-                                dates={dateMulti}
+                                dates={dates}
                                 handleDate={dates => {
-                                    this.setState(() => ({ dateMulti: dates })); 
+                                    this.setState(() => ({ dates })); 
                                 }}
                             />
 
                             </React.Fragment>
                         } 
 
-                         {(
-                            checkedRadio === multipleDays
-                                && days 
-                                && dateMulti.length !== days
-                            ) &&
+                         {(checkedRadio === this.multipleDays && days && dates.length !== days) &&
                             <React.Fragment>
                                 <h1>foo</h1>
                             <DateRangePickerWithGaps 
                                 numberOfDates={days}
                                 handleDate={dates => {
-                                    this.setState(() => ({ dateMulti: dates })); 
+                                    this.setState(() => ({ dates })); 
                                 }}
                             />
 
