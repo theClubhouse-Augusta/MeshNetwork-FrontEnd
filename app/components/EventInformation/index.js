@@ -407,18 +407,37 @@ export default class EventInformation extends PureComponent {
             )
         }
     }
-    changeRadio = e => this.setState({
-        checkedRadio: e.target.value,
-        days: '',
-        dateMulti: [],
-        endMulti: [],
-        startMulti: [],
-        dateError: '',
-        day: '',
-        start: '',
-        end: '',
-        date: [],
-    });
+    changeRadio = e => {
+        const checkedRadio = parseInt(e.target.value, 10);
+        const singleDay = 0;
+        if (checkedRadio === singleDay) {
+            this.setState({
+                checkedRadio,
+                days: 1,
+                dateMulti: [],
+                endMulti: [],
+                startMulti: [],
+                dateError: '',
+                day: '',
+                start: '',
+                end: '',
+                date: [],
+            });
+        } else {
+            this.setState({
+                checkedRadio,
+                days: '',
+                dateMulti: [],
+                endMulti: [],
+                startMulti: [],
+                dateError: '',
+                day: '',
+                start: '',
+                end: '',
+                date: [],
+            });
+        }
+}
 
     handleLogo = (event) => {
         event.preventDefault();
@@ -461,8 +480,12 @@ export default class EventInformation extends PureComponent {
             loadedTags,
             days,
             dateMulti,
-            date
+            date,
+            checkedRadio,
         } = this.state;
+
+        const singleDay = 0;
+        const multipleDays = 1;
 
         const options = [
             {
@@ -569,7 +592,7 @@ export default class EventInformation extends PureComponent {
                                 height: 50,
                                 color: 'rgba(0,0,0,0.54)',
                                 justifyContent: 'space-between',
-                                marginBottom: parseInt(this.state.checkedRadio, 10) === 1 ? 32 : '',
+                                marginBottom: checkedRadio === multipleDays ? 32 : '',
                                 marginTop: 32
                             }}
                         >
@@ -577,7 +600,7 @@ export default class EventInformation extends PureComponent {
                                 <label key={`l${item.id}`} className="radio-inline">
                                     <input
                                         type="radio"
-                                        checked={this.state.checkedRadio === i.toString()}
+                                        checked={checkedRadio === i}
                                         ref={(el) => this["myRadioRef" + i] = el}
                                         value={item.id}
                                         onChange={this.changeRadio}
@@ -588,7 +611,7 @@ export default class EventInformation extends PureComponent {
                             )}
                         </div>
 
-                        {parseInt(this.state.checkedRadio, 10) === 1 &&
+                        {checkedRadio === multipleDays &&
                             <TextField
                                 label="How many days?"
                                 onChange={this.eventDays}
@@ -596,11 +619,15 @@ export default class EventInformation extends PureComponent {
                                 type="text"
                             />} 
 
-                         {parseInt(this.state.checkedRadio, 10) === 0 && 
+                         {checkedRadio === singleDay && 
                             <React.Fragment>
                                 <label key="singleDay" className="addEventFormLabel"> date & time </label>
                                 <DateRangePickerWithGaps 
-                                    dates={date}
+                                    dates={date.length ? date : [{
+                                        day: null,
+                                        start: '',
+                                        end: '',
+                                    }]}
                                     handleDate={foo => {
                                         this.setState(() => ({ date: foo })); 
                                     }}
@@ -609,29 +636,38 @@ export default class EventInformation extends PureComponent {
                         }
 
                          {(
-                            parseInt(this.state.checkedRadio, 10) === 1 
+                            checkedRadio === multipleDays 
                                 && days 
                                 && dateMulti.length === days
                             ) &&
+
+                            <React.Fragment>
+                                <h1>bar</h1>
                             <DateRangePickerWithGaps 
                                 dates={dateMulti}
                                 handleDate={dates => {
                                     this.setState(() => ({ dateMulti: dates })); 
                                 }}
                             />
+
+                            </React.Fragment>
                         } 
 
                          {(
-                            parseInt(this.state.checkedRadio, 10) === 1 
+                            checkedRadio === multipleDays
                                 && days 
                                 && dateMulti.length !== days
                             ) &&
+                            <React.Fragment>
+                                <h1>foo</h1>
                             <DateRangePickerWithGaps 
                                 numberOfDates={days}
                                 handleDate={dates => {
                                     this.setState(() => ({ dateMulti: dates })); 
                                 }}
                             />
+
+                            </React.Fragment>
                         } 
 
                         <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>

@@ -160,7 +160,7 @@ export default class DateRangePickerWithGaps extends PureComponent {
   render() {
     let { dates } = this.state;
     return (
-      <div style={{height: '100vh'}}>
+      <div>
         <div style={{ display: 'flex', flexDirection: 'column', }}>
           {dates.map((date, index) => 
             <DateRangePickerWithGapsController 
