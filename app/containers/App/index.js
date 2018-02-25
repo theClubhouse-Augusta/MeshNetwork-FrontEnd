@@ -47,6 +47,23 @@ export default class App extends Component {
             token: localStorage.getItem('token'),
             user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
             space: '',
+            dates: [
+                {
+                    day: moment(),
+                    start: "13:00",
+                    end: "15:00",
+                },
+                {
+                    day: moment().add(1,'d'),
+                    start: "13:00",
+                    end: "15:00",
+                },
+                {
+                    day: moment().add(2, 'd'),
+                    start: "13:00",
+                    end: "15:00",
+                }
+            ],
         };
     }
 
@@ -99,24 +116,11 @@ export default class App extends Component {
                     path="/Foo"
                     render={() => 
                         <DateRangePickerWithGaps 
-                           // numberOfDates={2}
-                            dates={[
-                                {
-                                    day: moment(),
-                                    start: "13:00",
-                                    end: "15:00",
-                                },
-                                {
-                                    day: moment().add(1,'d'),
-                                    start: "13:00",
-                                    end: "15:00",
-                                },
-                                {
-                                    day: moment().add(2, 'd'),
-                                    start: "13:00",
-                                    end: "15:00",
-                                }
-                            ]}
+                          //  numberOfDates={2}
+                            dates={this.state.dates}
+                            handleDate={dates => { 
+                                this.setState(() => ({ dates })); 
+                            }}
 
                         />
                     }

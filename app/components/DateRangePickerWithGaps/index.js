@@ -35,12 +35,14 @@ export default class DateRangePickerWithGaps extends PureComponent {
       });
       count++;
     }
-    this.setState(() => ({ dates }));
+    this.setState({ dates }, () => {
+      this.props.handleDate(dates)
+    });
   };
 
 
   handleDates = (newDay, positionOfDayPicker, isOrdered, repeatsAllowed) => {
-    console.log('handleDates')
+    console.log('handleDatesFoo')
     let  dates = this.state.dates.slice();
 
     let validDateAfter = true;
@@ -49,12 +51,24 @@ export default class DateRangePickerWithGaps extends PureComponent {
 
     if (newDay === null) {
       dates[positionOfDayPicker].day = null;
-      this.setState(() => ({ dates }));
+      this.setState({ dates }, () => {
+        this.props.handleDate(dates);
+      });
       return true;
     }
     if (!isOrdered && repeatsAllowed) {
       dates[positionOfDayPicker].day = null;
-      this.setState(() => ({ dates }));
+      this.setState({ dates }, () => {
+        this.props.handleDate(dates);
+      });
+      return true;
+    }
+
+    if (dates.length === 1) {
+      console.log('baz')
+      this.setState({ dates }, () => {
+        this.props.handleDate(dates);
+      });
       return true;
     }
 
@@ -79,7 +93,9 @@ export default class DateRangePickerWithGaps extends PureComponent {
         }
         if (validDateAfter && validDateBefore && validDateSame) {
           date.day = newDay;
-          this.setState(() => ({ dates }));
+          this.setState({ dates }, () => {
+            this.props.handleDate(dates);
+          });
         }
       }
     });
@@ -89,39 +105,53 @@ export default class DateRangePickerWithGaps extends PureComponent {
   handleStartTimes = (newStartTime, currentEndTime, date, position) => {
     let dates  = this.state.dates.slice();
     let validStartTime = true;
+    const multipleDays = dates.length > 1;
     if (date && currentEndTime) {
       validStartTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newStartTime}`).isBefore(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentEndTime}`))
-      validStartTime ? dates[position].start = newStartTime : this.showSnack(' 0 Invalid time');
+      validStartTime 
+        ? dates[position].start = newStartTime 
+        : this.showSnack(' 0 Invalid time');
     } else {
       dates[position].start = newStartTime;
     }
-    this.setState(() => ({ dates }));
+    this.setState({ dates }, () => {
+      this.props.handleDate(dates);
+    });
     return validStartTime
   };
 
   handleEndTimes = (newEndTime, currentStartTime, date, position) => {
     let dates  = this.state.dates.slice();
+    const multipleDays = dates.length > 1;
     let validEndTime = true;
     if (date && currentStartTime) {
       validEndTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newEndTime}`).isAfter(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentStartTime}`))
-      validEndTime ? dates[position].end = newEndTime : this.showSnack(' 2 invalid time');
+      validEndTime 
+        ? dates[position].end = newEndTime 
+        : this.showSnack(' 2 invalid time');
     } else {
       dates[position].end = newEndTime;
     }
-    this.setState(() => ({ dates }));
+    this.setState({ dates }, () => {
+      this.props.handleDate(dates);
+    });
     return validEndTime;
   };
 
   clearStartTimes = position => {
     let dates = this.state.date.slice();
     dates[position].start = "";
-    this.setState(() => ({ dates }));
+    this.setState({ dates }, () => {
+      this.props.handleDate(dates);
+    });
   };
 
   clearEndTimes = position => {
     let dates = this.state.dates.slice();
     dates[position].end = "";
-    this.setState(() => ({ dates }));
+    this.setState({ dates }, () => {
+      this.props.handleDate(dates);
+    })
   };
 
   handleRequestClose = () => { this.setState({ snack: false, snackMsg: "" }); };
@@ -143,6 +173,7 @@ export default class DateRangePickerWithGaps extends PureComponent {
               showClearDate
               numberOfMonths={1}
               handleDates={this.handleDates}
+              handleDate={this.props.handleDate}
               handleStartTimes={this.handleStartTimes}
               handleEndTimes={this.handleEndTimes}
               clearEndTimes={this.clearEndTimes}

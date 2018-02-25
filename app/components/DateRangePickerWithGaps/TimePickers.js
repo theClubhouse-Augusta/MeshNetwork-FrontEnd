@@ -23,7 +23,7 @@ export default class TimerPickers extends PureComponent {
       const validStartTime = (this.state.preStartTime.length === 5 )
         ? this.props.handleStartTimes(this.state.preStartTime, this.state.endTime, this.state.date, this.state.position) 
         : false;
-      if (validStartTime) this.setState({ startTime: this.state.preStartTime });
+      if (validStartTime) this.setState(() => ({ startTime: this.state.preStartTime }));
     })
   };
 
@@ -33,7 +33,7 @@ export default class TimerPickers extends PureComponent {
       const validEndTime = this.state.preEndTime.length === 5 
         ? this.props.handleEndTimes(this.state.preEndTime, this.state.startTime, this.state.date, this.state.position) 
         : false;
-      if (validEndTime) this.setState({ endTime: this.state.preEndTime });
+      if (validEndTime) this.setState(() => ({ endTime: this.state.preEndTime }));
     })
   };
 

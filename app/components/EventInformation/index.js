@@ -18,20 +18,9 @@ import moment from 'moment';
 
 import DateRangePickerWithGaps from '../DateRangePickerWithGaps';
 import RaisedButton from '../../containers/AddEvent/RaisedButton';
-import DateTimeSelect from '../DateTimeSelect';
 import { SelectedSponsors } from '../../containers/AddEvent/SelectedSponsors';
 
 import authenticate from '../../utils/Authenticate';
-import {
-    // removeDuplicateDate,
-    // removeDuplicateStart,
-    // removeDuplicateEnd,
-    // dateErrors,
-    // multiDayTimeErrors,
-    timeError,
-    formatSelectedDate,
-    formatTodaysDate
-} from '../../containers/AddEvent/dateUtils';
 
 // styles
 import './style.css';
@@ -98,6 +87,7 @@ export default class EventInformation extends PureComponent {
         focusedInput: false,
         startDate: moment(),
         endDate: moment(),
+        date: [],
     };
 
     async componentDidMount() {
@@ -107,9 +97,6 @@ export default class EventInformation extends PureComponent {
             this.getSponsors();
             this.loadSkills();
             this.getEvent(this.props.id);
-            // this.previousOrganizers();
-            // this.previousSponsors();
-            // this.previousDates();
         } else {
             this.props.history.push('/');
         }
@@ -166,13 +153,15 @@ export default class EventInformation extends PureComponent {
                     });
                     this.state.eventDates.forEach((date, i) => {
                         let start = date.start.split(' ');
-                        let day = moment(start[0]);
-                        let startTimeSeconds = start[1].lastIndexOf(':');
-                        let startTime = start[1].slice(0, startTimeSeconds);
+                        const [ startDateString, startTimeString ] = start; 
+                        let day = moment(startDateString);
+                        let startTimeSeconds = startTimeString.lastIndexOf(':');
+                        let startTime = startTimeString.slice(0, startTimeSeconds);
 
                         let end = date.end.split(' ');
-                        let endTimeSeconds = end[1].lastIndexOf(':');
-                        let endTime = end[1].slice(0, endTimeSeconds);
+                        const [, endTimeString ] = end; 
+                        let endTimeSeconds = endTimeString.lastIndexOf(':');
+                        let endTime = endTimeString.slice(0, endTimeSeconds);
 
                         this.setState((prevState) => {
                             const dateMulti = prevState.dateMulti.slice();
@@ -184,84 +173,35 @@ export default class EventInformation extends PureComponent {
                             return { dateMulti: dateMulti }    
                         });
                     });
+                } else if (this.state.eventDates.length === 1 && !!!this.state.checkedRadio) {
+                    this.setState({
+                        checkedRadio: 0, 
+                        // days: this.state.eventDates.length,
+                    });
+                    let [ date ] = this.state.eventDates.slice();
+
+
+                    let start = date.start.split(' ');
+                    const [ dateString, startTimeString ] = start; 
+                    const day = moment(dateString);
+                    const startTimeWithSeconds = startTimeString.lastIndexOf(':');
+                    start = startTimeString.slice(0, startTimeWithSeconds);
+
+                    let end = date.end.split(' ');
+                    const [, endTimeString ] = end; 
+                    const endTimeWithSeconds = endTimeString.lastIndexOf(':');
+                    end = endTimeString.slice(0, endTimeWithSeconds);
+
+                    date = [{
+                        day,
+                        start,
+                        end
+                    }]
+                    this.setState(() => ({ date }));
+
                 }
             }
         }
-
-    // getEvent = eventID => {
-    //     fetch(`http://localhost:8000/api/event/${eventID}`)
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             console.log('d', json.description)
-    //             this.setState({
-    //                 event: json.event,
-    //                 eventSponsors: json.sponsors,
-    //                 eventOrganizers: json.organizers,
-    //                 description: json.event.description,
-    //                 url: json.event.url,
-    //                 name: json.event.title,
-    //                 eventDates: json.dates,
-    //                 eventImgPreview: json.event.image,
-    //                 selectedTags: json.tags
-    //             }, () => {
-    //                 if (this.state.eventSponsors.length) {
-    //                     this.state.eventSponsors.forEach(sponsor => {
-    //                         const selectedSponsors = this.state.selectedSponsors.slice();
-    //                         selectedSponsors.push(sponsor.name);
-    //                         this.setState({ selectedSponsors: selectedSponsors });
-    //                     })
-    //                 }
-    //                 if (this.state.eventOrganizers.length) {
-    //                     this.state.eventOrganizers.forEach(organizer => {
-    //                         const selectedOrganizers = this.state.selectedOrganizers.slice();
-    //                         selectedOrganizers.push(organizer.email);
-    //                         this.setState({ selectedOrganizers: selectedOrganizers });
-    //                     })
-    //                 }
-    //                 if (this.state.eventDates.length) {
-    //                     if (this.state.eventDates.length > 1) {
-    //                         this.setState({
-    //                             checkedRadio: 1, 
-    //                             days: this.state.eventDates.length 
-    //                         });
-    //                         this.state.eventDates.forEach((date, i) => {
-    //                             console.log('count', i);
-    //                             const dateMulti = this.state.dateMulti.slice();
-    //                             console.log('dateMultiOne', dateMulti);
-    //                             const startMulti = this.state.startMulti.slice();
-    //                             console.log('startMultiOne', startMulti);
-    //                             const endMulti = this.state.endMulti.slice();
-    //                             const start = date.start.split(' ');
-    //                             const end = date.end.split(' ');
-    //                             dateMulti.push({ 
-    //                                 day: start[0],
-    //                                 index: i 
-    //                             })
-    //                             startMulti.push({
-    //                                 start: start[1],
-    //                                 index: i
-    //                             })
-    //                             endMulti.push({
-    //                                 end: end[1],
-    //                                 index: i
-    //                             })
-    //                             this.setState({
-    //                                 dateMulti: dateMulti,
-    //                                 startMulti: startMulti,
-    //                                 endMulti: endMulti
-    //                             }, () => {
-
-    //                             console.log('dateMulti', dateMulti);
-
-    //                             console.log('startMulti', startMulti);
-    //                             })
-    //                         })
-    //                     }
-    //                 }
-    //             })
-                    
-    //         })
-    // }
 
     getSponsors = () => {
         fetch(`http://localhost:8000/api/sponsors`, {
@@ -313,182 +253,6 @@ export default class EventInformation extends PureComponent {
             }
         }
     }
-
-    selectDate = (e, index) => {
-        if (typeof index !== 'number') {
-            if (formatSelectedDate(e.target.value) >= formatTodaysDate()) {
-                this.setState({ day: e.target.value }, () => {
-                    if (this.state.day && this.state.start && this.state.end) {
-                        const error = timeError(this.state.start, this.state.end, this.state.day);
-                        if (error) this.setState({ modalMessage: "Invalid Date", dateError: "Please check the order of your dates" })
-                        else this.setState({ dateError: '' })
-                    } else {
-                        this.setState({ dateError: '' });
-                    }
-                });
-            } else {
-                this.setState({ dateError: "Please check the order of your dates" });
-            }
-        }
-    }
-
-    selectStart = (e, index) => {
-        if (typeof index !== 'number') {
-            this.setState({ start: e.target.value }, () => {
-                if (this.state.day && this.state.start && this.state.end) {
-                    const error = timeError(this.state.start, this.state.end, this.state.day);
-                    if (error) this.setState({ dateError: "Please check your start and end times" });
-                    else this.setState({ dateError: '' });
-                }
-            });
-        }
-    }
-
-    selectEnd = (e, index) => {
-        if (typeof index !== 'number') {
-            this.setState({ end: e.target.value }, () => {
-                if (this.state.day && this.state.start && this.state.end) {
-                    const error = timeError(this.state.start, this.state.end, this.state.day);
-                    if (error) this.setState({ dateError: "Please check your start and end times" });
-                    else this.setState({ dateError: '' });
-                }
-            });
-        }
-    }
-
-    // selectDateMulti = (e, index) => {
-    //     if (typeof index === 'number') {
-    //         if (formatTodaysDate() > formatSelectedDate(e.target.value)) {
-    //             this.setState({ dateError: "Please check the order of your dates" });
-    //             return;
-    //         } else {
-    //             const changeDateMulti = this.state.dateMulti.slice();
-    //             changeDateMulti.push({
-    //                 change: index 
-    //             })
-    //             this.setState({ 
-    //                 dateError: '',
-    //                changeDateMulti: changeDateMulti 
-    //             })
-    //             const dates = this.state.dateMulti.slice();
-    //             const date = { day: e.target.value, index: index, };
-    //             const removeDate = removeDuplicateDate(dates, date);
-
-    //             if (typeof removeDate !== 'number') {
-    //                 dates.push(date);
-    //                 this.setState({ dateMulti: dates }, () => {
-    //                     if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
-    //                     else this.setState({ dateError: '' });
-    //                 });
-    //             } else if (typeof removeDate === 'number') {
-    //                 dates.splice(removeDate, 1);
-    //                 dates.push(date);
-    //                 this.setState({ dateMulti: dates }, () => {
-    //                     if (dateErrors(this.state.dateMulti)) this.setState({ dateError: "Please check the order of your dates" });
-    //                     else this.setState({ dateError: '' });
-    //                 });
-    //             }
-    //         }
-    //     }
-    // }
-
-    // selectStartMulti = (e, index) => {
-    //     const changeStartMulti = this.state.changeStartMulti.slice();
-    //     changeStartMulti.push({
-    //         index: index 
-    //     })
-    //     this.setState({ 
-    //         dateError: '',
-    //         changeStartMulti: changeStartMulti 
-    //     })
-    //     if (typeof index === 'number') {
-    //         const startTimes = this.state.startMulti.slice();
-    //         // const endTimes = this.state.endMulti.slice();
-    //         const time = { start: e.target.value, index: index, };
-    //         const removeTime = removeDuplicateStart(startTimes, time);
-    //         if (typeof removeTime !== 'number') {
-
-    //             startTimes.push(time);
-    //             this.setState({ startMulti: startTimes }, () => {
-    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-    //                     this.setState({ dateError: 'Check you start and end times', });
-    //                 } else {
-    //                     this.setState({ dateError: '' });
-    //                 }
-    //             });
-    //         } else if (typeof removeTime === 'number') {
-    //             startTimes.splice(removeTime, 1);
-    //             startTimes.push(time);
-    //             this.setState({ startMulti: startTimes }, () => {
-    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-    //                     this.setState({ dateError: 'Check your start and end times', });
-    //                 } else {
-    //                     this.setState({ dateError: '' });
-    //                 }
-    //             });
-    //         }
-    //     }
-    // }
-
-    // selectEndMulti = (e, index) => {
-    //     if (typeof index === 'number') {
-    //         // const startTimes = this.state.startMulti.slice();
-    //         const endTimes = this.state.endMulti.slice();
-    //         const time = { end: e.target.value, index: index, };
-    //         const removeTime = removeDuplicateEnd(endTimes, time);
-    //         if (typeof removeTime !== 'number') {
-    //             endTimes.push(time);
-    //             this.setState({ endMulti: endTimes }, () => {
-    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-    //                     this.setState({ dateError: 'Check you start and end times', });
-    //                 } else {
-    //                     this.setState({ dateError: '' });
-    //                 }
-    //             });
-    //         } else if (typeof removeTime === 'number') {
-    //             endTimes.splice(removeTime, 1);
-    //             endTimes.push(time);
-    //             this.setState({ endMulti: endTimes }, () => {
-    //                 if (multiDayTimeErrors(this.state.startMulti, this.state.endMulti, this.state.dateMulti)) {
-    //                     this.setState({ dateError: 'Check you start and end times', });
-    //                 } else {
-    //                     this.setState({ dateError: '' })
-    //                 }
-    //             });
-    //         }
-    //     }
-    // }
-
-    // multiDay = days => {
-    //     const multidayComponent = [];
-    //     let dayComponent;
-    //     const {
-    //         // changeDateMulti,
-    //         changeEndMulti,
-    //         changeStartMulti,
-    //         // dateMulti,
-    //     } = this.state;
-    //     for (let i = 0; i < days; i++) {
-    //         dayComponent =
-    //         <DateTimeSelect
-    //             key={`multiday${i}`}
-    //             index={i}
-    //             style={{ display: 'flex', flexDirection: 'column', alignItems: 'space-around' }}
-    //             dateLabel={`Day ${i + 1}`}
-    //             startTimeLabel="event start"
-    //             endTimeLabel="event end"
-    //             multiday={true}
-    //             selectDateMulti={this.selectDateMulti}
-    //             selectStartMulti={this.selectStartMulti}
-    //             selectEndMulti={this.selectEndMulti}
-    //             dayValue={this.state.dateMulti[i].day}
-    //             startValue={!!changeStartMulti[i].index ? false : this.state.startMulti[i].start}
-    //             endValue={!!changeEndMulti[i].index ? false : this.state.endMulti[i].end}
-    //         />
-    //         multidayComponent.push(dayComponent);
-    //     }
-    //     return multidayComponent;
-    // }
 
     eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
@@ -652,7 +416,8 @@ export default class EventInformation extends PureComponent {
         dateError: '',
         day: '',
         start: '',
-        end: ''
+        end: '',
+        date: [],
     });
 
     handleLogo = (event) => {
@@ -696,8 +461,7 @@ export default class EventInformation extends PureComponent {
             loadedTags,
             days,
             dateMulti,
-            startMulti,
-            endMulti
+            date
         } = this.state;
 
         const options = [
@@ -832,19 +596,17 @@ export default class EventInformation extends PureComponent {
                                 type="text"
                             />} 
 
-                         {parseInt(this.state.checkedRadio, 10) === 0 && [
-                            <label key="singleDay" className="addEventFormLabel"> date & time </label>,
-                            <DateTimeSelect
-                                key="singleDay2"
-                                dateLabel="Start date"
-                                startTimeLabel="event start"
-                                endTimeLabel="event end"
-                                multiday={false}
-                                selectDate={this.selectDate}
-                                selectStart={this.selectStart}
-                                selectEnd={this.selectEnd}
-                            />
-                        ]}
+                         {parseInt(this.state.checkedRadio, 10) === 0 && 
+                            <React.Fragment>
+                                <label key="singleDay" className="addEventFormLabel"> date & time </label>
+                                <DateRangePickerWithGaps 
+                                    dates={date}
+                                    handleDate={foo => {
+                                        this.setState(() => ({ date: foo })); 
+                                    }}
+                                />
+                            </React.Fragment>
+                        }
 
                          {(
                             parseInt(this.state.checkedRadio, 10) === 1 
@@ -853,6 +615,9 @@ export default class EventInformation extends PureComponent {
                             ) &&
                             <DateRangePickerWithGaps 
                                 dates={dateMulti}
+                                handleDate={dates => {
+                                    this.setState(() => ({ dateMulti: dates })); 
+                                }}
                             />
                         } 
 
@@ -863,6 +628,9 @@ export default class EventInformation extends PureComponent {
                             ) &&
                             <DateRangePickerWithGaps 
                                 numberOfDates={days}
+                                handleDate={dates => {
+                                    this.setState(() => ({ dateMulti: dates })); 
+                                }}
                             />
                         } 
 

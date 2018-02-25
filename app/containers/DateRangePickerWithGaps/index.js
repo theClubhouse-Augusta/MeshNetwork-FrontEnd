@@ -64,6 +64,14 @@ export default class DateRangePickerWithGaps extends PureComponent {
       return true;
     }
 
+    if (dates.length === 1) {
+      console.log('three')
+      this.setState({ dates }, () => {
+        this.props.handleDate(dates);
+      });
+      return true;
+    }    
+
     let previouslySetDay = null;
     dates.forEach((date, index) => {
       if (!!date.day && index < positionOfDayPicker) {
