@@ -98,18 +98,15 @@ export default class EventDetail extends React.PureComponent {
         // const start = event.start;
         // const end = event.end;
 
+        let joinLink = <Link to={'/join/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Sign Up</FlatButton></Link>;
+
         return (
             <div className="eventDetailContainer">
                 <Helmet title="EventDetail" meta={[{ name: 'description', content: 'Description of EventDetail' }]} />
                 <header style={{ background: '#FFFFFF' }}>
                     <Header space={this.props.spaceName} />
                     <div className="eventDetailBanner"
-                        style={{
-                            background: "linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(" + this.state.event.image + ")",
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center center',
-                        }}>
+                        style={{background: '#ff4d58'}}>
                         <div className="homeHeaderContentTitle">{this.state.event.title}</div>
                         <div className="homeHeaderContentSubtitle">{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
                     </div>
@@ -156,7 +153,7 @@ export default class EventDetail extends React.PureComponent {
                                 </div>
                                 <div className="eventDetailSignUpRow">
                                     <div className="homeSignButtons">
-                                        <Link to={'/join/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Sign Up</FlatButton></Link>
+                                        {joinLink}
                                         <Link to={'/space/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#FFFFFF', paddingTop: '10px', paddingBottom: '10px', color: '#ff4d58', fontWeight: 'bold', border: '1px solid #DDDDDD' }}>About the Space</FlatButton></Link>
                                     </div>
                                 </div>

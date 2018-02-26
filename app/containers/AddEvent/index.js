@@ -50,7 +50,9 @@ export default class AddEvent extends Component {
         loading: true,
         dateError: '',
         modalMessage: '',
-        snackBar: false,
+        msg: "",
+        snack: false,
+        // event
         name: '',
         url: '',
         days: '',
@@ -80,6 +82,8 @@ export default class AddEvent extends Component {
 
     singleDay = 0;
     multipleDays = 1;
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token']);
@@ -179,14 +183,6 @@ export default class AddEvent extends Component {
 
     toggleNewSponsors = () => this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
 
-    toggleSnackBar = (message) =>
-        this.setState({
-            snackBar: !this.state.snackBar,
-            snackBarMessage: message
-        });
-
-    handleRequestClose = () => { this.setState({ snackBar: false, snackBarMessage: "" }); };
-
     sponsorName = event => this.setState({ sponsorNames: event.target.value });
     sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
 
@@ -206,9 +202,14 @@ export default class AddEvent extends Component {
             const duplicateNew = newSponsors.findIndex(previous => previous.name === sponsor.name);
             if (duplicateOld === -1 && duplicateNew === -1) {
                 newSponsors.push(sponsor);
-                this.setState({ newSponsors: newSponsors });
+                this.setState({ 
+                    newSponsors: newSponsors,
+                    sponsorNames: '',
+                    sponsorLogos: '',
+                    sponsorWebsites: '',
+                });
             } else {
-                this.toggleSnackBar("Sponsor name already taken!");
+                this.showSnack("Sponsor name already taken!");
             }
         }
     }
@@ -222,13 +223,14 @@ export default class AddEvent extends Component {
             dates,
         } = this.state;
 
+
         let data = new FormData();
         data.append('description', description);
         data.append('tags', selectedTags);
         data.append('compEvent', 0);
         data.append('dates', JSON.stringify(dates));
         data.append('name', this.state.name);
-        data.append('image', this.state.eventImg);
+        //data.append('image', this.state.eventImg);
         data.append('url', this.state.url);
         data.append('organizers', this.state.selectedOrganizers);
         data.append('sponsors', this.state.selectedSponsors);
@@ -243,18 +245,20 @@ export default class AddEvent extends Component {
             method: 'post',
             body: data,
         })
-            .then(response => response.json())
-            .then(eventID => {
-                if (eventID.error) {
-                   this.toggleSnackBar(eventID.error); 
-                } else {
-                    this.props.history.push(`/event/${eventID}`)
-                }
-            })
-            .catch(error => {
-                console.log(`Submit(): ${error}`);
-                console.log(`message: ${error.message}`);
-            })
+        .then((response)=> {
+            return response.json();
+        })
+        .then((json) => {
+            if(json.error) {
+                this.showSnack(json.error);
+            } 
+            else if(json.success) {
+                this.showSnack(json.success);
+                setTimeout(() => {
+                    this.props.history.push(`/event/${json.eventID}`)
+                }, 2000);
+            }
+        })
     }
 
     closeModal = () => this.setState({ modalMessage: '' });
@@ -359,8 +363,6 @@ export default class AddEvent extends Component {
     }
     render() {
         const {
-            snackBarMessage,
-            snackBar,
             newSponsors, 
             organizers,
             sponsors,
@@ -585,11 +587,11 @@ export default class AddEvent extends Component {
                                     onSubmit={this.onNewSponsorSubmit}
                                     sponsor
                                     style={{
-                                        backgroundColor: '#3399cc',
+                                        backgroundColor: '#CCCCCC',
                                         marginBottom: 64,
                                         padding: '10px',
                                         marginTop: '15px',
-                                        color: 'rgba(0,0,0,0.54)',
+                                        color: '#FFFFFF',
                                         fontWeight: 'bold'
                                     }}
                                 />
@@ -603,8 +605,7 @@ export default class AddEvent extends Component {
                                 />}
 
 
-
-                            <div className="spaceLogoMainImageRow">
+                            {/*<div className="spaceLogoMainImageRow">
                                 <label htmlFor="event-image" className="spaceLogoMainImageBlock">
                                     {this.renderEventImageText()}
                                     {this.renderEventImage()}
@@ -616,7 +617,7 @@ export default class AddEvent extends Component {
                                         accept="image/png, image/jpg, image/jpeg"
                                     />
                                 </label>
-                            </div>
+                            </div>*/}
 
                             <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
                                 Submit Event
@@ -627,9 +628,9 @@ export default class AddEvent extends Component {
                         Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
                     </footer>
                     <Snackbar
-                        open={snackBar}
-                        message={snackBarMessage}
-                        autoHideDuration={4000}
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={5000}
                         onClose={this.handleRequestClose}
                     />
                 </div>

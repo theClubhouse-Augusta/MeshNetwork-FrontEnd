@@ -187,20 +187,14 @@ export default class SpaceProfile extends React.PureComponent {
     // console.log(event);
     // var backgroundColor = "#ff4d58";
     var style = {
-      background:
-        "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(" +
-        event.image +
-        ")",
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover",
-      backgroundPosition: "center center",
+      background: '#ff4d58',
       fontWeight: "bold",
       borderRadius: "0px",
       border: "none",
       fontFamily: "Noto Sans",
       display: "flex",
       flexDirection: "column",
-      minHeight: "40px"
+      minHeight: "28px"
     };
     return {
       style: style

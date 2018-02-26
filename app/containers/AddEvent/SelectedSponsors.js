@@ -9,7 +9,6 @@ export const SelectedSponsors = props =>
           className="addEventOrganizerCard foobar" 
           key={ !props.newSponsor ? `selectedSponsor${sponsor.value}` : `newSponsor${sponsor.name}`}
         >  
-          <img alt="" className="fakeUserPic" src={props.newSponsor ? sponsor.imagePreviewUrl : sponsor.logo} />
           <dl id="addEventUserInfo">
             <div>  
               <dt>name:</dt>
