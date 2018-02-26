@@ -20,7 +20,6 @@ const SpaceDash = asyncComponent(() => import('../SpaceDash'));
 const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
-const DateRangePickerWithGaps = asyncComponent(() => import('../DateRangePickerWithGaps'));
 const TimePickers = asyncComponent(() => import('../DateRangePickerWithGaps/TimePickers'));
 
 // const Challenges = asyncComponent(() => import('../Challenges'));
@@ -108,20 +107,6 @@ export default class App extends Component {
                     path="/bar"
                     render={() => 
                         <TimePickers 
-                        />
-                    }
-                />
-
-                <Route
-                    path="/Foo"
-                    render={() => 
-                        <DateRangePickerWithGaps 
-                          //  numberOfDates={2}
-                            dates={this.state.dates}
-                            handleDate={dates => { 
-                                this.setState(() => ({ dates })); 
-                            }}
-
                         />
                     }
                 />
