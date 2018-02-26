@@ -8,13 +8,13 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Dialog from 'material-ui/Dialog';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import TextField from 'material-ui/TextField';
+// import Menu, { MenuItem } from 'material-ui/Menu';
+// import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
 import Card, { CardTitle, CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import { FormControl} from 'material-ui/Form';
-import Input, { InputLabel } from 'material-ui/Input';
+// import { FormControl} from 'material-ui/Form';
+// import Input, { InputLabel } from 'material-ui/Input';
 import { LinearProgress } from 'material-ui/Progress';
 import Snackbar from 'material-ui/Snackbar';
 
@@ -55,7 +55,7 @@ export default class LMSDash extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -67,7 +67,7 @@ export default class LMSDash extends React.PureComponent {
     this.setState({
       page:1,
       category:value
-    }, function() {
+    }, () => {
       this.getCourses(value);
     })
   }
@@ -81,7 +81,6 @@ export default class LMSDash extends React.PureComponent {
   };
 
   getCourses = (category = 0) => {
-    let _this = this;
 
     fetch('https://lms.innovationmesh.com/myCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
       method:'GET',
@@ -89,15 +88,13 @@ export default class LMSDash extends React.PureComponent {
         'Authorization': 'JWT ' + this.state.token
       }
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
-        _this.props.history.push('/signIn');
+        this.props.history.push('/signIn');
       }
       else if(json.detail) {
-        _this.props.history.push('/signIn');
+        this.props.history.push('/signIn');
       }
       else {
         this.setState({
@@ -107,13 +104,13 @@ export default class LMSDash extends React.PureComponent {
           isLoading:false
         })
       }
-    }.bind(this))
+    })
   };
 
   getNextCourses = (category) => {
     this.setState({
       page:this.state.nextPage
-    }, function() {
+    }, () => {
       this.getCourses(category);
     })
   };
@@ -121,7 +118,7 @@ export default class LMSDash extends React.PureComponent {
   getPreviousCourses = (category) => {
     this.setState({
       page:this.state.previousPage
-    }, function() {
+    }, () => {
       this.getCourses(category);
     })
   };
@@ -132,62 +129,53 @@ export default class LMSDash extends React.PureComponent {
     fetch("https://lms.innovationmesh.com/getCategories/", {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         categories:json.categories
       })
-    }.bind(this))
+    })
   }
 
   createCourse = () => {
-    let _this = this;
-
     fetch('https://lms.innovationmesh.com/storeCourse/', {
       method:'POST',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+        this.props.app.signOut();
+        this.props.app.handleAuth();
       }
       else {
-        _this.props.history.push('/update/'+json.course)
+        this.props.history.push('/update/'+json.course)
       }
-    }.bind(this))
+    })
   }
 
   deleteCourse = () => {
-    let _this = this;
     let course = this.state.courses;
     fetch("https://lms.innovationmesh.com/deleteCourse/"+this.state.activeCourse+"/", {
       method:'POST',
       headers:{'Authorization':'JWT '+ this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+        this.props.app.signOut();
+        this.props.app.handleAuth();
       }
       else if(json.success) {
-        _this.showSnack("Course Removed.");
+        this.showSnack("Course Removed.");
         course.splice(this.state.activeIndex, 1);
 
-        _this.setState({
+        this.setState({
           deleteDialog: !this.state.deleteDialog,
           course:course
         })
       }
-    }.bind(this))
+    })
   }
 
   renderPageButtons = () => {
@@ -221,7 +209,7 @@ export default class LMSDash extends React.PureComponent {
         <div className="lmsHomeMainBlock" onClick={this.createCourse}>
           <Card style={{height:'435px'}}>
             <CardMedia style={{width:'100%', height:'380px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
-              <img src="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png" style={{width:'100%', height:'auto'}}/>
+              <img alt="" src="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png" style={{width:'100%', height:'auto'}}/>
             </CardMedia>
             <CardTitle title="Create a Course" />
           </Card>
@@ -281,7 +269,7 @@ export default class LMSDash extends React.PureComponent {
         <Helmet title="Dashboard" meta={[ { name: 'description', content: 'Description of Dashboard' }]}/>
 
         <header>
-          <Header/>
+          <Header space={this.props.spaceName}/>
         </header>
 
         <main className="lmsHomeMain">

@@ -40,25 +40,22 @@ export default class CourseInfo extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
 
   getCourse = (id) => {
-    let _this = this;
 
     fetch("https://lms.innovationmesh.com/showCourse/"+id + "/", {
       method:'GET',
       headers: { 'Authorization': 'JWT ' + this.state.token }
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+        this.props.app.signOut();
+        this.props.app.handleAuth();
       }
       else {
         let lessons = json.lessons;
@@ -67,7 +64,7 @@ export default class CourseInfo extends React.PureComponent {
           lessons[i].lectures = [];
 
           for(let j = 0; j < json.lectures.length; j++) {
-            if(lessons[i].id == json.lectures[j].lessonID) {
+            if(lessons[i].id === json.lectures[j].lessonID) {
               lessons[i].lectures.push(json.lectures[j]);
             }
           }
@@ -78,7 +75,7 @@ export default class CourseInfo extends React.PureComponent {
           students:json.students
         })
       }
-    }.bind(this))
+    })
   }
 
   changeView = (view) => {
@@ -205,7 +202,7 @@ export default class CourseInfo extends React.PureComponent {
       return(
         <div className="lmsDetailStudentBlock" key={index}>
           <div className="lmsDetailStudentBlockLeft">
-            <img  className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
+            <img  alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
           </div>
           <div className="lmsDetailStudentBlockRight">
@@ -222,7 +219,7 @@ export default class CourseInfo extends React.PureComponent {
       return(
         <div className="lmsDetailStudentBlock" key={index}>
           <div className="lmsDetailStudentBlockLeft">
-            <img  className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
+            <img alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
           </div>
           <div className="lmsDetailStudentBlockRight">
@@ -294,7 +291,7 @@ export default class CourseInfo extends React.PureComponent {
         <div className="lmsDetailAuthor">
           <div className="lmsDetailAuthorContainer">
             <div className="lmsDetailAuthorAvatar">
-              <img className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
+              <img alt="" className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
             </div>
             <div className="lmsDetailAuthorInfo">
               <div className="lmsDetailAuthorName">{this.state.course.courseInstructorName}</div>
@@ -354,7 +351,7 @@ export default class CourseInfo extends React.PureComponent {
             </div>
             <div className="lmsLessonColumnOneContent">
               <div className="lmsSingleLessonImageContainer">
-                <img className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
+                <img alt="" className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
               </div>
               <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
               <div className="lmsLessonList">

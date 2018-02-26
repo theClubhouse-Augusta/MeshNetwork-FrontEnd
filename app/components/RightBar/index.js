@@ -8,7 +8,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Snackbar from 'material-ui/Snackbar';
-import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import Dialog from 'material-ui/Dialog';
+// import { DialogTitle } from 'material-ui/Dialog';
 import FlatButton from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 
@@ -54,7 +55,7 @@ export default class RightBar extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -62,7 +63,7 @@ export default class RightBar extends React.PureComponent {
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  challengeDialog = () => {this.setState({challengeOpen:!this.state.challengeOpen}, function() { this.getCategories(); })}
+  challengeDialog = () => {this.setState({challengeOpen:!this.state.challengeOpen}, () => { this.getCategories(); })}
   questionDialog = () => {this.setState({questionOpen:!this.state.questionOpen})}
 
   handleChallengeTitle = (event) => {this.setState({challengeTitle:event.target.value})}
@@ -102,8 +103,7 @@ export default class RightBar extends React.PureComponent {
       reader.onloadend = () => {
         this.setState({
           challengeFiles:challengeFiles
-        }, function() {
-          console.log(this.state.challengeFiles);
+        }, () => {
           this.forceUpdate();
         })
       }
@@ -115,17 +115,15 @@ export default class RightBar extends React.PureComponent {
   handleQuestionContent = (editorState) => {this.setState({questionContent: editorState, editorState: editorState})};
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/selectCategories", {
+    fetch("http://localhost:8000/api/selectCategories", {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         categories:json.categories
       })
-    }.bind(this))
+    });
   }
 
   deleteFile = (i) => {
@@ -135,7 +133,7 @@ export default class RightBar extends React.PureComponent {
 
     this.setState({
       challengeFiles:challengeFiles
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -145,7 +143,6 @@ export default class RightBar extends React.PureComponent {
       confirmStatus:"Uploading..."
     })
 
-    let _this = this;
     let data = new FormData();
 
     data.append('challengeTitle', this.state.challengeTitle);
@@ -156,87 +153,80 @@ export default class RightBar extends React.PureComponent {
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("https://innovationmesh.com/api/storeChallenge", {
+    fetch("http://localhost:8000/api/storeChallenge", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
         if(json.error === 'token_expired') {
-          //_this.props.app.signOut(0, 'Your session has expired.');
+          //this.props.app.signOut(0, 'Your session has expired.');
         } else {
-          _this.showSnack(json.error);
-          _this.setState({
+          this.showSnack(json.error);
+          this.setState({
             confirmStatus:"Confirm"
           })
         }
       }
       else if(json.challenge) {
-        console.log(_this.state.challengeFiles.length);
-        if(_this.state.challengeFiles.length > 0) {
-          for(let i = 0; i < _this.state.challengeFiles.length; i++)
+        // console.log(this.state.challengeFiles.length);
+        if(this.state.challengeFiles.length > 0) {
+          for(let i = 0; i < this.state.challengeFiles.length; i++)
           {
             let fileData = new FormData();
             fileData.append('challengeID', json.challenge);
-            fileData.append('challengeFile', _this.state.challengeFiles[i].fileData);
+            fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
-            fetch("https://innovationmesh.com/api/uploadFile", {
+            fetch("http://localhost:8000/api/uploadFile", {
               method:'POST',
               body:fileData,
-              headers:{'Authorization':'Bearer ' + _this.state.token}
+              headers:{'Authorization':'Bearer ' + this.state.token}
             })
-            .then(function(response) {
-              return response.json();
-            })
-            .then(function(json) {
+            .then(response => response.json())
+            .then(json => {
               if(json.error) {
-                _this.showSnack(json.error);
-                _this.setState({
+                this.showSnack(json.error);
+                this.setState({
                   confirmStatus:"Confirm"
                 })
               }
             })
           }
         }
-        _this.showSnack("Challenge Saved");
-        _this.challengeDialog();
+        this.showSnack("Challenge Saved");
+        this.challengeDialog();
       }
-    }.bind(this))
+    })
   }
 
   storeQuestion = () => {
-    let _this = this;
     let data = new FormData();
 
     data.append('questionTitle', this.state.questionTitle);
     data.append('questionContent', draftToHtml(convertToRaw(this.state.questionContent.getCurrentContent())));
 
-    fetch("https://innovationmesh.com/api/storeQuestion", {
+    fetch("http://localhost:8000/api/storeQuestion", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
         if(json.error === 'token_expired') {
-          _this.props.app.signOut(0, 'Your session has expired.');
-          _this.props.app.handleAuth();
+          this.props.app.signOut(0, 'Your session has expired.');
+          this.props.app.handleAuth();
         } else {
-          _this.showSnack(json.error);
+          this.showSnack(json.error);
         }
       }
       else if(json.success) {
-        _this.showSnack(json.success);
-        _this.questionDialog();
+        this.showSnack(json.success);
+        this.questionDialog();
       }
-    }.bind(this))
+    })
   }
 
   renderChallengeImageText = () => {
@@ -254,12 +244,12 @@ export default class RightBar extends React.PureComponent {
     if(this.state.challengeImage === "")
     {
       return(
-        <img src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
       )
     }
     else {
       return(
-        <img src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
       )
     }
   }
@@ -300,7 +290,7 @@ export default class RightBar extends React.PureComponent {
           <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Subscribe</FlatButton>
         </div>*/}
         <div className="challenges_newsLetterBlock">
-          <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/guide.png"/>
+          <img alt="" className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/guide.png"/>
           <div className="challenges_categoryTitle" style={{width:'100%', textAlign:'center', marginTop:'5px', marginBottom:'7px'}}>Creating a Challenge</div>
           <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Coming Soon</FlatButton>
         </div>

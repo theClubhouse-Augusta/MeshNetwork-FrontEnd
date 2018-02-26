@@ -4,20 +4,23 @@
  * SpaceDash
  *
  */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
-
-import SpaceInformation from 'components/SpaceInformation';
-
+import Table, {
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    TablePagination,
+    TableFooter
+} from 'material-ui/Table';
+import SpaceInformation from '../../components/SpaceInformation';
+import EventInformation from '../../components/EventInformation';
 import { AppearanceByMonthYear } from '../../components/DataViz/AppearanceByMonthYear';
 import { AllAppearances } from '../../components/DataViz/AllAppearances';
 import { AllJoins } from '../../components/DataViz/AllJoins';
-
-import Table, { TableBody, TableCell, TableHead, TableRow, TablePagination, TableFooter } from 'material-ui/Table';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
@@ -31,14 +34,14 @@ import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
 
-const getUsersAPI = 'https://innovationmesh.com/api/users/';
+const getUsersAPI = 'http://localhost:8000/api/users/';
 
-const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/';
+const spaceInfoAPI = 'http://localhost:8000/api/workspace/';
 
 export default class SpaceDash extends React.PureComponent {
     state = {
         token: localStorage.getItem('token'),
-        activeMenu: 0,
+        activeMenu: 'main',
         spaceUsers: [],
         spaceDescription: '',
         spaceID: 0,
@@ -67,10 +70,12 @@ export default class SpaceDash extends React.PureComponent {
         resourceStartTime:'',
         resourceEndTime:'',
         resourceIncrement:0,
+        pageContent: [],
+        editEventID: '',
     }
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history);
-        if (!authorized.error) {
+        if (!authorized.error && authorized) {
             this.loadSpaceDescription();
             this.setState({ loading: false });
         } else {
@@ -85,86 +90,86 @@ export default class SpaceDash extends React.PureComponent {
         fetch(getUsersAPI + id, {
             method: 'GET'
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     spaceUsers: json
                 });
-            }.bind(this))
+            })
     }
 
     loadSpaceDescription = () => {
         fetch(spaceInfoAPI + this.props.match.params.id, {
             method: 'GET'
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     spaceDescription: json.description,
                     spaceID: json.id
-                }, function () {
+                },  () => {
                     this.loadSpaceUsers(json.id);
                     this.getSpaceStats(json.id);
                     this.getSpaceEvents(json.id);
                     this.getPhotoGallery(json.id);
                     this.getResources(json.id);
                 })
-            }.bind(this))
+            })
     }
 
     getSpaceStats = (id) => {
-        fetch('https://innovationmesh.com/api/space/metrics/' + id, {
+        fetch('http://localhost:8000/api/space/metrics/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     memberCount: json.memberCount,
                     eventCount: json.eventCount,
                     checkinCount: json.checkinCount,
                     thisMonthCheckIns: json.thisMonthCheckIns,
                 })
-            }.bind(this))
+            })
     }
 
     getSpaceEvents = (id) => {
-        fetch('https://innovationmesh.com/api/events/' + id, {
+        fetch('http://localhost:8000/api/events/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     spaceEvents: json
                 })
-            }.bind(this))
+            })
     }
 
-    changeMenu = (id) => {
+    changeMenu = (page) => {
         this.setState({
-            activeMenu: id
+            activeMenu: page
         })
     }
 
     getPhotoGallery = (id) => {
-        fetch('https://innovationmesh.com/api/photos/' + id, {
+        fetch('http://localhost:8000/api/photos/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     photoGallery: json.photos
                 })
-            }.bind(this))
+            })
     }
 
     handleGalleryPhoto = (event) => {
@@ -179,41 +184,40 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     storePhoto = (file) => {
-        let _this = this;
         let photoGallery = this.state.photoGallery;
         let data = new FormData();
 
         data.append('spaceID', this.state.spaceID);
         data.append('photo', file);
-        fetch('https://innovationmesh.com/api/photos', {
+        fetch('http://localhost:8000/api/photos', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 }
                 else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                     photoGallery.push(json.photo);
-                    _this.setState({
+                    this.setState({
                         photoGallery: photoGallery
                     })
                 }
-            }.bind(this))
+            })
     }
 
     deletePhoto = (id, i, spaceID) => {
         let photoGallery = this.state.photoGallery;
-        console.log(i);
+        // console.log(i);
         let data = new FormData();
         data.append("_method", "DELETE");
         // data.append("spaceID", spaceID);
-        fetch(`https://innovationmesh.com/api/photos/${id}`, {
+        fetch(`http://localhost:8000/api/photos/${id}`, {
             headers: { 'Authorization': 'Bearer ' + this.state.token },
             method: "POST",
             body: data,
@@ -227,7 +231,7 @@ export default class SpaceDash extends React.PureComponent {
                     // if (remove !== -1 && photoGallery.length !== 1) {
                     // this.showSnack(json.success);
                     //this.setState({ photoGallery: photoGallery.splice(-i, 1) });
-                    this.setState({ photoGallery: photoGallery }, function () {
+                    this.setState({ photoGallery: photoGallery }, () => {
                         this.forceUpdate();
                     })
                     // } else {
@@ -271,7 +275,7 @@ export default class SpaceDash extends React.PureComponent {
 
     handleStartEnd = (event) => {
         this.setState({
-            resourceStartEnd: event.target.value
+            resourceEndTime: event.target.value
         })
     };
 
@@ -282,17 +286,17 @@ export default class SpaceDash extends React.PureComponent {
     };
 
     getResources = (id) => {
-        fetch('https://innovationmesh.com/api/resources/' + id, {
+        fetch('http://localhost:8000/api/resources/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     resources: json
                 })
-            }.bind(this))
+            })
     };
 
     handleResourceMonday = (event) => {
@@ -312,7 +316,6 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     storeResource = () => {
-        let _this = this;
         let resources = this.state.resources;
         let resourceDays = [];
 
@@ -337,23 +340,25 @@ export default class SpaceDash extends React.PureComponent {
         data.append('resourceName', this.state.resourceName);
         data.append('resourceEmail', this.state.resourceEmail);
         data.append('resourceStartTime', this.state.resourceStartTime);
+        data.append('resourceStartEnd', this.state.resourceStartTime);
         data.append('resourceEndTime', this.state.resourceEndTime);
+        data.append('resourceIncrement', this.state.resourceIncrement);
         data.append('resourceDays', JSON.stringify(resourceDays));
 
-        fetch('https://innovationmesh.com/api/resource', {
+        fetch('http://localhost:8000/api/resource', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 }
                 else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                     resources.push(json.resource);
                     this.setState({
                         resources: resources,
@@ -361,32 +366,31 @@ export default class SpaceDash extends React.PureComponent {
                         resourceEmail: ""
                     })
                 }
-            }.bind(this))
+            })
     };
 
     deleteResource = (id, i) => {
-        let _this = this;
         let resource = this.state.resources;
 
-        fetch('https://innovationmesh.com/api/resource/' + id, {
+        fetch('http://localhost:8000/api/resource/' + id, {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 }
                 else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                     resource.splice(i, 1);
                     this.setState({
                         resource: resource
                     })
                 }
-            }.bind(this))
+            })
     }
 
     handleUserChangePage = (event, page) => {
@@ -404,13 +408,14 @@ export default class SpaceDash extends React.PureComponent {
      handleEventChangeRowsPerPage = event => {
       this.setState({ eventRowsPerPage: event.target.value });
     };
-
+    editEventID = id => this.setState({ editEventID: id });
 
     renderDashContent = () => {
-        if (this.state.activeMenu === 0) {
+        if (this.state.activeMenu === 'main') {
+
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header space={this.props.spaceName}/>
                     <div className="spaceDashDataRow">
                         <div className="spaceDashDataBlock">
                             <div className="spaceDashDataTitle">Members</div>
@@ -459,9 +464,9 @@ export default class SpaceDash extends React.PureComponent {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {this.state.spaceUsers.slice(this.state.userPage * this.state.userRowsPerPage, this.state.userPage * this.state.userRowsPerPage + this.state.userRowsPerPage).map(user => {
+                                  {this.state.spaceUsers.slice(this.state.userPage * this.state.userRowsPerPage, this.state.userPage * this.state.userRowsPerPage + this.state.userRowsPerPage).map((user, key) => {
                                     return(
-                                      <TableRow>
+                                      <TableRow key={`user${key}`}>
                                           <TableCell>{user.name}</TableCell>
                                           <TableCell>{user.email}</TableCell>
                                           <TableCell>{user.title}</TableCell>
@@ -497,16 +502,29 @@ export default class SpaceDash extends React.PureComponent {
                                         <TableCell>Event Name</TableCell>
                                         <TableCell>Location</TableCell>
                                         <TableCell>Start Date</TableCell>
+                                        <TableCell>Edit</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {this.state.spaceEvents.slice(this.state.eventPage * this.state.eventRowsPerPage, this.state.eventPage * this.state.eventRowsPerPage + this.state.eventRowsPerPage).map(e => {
+                                  {this.state.spaceEvents.slice(
+                                      this.state.eventPage * this.state.eventRowsPerPage, 
+                                      this.state.eventPage * this.state.eventRowsPerPage + this.state.eventRowsPerPage
+                                    ).map((e, key) => {
                                     return(
-                                      <TableRow>
-                                        <TableCell>{e.title}</TableCell>
-                                        <TableCell>{e.space.city}, {e.space.state}</TableCell>
-                                        <TableCell>{e.date}</TableCell>
-                                      </TableRow>
+                                      <TableRow key={`event${key}`}>
+                                            <TableCell><a href={`/event/${e.id}`}>{e.title}</a></TableCell>
+                                            <TableCell>{e.space.city}, {e.space.state}</TableCell>
+                                            <TableCell>{e.date}</TableCell>
+                                            <TableCell 
+                                                className="editEventRow"
+                                                onClick={() => { 
+                                                    this.changeMenu('editEvent'); 
+                                                    this.editEventID(e.id); 
+                                                }}
+                                            >
+                                                update&nbsp;{e.title}
+                                            </TableCell>
+                                        </TableRow>
                                     )
                                   })}
                                 </TableBody>
@@ -535,18 +553,18 @@ export default class SpaceDash extends React.PureComponent {
                 </div>
             )
         }
-        else if (this.state.activeMenu === 1) {
+        else if (this.state.activeMenu === 'updateSpace') {
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header  space={this.props.spaceName} />
                     <SpaceInformation id={this.props.match.params.id} spaceID={this.state.spaceID} description={this.state.spaceDescription} />
                 </div>
             )
         }
-        else if (this.state.activeMenu === 2) {
+        else if (this.state.activeMenu === 'updatePhotos') {
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header space={this.props.spaceName} />
                     <div className="spaceDashOptions">
                         <label htmlFor="photo-file" style={{ width: '10%', margin: '10px' }}>
                             <div style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }} >Upload Photo</div>
@@ -555,9 +573,8 @@ export default class SpaceDash extends React.PureComponent {
                     </div>
                     <div className="spaceDashPhotoGallery">
                         {this.state.photoGallery.map((photo, i) => (
-                            <React.Fragment key={`gallery${i}`} >
-                                <div className="spaceDashPhotoBlock">
-                                    <img src={photo.photoThumbnail} />
+                                <div key={`photoGallery${i}`} className="spaceDashPhotoBlock">
+                                    <img alt="" src={photo.photoThumbnail} />
 
                                     <FlatButton
                                         style={{
@@ -575,38 +592,37 @@ export default class SpaceDash extends React.PureComponent {
                                     </FlatButton>
 
                                 </div>
-                            </React.Fragment>
                         ))}
                     </div>
                 </div>
             )
         }
-        else if (this.state.activeMenu === 3) {
+        else if (this.state.activeMenu === 'editResources') {
             return (
                 <div className="spaceDashContent">
-                    <Header />
+                    <Header space={this.props.spaceName} />
                     <div className="spaceDashOptions">
-                        <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px' }} />
-                        <FormGroup row>
+                        <TextField  value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px', marginTop: 32  }} />
+                        <TextField  value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px', marginTop: 32 }} />
+                        <FormGroup style={{marginTop: 32}} row>
                             <FormControlLabel
                             control={
                                 <Checkbox
-                                checked={this.state.resourceMonday}
-                                onChange={this.handleResourceMonday}
-                                value={1}
+                                    checked={this.state.resourceMonday}
+                                    onChange={this.handleResourceMonday}
+                                    value={1}
                                 />
                             }
                             label="Monday"
                             />
                             <FormControlLabel
-                            control={
-                                <Checkbox
-                                checked={this.state.resourceTuesday}
-                                onChange={this.handleResourceTuesday}
-                                value={2}
-                                />
-                            }
+                                control={
+                                    <Checkbox
+                                        checked={this.state.resourceTuesday}
+                                        onChange={this.handleResourceTuesday}
+                                        value={2}
+                                    />
+                                }
                             label="Tuesday"
                             />
                             <FormControlLabel
@@ -640,16 +656,50 @@ export default class SpaceDash extends React.PureComponent {
                             label="Friday"
                             />
                         </FormGroup>
-                        <TextField value={this.state.resourceStartTime} onChange={this.handleStartTime} label="Start Time" placeholder="8:00am" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceEndTime} onChange={this.handleEndTime} label="End Time" placeholder="8:00pm" style={{ marginRight: '10px' }} />
-                        <TextField value={this.state.resourceIncrement} onChange={this.handleIncrement} label="Increments" placeholder="Minutes" style={{ marginRight: '10px' }} />
+                        <label style={{marginTop: 32}} htmlFor="startTime">Start Time</label>
+                        <TextField 
+                            id="startTime"
+                            value={this.state.resourceStartTime} 
+                            type="time"
+                            onChange={this.handleStartTime} 
+                            //label="Start Time" 
+                            placeholder="8:00am" 
+                            style={{ marginRight: '10px', marginBottom: 32 }} 
+                        />
+                        <label htmlFor="endTime">End Time </label>
+                        <TextField 
+                            id="endTime"
+                            value={this.state.resourceEndTime} 
+                            type="time"
+                            onChange={this.handleStartEnd} 
+                            //label="End Time" 
+                            placeholder="8:00pm" 
+                            style={{ marginRight: '10px', marginBottom: 32 }} 
+                        />
+                        <TextField value={this.state.resourceIncrement} onChange={this.handleIncrement} label="Max booking time in minutes" placeholder="Minutes" style={{ marginRight: '10px' }} />
                         <label style={{ width: '10%', margin: '10px' }}>
-                            <div onClick={this.storeResource} style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold', cursor: 'pointer' }} >Add Resource</div>
+                            <div 
+                                onClick={this.storeResource} 
+                                style={{ 
+                                    fontFamily: 'Noto Sans', 
+                                    textTransform: 'uppercase', 
+                                    fontSize: '0.9em', 
+                                    textAlign: 'center', 
+                                    width: '100%', 
+                                    background: '#ff4d58', 
+                                    paddingTop: '10px', 
+                                    paddingBottom: '10px', 
+                                    color: '#FFFFFF', 
+                                    fontWeight: 'bold', 
+                                    cursor: 'pointer', 
+                                    marginTop: 32,
+                                    marginLeft: '30vw'
+                                }} >Add Resource</div>
                         </label>
                     </div>
                     <div className="spaceDashResources">
                         {this.state.resources.map((res, i) => (
-                            <div className="spaceDashResourceBlock">
+                            <div key={`resources${i}`} className="spaceDashResourceBlock">
                                 <div className="spaceDashResourceTitle">{res.resourceName}</div>
                                 <div className="spaceDashResourceContact">
                                     {res.resourceEmail}
@@ -658,6 +708,16 @@ export default class SpaceDash extends React.PureComponent {
                             </div>
                         ))}
                     </div>
+                </div>
+            )
+        }
+        else if (this.state.activeMenu === 'editEvent') {
+            return (
+                <div className="spaceDashContent">
+                    <Header space={this.props.spaceName} />
+                    <EventInformation 
+                        id={this.state.editEventID} 
+                    />
                 </div>
             )
         }
@@ -679,10 +739,10 @@ export default class SpaceDash extends React.PureComponent {
 
                     <main className="spaceDashMain">
                         <div className="spaceDashMenu">
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(0)}>Dashboard</div>
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(1)}>Space Information</div>
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(2)}>Photo Gallery</div>
-                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu(3)}>Resources</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('main')}>Dashboard</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('updateSpace')}>Space Information</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('updatePhotos')}>Photo Gallery</div>
+                            <div className="spaceDashMenuItem" onClick={() => this.changeMenu('editResources')}>Resources</div>
                             <Link to={'/addEvent'}><div className="spaceDashMenuItem">Add an Event</div></Link>
                         </div>
                         {this.renderDashContent()}

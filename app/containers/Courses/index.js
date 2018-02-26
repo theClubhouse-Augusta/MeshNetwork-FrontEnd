@@ -7,14 +7,18 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import SelectField from 'material-ui/Select';
-import Menu, { MenuItem } from 'material-ui/Menu';
+// import SelectField from 'material-ui/Select';
+// import Menu, { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
-import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
+import Card, { 
+  // CardActions, 
+  CardContent, 
+  CardMedia 
+} from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import { FormControl} from 'material-ui/Form';
-import Input, { InputLabel } from 'material-ui/Input';
+// import { FormControl} from 'material-ui/Form';
+// import Input, { InputLabel } from 'material-ui/Input';
 
 import PreviousIcon from 'react-icons/lib/fa/arrow-left';
 import NextIcon from 'react-icons/lib/fa/arrow-right';
@@ -51,7 +55,7 @@ export default class Courses extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -59,7 +63,7 @@ export default class Courses extends React.PureComponent {
   handleSearch = (event) => {
     this.setState({
       searchContent:event.target.value
-    }, function() {
+    }, () => {
       if(this.state.searchContent.length > 4) {
         this.searchCourses();
       } else if(this.state.searchContent.length === 0) {
@@ -71,7 +75,7 @@ export default class Courses extends React.PureComponent {
     this.setState({
       page:1,
       category:value
-    }, function() {
+    }, () => {
       this.getCourses(value);
     })
   }
@@ -90,23 +94,21 @@ export default class Courses extends React.PureComponent {
     fetch('https://lms.innovationmesh.com/getCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         nextPage:json.nextPageNum,
         previousPage:json.previousPageNum,
         courses: json.courses,
         isLoading:false
       })
-    }.bind(this))
+    })
   };
 
   getNextCourses = (category) => {
     this.setState({
       page:this.state.nextPage
-    }, function() {
+    }, () => {
       if(this.state.order === "all") {
         this.getCourses(category);
       }
@@ -119,7 +121,7 @@ export default class Courses extends React.PureComponent {
   getPreviousCourses = (category) => {
     this.setState({
       page:this.state.previousPage
-    }, function() {
+    }, () => {
       if(this.state.order === "all") {
         this.getCourses(category);
       }
@@ -133,14 +135,12 @@ export default class Courses extends React.PureComponent {
     fetch("https://lms.innovationmesh.com/getCategories/", {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         categories:json.categories
       })
-    }.bind(this))
+    })
   }
 
   searchCourses = () => {
@@ -153,7 +153,6 @@ export default class Courses extends React.PureComponent {
       })
     }
 
-    let _this = this;
     let data = new FormData();
     data.append('searchContent', this.state.searchContent);
 
@@ -161,17 +160,15 @@ export default class Courses extends React.PureComponent {
       method:'POST',
       body:data
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         nextPage:json.nextPageNum,
         previousPage:json.previousPageNum,
         courses: json.courses,
         isLoading:false
       })
-    }.bind(this))
+    })
   };
 
   renderPageButtons = () => {
@@ -204,7 +201,7 @@ export default class Courses extends React.PureComponent {
       <div className="container">
         <Helmet title="Browse" meta={[ { name: 'description', content: 'Description of Browse' }]}/>
         <header>
-          <Header/>
+          <Header space={this.props.spaceName} />
         </header>
         <main className="lmsHomeMain">
           <div className="lmsHomeMainContainer">

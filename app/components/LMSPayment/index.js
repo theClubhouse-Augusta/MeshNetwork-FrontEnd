@@ -5,7 +5,15 @@
 */
 
 import React from 'react';
-import {StripeProvider, injectStripe, CardNumberElement, CardExpiryElement, CardCVCElement, PostalCodeElement, PaymentRequestButtonElement} from 'react-stripe-elements';
+import {
+  // StripeProvider, 
+  injectStripe, 
+  CardNumberElement, 
+  CardExpiryElement, 
+  CardCVCElement, 
+  PostalCodeElement, 
+  // PaymentRequestButtonElement
+} from 'react-stripe-elements';
 
 import Snackbar from 'material-ui/Snackbar';
 
@@ -27,7 +35,7 @@ class LMSPayment extends React.Component {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -36,12 +44,9 @@ class LMSPayment extends React.Component {
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
   handleEnroll = (ev) => {
-
     ev.preventDefault();
 
-    let _this = this;
     this.props.stripe.createToken({name: this.state.user.name}).then(({token}) => {
-      console.log(token);
       let data = new FormData();
       data.append('stripeToken', token.id);
       fetch("https://lms.innovationmesh.com/enrollCourse/" + this.props.courseID + "/", {
@@ -49,19 +54,17 @@ class LMSPayment extends React.Component {
         body:data,
         headers: { 'Authorization': 'JWT ' + this.state.token}
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
+      .then(response => response.json())
+      .then(json => {
         if(json.error) {
-          _this.showSnack(json.error);
+          this.showSnack(json.error);
         }
         else if(json.detail) {
-          _this.props.app.signOut();
-          _this.props.app.handleAuth();
+          this.props.app.signOut();
+          this.props.app.handleAuth();
         }
         else if(json.success) {
-          _this.showSnack(json.success);
+          this.showSnack(json.success);
         }
       })
     });

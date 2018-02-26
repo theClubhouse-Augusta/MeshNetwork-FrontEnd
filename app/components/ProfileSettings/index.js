@@ -5,8 +5,8 @@
 */
 
 import React from 'react';
-import Select from 'react-select'; 
-import PropTypes, { oneOfType } from 'prop-types';
+// import Select from 'react-select'; 
+import PropTypes from 'prop-types';
 
 import './style.css';
 import './styleM.css';

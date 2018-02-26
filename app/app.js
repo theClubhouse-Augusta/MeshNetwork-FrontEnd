@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import 'react-dates/initialize';
 import 'babel-polyfill';
 
 import '!file-loader?name=[name].[ext]!./favicon.ico';
@@ -10,6 +11,7 @@ import App from 'containers/App';
 import './app.css';
 import './lms.css';
 import './challenges.css';
+import 'react-dates/lib/css/_datepicker.css';
 
 ReactDOM.render((
     <BrowserRouter>
