@@ -221,25 +221,12 @@ export default class AddEvent extends Component {
             description,
             dates,
         } = this.state;
-        // let dates = this.state.dates.slice();
 
         let data = new FormData();
         data.append('description', description);
         data.append('tags', selectedTags);
         data.append('compEvent', 0);
-        //     date.day = date.day.format('YYYY-MM-DD');
-            // dates.forEach(date => {
-        // })
-        // const dates = [{
-        //     day: 'yyyy-mm-dd',
-        //     start: '0',
-        //     end: '1',
-        // }];
-        // dates.forEach(date => {
-        //     data.append()
-        // })
         data.append('dates', JSON.stringify(dates));
-        // console.log('addEvent', date);
         data.append('name', this.state.name);
         data.append('image', this.state.eventImg);
         data.append('url', this.state.url);
