@@ -18,13 +18,17 @@ export default class DateRangePickerWithGaps extends Component {
 
   componentDidMount() {
     const { dates } = this.state
+    console.log(`cdm, dates: ${JSON.stringify(dates)}`)
 
     if (!dates.length) {
+      console.log('componentDidMount')
       this.setDatesIfNoneProvidedByProps(this.props.numberOfDates);
     }
   }
 
   setDatesIfNoneProvidedByProps = numberOfDates => {
+
+      console.log('setDatesIfNoneProvidedByProps')
     let count = 0;
     const dates = [];
     while (count < numberOfDates) {
@@ -42,6 +46,8 @@ export default class DateRangePickerWithGaps extends Component {
 
 
   handleDates = (newDay, positionOfDayPicker, isOrdered, repeatsAllowed) => {
+
+      console.log('handleDates')
     let  dates = this.state.dates.slice();
 
     let validDateAfter = true;
@@ -101,7 +107,19 @@ export default class DateRangePickerWithGaps extends Component {
     return validDateBefore && validDateAfter && validDateSame;
   };
 
-  handleStartTimes = (newStartTime, currentEndTime, date, position) => {
+  handleStartTimes = (
+    newStartTime, 
+    currentEndTime, 
+    date, 
+    position
+  ) => {
+    console.log(
+      `handleStartTimes:
+      newStartTime: ${newStartTime},
+      currentEndTime: ${currentEndTime},
+      date: ${date},
+      position: ${position} 
+    `)
     let dates  = this.state.dates.slice();
     let validStartTime = true;
     if (date && currentEndTime) {
@@ -119,6 +137,8 @@ export default class DateRangePickerWithGaps extends Component {
   };
 
   handleEndTimes = (newEndTime, currentStartTime, date, position) => {
+
+      console.log('handleEndTimes')
     let dates  = this.state.dates.slice();
     let validEndTime = true;
     if (date && currentStartTime) {
@@ -136,6 +156,8 @@ export default class DateRangePickerWithGaps extends Component {
   };
 
   clearStartTimes = position => {
+
+      console.log('clearStartTimes')
     let dates = this.state.date.slice();
     dates[position].start = "";
     this.setState({ dates }, () => {
@@ -144,6 +166,7 @@ export default class DateRangePickerWithGaps extends Component {
   };
 
   clearEndTimes = position => {
+      console.log('clearEndTimes')
     let dates = this.state.dates.slice();
     dates[position].end = "";
     this.setState({ dates }, () => {

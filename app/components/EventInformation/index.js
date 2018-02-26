@@ -39,7 +39,6 @@ const MenuProps = {
 
 export default class EventInformation extends Component {
     state = {
-        dateError: '',
         modalMessage: '',
         snackBar: false,
         name: '',
@@ -68,9 +67,6 @@ export default class EventInformation extends Component {
         eventSponsors: [],
         eventOrganizers: [],
         eventDates: [],
-        changeDateMulti: [],
-        changeStartMulti: [],
-        changeEndMulti: [],
         focusedInput: false,
         dates: [],
     };
@@ -406,7 +402,7 @@ export default class EventInformation extends Component {
                 dates: [],
             });
         }
-}
+    }
 
     handleLogo = (event) => {
         event.preventDefault();
@@ -440,7 +436,6 @@ export default class EventInformation extends Component {
     render() {
         const {
             snackBarMessage,
-            dateError,
             snackBar,
             newSponsors, 
             organizers,
@@ -546,11 +541,6 @@ export default class EventInformation extends Component {
                             </FormControl>
                         }
 
-                        {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
-                        {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-                        {dateError && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>}
-                        {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-
                         <div
                             style={{
                                 display: 'flex',
@@ -583,7 +573,8 @@ export default class EventInformation extends Component {
                                 onChange={this.eventDays}
                                 value={this.state.days}
                                 type="text"
-                            />} 
+                            />
+                        } 
 
                          {checkedRadio === this.singleDay && 
                             <React.Fragment>
@@ -605,9 +596,9 @@ export default class EventInformation extends Component {
 
                             <React.Fragment>
                                 <h1>bar</h1>
-                            <DateRangePickerWithGaps 
-                                dates={dates}
-                                handleDate={dates => {
+                                <DateRangePickerWithGaps 
+                                    dates={dates}
+                                    handleDate={dates => {
                                     this.setState(() => ({ dates })); 
                                 }}
                             />

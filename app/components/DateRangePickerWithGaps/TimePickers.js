@@ -17,6 +17,11 @@ export default class TimerPickers extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log('pos',this.state.position);
+    console.log('date',this.state.date);
+  }
+
   handleStartTime = e => {
     let preStartTime = e.target.value;
     this.setState({ preStartTime: preStartTime }, () => {
