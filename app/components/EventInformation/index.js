@@ -38,38 +38,40 @@ const MenuProps = {
 };
 
 export default class EventInformation extends Component {
-    state = {
-        modalMessage: '',
-        snackBar: false,
-        name: '',
-        url: '',
-        days: '',
-        description: '',
-        selectedTag: '',
-        selectedTags: [],
-        selectedSponsors: [],
-        newSponsors: [],
-        organizers: [],
-        showOrganizers: false,
-        sponsors: [],
-        checkNewSponsors: '',
-        sponsorNames: '',
-        sponsorLogos: '',
-        sponsorWebsites: '',
-        loadedTags: [],
-        checkedRadio: null,
-        logo: '',
-        logoPreview: '',
-        eventImg: '',
-        eventImgPreview: '',
-        tag: [],
-        selectedOrganizers: [],
-        eventSponsors: [],
-        eventOrganizers: [],
-        eventDates: [],
-        focusedInput: false,
-        dates: [],
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            eventID: props.id,
+            modalMessage: '',
+            snackBar: false,
+            name: '',
+            url: '',
+            days: '',
+            description: '',
+            selectedTag: '',
+            selectedTags: [],
+            selectedSponsors: [],
+            newSponsors: [],
+            organizers: [],
+            showOrganizers: false,
+            sponsors: [],
+            checkNewSponsors: '',
+            sponsorNames: '',
+            sponsorLogos: '',
+            sponsorWebsites: '',
+            loadedTags: [],
+            checkedRadio: null,
+            logo: '',
+            logoPreview: '',
+            tag: [],
+            selectedOrganizers: [],
+            eventSponsors: [],
+            eventOrganizers: [],
+            eventDates: [],
+            focusedInput: false,
+            dates: [],
+        };
+    }
 
     singleDay = 0;
     multipleDays = 1;
@@ -98,7 +100,6 @@ export default class EventInformation extends Component {
                     url: json.event.url,
                     name: json.event.title,
                     eventDates: json.dates,
-                    eventImgPreview: json.event.image,
                     selectedTags: json.tags
                 }, () => {
                     this.previousSponsors();
@@ -108,81 +109,83 @@ export default class EventInformation extends Component {
             })
         };
 
-        previousSponsors = () => {
-            if (this.state.eventSponsors.length) {
-                this.state.eventSponsors.forEach(sponsor => {
-                    const selectedSponsors = this.state.selectedSponsors.slice();
-                    selectedSponsors.push(sponsor.name);
-                    this.setState({ selectedSponsors: selectedSponsors });
-                })
-            }
-        };
-
-        previousOrganizers = () => {
-            if (this.state.eventOrganizers.length) {
-                this.state.eventOrganizers.forEach(organizer => {
-                    const selectedOrganizers = this.state.selectedOrganizers.slice();
-                    selectedOrganizers.push(organizer.email);
-                    this.setState({ selectedOrganizers: selectedOrganizers });
-                })
-            }
+    previousSponsors = () => {
+        if (this.state.eventSponsors.length) {
+            this.state.eventSponsors.forEach(sponsor => {
+                const selectedSponsors = this.state.selectedSponsors.slice();
+                selectedSponsors.push(sponsor.name);
+                this.setState({ selectedSponsors: selectedSponsors });
+            })
         }
+    };
 
-        previousDates = () => {
-            if (this.state.eventDates.length) {
-                if (this.state.eventDates.length > 1 && !!!this.state.checkedRadio) {
-                    this.setState({
-                        checkedRadio: 1, 
-                        days: this.state.eventDates.length,
-                    });
-                    this.state.eventDates.forEach((date, i) => {
-                        let start = date.start.split(' ');
-                        const [ startDateString, startTimeString ] = start; 
-                        const day = moment(startDateString);
-                        const startTimeSeconds = startTimeString.lastIndexOf(':');
-                        start = startTimeString.slice(0, startTimeSeconds);
+    previousOrganizers = () => {
+        if (this.state.eventOrganizers.length) {
+            this.state.eventOrganizers.forEach(organizer => {
+                const selectedOrganizers = this.state.selectedOrganizers.slice();
+                selectedOrganizers.push(organizer.email);
+                this.setState({ selectedOrganizers: selectedOrganizers });
+            })
+        }
+    };
 
-                        let end = date.end.split(' ');
-                        const [, endTimeString ] = end; 
-                        const endTimeSeconds = endTimeString.lastIndexOf(':');
-                        end = endTimeString.slice(0, endTimeSeconds);
+    previousDates = () => {
+        if (this.state.eventDates.length) {
+            if (this.state.eventDates.length > 1 && !!!this.state.checkedRadio) {
+                this.setState({
+                    checkedRadio: 1, 
+                    days: this.state.eventDates.length,
+                });
+                this.state.eventDates.forEach(({ start: startDate, end: endDate, id }, i) => {
+                    let start = startDate.split(' ');
+                    const [ startDateString, startTimeString ] = start; 
+                    const day = moment(startDateString);
+                    const startTimeSeconds = startTimeString.lastIndexOf(':');
+                    start = startTimeString.slice(0, startTimeSeconds);
 
-                        this.setState((prevState) => {
-                            const dates = prevState.dates.slice();
-                            dates.push({ 
-                                day,
-                                start,
-                                end,
-                            });
-                            return { dates }    
-                        });
-                    });
-                } else if (this.state.eventDates.length === 1 && !!!this.state.checkedRadio) {
-                    this.setState({ checkedRadio: this.singleDay, });
-                    let [ dates ] = this.state.eventDates.slice();
-
-
-                    let start = dates.start.split(' ');
-                    const [ dateString, startTimeString ] = start; 
-                    const day = moment(dateString);
-                    const startTimeWithSeconds = startTimeString.lastIndexOf(':');
-                    start = startTimeString.slice(0, startTimeWithSeconds);
-
-                    let end = dates.end.split(' ');
+                    let end = endDate.split(' ');
                     const [, endTimeString ] = end; 
-                    const endTimeWithSeconds = endTimeString.lastIndexOf(':');
-                    end = endTimeString.slice(0, endTimeWithSeconds);
+                    const endTimeSeconds = endTimeString.lastIndexOf(':');
+                    end = endTimeString.slice(0, endTimeSeconds);
 
-                    dates = [{
-                        day,
-                        start,
-                        end
-                    }]
-                    this.setState(() => ({ dates }));
+                    this.setState((prevState) => {
+                        const dates = prevState.dates.slice();
+                        dates.push({ 
+                            day,
+                            start,
+                            end,
+                            id,
+                        });
+                        return { dates }    
+                    });
+                });
+            } else if (this.state.eventDates.length === 1 && !!!this.state.checkedRadio) {
+                this.setState({ checkedRadio: this.singleDay, });
+                let [ dates ] = this.state.eventDates.slice();
+                const { start: startDate, end: endDate, id } = dates;
 
-                } 
-            }
+                let start = startDate.split(' ');
+                const [ dateString, startTimeString ] = start; 
+                const day = moment(dateString);
+                const startTimeWithSeconds = startTimeString.lastIndexOf(':');
+                start = startTimeString.slice(0, startTimeWithSeconds);
+
+                let end = endDate.split(' ');
+                const [, endTimeString ] = end; 
+                const endTimeWithSeconds = endTimeString.lastIndexOf(':');
+                end = endTimeString.slice(0, endTimeWithSeconds);
+
+                dates = [{
+                    day,
+                    start,
+                    end,
+                    id,
+                }];
+                this.setState(() => ({ dates }));
+
+            } 
         }
+    };
 
     getSponsors = () => {
         fetch(`http://localhost:8000/api/sponsors`, {
@@ -296,62 +299,48 @@ export default class EventInformation extends Component {
     Submit = () => {
         let {
             newSponsors,
-            endMulti,
-            startMulti,
-            dateMulti,
-            day,
-            start,
-            end,
+            selectedTags,
             description,
+            dates,
+            eventID,
+            name,
+            url,
+            selectedOrganizers,
+            selectedSponsors
         } = this.state;
 
         let data = new FormData();
+
+        data.append('eventID', eventID);
         data.append('description', description);
-        data.append('tags', this.state.selectedTags);
-        data.append('compEvent', 0);
-        data.append('name', this.state.name);
-        data.append('image', this.state.eventImg);
-        data.append('url', this.state.url);
-        data.append('organizers', this.state.selectedOrganizers);
-        data.append('sponsors', this.state.selectedSponsors);
+        data.append('tags', selectedTags);
+        data.append('dates', JSON.stringify(dates));
+        data.append('name', name);
+        data.append('url', url);
+        data.append('organizers', selectedOrganizers);
+        data.append('sponsors', selectedSponsors);
 
         if (!!newSponsors.length) {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
-        if (!!!dateMulti.length) {
-            if (day) data.append('day', JSON.stringify(day));
-            if (start) data.append('start', JSON.stringify(start));
-            if (end) data.append('end', JSON.stringify(end));
-        } else {
-            const days = dateMulti.findIndex(previous => previous.day === '');
-            const starts = startMulti.findIndex(previous => previous.start === '');
-            const ends = endMulti.findIndex(previous => previous.end === '');
-            if (days === -1 && starts === -1 && ends === -1) {
-                data.append('dateMulti', JSON.stringify(dateMulti));
-                data.append('startMulti', JSON.stringify(startMulti));
-                data.append('endMulti', JSON.stringify(endMulti));
-            }
-        }
 
-        fetch(`http://localhost:8000/api/event`, {
+        fetch(`http://localhost:8000/api/event/update`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
         })
-            .then(response => response.json())
-            .then(eventID => {
+            .then(response => response.text())
+            .then(success => {
                 if (eventID.error) {
                    this.toggleSnackBar(eventID.error); 
                 } else {
-                    this.props.history.push(`/event/${eventID}`)
+                   this.toggleSnackBar(success); 
                 }
             })
             .catch(error => {
             })
-    }
-
-    closeModal = () => this.setState({ modalMessage: '' });
+    };
 
     renderLogoImage = () => {
         if (this.state.logo !== "")
@@ -369,24 +358,6 @@ export default class EventInformation extends Component {
         }
     }
 
-    renderEventImage = () => {
-        if (this.state.eventImg || this.state.eventImgPreview) {
-            return (
-                <img alt="" src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
-            )
-        }
-    }
-
-    renderEventImageText = () => {
-        if (!this.state.eventImgPreview) {
-            return (
-                <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                    Add an Event Image
-          <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
-                </span>
-            )
-        }
-    }
     changeRadio = e => {
         const checkedRadio = parseInt(e.target.value, 10);
         if (checkedRadio === this.singleDay) {
@@ -419,20 +390,6 @@ export default class EventInformation extends Component {
         reader.readAsDataURL(file);
     };
 
-    handleEventImage = (event) => {
-        event.preventDefault();
-        let reader = new FileReader();
-        let file = event.target.files[0];
-
-        reader.onloadend = () => {
-            this.setState({
-                eventImg: file,
-                eventImgPreview: reader.result
-            });
-        }
-
-        reader.readAsDataURL(file);
-    };
     render() {
         const {
             snackBarMessage,
@@ -580,11 +537,7 @@ export default class EventInformation extends Component {
                             <React.Fragment>
                                 <label key="singleDay" className="addEventFormLabel"> date & time </label>
                                 <DateRangePickerWithGaps 
-                                    dates={dates.length ? dates : [{
-                                        day: null,
-                                        start: '',
-                                        end: '',
-                                    }]}
+                                    dates={dates}
                                     handleDate={dates => {
                                         this.setState(() => ({ dates })); 
                                     }}
@@ -687,21 +640,8 @@ export default class EventInformation extends Component {
                                 selectedSponsors={newSponsors}
                                 removeSponsor={this.removeNewSponsor}
                                 newSponsor={true}
-                            />}
-
-                        <div className="spaceLogoMainImageRow">
-                            <label htmlFor="event-image" className="spaceLogoMainImageBlock">
-                                {this.renderEventImageText()}
-                                {this.renderEventImage()}
-                                <input
-                                    type="file"
-                                    onChange={this.handleEventImage}
-                                    id="event-image"
-                                    style={{ display: 'none' }}
-                                    accept="image/png, image/jpg, image/jpeg"
-                                />
-                            </label>
-                        </div>
+                            />
+                        }
 
                         <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
                             Submit Event

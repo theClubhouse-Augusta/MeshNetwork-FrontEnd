@@ -129,7 +129,7 @@ export default class MemberSearch extends PureComponent {
     return (
       <Chip
         style={chipStyle}
-        key={i}
+        key={`Chip${i}`}
         label={skill.name}
         onClick={() => {
           this.tagClick(skill.id);

@@ -179,7 +179,7 @@ export default class Replies extends React.PureComponent {
           <div className="challenges_mainContainer">
             <div className="challenges_detailReplyContainer">
               {this.state.replies.map((reply, i) => (
-                <div className="challenges_replyBlockContainer" key={i}>
+                <div className="challenges_replyBlockContainer" key={`repliesChallenges${i}`}>
                   <div className="challenges_replyBlock">
                     <div className="challenges_replyAvatar">
                       <img alt="" className="challenges_replyAvatarImg" src={reply.avatar}/>

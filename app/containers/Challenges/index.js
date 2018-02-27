@@ -109,7 +109,7 @@ export default class Challenges extends React.PureComponent {
                     <Link
                       to={"/Challenges/challenge/" + u.challengeSlug}
                       className="challenges_feedBlock"
-                      key={i}
+                      key={`challengeFeedBlock${i}`}
                     >
                       <img
                         alt=""
@@ -128,7 +128,10 @@ export default class Challenges extends React.PureComponent {
                         />
                         <div className="challenges_feedTags">
                           {u.categories.map((c, j) => (
-                            <div className="challenges_tagBlock" key={j}>
+                            <div
+                              className="challenges_tagBlock"
+                              key={`challengesCategory${j}`}
+                            >
                               {c.categoryName}
                             </div>
                           ))}
@@ -146,7 +149,7 @@ export default class Challenges extends React.PureComponent {
                     <Link
                       to={"/Challenges/Ask/" + q.questionSlug}
                       className="challenges_questionBlock"
-                      key={i}
+                      key={`challengeQuestionBloclLink${i}`}
                     >
                       <div className="challenges_questionHeader">
                         <div className="challenges_questionAvatar">
@@ -189,7 +192,7 @@ export default class Challenges extends React.PureComponent {
                   <Link
                     to={"/Challenges/team/" + t.id}
                     className="challenges_feedBlock"
-                    key={i}
+                    key={`challenges_fb${i}`}
                   >
                     <div className="challenges_feedImageContainer">
                       <img
@@ -208,7 +211,7 @@ export default class Challenges extends React.PureComponent {
                         <img
                           alt=""
                           className="challenges_memberAvatar"
-                          key={j}
+                          key={`challengesAvatar${j}`}
                           src={m.avatar}
                         />
                       ))}

@@ -48,7 +48,7 @@ export default class SpaceInformation extends React.PureComponent {
         description: ""
     };
 
-    spaceUpdateAPI = `http://localhost:8000/api/workspaces/${this.props.spaceID}`;
+    spaceUpdateAPI = `https://innovationmesh.com/api/workspaces/${this.props.spaceID}`;
 
     handleRequestClose = () => {
         this.setState({ snack: false, msg: "" });

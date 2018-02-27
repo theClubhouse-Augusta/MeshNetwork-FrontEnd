@@ -162,7 +162,7 @@ export default class RightBar extends React.PureComponent {
     .then(json => {
       if(json.error) {
         if(json.error === 'token_expired') {
-          //this.props.app.signOut(0, 'Your session has expired.');
+          this.showSnack("Your session has expired. Please log back in.");
         } else {
           this.showSnack(json.error);
           this.setState({
@@ -171,7 +171,6 @@ export default class RightBar extends React.PureComponent {
         }
       }
       else if(json.challenge) {
-        // console.log(this.state.challengeFiles.length);
         if(this.state.challengeFiles.length > 0) {
           for(let i = 0; i < this.state.challengeFiles.length; i++)
           {
@@ -197,6 +196,9 @@ export default class RightBar extends React.PureComponent {
         }
         this.showSnack("Challenge Saved");
         this.challengeDialog();
+        setTimeout(() => {
+          this.props.history.push(`/Challenges/challenge/${json.challenge}`);
+        }, 2000);
       }
     })
   }
@@ -322,7 +324,7 @@ export default class RightBar extends React.PureComponent {
                 <input type="file" onChange={this.handleChallengeImage} id="challenge-image" style={{display:'none'}}/>
               </div>
               {this.state.challengeFiles.map((file, index) => (
-                <div key={index}>
+                <div key={`rightBarChallenge${index}`}>
                   <div className="challenges_newFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={25} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(index)}/></div>
                 </div>
               ))}

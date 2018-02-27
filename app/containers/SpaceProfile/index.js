@@ -43,7 +43,7 @@ export default class SpaceProfile extends React.PureComponent {
 
   getProfile = () => {
     fetch(
-      "http://localhost:8000/api/workspace/" + this.props.match.params.id,
+      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
       {
         method: "GET"
       }
@@ -162,7 +162,7 @@ export default class SpaceProfile extends React.PureComponent {
           </FlatButton>
         </Link>
       );
-    } else {
+    } /*else {
       return (
       <Link
         to={"/user/" + this.state.user.id}
@@ -180,7 +180,7 @@ export default class SpaceProfile extends React.PureComponent {
         </FlatButton>
       </Link>
       );
-    }
+    }*/
   };
 
   eventStyleGetter = (event, start, end, isSelected) => {
@@ -382,7 +382,7 @@ export default class SpaceProfile extends React.PureComponent {
                   <div className="spaceMembersTitle">Organizers</div>
                   <div className="spaceMembersContent">
                     {this.state.users.map((u, i) => (
-                      <div className="spaceProfileUser" key={i}>
+                      <div className="spaceProfileUser" key={`SpaceProfileUser${i}`}>
                         <img
                           alt=""
                           className="spaceProfileUserAvatar"

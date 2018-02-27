@@ -184,9 +184,13 @@ export default class SideNav extends React.PureComponent {
           <a
             href={"/Challenges/Category/" + c.categorySlug}
             className="challenges_categoryBlock"
-            key={i}
+            key={`category${i}`}
           >
-            <img src={c.categoryImage} className="challenges_categoryIcon" />
+            <img
+              alt=""
+              src={c.categoryImage}
+              className="challenges_categoryIcon"
+            />
             <div className="challenges_categoryName">{c.categoryName}</div>
           </a>
         ))}

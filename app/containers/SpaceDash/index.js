@@ -34,9 +34,9 @@ import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
 
-const getUsersAPI = 'http://localhost:8000/api/users/';
+const getUsersAPI = 'https://innovationmesh.com/api/users/';
 
-const spaceInfoAPI = 'http://localhost:8000/api/workspace/';
+const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/';
 
 export default class SpaceDash extends React.PureComponent {
     state = {

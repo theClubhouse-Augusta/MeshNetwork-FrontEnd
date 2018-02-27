@@ -1,28 +1,28 @@
-import React from "react";
-import Helmet from "react-helmet";
+import React from 'react';
+import Helmet from 'react-helmet';
 
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/Button";
-import Snackbar from "material-ui/Snackbar";
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
-import Checkbox from "material-ui/Checkbox";
-import { ListItemText } from "material-ui/List";
-import { LinearProgress } from "material-ui/Progress";
-import IconButton from "material-ui/IconButton";
-import Input, { InputLabel, InputAdornment } from "material-ui/Input";
-import { FormControl, FormHelperText } from "material-ui/Form";
-import Visibility from "material-ui-icons/Visibility";
-import VisibilityOff from "material-ui-icons/VisibilityOff";
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import Checkbox from 'material-ui/Checkbox';
+import { ListItemText } from 'material-ui/List';
+import { LinearProgress } from 'material-ui/Progress';
+import IconButton from 'material-ui/IconButton';
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Visibility from 'material-ui-icons/Visibility';
+import VisibilityOff from 'material-ui-icons/VisibilityOff';
 
-import { injectStripe } from "react-stripe-elements";
-import CardSection from "./CardSection";
-import Header from "../../components/Header";
+import { injectStripe } from 'react-stripe-elements';
+import CardSection from './CardSection';
+import Header from '../../components/Header';
 
-import Logger from "../../utils/Logger";
 
-import "./style.css";
-import "./styleM.css";
+import './style.css';
+import './styleM.css';
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -101,7 +101,7 @@ class CheckoutForm extends React.PureComponent {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
-            .catch(error => Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`));
+            .catch(error => {});
     }
 
     loadPlans = () => {
@@ -109,7 +109,7 @@ class CheckoutForm extends React.PureComponent {
         })
             .then(response => response.json())
             .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
-            .catch(error => Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`));
+            .catch(error => {})
     }
 
     selectPlan = (e, selected) => {
@@ -322,7 +322,7 @@ class CheckoutForm extends React.PureComponent {
                   this.showSnack(user.error);
               } else if (user.token) {
                 localStorage.setItem('token', user.token);
-                fetch("http://localhost:8000/api/auth/user", {
+                fetch("http://localhost:8000/api/user/auth", {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + user.token }
                 })
@@ -342,37 +342,11 @@ class CheckoutForm extends React.PureComponent {
                     }
                     else if(json.token)
                     {
-                      localStorage.setItem('challengeToken', json.token);
-                      let newData = new FormData();
-                      newData.append('username', this.state.email);
-                      newData.append('password', this.state.password);
-                      fetch('https://lms.innovationmesh.com/signIn/', {
-                        method:'POST',
-                        body:newData
-                      })
-                      .then(response => response.json())
-                      .then(json => {
-                        if(json.non_field_errors)
-                        {
-                          this.showSnack("Invalid Credentials");
-                        }
-                        else if(json.token)
-                        {
-                          localStorage.setItem('lmsToken', json.token);
-                          fetch('https://lms.innovationmesh.com/getUser/', {
-                            method:'GET',
-                            headers: {'Authorization' : 'JWT ' + json.token}
-                          })
-                          .then(response => response.json())
-                          .then(json => {
-                            localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                            this.showSnack('Welcome to '+this.state.space.name+'!');
-                            setTimeout(() => {
-                                this.props.history.push(`/user/${mainUser.id}`)
-                            }, 2000);
-                          })
-                        }
-                      })
+                      localStorage.setItem('token', json.token);
+                      this.showSnack('Welcome to '+ this.state.space.name+'!');
+                    setTimeout(() => {
+                        this.props.history.push(`/user/${mainUser.id}`)
+                    }, 2000);
                     }
                   })
                 })
@@ -589,36 +563,10 @@ class CheckoutForm extends React.PureComponent {
             .then(json => {
               let mainUser = json.user;
               localStorage.setItem('user', JSON.stringify(mainUser));
-            let newData = new FormData();
-            newData.append('username', this.state.email);
-            newData.append('password', this.state.password);
-            fetch('https://lms.innovationmesh.com/signIn/', {
-            method:'POST',
-            body:newData
-            })
-            .then(response => response.json())
-            .then(json => {
-            if(json.non_field_errors)
-            {
-                this.showSnack("Invalid Credentials");
-            }
-            else if(json.token)
-            {
-                localStorage.setItem('lmsToken', json.token);
-                fetch('https://lms.innovationmesh.com/getUser/', {
-                method:'GET',
-                headers: {'Authorization' : 'JWT ' + json.token}
-                })
-                .then(response => response.json())
-                .then(json => {
-                localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                this.showSnack('Welcome to '+this.state.space.name+'!');
+                this.showSnack('Welcome to '+ this.state.space.name+'!');
                 setTimeout(() => {
                     this.props.history.push(`/user/${mainUser.id}`)
                 }, 2000);
-                })
-            }
-            })
             })
           }
           this.setState({

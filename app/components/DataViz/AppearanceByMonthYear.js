@@ -16,7 +16,6 @@ import {
 } from 'Recharts';
 
 import DateRangePicker from '../DateRangePicker';
-import Logger from '../../utils/Logger';
 
 import './style.css';
 import './styleM.css';
@@ -45,7 +44,7 @@ export class AppearanceByMonthYear extends React.PureComponent {
                     dataTwo: json,
                     error: false
                 }))
-                .catch(error => Logger(`front-end: AppearanceByMonthYear@AppearancesForMonthYear: ${error.message}`));
+                .catch(error => {})
         } else {
             this.setState({ error: true })
         }

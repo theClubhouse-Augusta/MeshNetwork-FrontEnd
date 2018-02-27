@@ -119,7 +119,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/selectCategories", {
+    fetch("http://localhost:8000/api/selectCategories", {
       method:'GET'
     })
     .then((response) => {
@@ -159,7 +159,7 @@ export default class Detail extends React.PureComponent {
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("https://innovationmesh.com/api/updateChallenge/"+this.state.challenge.id, {
+    fetch("http://localhost:8000/api/updateChallenge/"+this.state.challenge.id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -187,7 +187,7 @@ export default class Detail extends React.PureComponent {
             fileData.append('challengeID', json.challenge);
             fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
-            fetch("https://innovationmesh.com/api/uploadFile", {
+            fetch("http://localhost:8000/api/uploadFile", {
               method:'POST',
               body:fileData,
               headers:{'Authorization':'Bearer ' + this.state.token}
@@ -303,40 +303,23 @@ export default class Detail extends React.PureComponent {
   };
 
   renderJoinButton = () => {
-    if (this.state.token) {
-      return (
-        <FlatButton
-          onClick={this.joinChallenge}
-          style={{
-            background: "#32b6b6",
-            color: "#FFFFFF",
-            marginBottom: "15px",
-            width: "100%"
-          }}
-        >
-          Join Challenge
-        </FlatButton>
-      );
-    } else {
-      return (
-        <Link
-          to={"/join/" + this.state.space.slug}
-          style={{ textDecoration: "none", width: "100%" }}
-        >
-          <FlatButton
-            style={{
-              background: "#32b6b6",
-              color: "#FFFFFF",
-              marginBottom: "15px",
-              width: "100%"
-            }}
-          >
-            Join Challenge
-          </FlatButton>
-        </Link>
-      );
+    if(this.state.token)
+    {
+      return(
+        <FlatButton onClick={this.joinChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Start Challenge</FlatButton>
+      )
     }
-  };
+    else {
+      return(
+        <div style={{display:'flex', flexDirection:'column'}}>
+          <div style={{background:'#DDDDDD', color:"#444444", fontSize:'0.9em', fontFamily:'Noto Sans'}}>
+            You must join a workspace before starting a challenge.
+          </div>
+          <Link to={'/join/'+this.state.space.slug} style={{textDecoration:'none', width:'100%'}}><FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Space & Challenge</FlatButton></Link>
+        </div>
+      )
+    }
+  }
 
   renderUpdateButtons = () => {
     if (this.state.token) {
@@ -438,6 +421,19 @@ export default class Detail extends React.PureComponent {
     return { __html: content }; 
   }; 
 
+  renderUploads = () => {
+    if(this.state.uploads.length > 0) {
+      return(
+        <div className="challenges_detailSideBlock">
+          <div className="challenges_categoryTitle">Uploads</div>
+          {this.state.uploads.map((u, i) => (
+            <a href={u.fileData} target="_blank" className="challenges_uploadBlock">{u.fileName}</a>
+          ))}
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -464,9 +460,7 @@ export default class Detail extends React.PureComponent {
 
                   <div className="challenges_feedTags">
                     {this.state.categories.map((c, j) => (
-                      <div className="challenges_tagBlock" key={j}>
-                        {c.categoryName}
-                      </div>
+                      <div className="challenges_tagBlock" key={`detailChallenges${j}`}>{c.categoryName}</div>
                     ))}
                   </div>
                 </div>
@@ -493,29 +487,13 @@ export default class Detail extends React.PureComponent {
             <div className="challenges_detailColumnTwo">
               {this.renderUpdateButtons()}
               {this.renderJoinButton()}
-              <div className="challenges_detailSideBlock">
-                <div className="challenges_categoryTitle">Uploads</div>
-                {this.state.uploads.map((u, i) => (
-                  <a
-                    href={u.fileData}
-                    target="_blank"
-                    className="challenges_uploadBlock"
-                  >
-                    {u.fileName}
-                  </a>
-                ))}
-              </div>
+              {this.renderUploads()}
               <div className="challenges_detailSideBlock">
                 <div className="challenges_categoryTitle">Participants</div>
                 {this.state.teams.map((t, i) => (
                   <div className="challenges_participantBlock">
-                    <img
-                      className="challenges_participantImage"
-                      src={t.teamImage}
-                    />
-                    <div className="challenges_participantName">
-                      {t.teamName}
-                    </div>
+                    <img alt="" className="challenges_participantImage" src={t.avatar}/>
+                    <div className="challenges_participantName">{t.name}</div>
                   </div>
                 ))}
               </div>
@@ -524,56 +502,39 @@ export default class Detail extends React.PureComponent {
         </main>
 
         <footer className="homeFooterContainer">
-          Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
-          723-5782
-        </footer>
+          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
+      </footer>
 
-        <Dialog
-          onClose={this.challengeDialog}
-          open={this.state.challengeOpen}
-          fullScreen
-          transition={this.transition}
-        >
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div
-              style={{
-                width: "30%",
-                display: "flex",
-                flexDirection: "column",
-                padding: "15px"
-              }}
-            >
-              <TextField
-                id="challengetitle"
-                label="Challenge Title"
-                value={this.state.challengeTitle}
-                onChange={this.handleChallengeTitle}
-                margin="normal"
-                fullWidth={true}
-                style={{ marginBottom: "15px" }}
-              />
-              <Select
-                name="categories-select"
-                value={this.state.challengeCategories}
-                removeSelected={false}
-                multi={true}
-                onChange={this.handleChallengeCategories}
-                options={this.state.cats}
-              />
-              <div>
-                <label
-                  htmlFor="challenge-image"
-                  className="challenges_challengeImageBlock"
-                >
-                  {this.renderChallengeImageText()}
-                  {this.renderChallengeImage()}
-                </label>
-                <input
-                  type="file"
-                  onChange={this.handleChallengeImage}
-                  id="challenge-image"
-                  style={{ display: "none" }}
-                />
+      <Dialog onClose={this.challengeDialog} open={this.state.challengeOpen} fullScreen transition={this.transition}>
+        <div style={{display:'flex', flexDirection:'row'}}>
+          <div style={{width:'30%', display:'flex', flexDirection:'column', padding:'15px'}} >
+            <TextField
+              id="challengetitle"
+              label="Challenge Title"
+              value={this.state.challengeTitle}
+              onChange={this.handleChallengeTitle}
+              margin="normal"
+              fullWidth={true}
+              style={{marginBottom:'15px'}}
+            />
+            <Select
+              name="categories-select"
+              value={this.state.challengeCategories}
+              removeSelected={false}
+              multi={true}
+              onChange={this.handleChallengeCategories}
+              options={this.state.cats}
+            />
+            <div>
+              <label htmlFor="challenge-image" className="challenges_challengeImageBlock">
+                {this.renderChallengeImageText()}
+                {this.renderChallengeImage()}
+              </label>
+              <input type="file" onChange={this.handleChallengeImage} id="challenge-image" style={{display:'none'}}/>
+            </div>
+            {this.state.challengeFiles.map((file, index) => (
+              <div key={`detailFiles${index}`}>
+                <div className="challenges_newFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={25} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(index)}/></div>
               </div>
               {this.state.challengeFiles.map((file, index) => (
                 <div key={index}>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import moment from 'moment';
 import asyncComponent from '../../components/AsyncComponent';
-
 
 const Home = asyncComponent(() => import('../Home'));
 const About = asyncComponent(() => import('../About'));
@@ -20,7 +18,6 @@ const SpaceDash = asyncComponent(() => import('../SpaceDash'));
 const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
-const TimePickers = asyncComponent(() => import('../DateRangePickerWithGaps/TimePickers'));
 
 // const Challenges = asyncComponent(() => import('../Challenges'));
 const Discover = asyncComponent(() => import('../Discover'));
@@ -46,23 +43,6 @@ export default class App extends Component {
             token: localStorage.getItem('token'),
             user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
             space: '',
-            dates: [
-                {
-                    day: moment(),
-                    start: "13:00",
-                    end: "15:00",
-                },
-                {
-                    day: moment().add(1,'d'),
-                    start: "13:00",
-                    end: "15:00",
-                },
-                {
-                    day: moment().add(2, 'd'),
-                    start: "13:00",
-                    end: "15:00",
-                }
-            ],
         };
     }
 
@@ -75,15 +55,23 @@ export default class App extends Component {
         fetch(`http://localhost:8000/api/spacename/${spaceID}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
-        .then(response => response.text())
-        .then(name => this.setState({ space: name }))
+        .then(response => response.json())
+        .then(({ name, error }) => {
+            if (name) {
+                this.setState(() => ({ space: name }));
+            } else if (error) {
+                // handle Error
+            }
+        })
         .catch(error => {
-            // do nothing
+            // 
         })
     } 
     render() {
         return (
             <Switch>
+
+                
                 <Route
                     exact path="/" // eslint-disable-line
                     render={props => 
@@ -103,13 +91,6 @@ export default class App extends Component {
                     }
                 />
 
-                <Route
-                    path="/bar"
-                    render={() => 
-                        <TimePickers 
-                        />
-                    }
-                />
 
                 <Route
                     path="/booking/:id"

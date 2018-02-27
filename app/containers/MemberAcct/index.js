@@ -22,7 +22,6 @@ import { ListItemText } from "material-ui/List";
 import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
 
-import Logger from "../../utils/Logger";
 import authenticate from "../../utils/Authenticate";
 import "./style.css";
 import "./styleM.css";
@@ -42,6 +41,7 @@ const MenuProps = {
 export default class MemberAcct extends React.PureComponent {
   state = {
     token: localStorage.getItem("token"),
+    user:JSON.parse(localStorage.getItem('user')),
     name: "",
     title: "",
     avatar: "",
@@ -66,6 +66,7 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   async componentDidMount() {
+    console.log(localStorage["token"]);
     const authorized = await authenticate(
       localStorage["token"],
       this.props.history
@@ -88,9 +89,9 @@ export default class MemberAcct extends React.PureComponent {
       .then(json => {
         this.setState({ loadedTags: json });
       })
-      .catch(error =>
-        Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`)
-      );
+      .catch(error => {
+
+      });
   };
 
   handleRequestClose = () => {
@@ -105,9 +106,6 @@ export default class MemberAcct extends React.PureComponent {
       {
         [name]: event.target.value
       }
-      //() => {
-      //console.log(this.state);
-      //}
     );
   };
 
@@ -126,7 +124,6 @@ export default class MemberAcct extends React.PureComponent {
       });
     };
     reader.readAsDataURL(file);
-    // console.log(this.state.avatarPreview);
   };
 
   renderAvatarPreview = () => {
@@ -215,6 +212,9 @@ export default class MemberAcct extends React.PureComponent {
       .then(json => {
         if (json.success) {
           this.showSnack(json.success);
+          setTimeout(() => {
+            this.props.history.push(`/user/${this.state.user.id}`)
+        }, 2000);
         } else {
           this.showSnack(json.error);
         }

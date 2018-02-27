@@ -1,4 +1,3 @@
-import Logger from './Logger';
 
 export default async token => {
     try {
@@ -8,7 +7,7 @@ export default async token => {
         const authorized = await response.json();
         return authorized;
     } catch (err) {
-        Logger(`authorized: ${err}`)
+        //
     }
 }
 
