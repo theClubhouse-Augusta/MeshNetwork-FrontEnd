@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import AddIcon from 'react-icons/lib/md/add';
 import Snackbar from 'material-ui/Snackbar';
@@ -34,7 +34,7 @@ export default class SideNav extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -67,18 +67,15 @@ export default class SideNav extends React.PureComponent {
     fetch("https://innovationmesh.com/api/getCategories", {
       method:'GET',
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         categories:json.categories
       })
-    }.bind(this))
+    })
   }
 
   storeCategory = () => {
-    let _this = this;
     let data = new FormData();
     let categories = this.state.categories;
 
@@ -89,19 +86,17 @@ export default class SideNav extends React.PureComponent {
       body:data,
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
         if(json.error === 'token_expired') {
-          _this.categoryDialog();
-          _this.props.app.signOut(0, 'Your session has expired.');
-          _this.props.app.handleAuth();
-          _this.showSnack("Your session has expired.");
+          this.categoryDialog();
+          this.props.app.signOut(0, 'Your session has expired.');
+          this.props.app.handleAuth();
+          this.showSnack("Your session has expired.");
         }
         else {
-          _this.showSnack(json.error);
+          this.showSnack(json.error);
         }
       }
       else if(json.category) {
@@ -109,10 +104,10 @@ export default class SideNav extends React.PureComponent {
         this.setState({
           categories:json.categories
         })
-        _this.categoryDialog();
-        _this.showSnack(json.success);
+        this.categoryDialog();
+        this.showSnack(json.success);
       }
-    }.bind(this))
+    })
   }
 
   renderCategoryImageText = () => {
@@ -130,12 +125,12 @@ export default class SideNav extends React.PureComponent {
     if(this.state.categoryImage === "")
     {
       return(
-        <img src={this.state.categoryImagePreview} className="challenges_newChallengeImagePreview"/>
+        <img alt="" src={this.state.categoryImagePreview} className="challenges_newChallengeImagePreview"/>
       )
     }
     else {
       return(
-        <img src={this.state.categoryImagePreview} className="challenges_newChallengeImagePreview"/>
+        <img alt="" src={this.state.categoryImagePreview} className="challenges_newChallengeImagePreview"/>
       )
     }
   }
@@ -158,7 +153,7 @@ export default class SideNav extends React.PureComponent {
         </div>
         {this.state.categories.map((c, i) => (
           <a href={'/Challenges/Category/' + c.categorySlug} className="challenges_categoryBlock" key={i}>
-            <img src={c.categoryImage} className="challenges_categoryIcon"/>
+            <img  alt="" src={c.categoryImage} className="challenges_categoryIcon"/>
             <div className="challenges_categoryName">{c.categoryName}</div>
           </a>
         ))}

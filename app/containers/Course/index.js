@@ -46,7 +46,7 @@ export default class Course extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -59,17 +59,15 @@ export default class Course extends React.PureComponent {
     fetch("https://innovationmesh.com/api/detailCourse/"+id, {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       let lessons = json.lessons;
 
       for(let i = 0; i < lessons.length; i++) {
         lessons[i].lectures = [];
 
         for(let j = 0; j < json.lectures.length; j++) {
-          if(lessons[i].id == json.lectures[j].lessonID) {
+          if(lessons[i].id === json.lectures[j].lessonID) {
             lessons[i].lectures.push(json.lectures[j]);
           }
         }
@@ -78,7 +76,7 @@ export default class Course extends React.PureComponent {
         course:json.course,
         lessons:lessons
       })
-    }.bind(this))
+    })
   }
 
   enrollCourse = () => {
@@ -127,9 +125,9 @@ export default class Course extends React.PureComponent {
 
   render() {
 
-    let headerStyle = {
+    // let headerStyle = {
 
-    }
+    // }
 
     let promoVideo = <FlatButton onClick={this.handleVideo} style={{color:'#FFFFFF', border:'2px solid #FFFFFF', height:'50px', marginLeft:'10px', marginRight:'10px'}}>Promo Video</FlatButton>;
     if(!this.state.course.courseVideo) {
@@ -139,7 +137,7 @@ export default class Course extends React.PureComponent {
     return (
       <div className="container">
         <Helmet title="Detail" meta={[ { name: 'description', content: 'Description of Detail' }]}/>
-        <Header/>
+        <Header space={this.props.spaceName} />
         <header className="lmsDetailHeader" style={{
           background:'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(http://houseofhackers.me/media/' + this.state.course.courseImage +')',
 
@@ -163,7 +161,7 @@ export default class Course extends React.PureComponent {
           <div className="lmsDetailAuthor">
             <div className="lmsDetailAuthorContainer">
               <div className="lmsDetailAuthorAvatar">
-                <img className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
+                <img alt="" className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
               </div>
               <div className="lmsDetailAuthorInfo">
                 <div className="lmsDetailAuthorName">{this.state.course.courseInstructorName}</div>
@@ -230,7 +228,7 @@ export default class Course extends React.PureComponent {
           onRequestClose={this.handleVideo}
           bodyStyle={{overflow:'hidden', background:'transparent'}}
         >
-          <iframe width="100%" height="500" src={'https://www.youtube.com/embed/' + this.state.course.courseVideo} frameborder="0"/>
+          <iframe title="lecture" width="100%" height="500" src={'https://www.youtube.com/embed/' + this.state.course.courseVideo} frameborder="0"/>
         </Dialog>
 
         <Snackbar

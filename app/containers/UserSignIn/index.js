@@ -43,10 +43,10 @@ export default class UserSignIn extends React.PureComponent {
     handlePassword = (event) => { this.setState({ password: event.target.value }) };
 
     signIn = () => {
+        let _this = this;
       this.setState({
         isLoading:true
       })
-        let _this = this;
         let data = new FormData();
         data.append('email', this.state.email);
         data.append('password', this.state.password);
@@ -55,12 +55,10 @@ export default class UserSignIn extends React.PureComponent {
             method: 'POST',
             body: data
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
               if (json.error) {
-                  _this.showSnack(json.error);
+                  this.showSnack(json.error);
               }
               else if (json.token) {
                 let mainToken = json.token;
@@ -69,10 +67,8 @@ export default class UserSignIn extends React.PureComponent {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + mainToken }
                 })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (json) {
+                .then(response => response.json())
+                .then(json => {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
                   _this.showSnack('Welcome back!');
@@ -81,10 +77,10 @@ export default class UserSignIn extends React.PureComponent {
                   }, 2000);
                 })
               }
-              _this.setState({
+              this.setState({
                 isLoading:false
               })
-            }.bind(this));
+            });
     };
 
     resetPassword = () => this.setState({ forgotPassword: true });
@@ -102,7 +98,7 @@ export default class UserSignIn extends React.PureComponent {
             });
         })
         .catch(error => {
-            console.log(error);
+            // console.log(error);
         })
     }
     renderLoading = () => {
@@ -121,7 +117,7 @@ export default class UserSignIn extends React.PureComponent {
 
                 <header style={{ background: '#FFFFFF' }}>
                   {this.renderLoading()}
-                  <Header />
+                  <Header space={this.props.spaceName} />
                   <div className="userSignUpBanner">
                       <div className="homeHeaderContentTitle">Welcome Back, Fellow Coworker</div>
                       <div className="homeHeaderContentSubtitle">Find out what you have been missing</div>

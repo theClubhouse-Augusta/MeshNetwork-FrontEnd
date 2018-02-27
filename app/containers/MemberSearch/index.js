@@ -11,9 +11,9 @@ import PropTypes from "prop-types";
 import Chip from "material-ui/Chip";
 import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
-import { MenuItem } from "material-ui/Menu";
-import Input, { InputLabel } from "material-ui/Input";
-import Select from "material-ui/Select";
+// import { MenuItem } from "material-ui/Menu";
+// import Input, { InputLabel } from "material-ui/Input";
+// import Select from "material-ui/Select";
 
 /* Components */
 import Helmet from "react-helmet";
@@ -51,7 +51,7 @@ export default class MemberSearch extends PureComponent {
       localStorage["token"],
       this.props.history
     );
-    if (!authorized.error) {
+    if (!authorized.error && authorized) {
       this.loadSkills();
       this.setState({ loading: false });
     } else {
@@ -104,18 +104,14 @@ export default class MemberSearch extends PureComponent {
       method: "POST",
       body: data
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
+      .then(response => response.json())
+      .then(json => {
           if (json.error) {
             this.showSnack(json.error);
           } else {
             this.setState({ results: json });
           }
-        }.bind(this)
-      );
+        });
   };
 
   renderTag = (skill, i) => {
@@ -155,7 +151,7 @@ export default class MemberSearch extends PureComponent {
         />
 
         <header style={{ background: "#FFFFFF", width: "100%" }}>
-          <Header />
+          <Header space={this.props.spaceName} />
           <div className="memberSearchBanner">
             <div className="memberSearchHeaderTitle">Connect with People</div>
             <div className="memberSearchHeaderSubtitle">
@@ -203,6 +199,8 @@ export default class MemberSearch extends PureComponent {
               >
                 <div className="memberBlockImage" style={{overflow:'hidden'}}>
                   <img
+                    alt=""
+                    
                     src={user.avatar}
                     style={{ width: "100%", height: "auto" }}
                   />

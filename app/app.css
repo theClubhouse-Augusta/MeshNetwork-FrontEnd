@@ -10,6 +10,12 @@ In the case of multiple components of the same type the first component ex HomeB
   /*  background:url('https://innovationmesh.com/assets/tiles.jpg');*/
 }
 
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 h1,
 h2,
 h3,
@@ -29,6 +35,13 @@ a {
   font-weight: 500;
 }
 
+<<<<<<< HEAD
+=======
+/* li {
+  margin-left:60px;
+} */
+
+>>>>>>> 45b320193a0f9dbda8c44af07825d4dfe81e7728
 button,
 input {
   border: 0;

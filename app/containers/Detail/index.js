@@ -12,17 +12,24 @@ import Header from 'components/Header';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
-import Dialog, { DialogTitle } from 'material-ui/Dialog';
+// import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import Dialog  from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 
-import {EditorState, ContentState, convertToRaw, convertFromRaw, convertFromHTML} from 'draft-js';
+import {
+  EditorState, 
+  ContentState, 
+  convertToRaw, 
+  // convertFromRaw, 
+  convertFromHTML
+} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import Slide from 'material-ui/transitions/Slide';
+// import Slide from 'material-ui/transitions/Slide';
 
 import CloseIcon from 'react-icons/lib/md/close';
 
@@ -61,7 +68,7 @@ export default class Detail extends React.PureComponent {
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  challengeDialog = () => {this.setState({challengeOpen:!this.state.challengeOpen}, function() { this.getCategories(); })}
+  challengeDialog = () => {this.setState({challengeOpen:!this.state.challengeOpen}, () => { this.getCategories(); })}
   handleChallengeTitle = (event) => {this.setState({challengeTitle:event.target.value})}
 
   handleChallengeContent = (editorState) => {this.setState({challengeContent: editorState})};
@@ -98,8 +105,8 @@ export default class Detail extends React.PureComponent {
       reader.onloadend = () => {
         this.setState({
           challengeFiles:challengeFiles
-        }, function() {
-          console.log(this.state.challengeFiles);
+        }, () => {
+          // console.log(this.state.challengeFiles);
           this.forceUpdate();
         })
       }
@@ -116,14 +123,14 @@ export default class Detail extends React.PureComponent {
     fetch("https://innovationmesh.com/api/selectCategories", {
       method:'GET'
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       this.setState({
         cats:json.categories
       })
-    }.bind(this))
+    })
   }
 
   deleteFile = (i) => {
@@ -133,7 +140,7 @@ export default class Detail extends React.PureComponent {
 
     this.setState({
       challengeFiles:challengeFiles
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -143,7 +150,6 @@ export default class Detail extends React.PureComponent {
       confirmStatus:"Uploading..."
     })
 
-    let _this = this;
     let data = new FormData();
 
     data.append('challengeTitle', this.state.challengeTitle);
@@ -159,51 +165,51 @@ export default class Detail extends React.PureComponent {
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
         if(json.error === 'token_expired') {
-          _this.showSnack("Your session has expired. Please sign back in to continue.");
+          this.showSnack("Your session has expired. Please sign back in to continue.");
         } else {
-          _this.showSnack(json.error);
-          _this.setState({
+          this.showSnack(json.error);
+          this.setState({
             confirmStatus:"Confirm"
           })
         }
       }
       else if(json.challenge) {
-        console.log(_this.state.challengeFiles.length);
-        if(_this.state.challengeFiles.length > 0) {
-          for(let i = 0; i < _this.state.challengeFiles.length; i++)
+        // console.log(this.state.challengeFiles.length);
+        if(this.state.challengeFiles.length > 0) {
+          for(let i = 0; i < this.state.challengeFiles.length; i++)
           {
             let fileData = new FormData();
             fileData.append('challengeID', json.challenge);
-            fileData.append('challengeFile', _this.state.challengeFiles[i].fileData);
+            fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
             fetch("https://innovationmesh.com/api/uploadFile", {
               method:'POST',
               body:fileData,
-              headers:{'Authorization':'Bearer ' + _this.state.token}
+              headers:{'Authorization':'Bearer ' + this.state.token}
             })
-            .then(function(response) {
+            .then((response) => {
               return response.json();
             })
-            .then(function(json) {
+            .then((json) => {
               if(json.error) {
-                _this.showSnack(json.error);
-                _this.setState({
+                this.showSnack(json.error);
+                this.setState({
                   confirmStatus:"Confirm"
                 })
               }
             })
           }
         }
-        _this.showSnack("Challenge Updated.");
-        _this.challengeDialog();
+        this.showSnack("Challenge Updated.");
+        this.challengeDialog();
       }
-    }.bind(this))
+    })
   }
 
   deleteFile = () => {
@@ -218,7 +224,7 @@ export default class Detail extends React.PureComponent {
   /*componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }*/
@@ -227,10 +233,8 @@ export default class Detail extends React.PureComponent {
     fetch("https://innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         challenge:json.challenge,
         categories:json.challenge.categories,
@@ -245,10 +249,10 @@ export default class Detail extends React.PureComponent {
       ),
         challengeCategories:json.categoriesArray,
         challengeImagePreview:json.challenge.challengeImage
-      }, function() {
+      }, () => {
         this.getSpace();
       })
-    }.bind(this))
+    })
   }
 
   getSpace = () => {
@@ -256,33 +260,26 @@ export default class Detail extends React.PureComponent {
         method: "GET"
       }
     )
-    .then(function(response) {
-      return response.json();
-    })
-    .then(
-      function(json) {
+    .then(response => response.json())
+    .then(json => {
         this.setState({
           space: json
         });
-      }.bind(this)
-    );
+    });
   }
 
   joinChallenge = () => {
-    let _this = this;
     fetch("https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
-        _this.showSnack(json.error);
+        this.showSnack(json.error);
       }
       else {
-        _this.showSnack(json.success);
+        this.showSnack(json.success);
       }
     })
   }
@@ -310,7 +307,7 @@ export default class Detail extends React.PureComponent {
     if(this.state.token)
     {
       if(this.state.user) {
-        if(this.state.user.spaceID == this.state.challenge.spaceID && this.state.user.roleID == 2)
+        if(this.state.user.spaceID === this.state.challenge.spaceID && this.state.user.roleID === 2)
         {
           return(
             <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
@@ -338,12 +335,12 @@ export default class Detail extends React.PureComponent {
     if(this.state.challengeImage === "")
     {
       return(
-        <img src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
       )
     }
     else {
       return(
-        <img src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
       )
     }
   }
@@ -372,7 +369,7 @@ export default class Detail extends React.PureComponent {
         <Helmet title={this.state.challenge.challengeTitle} meta={[ { name: 'description', content: 'Description of Detail' }]}/>
 
         <header>
-          <Header/>
+          <Header space={this.props.spaceName}/>
         </header>
 
         <main className="challenges_mainContainer">
@@ -393,7 +390,7 @@ export default class Detail extends React.PureComponent {
                 </div>
               </div>
               <div className="challenges_detailImageContainer">
-                <img className="challenges_detailImage" src={this.state.challenge.challengeImage} />
+                <img alt="" className="challenges_detailImage" src={this.state.challenge.challengeImage} />
               </div>
               <div style={{fontFamily:'Noto Sans', fontWeight:'200', color:'#555555', paddingTop:'5px', paddingBottom:'5px', lineHeight:'35px'}} className="challenges_detailContent" dangerouslySetInnerHTML={this.createMarkup()} />
             </div>

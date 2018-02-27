@@ -67,11 +67,12 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   async componentDidMount() {
+    console.log(localStorage["token"]);
     const authorized = await authenticate(
       localStorage["token"],
       this.props.history
     );
-    if (!authorized.error) {
+    if (!authorized.error && authorized) {
       this.getUserInfo();
       this.loadSkills();
       this.setState({ loading: false });
@@ -89,9 +90,7 @@ export default class MemberAcct extends React.PureComponent {
       .then(json => {
         this.setState({ loadedTags: json });
       })
-      .catch(error =>
-        Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`)
-      );
+      
   };
 
   handleRequestClose = () => {
@@ -127,19 +126,21 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   renderAvatarPreview = () => {
-    if (this.state.avatarPreview == "") {
+    if (this.state.avatarPreview === "") {
       return (
         <img
+          alt=""
           src={this.state.avatar}
           className="acctProfilePicturePreview"
           height="200px"
           width="200px"
         />
       );
-    } else this.state.avatar !== this.state.avatarPreview;
+    } else if (this.state.avatar !== this.state.avatarPreview)
     {
       return (
         <img
+          alt=""
           src={this.state.avatarPreview}
           className="acctProfilePicturePreview"
           height="200px"
@@ -162,11 +163,8 @@ export default class MemberAcct extends React.PureComponent {
       method: "GET",
       headers: { Authorization: "Bearer " + this.state.token }
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
+      .then(response => response.json())
+      .then(json => {
           this.setState(
             {
               name: json.user.name,
@@ -180,10 +178,11 @@ export default class MemberAcct extends React.PureComponent {
               github: json.user.github,
               behance: json.user.behance,
               selectedTags: json.user.skills.split(",")
-            }
-          );
-        }.bind(this)
-      );
+            },
+            () => {
+              console.log(this.state);
+            });
+        });
   };
 
   updateUser = e => {
@@ -234,9 +233,9 @@ export default class MemberAcct extends React.PureComponent {
       loadedTags,
       name,
       title,
-      avatar,
-      avatarPreview,
-      phoneNumber,
+      // avatar,
+      // avatarPreview,
+      // phoneNumber,
       facebook,
       twitter,
       instagram,
@@ -253,7 +252,7 @@ export default class MemberAcct extends React.PureComponent {
           meta={[{ name: "description", content: "Description of MemberAcct" }]}
         />
         <header style={{ background: "#FFFFFF" }}>
-          <Header />
+          <Header space={this.props.spaceName} />
           <div className="acctBanner">
             <div className="homeHeaderContentTitle">Update Your Profile</div>
             <div className="homeHeaderContentSubtitle">

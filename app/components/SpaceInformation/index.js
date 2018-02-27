@@ -5,7 +5,6 @@
  */
 
 import React from "react";
-import PropTypes from "prop-types";
 import Paper from "material-ui/Paper";
 import { TextField } from "material-ui";
 import Button from "material-ui/Button";
@@ -14,7 +13,7 @@ import {
     EditorState,
     ContentState,
     convertToRaw,
-    convertFromRaw,
+    // convertFromRaw,
     convertFromHTML
 } from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -83,18 +82,14 @@ export default class SpaceInformation extends React.PureComponent {
             });
         };
         reader.readAsDataURL(file);
-        console.log(this.state.logoPreview);
     };
 
     getSpaceInfo = () => {
         fetch("https://innovationmesh.com/api/workspace/" + this.props.id, {
             method: "GET"
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(
-            function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState(
                     {
                         id: json.id,
@@ -117,28 +112,22 @@ export default class SpaceInformation extends React.PureComponent {
                         instagram: json.instagram,
                         stripe: json.stripe,
                         pubKey: json.pubKey
-                    },
-                    function () {
-                        console.log(this.state);
                     }
                 );
-            }.bind(this)
-            );
+            });
     };
 
     renderLogoPreview = () => {
-        if (this.state.logoPreview == "") {
-            return <img src={this.state.logo} className="spaceIDashLogoPreview" />;
-        } else this.state.logo !== this.state.logoPreview;
-        {
+        if (this.state.logoPreview === "") {
+            return <img alt="" src={this.state.logo} className="spaceIDashLogoPreview" />;
+        } else if (this.state.logo !== this.state.logoPreview) {
             return (
-                <img src={this.state.logoPreview} className="spaceIDashLogoPreview" />
+                <img alt="" src={this.state.logoPreview} className="spaceIDashLogoPreview" />
             );
         }
     };
 
     spaceInfoSubmit = () => {
-        let _this = this;
         let data = new FormData();
         let {
             id,
@@ -185,28 +174,24 @@ export default class SpaceInformation extends React.PureComponent {
             body: data,
             headers: { Authorization: "Bearer " + this.state.token }
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(
-            function (json) {
+            .then(response => response.json())
+            .then(json => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 } else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                 }
-            }.bind(this)
-            );
+            });
     };
 
     render() {
-        const { contentState } = this.state;
+        // const { contentState } = this.state;
 
         return (
             <div className="spaceInfoDash">
                 <Paper>
                     <div className="spaceIDashHeader">
-                        <h2 />
+                        {/* <h2 /> */}
                     </div>
                     <div className="spaceIDashMain">
                         <form className="spaceIDashForm">

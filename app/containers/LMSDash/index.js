@@ -15,11 +15,12 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
+
 import FlatButton from 'material-ui/Button';
 import Card, { CardTitle, CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import { FormControl} from 'material-ui/Form';
-import Input, { InputLabel } from 'material-ui/Input';
+// import { FormControl} from 'material-ui/Form';
+// import Input, { InputLabel } from 'material-ui/Input';
 import { LinearProgress } from 'material-ui/Progress';
 import Snackbar from 'material-ui/Snackbar';
 
@@ -60,7 +61,7 @@ export default class LMSDash extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -72,7 +73,7 @@ export default class LMSDash extends React.PureComponent {
     this.setState({
       page:1,
       category:value
-    }, function() {
+    }, () => {
       this.getCourses(value);
     })
   }
@@ -86,7 +87,6 @@ export default class LMSDash extends React.PureComponent {
   };
 
   getCourses = (category = 0) => {
-    let _this = this;
 
     fetch('https://innovationmesh.com/api/myCourses/'+this.state.count+'?page='+this.state.page, {
       method:'GET',
@@ -94,15 +94,10 @@ export default class LMSDash extends React.PureComponent {
         'Authorization': 'Bearer ' + this.state.token
       }
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
-        //_this.props.history.push('/signIn');
-      }
-      else if(json.detail) {
-        //_this.props.history.push('/signIn');
+        this.props.history.push('/signIn');
       }
       else {
         let nextPage = 0;
@@ -128,13 +123,13 @@ export default class LMSDash extends React.PureComponent {
           isLoading:false
         })
       }
-    }.bind(this))
+    })
   };
 
   getNextCourses = (category) => {
     this.setState({
       page:this.state.nextPage
-    }, function() {
+    }, () => {
       this.getCourses(category);
     })
   };
@@ -142,7 +137,7 @@ export default class LMSDash extends React.PureComponent {
   getPreviousCourses = (category) => {
     this.setState({
       page:this.state.previousPage
-    }, function() {
+    }, () => {
       this.getCourses(category);
     })
   };
@@ -153,14 +148,12 @@ export default class LMSDash extends React.PureComponent {
     fetch("https://innovationmesh.com/api/getCategories", {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         categories:json.categories
       })
-    }.bind(this))
+    })
   }
 
   createCourse = () => {
@@ -180,11 +173,10 @@ export default class LMSDash extends React.PureComponent {
       else {
         _this.props.history.push('/LMS/Update/'+json.course)
       }
-    }.bind(this))
+    })
   }
 
   deleteCourse = () => {
-    let _this = this;
     let course = this.state.courses;
     fetch("https://innovationmesh.com/api/deleteCourse/"+this.state.activeCourse, {
       method:'POST',
@@ -198,15 +190,15 @@ export default class LMSDash extends React.PureComponent {
         _this.showSnack("Your session has expired.");
       }
       else if(json.success) {
-        _this.showSnack("Course Removed.");
+        this.showSnack("Course Removed.");
         course.splice(this.state.activeIndex, 1);
 
-        _this.setState({
+        this.setState({
           deleteDialog: !this.state.deleteDialog,
           course:course
         })
       }
-    }.bind(this))
+    })
   }
 
   renderPageButtons = () => {
@@ -309,7 +301,7 @@ export default class LMSDash extends React.PureComponent {
         <Helmet title="Dashboard" meta={[ { name: 'description', content: 'Description of Dashboard' }]}/>
 
         <header>
-          <Header/>
+          <Header space={this.props.spaceName}/>
         </header>
 
         <main className="lmsHomeMain">

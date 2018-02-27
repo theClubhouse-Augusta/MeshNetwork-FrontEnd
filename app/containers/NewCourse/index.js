@@ -10,7 +10,8 @@ import { Link } from 'react-router-dom';
 import FlatButton from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/Select';
-import Menu, { MenuItem } from 'material-ui/Menu';
+// import Menu from 'material-ui/Menu';
+import { MenuItem } from 'material-ui/Menu';
 import {EditorState, ContentState, convertFromHTML, convertToRaw} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Editor } from 'react-draft-wysiwyg';
@@ -18,7 +19,8 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Snackbar from 'material-ui/Snackbar';
 import { LinearProgress } from 'material-ui/Progress';
 import { FormControl} from 'material-ui/Form';
-import Input, { InputLabel } from 'material-ui/Input';
+// import Input from 'material-ui/Input';
+import { InputLabel } from 'material-ui/Input';
 
 import AddIcon from 'react-icons/lib/fa/plus-square-o';
 import BackIcon from 'react-icons/lib/fa/arrow-circle-left';
@@ -68,12 +70,13 @@ export default class NewCourse extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
 
   getCourse = (id) => {
+    let _this = this;
     fetch("https://innovationmesh.com/api/editCourse/"+id, {
       method:'GET',
       headers:{'Authorization': 'Bearer '+this.state.token}
@@ -122,7 +125,7 @@ export default class NewCourse extends React.PureComponent {
               }
             }
 
-            if(lessons[i].id == lectures[j].lessonID) {
+            if(lessons[i].id === lectures[j].lessonID) {
               lessons[i].lectures.push(lectures[j]);
             }
           }
@@ -139,25 +142,23 @@ export default class NewCourse extends React.PureComponent {
           coursePrice:json.course.coursePrice,
           courseStatus:json.course.courseStatus,
           lessons:lessons
-        }, function() {
-          console.log(this.state.lessons)
+        }, () => {
+          // console.log(this.state.lessons)
         })
       }
-    }.bind(this))
+    })
   }
 
   getCategories = () => {
     fetch("https://innovationmesh.com/api/getCategories", {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         categories:json.categories
-      })
-    }.bind(this))
+      });
+    })
   }
 
   handleCourseName = (event) => {this.setState({courseName:event.target.value})};
@@ -170,13 +171,13 @@ export default class NewCourse extends React.PureComponent {
 
   handleLectureName = (i, j, event) => {
     let lessons = this.state.lessons;
-    let activeView = this.state.activeView;
+    // let activeView = this.state.activeView;
 
     lessons[i].lectures[j].lectureName = event.target.value;
 
     this.setState({
       lessons:lessons
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -195,7 +196,6 @@ export default class NewCourse extends React.PureComponent {
   };
 
   handleLectureType = (event, index, value) => {
-    console.log(event.target.value);
     let activeView = this.state.activeView;
     let lessons = this.state.lessons;
     activeView.lectureType = event.target.value;
@@ -220,7 +220,7 @@ export default class NewCourse extends React.PureComponent {
     this.setState({
       activeView:activeView,
       lessons:lessons,
-    }, function() {
+    }, () => {
       this.forceUpdate();
       this.updateLecture(this.state.activeLesson, this.state.activeLecture);
     })
@@ -235,7 +235,7 @@ export default class NewCourse extends React.PureComponent {
       this.setState({
         courseImage: file,
         courseImagePreview: reader.result
-      }, function() {
+      }, () => {
         this.updateCourseImage();
       });
     }
@@ -252,7 +252,7 @@ export default class NewCourse extends React.PureComponent {
       this.setState({
         courseInstructorAvatar: file,
         courseInstructorAvatarPreview: reader.result
-      }, function() {
+      }, () => {
         this.updateCourseInstructorAvatar();
       });
     }
@@ -265,7 +265,7 @@ export default class NewCourse extends React.PureComponent {
     lessons[index].lessonName = event.target.value
     this.setState({
       lessons:lessons
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -292,7 +292,7 @@ export default class NewCourse extends React.PureComponent {
           reader.onloadend = () => {
             this.setState({
               lessons:lessons
-            }, function() {
+            }, () => {
               this.storeFile(fileData, lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles.length - 1);
               this.forceUpdate();
             });
@@ -312,13 +312,12 @@ export default class NewCourse extends React.PureComponent {
 
     this.setState({
       lessons:lessons
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
 
   storeQuestion = (type) => {
-    let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
     if(lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions.length < 50) {
@@ -344,19 +343,18 @@ export default class NewCourse extends React.PureComponent {
           lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions.push(question);
           this.setState({
             lessons:lessons
-          }, function() {
+          }, () => {
             this.forceUpdate();
           })
-          _this.showSnack("Question Added.")
+          this.showSnack("Question Added.")
         }
-      }.bind(this))
+      })
     } else {
       this.showSnack("No More Than 50 Questions per Exam.")
     }
   }
 
   updateQuestion = (i, event) => {
-
     let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
@@ -381,15 +379,14 @@ export default class NewCourse extends React.PureComponent {
 
         this.setState({
           lessons:lessons
-        }, function() {
+        }, () => {
           this.forceUpdate();
         })
       }
-    }.bind(this))
+    })
   }
 
   storeAnswer = (i) => {
-
     let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
@@ -417,11 +414,11 @@ export default class NewCourse extends React.PureComponent {
           lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers.push(answer);
           this.setState({
             lessons:lessons
-          }, function() {
+          }, () => {
             this.forceUpdate();
           })
         }
-      }.bind(this))
+      })
     } else {
       this.showSnack("Only 6 Maximum Answers")
     }
@@ -451,11 +448,11 @@ export default class NewCourse extends React.PureComponent {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].answerContent = json.answer.answerContent;
         this.setState({
           lessons:lessons
-        }, function() {
-          _this.forceUpdate();
+        }, () => {
+          this.forceUpdate();
         })
       }
-    }.bind(this))
+    })
   }
 
   setCorrect = (i, j, event) => {
@@ -475,20 +472,20 @@ export default class NewCourse extends React.PureComponent {
 
     this.setState({
       lessons:lessons
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
 
   }
 
   updateCourse = (courseStatus) => {
+    let _this = this;
     if(courseStatus === 'Published') {
       this.setState({
         isSaving:true
       })
     }
 
-    let _this = this;
     let data = new FormData();
 
     let coursePrice = this.state.coursePrice;
@@ -523,19 +520,19 @@ export default class NewCourse extends React.PureComponent {
         _this.showSnack('Your session has expired.');
       }
       else {
-        _this.setState({
+        this.setState({
           isSaving:false
         })
       }
-    }.bind(this))
+    })
   };
 
   updateCourseImage = () => {
+    let _this = this;
     this.setState({
       isSaving:true
     })
 
-    let _this = this;
     let data = new FormData();
 
     data.append('courseImage', this.state.courseImage);
@@ -553,19 +550,19 @@ export default class NewCourse extends React.PureComponent {
         _this.showSnack('Your session has expired.');
       }
       else {
-        _this.setState({
+        this.setState({
           isSaving:false
         })
       }
-    }.bind(this))
+    })
   };
 
   updateCourseInstructorAvatar = () => {
+    let _this = this;
     this.setState({
       isSaving:true
     })
 
-    let _this = this;
     let data = new FormData();
 
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
@@ -583,11 +580,11 @@ export default class NewCourse extends React.PureComponent {
         _this.showSnack('Your session has expired');
       }
       else {
-        _this.setState({
+        this.setState({
           isSaving:false
         })
       }
-    }.bind(this))
+    })
   };
 
   storeLesson = () => {
@@ -615,12 +612,12 @@ export default class NewCourse extends React.PureComponent {
         lessons.push(newLesson);
         this.setState({
           lessons:lessons
-        }, function() {
+        }, () => {
           this.forceUpdate();
         })
-        _this.showSnack("Lesson Added.")
+        this.showSnack("Lesson Added.")
       }
-    }.bind(this))
+    })
   }
 
   updateLesson = (id, lessonName) => {
@@ -642,15 +639,15 @@ export default class NewCourse extends React.PureComponent {
         _this.showSnack('Your session has expired.');
       }
       else {
-        _this.showSnack('Lesson Updated');
+        this.showSnack('Lesson Updated');
       }
-    }.bind(this))
+    })
   }
 
   updateLecture = (i, j) => {
-    let _this = this;
     let lessons = this.state.lessons;
     let id = lessons[i].lectures[j].id;
+    let _this = this;
 
     let data = new FormData();
       data.append('lectureName', lessons[i].lectures[j].lectureName);
@@ -670,13 +667,13 @@ export default class NewCourse extends React.PureComponent {
       if(json.error) {
         _this.showSnack('Your session has expired.');
       }
-    }.bind(this))
+    })
   }
 
   storeLecture = (i) => {
-    let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
+    let _this = this;
 
     data.append('lessonID', lessons[i].id);
     data.append('lectureName', "Lecture Title");
@@ -701,17 +698,17 @@ export default class NewCourse extends React.PureComponent {
         lessons[i].lectures.push(lecture);
         this.setState({
           lessons:lessons
-        }, function() {
+        }, () => {
           this.forceUpdate();
         })
-        _this.showSnack("Lecture Added.")
+        this.showSnack("Lecture Added.")
       }
-    }.bind(this))
+    })
   }
 
   storeFile = (file, index) => {
-    let _this = this;
     let lessons = this.state.lessons;
+    let _this = this;
 
     let data = new FormData();
     data.append('lectureID', this.state.activeView.id);
@@ -722,34 +719,32 @@ export default class NewCourse extends React.PureComponent {
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then((json) => {
       if(json.error) {
         _this.showSnack(json.error);
       }
       else if(json.success){
-        lessons[_this.state.activeLesson].lectures[_this.state.activeLecture].lectureFiles[index].isLoading = false;
-        lessons[_this.state.activeLesson].lectures[_this.state.activeLecture].lectureFiles[index].id = json.success;
-        _this.setState({
+        lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles[index].isLoading = false;
+        lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles[index].id = json.success;
+        this.setState({
           lessons:lessons
-        }, function() {
-          _this.forceUpdate()
+        }, () => {
+          this.forceUpdate()
         })
       }
-    }.bind(this))
+    })
   }
 
   deleteLesson = (id, i) => {
-    let _this = this;
     let lessons = this.state.lessons;
+    let _this = this;
 
     fetch("https://innovationmesh.com/api/deleteLesson/" + id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
     .then(function(json) {
@@ -759,22 +754,22 @@ export default class NewCourse extends React.PureComponent {
         lessons.splice(i, 1);
         this.setState({
           lessons:lessons
-        }, function() {
-          _this.forceUpdate();
+        }, () => {
+          this.forceUpdate();
         });
       }
-    }.bind(this))
+    })
   }
 
   deleteLecture = (id, i, j) => {
-    let _this = this;
     let lessons = this.state.lessons;
+    let _this = this;
 
     fetch("https://innovationmesh.com/api/deleteLecture/" + id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
     .then(function(json) {
@@ -785,22 +780,22 @@ export default class NewCourse extends React.PureComponent {
         lessons[i].lectures.splice(j, 1);
         this.setState({
           lessons:lessons
-        }, function() {
-          _this.forceUpdate();
+        }, () => {
+          this.forceUpdate();
         });
       }
-    }.bind(this))
+    })
   }
 
   deleteQuestion = (id, i) => {
-    let _this = this;
     let lessons = this.state.lessons;
+    let _this = this;
 
     fetch("https://innovationmesh.com/api/deleteQuestion/"+id, {
       method:'POST',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
     .then(function(json) {
@@ -811,22 +806,22 @@ export default class NewCourse extends React.PureComponent {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions.splice(i, 1);
         this.setState({
           lessons:lessons
-        }, function() {
-          _this.forceUpdate();
+        }, () => {
+          this.forceUpdate();
         })
       }
-    }.bind(this))
+    })
   }
 
   deleteAnswer = (id, i, j) => {
-    let _this = this;
     let lessons = this.state.lessons;
+    let _this = this;
 
     fetch("https://innovationmesh.com/api/deleteAnswer/"+id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
     .then(function(json) {
@@ -837,22 +832,22 @@ export default class NewCourse extends React.PureComponent {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers.splice(j, 1);
         this.setState({
           lessons:lessons
-        }, function() {
-          _this.forceUpdate();
+        }, () => {
+          this.forceUpdate();
         })
       }
-    }.bind(this))
+    })
   }
 
   deleteFile = (id, i) => {
-    let _this = this;
     let lessons = this.state.lessons;
+    let _this = this;
 
     fetch("https://innovationmesh.com/api/deleteFile/"+id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
     .then(function(json) {
@@ -863,11 +858,11 @@ export default class NewCourse extends React.PureComponent {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles.splice(i, 1);
         this.setState({
           lessons:lessons
-        }, function() {
-          _this.forceUpdate();
+        }, () => {
+          this.forceUpdate();
         })
       }
-    }.bind(this))
+    })
   }
 
   confirmLessonDelete = (i) => {
@@ -876,7 +871,7 @@ export default class NewCourse extends React.PureComponent {
 
     this.setState({
       lessons:lessons
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -887,13 +882,12 @@ export default class NewCourse extends React.PureComponent {
 
     this.setState({
       lessons:lessons
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
 
   changeMenu = (i, j = -1) => {
-    let _this = this;
     let lessons = this.state.lessons;
     if(j !== -1) {
       if(typeof lessons[i].lectures[j].lectureContent === 'object') {
@@ -904,11 +898,11 @@ export default class NewCourse extends React.PureComponent {
       activeLesson:i,
       activeLecture:j,
       lessons:lessons
-    }, function() {
+    }, () => {
       if(j !== -1) {
         lessons[i].lectures[j].lectureContent = EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(lessons[i].lectures[j].lectureContent)));
         let activeView = lessons[i].lectures[j];
-        _this.setState({
+        this.setState({
           lessons:lessons,
           activeView:activeView,
           activeLectureType:activeView.lectureType
@@ -1202,12 +1196,12 @@ export default class NewCourse extends React.PureComponent {
     if(this.state.courseImage === "")
     {
       return(
-        <img src={'http://houseofhackers.me/media/' + this.state.courseImagePreview} className="lmsNewCourseImagePreview"/>
+        <img alt="" src={'http://houseofhackers.me/media/' + this.state.courseImagePreview} className="lmsNewCourseImagePreview"/>
       )
     }
     else {
       return(
-        <img src={this.state.courseImagePreview} className="lmsNewCourseImagePreview"/>
+        <img alt="" src={this.state.courseImagePreview} className="lmsNewCourseImagePreview"/>
       )
     }
   }
@@ -1275,7 +1269,7 @@ export default class NewCourse extends React.PureComponent {
               <div className="lmsDetailAuthorAvatar">
                 <label htmlFor="course-avatar" className="lmsLessonMainAvatarBlock">
                   {this.renderAvatarImageText()}
-                  <img src={this.state.courseInstructorAvatarPreview} className="lmsNewCourseImagePreview"/>
+                  <img alt="" src={this.state.courseInstructorAvatarPreview} className="lmsNewCourseImagePreview"/>
                 </label>
                 <input type="file" onChange={this.handleCourseInstructorAvatar} id="course-avatar" style={{display:'none'}}/>
               </div>

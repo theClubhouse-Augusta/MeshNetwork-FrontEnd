@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Bars from "react-icons/lib/fa/bars";
 import MdExplore from "react-icons/lib/md/explore";
 import MdInfoOutline from "react-icons/lib/md/info-outline";
@@ -15,7 +15,7 @@ import MdSchool from "react-icons/lib/md/school";
 import MdPerson from "react-icons/lib/md/person";
 import MdExitToApp from "react-icons/lib/md/exit-to-app";
 import DownArrow from "react-icons/lib/fa/caret-down";
-import Divider from "material-ui/Divider";
+// import Divider from "material-ui/Divider";
 
 import Menu, { MenuItem } from "material-ui/Menu";
 
@@ -38,7 +38,8 @@ export default class Header extends React.PureComponent {
       educationMenu: null,
       accountMenu: null,
       msg: "",
-      snack: false
+      snack: false,
+      redirect: null
     };
   }
 
@@ -239,7 +240,6 @@ export default class Header extends React.PureComponent {
   }
 
   signOut = () => {
-    let _this = this;
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("lmsToken");
@@ -251,9 +251,9 @@ export default class Header extends React.PureComponent {
         token: "",
         user: ""
       },
-      function() {
-        setTimeout(function() {
-          _this.props.history.push("/");
+      () => {
+        setTimeout(() => {
+          this.setState({ redirect: <Redirect to="/" /> });
         }, 2000);
       }
     );
@@ -335,7 +335,7 @@ export default class Header extends React.PureComponent {
         </span>
       </Link>
     );
-    if (this.state.headerTitle != "Mesh Network") {
+    if (this.state.headerTitle !== "Mesh Network") {
       headerTitle = this.state.headerTitle;
     }
     /*let headerTitle = (
@@ -352,6 +352,7 @@ export default class Header extends React.PureComponent {
           background: this.state.backgroundColor
         }}
       >
+        {this.state.redirect}
         <div className="navBar">
           <div
             className="siteName"

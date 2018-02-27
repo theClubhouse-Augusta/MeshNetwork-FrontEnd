@@ -3,10 +3,10 @@ import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
-import ExpansionPanel, {
-    ExpansionPanelSummary,
-    ExpansionPanelDetails,
-} from 'material-ui/ExpansionPanel';
+// import ExpansionPanel, {
+//     ExpansionPanelSummary,
+//     ExpansionPanelDetails,
+// } from 'material-ui/ExpansionPanel';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import BigCalendar from 'react-big-calendar';
@@ -55,7 +55,7 @@ export default class Booking extends React.PureComponent {
     componentWillReceiveProps(app) {
         this.setState({
             app: app.app
-        }, function () {
+        }, () => {
             this.forceUpdate();
         })
     }
@@ -67,7 +67,6 @@ export default class Booking extends React.PureComponent {
     handleName = (event) => { this.setState({ name: event.target.value }) }
     handleEmail = (event) => { this.setState({ email: event.target.value }) }
     handleType = (type) => {
-        let _this = this;
         let activeTimes = [];
         let times = this.state.times;
         for (let i = 0; i < times.length; i++) {
@@ -88,27 +87,25 @@ export default class Booking extends React.PureComponent {
             acitveDays:[1,2,3,4,5],
             increments:60,
             times: times
-        }, function () {
+        }, () => {
             fetch('https://innovationmesh.com/api/bookings/' + type, {
                 method: 'GET'
             })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (json) {
+                .then(response => response.json())
+                .then(json => {
                     let events = json;
                     for (let i = 0; i < events.length; i++) {
                         events[i].start = new Date(events[i].start);
                         events[i].end = new Date(events[i].end);
                     }
-                    _this.setState({
+                    this.setState({
                         events: json.bookings,
                         activeResource:json.resource,
                         activeDays:JSON.parse(json.resource.resourceDays),
                         increment: json.resource.resourceIncrement
-                    }, function () {
-                        _this.forceUpdate();
-                        console.log(this.state.events);
+                    },  () => {
+                        this.forceUpdate();
+                        // console.log(this.state.events);
                     })
                 })
         })
@@ -126,7 +123,7 @@ export default class Booking extends React.PureComponent {
         this.setState({
             activeTimes: activeTimes,
             times: times
-        }, function () {
+        }, () => {
             this.forceUpdate();
         })
     }
@@ -147,7 +144,7 @@ export default class Booking extends React.PureComponent {
         this.setState({
             activeTimes: activeTimes,
             times: times
-        }, function () {
+        }, () => {
             this.forceUpdate();
         })
     }
@@ -156,38 +153,33 @@ export default class Booking extends React.PureComponent {
         fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     spaceProfile: json,
-                }, function () {
+                }, () => {
                     if (!this.state.token) {
                         this.props.history.push('/join/' + this.state.spaceProfile.slug)
                     }
                     this.getResources(json.id);
                 })
-            }.bind(this));
+            });
     }
 
     getResources = (id) => {
         fetch('https://innovationmesh.com/api/resources/' + id, {
             method: 'GET',
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     resources: json
                 })
-            }.bind(this))
+            })
     };
 
     storeBooking = () => {
-        let _this = this;
-        let data = new FormData;
+        let data = new FormData();
 
         data.append('name', this.state.name);
         data.append('email', this.state.email);
@@ -201,20 +193,18 @@ export default class Booking extends React.PureComponent {
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 if (json.error) {
-                    _this.showSnack(json.error);
+                    this.showSnack(json.error);
                 }
                 else if (json.success) {
-                    _this.showSnack(json.success);
+                    this.showSnack(json.success);
                     setTimeout(() => {
                         this.props.history.push(`/space/${this.state.spaceProfile.slug}`)
                     }, 5000);
                 }
-            }.bind(this));
+            });
     }
 
     renderTypeButton = (res, i) => {
@@ -232,8 +222,8 @@ export default class Booking extends React.PureComponent {
     }
 
     renderTimes = (day, item, j) => {
-        let activeTimes = this.state.activeTimes;
-        let times = { day: day, time: item.time };
+        // let activeTimes = this.state.activeTimes;
+        // let times = { day: day, time: item.time };
         if (item.active === 0) {
             return (
                 <div className="bookingTimeBlock" key={j}>
@@ -352,7 +342,7 @@ export default class Booking extends React.PureComponent {
                 <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
 
                 <header style={{ background: '#FFFFFF' }}>
-                    <Header app={this.state.app} />
+                    <Header app={this.state.app} space={this.props.spaceName} />
                 </header>
 
                 <main className="bookingMainContainer">

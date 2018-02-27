@@ -20,7 +20,7 @@ const DateTimeSelect = props =>
       multiday={props.multiday} 
     />   
     <TimePicker 
-      label={props.startTimeLabel} 
+      label={props.startTimeLabel}
       index={typeof props.index === 'number' ? props.index : false} 
       selector={!props.multiday ? props.selectStart : props.selectStartMulti} 
     />

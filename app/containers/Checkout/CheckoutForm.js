@@ -36,9 +36,6 @@ const MenuProps = {
     },
 };
 
-// const loadedTags = ['one', 'two', 'three'];
-
-
 class CheckoutForm extends React.PureComponent {
     state = {
         token:localStorage.getItem('token'),
@@ -92,14 +89,12 @@ class CheckoutForm extends React.PureComponent {
         fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     space: json
                 })
-            }.bind(this));
+            });
     }
 
     loadSkills = () => {
@@ -120,7 +115,7 @@ class CheckoutForm extends React.PureComponent {
 
     selectPlan = (e, selected) => {
         e.preventDefault();
-        console.log('s', selected);
+        // console.log('s', selected);
         this.setState({ plan: selected });
     }
 
@@ -130,7 +125,7 @@ class CheckoutForm extends React.PureComponent {
     handleName = (event) => { this.setState({ name: event.target.value.replace(/\s\s+/g, ' ') }) };
     handleEmail = (event) => { this.setState({ email: event.target.value }) };
     handlePassword = (event) => {
-      this.setState({ password: event.target.value }, function() {
+      this.setState({ password: event.target.value }, () => {
         if(this.state.password.length < 6) {
           this.setState({
             passwordError:'Password Too Short'
@@ -223,10 +218,8 @@ class CheckoutForm extends React.PureComponent {
                 method: 'POST',
                 body: data,
             })
-            .then(function(response) {
-              return response.json();
-            })
-            .then(function(user) {
+            .then(response => response.json())
+            .then(user => {
               if (user.error) {
                   _this.showSnack(user.error);
               } else if (user.token) {
@@ -235,23 +228,19 @@ class CheckoutForm extends React.PureComponent {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + user.token }
                 })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (json) {
+                .then(response => response.json())
+                .then(json => {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
                   fetch('https://innovationmesh.com/api/signIn', {
                     method:'POST',
                     body:data
                   })
-                  .then(function(response) {
-                    return response.json();
-                  })
-                  .then(function(json) {
+                  .then(response => response.json())
+                  .then(json => {
                     if(json.error)
                     {
-                      _this.showSnack(json.error);
+                      this.showSnack(json.error);
                     }
                     else if(json.token)
                     {
@@ -264,10 +253,10 @@ class CheckoutForm extends React.PureComponent {
                   })
                 })
               }
-              _this.setState({
+              this.setState({
                 isLoading:false
               })
-            }.bind(this));
+            });
           })
         }
 
@@ -276,7 +265,6 @@ class CheckoutForm extends React.PureComponent {
         isLoading:true
       })
         e.preventDefault();
-        let _this = this;
         let data = new FormData();
         let {
             name,
@@ -305,10 +293,8 @@ class CheckoutForm extends React.PureComponent {
             method: 'POST',
             body: data,
         })
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(json) {
+        .then(response => response.json())
+        .then(json => {
           if (json.error) {
             this.showSnack(json.error);
           } else if (json.token) {
@@ -318,22 +304,20 @@ class CheckoutForm extends React.PureComponent {
               method: 'GET',
               headers: { "Authorization": "Bearer " + mainToken }
             })
-            .then(function (response) {
-              return response.json();
-            })
-            .then(function (json) {
+            .then(response => response.json())
+            .then(json => {
               let mainUser = json.user;
               localStorage.setItem('user', JSON.stringify(mainUser));
                 _this.showSnack('Welcome to '+ _this.state.space.name+'!');
                 setTimeout(() => {
-                    _this.props.history.push(`/user/${mainUser.id}`)
+                    this.props.history.push(`/user/${mainUser.id}`)
                 }, 2000);
             })
           }
-          _this.setState({
+          this.setState({
             isLoading:false
           })
-        }.bind(this));
+        });
       }
 
       renderLoading = () => {
@@ -347,11 +331,8 @@ class CheckoutForm extends React.PureComponent {
 
     render() {
         const {
-            selectedTags,
             loadedTags,
-            focused,
             plan,
-            options,
             loadedPlans,
     } = this.state;
 
@@ -360,7 +341,7 @@ class CheckoutForm extends React.PureComponent {
                 <Helmet title="SpaceSignUp" meta={[{ name: 'description', content: 'Description of SpaceSignUp' }]} />
                 <header className="checkoutHeaderContainer">
                     {this.renderLoading()}
-                    <Header headerTitle={this.state.space.name} />
+                    <Header headerTitle={this.state.space.name} space={this.props.spaceName} />
                     <div className="checkoutHeaderBanner">
                         <div className="homeHeaderContentTitle">Join {this.state.space.name}</div>
                         <div className="homeHeaderContentSubtitle">Find out what all the buzz is about</div>
@@ -370,7 +351,7 @@ class CheckoutForm extends React.PureComponent {
                 <main className="userSignUpMain">
                     <div className="spaceSignUpMain">
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <img src={this.state.space.logo} height="auto" width="300px" />
+                            <img alt="" src={this.state.space.logo} height="auto" width="300px" />
                         </div>
                         <div className="spaceSignUpContainer">
                             <TextField

@@ -6,7 +6,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Helmet from 'react-helmet';
 import Chip from 'material-ui/Chip';
 import Snackbar from 'material-ui/Snackbar';
@@ -46,13 +45,9 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`https://innovationmesh.com/api/event/${eventID}`, {
-            method: 'GET'
-        })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (json) {
+        fetch(`https://innovationmesh.com/api/event/${eventID}`)
+            .then(response => response.json())
+            .then(json => {
                 this.setState({
                     event: json.event,
                     workSpace: json.workspace,
@@ -63,12 +58,12 @@ export default class EventDetail extends React.PureComponent {
                     dates: json.dates,
                     tags: json.tags
                 })
-            }.bind(this))
+            })
     }
 
     registerForEvent = (e, eventID) => {
         e.preventDefault();
-        fetch(`http:/localhost/api/event/join/${eventID}`, {
+        fetch(`https://innovationmesh.com/api/event/join/${eventID}`, {
             headers: { Authorization: `Bearer ${this.token}` }
         },
         )
@@ -94,52 +89,14 @@ export default class EventDetail extends React.PureComponent {
             snackBarMessage: message
         });
 
-    handleDates = (start, end) => {
-        // hour:min:sec
-        const startHourMinSec = moment(start).format('hms');
-        const endHourMinSec = moment(end).format('hms');
-
-        // day of month
-        const startDay = moment(start).format('Do');
-        const endDay = moment(end).format('Do');
-
-        let timeFormat;
-        if (startHourMinSec !== endHourMinSec && startDay !== endDay) {
-            if (startDay === endDay) {
-                timeFormat = (
-                    <time>
-                        {`${moment(start).format('MMMM Do h:mm')} - ${moment(end).format('h:mm')}`}
-                    </time>
-                );
-            } else {
-                timeFormat = (
-                    <div>
-                        <time>
-                            starts:&nbsp;&nbsp;&nbsp;{`${moment(start).format(`MMMM D, h:mm A`)}`}
-                        </time>
-
-                        <br />
-
-                        <time>
-                            ends:&nbsp;&nbsp;&nbsp;{`${moment(end).format('MMMM D, h:mm A')}`}
-                        </time>
-                    </div>
-                );
-            }
-        }
-        return timeFormat;
-    }
-
-
     render() {
         const {
-      event,
             workSpace,
             tags
-    } = this.state;
+        } = this.state;
         // organizers.forEach(organizer => attendees.push(organizer))
-        const start = event.start;
-        const end = event.end;
+        // const start = event.start;
+        // const end = event.end;
 
         let joinLink = <Link to={'/join/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Sign Up</FlatButton></Link>;
 
@@ -147,7 +104,7 @@ export default class EventDetail extends React.PureComponent {
             <div className="eventDetailContainer">
                 <Helmet title="EventDetail" meta={[{ name: 'description', content: 'Description of EventDetail' }]} />
                 <header style={{ background: '#FFFFFF' }}>
-                    <Header />
+                    <Header space={this.props.spaceName} />
                     <div className="eventDetailBanner"
                         style={{background: '#ff4d58'}}>
                         <div className="homeHeaderContentTitle">{this.state.event.title}</div>
@@ -191,7 +148,7 @@ export default class EventDetail extends React.PureComponent {
                             <div className="eventDetailSectionContent">
                                 <div className="eventDetailDates">
                                     {this.state.dates.map((date, i) => (
-                                        <div className="eventDetailsDateBlock">{date.start} -- {date.end}</div>
+                                        <div className="eventDetailsDateBlock">{date.startFormatted} -- {date.endFormatted}</div>
                                     ))}
                                 </div>
                                 <div className="eventDetailSignUpRow">
@@ -208,7 +165,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.organizers.map((organizer, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={organizer.avatar} style={{ width: '100px', height: '100px' }} />
+                                            <img alt="" src={organizer.avatar} style={{ width: '100px', height: '100px' }} />
                                             <div style={{ marginTop: '10px', textAlign: 'center' }}>{organizer.name}</div>
                                         </div>
                                     ))}
@@ -221,7 +178,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.sponsors.map((sponsor, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={sponsor.logo} style={{ width: '100px', height: '100px' }} />
+                                            <img alt="" src={sponsor.logo} style={{ width: '100px', height: '100px' }} />
                                         </div>
                                     ))}
                                 </div>
@@ -233,7 +190,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.attendees.map((attendee, i) => (
                                         <div className="eventDetailUsersBlock">
-                                            <img src={attendee.avatar} style={{ width: '100px', height: '100px' }} />
+                                            <img alt="" src={attendee.avatar} style={{ width: '100px', height: '100px' }} />
                                             <div style={{ marginTop: '10px', textAlign: 'center' }}>{attendee.name}</div>
                                         </div>
                                     ))}

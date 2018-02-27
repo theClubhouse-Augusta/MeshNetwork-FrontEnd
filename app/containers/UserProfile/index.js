@@ -42,7 +42,7 @@ export default class UserProfile extends React.Component {
 
     async componentDidMount() {
         const authorized = await authenticate(localStorage['token'], this.props.history)
-        if (!authorized.error) {
+        if (!authorized.error && authorized) {
             this.getUser();
             this.setState({ loading: false })
         } else {
@@ -55,16 +55,16 @@ export default class UserProfile extends React.Component {
             method: 'GET',
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
-            .then(function (response) {
+            .then((response) => {
                 return response.json();
             })
-            .then(function (json) {
+            .then((json) => {
                 this.setState({
                     user: json.user,
                     space: json.space,
                     skills: json.skills ? json.skills : [],
                 })
-            }.bind(this))
+            })
     }
 
     renderTag = (skill, i) => {
@@ -121,8 +121,15 @@ export default class UserProfile extends React.Component {
         )
 
     }
-
     render() {
+        const {
+            facebook,
+            twitter,
+            instagram,
+            linkedin,
+            github,
+            behance
+        } = this.state;
         return (
             this.state.loading
                 ?
@@ -131,12 +138,12 @@ export default class UserProfile extends React.Component {
                 <div className="container">
                     <Helmet title={this.state.user.name} meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
                     <header>
-                        <Header />
+                        <Header space={this.props.spaceName} />
                     </header>
 
                     <main className="mainProfile">
                         <div className="profileHeader">
-                            <img src={this.state.user.avatar} className="profileHeaderImg" />
+                            <img alt="" src={this.state.user.avatar} className="profileHeaderImg" />
                             <div className="profileHeaderTitle">{this.state.user.name}</div>
                             <div className="profileSubTitle">{!!this.state.user.title !== "null" ? this.state.user.title : false}</div>
                         </div>

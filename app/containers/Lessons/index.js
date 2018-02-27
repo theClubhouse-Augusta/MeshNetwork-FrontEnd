@@ -44,7 +44,7 @@ export default class Lessons extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -78,7 +78,7 @@ export default class Lessons extends React.PureComponent {
             lectures[j].lectureQuestions = [];
             lectures[j].pendingDelete = false;
             lectures[j].userAnswers = [];
-            console.log(lectures[j]);
+            // console.log(lectures[j]);
 
             for(let k = 0; k < files.length; k++) {
               if(lectures[j].id === files[k].lectureID) {
@@ -109,12 +109,12 @@ export default class Lessons extends React.PureComponent {
           course:json.course,
           lessons:lessons,
           enrolled:json.enrolled
-        }, function() {
+        }, () => {
           this.forceUpdate();
           if(this.props.match.params.lid) {
             for(let i = 0; i < this.state.lessons.length; i++) {
               for(let j = 0; j < this.state.lessons[i].lectures.length; j++) {
-                if(this.state.lessons[i].lectures[j].id == this.props.match.params.lid) {
+                if(this.state.lessons[i].lectures[j].id === this.props.match.params.lid) {
                   this.setState({
                     activeLesson:i,
                     activeLecture:j,
@@ -133,7 +133,7 @@ export default class Lessons extends React.PureComponent {
           }
         });
       }
-    }.bind(this))
+    })
   }
 
   changeLecture = (i, j, lecture) => {
@@ -145,7 +145,6 @@ export default class Lessons extends React.PureComponent {
   }
 
   completeLecture = () => {
-    let _this = this;
     let lessons = this.state.lessons;
     let data = new FormData();
     data.append('courseID', this.props.match.params.id);
@@ -167,9 +166,9 @@ export default class Lessons extends React.PureComponent {
       else if(json.success) {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].complete = 1;
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].grade = json.grade;
-        _this.setState({
+        this.setState({
           lessons:lessons
-        }, function() {
+        }, () => {
           let activeView = this.state.activeView;
           let activeLecture = this.state.activeLecture;
           if(this.state.activeLecture  < lessons[this.state.activeLesson].lectures.length - 1) {
@@ -179,16 +178,16 @@ export default class Lessons extends React.PureComponent {
           this.setState({
             activeLecture:activeLecture,
             activeView:activeView
-          }, function() {
+          }, () => {
             this.forceUpdate();
           })
         })
       }
-    }.bind(this))
+    })
   }
 
   previousLecture = () => {
-    let lessons = this.state.lessons;
+    // let lessons = this.state.lessons;
     let activeView = this.state.activeView;
     let activeLecture = this.state.activeLecture;
     if(this.state.activeLecture !== 0) {
@@ -217,7 +216,7 @@ export default class Lessons extends React.PureComponent {
 
     this.setState({
       lessons:lessons
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
 
@@ -319,7 +318,7 @@ export default class Lessons extends React.PureComponent {
     {
       return(
         <div className="lmsLessonMainContent">
-          <iframe width="100%" height="800px" src={'https://www.youtube.com/embed/' + this.state.activeView.lectureVideo} frameborder="0"/>
+          <iframe title="lesson" width="100%" height="800px" src={'https://www.youtube.com/embed/' + this.state.activeView.lectureVideo} frameborder="0"/>
         </div>
       )
     }

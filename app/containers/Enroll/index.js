@@ -6,7 +6,16 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import {StripeProvider, Elements, injectStripe, CardNumberElement, CardExpiryElement, CardCVCElement, PostalCodeElement, PaymentRequestButtonElement} from 'react-stripe-elements';
+import {
+  StripeProvider, 
+  Elements, 
+  // injectStripe, 
+  // CardNumberElement, 
+  // CardExpiryElement, 
+  // CardCVCElement, 
+  // PostalCodeElement, 
+  // PaymentRequestButtonElement
+} from 'react-stripe-elements';
 import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
@@ -38,7 +47,7 @@ export default class Enroll extends React.PureComponent {
   componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -47,34 +56,29 @@ export default class Enroll extends React.PureComponent {
     fetch("https://lms.innovationmesh.com/showCourse/"+id+"/", {
       method:'GET'
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         course:json.course,
       })
-    }.bind(this))
+    })
   }
 
   storeEnroll = () => {
-    let _this = this;
     fetch("https://lms.innovationmesh.com/enrollCourse/" + this.props.match.params.id + "/", {
       method:'POST',
       headers: { 'Authorization': 'JWT ' + this.state.token}
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       if(json.error) {
-        _this.showSnack(json.error);
+        this.showSnack(json.error);
       }
       else if(json.detail) {
-        //_this.props.app.signOut();
+        //this.props.app.signOut();
       }
       else if(json.success) {
-        _this.showSnack(json.success);
+        this.showSnack(json.success);
       }
     })
   }
@@ -140,7 +144,7 @@ export default class Enroll extends React.PureComponent {
           <Helmet title="Enroll" meta={[ { name: 'description', content: 'Description of Enroll' }]}/>
 
           <header>
-            <Header />
+            <Header space={this.props.spaceName} />
           </header>
 
           <main className="lmsEnrollMain">
@@ -151,7 +155,7 @@ export default class Enroll extends React.PureComponent {
                   <div className="lmsEnrollSummaryMain">
                     <div className="lmsEnrollCourse">
                       <div className="lmsEnrollCourseImageContainer">
-                        <img src={'http://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
+                        <img alt="" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} className="lmsEnrollCourseImage"/>
                       </div>
                       <div className="lmsEnrollCourseName">{this.state.course.courseName}</div>
                       {this.renderPrice()}
