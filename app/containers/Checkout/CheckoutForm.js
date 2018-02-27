@@ -85,7 +85,7 @@ class CheckoutForm extends React.PureComponent {
 
 
     getSpace = () => {
-        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -97,7 +97,7 @@ class CheckoutForm extends React.PureComponent {
     }
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
@@ -105,7 +105,7 @@ class CheckoutForm extends React.PureComponent {
     }
 
     loadPlans = () => {
-        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
+        fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
@@ -182,7 +182,6 @@ class CheckoutForm extends React.PureComponent {
     onBlurPlan = () => this.setState({ planFocused: false });
 
     storeUser = e => {
-        let _this = this;
         this.setState({
           isLoading:true
         })
@@ -213,17 +212,17 @@ class CheckoutForm extends React.PureComponent {
             data.append('plan', plan);
             data.append('username', name);
 
-            fetch("https://innovationmesh.com/api/signUp", {
+            fetch("http://localhost:8000/api/signUp", {
                 method: 'POST',
                 body: data,
             })
             .then(response => response.json())
             .then(user => {
               if (user.error) {
-                  _this.showSnack(user.error);
+                  this.showSnack(user.error);
               } else if (user.token) {
                 localStorage.setItem('token', user.token);
-                fetch("https://innovationmesh.com/api/user/auth", {
+                fetch("http://localhost:8000/api/user/auth", {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + user.token }
                 })
@@ -231,7 +230,7 @@ class CheckoutForm extends React.PureComponent {
                 .then(json => {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
-                  fetch('https://innovationmesh.com/api/signIn', {
+                  fetch('http://localhost:8000/api/signIn', {
                     method:'POST',
                     body:data
                   })
@@ -244,9 +243,9 @@ class CheckoutForm extends React.PureComponent {
                     else if(json.token)
                     {
                       localStorage.setItem('token', json.token);
-                      _this.showSnack('Welcome to '+ _this.state.space.name+'!');
+                      this.showSnack('Welcome to '+ this.state.space.name+'!');
                     setTimeout(() => {
-                        _this.props.history.push(`/user/${mainUser.id}`)
+                        this.props.history.push(`/user/${mainUser.id}`)
                     }, 2000);
                     }
                   })
@@ -288,7 +287,7 @@ class CheckoutForm extends React.PureComponent {
         data.append('username', name);
 
 
-        fetch("https://innovationmesh.com/api/signUp", {
+        fetch("http://localhost:8000/api/signUp", {
             method: 'POST',
             body: data,
         })
@@ -299,7 +298,7 @@ class CheckoutForm extends React.PureComponent {
           } else if (json.token) {
             let mainToken = json.token;
             localStorage.setItem('token', mainToken);
-            fetch("https://innovationmesh.com/api/user/auth", {
+            fetch("http://localhost:8000/api/user/auth", {
               method: 'GET',
               headers: { "Authorization": "Bearer " + mainToken }
             })
@@ -307,7 +306,7 @@ class CheckoutForm extends React.PureComponent {
             .then(json => {
               let mainUser = json.user;
               localStorage.setItem('user', JSON.stringify(mainUser));
-                _this.showSnack('Welcome to '+ _this.state.space.name+'!');
+                this.showSnack('Welcome to '+ this.state.space.name+'!');
                 setTimeout(() => {
                     this.props.history.push(`/user/${mainUser.id}`)
                 }, 2000);

@@ -91,13 +91,13 @@ export default class Courses extends React.PureComponent {
       })
     }
 
-    fetch('https://innovationmesh.com/api/getCourses/'+category+'/'+this.state.count+'?page='+this.state.page, {
+    fetch('http://localhost:8000/api/getCourses/'+category+'/'+this.state.count+'?page='+this.state.page, {
       method:'GET'
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       let nextPage = 0;
       let previousPage = 0;
       if(json.courses.last_page !== json.courses.current_page)
@@ -150,7 +150,7 @@ export default class Courses extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/getCategories", {
+    fetch("http://localhost:8000/api/getCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -174,7 +174,7 @@ export default class Courses extends React.PureComponent {
     let data = new FormData();
     data.append('searchContent', this.state.searchContent);
 
-    fetch('https://innovationmesh.com/api/searchCourse', {
+    fetch('http://localhost:8000/api/searchCourse', {
       method:'POST',
       body:data
     })

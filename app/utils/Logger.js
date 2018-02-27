@@ -3,5 +3,5 @@
  * @param {string} message 
  */
 export default message => {
-    fetch(`https://innovationmesh.com/api/log/${message}`)
+    fetch(`http://localhost:8000/api/log/${message}`)
 }

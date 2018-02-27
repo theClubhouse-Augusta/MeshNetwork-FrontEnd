@@ -47,7 +47,7 @@ export default class CourseInfo extends React.PureComponent {
 
   getCourse = (id) => {
 
-    fetch("https://innovationmesh.com/api/showCourse/"+id, {
+    fetch("http://localhost:8000/api/showCourse/"+id, {
       method:'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -338,11 +338,11 @@ export default class CourseInfo extends React.PureComponent {
   renderImage = () => {
     if(this.state.course.courseImage) {
       return(
-        <img className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
+        <img alt="" className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
       )
     } else {
       return(
-        <img className="lmsSingleLessonImage" src={'http://h4z.it/Image/5249e9_placeholder.gif'} />
+        <img alt="" className="lmsSingleLessonImage" src={'http://h4z.it/Image/5249e9_placeholder.gif'} />
       )
     }
   }

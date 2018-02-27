@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import moment from 'moment';
 import asyncComponent from '../../components/AsyncComponent';
-
 
 const Home = asyncComponent(() => import('../Home'));
 const About = asyncComponent(() => import('../About'));
@@ -33,7 +31,7 @@ const LMS = asyncComponent(() => import('containers/LMS'));
 const Courses = asyncComponent(() => import('containers/Courses'));
 const Course = asyncComponent(() => import('containers/Course'));
 const CourseInfo = asyncComponent(() => import('containers/CourseInfo'));
-const New = asyncComponent(() => import('containers/NewCourse'));
+const NewCourse = asyncComponent(() => import('containers/NewCourse'));
 const Lessons = asyncComponent(() => import('containers/Lessons'));
 const Enroll = asyncComponent(() => import('containers/Enroll'));
 const LMSDash = asyncComponent(() => import('containers/LMSDash'));
@@ -45,37 +43,26 @@ export default class App extends Component {
             token: localStorage.getItem('token'),
             user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
             space: '',
-            dates: [
-                {
-                    day: moment(),
-                    start: "13:00",
-                    end: "15:00",
-                },
-                {
-                    day: moment().add(1,'d'),
-                    start: "13:00",
-                    end: "15:00",
-                },
-                {
-                    day: moment().add(2, 'd'),
-                    start: "13:00",
-                    end: "15:00",
-                }
-            ],
         };
     }
 
-    /*componentDidMount() {
+    componentDidMount() {
         if (this.state.user && this.state.token)
             this.getSpaceName(this.state.user.spaceID, this.state.token);
-    }*/
+    }
 
     getSpaceName = (spaceID, token) => {
-        fetch(`https://innovationmesh.com/api/spacename/${spaceID}`, {
+        fetch(`http://localhost:8000/api/spacename/${spaceID}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
-        .then(response => response.text())
-        .then(name => this.setState({ space: name }))
+        .then(response => response.json())
+        .then(({ name, error }) => {
+            if (name) {
+                this.setState(() => ({ space: name }));
+            } else if (error) {
+                // handle Error
+            }
+        })
         .catch(error => {
             // 
         })
@@ -83,6 +70,8 @@ export default class App extends Component {
     render() {
         return (
             <Switch>
+
+                
                 <Route
                     exact path="/" // eslint-disable-line
                     render={props => 

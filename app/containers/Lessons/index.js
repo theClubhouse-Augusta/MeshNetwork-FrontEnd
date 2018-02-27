@@ -50,17 +50,16 @@ export default class Lessons extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    let _this = this;
-    fetch("https://innovationmesh.com/api/showCourse/"+id, {
+    fetch("http://localhost:8000/api/showCourse/"+id, {
       method:'GET',
       headers:{'Authorization': 'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else {
         let lessons = json.lessons;
@@ -151,17 +150,17 @@ export default class Lessons extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('answers', this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers);
 
-    fetch("https://innovationmesh.com/api/completeLecture", {
+    fetch("http://localhost:8000/api/completeLecture", {
       method:'POST',
       body:data,
       headers:{'Authorization': 'Bearer '+this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else if(json.success) {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].complete = 1;
