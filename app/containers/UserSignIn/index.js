@@ -43,6 +43,7 @@ export default class UserSignIn extends React.PureComponent {
     handlePassword = (event) => { this.setState({ password: event.target.value }) };
 
     signIn = () => {
+        let _this = this;
       this.setState({
         isLoading:true
       })
@@ -50,7 +51,7 @@ export default class UserSignIn extends React.PureComponent {
         data.append('email', this.state.email);
         data.append('password', this.state.password);
 
-        fetch("http://localhost:8000/api/login", {
+        fetch("https://innovationmesh.com/api/login", {
             method: 'POST',
             body: data
         })
@@ -62,7 +63,7 @@ export default class UserSignIn extends React.PureComponent {
               else if (json.token) {
                 let mainToken = json.token;
                 localStorage.setItem('token', mainToken);
-                fetch("http://localhost:8000/api/user/auth", {
+                fetch("https://innovationmesh.com/api/user/auth", {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + mainToken }
                 })
@@ -70,37 +71,11 @@ export default class UserSignIn extends React.PureComponent {
                 .then(json => {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
-                    // let newData = new FormData();
-                    // newData.append('username', this.state.email);
-                    // newData.append('password', this.state.password);
-                    // fetch('https://lms.innovationmesh.com/signIn/', {
-                    // method:'POST',
-                    // body:newData
-                    // })
-                    // .then(response => response.json())
-                    // .then(json => {
-                        // if(json.non_field_errors)
-                        // {
-                            // this.showSnack("Invalid Credentials");
-                        // }
-                        // else if(json.token)
-                        // {
-                            // localStorage.setItem('lmsToken', json.token);
-                            // fetch('https://lms.innovationmesh.com/getUser/', {
-                            // method:'GET',
-                            // headers: {'Authorization' : 'JWT ' + json.token}
-                            // })
-                            // .then(response => response.json())
-                            // .then(json => {
-                            // localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                            // this.showSnack('Welcome back!');
-                            setTimeout(() => {
-                                this.props.history.push(`/user/${mainUser.id}`)
-                            }, 2000);
-                            })
-                        // }
-                    // })
-                // })
+                  _this.showSnack('Welcome back!');
+                  setTimeout(() => {
+                      _this.props.history.push(`/user/${mainUser.id}`)
+                  }, 2000);
+                })
               }
               this.setState({
                 isLoading:false
@@ -112,7 +87,7 @@ export default class UserSignIn extends React.PureComponent {
     sendResetEmail = () => {
         let data = new FormData();
         data.append('email', this.state.email);
-        fetch(`http://localhost:8000/api/forgotpassword`, {
+        fetch(`https://innovationmesh.com/api/forgotpassword`, {
             method: 'POST',
             body: data
         })
@@ -120,10 +95,6 @@ export default class UserSignIn extends React.PureComponent {
         .then(json => {
             this.setState({ emailSent: true }, () => {
                 console.log(JSON.stringify(json));
-                // if (json.success)
-                //     this.showSnack('Check your email for your temporary password.');
-                // else     
-                //     this.showSnack(json)    
             });
         })
         .catch(error => {
