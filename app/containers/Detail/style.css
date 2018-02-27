@@ -83,6 +83,10 @@
   padding-bottom:5px;
 }
 
+.challenges_detailContent li {
+  margin-left:60px;
+}
+
 .challenges_detailSideBlock {
   width:100%;
   background:#FFFFFF;

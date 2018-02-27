@@ -6,3 +6,11 @@
   min-height:100vh;
   justify-content: space-between;
 }
+
+.lmsDashMainList{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  width:100%;
+  max-width:1200px;
+}

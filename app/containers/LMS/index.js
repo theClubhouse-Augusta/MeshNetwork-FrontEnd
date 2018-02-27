@@ -42,7 +42,7 @@ export default class LMS extends React.PureComponent {
 
   getCourses = () => {
 
-    fetch("https://lms.innovationmesh.com/getCourses/0/6/1/", {
+    fetch("https://innovationmesh.com/api/getCourses/0/6", {
       method:'GET',
     })
     .then(function(response) {
@@ -50,7 +50,7 @@ export default class LMS extends React.PureComponent {
     })
     .then(function(json) {
       this.setState({
-        courses: json.courses,
+        courses: json.courses.data,
       })
     }.bind(this))
   };

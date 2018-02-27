@@ -143,16 +143,44 @@ export default class Discover extends React.PureComponent {
   }
 
   render() {
+
+    let headerTitle = <Link
+    to="/"
+    style={{
+      color:'#000000'
+    }}
+  >
+    Mesh
+    <span
+      style={{
+        color: "#ff4d58"
+      }}
+    >
+      Network
+    </span>
+    &nbsp;- Challenges
+  </Link>;
+
     return (
       <div className="container">
         <Helmet title="Discover" meta={[ { name: 'description', content: 'Description of Discover' }]}/>
 
         <header>
-          <Header app={this.state.app}/>
+          <Header headerTitle={headerTitle} app={this.state.app}/>
         </header>
 
         <main className="challenges_mainContainer">
-
+          <div style={{width:'100%', maxWidth:'1200px', margin:'0 auto', fontFamily:'Noto Sans'}}>
+           <div style={{fontFamily:'Lato', fontSize:'2em', fontVariant:'small-caps', borderBottom:'1px solid #BBBBBB', padding:'20px',textAlign:'center',}}>WHAT IS THE SOUTHEAST STARTUP CHALLENGE?</div>
+           <p>The Southeast Startup Challenge is a 5 city hackathon for entrepreneurs. We’ve done the hard work of finding critical partners and first customers that have identified specific problems they believe that technology startups can solve.
+           </p>
+            <p>
+              Midsize cities have distinct differences from large cities which provide a unique opportunity for entrepreneurs to innovate from a different perspective. 40% of the nation lives in mid and small size communities, which provides a huge and mostly untapped market for companies to grow.
+            </p>
+            <p>
+              Join the Southeast Startup Challenge and you could finish the weekend with your first customer, and an invite to pitch in June for over $25,000 in cash and services to help your business grow!
+            </p>
+          </div>
           <div className="challenges_contentContainer">
             <div className="challenges_categoryContainer">
               <SideNav app={this.state.app}/>
@@ -183,7 +211,7 @@ export default class Discover extends React.PureComponent {
               </div>
             </div>
             <div className="challenges_sideBar">
-              <RightBar app={this.state.app}/>
+              <RightBar app={this.state.app} history={this.props.history}/>
             </div>
           </div>
 

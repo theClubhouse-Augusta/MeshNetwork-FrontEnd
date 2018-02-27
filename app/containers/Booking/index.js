@@ -388,6 +388,7 @@ export default class Booking extends React.PureComponent {
                         defaultDate={new Date()}
                         editable={false}
                         selectable={true}
+                        selectOverlap={false}
                         slotDuration={'00:'+this.state.increment+':00'}
                         allDaySlot={false}
                         select={(event) => this.testSlot(event)}

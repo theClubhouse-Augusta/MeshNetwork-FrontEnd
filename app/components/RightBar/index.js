@@ -167,7 +167,7 @@ export default class RightBar extends React.PureComponent {
     .then(function(json) {
       if(json.error) {
         if(json.error === 'token_expired') {
-          //_this.props.app.signOut(0, 'Your session has expired.');
+          _this.showSnack("Your session has expired. Please log back in.");
         } else {
           _this.showSnack(json.error);
           _this.setState({
@@ -176,7 +176,6 @@ export default class RightBar extends React.PureComponent {
         }
       }
       else if(json.challenge) {
-        console.log(_this.state.challengeFiles.length);
         if(_this.state.challengeFiles.length > 0) {
           for(let i = 0; i < _this.state.challengeFiles.length; i++)
           {
@@ -204,6 +203,9 @@ export default class RightBar extends React.PureComponent {
         }
         _this.showSnack("Challenge Saved");
         _this.challengeDialog();
+        setTimeout(function() {
+          _this.props.history.push(`/Challenges/challenge/${json.challenge}`);
+        }, 2000);
       }
     }.bind(this))
   }

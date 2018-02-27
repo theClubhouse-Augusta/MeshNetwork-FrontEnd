@@ -7,7 +7,12 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-import Dialog from 'material-ui/Dialog';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/Button';
@@ -31,8 +36,8 @@ export default class LMSDash extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token:localStorage.getItem('lmsToken'),
-      user:localStorage.getItem('lmsUser'),
+      token:localStorage.getItem('token'),
+      user:JSON.parse(localStorage.getItem('user')),
       category:0,
       courses:[],
       categories:[],
@@ -83,10 +88,10 @@ export default class LMSDash extends React.PureComponent {
   getCourses = (category = 0) => {
     let _this = this;
 
-    fetch('https://lms.innovationmesh.com/myCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
+    fetch('https://innovationmesh.com/api/myCourses/'+this.state.count+'?page='+this.state.page, {
       method:'GET',
       headers: {
-        'Authorization': 'JWT ' + this.state.token
+        'Authorization': 'Bearer ' + this.state.token
       }
     })
     .then(function(response) {
@@ -94,16 +99,32 @@ export default class LMSDash extends React.PureComponent {
     })
     .then(function(json) {
       if(json.error) {
-        _this.props.history.push('/signIn');
+        //_this.props.history.push('/signIn');
       }
       else if(json.detail) {
-        _this.props.history.push('/signIn');
+        //_this.props.history.push('/signIn');
       }
       else {
+        let nextPage = 0;
+        let previousPage = 0;
+        if(json.courses.last_page !== json.courses.current_page)
+        {
+          nextPage = this.state.page + 1;
+          if(json.courses.current_page !== 1)
+          {
+            previousPage = this.state.page - 1;
+          }
+        } else if(json.courses.last_page === json.courses.current_page)
+        {
+          if(json.courses.current_page !== 1)
+          {
+            previousPage = this.state.page - 1;
+          }
+        }
         this.setState({
-          nextPage:json.nextPageNum,
-          previousPage:json.previousPageNum,
-          courses: json.courses,
+          nextPage:nextPage,
+          previousPage:previousPage,
+          courses: json.courses.data,
           isLoading:false
         })
       }
@@ -129,7 +150,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("https://lms.innovationmesh.com/getCategories/", {
+    fetch("https://innovationmesh.com/api/getCategories", {
       method:'GET'
     })
     .then(function(response) {
@@ -145,20 +166,19 @@ export default class LMSDash extends React.PureComponent {
   createCourse = () => {
     let _this = this;
 
-    fetch('https://lms.innovationmesh.com/storeCourse/', {
+    fetch('https://innovationmesh.com/api/storeCourse', {
       method:'POST',
-      headers:{'Authorization':'JWT ' + this.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
     })
     .then(function(json) {
-      if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+      if(json.error) {
+        _this.showSnack("Your session has expired.");
       }
       else {
-        _this.props.history.push('/update/'+json.course)
+        _this.props.history.push('/LMS/Update/'+json.course)
       }
     }.bind(this))
   }
@@ -166,17 +186,16 @@ export default class LMSDash extends React.PureComponent {
   deleteCourse = () => {
     let _this = this;
     let course = this.state.courses;
-    fetch("https://lms.innovationmesh.com/deleteCourse/"+this.state.activeCourse+"/", {
+    fetch("https://innovationmesh.com/api/deleteCourse/"+this.state.activeCourse, {
       method:'POST',
-      headers:{'Authorization':'JWT '+ this.state.token}
+      headers:{'Authorization':'Bearer '+ this.state.token}
     })
     .then(function(response) {
       return response.json();
     })
     .then(function(json) {
-      if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+      if(json.error) {
+        _this.showSnack("Your session has expired.");
       }
       else if(json.success) {
         _this.showSnack("Course Removed.");
@@ -216,14 +235,11 @@ export default class LMSDash extends React.PureComponent {
   }
 
   renderNewCourse = () => {
-    if(this.state.user.roleID === 1 || this.state.user.roleID === 3) {
+    if(this.state.user.roleID == 1 || this.state.user.roleID == 4) {
       return(
         <div className="lmsHomeMainBlock" onClick={this.createCourse}>
-          <Card style={{height:'435px'}}>
-            <CardMedia style={{width:'100%', height:'380px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
-              <img src="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png" style={{width:'100%', height:'auto'}}/>
-            </CardMedia>
-            <CardTitle title="Create a Course" />
+          <Card style={{height:'380px'}}>
+            <CardMedia style={{width:'100%', height:'380px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}} image="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png"/>
           </Card>
         </div>
       )
@@ -235,7 +251,7 @@ export default class LMSDash extends React.PureComponent {
 
   renderProgress = (course) => {
     if(this.state.user) {
-      if(this.state.user.roleID !== 3) {
+      if(this.state.user.roleID !== 4) {
         return(
           <div style={{marginTop:'10px'}}>
             <span className="lmsProgressHeader" style={{fontFamily:'Noto Sans'}}>Completed: {course.complete}</span>
@@ -252,7 +268,7 @@ export default class LMSDash extends React.PureComponent {
 
   renderActions = (course, index) => {
     if(this.state.user) {
-      if(this.state.user.userID === course.userID) {
+      if(this.state.user.id === course.userID) {
         return(
           <CardActions>
             <Link to={'/LMS/Update/'+course.id}><FlatButton>Edit</FlatButton></Link>
@@ -269,13 +285,25 @@ export default class LMSDash extends React.PureComponent {
     }
   }
 
+  renderImage = (image) => {
+    if(image) {
+      return(
+        <CardMedia
+          style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
+          image={'http://houseofhackers.me/media/' + image}
+        />
+      )
+    } else {
+      return(
+        <CardMedia
+          style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
+          image={'http://h4z.it/Image/5249e9_placeholder.gif'}
+        />
+      )
+    }
+  }
+
   render() {
-
-    const actions = [
-      <FlatButton onClick={this.handleDelete}>Cancel</FlatButton>,
-      <FlatButton onClick={this.deleteCourse}>Delete</FlatButton>
-    ];
-
     return (
       <div className="container">
         <Helmet title="Dashboard" meta={[ { name: 'description', content: 'Description of Dashboard' }]}/>
@@ -286,21 +314,19 @@ export default class LMSDash extends React.PureComponent {
 
         <main className="lmsHomeMain">
           <div className="lmsHomeMainContainer">
-            <div className="lmsHomeMainList">
+            <div className="lmsDashMainList">
               {this.renderNewCourse()}
+
               {this.state.courses.map((course, index) => (
                 <div className="lmsHomeMainBlock" key={index}>
                   <Link style={{textDecoration:'none'}} to={'/LMS/CourseInfo/'+course.id}>
-                    <Card style={{height:'435px'}}>
-                      <CardMedia
-                        style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                        image={'http://houseofhackers.me/media/' + course.courseImage}
-                      />
+                    <Card style={{height:'380px'}}>
+                      {this.renderImage(course.courseImage)}
                       <CardContent>
                         <Typography type="headline" component="h2">
                           {course.courseName}
                         </Typography>
-                        {this.renderProgress(course)}
+                        {/*this.renderProgress(course)*/}
                       </CardContent>
                     </Card>
                   </Link>
@@ -315,12 +341,20 @@ export default class LMSDash extends React.PureComponent {
         </main>
 
         <Dialog
-          title="Delete Course"
-          actions={actions}
           open={this.state.deleteDialog}
           onClose={this.handleDelete}
         >
-          Are you sure you want to delete this Course?
+        <DialogTitle id="alert-dialog-title">{"Delete Course"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this Course?
+
+          </DialogContentText>
+        </DialogContent>
+          <DialogActions>
+            <FlatButton onClick={this.handleDelete}>Cancel</FlatButton>
+            <FlatButton onClick={this.deleteCourse}>Delete</FlatButton>
+          </DialogActions>
         </Dialog>
         <Snackbar
           open={this.state.snack}

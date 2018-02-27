@@ -24,7 +24,7 @@ export default class CourseInfo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token:localStorage.getItem('lmsToken'),
+      token:localStorage.getItem('token'),
       activeView:"Curriculum",
       course:"",
       lessons:[],
@@ -48,9 +48,9 @@ export default class CourseInfo extends React.PureComponent {
   getCourse = (id) => {
     let _this = this;
 
-    fetch("https://lms.innovationmesh.com/showCourse/"+id + "/", {
+    fetch("https://innovationmesh.com/api/showCourse/"+id, {
       method:'GET',
-      headers: { 'Authorization': 'JWT ' + this.state.token }
+      headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
     .then(function(response) {
       return response.json();
@@ -338,6 +338,18 @@ export default class CourseInfo extends React.PureComponent {
     }
   }
 
+  renderImage = () => {
+    if(this.state.course.courseImage) {
+      return(
+        <img className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
+      )
+    } else {
+      return(
+        <img className="lmsSingleLessonImage" src={'http://h4z.it/Image/5249e9_placeholder.gif'} />
+      )
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -354,7 +366,7 @@ export default class CourseInfo extends React.PureComponent {
             </div>
             <div className="lmsLessonColumnOneContent">
               <div className="lmsSingleLessonImageContainer">
-                <img className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
+                {this.renderImage()}
               </div>
               <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
               <div className="lmsLessonList">

@@ -75,40 +75,10 @@ export default class UserSignIn extends React.PureComponent {
                 .then(function (json) {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
-                    let newData = new FormData();
-                    newData.append('username', _this.state.email);
-                    newData.append('password', _this.state.password);
-                    fetch('https://lms.innovationmesh.com/signIn/', {
-                    method:'POST',
-                    body:newData
-                    })
-                    .then(function(response) {
-                    return response.json();
-                    })
-                    .then(function(json) {
-                        if(json.non_field_errors)
-                        {
-                            _this.showSnack("Invalid Credentials");
-                        }
-                        else if(json.token)
-                        {
-                            localStorage.setItem('lmsToken', json.token);
-                            fetch('https://lms.innovationmesh.com/getUser/', {
-                            method:'GET',
-                            headers: {'Authorization' : 'JWT ' + json.token}
-                            })
-                            .then(function(response) {
-                            return response.json();
-                            })
-                            .then(function(json) {
-                            localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                            _this.showSnack('Welcome back!');
-                            setTimeout(() => {
-                                _this.props.history.push(`/user/${mainUser.id}`)
-                            }, 2000);
-                            })
-                        }
-                    })
+                  _this.showSnack('Welcome back!');
+                  setTimeout(() => {
+                      _this.props.history.push(`/user/${mainUser.id}`)
+                  }, 2000);
                 })
               }
               _this.setState({
@@ -129,10 +99,6 @@ export default class UserSignIn extends React.PureComponent {
         .then(json => {
             this.setState({ emailSent: true }, () => {
                 console.log(JSON.stringify(json));
-                // if (json.success)
-                //     this.showSnack('Check your email for your temporary password.');
-                // else     
-                //     this.showSnack(json)    
             });
         })
         .catch(error => {

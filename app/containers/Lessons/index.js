@@ -26,7 +26,7 @@ export default class Lessons extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token:localStorage.getItem("lmsToken"),
+      token:localStorage.getItem("token"),
       course:"",
       lessons:[],
       activeLesson:0,
@@ -51,17 +51,16 @@ export default class Lessons extends React.PureComponent {
 
   getCourse = (id) => {
     let _this = this;
-    fetch("https://lms.innovationmesh.com/showCourse/"+id+"/", {
+    fetch("https://innovationmesh.com/api/showCourse/"+id, {
       method:'GET',
-      headers:{'Authorization': 'JWT ' + this.state.token}
+      headers:{'Authorization': 'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
     })
     .then(function(json) {
-      if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+      if(json.error) {
+        _this.showSnack('Your session has expired.');
       }
       else {
         let lessons = json.lessons;
@@ -153,18 +152,17 @@ export default class Lessons extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('answers', this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers);
 
-    fetch("https://lms.innovationmesh.com/completeLecture/", {
+    fetch("https://innovationmesh.com/api/completeLecture", {
       method:'POST',
       body:data,
-      headers:{'Authorization': 'JWT '+this.state.token}
+      headers:{'Authorization': 'Bearer '+this.state.token}
     })
     .then(function(response) {
       return response.json();
     })
     .then(function(json) {
-      if(json.detail) {
-        _this.props.app.signOut();
-        _this.props.app.handleAuth();
+      if(json.error) {
+        _this.showSnack('Your session has expired.');
       }
       else if(json.success) {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].complete = 1;

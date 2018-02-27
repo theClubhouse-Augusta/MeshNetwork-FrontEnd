@@ -42,6 +42,7 @@ const MenuProps = {
 export default class MemberAcct extends React.PureComponent {
   state = {
     token: localStorage.getItem("token"),
+    user:JSON.parse(localStorage.getItem('user')),
     name: "",
     title: "",
     avatar: "",
@@ -105,9 +106,6 @@ export default class MemberAcct extends React.PureComponent {
       {
         [name]: event.target.value
       }
-      //function() {
-      //console.log(this.state);
-      //}
     );
   };
 
@@ -126,7 +124,6 @@ export default class MemberAcct extends React.PureComponent {
       });
     };
     reader.readAsDataURL(file);
-    console.log(this.state.avatarPreview);
   };
 
   renderAvatarPreview = () => {
@@ -183,9 +180,6 @@ export default class MemberAcct extends React.PureComponent {
               github: json.user.github,
               behance: json.user.behance,
               selectedTags: json.user.skills.split(",")
-            },
-            function() {
-              console.log(this.state);
             }
           );
         }.bind(this)
@@ -193,6 +187,7 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   updateUser = e => {
+    let _this = this;
     e.preventDefault();
 
     let data = new FormData();
@@ -218,6 +213,9 @@ export default class MemberAcct extends React.PureComponent {
       .then(json => {
         if (json.success) {
           this.showSnack(json.success);
+          setTimeout(() => {
+            _this.props.history.push(`/user/${this.state.user.id}`)
+        }, 2000);
         } else {
           this.showSnack(json.error);
         }
