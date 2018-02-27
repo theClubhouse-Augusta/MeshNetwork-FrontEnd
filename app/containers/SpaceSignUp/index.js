@@ -160,7 +160,7 @@ export default class SpaceSignUp extends React.PureComponent {
         data.append('password', userPassword.trim());
         data.append('avatar', avatar);
 
-        fetch("http://localhost:8000/api/workspaces", {
+        fetch("https://innovationmesh.com/api/workspaces", {
             method: 'POST',
             body: data,
         })

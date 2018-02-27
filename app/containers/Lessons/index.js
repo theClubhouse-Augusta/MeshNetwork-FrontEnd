@@ -50,7 +50,7 @@ export default class Lessons extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("http://localhost:8000/api/showCourse/"+id, {
+    fetch("https://innovationmesh.com/api/showCourse/"+id, {
       method:'GET',
       headers:{'Authorization': 'Bearer ' + this.state.token}
     })
@@ -150,7 +150,7 @@ export default class Lessons extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('answers', this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers);
 
-    fetch("http://localhost:8000/api/completeLecture", {
+    fetch("https://innovationmesh.com/api/completeLecture", {
       method:'POST',
       body:data,
       headers:{'Authorization': 'Bearer '+this.state.token}

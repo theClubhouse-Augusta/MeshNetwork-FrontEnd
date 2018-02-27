@@ -91,7 +91,7 @@ export default class Courses extends React.PureComponent {
       })
     }
 
-    fetch('http://localhost:8000/api/getCourses/'+category+'/'+this.state.count+'?page='+this.state.page, {
+    fetch('https://innovationmesh.com/api/getCourses/'+category+'/'+this.state.count+'?page='+this.state.page, {
       method:'GET'
     })
     .then((response) => {
@@ -150,7 +150,7 @@ export default class Courses extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/getCategories", {
+    fetch("https://innovationmesh.com/api/getCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -174,7 +174,7 @@ export default class Courses extends React.PureComponent {
     let data = new FormData();
     data.append('searchContent', this.state.searchContent);
 
-    fetch('http://localhost:8000/api/searchCourse', {
+    fetch('https://innovationmesh.com/api/searchCourse', {
       method:'POST',
       body:data
     })
@@ -247,7 +247,7 @@ export default class Courses extends React.PureComponent {
                   <Card style={{height:'385px'}}>
                     <CardMedia
                       style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
-                      image={'http://houseofhackers.me/media/' + course.courseImage}
+                      image={course.courseImage}
                     />
                     <CardContent>
                       <Typography type="headline" component="h2">
