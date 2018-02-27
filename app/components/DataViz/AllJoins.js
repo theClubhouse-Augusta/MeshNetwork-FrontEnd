@@ -13,7 +13,6 @@ import {
     CartesianGrid,
     Tooltip
 } from 'Recharts';
-import Logger from '../../utils/Logger';
 
 import './style.css';
 import './styleM.css';
@@ -32,7 +31,7 @@ export class AllJoins extends React.PureComponent {
         })
             .then(response => response.json())
             .then(json => this.setState({ data: json }))
-            .catch(error => Logger(`front-end: AllJoins@loadAppearances: ${error.message}`));
+            .catch(error => {  } );
     }
 
     render() {

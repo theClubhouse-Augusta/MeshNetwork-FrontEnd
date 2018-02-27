@@ -366,7 +366,7 @@ export default class Detail extends React.PureComponent {
 
                   <div className="challenges_feedTags">
                     {this.state.categories.map((c, j) => (
-                      <div className="challenges_tagBlock" key={j}>{c.categoryName}</div>
+                      <div className="challenges_tagBlock" key={`detailChallenges${j}`}>{c.categoryName}</div>
                     ))}
                   </div>
                 </div>
@@ -430,7 +430,7 @@ export default class Detail extends React.PureComponent {
               <input type="file" onChange={this.handleChallengeImage} id="challenge-image" style={{display:'none'}}/>
             </div>
             {this.state.challengeFiles.map((file, index) => (
-              <div key={index}>
+              <div key={`detailFiles${index}`}>
                 <div className="challenges_newFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={25} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(index)}/></div>
               </div>
             ))}

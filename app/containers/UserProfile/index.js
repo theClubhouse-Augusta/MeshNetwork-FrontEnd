@@ -78,7 +78,7 @@ export default class UserProfile extends React.Component {
         chipStyle.animation = 'profileFlicker ' + rand + 's ease alternate infinite';
 
         return (
-            <Chip style={chipStyle} key={i} label={skill} />
+            <Chip style={chipStyle} key={`userProfile${i}`} label={skill} />
         )
     }
 

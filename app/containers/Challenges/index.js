@@ -100,14 +100,14 @@ export default class Challenges extends React.PureComponent {
                 <div className="challenges_feedHeader">Challenges</div>
                 <div className="challenges_feedList">
                   {this.state.challenges.map((u, i) => (
-                    <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={i}>
+                    <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={`challengeFeedBlock${i}`}>
                       <img alt="" className="challenges_feedImage" src={u.challengeImage}/>
                       <div className="challenges_feedInfo">
                         <div className="challenges_feedTitle">{u.challengeTitle}</div>
                         <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: u.challengeContent }} />
                         <div className="challenges_feedTags">
                           {u.categories.map((c, j) => (
-                            <div className="challenges_tagBlock" key={j}>{c.categoryName}</div>
+                            <div className="challenges_tagBlock" key={`challengesCategory${j}`}>{c.categoryName}</div>
                           ))}
                         </div>
                       </div>
@@ -120,7 +120,7 @@ export default class Challenges extends React.PureComponent {
                 <div className="challenges_feedHeader">Questions</div>
                 <div className="challenges_questionContainer">
                   {this.state.questions.map((q, i) => (
-                    <Link to={'/Challenges/Ask/' + q.questionSlug} className="challenges_questionBlock" key={i}>
+                    <Link to={'/Challenges/Ask/' + q.questionSlug} className="challenges_questionBlock" key={`challengeQuestionBloclLink${i}`}>
                       <div className="challenges_questionHeader">
                         <div className="challenges_questionAvatar">
                           <img alt="" className="challenges_questionAvatarImg" src={q.avatar} />
@@ -140,7 +140,7 @@ export default class Challenges extends React.PureComponent {
               <div className="challenges_feedContainer">
                 <div className="challenges_feedHeader">Teams</div>
                 {this.state.teams.map((t, i) => (
-                  <Link to={'/Challenges/team/' + t.id} className="challenges_feedBlock" key={i}>
+                  <Link to={'/Challenges/team/' + t.id} className="challenges_feedBlock" key={`challenges_fb${i}`}>
                     <div className="challenges_feedImageContainer">
                       <img alt="" className="challenges_feedImage" src={t.teamImage}/>
                     </div>
@@ -148,7 +148,7 @@ export default class Challenges extends React.PureComponent {
                       <div className="challenges_feedTitle">{t.teamName}</div>
                       <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: t.teamContent }} />
                       {t.members.map((m, j) => (
-                        <img alt="" className="challenges_memberAvatar" key={j} src={m.avatar}/>
+                        <img alt="" className="challenges_memberAvatar" key={`challengesAvatar${j}`} src={m.avatar}/>
                       ))}
                     </div>
                   </Link>

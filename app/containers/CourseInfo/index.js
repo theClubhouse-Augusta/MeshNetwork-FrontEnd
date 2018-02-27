@@ -200,7 +200,7 @@ export default class CourseInfo extends React.PureComponent {
   renderCurrentStudent = (student, index) => {
     if(student.status === 'Ongoing') {
       return(
-        <div className="lmsDetailStudentBlock" key={index}>
+        <div className="lmsDetailStudentBlock" key={`lmsStudent${index}`}>
           <div className="lmsDetailStudentBlockLeft">
             <img  alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
@@ -217,7 +217,7 @@ export default class CourseInfo extends React.PureComponent {
   renderGraduateStudent = (student, index) => {
     if(student.status === 'Graduate') {
       return(
-        <div className="lmsDetailStudentBlock" key={index}>
+        <div className="lmsDetailStudentBlock" key={`lmsGraduate${index}`}>
           <div className="lmsDetailStudentBlockLeft">
             <img alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
@@ -259,11 +259,11 @@ export default class CourseInfo extends React.PureComponent {
           <div className="lmsDetailCoursesContainer">
             <div className="lmsDetailCoursesHeader">Class Curriculum</div>
             {this.state.lessons.map((lesson, i) => (
-              <div className="lmsDetailCoursesBlock" key={i}>
+              <div className="lmsDetailCoursesBlock" key={`lmsDetailCourses${i}`}>
                 <div className="lmsDetailCoursesBlockHeader">{lesson.lessonName}</div>
                 <div className="lmsDetailCoursesBlockList">
                   {lesson.lectures.map((lecture, j) => (
-                    <div className="lmsDetailCoursesBlockItem" key={j}>
+                    <div className="lmsDetailCoursesBlockItem" key={`lmsDetailItem${j}`}>
                       <div className="lmsDetailCoursesBlockInfo">
                         {this.renderLectureStatus(lecture.status)}
                         <div className="lmsDetailCoursesBlockIcon">

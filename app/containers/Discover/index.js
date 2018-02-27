@@ -156,7 +156,7 @@ export default class Discover extends React.PureComponent {
                 <div className="challenges_feedHeader">Challenges</div>
                 <div className="challenges_feedList">
                   {this.state.challenges.map((u, i) => (
-                    <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={i}>
+                    <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={`challengesBlockLink${i}`}>
                       <div className="challenges_feedImageContainer">
                         <img alt="" className="challenges_feedImage" src={u.challengeImage}/>
                       </div>
@@ -165,7 +165,7 @@ export default class Discover extends React.PureComponent {
                         <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: u.challengeContent }} />
                         <div className="challenges_feedTags">
                           {u.categories.map((c, j) => (
-                            <div className="challenges_tagBlock" key={j}>{c.categoryName}</div>
+                            <div className="challenges_tagBlock" key={`challengestagblock${j}`}>{c.categoryName}</div>
                           ))}
                         </div>
                       </div>

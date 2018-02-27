@@ -132,7 +132,7 @@ export default class Ask extends React.PureComponent {
                 <div className="challenges_feedHeader">Questions</div>
                 <div className="challenges_questionContainer">
                   {this.state.questions.map((q, i) => (
-                    <Link to={'/Challenges/Ask/' + q.questionSlug} className="challenges_questionBlock" key={i}>
+                    <Link to={'/Challenges/Ask/' + q.questionSlug} className="challenges_questionBlock" key={`questions${i}`}>
                       <div className="challenges_questionHeader">
                         <div className="challenges_questionAvatar">
                           <img alt="" className="challenges_questionAvatarImg" src={q.avatar} />

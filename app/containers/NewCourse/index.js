@@ -895,7 +895,7 @@ export default class NewCourse extends React.PureComponent {
       if(j === this.state.activeLecture)
       {
         return(
-          <div className="lmsNewBlockItemContainer" key={j}>
+          <div className="lmsNewBlockItemContainer" key={`lmsLecturecontain${j}`}>
             <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)} style={{borderLeft:'5px solid  #6fc13e'}}>
               <input className="lmsNewBlockItemInput" value={lecture.lectureName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)} />
               <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLectureDelete(i, j)}/></div>
@@ -906,7 +906,7 @@ export default class NewCourse extends React.PureComponent {
       }
       else {
         return(
-          <div className="lmsNewBlockItemContainer" key={j}>
+          <div className="lmsNewBlockItemContainer" key={`lmsLectureRenderMenu${j}`}>
             <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)}>
               <input className="lmsNewBlockItemInput" value={lecture.lecturName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)}/>
               <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLectureDelete(i, j)}/></div>
@@ -918,7 +918,7 @@ export default class NewCourse extends React.PureComponent {
     }
     else {
       return(
-        <div className="lmsNewBlockItemContainer" key={j}>
+        <div className="lmsNewBlockItemContainer" key={`lmsRenderCon${j}`}>
           <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)}>
             <input className="lmsNewBlockItemInput" value={lecture.lectureName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)}/>
             <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLectureDelete(i, j)}/></div>
@@ -1008,7 +1008,7 @@ export default class NewCourse extends React.PureComponent {
   renderFile = (file, index) => {
     if(file.isLoading === true) {
       return(
-        <div key={index}>
+        <div key={`lmsRenderFile${index}`}>
           <div className="lmsNewFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={35} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(file.id, index)}/></div>
           <LinearProgress mode='indeterminate' />
         </div>
@@ -1016,7 +1016,7 @@ export default class NewCourse extends React.PureComponent {
     }
     else {
       return(
-        <div key={index}>
+        <div key={`lmsRenderFile2${index}`}>
           <div className="lmsNewFileBlock"><span></span>{file.fileData.name} <CloseIcon size={35} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(file.id, index)}/></div>
         </div>
       )
@@ -1027,7 +1027,7 @@ export default class NewCourse extends React.PureComponent {
 
     if(question.questionType === 'multiple') {
       return(
-        <div className="lmsNewLectureQuestionBlock" key={i}>
+        <div className="lmsNewLectureQuestionBlock" key={`lmsLectrue${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
             <TextField label="Question Content" fullWidth={true} onChange={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3}>{question.content}</TextField>
@@ -1046,7 +1046,7 @@ export default class NewCourse extends React.PureComponent {
     }
     else if (question.questionType === 'open') {
       return(
-        <div className="lmsNewLectureQuestionBlock" key={i}>
+        <div className="lmsNewLectureQuestionBlock" key={`lmsLecture2${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
             <TextField label="Question Content" fullWidth={true} onChange={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3}>{question.content}</TextField>
@@ -1068,7 +1068,7 @@ export default class NewCourse extends React.PureComponent {
     else if(j === 5) { letter = "F" }
 
     return(
-      <div style={{marginBottom:'10px', width:'100%', display:'flex', flexDirection:'row', alignItems:'center'}} key={j}>
+      <div style={{marginBottom:'10px', width:'100%', display:'flex', flexDirection:'row', alignItems:'center'}} key={`renderNewAnswer${j}`}>
         <span className="lmsNewLectureQuestionNum">{letter}</span>
         <input type="radio" onChange={() => this.updateCorrect(i, j)} name={'question-'+ i}/>
         <TextField value={answer.answerContent} onChange={(event) => this.updateAnswer(i, j, event)} style={{border:'none', outline:'none', marginLeft:'10px', width:'90%'}} placeholder="Type an Answer..." name={"answerContent-"+j}/>
@@ -1203,7 +1203,7 @@ export default class NewCourse extends React.PureComponent {
                   }}
                 >
                   {this.state.categories.map((category, index) => (
-                    <MenuItem value={category.id} key={index}>{category.categoryName}</MenuItem>
+                    <MenuItem value={category.id} key={`lmsLecturerendercourse${index}`}>{category.categoryName}</MenuItem>
                   ))}
                 </SelectField>
               </FormControl>
@@ -1314,7 +1314,7 @@ export default class NewCourse extends React.PureComponent {
                   <div className="lmsNewLessonAddButtonTitle">Add Lesson</div>
                 </div>
                 {this.state.lessons.map((lesson, i) => (
-                  <div className="lmsLessonBlock" key={i}>
+                  <div className="lmsLessonBlock" key={`lmslessonBlock1${i}`}>
                     <div className="lmsNewLessonBlockHeader">
                       <input className="lmsNewLessonBlockHeaderInput" value={lesson.lessonName} onChange={(event) => this.handleLessonName(i, event)} onBlur={(event) => this.updateLesson(lesson.id, event.target.value)}/>
                       <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLessonDelete(i)}/></div>

@@ -277,7 +277,7 @@ export default class LMSDash extends React.PureComponent {
             <div className="lmsHomeMainList">
               {this.renderNewCourse()}
               {this.state.courses.map((course, index) => (
-                <div className="lmsHomeMainBlock" key={index}>
+                <div className="lmsHomeMainBlock" key={`LMSDASHnewcourse${index}`}>
                   <Link style={{textDecoration:'none'}} to={'/LMS/CourseInfo/'+course.id}>
                     <Card style={{height:'435px'}}>
                       <CardMedia

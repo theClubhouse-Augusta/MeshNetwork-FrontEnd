@@ -211,12 +211,12 @@ export default class Booking extends React.PureComponent {
 
         if (this.state.activeType === res.id) {
             return (
-                <div className="bookingActiveTypeButton" key={i} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
+                <div className="bookingActiveTypeButton" key={`activeButton${i}`} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
             )
         }
         else {
             return (
-                <div className="bookingTypeButton" key={i} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
+                <div className="bookingTypeButton" key={`bookingButton${i}`} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
             )
         }
     }
@@ -226,7 +226,7 @@ export default class Booking extends React.PureComponent {
         // let times = { day: day, time: item.time };
         if (item.active === 0) {
             return (
-                <div className="bookingTimeBlock" key={j}>
+                <div className="bookingTimeBlock" key={`BookingTimeBlock${j}`}>
                     <div className="bookingTimeText">{item.time}</div>
                     <div className="bookingTimeButton">
                         <FlatButton style={{ background: '#ff4d58', color: '#FFFFFF' }} onClick={() => this.handleTime(day, item.time, j)}>Select</FlatButton>
@@ -235,7 +235,7 @@ export default class Booking extends React.PureComponent {
             )
         } else {
             return (
-                <div className="bookingTimeBlock" key={j}>
+                <div className="bookingTimeBlock" key={`bookingTimeBlock2${j}`}>
                     <div className="bookingTimeText">{item.time}</div>
                     <div className="bookingTimeButton">
                         <FlatButton style={{ background: '#ff4d58', color: '#FFFFFF' }} onClick={() => this.removeTime(day, item.time, j)}>Remove</FlatButton>
@@ -398,7 +398,7 @@ export default class Booking extends React.PureComponent {
                     {/*<div className="bookingTimeContainer">
                       <div className="bookingColumnTitle">Schedule Times</div>
                       {this.state.days.map((day, i) => (
-                          <ExpansionPanel style={{ marginTop: '30px' }} key={i}>
+                          <ExpansionPanel style={{ marginTop: '30px' }} key={`bookingTimecontainer${i}`}>
                               <ExpansionPanelSummary>
                                   <div className="bookingPanelTitle">{day}</div>
                               </ExpansionPanelSummary>

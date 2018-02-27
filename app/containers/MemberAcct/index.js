@@ -22,7 +22,6 @@ import { ListItemText } from "material-ui/List";
 import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
 
-import Logger from "../../utils/Logger";
 import authenticate from "../../utils/Authenticate";
 import "./style.css";
 import "./styleM.css";
@@ -88,9 +87,9 @@ export default class MemberAcct extends React.PureComponent {
       .then(json => {
         this.setState({ loadedTags: json });
       })
-      .catch(error =>
-        Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`)
-      );
+      .catch(error => {
+
+      });
   };
 
   handleRequestClose = () => {

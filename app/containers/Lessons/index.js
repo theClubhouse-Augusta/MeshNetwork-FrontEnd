@@ -238,7 +238,7 @@ export default class Lessons extends React.PureComponent {
     }
 
     return(
-      <div className="lmsLessonBlockItem" key={j} onClick={() => this.changeLecture(i, j, lecture)} style={activeStyle}>
+      <div className="lmsLessonBlockItem" key={`lmsItem${j}`} onClick={() => this.changeLecture(i, j, lecture)} style={activeStyle}>
         <div className="lmsLessonBlockStatus">
           {complete}
         </div>
@@ -276,7 +276,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div style={{marginLeft:'70px', width:'85%'}}>
           {question.questionAnswers.map((answer, j) => (
-            <div key={j}>
+            <div key={`lmsQuestionAnswer${j}`}>
               <input type="radio" name={'question-'+ i} value={answer.id} onChange={(event) => this.handleAnswer(question.id, event)}/>
               <span style={{marginLeft:'10px', width:'90%'}}>{answer.answerContent}</span>
             </div>
@@ -324,7 +324,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureFiles.map((file, index) => (
-            <a href={'https://127.0.0.1/media/' + file.fileData} key={index} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
+            <a href={'https://127.0.0.1/media/' + file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
           ))}
         </div>
       )
@@ -334,7 +334,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureQuestions.map((question, i) => (
-            <div className="lmsNewLectureQuestionBlock" key={i} style={{borderBottom:'1px solid #EEEEEE', paddingTop:'15px', paddingBottom:'15px'}}>
+            <div className="lmsNewLectureQuestionBlock" key={`questionBlock${i}`} style={{borderBottom:'1px solid #EEEEEE', paddingTop:'15px', paddingBottom:'15px'}}>
               <div className="lmsNewLectureQuestionContent">
                 <span className="lmsNewLectureQuestionNum">{i + 1}</span>
                 <div>{question.questionContent}</div>
@@ -375,7 +375,7 @@ export default class Lessons extends React.PureComponent {
               <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
               <div className="lmsLessonList">
                 {this.state.lessons.map((lesson, i) => (
-                  <div className="lmsLessonBlock" key={i}>
+                  <div className="lmsLessonBlock" key={`lmsLBlock${i}`}>
                     <div className="lmsLessonBlockHeader">{lesson.lessonName}</div>
                     {lesson.lectures.map((lecture, j) => (
                       this.renderLectureMenu(lecture, i, j)

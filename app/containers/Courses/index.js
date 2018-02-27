@@ -219,7 +219,7 @@ export default class Courses extends React.PureComponent {
               >
                 <MenuItem value={0}>All Categories</MenuItem>
                 {this.state.categories.map((category, index) => (
-                  <MenuItem value={category.id} key={index}>{category.categoryName}</MenuItem>
+                  <MenuItem value={category.id} key={`${index}`}>{category.categoryName}</MenuItem>
                 ))}
               </SelectField>
             </FormControl>*/}
@@ -227,7 +227,7 @@ export default class Courses extends React.PureComponent {
             </div>
             <div className="lmsHomeMainList">
               {this.state.courses.map((course, index) => (
-                <Link className="lmsHomeMainBlock" key={index} to={'/LMS/Course/'+course.id}>
+                <Link className="lmsHomeMainBlock" key={`CourseslmsHomeMainBlock${index}`} to={'/LMS/Course/'+course.id}>
                   <Card style={{height:'385px'}}>
                     <CardMedia
                       style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}

@@ -322,7 +322,7 @@ export default class RightBar extends React.PureComponent {
                 <input type="file" onChange={this.handleChallengeImage} id="challenge-image" style={{display:'none'}}/>
               </div>
               {this.state.challengeFiles.map((file, index) => (
-                <div key={index}>
+                <div key={`rightBarChallenge${index}`}>
                   <div className="challenges_newFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={25} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(index)}/></div>
                 </div>
               ))}

@@ -382,7 +382,7 @@ export default class SpaceProfile extends React.PureComponent {
                   <div className="spaceMembersTitle">Organizers</div>
                   <div className="spaceMembersContent">
                     {this.state.users.map((u, i) => (
-                      <div className="spaceProfileUser" key={i}>
+                      <div className="spaceProfileUser" key={`SpaceProfileUser${i}`}>
                         <img
                           alt=""
                           className="spaceProfileUserAvatar"

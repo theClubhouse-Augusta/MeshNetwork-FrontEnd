@@ -233,7 +233,7 @@ export default class Teams extends React.PureComponent {
               <TextField value={this.state.searchContent} onChange={this.handleSearch} fullWidth placeholder="Search For Teams" style={{marginTop:'15px'}}/>
               <div className="challenges_teamList">
                 {this.state.teams.map((t, i) => (
-                  <Link to={'/Challenges/team/' + t.id} className="challenges_feedBlock" key={i}>
+                  <Link to={'/Challenges/team/' + t.id} className="challenges_feedBlock" key={`Teams${i}`}>
                     <div className="challenges_feedImageContainer">
                       <img alt="" className="challenges_feedImage" src={t.teamImage}/>
                     </div>
@@ -242,7 +242,7 @@ export default class Teams extends React.PureComponent {
                       <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: t.teamContent }} />
                       <div style={{display:'flex', flexDirection:'row'}}>
                         {t.members.map((m, j) => (
-                          <img alt="" className="challenges_memberAvatar" key={j} src={m.avatar}/>
+                          <img alt="" className="challenges_memberAvatar" key={`teamsAvatar${j}`} src={m.avatar}/>
                         ))}
                       </div>
                     </div>

@@ -19,7 +19,6 @@ import { injectStripe } from 'react-stripe-elements';
 import CardSection from './CardSection';
 import Header from '../../components/Header';
 
-import Logger from '../../utils/Logger';
 
 import './style.css';
 import './styleM.css';
@@ -102,7 +101,7 @@ class CheckoutForm extends React.PureComponent {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
-            .catch(error => Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`));
+            .catch(error => {});
     }
 
     loadPlans = () => {
@@ -110,7 +109,7 @@ class CheckoutForm extends React.PureComponent {
         })
             .then(response => response.json())
             .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
-            .catch(error => Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`));
+            .catch(error => {})
     }
 
     selectPlan = (e, selected) => {

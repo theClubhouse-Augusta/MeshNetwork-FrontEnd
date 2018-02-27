@@ -20,7 +20,6 @@ const SpaceDash = asyncComponent(() => import('../SpaceDash'));
 const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
-const TimePickers = asyncComponent(() => import('../DateRangePickerWithGaps/TimePickers'));
 
 // const Challenges = asyncComponent(() => import('../Challenges'));
 const Discover = asyncComponent(() => import('../Discover'));
@@ -78,7 +77,7 @@ export default class App extends Component {
         .then(response => response.text())
         .then(name => this.setState({ space: name }))
         .catch(error => {
-            // do nothing
+            // 
         })
     } 
     render() {
@@ -103,13 +102,6 @@ export default class App extends Component {
                     }
                 />
 
-                <Route
-                    path="/bar"
-                    render={() => 
-                        <TimePickers 
-                        />
-                    }
-                />
 
                 <Route
                     path="/booking/:id"

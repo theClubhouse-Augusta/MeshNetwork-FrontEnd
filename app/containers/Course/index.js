@@ -132,11 +132,11 @@ export default class Course extends React.PureComponent {
             <div className="lmsDetailCoursesContainer">
               <div className="lmsDetailCoursesHeader">Class Curriculum</div>
               {this.state.lessons.map((lesson, i) => (
-                <div className="lmsDetailCoursesBlock" key={i}>
+                <div className="lmsDetailCoursesBlock" key={`lessons${i}`}>
                   <div className="lmsDetailCoursesBlockHeader">{lesson.lessonName}</div>
                   <div className="lmsDetailCoursesBlockList">
                     {lesson.lectures.map((lecture, j) => (
-                      <div className="lmsDetailCoursesBlockItem" key={j}>
+                      <div className="lmsDetailCoursesBlockItem" key={`lmscourses${j}`}>
                         <div className="lmsDetailCoursesBlockInfo">
                           <div className="lmsDetailCoursesBlockIcon">
                             {this.renderIcon(lecture.lectureType)}
