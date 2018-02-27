@@ -45,7 +45,7 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`http://localhost:8000/api/event/${eventID}`)
+        fetch(`https://innovationmesh.com/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
                 this.setState({
@@ -63,7 +63,7 @@ export default class EventDetail extends React.PureComponent {
 
     registerForEvent = (e, eventID) => {
         e.preventDefault();
-        fetch(`http:/localhost/api/event/join/${eventID}`, {
+        fetch(`https://innovationmesh.com/api/event/join/${eventID}`, {
             headers: { Authorization: `Bearer ${this.token}` }
         },
         )

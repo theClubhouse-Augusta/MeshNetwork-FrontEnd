@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import FlatButton from 'material-ui/Button';
 import Dialog from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 
 import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
 import TextIcon from 'react-icons/lib/fa/file-text-o';
@@ -25,12 +26,18 @@ export default class Course extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token:localStorage.getItem('token'),
       course:"",
       lessons:[],
       videoDialog:false,
+      snack: false,
+      msg: "",
       app:this.props.app
     }
   }
+
+  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
   componentWillMount() {
     this.getCourse(this.props.match.params.id);
@@ -49,7 +56,7 @@ export default class Course extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://lms.innovationmesh.com/showCourse/"+id+"/", {
+    fetch("https://innovationmesh.com/api/detailCourse/"+id, {
       method:'GET'
     })
     .then(response => response.json())
@@ -72,11 +79,48 @@ export default class Course extends React.PureComponent {
     })
   }
 
+  enrollCourse = () => {
+    let _this = this;
+
+    fetch("https://innovationmesh.com/api/enrollCourse/"+this.state.course.id, {
+      method:'GET',
+      headers: {
+        'Authorization':'Bearer ' + this.state.token
+      }
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      if(json.error) {
+        _this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
+      }
+      else {
+        _this.showSnack(json.success);
+        setTimeout(() => {
+          _this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
+      }, 2000);
+      }
+    }.bind(this))
+  }
+
   renderIcon = (type) => {
     if(type === "Video") { return(<YoutubeIcon/>) }
     else if(type === "Exam") { return(<ExamIcon/>) }
     else if(type === "Text") { return(<TextIcon/>) }
     else if(type === "File") { return(<FileIcon/>) }
+  }
+
+  renderEnroll = () => {
+    if(this.state.token) {
+      return(
+        <FlatButton onClick={this.enrollCourse} style={{background:"#6fc13e", color:'#FFFFFF', border:'2px solid #6fc13e', height:'50px', marginLeft:'10px', marginRight:'10px', marginTop:'10px'}}>See the Course</FlatButton>
+      )
+    } else {
+      return(
+        <Link to={'/signUp'}><FlatButton style={{background:"#6fc13e", color:"#FFFFFF", border:'2px solid #6fc13e', height:'50px', marginLeft:'10px', marginRight:'10px'}}>Enroll Now</FlatButton></Link>
+      )
+    }
   }
 
   render() {
@@ -102,11 +146,11 @@ export default class Course extends React.PureComponent {
             {this.state.course.courseName}
           </div>
           <div className="lmsDetailHeaderText">
-            {this.state.course.courseSummary}
+            {/*this.state.course.courseSummary*/}
           </div>
           <div className="lmsDetailHeaderButtons">
             {promoVideo}
-            <Link to={'/LMS/Enroll/' + this.props.match.params.id}><FlatButton style={{background:"#6fc13e", color:"#FFFFFF", border:'2px solid #6fc13e', height:'50px', marginLeft:'10px', marginRight:'10px'}}>Enroll Now</FlatButton></Link>
+            {this.renderEnroll()}
           </div>
         </header>
 
@@ -146,7 +190,7 @@ export default class Course extends React.PureComponent {
                           </div>
                         </div>
                         <div className="lmsDetailCoursesBlockButton">
-                          <Link to={"/LMS/Lesson/"+this.props.match.params.id+"/"+lecture.id}><FlatButton style={{background:"#6fc13e", color:'#FFFFFF'}}>Start</FlatButton></Link>
+                          {/*<Link to={"/LMS/Lesson/"+this.props.match.params.id+"/"+lecture.id}><FlatButton style={{background:"#6fc13e", color:'#FFFFFF'}}>Start</FlatButton></Link>*/}
                         </div>
                       </div>
                     ))}
@@ -173,10 +217,10 @@ export default class Course extends React.PureComponent {
               </div>
             </div>
           </div>
-          <div className="lmsDetailCallToAction">
+          {/*<div className="lmsDetailCallToAction">
             Get Started Now!
-            <FlatButton style={{background:"#6fc13e", color:'#FFFFFF', border:'2px solid #6fc13e', height:'50px', marginLeft:'10px', marginRight:'10px', marginTop:'10px'}}>Enroll</FlatButton>
-          </div>
+            <FlatButton onClick={this.enrollCourse} style={{background:"#6fc13e", color:'#FFFFFF', border:'2px solid #6fc13e', height:'50px', marginLeft:'10px', marginRight:'10px', marginTop:'10px'}}>Enroll</FlatButton>
+            </div>*/}
         </main>
         <Dialog
           modal={false}
@@ -186,6 +230,13 @@ export default class Course extends React.PureComponent {
         >
           <iframe title="lecture" width="100%" height="500" src={'https://www.youtube.com/embed/' + this.state.course.courseVideo} frameborder="0"/>
         </Dialog>
+
+        <Snackbar
+          open={this.state.snack}
+          message={this.state.msg}
+          autoHideDuration={3000}
+          onClose={this.handleRequestClose}
+        />
       </div>
     );
   }

@@ -91,15 +91,33 @@ export default class Courses extends React.PureComponent {
       })
     }
 
-    fetch('https://lms.innovationmesh.com/getCourses/'+category+'/'+this.state.count+'/'+this.state.page+'/', {
+    fetch('https://innovationmesh.com/api/getCourses/'+category+'/'+this.state.count+'?page='+this.state.page, {
       method:'GET'
     })
-    .then(response => response.json())
-    .then(json => {
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      let nextPage = 0;
+      let previousPage = 0;
+      if(json.courses.last_page !== json.courses.current_page)
+      {
+        nextPage = this.state.page + 1;
+        if(json.courses.current_page !== 1)
+        {
+          previousPage = this.state.page - 1;
+        }
+      } else if(json.courses.last_page === json.courses.current_page)
+      {
+        if(json.courses.current_page !== 1)
+        {
+          previousPage = this.state.page - 1;
+        }
+      }
       this.setState({
-        nextPage:json.nextPageNum,
-        previousPage:json.previousPageNum,
-        courses: json.courses,
+        nextPage:nextPage,
+        previousPage:previousPage,
+        courses: json.courses.data,
         isLoading:false
       })
     })
@@ -132,7 +150,7 @@ export default class Courses extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("https://lms.innovationmesh.com/getCategories/", {
+    fetch("https://innovationmesh.com/api/getCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -156,16 +174,14 @@ export default class Courses extends React.PureComponent {
     let data = new FormData();
     data.append('searchContent', this.state.searchContent);
 
-    fetch('https://lms.innovationmesh.com/searchCourse/'+this.state.count+'/'+this.state.page+'/', {
+    fetch('https://innovationmesh.com/api/searchCourse', {
       method:'POST',
       body:data
     })
     .then(response => response.json())
     .then(json => {
       this.setState({
-        nextPage:json.nextPageNum,
-        previousPage:json.previousPageNum,
-        courses: json.courses,
+        courses: json,
         isLoading:false
       })
     })

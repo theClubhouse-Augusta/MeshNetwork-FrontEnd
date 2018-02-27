@@ -93,7 +93,7 @@ export default class AddEvent extends Component {
     }
 
     getSponsors = () => {
-        fetch(`http://localhost:8000/api/sponsors`, {
+        fetch(`https://innovationmesh.com/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -107,7 +107,7 @@ export default class AddEvent extends Component {
     }
 
     getOrganizers = () => {
-        fetch(`http://localhost:8000/api/organizers/events`, {
+        fetch(`https://innovationmesh.com/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -122,7 +122,7 @@ export default class AddEvent extends Component {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -229,7 +229,7 @@ export default class AddEvent extends Component {
             console.log('d',data.get('description'));
         }
 
-        fetch(`http://localhost:8000/api/event`, {
+        fetch(`https://innovationmesh.com/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,

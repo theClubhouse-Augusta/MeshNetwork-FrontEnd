@@ -230,7 +230,7 @@ export default class Detail extends React.PureComponent {
   }*/
 
   getDetail = () => {
-    fetch("http://localhost:8000/api/showChallenge/"+this.props.match.params.id, {
+    fetch("https://innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
       method:'GET'
     })
     .then(response => response.json())
@@ -256,7 +256,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getSpace = () => {
-    fetch("http://localhost:8000/api/workspace/" + this.state.challenge.spaceID, {
+    fetch("https://innovationmesh.com/api/workspace/" + this.state.challenge.spaceID, {
         method: "GET"
       }
     )
@@ -269,7 +269,7 @@ export default class Detail extends React.PureComponent {
   }
 
   joinChallenge = () => {
-    fetch("http://localhost:8000/api/joinChallenge/" + this.state.challenge.id, {
+    fetch("https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
@@ -288,12 +288,17 @@ export default class Detail extends React.PureComponent {
     if(this.state.token)
     {
       return(
-        <FlatButton onClick={this.joinChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton>
+        <FlatButton onClick={this.joinChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Start Challenge</FlatButton>
       )
     }
     else {
       return(
-       <Link to={'/join/'+this.state.space.slug} style={{textDecoration:'none', width:'100%'}}><FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Challenge</FlatButton></Link>
+        <div style={{display:'flex', flexDirection:'column'}}>
+          <div style={{background:'#DDDDDD', color:"#444444", fontSize:'0.9em', fontFamily:'Noto Sans'}}>
+            You must join a workspace before starting a challenge.
+          </div>
+          <Link to={'/join/'+this.state.space.slug} style={{textDecoration:'none', width:'100%'}}><FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Space & Challenge</FlatButton></Link>
+        </div>
       )
     }
   }
@@ -345,6 +350,19 @@ export default class Detail extends React.PureComponent {
     return {__html: content};
   }
 
+  renderUploads = () => {
+    if(this.state.uploads.length > 0) {
+      return(
+        <div className="challenges_detailSideBlock">
+          <div className="challenges_categoryTitle">Uploads</div>
+          {this.state.uploads.map((u, i) => (
+            <a href={u.fileData} target="_blank" className="challenges_uploadBlock">{u.fileName}</a>
+          ))}
+        </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -379,18 +397,13 @@ export default class Detail extends React.PureComponent {
             <div className="challenges_detailColumnTwo">
               {this.renderUpdateButtons()}
               {this.renderJoinButton()}
-              <div className="challenges_detailSideBlock">
-                <div className="challenges_categoryTitle">Uploads</div>
-                {this.state.uploads.map((u, i) => (
-                  <a href={u.fileData} target="_blank" className="challenges_uploadBlock">{u.fileName}</a>
-                ))}
-              </div>
+              {this.renderUploads()}
               <div className="challenges_detailSideBlock">
                 <div className="challenges_categoryTitle">Participants</div>
                 {this.state.teams.map((t, i) => (
                   <div className="challenges_participantBlock">
-                    <img alt="" className="challenges_participantImage" src={t.teamImage}/>
-                    <div className="challenges_participantName">{t.teamName}</div>
+                    <img className="challenges_participantImage" src={t.avatar}/>
+                    <div className="challenges_participantName">{t.name}</div>
                   </div>
                 ))}
               </div>

@@ -85,7 +85,7 @@ class CheckoutForm extends React.PureComponent {
 
 
     getSpace = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -97,7 +97,7 @@ class CheckoutForm extends React.PureComponent {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
         })
             .then(response => response.json())
             .then(json => { this.setState({ loadedTags: json }) })
@@ -105,7 +105,7 @@ class CheckoutForm extends React.PureComponent {
     }
 
     loadPlans = () => {
-        fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
+        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
@@ -182,6 +182,7 @@ class CheckoutForm extends React.PureComponent {
     onBlurPlan = () => this.setState({ planFocused: false });
 
     storeUser = e => {
+        let _this = this;
         this.setState({
           isLoading:true
         })
@@ -212,17 +213,17 @@ class CheckoutForm extends React.PureComponent {
             data.append('plan', plan);
             data.append('username', name);
 
-            fetch("http://localhost:8000/api/signUp", {
+            fetch("https://innovationmesh.com/api/signUp", {
                 method: 'POST',
                 body: data,
             })
             .then(response => response.json())
             .then(user => {
               if (user.error) {
-                  this.showSnack(user.error);
+                  _this.showSnack(user.error);
               } else if (user.token) {
                 localStorage.setItem('token', user.token);
-                fetch("http://localhost:8000/api/auth/user", {
+                fetch("https://innovationmesh.com/api/user/auth", {
                     method: 'GET',
                     headers: { "Authorization": "Bearer " + user.token }
                 })
@@ -230,7 +231,7 @@ class CheckoutForm extends React.PureComponent {
                 .then(json => {
                   let mainUser = json.user;
                   localStorage.setItem('user', JSON.stringify(mainUser));
-                  fetch('http://localhost:8000/api/signIn', {
+                  fetch('https://innovationmesh.com/api/signIn', {
                     method:'POST',
                     body:data
                   })
@@ -242,37 +243,11 @@ class CheckoutForm extends React.PureComponent {
                     }
                     else if(json.token)
                     {
-                      localStorage.setItem('challengeToken', json.token);
-                      let newData = new FormData();
-                      newData.append('username', this.state.email);
-                      newData.append('password', this.state.password);
-                      fetch('https://lms.innovationmesh.com/signIn/', {
-                        method:'POST',
-                        body:newData
-                      })
-                      .then(response => response.json())
-                      .then(json => {
-                        if(json.non_field_errors)
-                        {
-                          this.showSnack("Invalid Credentials");
-                        }
-                        else if(json.token)
-                        {
-                          localStorage.setItem('lmsToken', json.token);
-                          fetch('https://lms.innovationmesh.com/getUser/', {
-                            method:'GET',
-                            headers: {'Authorization' : 'JWT ' + json.token}
-                          })
-                          .then(response => response.json())
-                          .then(json => {
-                            localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                            this.showSnack('Welcome to '+this.state.space.name+'!');
-                            setTimeout(() => {
-                                this.props.history.push(`/user/${mainUser.id}`)
-                            }, 2000);
-                          })
-                        }
-                      })
+                      localStorage.setItem('token', json.token);
+                      _this.showSnack('Welcome to '+ _this.state.space.name+'!');
+                    setTimeout(() => {
+                        _this.props.history.push(`/user/${mainUser.id}`)
+                    }, 2000);
                     }
                   })
                 })
@@ -313,7 +288,7 @@ class CheckoutForm extends React.PureComponent {
         data.append('username', name);
 
 
-        fetch("http://localhost:8000/api/signUp", {
+        fetch("https://innovationmesh.com/api/signUp", {
             method: 'POST',
             body: data,
         })
@@ -324,7 +299,7 @@ class CheckoutForm extends React.PureComponent {
           } else if (json.token) {
             let mainToken = json.token;
             localStorage.setItem('token', mainToken);
-            fetch("http://localhost:8000/api/user/auth", {
+            fetch("https://innovationmesh.com/api/user/auth", {
               method: 'GET',
               headers: { "Authorization": "Bearer " + mainToken }
             })
@@ -332,36 +307,10 @@ class CheckoutForm extends React.PureComponent {
             .then(json => {
               let mainUser = json.user;
               localStorage.setItem('user', JSON.stringify(mainUser));
-            let newData = new FormData();
-            newData.append('username', this.state.email);
-            newData.append('password', this.state.password);
-            fetch('https://lms.innovationmesh.com/signIn/', {
-            method:'POST',
-            body:newData
-            })
-            .then(response => response.json())
-            .then(json => {
-            if(json.non_field_errors)
-            {
-                this.showSnack("Invalid Credentials");
-            }
-            else if(json.token)
-            {
-                localStorage.setItem('lmsToken', json.token);
-                fetch('https://lms.innovationmesh.com/getUser/', {
-                method:'GET',
-                headers: {'Authorization' : 'JWT ' + json.token}
-                })
-                .then(response => response.json())
-                .then(json => {
-                localStorage.setItem('lmsUser', JSON.stringify(json.user));
-                this.showSnack('Welcome to '+this.state.space.name+'!');
+                _this.showSnack('Welcome to '+ _this.state.space.name+'!');
                 setTimeout(() => {
                     this.props.history.push(`/user/${mainUser.id}`)
                 }, 2000);
-                })
-            }
-            })
             })
           }
           this.setState({

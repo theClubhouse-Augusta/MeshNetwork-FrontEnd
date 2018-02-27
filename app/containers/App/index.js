@@ -33,7 +33,7 @@ const LMS = asyncComponent(() => import('containers/LMS'));
 const Courses = asyncComponent(() => import('containers/Courses'));
 const Course = asyncComponent(() => import('containers/Course'));
 const CourseInfo = asyncComponent(() => import('containers/CourseInfo'));
-const NewCourse = asyncComponent(() => import('containers/NewCourse'));
+const New = asyncComponent(() => import('containers/NewCourse'));
 const Lessons = asyncComponent(() => import('containers/Lessons'));
 const Enroll = asyncComponent(() => import('containers/Enroll'));
 const LMSDash = asyncComponent(() => import('containers/LMSDash'));
@@ -65,13 +65,13 @@ export default class App extends Component {
         };
     }
 
-    componentDidMount() {
+    /*componentDidMount() {
         if (this.state.user && this.state.token)
             this.getSpaceName(this.state.user.spaceID, this.state.token);
-    }
+    }*/
 
     getSpaceName = (spaceID, token) => {
-        fetch(`http://localhost:8000/api/spacename/${spaceID}`, {
+        fetch(`https://innovationmesh.com/api/spacename/${spaceID}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(response => response.text())
