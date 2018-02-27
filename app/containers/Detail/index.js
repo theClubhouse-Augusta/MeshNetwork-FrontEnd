@@ -13,22 +13,22 @@ import FlatButton from "material-ui/Button";
 import Snackbar from "material-ui/Snackbar";
 
 // import Dialog, { DialogTitle } from 'material-ui/Dialog';
-import Dialog  from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
+import Dialog from "material-ui/Dialog";
+import TextField from "material-ui/TextField";
 
 import {
-  EditorState, 
-  ContentState, 
-  convertToRaw, 
-  // convertFromRaw, 
+  EditorState,
+  ContentState,
+  convertToRaw,
+  // convertFromRaw,
   convertFromHTML
-} from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+} from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+import Select from "react-select";
+import "react-select/dist/react-select.css";
 // import Slide from 'material-ui/transitions/Slide';
 
 import CloseIcon from "react-icons/lib/md/close";
@@ -65,15 +65,27 @@ export default class Detail extends React.PureComponent {
     //      app:this.props.app
   }
 
-  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
+  handleRequestClose = () => {
+    this.setState({ snack: false, msg: "" });
+  };
+  showSnack = msg => {
+    this.setState({ snack: true, msg: msg });
+  };
 
-  challengeDialog = () => {this.setState({challengeOpen:!this.state.challengeOpen}, () => { this.getCategories(); })}
-  handleChallengeTitle = (event) => {this.setState({challengeTitle:event.target.value})}
+  challengeDialog = () => {
+    this.setState({ challengeOpen: !this.state.challengeOpen }, () => {
+      this.getCategories();
+    });
+  };
+  handleChallengeTitle = event => {
+    this.setState({ challengeTitle: event.target.value });
+  };
 
-  handleChallengeContent = (editorState) => {this.setState({challengeContent: editorState})};
+  handleChallengeContent = editorState => {
+    this.setState({ challengeContent: editorState });
+  };
 
-  handleChallengeCategories = (challengeCategories) => {
+  handleChallengeCategories = challengeCategories => {
     this.setState({ challengeCategories });
   };
 
@@ -103,13 +115,16 @@ export default class Detail extends React.PureComponent {
       challengeFiles.push(fileData);
 
       reader.onloadend = () => {
-        this.setState({
-          challengeFiles:challengeFiles
-        }, () => {
-          // console.log(this.state.challengeFiles);
-          this.forceUpdate();
-        })
-      }
+        this.setState(
+          {
+            challengeFiles: challengeFiles
+          },
+          () => {
+            // console.log(this.state.challengeFiles);
+            this.forceUpdate();
+          }
+        );
+      };
       reader.readAsDataURL(files[i]);
     }
   };
@@ -120,29 +135,32 @@ export default class Detail extends React.PureComponent {
 
   getCategories = () => {
     fetch("http://localhost:8000/api/selectCategories", {
-      method:'GET'
+      method: "GET"
     })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      this.setState({
-        cats:json.categories
+      .then(response => {
+        return response.json();
       })
-    })
-  }
+      .then(json => {
+        this.setState({
+          cats: json.categories
+        });
+      });
+  };
 
-  deleteFile = (i) => {
+  deleteFile = i => {
     let challengeFiles = this.state.challengeFiles;
 
     challengeFiles.splice(i, 1);
 
-    this.setState({
-      challengeFiles:challengeFiles
-    }, () => {
-      this.forceUpdate();
-    })
-  }
+    this.setState(
+      {
+        challengeFiles: challengeFiles
+      },
+      () => {
+        this.forceUpdate();
+      }
+    );
+  };
 
   updateChallenge = () => {
     this.setState({
@@ -151,79 +169,77 @@ export default class Detail extends React.PureComponent {
 
     let data = new FormData();
 
-    data.append('challengeTitle', this.state.challengeTitle);
-    data.append('challengeContent', draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent())));
-    data.append('challengeCategories', JSON.stringify(this.state.challengeCategories));
-    data.append('challengeImage', this.state.challengeImage);
-    data.append('challengeFiles', this.state.challengeFiles);
-    data.append('startDate', this.state.startDate);
-    data.append('endDate', this.state.endDate);
+    data.append("challengeTitle", this.state.challengeTitle);
+    data.append(
+      "challengeContent",
+      draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent()))
+    );
+    data.append(
+      "challengeCategories",
+      JSON.stringify(this.state.challengeCategories)
+    );
+    data.append("challengeImage", this.state.challengeImage);
+    data.append("challengeFiles", this.state.challengeFiles);
+    data.append("startDate", this.state.startDate);
+    data.append("endDate", this.state.endDate);
 
-    fetch("http://localhost:8000/api/updateChallenge/"+this.state.challenge.id, {
-      method:'POST',
-      body:data,
-      headers:{'Authorization':'Bearer ' + this.state.token}
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      if(json.error) {
-        if(json.error === 'token_expired') {
-          this.showSnack("Your session has expired. Please sign back in to continue.");
-        } else {
-          this.showSnack(json.error);
-          this.setState({
-            confirmStatus:"Confirm"
-          })
-        }
+    fetch(
+      "http://localhost:8000/api/updateChallenge/" + this.state.challenge.id,
+      {
+        method: "POST",
+        body: data,
+        headers: { Authorization: "Bearer " + this.state.token }
       }
-      else if(json.challenge) {
-        // console.log(this.state.challengeFiles.length);
-        if(this.state.challengeFiles.length > 0) {
-          for(let i = 0; i < this.state.challengeFiles.length; i++)
-          {
-            let fileData = new FormData();
-            fileData.append('challengeID', json.challenge);
-            fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
-
-            fetch("http://localhost:8000/api/uploadFile", {
-              method:'POST',
-              body:fileData,
-              headers:{'Authorization':'Bearer ' + this.state.token}
-            })
-            .then((response) => {
-              return response.json();
-            })
-            .then((json) => {
-              if(json.error) {
-                this.showSnack(json.error);
-                this.setState({
-                  confirmStatus:"Confirm"
-                })
-                  .then(function(response) {
-                    return response.json();
-                  })
-                  .then(function(json) {
-                    if (json.error) {
-                      _this.showSnack(json.error);
-                      _this.setState({
-                        confirmStatus: "Confirm"
-                      });
-                    }
-                  });
-              }
-            }, 
-          ) 
-            _this.showSnack("Challenge Updated.");
-            _this.challengeDialog();
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        if (json.error) {
+          if (json.error === "token_expired") {
+            this.showSnack(
+              "Your session has expired. Please sign back in to continue."
+            );
+          } else {
+            this.showSnack(json.error);
+            this.setState({
+              confirmStatus: "Confirm"
+            });
           }
+        } else if (json.challenge) {
+          // console.log(this.state.challengeFiles.length);
+          if (this.state.challengeFiles.length > 0) {
+            for (let i = 0; i < this.state.challengeFiles.length; i++) {
+              let fileData = new FormData();
+              fileData.append("challengeID", json.challenge);
+              fileData.append(
+                "challengeFile",
+                this.state.challengeFiles[i].fileData
+              );
+
+              fetch("http://localhost:8000/api/uploadFile", {
+                method: "POST",
+                body: fileData,
+                headers: { Authorization: "Bearer " + this.state.token }
+              })
+                .then(response => {
+                  return response.json();
+                })
+                .then(json => {
+                  if (json.error) {
+                    this.showSnack(json.error);
+                    this.setState({
+                      confirmStatus: "Confirm"
+                    });
+                  }
+                });
+            }
+          }
+          this.showSnack("Challenge Updated.");
+          this.challengeDialog();
         }
-        this.showSnack("Challenge Updated.");
-        this.challengeDialog();
-      }
-    })
-  }
+      });
+  };
 
   deleteFile = () => {};
 
@@ -238,95 +254,124 @@ export default class Detail extends React.PureComponent {
   }*/
 
   getDetail = () => {
-    fetch("http://localhost:8000/api/showChallenge/"+this.props.match.params.id, {
-      method:'GET'
-    })
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        challenge:json.challenge,
-        categories:json.challenge.categories,
-        uploads:json.uploads,
-        teams:json.teams,
-        participant:json.participant,
-        challengeTitle:json.challenge.challengeTitle,
-        challengeContent: EditorState.createWithContent(
-          ContentState.createFromBlockArray(
-              convertFromHTML(json.challenge.challengeContent)
-          )
-      ),
-        challengeCategories:json.categoriesArray,
-        challengeImagePreview:json.challenge.challengeImage
-      }, () => {
-        this.getSpace();
-      })
-    })
-  }
-
-  getSpace = () => {
-    fetch("http://localhost:8000/api/workspace/" + this.state.challenge.spaceID, {
+    fetch(
+      "http://localhost:8000/api/showChallenge/" + this.props.match.params.id,
+      {
         method: "GET"
       }
     )
-    .then(response => response.json())
-    .then(json => {
+      .then(response => response.json())
+      .then(json => {
+        this.setState(
+          {
+            challenge: json.challenge,
+            categories: json.challenge.categories,
+            uploads: json.uploads,
+            teams: json.teams,
+            participant: json.participant,
+            challengeTitle: json.challenge.challengeTitle,
+            challengeContent: EditorState.createWithContent(
+              ContentState.createFromBlockArray(
+                convertFromHTML(json.challenge.challengeContent)
+              )
+            ),
+            challengeCategories: json.categoriesArray,
+            challengeImagePreview: json.challenge.challengeImage
+          },
+          () => {
+            this.getSpace();
+          }
+        );
+      });
+  };
+
+  getSpace = () => {
+    fetch(
+      "http://localhost:8000/api/workspace/" + this.state.challenge.spaceID,
+      {
+        method: "GET"
+      }
+    )
+      .then(response => response.json())
+      .then(json => {
         this.setState({
           space: json
         });
-    });
-  }
+      });
+  };
 
   joinChallenge = () => {
-    fetch("http://localhost:8000/api/joinChallenge/" + this.state.challenge.id, {
-      method:'GET',
-      headers: {'Authorization':'Bearer ' + this.state.token}
-    })
-    .then(response => response.json())
-    .then(json => {
-      if(json.error) {
-        this.showSnack(json.error);
-      }
-      else {
-        this.showSnack(json.success);
+    fetch(
+      "http://localhost:8000/api/joinChallenge/" + this.state.challenge.id,
+      {
+        method: "GET",
+        headers: { Authorization: "Bearer " + this.state.token }
       }
     )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
+      .then(response => response.json())
+      .then(json => {
         if (json.error) {
-          _this.showSnack(json.error);
+          this.showSnack(json.error);
         } else {
-          _this.showSnack(json.success);
+          this.showSnack(json.success);
         }
       });
   };
 
   renderJoinButton = () => {
-    if(this.state.token)
-    {
-      return(
-        <FlatButton onClick={this.joinChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Start Challenge</FlatButton>
-      )
-    }
-    else {
-      return(
-        <div style={{display:'flex', flexDirection:'column'}}>
-          <div style={{background:'#DDDDDD', color:"#444444", fontSize:'0.9em', fontFamily:'Noto Sans'}}>
+    if (this.state.token) {
+      return (
+        <FlatButton
+          onClick={this.joinChallenge}
+          style={{
+            background: "#32b6b6",
+            color: "#FFFFFF",
+            marginBottom: "15px",
+            width: "100%"
+          }}
+        >
+          Start Challenge
+        </FlatButton>
+      );
+    } else {
+      return (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              background: "#DDDDDD",
+              color: "#444444",
+              fontSize: "0.9em",
+              fontFamily: "Noto Sans"
+            }}
+          >
             You must join a workspace before starting a challenge.
           </div>
-          <Link to={'/join/'+this.state.space.slug} style={{textDecoration:'none', width:'100%'}}><FlatButton style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Join Space & Challenge</FlatButton></Link>
+          <Link
+            to={"/join/" + this.state.space.slug}
+            style={{ textDecoration: "none", width: "100%" }}
+          >
+            <FlatButton
+              style={{
+                background: "#32b6b6",
+                color: "#FFFFFF",
+                marginBottom: "15px",
+                width: "100%"
+              }}
+            >
+              Join Space & Challenge
+            </FlatButton>
+          </Link>
         </div>
-      )
+      );
     }
-  }
+  };
 
   renderUpdateButtons = () => {
     if (this.state.token) {
       if (this.state.user) {
         if (
-          this.state.user.spaceID == this.state.challenge.spaceID &&
-          this.state.user.roleID == 2
+          this.state.user.spaceID === this.state.challenge.spaceID &&
+          this.state.user.roleID === 2
         ) {
           return (
             <div
@@ -347,15 +392,6 @@ export default class Detail extends React.PureComponent {
               >
                 Edit Challenge
               </FlatButton>
-              </div> ) 
-    if(this.state.token)
-    {
-      if(this.state.user) {
-        if(this.state.user.spaceID === this.state.challenge.spaceID && this.state.user.roleID === 2)
-        {
-          return(
-            <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
-              <FlatButton onClick={this.challengeDialog} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Edit Challenge</FlatButton>
               {/*<FlatButton onClick={this.deleteChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Delete Challenge</FlatButton>*/}
             </div>
           );
@@ -391,6 +427,7 @@ export default class Detail extends React.PureComponent {
     if (this.state.challengeImage === "") {
       return (
         <img
+          alt=""
           src={this.state.challengeImagePreview}
           className="challenges_newChallengeImagePreview"
         />
@@ -398,41 +435,37 @@ export default class Detail extends React.PureComponent {
     } else {
       return (
         <img
+          alt=""
           src={this.state.challengeImagePreview}
           className="challenges_newChallengeImagePreview"
         />
       );
-    if(this.state.challengeImage === "")
-    {
-      return(
-        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
-      )
     }
-    else {
-      return(
-        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
-      )
-    }
-  }
-}; 
+  };
 
-  createMarkup() { 
+  createMarkup() {
     let content = this.state.challenge.challengeContent;
-    return { __html: content }; 
-  }; 
+    return { __html: content };
+  }
 
   renderUploads = () => {
-    if(this.state.uploads.length > 0) {
-      return(
+    if (this.state.uploads.length > 0) {
+      return (
         <div className="challenges_detailSideBlock">
           <div className="challenges_categoryTitle">Uploads</div>
           {this.state.uploads.map((u, i) => (
-            <a href={u.fileData} target="_blank" className="challenges_uploadBlock">{u.fileName}</a>
+            <a
+              href={u.fileData}
+              target="_blank"
+              className="challenges_uploadBlock"
+            >
+              {u.fileName}
+            </a>
           ))}
         </div>
-      )
+      );
     }
-  }
+  };
 
   render() {
     return (
@@ -443,7 +476,7 @@ export default class Detail extends React.PureComponent {
         />
 
         <header>
-          <Header space={this.props.spaceName}/>
+          <Header space={this.props.spaceName} />
         </header>
 
         <main className="challenges_mainContainer">
@@ -460,7 +493,12 @@ export default class Detail extends React.PureComponent {
 
                   <div className="challenges_feedTags">
                     {this.state.categories.map((c, j) => (
-                      <div className="challenges_tagBlock" key={`detailChallenges${j}`}>{c.categoryName}</div>
+                      <div
+                        className="challenges_tagBlock"
+                        key={`detailChallenges${j}`}
+                      >
+                        {c.categoryName}
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -492,7 +530,11 @@ export default class Detail extends React.PureComponent {
                 <div className="challenges_categoryTitle">Participants</div>
                 {this.state.teams.map((t, i) => (
                   <div className="challenges_participantBlock">
-                    <img alt="" className="challenges_participantImage" src={t.avatar}/>
+                    <img
+                      alt=""
+                      className="challenges_participantImage"
+                      src={t.avatar}
+                    />
                     <div className="challenges_participantName">{t.name}</div>
                   </div>
                 ))}
@@ -502,42 +544,59 @@ export default class Detail extends React.PureComponent {
         </main>
 
         <footer className="homeFooterContainer">
-          Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-      </footer>
+          Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
+          723-5782
+        </footer>
 
-      <Dialog onClose={this.challengeDialog} open={this.state.challengeOpen} fullScreen transition={this.transition}>
-        <div style={{display:'flex', flexDirection:'row'}}>
-          <div style={{width:'30%', display:'flex', flexDirection:'column', padding:'15px'}} >
-            <TextField
-              id="challengetitle"
-              label="Challenge Title"
-              value={this.state.challengeTitle}
-              onChange={this.handleChallengeTitle}
-              margin="normal"
-              fullWidth={true}
-              style={{marginBottom:'15px'}}
-            />
-            <Select
-              name="categories-select"
-              value={this.state.challengeCategories}
-              removeSelected={false}
-              multi={true}
-              onChange={this.handleChallengeCategories}
-              options={this.state.cats}
-            />
-            <div>
-              <label htmlFor="challenge-image" className="challenges_challengeImageBlock">
-                {this.renderChallengeImageText()}
-                {this.renderChallengeImage()}
-              </label>
-              <input type="file" onChange={this.handleChallengeImage} id="challenge-image" style={{display:'none'}}/>
-            </div>
-            {this.state.challengeFiles.map((file, index) => (
-              <div key={`detailFiles${index}`}>
-                <div className="challenges_newFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={25} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(index)}/></div>
+        <Dialog
+          onClose={this.challengeDialog}
+          open={this.state.challengeOpen}
+          fullScreen
+          transition={this.transition}
+        >
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              style={{
+                width: "30%",
+                display: "flex",
+                flexDirection: "column",
+                padding: "15px"
+              }}
+            >
+              <TextField
+                id="challengetitle"
+                label="Challenge Title"
+                value={this.state.challengeTitle}
+                onChange={this.handleChallengeTitle}
+                margin="normal"
+                fullWidth={true}
+                style={{ marginBottom: "15px" }}
+              />
+              <Select
+                name="categories-select"
+                value={this.state.challengeCategories}
+                removeSelected={false}
+                multi={true}
+                onChange={this.handleChallengeCategories}
+                options={this.state.cats}
+              />
+              <div>
+                <label
+                  htmlFor="challenge-image"
+                  className="challenges_challengeImageBlock"
+                >
+                  {this.renderChallengeImageText()}
+                  {this.renderChallengeImage()}
+                </label>
+                <input
+                  type="file"
+                  onChange={this.handleChallengeImage}
+                  id="challenge-image"
+                  style={{ display: "none" }}
+                />
               </div>
               {this.state.challengeFiles.map((file, index) => (
-                <div key={index}>
+                <div key={`detailFiles${index}`}>
                   <div className="challenges_newFileBlock">
                     <span />
                     {file.fileData.name}{" "}
@@ -631,6 +690,6 @@ export default class Detail extends React.PureComponent {
           onClose={this.handleRequestClose}
         />
       </div>
-    ) 
-  };
+    );
+  }
 }
