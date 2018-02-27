@@ -45,7 +45,7 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`http://localhost:8000/api/event/${eventID}`)
+        fetch(`https://innovationmesh.com/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
                 this.setState({
@@ -63,7 +63,7 @@ export default class EventDetail extends React.PureComponent {
 
     registerForEvent = (e, eventID) => {
         e.preventDefault();
-        fetch(`http://localhost:8000/api/event/join/${eventID}`, {
+        fetch(`https://innovationmesh.com/api/event/join/${eventID}`, {
             headers: { Authorization: `Bearer ${this.token}` }
         },
         )
@@ -89,6 +89,18 @@ export default class EventDetail extends React.PureComponent {
             snackBarMessage: message
         });
 
+    renderLocation = () => {
+        if(!this.state.event.location) {
+            return(
+                <div className="homeHeaderContentSubtitle">{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
+            )
+        } else {
+            return(
+                <div className="homeHeaderContentSubtitle">{this.state.event.location}</div>
+            )
+        }
+    }
+
     render() {
         const {
             workSpace,
@@ -108,7 +120,7 @@ export default class EventDetail extends React.PureComponent {
                     <div className="eventDetailBanner"
                         style={{background: '#ff4d58'}}>
                         <div className="homeHeaderContentTitle">{this.state.event.title}</div>
-                        <div className="homeHeaderContentSubtitle">{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
+                        {this.renderLocation()}
                     </div>
                 </header>
 

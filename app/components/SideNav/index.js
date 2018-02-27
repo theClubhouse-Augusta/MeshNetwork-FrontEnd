@@ -64,7 +64,7 @@ export default class SideNav extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/getCategories", {
+    fetch("https://innovationmesh.com/api/getCategories", {
       method:'GET',
     })
     .then(response => response.json())
@@ -81,7 +81,7 @@ export default class SideNav extends React.PureComponent {
 
     data.append('categoryName', this.state.categoryName);
     data.append('categoryImage', this.state.categoryImage);
-    fetch("http://localhost:8000/api/storeCategory", {
+    fetch("https://innovationmesh.com/api/storeCategory", {
       method:'POST',
       body:data,
       headers: {'Authorization':'Bearer ' + this.state.token}
@@ -149,7 +149,6 @@ export default class SideNav extends React.PureComponent {
       <div>
         <div className="challenges_categoryHeader">
           <div className="challenges_categoryTitle">Categories</div>
-          {this.renderAdd()}
         </div>
         {this.state.categories.map((c, i) => (
           <a href={'/Challenges/Category/' + c.categorySlug} className="challenges_categoryBlock" key={`category${i}`}>

@@ -56,7 +56,7 @@ export default class Course extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("http://localhost:8000/api/detailCourse/"+id, {
+    fetch("https://innovationmesh.com/api/detailCourse/"+id, {
       method:'GET'
     })
     .then(response => response.json())
@@ -81,7 +81,7 @@ export default class Course extends React.PureComponent {
 
   enrollCourse = () => {
 
-    fetch("http://localhost:8000/api/enrollCourse/"+this.state.course.id, {
+    fetch("https://innovationmesh.com/api/enrollCourse/"+this.state.course.id, {
       method:'GET',
       headers: {
         'Authorization':'Bearer ' + this.state.token
@@ -138,7 +138,7 @@ export default class Course extends React.PureComponent {
         <Helmet title="Detail" meta={[ { name: 'description', content: 'Description of Detail' }]}/>
         <Header space={this.props.spaceName} />
         <header className="lmsDetailHeader" style={{
-          background:'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(http://houseofhackers.me/media/' + this.state.course.courseImage +')',
+          background:'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(' + this.state.course.courseImage +')',
 
         }}>
           <div className="lmsDetailHeaderHeading">
@@ -160,7 +160,7 @@ export default class Course extends React.PureComponent {
           <div className="lmsDetailAuthor">
             <div className="lmsDetailAuthorContainer">
               <div className="lmsDetailAuthorAvatar">
-                <img alt="" className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
+                <img alt="" className="lmsDetailAuthorAvatarImg" src={this.state.course.courseInstructorAvatar}/>
               </div>
               <div className="lmsDetailAuthorInfo">
                 <div className="lmsDetailAuthorName">{this.state.course.courseInstructorName}</div>
