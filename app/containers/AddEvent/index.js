@@ -3,38 +3,27 @@
  * AddEvent
  *
  */
-import React, { PureComponent } from "react";
-import Helmet from "react-helmet";
-import Snackbar from "material-ui/Snackbar";
-import TextField from "material-ui/TextField";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
 import RaisedButton from "./RaisedButton";
-import FlatButton from "material-ui/Button";
-import Checkbox from "material-ui/Checkbox";
-import { ListItemText } from "material-ui/List";
+import FlatButton from 'material-ui/Button';
+import Checkbox from 'material-ui/Checkbox';
+import { ListItemText } from 'material-ui/List';
+import moment from 'moment';
 
-import MdFileUpload from "react-icons/lib/md/file-upload";
-import Header from "../../components/Header";
-import { MdInsertDriveFile } from "react-icons/lib/md";
-import DateTimeSelect from "../../components/DateTimeSelect";
-import { SelectedSponsors } from "./SelectedSponsors";
-import Spinner from "../../components/Spinner";
+import Header from '../../components/Header';
+import { SelectedSponsors } from './SelectedSponsors';
+import Spinner from '../../components/Spinner';
 
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
-import Input, { InputLabel } from "material-ui/Input";
-import { FormControl } from "material-ui/Form";
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
 
-import authenticate from "../../utils/Authenticate";
-import {
-  removeDuplicateDate,
-  removeDuplicateStart,
-  removeDuplicateEnd,
-  dateErrors,
-  multiDayTimeErrors,
-  timeError,
-  formatSelectedDate,
-  formatTodaysDate
-} from "./dateUtils";
+import DateRangePickerWithGaps from '../../components/DateRangePickerWithGaps';
+import authenticate from '../../utils/Authenticate';
 
 // styles
 import "./style.css";
@@ -56,98 +45,110 @@ const MenuProps = {
 //     'three',
 // ]
 
-export default class AddEvent extends PureComponent {
-  state = {
-    loading: true,
-    dateError: "",
-    modalMessage: "",
-    msg: "",
-    snack: false,
-    // event
-    name: "",
-    url: "",
-    days: "",
-    description: "",
-    selectedTag: "",
-    selectedTags: [],
-    selectedSponsors: [],
-    day: "",
-    start: "",
-    end: "",
-    dateMulti: [],
-    startMulti: [],
-    endMulti: [],
-    newSponsors: [],
-    eventFiles: [],
-    // organizers
-    organizers: [],
-    showOrganizers: false,
-    // sponsors
-    sponsors: [],
-    checkNewSponsors: "",
-    // add new Sponsor form values
-    sponsorNames: "",
-    sponsorLogos: "",
-    sponsorWebsites: "",
-    // date/time
-    // tags
-    loadedTags: [],
-    checkedRadio: null,
-    logo: "",
-    logoPreview: "",
-    eventImg: "",
-    eventImgPreview: "",
-    tag: [],
-    selectedOrganizers: [],
-    selectedSponsors: []
-  };
+export default class AddEvent extends Component {
+    state = {
+        loading: true,
+        dateError: '',
+        modalMessage: '',
+        msg: "",
+        snack: false,
+        // event
+        name: '',
+        url: '',
+        days: '',
+        description: '',
+        selectedTag: '',
+        selectedTags: [],
+        selectedSponsors: [],
+        newSponsors: [],
+        eventFiles: [],
+        organizers: [],
+        showOrganizers: false,
+        sponsors: [],
+        checkNewSponsors: '',
+        sponsorNames: '',
+        sponsorLogos: '',
+        sponsorWebsites: '',
+        loadedTags: [],
+        checkedRadio: null,
+        logo: '',
+        logoPreview: '',
+        eventImg: '',
+        eventImgPreview: '',
+        tag: [],
+        selectedOrganizers: [],
+        dates: []
+    };
 
-  handleRequestClose = () => {
-    this.setState({ snack: false, msg: "" });
-  };
-  showSnack = msg => {
-    this.setState({ snack: true, msg: msg });
-  };
+    singleDay = 0;
+    multipleDays = 1;
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  async componentDidMount() {
-    const authorized = await authenticate(localStorage["token"]);
-    if (!authorized.error) {
-      this.getOrganizers();
-      this.getSponsors();
-      this.loadSkills();
-      this.setState({ loading: false });
-    } else {
-      this.props.history.push("/");
-    }
-  }
-
-  getSponsors = () => {
-    fetch(`https://innovationmesh.com/api/sponsors`, {
-      headers: { Authorization: `Bearer ${localStorage["token"]}` }
-    })
-      .then(response => response.json())
-      .then(Sponsors => {
-        if (!Sponsors.error) this.setState({ sponsors: Sponsors });
-      })
-      .catch(error => {
-        alert(`error in fetching data from server: ${error}`); // eslint-disable-line
-      });
-  };
-
-  getOrganizers = () => {
-    fetch(`https://innovationmesh.com/api/organizers/events`, {
-      headers: { Authorization: `Bearer ${localStorage["token"]}` }
-    })
-      .then(response => response.json())
-      .then(Organizers => {
-        if (!Organizers.error) {
-          this.setState({ organizers: Organizers });
+    async componentDidMount() {
+        const authorized = await authenticate(localStorage['token']);
+        if (!authorized.error && authorized) {
+            this.getOrganizers();
+            this.getSponsors();
+            this.loadSkills();
+            this.setState({ loading: false });
+        } else {
+            this.props.history.push('/');
         }
-      })
-      .catch(error => {
+    }
+
+    getSponsors = () => {
+        fetch(`http://localhost:8000/api/sponsors`, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(response => response.json())
+            .then(Sponsors => {
+                if (!Sponsors.error)
+                    this.setState({ sponsors: Sponsors });
+            })
+            .catch(error => {
+                alert(`GetSponsors()error in fetching data from server: ${error}`); // eslint-disable-line
+            });
+    }
+
+    getOrganizers = () => {
+        fetch(`http://localhost:8000/api/organizers/events`, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(response => response.json())
+            .then(Organizers => {
+                if (!Organizers.error) {
+                    this.setState({ organizers: Organizers });
+                }
+            })
+            .catch(error => {
+                alert(`GetOrganizers()error in fetching data from server: ${error}`); // eslint-disable-line
+            });
+    }
+
+    loadSkills = () => {
+        fetch('http://localhost:8000/api/skills/all', {
+            headers: { Authorization: `Bearer ${localStorage['token']}` },
+        })
+            .then(response => response.json())
+            .then(json => { this.setState({ loadedTags: json }) })
+            .catch(error => {
+                alert(`loadSkills()error in fetching data from server: ${error}`);
+            });
+    }
+
+    removeNewSponsor = (sponsor) => {
+        if (sponsor) {
+            const sponsors = this.state.newSponsors.slice();
+            const remove = sponsors.findIndex(previous => previous === sponsor);
+            if (remove !== -1) {
+                sponsors.splice(remove, 1);
+                this.setState({ newSponsors: sponsors });
+            }
+        .catch(error) => {
         alert(`error in fetching data from server: ${error}`); // eslint-disable-line
-      });
-  };
+      };
+    }};
 
   loadSkills = () => {
     fetch("https://innovationmesh.com/api/skills/all", {
@@ -171,246 +172,26 @@ export default class AddEvent extends PureComponent {
         this.setState({ newSponsors: sponsors });
       }
     }
-  };
 
-  selectDate = (e, index) => {
-    if (typeof index !== "number") {
-      if (formatSelectedDate(e.target.value) >= formatTodaysDate()) {
-        this.setState({ day: e.target.value }, () => {
-          if (this.state.day && this.state.start && this.state.end) {
-            const error = timeError(
-              this.state.start,
-              this.state.end,
-              this.state.day
-            );
-            if (error)
-              this.setState({
-                modalMessage: "Invalid Date",
-                dateError: "Please check the order of your dates"
-              });
-            else this.setState({ dateError: "" });
-          } else {
-            this.setState({ dateError: "" });
-          }
-        });
-      } else {
-        this.setState({ dateError: "Please check the order of your dates" });
-      }
-    }
-  };
+    eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
+    eventUrl = event => this.setState({ url: event.target.value.trim() });
+    eventDays = event => this.setState({ days: event.target.value });
 
-  selectStart = (e, index) => {
-    if (typeof index !== "number") {
-      this.setState({ start: e.target.value }, () => {
-        if (this.state.day && this.state.start && this.state.end) {
-          const error = timeError(
-            this.state.start,
-            this.state.end,
-            this.state.day
-          );
-          if (error)
-            this.setState({
-              dateError: "Please check your start and end times"
-            });
-          else this.setState({ dateError: "" });
-        }
-      });
-    }
-  };
+    selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
+    selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
+    eventDescription = e => this.setState({ description: e.target.value });
 
-  selectEnd = (e, index) => {
-    if (typeof index !== "number") {
-      this.setState({ end: e.target.value }, () => {
-        if (this.state.day && this.state.start && this.state.end) {
-          const error = timeError(
-            this.state.start,
-            this.state.end,
-            this.state.day
-          );
-          if (error)
-            this.setState({
-              dateError: "Please check your start and end times"
-            });
-          else this.setState({ dateError: "" });
-        }
-      });
-    }
-  };
+    handleOrganizerChange = event => {
+        this.setState({ selectedOrganizers: event.target.value });
+    };
 
-  selectDateMulti = (e, index) => {
-    if (typeof index === "number") {
-      if (formatTodaysDate() > formatSelectedDate(e.target.value)) {
-        this.setState({ dateError: "Please check the order of your dates" });
-        return;
-      } else {
-        this.setState({ dateError: "" });
-      }
-      const dates = this.state.dateMulti.slice();
-      const date = { day: e.target.value, index: index };
-      const removeDate = removeDuplicateDate(dates, date);
+    handleSponsorChange = event => {
+        this.setState({ selectedSponsors: event.target.value });
+    };
 
-      if (typeof removeDate !== "number") {
-        dates.push(date);
-        this.setState({ dateMulti: dates }, () => {
-          if (dateErrors(this.state.dateMulti))
-            this.setState({
-              dateError: "Please check the order of your dates"
-            });
-          else this.setState({ dateError: "" });
-        });
-      } else if (typeof removeDate === "number") {
-        dates.splice(removeDate, 1);
-        dates.push(date);
-        this.setState({ dateMulti: dates }, () => {
-          if (dateErrors(this.state.dateMulti))
-            this.setState({
-              dateError: "Please check the order of your dates"
-            });
-          else this.setState({ dateError: "" });
-        });
-      }
-    }
-  };
 
-  selectStartMulti = (e, index) => {
-    if (typeof index === "number") {
-      const startTimes = this.state.startMulti.slice();
-      const endTimes = this.state.endMulti.slice();
-      const time = { start: e.target.value, index: index };
-      const removeTime = removeDuplicateStart(startTimes, time);
-      if (typeof removeTime !== "number") {
-        startTimes.push(time);
-        this.setState({ startMulti: startTimes }, () => {
-          if (
-            multiDayTimeErrors(
-              this.state.startMulti,
-              this.state.endMulti,
-              this.state.dateMulti
-            )
-          ) {
-            this.setState({ dateError: "Check you start and end times" });
-          } else {
-            this.setState({ dateError: "" });
-          }
-        });
-      } else if (typeof removeTime === "number") {
-        startTimes.splice(removeTime, 1);
-        startTimes.push(time);
-        this.setState({ startMulti: startTimes }, () => {
-          if (
-            multiDayTimeErrors(
-              this.state.startMulti,
-              this.state.endMulti,
-              this.state.dateMulti
-            )
-          ) {
-            this.setState({ dateError: "Check your start and end times" });
-          } else {
-            this.setState({ dateError: "" });
-          }
-        });
-      }
-    }
-  };
-
-  selectEndMulti = (e, index) => {
-    if (typeof index === "number") {
-      const startTimes = this.state.startMulti.slice();
-      const endTimes = this.state.endMulti.slice();
-      const time = { end: e.target.value, index: index };
-      const removeTime = removeDuplicateEnd(endTimes, time);
-      if (typeof removeTime !== "number") {
-        endTimes.push(time);
-        this.setState({ endMulti: endTimes }, () => {
-          if (
-            multiDayTimeErrors(
-              this.state.startMulti,
-              this.state.endMulti,
-              this.state.dateMulti
-            )
-          ) {
-            this.setState({ dateError: "Check you start and end times" });
-          } else {
-            this.setState({ dateError: "" });
-          }
-        });
-      } else if (typeof removeTime === "number") {
-        endTimes.splice(removeTime, 1);
-        endTimes.push(time);
-        this.setState({ endMulti: endTimes }, () => {
-          if (
-            multiDayTimeErrors(
-              this.state.startMulti,
-              this.state.endMulti,
-              this.state.dateMulti
-            )
-          ) {
-            this.setState({ dateError: "Check you start and end times" });
-          } else {
-            this.setState({ dateError: "" });
-          }
-        });
-      }
-    }
-  };
-
-  multiDay = days => {
-    const multidayComponent = [];
-    for (let i = 0; i < days; i++) {
-      const dayComponent = (
-        <DateTimeSelect
-          key={`multiday${i}`}
-          index={i}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "space-around"
-          }}
-          dateLabel={`Day ${i + 1}`}
-          startTimeLabel="event start"
-          endTimeLabel="event end"
-          multiday={true}
-          selectDateMulti={this.selectDateMulti}
-          selectStartMulti={this.selectStartMulti}
-          selectEndMulti={this.selectEndMulti}
-        />
-      );
-      multidayComponent.push(dayComponent);
-    }
-    return multidayComponent;
-  };
-
-  eventName = event =>
-    this.setState({ name: event.target.value.replace(/\s\s+/g, " ").trim() });
-  eventUrl = event => this.setState({ url: event.target.value.trim() });
-  eventDays = event => this.setState({ days: event.target.value });
-
-  selectSponsor = selectedSponsor =>
-    this.setState({ selectedSponsors: selectedSponsor });
-  selectOrganizer = selectedOrganizer =>
-    this.setState({ selectedOrganizers: selectedOrganizer });
-  eventDescription = e => this.setState({ description: e.target.value });
-
-  handleOrganizerChange = event => {
-    this.setState({ selectedOrganizers: event.target.value });
-  };
-
-  handleSponsorChange = event => {
-    this.setState({ selectedSponsors: event.target.value });
-  };
-
-  handleSkillTags = event => {
-    this.setState({ selectedTags: event.target.value });
-  };
-
-  eventFiles = event => {
-    event.preventDefault();
-    let file = event.target.files[0];
-    let reader = new FileReader();
-    const files = this.state.eventFiles.slice();
-    reader.onload = () => {
-      files.push(file);
-      this.setState({ eventFiles: files });
+    handleSkillTags = event => {
+        this.setState({ selectedTags: event.target.value });
     };
     reader.readAsDataURL(event.target.files[0]);
   };
@@ -451,52 +232,59 @@ export default class AddEvent extends PureComponent {
         this.showSnack("Sponsor name already taken!");
       }
     }
-  };
 
-  Submit = () => {
-    let {
-      newSponsors,
-      endMulti,
-      startMulti,
-      dateMulti,
-      day,
-      start,
-      end,
-      description
-    } = this.state;
+    Submit = () => {
+        console.log('dhsjd');
+        let {
+            newSponsors,
+            selectedTags,
+            description,
+            dates,
+        } = this.state;
 
-    let _this = this;
 
-    let data = new FormData();
-    data.append("description", description);
-    data.append("tags", this.state.selectedTags);
-    //this.state.eventFiles.forEach((file, index) => data.append(`files${index}`, file));
-    //data.append('compEvent', 0);
-    data.append("name", this.state.name);
-    //data.append('image', this.state.eventImg);
-    data.append("url", this.state.url);
-    data.append("organizers", this.state.selectedOrganizers);
-    data.append("sponsors", this.state.selectedSponsors);
+        let data = new FormData();
+        data.append('description', description);
+        data.append('tags', selectedTags);
+        data.append('compEvent', 0);
+        data.append('dates', JSON.stringify(dates));
+        data.append('name', this.state.name);
+        //data.append('image', this.state.eventImg);
+        data.append('url', this.state.url);
+        data.append('organizers', this.state.selectedOrganizers);
+        data.append('sponsors', this.state.selectedSponsors);
 
-    if (!!newSponsors.length) {
-      data.append("newSponsors", JSON.stringify(newSponsors));
-      newSponsors.forEach((file, index) =>
-        data.append(`logos${index}`, file.logo)
-      );
+        if (!!newSponsors.length) {
+            data.append('newSponsors', JSON.stringify(newSponsors));
+            newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
+        }
+
+        fetch(`http://localhost:8000/api/event`, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` },
+            method: 'post',
+            body: data,
+        })
+        .then((response)=> {
+            return response.json();
+        })
+        .then((json) => {
+            if(json.error) {
+                this.showSnack(json.error);
+            } 
+            else if(json.success) {
+                this.showSnack(json.success);
+                setTimeout(() => {
+                    this.props.history.push(`/event/${json.eventID}`)
+                }, 2000);
+            }
+        })
     }
-    if (!!!dateMulti.length) {
-      if (day) data.append("day", JSON.stringify(day));
-      if (start) data.append("start", JSON.stringify(start));
-      if (end) data.append("end", JSON.stringify(end));
-    } else {
-      const days = dateMulti.findIndex(previous => previous.day === "");
-      const starts = startMulti.findIndex(previous => previous.start === "");
-      const ends = endMulti.findIndex(previous => previous.end === "");
-      if (days === -1 && starts === -1 && ends === -1) {
-        data.append("dateMulti", JSON.stringify(dateMulti));
-        data.append("startMulti", JSON.stringify(startMulti));
-        data.append("endMulti", JSON.stringify(endMulti));
-      }
+
+    closeModal = () => this.setState({ modalMessage: '' });
+
+    renderLogoImage = () => {
+        if (this.state.logo !== "")
+            return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
     }
 
     fetch(`https://innovationmesh.com/api/event`, {
@@ -549,16 +337,13 @@ export default class AddEvent extends PureComponent {
         </span>
       );
     }
-  };
 
-  renderEventImage = () => {
-    if (this.state.eventImg !== "") {
-      return (
-        <img
-          src={this.state.eventImgPreview}
-          className="spaceLogoImagePreview"
-        />
-      );
+    renderEventImage = () => {
+        if (this.state.eventImg !== "") {
+            return (
+                <img alt="" src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
+            )
+        }
     }
   };
 
@@ -583,19 +368,23 @@ export default class AddEvent extends PureComponent {
         </span>
       );
     }
-  };
-  changeRadio = e =>
-    this.setState({
-      checkedRadio: e.target.value,
-      days: "",
-      dateMulti: [],
-      endMulti: [],
-      startMulti: [],
-      dateError: "",
-      day: "",
-      start: "",
-      end: ""
-    });
+
+    changeRadio = e => {
+        const checkedRadio = parseInt(e.target.value, 10);
+        if (checkedRadio === this.singleDay) {
+            this.setState({
+                checkedRadio,
+                days: 1,
+                dates: [],
+            });
+        } else {
+            this.setState({
+                checkedRadio,
+                days: '',
+                dates: [],
+            });
+        }
+    }
 
   handleLogo = event => {
     event.preventDefault();
@@ -624,334 +413,265 @@ export default class AddEvent extends PureComponent {
       });
     };
 
-    reader.readAsDataURL(file);
-  };
-  render() {
-    const {
-      snackBarMessage,
-      dateError,
-      snackBar,
-      selectedTags,
-      selectedSponsors,
-      newSponsors,
-      eventFiles,
-      organizers,
-      selectedOrganizers,
-      sponsors,
-      checkNewSponsors,
-      loadedTags,
-      days
-    } = this.state;
+    // setDates = async dates => this.setState(() => ({ dates }));
 
-    const options = [
-      {
-        id: 0,
-        nm: "one day event"
-      },
-      {
-        id: 1,
-        nm: "multi-day event"
-      }
-    ];
-    return this.state.loading ? (
-      <Spinner loading={this.state.loading} />
-    ) : (
-      <div className="container">
-        <Helmet>
-          <title>Create Event Form</title>
-          <meta name="description" content="Description of Create event form" />
-        </Helmet>
-        <Header />
+    multiDay = days => {
+        const dates = this.state.dates.slice();
+        let count = 0;
+        while (count < days) {
+            dates.push({
+                day: moment().add(count, 'd'),
+                start: '',
+                end: ''
+            })
+            count++;
+        }
+        return dates;
+        // this.setDates(dates).then(dates => dates); 
+    }
+    render() {
+        const {
+            newSponsors, 
+            organizers,
+            sponsors,
+            checkNewSponsors,
+            loadedTags,
+            days,
+            dates,
+            checkedRadio
+        } = this.state;
 
-        <div className="addEventBanner">
-          <div className="homeHeaderContentTitle">Add a New Event</div>
-          <div className="homeHeaderContentSubtitle">
-            Create an Event for your Space
-          </div>
-        </div>
-        <main className="spaceSignUpMain">
-          <div className="spaceSignUpTitle">Submit an Event</div>
-          <div className="spaceSignUpContainer">
-            <TextField
-              label="Event name"
-              onChange={this.eventName}
-              type="text"
-              name="eventName"
-              margin="normal"
-            />
-            <TextField
-              onChange={this.eventUrl}
-              type="url"
-              label="Event url"
-              margin="normal"
-            />
-            <TextField
-              label="Brief description"
-              value={this.state.description}
-              margin="normal"
-              multiline
-              onChange={this.eventDescription}
-            />
+        const options = [
+            {
+                id: 0,
+                nm: "one day event"
+            },
+            {
+                id: 1, nm:
+                    "multi-day event"
+            }
+        ];
+        return (
+            this.state.loading
+                ?
+                <Spinner loading={this.state.loading} />
+                :
+                <div className="container">
+                    <Helmet>
+                        <title>Create Event Form</title>
+                        <meta name="description" content="Description of Create event form" />
+                    </Helmet>
+                    <Header space={this.props.spaceName} />
 
-            {!!loadedTags.length && (
-              <FormControl style={{ marginTop: 24 }}>
-                <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
-                <Select
-                  multiple
-                  value={this.state.selectedTags}
-                  onChange={this.handleSkillTags}
-                  input={<Input id="tag-multiple" />}
-                  renderValue={selected => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {loadedTags.map((tag, key) => (
-                    <MenuItem key={`${key}tag`} value={tag}>
-                      <Checkbox
-                        checked={this.state.selectedTags.indexOf(tag) > -1}
-                      />
-                      <ListItemText primary={tag} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+                    <div className="addEventBanner">
+                        <div className="homeHeaderContentTitle">Add a New Event</div>
+                        <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
+                    </div>
+                    <main className="spaceSignUpMain">
 
-            {!!organizers.length && (
-              <FormControl style={{ marginTop: 24 }}>
-                <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
-                <Select
-                  multiple
-                  value={this.state.selectedOrganizers}
-                  onChange={this.handleOrganizerChange}
-                  input={<Input id="tag-multiple" />}
-                  renderValue={selected => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {organizers.map(organizer => (
-                    <MenuItem key={organizer} value={organizer}>
-                      <Checkbox
-                        checked={
-                          this.state.selectedOrganizers.indexOf(organizer) > -1
-                        }
-                      />
-                      <ListItemText primary={organizer} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+                        <div className="spaceSignUpTitle">Submit an Event</div>
+                        <div className="spaceSignUpContainer">
 
-            {!!sponsors.length && (
-              <FormControl style={{ marginTop: 24 }}>
-                <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
-                <Select
-                  multiple
-                  value={this.state.selectedSponsors}
-                  onChange={this.handleSponsorChange}
-                  input={<Input id="tag-multiple" />}
-                  renderValue={selected => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {sponsors.map(sponsor => (
-                    <MenuItem key={sponsor} value={sponsor}>
-                      <Checkbox
-                        checked={
-                          this.state.selectedSponsors.indexOf(sponsor) > -1
-                        }
-                      />
-                      <ListItemText primary={sponsor} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+                            <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
+                            <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
+                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
-            {dateError && (
-              <p
-                style={{
-                  textAlign: "center",
-                  margin: 0,
-                  padding: 0,
-                  color: "red"
-                }}
-              >
-                {dateError}
-              </p>
-            )}
-            {/* {(timeError && !checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
-            {dateError && (
-              <p
-                style={{
-                  textAlign: "center",
-                  margin: 0,
-                  padding: 0,
-                  color: "red"
-                }}
-              >
-                {dateError}
-              </p>
-            )}
-            {/* {(timeError && checkMultiday) && <p style={{ textAlign: 'center', margin: 0, padding: 0, color: 'red', }}>{dateError}</p>} */}
+                            {!!loadedTags.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={this.state.selectedTags}
+                                        onChange={this.handleSkillTags}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(',')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {loadedTags.map((tag, key) => (
+                                            <MenuItem key={`${key}tag`} value={tag}>
+                                                <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
+                                                <ListItemText primary={tag} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: 50,
-                color: "rgba(0,0,0,0.54)",
-                justifyContent: "space-between",
-                marginBottom: parseInt(this.state.checkedRadio) === 1 ? 32 : "",
-                marginTop: 32
-              }}
-            >
-              {options.map((item, i) => (
-                <label key={`l${item.id}`} className="radio-inline">
-                  <input
-                    type="radio"
-                    checked={this.state.checkedRadio == i}
-                    ref={el => (this["myRadioRef" + i] = el)}
-                    value={item.id}
-                    onChange={this.changeRadio}
-                    onKeyDown={e =>
-                      e.keyCode === 13 ? this.changeRadio() : null
-                    }
-                  />
-                  <span style={{ paddingLeft: 8 }}>{item.nm}</span>
-                </label>
-              ))}
-            </div>
+                            {!!organizers.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={this.state.selectedOrganizers}
+                                        onChange={this.handleOrganizerChange}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(',')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {organizers.map(organizer => (
+                                            <MenuItem key={organizer} value={organizer}>
+                                                <Checkbox checked={this.state.selectedOrganizers.indexOf(organizer) > -1} />
+                                                <ListItemText primary={organizer} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
 
-            {parseInt(this.state.checkedRadio) === 1 && (
-              <TextField
-                label="How many days?"
-                onChange={this.eventDays}
-                value={this.state.days}
-                type="text"
-              />
-            )}
+                            {!!sponsors.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={this.state.selectedSponsors}
+                                        onChange={this.handleSponsorChange}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(',')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {sponsors.map(sponsor => (
+                                            <MenuItem key={sponsor} value={sponsor}>
+                                                <Checkbox checked={this.state.selectedSponsors.indexOf(sponsor) > -1} />
+                                                <ListItemText primary={sponsor} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
 
-            {parseInt(this.state.checkedRadio) === 0 && [
-              <label key="singleDay" className="addEventFormLabel">
-                {" "}
-                date & time{" "}
-              </label>,
-              <DateTimeSelect
-                key="singleDay2"
-                dateLabel="Start date"
-                startTimeLabel="event start"
-                endTimeLabel="event end"
-                multiday={false}
-                selectDate={this.selectDate}
-                selectStart={this.selectStart}
-                selectEnd={this.selectEnd}
-              />
-            ]}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: 50,
+                                    color: 'rgba(0,0,0,0.54)',
+                                    justifyContent: 'space-between',
+                                    marginBottom: checkedRadio === this.multipleDays ? 32 : '',
+                                    marginTop: 32
+                                }}
+                            >
+                                {options.map((item, i) =>
+                                    <label key={`l${item.id}`} className="radio-inline">
+                                        <input
+                                            type="radio"
+                                            checked={checkedRadio === i}
+                                            ref={(el) => this["myRadioRef" + i] = el}
+                                            value={item.id}
+                                            onChange={this.changeRadio}
+                                            onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
+                                        />
+                                        <span style={{ paddingLeft: 8 }}>{item.nm}</span>
+                                    </label>
+                                )}
+                            </div>
 
-            {parseInt(this.state.checkedRadio) === 1 &&
-              days &&
-              this.multiDay(days)}
+                            {checkedRadio === this.multipleDays &&
+                                <TextField
+                                    label="How many days?"
+                                    onChange={this.eventDays}
+                                    value={this.state.days}
+                                    type="text"
+                                />
+                            }
 
-            <div
-              style={{
-                display: "flex",
-                marginTop: "32px",
-                marginBottom: "72px"
-              }}
-            >
-              <input
-                id="newSponsors"
-                type="checkbox"
-                onKeyDown={e =>
-                  e.keyCode === 13 ? this.toggleNewSponsors() : null
-                }
-                onChange={this.toggleNewSponsors}
-                checked={checkNewSponsors}
-              />
+                            {checkedRadio === this.singleDay && 
+                                <React.Fragment>
+                                    <label key="singleDay" className="addEventFormLabel"> date & time </label>
+                                    <DateRangePickerWithGaps 
+                                        dates={dates.length ? dates : [{
+                                            day: moment(),
+                                            start: '',
+                                            end: '',
+                                        }]}
+                                        handleDate={dates => {
+                                            this.setState(() => ({ dates })); 
+                                        }}
+                                    />
+                                </React.Fragment>
+                            }
 
-              <label
-                style={{ color: "rgba(0,0,0,0.54)" }}
-                htmlFor="newSponsors"
-              >
-                &nbsp;&nbsp;Add new sponsor
-              </label>
-            </div>
-
-            {checkNewSponsors && [
-              <TextField
-                key="newSponTF1"
-                label="name"
-                onChange={this.sponsorName}
-                value={this.state.sponsorNames}
-                type="text"
-                margin="normal"
-              />,
-
-              <TextField
-                key="newSponTF2"
-                label="website"
-                onChange={this.sponsorUrl}
-                value={this.state.sponsorWebsites}
-                type="url"
-                margin="normal"
-              />,
-
-              <div key="newSponTF3" className="spaceLogoMainImageRow">
-                <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
-                  {this.renderLogoImageText()}
-                  {this.renderLogoImage()}
-                  <input
-                    type="file"
-                    onChange={this.handleLogo}
-                    id="logo-image"
-                    style={{ display: "none" }}
-                    accept="image/png, image/jpg, image/jpeg"
-                  />
-                </label>
-              </div>,
-
-              <RaisedButton
-                key="newSponTF4"
-                onSubmit={this.onNewSponsorSubmit}
-                sponsor
-                style={{
-                  backgroundColor: "#CCCCCC",
-                  marginBottom: 64,
-                  padding: "10px",
-                  marginTop: "15px",
-                  color: "#FFFFFF",
-                  fontWeight: "bold"
-                }}
-              />
-            ]}
-
-            {!!newSponsors.length && (
-              <SelectedSponsors
-                selectedSponsors={newSponsors}
-                removeSponsor={this.removeNewSponsor}
-                newSponsor={true}
-              />
-            )}
-
-            {/*<input multiple id="event-files" type="file" style={{ display: 'none' }} onChange={this.eventFiles} />
-                            <label htmlFor="event-files">
-                                <div style={{ display: 'flex', color: 'rgba(0,0,0,0.54)', flexDirection: 'column', marginBottom: 16, textAlign: 'center' }}>
-                                    <MdFileUpload size="40px" />
-                                    Upload any other relevant documents
+                            {checkedRadio === this.multipleDays && days > 1 &&
+                                <div>
+                                    {console.log('two')}
+                                    <DateRangePickerWithGaps 
+                                        dates={dates.length ? dates : this.multiDay(days)}
+                                        handleDate={dates => {
+                                            this.setState(() => ({ dates })); 
+                                        }}
+                                    />
                                 </div>
-                            </label>
-                            <div style={{ marginTop: '40px', color: 'rgba(0,0,0,0.54)', }}>
-                                {!!eventFiles.length ? [
-                                    <h4 key="fileh4" style={{ marginBottom: 10 }}> Uploaded files </h4>,
-                                    <ol key="fileol" style={{ height: '100%', display: 'flex', flexDirection: 'column', marginBottom: '60px', }}>
-                                        {eventFiles.map((file, key) => [
-                                            <li style={{ height: '30px', borderBottom: '2px solid rgba(0,0,0,0.54)', paddingBottom: 20, paddingTop: 20 }} key={`file${key}`}>
-                                                <MdInsertDriveFile size="40px" />
-                                                {file.name}
-                                            </li>
-                                        ])}
-                                    </ol>
-                                ] : null}
-                            </div>*/}
+                            }
+
+                            <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
+                                <input
+                                    id="newSponsors"
+                                    type="checkbox"
+                                    onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null}
+                                    onChange={this.toggleNewSponsors}
+                                    checked={checkNewSponsors}
+                                />
+
+                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                                    &nbsp;&nbsp;Add new sponsor
+                                </label>
+
+                            </div>
+
+                            {checkNewSponsors && [
+                                <TextField
+                                    key="newSponTF1"
+                                    label="name"
+                                    onChange={this.sponsorName}
+                                    value={this.state.sponsorNames}
+                                    type="text"
+                                    margin="normal"
+                                />,
+
+                                <TextField
+                                    key="newSponTF2"
+                                    label="website"
+                                    onChange={this.sponsorUrl}
+                                    value={this.state.sponsorWebsites}
+                                    type="url"
+                                    margin="normal"
+                                />,
+
+                                <div key="newSponTF3" className="spaceLogoMainImageRow">
+                                    <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
+                                        {this.renderLogoImageText()}
+                                        {this.renderLogoImage()}
+                                        <input
+                                            type="file"
+                                            onChange={this.handleLogo}
+                                            id="logo-image"
+                                            style={{ display: 'none' }}
+                                            accept="image/png, image/jpg, image/jpeg"
+                                        />
+                                    </label>
+                                </div>,
+
+                                <RaisedButton
+                                    key="newSponTF4"
+                                    onSubmit={this.onNewSponsorSubmit}
+                                    sponsor
+                                    style={{
+                                        backgroundColor: '#CCCCCC',
+                                        marginBottom: 64,
+                                        padding: '10px',
+                                        marginTop: '15px',
+                                        color: '#FFFFFF',
+                                        fontWeight: 'bold'
+                                    }}
+                                />
+                            ]}
+
+                            {!!newSponsors.length &&
+                                <SelectedSponsors
+                                    selectedSponsors={newSponsors}
+                                    removeSponsor={this.removeNewSponsor}
+                                    newSponsor={true}
+                                />}
+
 
             {/*<div className="spaceLogoMainImageRow">
                                 <label htmlFor="event-image" className="spaceLogoMainImageBlock">

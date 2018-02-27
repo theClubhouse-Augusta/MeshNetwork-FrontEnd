@@ -35,8 +35,6 @@ const MenuProps = {
   }
 };
 
-// const loadedTags = ['one', 'two', 'three'];
-
 class CheckoutForm extends React.PureComponent {
   state = {
     token: localStorage.getItem("token"),
@@ -76,32 +74,69 @@ class CheckoutForm extends React.PureComponent {
     }
   }
 
-  handleMouseDownPassword = event => {
-    event.preventDefault();
-  };
+    handleMouseDownPassword = event => {
+      event.preventDefault();
+    };
 
-  handleClickShowPasssword = () => {
-    this.setState({ showPassword: !this.state.showPassword });
-  };
 
-  getSpace = () => {
-    fetch(
-      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
-      {
-        method: "GET"
-      }
-    )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
+    handleClickShowPasssword = () => {
+      this.setState({ showPassword: !this.state.showPassword });
+    };
+
+
+    getSpace = () => {
+        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    space: json
+                })
+            });
+    }
+
+    loadSkills = () => {
+        fetch('http://localhost:8000/api/skills/all', {
+        })
+            .then(response => response.json())
+            .then(json => { this.setState({ loadedTags: json }) })
+            .catch(error => Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`));
+    }
+
+    loadPlans = () => {
+        fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {
+        })
+            .then(response => response.json())
+            .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
+            .catch(error => Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`));
+    }
+
+    selectPlan = (e, selected) => {
+        e.preventDefault();
+        // console.log('s', selected);
+        this.setState({ plan: selected });
+    }
+
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
+
+    handleName = (event) => { this.setState({ name: event.target.value.replace(/\s\s+/g, ' ') }) };
+    handleEmail = (event) => { this.setState({ email: event.target.value }) };
+    handlePassword = (event) => {
+      this.setState({ password: event.target.value }, () => {
+        if(this.state.password.length < 6) {
+          this.setState({
+            passwordError:'Password Too Short'
+          })
+        } else {
           this.setState({
             space: json
           });
-        }.bind(this)
-      );
-  };
+        }
+       .bind(this)
+      }
+    )};
 
   loadSkills = () => {
     fetch("https://innovationmesh.com/api/skills/all", {})
@@ -250,114 +285,140 @@ class CheckoutForm extends React.PureComponent {
         .then(function(response) {
           return response.json();
         })
-        .then(
-          function(user) {
-            if (user.error) {
-              this.showSnack(user.error);
-            } else if (user.token) {
-              localStorage.setItem("token", user.token);
-              fetch("https://innovationmesh.com/api/auth/user", {
-                method: "GET",
-                headers: { Authorization: "Bearer " + user.token }
-              })
-                .then(function(response) {
-                  return response.json();
-                })
-                .then(function(json) {
-                  let mainUser = json.user;
-                  localStorage.setItem("user", JSON.stringify(mainUser));
-                  fetch("https://innovationmesh.com/api/signIn", {
-                    method: "POST",
-                    body: data
-                  })
-                    .then(function(response) {
-                      return response.json();
-                    })
-                    .then(function(json) {
-                      if (json.error) {
-                        _this.showSnack(json.error);
-                      } else if (json.token) {
-                        localStorage.setItem("challengeToken", json.token);
-                        let newData = new FormData();
-                        newData.append("username", _this.state.email);
-                        newData.append("password", _this.state.password);
-                        fetch("https://lms.innovationmesh.com/signIn/", {
-                          method: "POST",
-                          body: newData
-                        })
-                          .then(function(response) {
-                            return response.json();
-                          })
-                          .then(function(json) {
-                            if (json.non_field_errors) {
-                              _this.showSnack("Invalid Credentials");
-                            } else if (json.token) {
-                              localStorage.setItem("lmsToken", json.token);
-                              fetch("https://lms.innovationmesh.com/getUser/", {
-                                method: "GET",
-                                headers: { Authorization: "JWT " + json.token }
-                              })
-                                .then(function(response) {
-                                  return response.json();
-                                })
-                                .then(function(json) {
-                                  localStorage.setItem(
-                                    "lmsUser",
-                                    JSON.stringify(json.user)
-                                  );
-                                  _this.showSnack(
-                                    "Welcome to " + this.state.space.name + "!"
-                                  );
-                                  setTimeout(() => {
-                                    _this.props.history.push(
-                                      `/user/${mainUser.id}`
-                                    );
-                                  }, 2000);
-                                });
-                            }
-                          });
-                      }
-                    });
-                });
+        e.preventDefault();
+        let data = new FormData();
+        let {
+            name,
+            email,
+            password,
+            bio,
+            selectedTags,
+            avatar,
+            plan
+        } = this.state;
+        this.props.stripe.createToken({ name: name }).then(({ token }) => {
+            data.append('name', name.trim());
+            if (selectedTags.length) {
+                data.append('tags', selectedTags);
             }
-            _this.setState({
-              isLoading: false
+            data.append('email', email.trim());
+            data.append('password', password.trim());
+            data.append('bio', bio);
+            data.append('spaceID', this.state.space.id);
+            data.append('avatar', avatar);
+            if (token.id) {
+                data.append('customerToken', token.id);
+            }
+            data.append('plan', plan);
+            data.append('username', name);
+
+            fetch("http://localhost:8000/api/signUp", {
+                method: 'POST',
+                body: data,
+            })
+            .then(response => response.json())
+            .then(user => {
+              if (user.error) {
+                  this.showSnack(user.error);
+              } else if (user.token) {
+                localStorage.setItem('token', user.token);
+                fetch("http://localhost:8000/api/auth/user", {
+                    method: 'GET',
+                    headers: { "Authorization": "Bearer " + user.token }
+                })
+                .then(response => response.json())
+                .then(json => {
+                  let mainUser = json.user;
+                  localStorage.setItem('user', JSON.stringify(mainUser));
+                  fetch('http://localhost:8000/api/signIn', {
+                    method:'POST',
+                    body:data
+                  })
+                  .then(response => response.json())
+                  .then(json => {
+                    if(json.error)
+                    {
+                      this.showSnack(json.error);
+                    }
+                    else if(json.token)
+                    {
+                      localStorage.setItem('challengeToken', json.token);
+                      let newData = new FormData();
+                      newData.append('username', this.state.email);
+                      newData.append('password', this.state.password);
+                      fetch('https://lms.innovationmesh.com/signIn/', {
+                        method:'POST',
+                        body:newData
+                      })
+                      .then(response => response.json())
+                      .then(json => {
+                        if(json.non_field_errors)
+                        {
+                          this.showSnack("Invalid Credentials");
+                        }
+                        else if(json.token)
+                        {
+                          localStorage.setItem('lmsToken', json.token);
+                          fetch('https://lms.innovationmesh.com/getUser/', {
+                            method:'GET',
+                            headers: {'Authorization' : 'JWT ' + json.token}
+                          })
+                          .then(response => response.json())
+                          .then(json => {
+                            localStorage.setItem('lmsUser', JSON.stringify(json.user));
+                            this.showSnack('Welcome to '+this.state.space.name+'!');
+                            setTimeout(() => {
+                                this.props.history.push(`/user/${mainUser.id}`)
+                            }, 2000);
+                          })
+                        }
+                      })
+                    }
+                  })
+                })
+              }
+              this.setState({
+                isLoading:false
+              })
             });
-          }.bind(this)
-        );
-    });
-  };
+          })
+        }, 
 
-  storeFreeUser = e => {
-    this.setState({
-      isLoading: true
-    });
-    e.preventDefault();
-    let _this = this;
-    let data = new FormData();
-    let { name, email, password, bio, selectedTags, avatar, plan } = this.state;
-
-    data.append("name", name.trim());
-    if (!!selectedTags.length) {
-      data.append("tags", selectedTags);
-    }
-    data.append("email", email.trim());
-    data.append("password", password.trim());
-    data.append("bio", bio.trim());
-    data.append("spaceID", this.state.space.id);
-    data.append("avatar", avatar);
-    data.append("plan", plan);
-    data.append("username", name);
-
-    fetch("https://innovationmesh.com/api/signUp", {
-      method: "POST",
-      body: data
-    })
-      .then(function(response) {
-        return response.json();
+    storeFreeUser = e => {
+      this.setState({
+        isLoading:true
       })
-      .then(
-        function(json) {
+        e.preventDefault();
+        let data = new FormData();
+        let {
+            name,
+            email,
+            password,
+            bio,
+            selectedTags,
+            avatar,
+            plan
+        } = this.state;
+
+        data.append('name', name.trim());
+        if (!!selectedTags.length) {
+            data.append('tags', selectedTags);
+        }
+        data.append('email', email.trim());
+        data.append('password', password.trim());
+        data.append('bio', bio.trim());
+        data.append('spaceID', this.state.space.id);
+        data.append('avatar', avatar);
+        data.append('plan', plan);
+        data.append('username', name);
+
+
+        fetch("http://localhost:8000/api/signUp", {
+            method: 'POST',
+            body: data,
+        })
+        .then(response => response.json())
+        .then(json => {
           if (json.error) {
             this.showSnack(json.error);
           } else if (json.token) {
@@ -413,10 +474,10 @@ class CheckoutForm extends React.PureComponent {
           }
           _this.setState({
             isLoading: false
-          });
-        }.bind(this)
-      );
-  };
+          })
+         .bind(this)
+        });
+  })}; 
 
   renderLoading = () => {
     if (this.state.isLoading) {
@@ -519,6 +580,122 @@ class CheckoutForm extends React.PureComponent {
               </FormControl>
 
               {/*<TextField label="Bio"
+            localStorage.setItem('token', mainToken);
+            fetch("http://localhost:8000/api/user/auth", {
+              method: 'GET',
+              headers: { "Authorization": "Bearer " + mainToken }
+            })
+            .then(response => response.json())
+            .then(json => {
+              let mainUser = json.user;
+              localStorage.setItem('user', JSON.stringify(mainUser));
+            let newData = new FormData();
+            newData.append('username', this.state.email);
+            newData.append('password', this.state.password);
+            fetch('https://lms.innovationmesh.com/signIn/', {
+            method:'POST',
+            body:newData
+            })
+            .then(response => response.json())
+            .then(json => {
+            if(json.non_field_errors)
+            {
+                this.showSnack("Invalid Credentials");
+            }
+            else if(json.token)
+            {
+                localStorage.setItem('lmsToken', json.token);
+                fetch('https://lms.innovationmesh.com/getUser/', {
+                method:'GET',
+                headers: {'Authorization' : 'JWT ' + json.token}
+                })
+                .then(response => response.json())
+                .then(json => {
+                localStorage.setItem('lmsUser', JSON.stringify(json.user));
+                this.showSnack('Welcome to '+this.state.space.name+'!');
+                setTimeout(() => {
+                    this.props.history.push(`/user/${mainUser.id}`)
+                }, 2000);
+                })
+            }
+            })
+            })
+          }
+          this.setState({
+            isLoading:false
+          })
+        });
+      }
+
+      renderLoading = () => {
+        if(this.state.isLoading)
+        {
+          return(
+            <LinearProgress color="accent" style={{ width:'100%', position:'fixed', top:'0', left:'0', right:'0'}}/>
+          )
+        }
+      }
+
+    render() {
+        const {
+            loadedTags,
+            plan,
+            loadedPlans,
+    } = this.state;
+
+        return (
+            <form className="container" onSubmit={this.handleSubmit}>
+                <Helmet title="SpaceSignUp" meta={[{ name: 'description', content: 'Description of SpaceSignUp' }]} />
+                <header className="checkoutHeaderContainer">
+                    {this.renderLoading()}
+                    <Header headerTitle={this.state.space.name} space={this.props.spaceName} />
+                    <div className="checkoutHeaderBanner">
+                        <div className="homeHeaderContentTitle">Join {this.state.space.name}</div>
+                        <div className="homeHeaderContentSubtitle">Find out what all the buzz is about</div>
+                    </div>
+                </header>
+
+                <main className="userSignUpMain">
+                    <div className="spaceSignUpMain">
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <img alt="" src={this.state.space.logo} height="auto" width="300px" />
+                        </div>
+                        <div className="spaceSignUpContainer">
+                            <TextField
+                                label="Full Name"
+                                value={this.state.name}
+                                onChange={this.handleName}
+                                margin="normal"
+                            />
+                            <TextField
+                                type="email"
+                                label="Email"
+                                value={this.state.email}
+                                onChange={this.handleEmail}
+                                margin="normal"
+                            />
+                            <FormControl error={this.state.passwordError ? 'true' : ''}>
+                              <InputLabel htmlFor="password">Password</InputLabel>
+                              <Input
+                                id="adornment-password"
+                                type={this.state.showPassword ? 'text' : 'password'}
+                                value={this.state.password}
+                                onChange={this.handlePassword}
+                                endAdornment={
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      onClick={this.handleClickShowPasssword}
+                                      onMouseDown={this.handleMouseDownPassword}
+                                    >
+                                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                  </InputAdornment>
+                                }
+                              />
+                              <FormHelperText id="password-helper-text">{this.state.passwordError}</FormHelperText>
+                            </FormControl>
+
+                            {/*<TextField label="Bio"
                                 value={this.state.bio}
                                 onChange={this.handleBio}
                                 margin="normal"
@@ -640,6 +817,6 @@ class CheckoutForm extends React.PureComponent {
       </form>
     );
   }
-}
+}   
 
 export default injectStripe(CheckoutForm);

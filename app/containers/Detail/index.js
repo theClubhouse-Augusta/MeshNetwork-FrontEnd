@@ -12,23 +12,24 @@ import Header from "components/Header";
 import FlatButton from "material-ui/Button";
 import Snackbar from "material-ui/Snackbar";
 
-import Dialog, { DialogTitle } from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
+// import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import Dialog  from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 
 import {
-  EditorState,
-  ContentState,
-  convertToRaw,
-  convertFromRaw,
+  EditorState, 
+  ContentState, 
+  convertToRaw, 
+  // convertFromRaw, 
   convertFromHTML
-} from "draft-js";
-import draftToHtml from "draftjs-to-html";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+} from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-import Select from "react-select";
-import "react-select/dist/react-select.css";
-import Slide from "material-ui/transitions/Slide";
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+// import Slide from 'material-ui/transitions/Slide';
 
 import CloseIcon from "react-icons/lib/md/close";
 
@@ -64,27 +65,15 @@ export default class Detail extends React.PureComponent {
     //      app:this.props.app
   }
 
-  handleRequestClose = () => {
-    this.setState({ snack: false, msg: "" });
-  };
-  showSnack = msg => {
-    this.setState({ snack: true, msg: msg });
-  };
+  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  challengeDialog = () => {
-    this.setState({ challengeOpen: !this.state.challengeOpen }, function() {
-      this.getCategories();
-    });
-  };
-  handleChallengeTitle = event => {
-    this.setState({ challengeTitle: event.target.value });
-  };
+  challengeDialog = () => {this.setState({challengeOpen:!this.state.challengeOpen}, () => { this.getCategories(); })}
+  handleChallengeTitle = (event) => {this.setState({challengeTitle:event.target.value})}
 
-  handleChallengeContent = editorState => {
-    this.setState({ challengeContent: editorState });
-  };
+  handleChallengeContent = (editorState) => {this.setState({challengeContent: editorState})};
 
-  handleChallengeCategories = challengeCategories => {
+  handleChallengeCategories = (challengeCategories) => {
     this.setState({ challengeCategories });
   };
 
@@ -114,16 +103,13 @@ export default class Detail extends React.PureComponent {
       challengeFiles.push(fileData);
 
       reader.onloadend = () => {
-        this.setState(
-          {
-            challengeFiles: challengeFiles
-          },
-          function() {
-            console.log(this.state.challengeFiles);
-            this.forceUpdate();
-          }
-        );
-      };
+        this.setState({
+          challengeFiles:challengeFiles
+        }, () => {
+          // console.log(this.state.challengeFiles);
+          this.forceUpdate();
+        })
+      }
       reader.readAsDataURL(files[i]);
     }
   };
@@ -134,97 +120,86 @@ export default class Detail extends React.PureComponent {
 
   getCategories = () => {
     fetch("https://innovationmesh.com/api/selectCategories", {
-      method: "GET"
+      method:'GET'
     })
-      .then(function(response) {
-        return response.json();
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      this.setState({
+        cats:json.categories
       })
-      .then(
-        function(json) {
-          this.setState({
-            cats: json.categories
-          });
-        }.bind(this)
-      );
-  };
+    })
+  }
 
-  deleteFile = i => {
+  deleteFile = (i) => {
     let challengeFiles = this.state.challengeFiles;
 
     challengeFiles.splice(i, 1);
 
-    this.setState(
-      {
-        challengeFiles: challengeFiles
-      },
-      function() {
-        this.forceUpdate();
-      }
-    );
-  };
+    this.setState({
+      challengeFiles:challengeFiles
+    }, () => {
+      this.forceUpdate();
+    })
+  }
 
   updateChallenge = () => {
     this.setState({
       confirmStatus: "Uploading..."
     });
 
-    let _this = this;
     let data = new FormData();
 
-    data.append("challengeTitle", this.state.challengeTitle);
-    data.append(
-      "challengeContent",
-      draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent()))
-    );
-    data.append(
-      "challengeCategories",
-      JSON.stringify(this.state.challengeCategories)
-    );
-    data.append("challengeImage", this.state.challengeImage);
-    data.append("challengeFiles", this.state.challengeFiles);
-    data.append("startDate", this.state.startDate);
-    data.append("endDate", this.state.endDate);
+    data.append('challengeTitle', this.state.challengeTitle);
+    data.append('challengeContent', draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent())));
+    data.append('challengeCategories', JSON.stringify(this.state.challengeCategories));
+    data.append('challengeImage', this.state.challengeImage);
+    data.append('challengeFiles', this.state.challengeFiles);
+    data.append('startDate', this.state.startDate);
+    data.append('endDate', this.state.endDate);
 
-    fetch(
-      "https://innovationmesh.com/api/updateChallenge/" +
-        this.state.challenge.id,
-      {
-        method: "POST",
-        body: data,
-        headers: { Authorization: "Bearer " + this.state.token }
+    fetch("https://innovationmesh.com/api/updateChallenge/"+this.state.challenge.id, {
+      method:'POST',
+      body:data,
+      headers:{'Authorization':'Bearer ' + this.state.token}
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      if(json.error) {
+        if(json.error === 'token_expired') {
+          this.showSnack("Your session has expired. Please sign back in to continue.");
+        } else {
+          this.showSnack(json.error);
+          this.setState({
+            confirmStatus:"Confirm"
+          })
+        }
       }
-    )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          if (json.error) {
-            if (json.error === "token_expired") {
-              _this.showSnack(
-                "Your session has expired. Please sign back in to continue."
-              );
-            } else {
-              _this.showSnack(json.error);
-              _this.setState({
-                confirmStatus: "Confirm"
-              });
-            }
-          } else if (json.challenge) {
-            console.log(_this.state.challengeFiles.length);
-            if (_this.state.challengeFiles.length > 0) {
-              for (let i = 0; i < _this.state.challengeFiles.length; i++) {
-                let fileData = new FormData();
-                fileData.append("challengeID", json.challenge);
-                fileData.append(
-                  "challengeFile",
-                  _this.state.challengeFiles[i].fileData
-                );
+      else if(json.challenge) {
+        // console.log(this.state.challengeFiles.length);
+        if(this.state.challengeFiles.length > 0) {
+          for(let i = 0; i < this.state.challengeFiles.length; i++)
+          {
+            let fileData = new FormData();
+            fileData.append('challengeID', json.challenge);
+            fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
-                fetch("https://innovationmesh.com/api/uploadFile", {
-                  method: "POST",
-                  body: fileData,
-                  headers: { Authorization: "Bearer " + _this.state.token }
+            fetch("https://innovationmesh.com/api/uploadFile", {
+              method:'POST',
+              body:fileData,
+              headers:{'Authorization':'Bearer ' + this.state.token}
+            })
+            .then((response) => {
+              return response.json();
+            })
+            .then((json) => {
+              if(json.error) {
+                this.showSnack(json.error);
+                this.setState({
+                  confirmStatus:"Confirm"
                 })
                   .then(function(response) {
                     return response.json();
@@ -238,13 +213,17 @@ export default class Detail extends React.PureComponent {
                     }
                   });
               }
-            }
+            }, 
+          ) 
             _this.showSnack("Challenge Updated.");
             _this.challengeDialog();
           }
-        }.bind(this)
-      );
-  };
+        }
+        this.showSnack("Challenge Updated.");
+        this.challengeDialog();
+      }
+    })
+  }
 
   deleteFile = () => {};
 
@@ -253,75 +232,62 @@ export default class Detail extends React.PureComponent {
   /*componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }*/
 
   getDetail = () => {
-    fetch(
-      "https://innovationmesh.com/api/showChallenge/" +
-        this.props.match.params.id,
-      {
-        method: "GET"
-      }
-    )
-      .then(function(response) {
-        return response.json();
+    fetch("http://localhost:8000/api/showChallenge/"+this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        challenge:json.challenge,
+        categories:json.challenge.categories,
+        uploads:json.uploads,
+        teams:json.teams,
+        participant:json.participant,
+        challengeTitle:json.challenge.challengeTitle,
+        challengeContent: EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+              convertFromHTML(json.challenge.challengeContent)
+          )
+      ),
+        challengeCategories:json.categoriesArray,
+        challengeImagePreview:json.challenge.challengeImage
+      }, () => {
+        this.getSpace();
       })
-      .then(
-        function(json) {
-          this.setState(
-            {
-              challenge: json.challenge,
-              categories: json.challenge.categories,
-              uploads: json.uploads,
-              teams: json.teams,
-              participant: json.participant,
-              challengeTitle: json.challenge.challengeTitle,
-              challengeContent: EditorState.createWithContent(
-                ContentState.createFromBlockArray(
-                  convertFromHTML(json.challenge.challengeContent)
-                )
-              ),
-              challengeCategories: json.categoriesArray,
-              challengeImagePreview: json.challenge.challengeImage
-            },
-            function() {
-              this.getSpace();
-            }
-          );
-        }.bind(this)
-      );
-  };
+    })
+  }
 
   getSpace = () => {
-    fetch(
-      "https://innovationmesh.com/api/workspace/" +
-        this.state.challenge.spaceID,
-      {
+    fetch("http://localhost:8000/api/workspace/" + this.state.challenge.spaceID, {
         method: "GET"
       }
     )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            space: json
-          });
-        }.bind(this)
-      );
-  };
+    .then(response => response.json())
+    .then(json => {
+        this.setState({
+          space: json
+        });
+    });
+  }
 
   joinChallenge = () => {
-    let _this = this;
-    fetch(
-      "https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id,
-      {
-        method: "GET",
-        headers: { Authorization: "Bearer " + this.state.token }
+    fetch("http://localhost:8000/api/joinChallenge/" + this.state.challenge.id, {
+      method:'GET',
+      headers: {'Authorization':'Bearer ' + this.state.token}
+    })
+    .then(response => response.json())
+    .then(json => {
+      if(json.error) {
+        this.showSnack(json.error);
+      }
+      else {
+        this.showSnack(json.success);
       }
     )
       .then(function(response) {
@@ -398,6 +364,15 @@ export default class Detail extends React.PureComponent {
               >
                 Edit Challenge
               </FlatButton>
+              </div> ) 
+    if(this.state.token)
+    {
+      if(this.state.user) {
+        if(this.state.user.spaceID === this.state.challenge.spaceID && this.state.user.roleID === 2)
+        {
+          return(
+            <div style={{display:'flex', flexDirection:'column', width:'100%'}}>
+              <FlatButton onClick={this.challengeDialog} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Edit Challenge</FlatButton>
               {/*<FlatButton onClick={this.deleteChallenge} style={{background:'#32b6b6', color:'#FFFFFF', marginBottom:'15px', width:'100%'}}>Delete Challenge</FlatButton>*/}
             </div>
           );
@@ -444,13 +419,24 @@ export default class Detail extends React.PureComponent {
           className="challenges_newChallengeImagePreview"
         />
       );
+    if(this.state.challengeImage === "")
+    {
+      return(
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+      )
     }
-  };
-
-  createMarkup() {
-    let content = this.state.challenge.challengeContent;
-    return { __html: content };
+    else {
+      return(
+        <img alt="" src={this.state.challengeImagePreview} className="challenges_newChallengeImagePreview"/>
+      )
+    }
   }
+}; 
+
+  createMarkup() { 
+    let content = this.state.challenge.challengeContent;
+    return { __html: content }; 
+  }; 
 
   render() {
     return (
@@ -461,7 +447,7 @@ export default class Detail extends React.PureComponent {
         />
 
         <header>
-          <Header />
+          <Header space={this.props.spaceName}/>
         </header>
 
         <main className="challenges_mainContainer">
@@ -684,6 +670,6 @@ export default class Detail extends React.PureComponent {
           onClose={this.handleRequestClose}
         />
       </div>
-    );
-  }
+    ) 
+  };
 }

@@ -19,11 +19,10 @@ import LinkIcon from "react-icons/lib/fa/chain";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
-
 import "./style.css";
 import "./styleM.css";
+
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 export default class SpaceProfile extends React.PureComponent {
   constructor() {
@@ -44,83 +43,83 @@ export default class SpaceProfile extends React.PureComponent {
 
   getProfile = () => {
     fetch(
-      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
+      "http://localhost:8000/api/workspace/" + this.props.match.params.id,
       {
         method: "GET"
       }
     )
-      .then(function(response) {
+      .then((response) => {
         return response.json();
       })
       .then(
-        function(json) {
+        (json) => {
           this.setState(
             {
               spaceProfile: json
             },
-            function() {
+            () => {
               this.getSpaceEvents(this.state.spaceProfile.id);
               this.getUsers(this.state.spaceProfile.id);
               this.getPhotoGallery(this.state.spaceProfile.id);
             }
           );
-        }.bind(this)
+        }
       );
   };
 
   getSpaceEvents = id => {
-    fetch("https://innovationmesh.com/api/spaceEvents/" + id, {
+    fetch("http://localhost:8000/api/spaceEvents/" + id, {
       method: "GET"
     })
-      .then(function(response) {
+      .then((response) => {
         return response.json();
       })
       .then(
-        function(json) {
+        (json) => {
           this.setState({
             events: json
           });
-        }.bind(this)
+        }
       );
   };
 
   getUsers = id => {
-    fetch("https://innovationmesh.com/api/organizers/space/" + id, {
+    fetch("http://localhost:8000/api/organizers/space/" + id, {
       method: "GET"
     })
-      .then(function(response) {
+      .then((response) => {
         return response.json();
       })
       .then(
-        function(json) {
+        (json) => {
           this.setState({
             users: json
           });
-        }.bind(this)
+        }
       );
   };
 
   getPhotoGallery = id => {
-    fetch("https://innovationmesh.com/api/photos/" + id, {
+    fetch("http://localhost:8000/api/photos/" + id, {
       method: "GET"
     })
-      .then(function(response) {
+      .then((response) => {
         return response.json();
       })
       .then(
-        function(json) {
+        (json) => {
           this.setState({
             photoGallery: json.photos
           });
-        }.bind(this)
+        }
       );
   };
 
   renderDashboard = () => {
     if (this.state.user) {
       if (
-        this.state.user.spaceID == this.state.spaceProfile.id &&
-        this.state.user.roleID == 2
+        this.state.user.spaceID === this.state.spaceProfile.id &&
+        this.state.user.roleID === 2
       ) {
         return (
           <Link
@@ -164,6 +163,7 @@ export default class SpaceProfile extends React.PureComponent {
         </Link>
       );
     } else {
+      return (
       <Link
         to={"/user/" + this.state.user.id}
         style={{ width: "100%" }}
@@ -178,13 +178,14 @@ export default class SpaceProfile extends React.PureComponent {
         >
           My Profile
         </FlatButton>
-      </Link>;
+      </Link>
+      );
     }
   };
 
   eventStyleGetter = (event, start, end, isSelected) => {
-    console.log(event);
-    var backgroundColor = "#ff4d58";
+    // console.log(event);
+    // var backgroundColor = "#ff4d58";
     var style = {
       background: '#ff4d58',
       fontWeight: "bold",
@@ -214,14 +215,14 @@ export default class SpaceProfile extends React.PureComponent {
           ]}
         />
         <header>
-          <Header />
+          <Header space={this.state.spaceProfile.name} />
         </header>
 
         <main>
           <div className="spaceGalleryContainer">
             {this.state.photoGallery.map((photo, i) => (
               <div className="spaceGalleryPhotoBlock">
-                <img src={photo.photoThumbnail} />
+                <img alt="" src={photo.photoThumbnail} />
               </div>
             ))}
           </div>
@@ -284,6 +285,7 @@ export default class SpaceProfile extends React.PureComponent {
               </div>
               <div className="spaceMainTwo">
                 <img
+                  alt=""
                   src={this.state.spaceProfile.logo}
                   className="spaceMainLogo"
                 />
@@ -354,6 +356,7 @@ export default class SpaceProfile extends React.PureComponent {
                 <div className="spaceLocation">
                   <div className="spaceLocationImage">
                     <img
+                      alt=""
                       src={
                         "https://maps.googleapis.com/maps/api/staticmap?center=" +
                         this.state.spaceProfile.city +
@@ -381,6 +384,7 @@ export default class SpaceProfile extends React.PureComponent {
                     {this.state.users.map((u, i) => (
                       <div className="spaceProfileUser" key={i}>
                         <img
+                          alt=""
                           className="spaceProfileUserAvatar"
                           src={u.avatar}
                         />

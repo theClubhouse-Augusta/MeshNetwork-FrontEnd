@@ -9,7 +9,7 @@ import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 
 import Header from "components/Header";
-import Banner from "components/Banner";
+// import Banner from 'components/Banner';
 import SideNav from "components/SideNav";
 import RightBar from "components/RightBar";
 
@@ -33,19 +33,19 @@ export default class Discover extends React.PureComponent {
     };
   }
 
-  componentWillMount() {
-    /*if(this.props.match.params.id) {
+  /* componentWillMount() {
+    if(this.props.match.params.id) {
       this.showCategories(this.props.match.params.id);
-    }*/
+    }
     //this.getChallenges();
-  }
+  } */
 
   componentWillReceiveProps(app) {
     this.setState(
       {
         app: app.app
       },
-      function() {
+      () => {
         this.forceUpdate();
       }
     );
@@ -56,7 +56,7 @@ export default class Discover extends React.PureComponent {
       {
         searchContent: event.target.value
       },
-      function() {
+      () => {
         if (this.state.searchContent.length >= 3) {
           this.search();
         }
@@ -66,23 +66,17 @@ export default class Discover extends React.PureComponent {
 
   showCategories = categoryID => {
     fetch(
-      "https://innovationmesh.com/api/showCategory/" +
-        categoryID +
-        "/Challenges",
+      "http://localhost:8000/api/showCategory/" + categoryID + "/Challenges",
       {
         method: "GET"
       }
     )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            challenges: json.challenges
-          });
-        }.bind(this)
-      );
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          challenges: json.challenges
+        });
+      });
   };
 
   getChallenges = () => {
@@ -91,57 +85,45 @@ export default class Discover extends React.PureComponent {
 
     if (this.state.currentPage !== this.state.lastPage) {
       fetch(
-        "https://innovationmesh.com/api/getChallenges/30?page=" +
+        "http://localhost:8000/api/getChallenges/30?page=" +
           this.state.nextPage,
         {
           method: "GET"
         }
       )
+        .then(response => response.json())
+        .then(json => {
+          if (json.challenges.current_page !== json.challenges.last_page) {
+            nextPage = nextPage + 1;
+          }
+          for (var i = 0; i < json.challenges.data.length; i++) {
+            method: "GET";
+          }
+        })
         .then(function(response) {
           return response.json();
-        })
-        .then(
-          function(json) {
-            if (json.challenges.current_page !== json.challenges.last_page) {
-              nextPage = nextPage + 1;
-            }
-            for (var i = 0; i < json.challenges.data.length; i++) {
-              challenges.push(json.challenges.data[i]);
-            }
-            this.setState({
-              nextPage: nextPage,
-              lastPage: json.challenges.last_page,
-              currentPage: json.challenges.current_page,
-              challenges: challenges
-            });
-          }.bind(this)
-        );
+        });
     }
   };
 
   search = () => {
-    let _this = this;
     let data = new FormData();
 
     data.append("searchContent", this.state.searchContent);
 
-    fetch("https://innovationmesh.com/api/searchChallenges", {
+    fetch("http://localhost:8000/api/searchChallenges", {
       method: "POST",
       body: data
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            nextPage: 1,
-            currentPage: 0,
-            lastPage: 1,
-            challenges: json.challenges
-          });
-        }.bind(this)
-      );
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          nextPage: 1,
+          currentPage: 0,
+          lastPage: 1,
+          challenges: json.challenges
+        });
+      });
   };
 
   renderWaypoint = () => {
@@ -167,7 +149,7 @@ export default class Discover extends React.PureComponent {
         />
 
         <header>
-          <Header app={this.state.app} />
+          <Header app={this.state.app} space={this.props.spaceName} />
         </header>
 
         <main className="challenges_mainContainer">

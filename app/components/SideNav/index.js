@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { Link } from "react-router-dom";
+// import { Link } from 'react-router-dom';
 
 import AddIcon from "react-icons/lib/md/add";
 import Snackbar from "material-ui/Snackbar";
@@ -75,57 +75,48 @@ export default class SideNav extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/getCategories", {
+    fetch("http://localhost:8000/api/getCategories", {
       method: "GET"
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            categories: json.categories
-          });
-        }.bind(this)
-      );
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          categories: json.categories
+        });
+      });
   };
 
   storeCategory = () => {
-    let _this = this;
     let data = new FormData();
     let categories = this.state.categories;
 
     data.append("categoryName", this.state.categoryName);
     data.append("categoryImage", this.state.categoryImage);
-    fetch("https://innovationmesh.com/api/storeCategory", {
+    fetch("http://localhost:8000/api/storeCategory", {
       method: "POST",
       body: data,
       headers: { Authorization: "Bearer " + this.state.token }
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          if (json.error) {
-            if (json.error === "token_expired") {
-              _this.categoryDialog();
-              _this.props.app.signOut(0, "Your session has expired.");
-              _this.props.app.handleAuth();
-              _this.showSnack("Your session has expired.");
-            } else {
-              _this.showSnack(json.error);
-            }
-          } else if (json.category) {
-            categories.push(json.category);
-            this.setState({
-              categories: json.categories
-            });
-            _this.categoryDialog();
-            _this.showSnack(json.success);
+      .then(response => response.json())
+      .then(json => {
+        if (json.error) {
+          if (json.error === "token_expired") {
+            this.categoryDialog();
+            this.props.app.signOut(0, "Your session has expired.");
+            this.props.app.handleAuth();
+            this.showSnack("Your session has expired.");
+          } else {
+            this.showSnack(json.error);
           }
-        }.bind(this)
-      );
+        } else if (json.category) {
+          categories.push(json.category);
+          this.setState({
+            categories: json.categories
+          });
+          this.categoryDialog();
+          this.showSnack(json.success);
+        }
+      });
   };
 
   renderCategoryImageText = () => {

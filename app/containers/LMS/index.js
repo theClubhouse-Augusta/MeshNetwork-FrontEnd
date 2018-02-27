@@ -8,7 +8,11 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 
-import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
+import Card, { 
+  // CardActions, 
+  CardContent, 
+  CardMedia 
+} from 'material-ui/Card';
 import FlatButton from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 
@@ -34,7 +38,7 @@ export default class LMS extends React.PureComponent {
   /*componentWillReceiveProps(app) {
     this.setState({
       app:app.app
-    }, function() {
+    }, () => {
       this.forceUpdate();
     })
   }
@@ -45,14 +49,12 @@ export default class LMS extends React.PureComponent {
     fetch("https://lms.innovationmesh.com/getCourses/0/6/1/", {
       method:'GET',
     })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
+    .then(response => response.json())
+    .then(json => {
       this.setState({
         courses: json.courses,
       })
-    }.bind(this))
+    })
   };
 
   renderJoinButton = () => {
@@ -71,7 +73,7 @@ export default class LMS extends React.PureComponent {
     return (
       <div className="container">
         <Helmet title="Home" meta={[ { name: 'description', content: 'Description of Home' }]}/>
-        <Header/>
+        <Header space={this.props.spaceName}/>
         <header className="lmsHomeHeader">
           <div className="lmsHomeHeaderHeading">
             Let The Learning Begin

@@ -3,9 +3,8 @@
 * TimePicker
 *
 */
-
 import React from 'react';
-import PropTypes, { oneOfType } from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 
@@ -26,24 +25,24 @@ const styles = theme => ({
 
 const TimePickers = props => {
   const { classes } = props;
-  return (
-    <div className={classes.container} noValidate>
-      <TextField
-        id="time"
-        onChange={(e) => {props.selector(e, props.index)}}
-        label={props.label}
-        type="time"
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputProps={{
-          step: 300, // 5 min
-        }}
-      />
-    </div>
-  );
-}
+    return (
+      <div className={classes.container} noValidate>
+        <TextField
+          id="time"
+          onChange={(e) => {props.selector(e, props.index)}}
+          label={props.label}
+          type="time"
+          className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{
+            step: 300, // 5 min
+          }}
+        />
+      </div>
+    );
+  }
 
 TimePickers.propTypes = {
   classes: PropTypes.object.isRequired,

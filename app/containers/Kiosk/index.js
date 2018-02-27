@@ -9,7 +9,7 @@ import Select from "react-select";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-import Header from "components/Header";
+// import Header from 'components/Header';
 
 import MeetIcon from "react-icons/lib/fa/group";
 import ClassIcon from "react-icons/lib/fa/graduation-cap";
@@ -55,12 +55,9 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getProfile = () => {
-    fetch(
-      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
-      {
-        method: "GET"
-      }
-    )
+    fetch("http://localhost:8000/api/workspace/" + this.props.match.params.id, {
+      method: "GET"
+    })
       .then(response => response.json())
       .then(json => {
         this.setState(
@@ -76,63 +73,45 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUsers = id => {
-    fetch("https://innovationmesh.com/api/users/space/" + id)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            users: json
-          });
-        }.bind(this)
-      );
+    fetch("http://localhost:8000/api/users/space/" + id)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          users: json
+        });
+      });
   };
 
   getReasons = () => {
-    fetch("https://innovationmesh.com/api/occasions")
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            reasons: json
-          });
-        }.bind(this)
-      );
+    fetch("http://localhost:8000/api/occasions")
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          reasons: json
+        });
+      });
   };
 
   getUpcomingEvents = () => {
-    fetch(
-      "https://innovationmesh.com/api/upcoming/" + this.props.match.params.id
-    )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            events: json
-          });
-        }.bind(this)
-      );
+    fetch("http://localhost:8000/api/upcoming/" + this.props.match.params.id)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          events: json
+        });
+      });
   };
 
   getToday = id => {
-    fetch("https://innovationmesh.com/api/todayevent/" + id, {
+    fetch("http://localhost:8000/api/todayevent/" + id, {
       headers: { Authorization: `Bearer ${localStorage["token"]}` }
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            todayEvents: json
-          });
-        }.bind(this)
-      );
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          todayEvents: json
+        });
+      });
   };
 
   storeAppearance = () => {
@@ -142,24 +121,31 @@ export default class Kiosk extends React.PureComponent {
     data.append("spaceID", this.state.workspace.id);
     data.append("occasion", this.state.selectedReason);
 
-    fetch("https://innovationmesh.com/api/appearance", {
+    fetch("http://localhost:8000/api/appearance", {
       method: "POST",
       body: data
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(
-        function(json) {
-          this.setState({
-            showComplete: true
-          });
-        }.bind(this)
-      );
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          showComplete: true
+        });
+      });
   };
 
   handleNameInputChange = loggedInUser => {
     this.setState({ loggedInUser });
+  };
+
+  selectReason = reason => {
+    // console.log(reason);
+    this.setState({ selectedReason: reason }, () => {
+      this.storeAppearance();
+    });
+  };
+
+  selectEvent = id => {
+    this.setState({ selectedEvent: id });
   };
 
   selectReason = reason => {
@@ -272,45 +258,82 @@ export default class Kiosk extends React.PureComponent {
           </div>
         </div>
       );
-    }
-  };
-
-  renderToday = () => {
-    if (this.state.selectedReason === "Event") {
-      if (this.state.todayEvents.length > 0) {
-        return (
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            {this.state.todayEvents.map((event, i) => (
-              <div
-                to={"/event/" + event.id}
-                className="spaceEventBlock"
-                onClick={this.selectEvent(event.id)}
-              >
-                <div className="spaceEventBlockImage">
-                  <img src={event.image} />
-                </div>
-                <div className="spaceEventBlockTitle">{event.title}</div>
-                <div className="spaceEventBlockContent">{event.start}</div>
+      renderToday = () => {
+        if (this.state.selectedReason === "Event") {
+          if (this.state.todayEvents.length > 0) {
+            return (
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                {this.state.todayEvents.map((event, i) => (
+                  <div
+                    to={"/event/" + event.id}
+                    className="spaceEventBlock"
+                    onClick={this.selectEvent(event.id)}
+                  >
+                    <div className="spaceEventBlockImage">
+                      <img alt="" src={event.image} />
+                    </div>
+                    <div className="spaceEventBlockTitle">{event.title}</div>
+                    <div className="spaceEventBlockContent">{event.start}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        );
-      } else {
-        return (
-          <div
-            style={{
-              color: "#FFFFFF",
-              fontFamily: "Noto Sans",
-              fontSize: "0.9em",
-              fontStyle: "italic",
-              textAlign: "center"
-            }}
-          >
-            There are no Events scheduled for Today.
-          </div>
-        );
-      }
+            );
+          } else {
+            return (
+              <div
+                style={{
+                  color: "#FFFFFF",
+                  fontFamily: "Noto Sans",
+                  fontSize: "0.9em",
+                  fontStyle: "italic",
+                  textAlign: "center"
+                }}
+              >
+                There are no Events scheduled for Today.
+              </div>
+            );
+          }
+        }
+      };
     }
+
+    renderToday = () => {
+      if (this.state.selectedReason === "Event") {
+        if (this.state.todayEvents.length > 0) {
+          return (
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              {this.state.todayEvents.map((event, i) => (
+                <div
+                  to={"/event/" + event.id}
+                  className="spaceEventBlock"
+                  onClick={this.selectEvent(event.id)}
+                >
+                  <div className="spaceEventBlockImage">
+                    <img src={event.image} />
+                  </div>
+                  <div className="spaceEventBlockTitle">{event.title}</div>
+                  <div className="spaceEventBlockContent">{event.start}</div>
+                </div>
+              ))}
+            </div>
+          );
+        } else {
+          return (
+            <div
+              style={{
+                color: "#FFFFFF",
+                fontFamily: "Noto Sans",
+                fontSize: "0.9em",
+                fontStyle: "italic",
+                textAlign: "center"
+              }}
+            >
+              There are no Events scheduled for Today.
+            </div>
+          );
+        }
+      }
+    };
   };
 
   render() {
