@@ -84,7 +84,7 @@ export default class TimerPickers extends Component {
               });
             }} 
             style={{alignSelf: 'center'}}
-            className="fuck"
+            className="fudge"
           >
             x
           </div>}

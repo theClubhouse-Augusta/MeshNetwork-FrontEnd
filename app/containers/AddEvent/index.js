@@ -39,11 +39,6 @@ const MenuProps = {
         },
     },
 };
-// const loadedTags = [
-//     'one',
-//     'two',
-//     'three',
-// ]
 
 export default class AddEvent extends Component {
     state = {
@@ -98,7 +93,7 @@ export default class AddEvent extends Component {
     }
 
     getSponsors = () => {
-        fetch(`https://innovationmesh.com/api/sponsors`, {
+        fetch(`http://localhost:8000/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -112,7 +107,7 @@ export default class AddEvent extends Component {
     }
 
     getOrganizers = () => {
-        fetch(`https://innovationmesh.com/api/organizers/events`, {
+        fetch(`http://localhost:8000/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -127,7 +122,7 @@ export default class AddEvent extends Component {
     }
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -202,12 +197,7 @@ export default class AddEvent extends Component {
             const duplicateNew = newSponsors.findIndex(previous => previous.name === sponsor.name);
             if (duplicateOld === -1 && duplicateNew === -1) {
                 newSponsors.push(sponsor);
-                this.setState({ 
-                    newSponsors: newSponsors,
-                    sponsorNames: '',
-                    sponsorLogos: '',
-                    sponsorWebsites: '',
-                });
+                this.setState(() => ({ newSponsors}));
             } else {
                 this.showSnack("Sponsor name already taken!");
             }
@@ -215,7 +205,6 @@ export default class AddEvent extends Component {
     }
 
     Submit = () => {
-        console.log('dhsjd');
         let {
             newSponsors,
             selectedTags,
@@ -223,14 +212,11 @@ export default class AddEvent extends Component {
             dates,
         } = this.state;
 
-
         let data = new FormData();
         data.append('description', description);
         data.append('tags', selectedTags);
-        data.append('compEvent', 0);
         data.append('dates', JSON.stringify(dates));
         data.append('name', this.state.name);
-        //data.append('image', this.state.eventImg);
         data.append('url', this.state.url);
         data.append('organizers', this.state.selectedOrganizers);
         data.append('sponsors', this.state.selectedSponsors);
@@ -238,9 +224,12 @@ export default class AddEvent extends Component {
         if (!!newSponsors.length) {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
+            console.log('new',data.get('logos0'));
+        } else {
+            console.log('d',data.get('description'));
         }
 
-        fetch(`https://innovationmesh.com/api/event`, {
+        fetch(`http://localhost:8000/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -248,7 +237,7 @@ export default class AddEvent extends Component {
         .then((response)=> {
             return response.json();
         })
-        .then((json) => {
+        .then(json => {
             if(json.error) {
                 this.showSnack(json.error);
             } 
@@ -259,7 +248,7 @@ export default class AddEvent extends Component {
                 }, 2000);
             }
         })
-    }
+    };
 
     closeModal = () => this.setState({ modalMessage: '' });
 

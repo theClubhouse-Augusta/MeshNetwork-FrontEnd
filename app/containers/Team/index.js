@@ -45,7 +45,7 @@ export default class Team extends React.PureComponent {
   }
 
   getDetail = () => {
-    fetch("https://innovationmesh.com/api/showTeam/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/showTeam/"+this.props.match.params.id, {
       method:'GET'
     })
     .then((response) => {
@@ -60,7 +60,7 @@ export default class Team extends React.PureComponent {
   }
 
   joinTeam = () => {
-    fetch("https://innovationmesh.com/api/joinTeam/" + this.state.team.id, {
+    fetch("http://localhost:8000/api/joinTeam/" + this.state.team.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })
@@ -118,14 +118,14 @@ export default class Team extends React.PureComponent {
                   <div className="challenges_feedHeader">Challenges</div>
                   <div className="challenges_feedList">
                     {this.state.challenges.map((u, i) => (
-                      <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={i}>
+                      <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={`TeamFeedBlock${i}`}>
                         <img alt="" className="challenges_feedImage" src={u.challengeImage}/>
                         <div className="challenges_feedInfo">
                           <div className="challenges_feedTitle">{u.challengeTitle}</div>
                           <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: u.challengeContent }} />
                           <div className="challenges_feedTags">
                             {u.categories.map((c, j) => (
-                              <div className="challenges_tagBlock" key={j}>{c.categoryName}</div>
+                              <div className="challenges_tagBlock" key={`TeamTagBlock${j}`}>{c.categoryName}</div>
                             ))}
                           </div>
                         </div>
@@ -140,7 +140,7 @@ export default class Team extends React.PureComponent {
               <div className="challenges_detailSideBlock">
                 <div className="challenges_categoryTitle">Members</div>
                 {this.state.members.map((m, i) => (
-                  <div className="challenges_participantBlock" key={i}>
+                  <div className="challenges_participantBlock" key={`TeamMembers${i}`}>
                     <img  alt="" className="challenges_participantImage" src={m.avatar} />
                     <div className="challenges_participantName">{m.profileName}</div>
                   </div>

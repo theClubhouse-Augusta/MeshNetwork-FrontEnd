@@ -91,13 +91,13 @@ export default class Courses extends React.PureComponent {
       })
     }
 
-    fetch('https://innovationmesh.com/api/getCourses/'+category+'/'+this.state.count+'?page='+this.state.page, {
+    fetch('http://localhost:8000/api/getCourses/'+category+'/'+this.state.count+'?page='+this.state.page, {
       method:'GET'
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       let nextPage = 0;
       let previousPage = 0;
       if(json.courses.last_page !== json.courses.current_page)
@@ -150,7 +150,7 @@ export default class Courses extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/getCategories", {
+    fetch("http://localhost:8000/api/getCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -174,7 +174,7 @@ export default class Courses extends React.PureComponent {
     let data = new FormData();
     data.append('searchContent', this.state.searchContent);
 
-    fetch('https://innovationmesh.com/api/searchCourse', {
+    fetch('http://localhost:8000/api/searchCourse', {
       method:'POST',
       body:data
     })
@@ -235,7 +235,7 @@ export default class Courses extends React.PureComponent {
               >
                 <MenuItem value={0}>All Categories</MenuItem>
                 {this.state.categories.map((category, index) => (
-                  <MenuItem value={category.id} key={index}>{category.categoryName}</MenuItem>
+                  <MenuItem value={category.id} key={`${index}`}>{category.categoryName}</MenuItem>
                 ))}
               </SelectField>
             </FormControl>*/}
@@ -243,7 +243,7 @@ export default class Courses extends React.PureComponent {
             </div>
             <div className="lmsHomeMainList">
               {this.state.courses.map((course, index) => (
-                <Link className="lmsHomeMainBlock" key={index} to={'/LMS/Course/'+course.id}>
+                <Link className="lmsHomeMainBlock" key={`CourseslmsHomeMainBlock${index}`} to={'/LMS/Course/'+course.id}>
                   <Card style={{height:'385px'}}>
                     <CardMedia
                       style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}

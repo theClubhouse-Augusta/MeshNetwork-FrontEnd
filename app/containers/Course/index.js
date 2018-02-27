@@ -56,7 +56,7 @@ export default class Course extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://innovationmesh.com/api/detailCourse/"+id, {
+    fetch("http://localhost:8000/api/detailCourse/"+id, {
       method:'GET'
     })
     .then(response => response.json())
@@ -80,28 +80,27 @@ export default class Course extends React.PureComponent {
   }
 
   enrollCourse = () => {
-    let _this = this;
 
-    fetch("https://innovationmesh.com/api/enrollCourse/"+this.state.course.id, {
+    fetch("http://localhost:8000/api/enrollCourse/"+this.state.course.id, {
       method:'GET',
       headers: {
         'Authorization':'Bearer ' + this.state.token
       }
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
+        this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
       }
       else {
-        _this.showSnack(json.success);
+        this.showSnack(json.success);
         setTimeout(() => {
-          _this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
+          this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
       }, 2000);
       }
-    }.bind(this))
+    })
   }
 
   renderIcon = (type) => {
@@ -176,11 +175,11 @@ export default class Course extends React.PureComponent {
             <div className="lmsDetailCoursesContainer">
               <div className="lmsDetailCoursesHeader">Class Curriculum</div>
               {this.state.lessons.map((lesson, i) => (
-                <div className="lmsDetailCoursesBlock" key={i}>
+                <div className="lmsDetailCoursesBlock" key={`lessons${i}`}>
                   <div className="lmsDetailCoursesBlockHeader">{lesson.lessonName}</div>
                   <div className="lmsDetailCoursesBlockList">
                     {lesson.lectures.map((lecture, j) => (
-                      <div className="lmsDetailCoursesBlockItem" key={j}>
+                      <div className="lmsDetailCoursesBlockItem" key={`lmscourses${j}`}>
                         <div className="lmsDetailCoursesBlockInfo">
                           <div className="lmsDetailCoursesBlockIcon">
                             {this.renderIcon(lecture.lectureType)}

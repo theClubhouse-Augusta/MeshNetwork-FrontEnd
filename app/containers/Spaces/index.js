@@ -29,7 +29,7 @@ export default class Spaces extends React.PureComponent {
   }
 
   getSpaces = () => {
-    fetch(`https://innovationmesh.com/api/workspaces`, {
+    fetch(`http://localhost:8000/api/workspaces`, {
       method: "GET"
     })
       .then((response) => {
@@ -62,7 +62,7 @@ export default class Spaces extends React.PureComponent {
         <main className="spacesMain">
           <div className="spacesMainContainer">
             {this.state.spaces.map((space, i) => (
-              <Link to={"space/" + space.slug} className="spacesBlock" key={i}>
+              <Link to={"space/" + space.slug} className="spacesBlock" key={`SpacesBlock${i}`}>
                 <div className="spacesBlockImage">
                   <img alt="" src={space.logo} />
                 </div>

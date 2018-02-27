@@ -12,7 +12,6 @@ import Header from 'components/Header';
 
 import Chip from 'material-ui/Chip';
 
-import MailIcon from 'react-icons/lib/fa/envelope-o';
 import FacebookIcon from 'react-icons/lib/fa/facebook-square';
 import TwitterIcon from 'react-icons/lib/fa/twitter-square';
 import LinkedInIcon from 'react-icons/lib/fa/linkedin-square';
@@ -51,7 +50,7 @@ export default class UserProfile extends React.Component {
     }
 
     getUser = () => {
-        fetch('https://innovationmesh.com/api/user/profile/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/user/profile/' + this.props.match.params.id, {
             method: 'GET',
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
@@ -78,7 +77,7 @@ export default class UserProfile extends React.Component {
         chipStyle.animation = 'profileFlicker ' + rand + 's ease alternate infinite';
 
         return (
-            <Chip style={chipStyle} key={i} label={skill} />
+            <Chip style={chipStyle} key={`userProfile${i}`} label={skill} />
         )
     }
 
@@ -122,14 +121,6 @@ export default class UserProfile extends React.Component {
 
     }
     render() {
-        const {
-            facebook,
-            twitter,
-            instagram,
-            linkedin,
-            github,
-            behance
-        } = this.state;
         return (
             this.state.loading
                 ?

@@ -67,7 +67,7 @@ export default class Replies extends React.PureComponent {
   }
 
   getQuestion = () => {
-    fetch("https://innovationmesh.com/api/showQuestion/" + this.props.match.params.id, {
+    fetch("http://localhost:8000/api/showQuestion/" + this.props.match.params.id, {
       method:'GET'
     })
     .then(response => response.json())
@@ -83,7 +83,7 @@ export default class Replies extends React.PureComponent {
     var replies = this.state.replies;
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("https://innovationmesh.com/api/getReplies/" + this.props.match.params.id + '?page=' + this.state.nextPage, {
+      fetch("http://localhost:8000/api/getReplies/" + this.props.match.params.id + '?page=' + this.state.nextPage, {
         method:'GET'
       })
       .then(response =>  response.json())
@@ -112,7 +112,7 @@ export default class Replies extends React.PureComponent {
     data.append('questionID', this.state.question.id);
     data.append('replyContent', draftToHtml(convertToRaw(this.state.replyContent.getCurrentContent())));
 
-    fetch("https://innovationmesh.com/api/storeReply/", {
+    fetch("http://localhost:8000/api/storeReply/", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -179,7 +179,7 @@ export default class Replies extends React.PureComponent {
           <div className="challenges_mainContainer">
             <div className="challenges_detailReplyContainer">
               {this.state.replies.map((reply, i) => (
-                <div className="challenges_replyBlockContainer" key={i}>
+                <div className="challenges_replyBlockContainer" key={`repliesChallenges${i}`}>
                   <div className="challenges_replyBlock">
                     <div className="challenges_replyAvatar">
                       <img alt="" className="challenges_replyAvatarImg" src={reply.avatar}/>

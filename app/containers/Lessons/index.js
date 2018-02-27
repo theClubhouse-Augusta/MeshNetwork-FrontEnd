@@ -50,17 +50,16 @@ export default class Lessons extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    let _this = this;
-    fetch("https://innovationmesh.com/api/showCourse/"+id, {
+    fetch("http://localhost:8000/api/showCourse/"+id, {
       method:'GET',
       headers:{'Authorization': 'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else {
         let lessons = json.lessons;
@@ -151,17 +150,17 @@ export default class Lessons extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('answers', this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers);
 
-    fetch("https://innovationmesh.com/api/completeLecture", {
+    fetch("http://localhost:8000/api/completeLecture", {
       method:'POST',
       body:data,
       headers:{'Authorization': 'Bearer '+this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else if(json.success) {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].complete = 1;
@@ -241,7 +240,7 @@ export default class Lessons extends React.PureComponent {
     }
 
     return(
-      <div className="lmsLessonBlockItem" key={j} onClick={() => this.changeLecture(i, j, lecture)} style={activeStyle}>
+      <div className="lmsLessonBlockItem" key={`lmsItem${j}`} onClick={() => this.changeLecture(i, j, lecture)} style={activeStyle}>
         <div className="lmsLessonBlockStatus">
           {complete}
         </div>
@@ -279,7 +278,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div style={{marginLeft:'70px', width:'85%'}}>
           {question.questionAnswers.map((answer, j) => (
-            <div key={j}>
+            <div key={`lmsQuestionAnswer${j}`}>
               <input type="radio" name={'question-'+ i} value={answer.id} onChange={(event) => this.handleAnswer(question.id, event)}/>
               <span style={{marginLeft:'10px', width:'90%'}}>{answer.answerContent}</span>
             </div>
@@ -327,7 +326,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureFiles.map((file, index) => (
-            <a href={'https://127.0.0.1/media/' + file.fileData} key={index} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
+            <a href={'https://127.0.0.1/media/' + file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
           ))}
         </div>
       )
@@ -337,7 +336,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureQuestions.map((question, i) => (
-            <div className="lmsNewLectureQuestionBlock" key={i} style={{borderBottom:'1px solid #EEEEEE', paddingTop:'15px', paddingBottom:'15px'}}>
+            <div className="lmsNewLectureQuestionBlock" key={`questionBlock${i}`} style={{borderBottom:'1px solid #EEEEEE', paddingTop:'15px', paddingBottom:'15px'}}>
               <div className="lmsNewLectureQuestionContent">
                 <span className="lmsNewLectureQuestionNum">{i + 1}</span>
                 <div>{question.questionContent}</div>
@@ -378,7 +377,7 @@ export default class Lessons extends React.PureComponent {
               <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
               <div className="lmsLessonList">
                 {this.state.lessons.map((lesson, i) => (
-                  <div className="lmsLessonBlock" key={i}>
+                  <div className="lmsLessonBlock" key={`lmsLBlock${i}`}>
                     <div className="lmsLessonBlockHeader">{lesson.lessonName}</div>
                     {lesson.lectures.map((lecture, j) => (
                       this.renderLectureMenu(lecture, i, j)

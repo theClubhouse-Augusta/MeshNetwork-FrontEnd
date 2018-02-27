@@ -14,7 +14,6 @@ import {
     CartesianGrid,
     Tooltip
 } from 'Recharts';
-import Logger from '../../utils/Logger';
 
 import './style.css';
 import './styleM.css';
@@ -29,11 +28,11 @@ export class AllAppearances extends React.PureComponent {
     }
 
     loadAppearances = () => {
-        fetch(`https://innovationmesh.com/api/appearances/${this.props.match.params.id}`, {
+        fetch(`http://localhost:8000/api/appearances/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ data: json }))
-            .catch(error => Logger(`front-end: Allappearances@loadAppearances: ${error.message}`));
+            .catch(error => {  });
     }
 
     render() {

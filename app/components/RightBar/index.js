@@ -115,7 +115,7 @@ export default class RightBar extends React.PureComponent {
   handleQuestionContent = (editorState) => {this.setState({questionContent: editorState, editorState: editorState})};
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/selectCategories", {
+    fetch("http://localhost:8000/api/selectCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -139,7 +139,6 @@ export default class RightBar extends React.PureComponent {
   }
 
   storeChallenge = () => {
-    let _this = this;
     this.setState({
       confirmStatus:"Uploading..."
     })
@@ -154,7 +153,7 @@ export default class RightBar extends React.PureComponent {
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("https://innovationmesh.com/api/storeChallenge", {
+    fetch("http://localhost:8000/api/storeChallenge", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -163,7 +162,7 @@ export default class RightBar extends React.PureComponent {
     .then(json => {
       if(json.error) {
         if(json.error === 'token_expired') {
-          _this.showSnack("Your session has expired. Please log back in.");
+          this.showSnack("Your session has expired. Please log back in.");
         } else {
           this.showSnack(json.error);
           this.setState({
@@ -172,14 +171,14 @@ export default class RightBar extends React.PureComponent {
         }
       }
       else if(json.challenge) {
-        if(_this.state.challengeFiles.length > 0) {
-          for(let i = 0; i < _this.state.challengeFiles.length; i++)
+        if(this.state.challengeFiles.length > 0) {
+          for(let i = 0; i < this.state.challengeFiles.length; i++)
           {
             let fileData = new FormData();
             fileData.append('challengeID', json.challenge);
             fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
-            fetch("https://innovationmesh.com/api/uploadFile", {
+            fetch("http://localhost:8000/api/uploadFile", {
               method:'POST',
               body:fileData,
               headers:{'Authorization':'Bearer ' + this.state.token}
@@ -195,10 +194,10 @@ export default class RightBar extends React.PureComponent {
             })
           }
         }
-        _this.showSnack("Challenge Saved");
-        _this.challengeDialog();
-        setTimeout(function() {
-          _this.props.history.push(`/Challenges/challenge/${json.challenge}`);
+        this.showSnack("Challenge Saved");
+        this.challengeDialog();
+        setTimeout(() => {
+          this.props.history.push(`/Challenges/challenge/${json.challenge}`);
         }, 2000);
       }
     })
@@ -210,7 +209,7 @@ export default class RightBar extends React.PureComponent {
     data.append('questionTitle', this.state.questionTitle);
     data.append('questionContent', draftToHtml(convertToRaw(this.state.questionContent.getCurrentContent())));
 
-    fetch("https://innovationmesh.com/api/storeQuestion", {
+    fetch("http://localhost:8000/api/storeQuestion", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -325,7 +324,7 @@ export default class RightBar extends React.PureComponent {
                 <input type="file" onChange={this.handleChallengeImage} id="challenge-image" style={{display:'none'}}/>
               </div>
               {this.state.challengeFiles.map((file, index) => (
-                <div key={index}>
+                <div key={`rightBarChallenge${index}`}>
                   <div className="challenges_newFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={25} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(index)}/></div>
                 </div>
               ))}

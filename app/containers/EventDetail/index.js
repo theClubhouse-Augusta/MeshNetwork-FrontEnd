@@ -45,7 +45,7 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`https://innovationmesh.com/api/event/${eventID}`)
+        fetch(`http://localhost:8000/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
                 this.setState({
@@ -63,7 +63,7 @@ export default class EventDetail extends React.PureComponent {
 
     registerForEvent = (e, eventID) => {
         e.preventDefault();
-        fetch(`https://innovationmesh.com/api/event/join/${eventID}`, {
+        fetch(`http://localhost:8000/api/event/join/${eventID}`, {
             headers: { Authorization: `Bearer ${this.token}` }
         },
         )
@@ -138,7 +138,7 @@ export default class EventDetail extends React.PureComponent {
                                     <div className="eventTags">
                                         <a href={this.state.event.url} style={{ textDecoration: 'none', background: '#EEEEEE', padding: '5px', color: '#222222', marginRight: '10px', borderRadius: '5px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}><LinkIcon size={25} /></a>
                                         {tags.map((tag, key) =>
-                                            <Chip key={`chip${key}`} label={tag} style={{ color: "#FFFFFF", marginRight: '5px', marginTop: '5px', borderRadius: '5px', background: '#ff4d58' }} />
+                                            <Chip key={`chip${`EventDetailChip${key}`}`} label={tag} style={{ color: "#FFFFFF", marginRight: '5px', marginTop: '5px', borderRadius: '5px', background: '#ff4d58' }} />
                                         )}
                                     </div>}
                             </div>

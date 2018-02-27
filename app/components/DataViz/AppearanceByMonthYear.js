@@ -16,7 +16,6 @@ import {
 } from 'Recharts';
 
 import DateRangePicker from '../DateRangePicker';
-import Logger from '../../utils/Logger';
 
 import './style.css';
 import './styleM.css';
@@ -38,14 +37,14 @@ export class AppearanceByMonthYear extends React.PureComponent {
     loadAppearancesForMonthYear = () => {
         const { year, year2, month, month2 } = this.state;
         if (year && year2 && month && month2) {
-            fetch(`https://innovationmesh.com/api/appearances/range/${this.props.match.params.id}/${month}/${year}/${month2}/${year2}`, {
+            fetch(`http://localhost:8000/api/appearances/range/${this.props.match.params.id}/${month}/${year}/${month2}/${year2}`, {
             })
                 .then(response => response.json())
                 .then(json => this.setState({
                     dataTwo: json,
                     error: false
                 }))
-                .catch(error => Logger(`front-end: AppearanceByMonthYear@AppearancesForMonthYear: ${error.message}`));
+                .catch(error => {})
         } else {
             this.setState({ error: true })
         }

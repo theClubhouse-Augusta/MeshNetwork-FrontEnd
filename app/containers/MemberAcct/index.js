@@ -22,7 +22,6 @@ import { ListItemText } from "material-ui/List";
 import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
 
-import Logger from "../../utils/Logger";
 import authenticate from "../../utils/Authenticate";
 import "./style.css";
 import "./styleM.css";
@@ -85,12 +84,14 @@ export default class MemberAcct extends React.PureComponent {
   // }
 
   loadSkills = () => {
-    fetch("https://innovationmesh.com/api/skills/all", {})
+    fetch("http://localhost:8000/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
       })
-      
+      .catch(error => {
+
+      });
   };
 
   handleRequestClose = () => {
@@ -159,7 +160,7 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   getUserInfo = () => {
-    fetch(`https://innovationmesh.com/api/user/auth`, {
+    fetch(`http://localhost:8000/api/user/auth`, {
       method: "GET",
       headers: { Authorization: "Bearer " + this.state.token }
     })
@@ -186,7 +187,6 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   updateUser = e => {
-    let _this = this;
     e.preventDefault();
 
     let data = new FormData();
@@ -203,7 +203,7 @@ export default class MemberAcct extends React.PureComponent {
     data.append("password", this.state.password);
     data.append("passwordConfirm", this.state.passwordConfirm);
 
-    fetch(`https://innovationmesh.com/api/user/update`, {
+    fetch(`http://localhost:8000/api/user/update`, {
       headers: { Authorization: "Bearer " + this.state.token },
       method: "POST",
       body: data
@@ -213,7 +213,7 @@ export default class MemberAcct extends React.PureComponent {
         if (json.success) {
           this.showSnack(json.success);
           setTimeout(() => {
-            _this.props.history.push(`/user/${this.state.user.id}`)
+            this.props.history.push(`/user/${this.state.user.id}`)
         }, 2000);
         } else {
           this.showSnack(json.error);

@@ -13,11 +13,9 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import TextField from 'material-ui/TextField';
 
 import FlatButton from 'material-ui/Button';
-import Card, { CardTitle, CardActions, CardContent, CardMedia } from 'material-ui/Card';
+import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 // import { FormControl} from 'material-ui/Form';
 // import Input, { InputLabel } from 'material-ui/Input';
@@ -88,7 +86,7 @@ export default class LMSDash extends React.PureComponent {
 
   getCourses = (category = 0) => {
 
-    fetch('https://innovationmesh.com/api/myCourses/'+this.state.count+'?page='+this.state.page, {
+    fetch('http://localhost:8000/api/myCourses/'+this.state.count+'?page='+this.state.page, {
       method:'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -145,7 +143,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/getCategories", {
+    fetch("http://localhost:8000/api/getCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -157,37 +155,36 @@ export default class LMSDash extends React.PureComponent {
   }
 
   createCourse = () => {
-    let _this = this;
 
-    fetch('https://innovationmesh.com/api/storeCourse', {
+    fetch('http://localhost:8000/api/storeCourse', {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack("Your session has expired.");
+        this.showSnack("Your session has expired.");
       }
       else {
-        _this.props.history.push('/LMS/Update/'+json.course)
+        this.props.history.push('/LMS/Update/'+json.course)
       }
     })
   }
 
   deleteCourse = () => {
     let course = this.state.courses;
-    fetch("https://innovationmesh.com/api/deleteCourse/"+this.state.activeCourse, {
+    fetch("http://localhost:8000/api/deleteCourse/"+this.state.activeCourse, {
       method:'POST',
       headers:{'Authorization':'Bearer '+ this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack("Your session has expired.");
+        this.showSnack("Your session has expired.");
       }
       else if(json.success) {
         this.showSnack("Course Removed.");
@@ -227,7 +224,7 @@ export default class LMSDash extends React.PureComponent {
   }
 
   renderNewCourse = () => {
-    if(this.state.user.roleID == 1 || this.state.user.roleID == 4) {
+    if(this.state.user.roleID === 1 || this.state.user.roleID === 4) {
       return(
         <div className="lmsHomeMainBlock" onClick={this.createCourse}>
           <Card style={{height:'380px'}}>
@@ -310,7 +307,7 @@ export default class LMSDash extends React.PureComponent {
               {this.renderNewCourse()}
 
               {this.state.courses.map((course, index) => (
-                <div className="lmsHomeMainBlock" key={index}>
+                <div className="lmsHomeMainBlock" key={`LMSDASHnewcourse${index}`}>
                   <Link style={{textDecoration:'none'}} to={'/LMS/CourseInfo/'+course.id}>
                     <Card style={{height:'380px'}}>
                       {this.renderImage(course.courseImage)}

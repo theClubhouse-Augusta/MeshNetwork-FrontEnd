@@ -76,17 +76,16 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    let _this = this;
-    fetch("https://innovationmesh.com/api/editCourse/"+id, {
+    fetch("http://localhost:8000/api/editCourse/"+id, {
       method:'GET',
       headers:{'Authorization': 'Bearer '+this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired');
+        this.showSnack('Your session has expired');
       }
       else {
         let lessons = json.lessons;
@@ -150,7 +149,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/getCategories", {
+    fetch("http://localhost:8000/api/getCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -205,7 +204,7 @@ export default class NewCourse extends React.PureComponent {
       activeView:activeView,
       lessons:lessons,
       activeLectureType:event.target.value
-    }, function() {
+    }, () => {
       this.forceUpdate();
       this.updateLecture(this.state.activeLesson, this.state.activeLecture);
     })
@@ -326,17 +325,17 @@ export default class NewCourse extends React.PureComponent {
       data.append('questionContent', "");
       data.append('questionType', type);
 
-      fetch("https://innovationmesh.com/api/storeQuestion/", {
+      fetch("http://localhost:8000/api/storeQuestion/", {
         method:'POST',
         body:data,
         headers:{'Authorization':'Bearer ' + this.state.token}
       })
-      .then(function(response) {
+      .then((response) => {
         return response.json()
       })
-      .then(function(json) {
+      .then((json) => {
         if(json.error) {
-         _this.showSnack('Your session has expired.');
+         this.showSnack('Your session has expired.');
         }
         else if(json.success) {
           let question = {"id":json.success, "questionContent":"", "questionAnswers":[], "questionType":type};
@@ -355,24 +354,23 @@ export default class NewCourse extends React.PureComponent {
   }
 
   updateQuestion = (i, event) => {
-    let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
     let id = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].id
 
     data.append('questionContent', event.target.value);
 
-    fetch("https://innovationmesh.com/api/updateQuestion/"+id, {
+    fetch("http://localhost:8000/api/updateQuestion/"+id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json()
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else if(json.question) {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionContent = json.question.questionContent;
@@ -387,7 +385,6 @@ export default class NewCourse extends React.PureComponent {
   }
 
   storeAnswer = (i) => {
-    let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
     let questionID = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].id;
@@ -397,17 +394,17 @@ export default class NewCourse extends React.PureComponent {
       data.append('answerContent', "");
       data.append('isCorrect', false);
 
-      fetch("https://innovationmesh.com/api/storeAnswer", {
+      fetch("http://localhost:8000/api/storeAnswer", {
         method:'POST',
         body:data,
         headers:{'Authorization':'Bearer ' + this.state.token}
       })
-      .then(function(response) {
+      .then((response) => {
         return response.json()
       })
-      .then(function(json) {
+      .then((json) => {
         if(json.error) {
-          _this.showSnack('Your session has expired.');
+          this.showSnack('Your session has expired.');
         }
         else if(json.success) {
           let answer = {"id":json.success, "answerContent":"", "isCorrect":false};
@@ -425,24 +422,23 @@ export default class NewCourse extends React.PureComponent {
   }
 
   updateAnswer = (i, j, event) => {
-    let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
     let id = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].id;
 
     data.append('answerContent', event.target.value);
 
-    fetch("https://innovationmesh.com/api/updateAnswer/" + id, {
+    fetch("http://localhost:8000/api/updateAnswer/" + id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json()
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else if(json.answer) {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].answerContent = json.answer.answerContent;
@@ -479,7 +475,6 @@ export default class NewCourse extends React.PureComponent {
   }
 
   updateCourse = (courseStatus) => {
-    let _this = this;
     if(courseStatus === 'Published') {
       this.setState({
         isSaving:true
@@ -507,17 +502,17 @@ export default class NewCourse extends React.PureComponent {
     data.append('coursePrice', coursePrice);
     data.append('courseStatus', courseStatus);
 
-    fetch("https://innovationmesh.com/api/updateCourse/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/updateCourse/"+this.props.match.params.id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else {
         this.setState({
@@ -528,7 +523,6 @@ export default class NewCourse extends React.PureComponent {
   };
 
   updateCourseImage = () => {
-    let _this = this;
     this.setState({
       isSaving:true
     })
@@ -537,17 +531,17 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseImage', this.state.courseImage);
 
-    fetch("https://innovationmesh.com/api/updateCourseImage/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/updateCourseImage/"+this.props.match.params.id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'JWT ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else {
         this.setState({
@@ -558,7 +552,6 @@ export default class NewCourse extends React.PureComponent {
   };
 
   updateCourseInstructorAvatar = () => {
-    let _this = this;
     this.setState({
       isSaving:true
     })
@@ -567,17 +560,17 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
 
-    fetch("https://innovationmesh.com/api/updateCourseInstructorAvatar/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/updateCourseInstructorAvatar/"+this.props.match.params.id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired');
+        this.showSnack('Your session has expired');
       }
       else {
         this.setState({
@@ -588,24 +581,23 @@ export default class NewCourse extends React.PureComponent {
   };
 
   storeLesson = () => {
-    let _this = this;
     let data = new FormData();
     let lessons = this.state.lessons;
 
     data.append('courseID', this.props.match.params.id);
     data.append('lessonName', "Lesson Title");
 
-    fetch("https://innovationmesh.com/api/storeLesson", {
+    fetch("http://localhost:8000/api/storeLesson", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json()
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.errorl) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else if(json.success) {
         let newLesson = {"id":json.success, "lessonName":"Lesson Title", "lectures":[], "pendingDelete":false};
@@ -621,22 +613,21 @@ export default class NewCourse extends React.PureComponent {
   }
 
   updateLesson = (id, lessonName) => {
-    let _this = this;
     let data = new FormData();
 
     data.append('lessonName', lessonName);
 
-    fetch("https://innovationmesh.com/api/updateLesson/"+id, {
+    fetch("http://localhost:8000/api/updateLesson/"+id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json()
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else {
         this.showSnack('Lesson Updated');
@@ -647,7 +638,6 @@ export default class NewCourse extends React.PureComponent {
   updateLecture = (i, j) => {
     let lessons = this.state.lessons;
     let id = lessons[i].lectures[j].id;
-    let _this = this;
 
     let data = new FormData();
       data.append('lectureName', lessons[i].lectures[j].lectureName);
@@ -655,17 +645,17 @@ export default class NewCourse extends React.PureComponent {
       data.append('lectureType', lessons[i].lectures[j].lectureType);
       data.append('lectureVideo', lessons[i].lectures[j].lectureVideo);
 
-    fetch("https://innovationmesh.com/api/updateLecture/"+id, {
+    fetch("http://localhost:8000/api/updateLecture/"+id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json()
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
     })
   }
@@ -673,7 +663,6 @@ export default class NewCourse extends React.PureComponent {
   storeLecture = (i) => {
     let data = new FormData();
     let lessons = this.state.lessons;
-    let _this = this;
 
     data.append('lessonID', lessons[i].id);
     data.append('lectureName', "Lecture Title");
@@ -681,17 +670,17 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureType', "Text");
     data.append('lectureVideo', "");
 
-    fetch("https://innovationmesh.com/api/storeLecture", {
+    fetch("http://localhost:8000/api/storeLecture", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
-    .then(function(response) {
+    .then((response) => {
       return response.json()
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else if(json.success) {
         let lecture = {"id":json.success, "lectureName":"Lecture Title", "lectureContent":EditorState.createEmpty(), "lectureType":"Text", "lectureVideo":"", "lectureFiles":[], "lectureQuestions":[], "pendingDelete":false};
@@ -708,13 +697,12 @@ export default class NewCourse extends React.PureComponent {
 
   storeFile = (file, index) => {
     let lessons = this.state.lessons;
-    let _this = this;
 
     let data = new FormData();
     data.append('lectureID', this.state.activeView.id);
     data.append('fileContent', file.fileData);
 
-    fetch("https://innovationmesh.com/api/storeFiles", {
+    fetch("http://localhost:8000/api/storeFiles", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -722,7 +710,7 @@ export default class NewCourse extends React.PureComponent {
     .then(response => response.json())
     .then((json) => {
       if(json.error) {
-        _this.showSnack(json.error);
+        this.showSnack(json.error);
       }
       else if(json.success){
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles[index].isLoading = false;
@@ -738,18 +726,17 @@ export default class NewCourse extends React.PureComponent {
 
   deleteLesson = (id, i) => {
     let lessons = this.state.lessons;
-    let _this = this;
 
-    fetch("https://innovationmesh.com/api/deleteLesson/" + id, {
+    fetch("http://localhost:8000/api/deleteLesson/" + id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired');
+        this.showSnack('Your session has expired');
       } else {
         lessons.splice(i, 1);
         this.setState({
@@ -763,18 +750,17 @@ export default class NewCourse extends React.PureComponent {
 
   deleteLecture = (id, i, j) => {
     let lessons = this.state.lessons;
-    let _this = this;
 
-    fetch("https://innovationmesh.com/api/deleteLecture/" + id, {
+    fetch("http://localhost:8000/api/deleteLecture/" + id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired');
+        this.showSnack('Your session has expired');
       }
       else {
         lessons[i].lectures.splice(j, 1);
@@ -789,18 +775,17 @@ export default class NewCourse extends React.PureComponent {
 
   deleteQuestion = (id, i) => {
     let lessons = this.state.lessons;
-    let _this = this;
 
-    fetch("https://innovationmesh.com/api/deleteQuestion/"+id, {
+    fetch("http://localhost:8000/api/deleteQuestion/"+id, {
       method:'POST',
       headers:{'Authorization':'JWT ' + this.state.token}
     })
     .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired.');
+        this.showSnack('Your session has expired.');
       }
       else {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions.splice(i, 1);
@@ -815,18 +800,17 @@ export default class NewCourse extends React.PureComponent {
 
   deleteAnswer = (id, i, j) => {
     let lessons = this.state.lessons;
-    let _this = this;
 
-    fetch("https://innovationmesh.com/api/deleteAnswer/"+id, {
+    fetch("http://localhost:8000/api/deleteAnswer/"+id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired');
+        this.showSnack('Your session has expired');
       }
       else {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers.splice(j, 1);
@@ -841,18 +825,17 @@ export default class NewCourse extends React.PureComponent {
 
   deleteFile = (id, i) => {
     let lessons = this.state.lessons;
-    let _this = this;
 
-    fetch("https://innovationmesh.com/api/deleteFile/"+id, {
+    fetch("http://localhost:8000/api/deleteFile/"+id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then((response) => {
       return response.json();
     })
-    .then(function(json) {
+    .then((json) => {
       if(json.error) {
-        _this.showSnack('Your session has expired');
+        this.showSnack('Your session has expired');
       }
       else {
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles.splice(i, 1);
@@ -919,7 +902,7 @@ export default class NewCourse extends React.PureComponent {
       if(j === this.state.activeLecture)
       {
         return(
-          <div className="lmsNewBlockItemContainer" key={j}>
+          <div className="lmsNewBlockItemContainer" key={`lmsLecturecontain${j}`}>
             <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)} style={{borderLeft:'5px solid  #6fc13e'}}>
               <input className="lmsNewBlockItemInput" value={lecture.lectureName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)} />
               <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLectureDelete(i, j)}/></div>
@@ -930,7 +913,7 @@ export default class NewCourse extends React.PureComponent {
       }
       else {
         return(
-          <div className="lmsNewBlockItemContainer" key={j}>
+          <div className="lmsNewBlockItemContainer" key={`lmsLectureRenderMenu${j}`}>
             <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)}>
               <input className="lmsNewBlockItemInput" value={lecture.lecturName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)}/>
               <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLectureDelete(i, j)}/></div>
@@ -942,7 +925,7 @@ export default class NewCourse extends React.PureComponent {
     }
     else {
       return(
-        <div className="lmsNewBlockItemContainer" key={j}>
+        <div className="lmsNewBlockItemContainer" key={`lmsRenderCon${j}`}>
           <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)}>
             <input className="lmsNewBlockItemInput" value={lecture.lectureName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)}/>
             <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLectureDelete(i, j)}/></div>
@@ -1032,7 +1015,7 @@ export default class NewCourse extends React.PureComponent {
   renderFile = (file, index) => {
     if(file.isLoading === true) {
       return(
-        <div key={index}>
+        <div key={`lmsRenderFile${index}`}>
           <div className="lmsNewFileBlock" ><span></span>{file.fileData.name} <CloseIcon size={35} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(file.id, index)}/></div>
           <LinearProgress mode='indeterminate' />
         </div>
@@ -1040,7 +1023,7 @@ export default class NewCourse extends React.PureComponent {
     }
     else {
       return(
-        <div key={index}>
+        <div key={`lmsRenderFile2${index}`}>
           <div className="lmsNewFileBlock"><span></span>{file.fileData.name} <CloseIcon size={35} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(file.id, index)}/></div>
         </div>
       )
@@ -1051,7 +1034,7 @@ export default class NewCourse extends React.PureComponent {
 
     if(question.questionType === 'multiple') {
       return(
-        <div className="lmsNewLectureQuestionBlock" key={i}>
+        <div className="lmsNewLectureQuestionBlock" key={`lmsLectrue${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
             <TextField label="Question Content" fullWidth={true} onChange={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3}>{question.content}</TextField>
@@ -1070,7 +1053,7 @@ export default class NewCourse extends React.PureComponent {
     }
     else if (question.questionType === 'open') {
       return(
-        <div className="lmsNewLectureQuestionBlock" key={i}>
+        <div className="lmsNewLectureQuestionBlock" key={`lmsLecture2${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
             <TextField label="Question Content" fullWidth={true} onChange={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3}>{question.content}</TextField>
@@ -1092,7 +1075,7 @@ export default class NewCourse extends React.PureComponent {
     else if(j === 5) { letter = "F" }
 
     return(
-      <div style={{marginBottom:'10px', width:'100%', display:'flex', flexDirection:'row', alignItems:'center'}} key={j}>
+      <div style={{marginBottom:'10px', width:'100%', display:'flex', flexDirection:'row', alignItems:'center'}} key={`renderNewAnswer${j}`}>
         <span className="lmsNewLectureQuestionNum">{letter}</span>
         <input type="radio" onChange={() => this.updateCorrect(i, j)} name={'question-'+ i}/>
         <TextField value={answer.answerContent} onChange={(event) => this.updateAnswer(i, j, event)} style={{border:'none', outline:'none', marginLeft:'10px', width:'90%'}} placeholder="Type an Answer..." name={"answerContent-"+j}/>
@@ -1227,7 +1210,7 @@ export default class NewCourse extends React.PureComponent {
                   }}
                 >
                   {this.state.categories.map((category, index) => (
-                    <MenuItem value={category.id} key={index}>{category.categoryName}</MenuItem>
+                    <MenuItem value={category.id} key={`lmsLecturerendercourse${index}`}>{category.categoryName}</MenuItem>
                   ))}
                 </SelectField>
               </FormControl>
@@ -1338,7 +1321,7 @@ export default class NewCourse extends React.PureComponent {
                   <div className="lmsNewLessonAddButtonTitle">Add Lesson</div>
                 </div>
                 {this.state.lessons.map((lesson, i) => (
-                  <div className="lmsLessonBlock" key={i}>
+                  <div className="lmsLessonBlock" key={`lmslessonBlock1${i}`}>
                     <div className="lmsNewLessonBlockHeader">
                       <input className="lmsNewLessonBlockHeaderInput" value={lesson.lessonName} onChange={(event) => this.handleLessonName(i, event)} onBlur={(event) => this.updateLesson(lesson.id, event.target.value)}/>
                       <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLessonDelete(i)}/></div>

@@ -68,7 +68,7 @@ export default class SpaceProfile extends React.PureComponent {
   };
 
   getSpaceEvents = id => {
-    fetch("https://innovationmesh.com/api/spaceEvents/" + id, {
+    fetch("http://localhost:8000/api/spaceEvents/" + id, {
       method: "GET"
     })
       .then((response) => {
@@ -84,7 +84,7 @@ export default class SpaceProfile extends React.PureComponent {
   };
 
   getUsers = id => {
-    fetch("https://innovationmesh.com/api/organizers/space/" + id, {
+    fetch("http://localhost:8000/api/organizers/space/" + id, {
       method: "GET"
     })
       .then((response) => {
@@ -100,7 +100,7 @@ export default class SpaceProfile extends React.PureComponent {
   };
 
   getPhotoGallery = id => {
-    fetch("https://innovationmesh.com/api/photos/" + id, {
+    fetch("http://localhost:8000/api/photos/" + id, {
       method: "GET"
     })
       .then((response) => {
@@ -382,7 +382,7 @@ export default class SpaceProfile extends React.PureComponent {
                   <div className="spaceMembersTitle">Organizers</div>
                   <div className="spaceMembersContent">
                     {this.state.users.map((u, i) => (
-                      <div className="spaceProfileUser" key={i}>
+                      <div className="spaceProfileUser" key={`SpaceProfileUser${i}`}>
                         <img
                           alt=""
                           className="spaceProfileUserAvatar"

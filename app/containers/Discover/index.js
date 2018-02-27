@@ -59,7 +59,7 @@ export default class Discover extends React.PureComponent {
   }
 
   showCategories = (categoryID) => {
-    fetch("https://innovationmesh.com/api/showCategory/"+categoryID+"/Challenges" , {
+    fetch("http://localhost:8000/api/showCategory/"+categoryID+"/Challenges" , {
       method:'GET',
     })
     .then(response => response.json())
@@ -76,7 +76,7 @@ export default class Discover extends React.PureComponent {
 
     if(this.state.currentPage !== this.state.lastPage)
     {
-      fetch("https://innovationmesh.com/api/getChallenges/30?page="+this.state.nextPage , {
+      fetch("http://localhost:8000/api/getChallenges/30?page="+this.state.nextPage , {
         method:'GET',
       })
       .then(response => response.json())
@@ -104,7 +104,7 @@ export default class Discover extends React.PureComponent {
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("https://innovationmesh.com/api/searchChallenges", {
+    fetch("http://localhost:8000/api/searchChallenges", {
       method:'POST',
       body:data
     })
@@ -184,7 +184,7 @@ export default class Discover extends React.PureComponent {
                 <div className="challenges_feedHeader">Challenges</div>
                 <div className="challenges_feedList">
                   {this.state.challenges.map((u, i) => (
-                    <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={i}>
+                    <Link to={'/Challenges/challenge/' + u.challengeSlug} className="challenges_feedBlock" key={`challengesBlockLink${i}`}>
                       <div className="challenges_feedImageContainer">
                         <img alt="" className="challenges_feedImage" src={u.challengeImage}/>
                       </div>
@@ -193,7 +193,7 @@ export default class Discover extends React.PureComponent {
                         <div className="challenges_feedContent" dangerouslySetInnerHTML={{ __html: u.challengeContent }} />
                         <div className="challenges_feedTags">
                           {u.categories.map((c, j) => (
-                            <div className="challenges_tagBlock" key={j}>{c.categoryName}</div>
+                            <div className="challenges_tagBlock" key={`challengestagblock${j}`}>{c.categoryName}</div>
                           ))}
                         </div>
                       </div>

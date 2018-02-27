@@ -122,7 +122,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getSpaceStats = (id) => {
-        fetch('https://innovationmesh.com/api/space/metrics/' + id, {
+        fetch('http://localhost:8000/api/space/metrics/' + id, {
             method: 'GET',
         })
             .then((response) => {
@@ -139,7 +139,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getSpaceEvents = (id) => {
-        fetch('https://innovationmesh.com/api/events/' + id, {
+        fetch('http://localhost:8000/api/events/' + id, {
             method: 'GET',
         })
             .then((response) => {
@@ -159,7 +159,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     getPhotoGallery = (id) => {
-        fetch('https://innovationmesh.com/api/photos/' + id, {
+        fetch('http://localhost:8000/api/photos/' + id, {
             method: 'GET',
         })
             .then((response) => {
@@ -189,7 +189,7 @@ export default class SpaceDash extends React.PureComponent {
 
         data.append('spaceID', this.state.spaceID);
         data.append('photo', file);
-        fetch('https://innovationmesh.com/api/photos', {
+        fetch('http://localhost:8000/api/photos', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -217,7 +217,7 @@ export default class SpaceDash extends React.PureComponent {
         let data = new FormData();
         data.append("_method", "DELETE");
         // data.append("spaceID", spaceID);
-        fetch(`https://innovationmesh.com/api/photos/${id}`, {
+        fetch(`http://localhost:8000/api/photos/${id}`, {
             headers: { 'Authorization': 'Bearer ' + this.state.token },
             method: "POST",
             body: data,
@@ -286,7 +286,7 @@ export default class SpaceDash extends React.PureComponent {
     };
 
     getResources = (id) => {
-        fetch('https://innovationmesh.com/api/resources/' + id, {
+        fetch('http://localhost:8000/api/resources/' + id, {
             method: 'GET',
         })
             .then((response) => {
@@ -345,7 +345,7 @@ export default class SpaceDash extends React.PureComponent {
         data.append('resourceIncrement', this.state.resourceIncrement);
         data.append('resourceDays', JSON.stringify(resourceDays));
 
-        fetch('https://innovationmesh.com/api/resource', {
+        fetch('http://localhost:8000/api/resource', {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -372,7 +372,7 @@ export default class SpaceDash extends React.PureComponent {
     deleteResource = (id, i) => {
         let resource = this.state.resources;
 
-        fetch('https://innovationmesh.com/api/resource/' + id, {
+        fetch('http://localhost:8000/api/resource/' + id, {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + this.state.token }
         })

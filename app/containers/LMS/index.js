@@ -46,7 +46,7 @@ export default class LMS extends React.PureComponent {
 
   getCourses = () => {
 
-    fetch("https://innovationmesh.com/api/getCourses/0/6", {
+    fetch("http://localhost:8000/api/getCourses/0/6", {
       method:'GET',
     })
     .then(response => response.json())
@@ -89,7 +89,7 @@ export default class LMS extends React.PureComponent {
             <div className="lmsHomeMainHeading">Latest Courses</div>
             <div className="lmsHomeMainList">
               {this.state.courses.map((course, index) => (
-                <Link className="lmsHomeMainBlock" key={index} to={'/LMS/Course/'+course.id}>
+                <Link className="lmsHomeMainBlock" key={`LMSlmsMainBlock${index}`} to={'/LMS/Course/'+course.id}>
                 <Card style={{height:'385px'}}>
                   <CardMedia
                     style={{width:'100%', height:'240px', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}
