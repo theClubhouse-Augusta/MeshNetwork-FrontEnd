@@ -81,9 +81,12 @@ class CheckoutForm extends React.PureComponent {
   };
 
   getSpace = () => {
-    fetch("http://localhost:8000/api/workspace/" + this.props.match.params.id, {
-      method: "GET"
-    })
+    fetch(
+      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
+      {
+        method: "GET"
+      }
+    )
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -93,7 +96,7 @@ class CheckoutForm extends React.PureComponent {
   };
 
   loadSkills = () => {
-    fetch("http://localhost:8000/api/skills/all", {})
+    fetch("https://innovationmesh.com/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
@@ -102,7 +105,10 @@ class CheckoutForm extends React.PureComponent {
   };
 
   loadPlans = () => {
-    fetch(`http://localhost:8000/api/plans/${this.props.match.params.id}`, {})
+    fetch(
+      `https://innovationmesh.com/api/plans/${this.props.match.params.id}`,
+      {}
+    )
       .then(response => response.json())
       .then(json =>
         this.setState({ loadedPlans: json.data ? json.data : json })
@@ -142,64 +148,6 @@ class CheckoutForm extends React.PureComponent {
       }
     });
   };
-
-  loadSkills = () => {
-    fetch("https://innovationmesh.com/api/skills/all", {})
-      .then(response => response.json())
-      .then(json => {
-        this.setState({ loadedTags: json });
-      })
-      .catch(error =>
-        Logger(`front-end: CheckoutForm@Loadskills: ${error.message}`)
-      );
-  };
-
-  loadPlans = () => {
-    fetch(
-      `https://innovationmesh.com/api/plans/${this.props.match.params.id}`,
-      {}
-    )
-      .then(response => response.json())
-      .then(json =>
-        this.setState({ loadedPlans: json.data ? json.data : json })
-      )
-      .catch(error =>
-        Logger(`front-end: CheckoutForm@loadPlans: ${error.message}`)
-      );
-  };
-
-  selectPlan = (e, selected) => {
-    e.preventDefault();
-    console.log("s", selected);
-    this.setState({ plan: selected });
-  };
-
-  handleRequestClose = () => {
-    this.setState({ snack: false, msg: "" });
-  };
-  showSnack = msg => {
-    this.setState({ snack: true, msg: msg });
-  };
-
-  handleName = event => {
-    this.setState({ name: event.target.value.replace(/\s\s+/g, " ") });
-  };
-  handleEmail = event => {
-    this.setState({ email: event.target.value });
-  };
-  handlePassword = event => {
-    this.setState({ password: event.target.value }, function() {
-      if (this.state.password.length < 6) {
-        this.setState({
-          passwordError: "Password Too Short"
-        });
-      } else {
-        this.setState({
-          passwordError: ""
-        });
-      }
-    });
-  };
   handleBio = event => {
     this.setState({ bio: event.target.value });
   };
@@ -214,250 +162,169 @@ class CheckoutForm extends React.PureComponent {
         imagePreviewUrl: reader.result
       });
     };
+    reader.readAsDataURL(file);
+  };
 
+  handleSkillTags = event => {
+    this.setState({ selectedTags: event.target.value });
+  };
 
-    getSpace = () => {
-        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
-            method: 'GET'
-        })
-            .then(response => response.json())
-            .then(json => {
-                this.setState({
-                    space: json
-                })
-            });
+  renderAvatarImage = () => {
+    if (this.state.avatar !== "") {
+      return (
+        <img
+          alt="avatarpreview"
+          src={this.state.imagePreviewUrl}
+          className="spaceLogoImagePreview"
+        />
+      );
     }
+  };
 
-    loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
-        })
-            .then(response => response.json())
-            .then(json => { this.setState({ loadedTags: json }) })
-            .catch(error => {});
+  renderAvatarImageText = () => {
+    if (
+      this.state.imagePreviewUrl === "" ||
+      this.state.imagePreviewUrl === undefined ||
+      this.state.imagePreviewUrl === null
+    ) {
+      return (
+        <span
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center"
+          }}
+        >
+          Select a profile picture
+          <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
+            For Best Size Use: 512 x 512
+          </span>
+        </span>
+      );
     }
+  };
+  onFocus = () => this.setState({ focused: true });
+  onBlur = () => this.setState({ focused: false });
+  onFocusPlan = () => this.setState({ planFocused: true });
+  onBlurPlan = () => this.setState({ planFocused: false });
 
-    loadPlans = () => {
-        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
-        })
-            .then(response => response.json())
-            .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
-            .catch(error => {})
-    }
+  storeUser = e => {
+    this.setState({
+      isLoading: true
+    });
+    e.preventDefault();
+    let data = new FormData();
+    let { name, email, password, bio, selectedTags, avatar, plan } = this.state;
+    this.props.stripe.createToken({ name: name }).then(({ token }) => {
+      data.append("name", name.trim());
+      if (selectedTags.length) {
+        data.append("tags", selectedTags);
+      }
+      data.append("email", email.trim());
+      data.append("password", password.trim());
+      data.append("bio", bio);
+      data.append("spaceID", this.state.space.id);
+      data.append("avatar", avatar);
+      if (token.id) {
+        data.append("customerToken", token.id);
+      }
+      data.append("plan", plan);
+      data.append("username", name);
 
-    selectPlan = (e, selected) => {
-        e.preventDefault();
-        // console.log('s', selected);
-        this.setState({ plan: selected });
-    }
-
-    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
-
-    handleName = (event) => { this.setState({ name: event.target.value.replace(/\s\s+/g, ' ') }) };
-    handleEmail = (event) => { this.setState({ email: event.target.value }) };
-    handlePassword = (event) => {
-      this.setState({ password: event.target.value }, () => {
-        if(this.state.password.length < 6) {
-          this.setState({
-            passwordError:'Password Too Short'
-          })
-        } else {
-          this.setState({
-            passwordError:''
-          })
-        }
-        data.append("email", email.trim());
-        data.append("password", password.trim());
-        data.append("bio", bio);
-        data.append("spaceID", this.state.space.id);
-        data.append("avatar", avatar);
-        if (token.id) {
-          data.append("customerToken", token.id);
-        }
-        data.append("plan", plan);
-        data.append("username", name);
-
-        fetch("https://innovationmesh.com/api/signUp", {
-          method: "POST",
-          body: data
-        }).then(function(response) {
-          return response.json();
-        });
-        e.preventDefault();
-        let data = new FormData();
-        let {
-          name,
-          email,
-          password,
-          bio,
-          selectedTags,
-          avatar,
-          plan
-        } = this.state;
-        this.props.stripe.createToken({ name: name }).then(({ token }) => {
-          data.append("name", name.trim());
-          if (selectedTags.length) {
-            data.append("tags", selectedTags);
-          }
-          data.append("email", email.trim());
-          data.append("password", password.trim());
-          data.append("bio", bio);
-          data.append("spaceID", this.state.space.id);
-          data.append("avatar", avatar);
-          if (token.id) {
-            data.append("customerToken", token.id);
-          }
-          data.append("plan", plan);
-          data.append("username", name);
-
-            fetch("https://innovationmesh.com/api/signUp", {
-                method: 'POST',
-                body: data,
+      fetch("https://innovationmesh.com/api/signUp", {
+        method: "POST",
+        body: data
+      })
+        .then(response => response.json())
+        .then(user => {
+          if (user.error) {
+            this.showSnack(user.error);
+          } else if (user.token) {
+            localStorage.setItem("token", user.token);
+            fetch("https://innovationmesh.com/api/user/auth", {
+              method: "GET",
+              headers: { Authorization: "Bearer " + user.token }
             })
-            .then(response => response.json())
-            .then(user => {
-              if (user.error) {
-                this.showSnack(user.error);
-              } else if (user.token) {
-                localStorage.setItem('token', user.token);
-                fetch("https://innovationmesh.com/api/user/auth", {
-                    method: 'GET',
-                    headers: { "Authorization": "Bearer " + user.token }
+              .then(response => response.json())
+              .then(json => {
+                let mainUser = json.user;
+                localStorage.setItem("user", JSON.stringify(mainUser));
+                fetch("https://innovationmesh.com/api/signIn", {
+                  method: "POST",
+                  body: data
                 })
-                .then(response => response.json())
-                .then(json => {
-                  let mainUser = json.user;
-                  localStorage.setItem('user', JSON.stringify(mainUser));
-                  fetch('https://innovationmesh.com/api/signIn', {
-                    method:'POST',
-                    body:data
-                  })
                   .then(response => response.json())
                   .then(json => {
-                    let mainUser = json.user;
-                    localStorage.setItem("user", JSON.stringify(mainUser));
-                    fetch("http://localhost:8000/api/signIn", {
-                      method: "POST",
-                      body: data
-                    })
-                      .then(response => response.json())
-                      .then(json => {
-                        if (json.error) {
-                          this.showSnack(json.error);
-                        } else if (json.token) {
-                          localStorage.setItem("token", json.token);
-                          this.showSnack(
-                            "Welcome to " + this.state.space.name + "!"
-                          );
-                          setTimeout(() => {
-                            this.props.history.push(`/user/${mainUser.id}`);
-                          }, 2000);
-                        }
-                      });
+                    if (json.error) {
+                      this.showSnack(json.error);
+                    } else if (json.token) {
+                      localStorage.setItem("token", json.token);
+                      this.showSnack(
+                        "Welcome to " + this.state.space.name + "!"
+                      );
+                      setTimeout(() => {
+                        this.props.history.push(`/user/${mainUser.id}`);
+                      }, 2000);
+                    }
                   });
-              }
-              this.setState({
-                isLoading: false
               });
-            });
-        });
-      },
-
-      (storeFreeUser = e => {
-        this.setState({
-          isLoading: true
-        });
-        e.preventDefault();
-        let data = new FormData();
-        let {
-          name,
-          email,
-          password,
-          bio,
-          selectedTags,
-          avatar,
-          plan
-        } = this.state;
-
-        data.append("name", name.trim());
-        if (!!selectedTags.length) {
-          data.append("tags", selectedTags);
-        }
-        data.append("email", email.trim());
-        data.append("password", password.trim());
-        data.append("bio", bio.trim());
-        data.append("spaceID", this.state.space.id);
-        data.append("avatar", avatar);
-        data.append("plan", plan);
-        data.append("username", name);
-
-        fetch("https://innovationmesh.com/api/signUp", {
-            method: 'POST',
-            body: data,
-        })
-          .then(response => response.json())
-          .then(json => {
-            if (json.error) {
-              this.showSnack(json.error);
-            } else if (json.token) {
-              let mainToken = json.token;
-              localStorage.setItem("token", mainToken);
-              fetch("https://innovationmesh.com/api/user/auth", {
-                method: "GET",
-                headers: { Authorization: "Bearer " + mainToken }
-              })
-                .then(function(response) {
-                  return response.json();
-                })
-                .then(function(json) {
-                  let mainUser = json.user;
-                  localStorage.setItem("user", JSON.stringify(mainUser));
-                  let newData = new FormData();
-                  newData.append("username", _this.state.email);
-                  newData.append("password", _this.state.password);
-                  fetch("https://lms.innovationmesh.com/signIn/", {
-                    method: "POST",
-                    body: newData
-                  })
-                    .then(function(response) {
-                      return response.json();
-                    })
-                    .then(function(json) {
-                      if (json.non_field_errors) {
-                        _this.showSnack("Invalid Credentials");
-                      } else if (json.token) {
-                        localStorage.setItem("lmsToken", json.token);
-                        fetch("https://lms.innovationmesh.com/getUser/", {
-                          method: "GET",
-                          headers: { Authorization: "JWT " + json.token }
-                        })
-                          .then(function(response) {
-                            return response.json();
-                          })
-                          .then(function(json) {
-                            localStorage.setItem(
-                              "lmsUser",
-                              JSON.stringify(json.user)
-                            );
-                            _this.showSnack(
-                              "Welcome to " + this.state.space.name + "!"
-                            );
-                            setTimeout(() => {
-                              _this.props.history.push(`/user/${mainUser.id}`);
-                            }, 2000);
-                          });
-                      }
-                    });
-                });
-            }
-            _this
-              .setState({
-                isLoading: false
-              })
-              .bind(this);
+          }
+          this.setState({
+            isLoading: false
           });
-      })
-    );
+        });
+    });
+  };
+
+  storeFreeUser = e => {
+    this.setState({
+      isLoading: true
+    });
+    e.preventDefault();
+    let data = new FormData();
+    let { name, email, password, bio, selectedTags, avatar, plan } = this.state;
+
+    data.append("name", name.trim());
+    if (!!selectedTags.length) {
+      data.append("tags", selectedTags);
+    }
+    data.append("email", email.trim());
+    data.append("password", password.trim());
+    data.append("bio", bio.trim());
+    data.append("spaceID", this.state.space.id);
+    data.append("avatar", avatar);
+    data.append("plan", plan);
+    data.append("username", name);
+
+    fetch("https://innovationmesh.com/api/signUp", {
+      method: "POST",
+      body: data
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.error) {
+          this.showSnack(json.error);
+        } else if (json.token) {
+          let mainToken = json.token;
+          localStorage.setItem("token", mainToken);
+          fetch("https://innovationmesh.com/api/user/auth", {
+            method: "GET",
+            headers: { Authorization: "Bearer " + mainToken }
+          })
+            .then(response => response.json())
+            .then(json => {
+              let mainUser = json.user;
+              localStorage.setItem("user", JSON.stringify(mainUser));
+              this.showSnack("Welcome to " + this.state.space.name + "!");
+              setTimeout(() => {
+                this.props.history.push(`/user/${mainUser.id}`);
+              }, 2000);
+            });
+        }
+        this.setState({
+          isLoading: false
+        });
+      });
   };
 
   renderLoading = () => {
@@ -476,16 +343,8 @@ class CheckoutForm extends React.PureComponent {
       );
     }
   };
-
   render() {
-    const {
-      selectedTags,
-      loadedTags,
-      focused,
-      plan,
-      options,
-      loadedPlans
-    } = this.state;
+    const { loadedTags, plan, loadedPlans } = this.state;
 
     return (
       <form className="container" onSubmit={this.handleSubmit}>
@@ -497,7 +356,10 @@ class CheckoutForm extends React.PureComponent {
         />
         <header className="checkoutHeaderContainer">
           {this.renderLoading()}
-          <Header headerTitle={this.state.space.name} />
+          <Header
+            headerTitle={this.state.space.name}
+            space={this.props.spaceName}
+          />
           <div className="checkoutHeaderBanner">
             <div className="homeHeaderContentTitle">
               Join {this.state.space.name}
@@ -509,17 +371,22 @@ class CheckoutForm extends React.PureComponent {
         </header>
 
         <main className="userSignUpMain">
-          <div className="userSignUpContainer">
-            <img
-              src={this.state.space.logo}
-              height="auto"
-              width="300px"
+          <div className="spaceSignUpMain">
+            <div
               style={{
-                margin: "0 auto"
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
               }}
-            />
-
-            <div className="spaceSignUpForm">
+            >
+              <img
+                alt=""
+                src={this.state.space.logo}
+                height="auto"
+                width="300px"
+              />
+            </div>
+            <div className="spaceSignUpContainer">
               <TextField
                 label="Full Name"
                 value={this.state.name}
@@ -561,100 +428,10 @@ class CheckoutForm extends React.PureComponent {
               </FormControl>
 
               {/*<TextField label="Bio"
-            localStorage.setItem('token', mainToken);
-            fetch("https://innovationmesh.com/api/user/auth", {
-              method: 'GET',
-              headers: { "Authorization": "Bearer " + mainToken }
-            })
-            .then(response => response.json())
-            .then(json => {
-              let mainUser = json.user;
-              localStorage.setItem('user', JSON.stringify(mainUser));
-                this.showSnack('Welcome to '+ this.state.space.name+'!');
-                setTimeout(() => {
-                    this.props.history.push(`/user/${mainUser.id}`)
-                }, 2000);
-            })
-          }
-          this.setState({
-            isLoading:false
-          })
-        });
-      }
-
-      renderLoading = () => {
-        if(this.state.isLoading)
-        {
-          return(
-            <LinearProgress color="accent" style={{ width:'100%', position:'fixed', top:'0', left:'0', right:'0'}}/>
-          )
-        }
-      }
-
-    render() {
-        const {
-            loadedTags,
-            plan,
-            loadedPlans,
-    } = this.state;
-
-        return (
-            <form className="container" onSubmit={this.handleSubmit}>
-                <Helmet title="SpaceSignUp" meta={[{ name: 'description', content: 'Description of SpaceSignUp' }]} />
-                <header className="checkoutHeaderContainer">
-                    {this.renderLoading()}
-                    <Header headerTitle={this.state.space.name} space={this.props.spaceName} />
-                    <div className="checkoutHeaderBanner">
-                        <div className="homeHeaderContentTitle">Join {this.state.space.name}</div>
-                        <div className="homeHeaderContentSubtitle">Find out what all the buzz is about</div>
-                    </div>
-                </header>
-
-                <main className="userSignUpMain">
-                    <div className="spaceSignUpMain">
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <img alt="" src={this.state.space.logo} height="auto" width="300px" />
-                        </div>
-                        <div className="spaceSignUpContainer">
-                            <TextField
-                                label="Full Name"
-                                value={this.state.name}
-                                onChange={this.handleName}
-                                margin="normal"
-                            />
-                            <TextField
-                                type="email"
-                                label="Email"
-                                value={this.state.email}
-                                onChange={this.handleEmail}
-                                margin="normal"
-                            />
-                            <FormControl error={this.state.passwordError ? 'true' : ''}>
-                              <InputLabel htmlFor="password">Password</InputLabel>
-                              <Input
-                                id="adornment-password"
-                                type={this.state.showPassword ? 'text' : 'password'}
-                                value={this.state.password}
-                                onChange={this.handlePassword}
-                                endAdornment={
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      onClick={this.handleClickShowPasssword}
-                                      onMouseDown={this.handleMouseDownPassword}
-                                    >
-                                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                  </InputAdornment>
-                                }
-                              />
-                              <FormHelperText id="password-helper-text">{this.state.passwordError}</FormHelperText>
-                            </FormControl>
-
-                            {/*<TextField label="Bio"
-                                value={this.state.bio}
-                                onChange={this.handleBio}
-                                margin="normal"
-                            />*/}
+                            value={this.state.bio}
+                            onChange={this.handleBio}
+                            margin="normal"
+                        />*/}
 
               {!!loadedTags.length && (
                 <FormControl style={{ marginTop: 24 }}>

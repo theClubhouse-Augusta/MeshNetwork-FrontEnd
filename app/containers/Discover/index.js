@@ -33,12 +33,12 @@ export default class Discover extends React.PureComponent {
     };
   }
 
-  /* componentWillMount() {
-    if(this.props.match.params.id) {
+  componentWillMount() {
+    /*if(this.props.match.params.id) {
       this.showCategories(this.props.match.params.id);
-    }
+    }*/
     //this.getChallenges();
-  } */
+  }
 
   componentWillReceiveProps(app) {
     this.setState(
@@ -64,30 +64,31 @@ export default class Discover extends React.PureComponent {
     );
   };
 
-  showCategories = (categoryID) => {
-    fetch("https://innovationmesh.com/api/showCategory/"+categoryID+"/Challenges" , {
-      method:'GET',
-    })
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        challenges:json.challenges
-      })
-    })
-  }
+  showCategories = categoryID => {
+    fetch(
+      "https://innovationmesh.com/api/showCategory/" +
+        categoryID +
+        "/Challenges",
+      {
+        method: "GET"
+      }
+    )
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          challenges: json.challenges
+        });
+      });
+  };
 
   getChallenges = () => {
     var nextPage = this.state.nextPage;
     var challenges = this.state.challenges;
 
-    if(this.state.currentPage !== this.state.lastPage)
-    {
-      fetch("https://innovationmesh.com/api/getChallenges/30?page="+this.state.nextPage , {
-        method:'GET',
-      })
-      .then(response => response.json())
-      .then(json => {
-        if(json.challenges.current_page !== json.challenges.last_page)
+    if (this.state.currentPage !== this.state.lastPage) {
+      fetch(
+        "https://innovationmesh.com/api/getChallenges/30?page=" +
+          this.state.nextPage,
         {
           method: "GET"
         }
@@ -98,11 +99,14 @@ export default class Discover extends React.PureComponent {
             nextPage = nextPage + 1;
           }
           for (var i = 0; i < json.challenges.data.length; i++) {
-            method: "GET";
+            challenges.push(json.challenges.data[i]);
           }
-        })
-        .then(function(response) {
-          return response.json();
+          this.setState({
+            nextPage: nextPage,
+            lastPage: json.challenges.last_page,
+            currentPage: json.challenges.current_page,
+            challenges: challenges
+          });
         });
     }
   };
@@ -113,17 +117,8 @@ export default class Discover extends React.PureComponent {
     data.append("searchContent", this.state.searchContent);
 
     fetch("https://innovationmesh.com/api/searchChallenges", {
-      method:'POST',
-      body:data
-    })
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        nextPage:1,
-        currentPage:0,
-        lastPage:1,
-        challenges: json.challenges,
-      })
+      method: "POST",
+      body: data
     })
       .then(response => response.json())
       .then(json => {
@@ -244,6 +239,7 @@ export default class Discover extends React.PureComponent {
                     >
                       <div className="challenges_feedImageContainer">
                         <img
+                          alt=""
                           className="challenges_feedImage"
                           src={u.challengeImage}
                         />
