@@ -1,1 +1,50 @@
 /* Home Mobile Styles */
+
+@media (max-width: 425px) {
+  .lmsHomeHeader {
+    height: 60vh;
+    padding-top: 30px;
+    text-align: center;
+  }
+
+  .lmsHomeHeaderHeading {
+    font-size: 3em;
+  }
+
+  .lmsHomeHeaderText {
+    font-size: 1.25em;
+    margin: 30px 15px 0 15px;
+    width: 90%;
+    text-align: center;
+  }
+
+  .lmsHomeMainList {
+    flex-direction: column;
+  }
+
+  .lmsHomeMainBlock {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .lmsEnrollMain,
+  .lmsEnrollContent {
+    flex-direction: column;
+  }
+
+  .lmsEnrollSummary,
+  .lmsEnrollPayment {
+    width: 90%;
+  }
+
+  .lmsHomeCallToAction {
+    height: auto;
+    padding: 7.5px;
+    text-align: center;
+    font-size: 2.5em;
+  }
+
+  .lmsHomeBuzz {
+    height: auto;
+  }
+}

@@ -18,8 +18,8 @@
   }
 
   .memberSearchBar {
-    margin: 1em 0.5em 2em 0.5em;
     min-width: 80%;
+    margin-top: 1em; 
   }
 
   .memberBlock {

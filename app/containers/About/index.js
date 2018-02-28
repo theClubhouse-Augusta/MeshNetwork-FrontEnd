@@ -16,7 +16,7 @@ import "./styleM.css";
 export default class About extends React.PureComponent {
   render() {
     return (
-      <div className="container">
+      <div className="aboutContainer">
         <Helmet>
           <title>About</title>
           <meta name="description" content="Description of About" />

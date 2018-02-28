@@ -3,43 +3,42 @@
  * AddEvent
  *
  */
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
-import Snackbar from 'material-ui/Snackbar';
-import TextField from 'material-ui/TextField';
+import React, { Component } from "react";
+import Helmet from "react-helmet";
+import Snackbar from "material-ui/Snackbar";
+import TextField from "material-ui/TextField";
 import RaisedButton from "./RaisedButton";
-import FlatButton from 'material-ui/Button';
-import Checkbox from 'material-ui/Checkbox';
-import { ListItemText } from 'material-ui/List';
-import moment from 'moment';
+import FlatButton from "material-ui/Button";
+import Checkbox from "material-ui/Checkbox";
+import { ListItemText } from "material-ui/List";
+import moment from "moment";
 
-import Header from '../../components/Header';
-import { SelectedSponsors } from './SelectedSponsors';
-import Spinner from '../../components/Spinner';
+import Header from "../../components/Header";
+import { SelectedSponsors } from "./SelectedSponsors";
+import Spinner from "../../components/Spinner";
 
-import Select from 'material-ui/Select';
-import { MenuItem } from 'material-ui/Menu';
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
+import Select from "material-ui/Select";
+import { MenuItem } from "material-ui/Menu";
+import Input, { InputLabel } from "material-ui/Input";
+import { FormControl } from "material-ui/Form";
 
-import DateRangePickerWithGaps from '../../components/DateRangePickerWithGaps';
-import authenticate from '../../utils/Authenticate';
+import DateRangePickerWithGaps from "../../components/DateRangePickerWithGaps";
+import authenticate from "../../utils/Authenticate";
 
 // styles
-import './style.css';
-import './styleM.css';
+import "./style.css";
+import "./styleM.css";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250
+    }
+  }
 };
-
 export default class AddEvent extends Component {
     state = {
         loading: true,
@@ -148,66 +147,54 @@ export default class AddEvent extends Component {
         }
     };
 
-    eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
+    eventName = event =>
+      this.setState({ name: event.target.value.replace(/\s\s+/g, " ").trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
     eventDays = event => this.setState({ days: event.target.value });
 
-    selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
-    selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
+    selectSponsor = selectedSponsor =>
+      this.setState({ selectedSponsors: selectedSponsor });
+    selectOrganizer = selectedOrganizer =>
+      this.setState({ selectedOrganizers: selectedOrganizer });
     eventDescription = e => this.setState({ description: e.target.value });
     eventLocation = e => this.setState({ location: e.target.value });
 
     handleOrganizerChange = event => {
-        this.setState({ selectedOrganizers: event.target.value });
+      this.setState({ selectedOrganizers: event.target.value });
     };
+    reader.readAsDataURL(event.target.files[0]);
+  };
 
-    handleSponsorChange = event => {
-        this.setState({ selectedSponsors: event.target.value });
-    };
+  toggleNewSponsors = () =>
+    this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
 
+  sponsorName = event => this.setState({ sponsorNames: event.target.value });
+  sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
 
-    handleSkillTags = event => {
-        this.setState({ selectedTags: event.target.value });
-    };
-
-    eventFiles = event => {
-        event.preventDefault();
-        let file = event.target.files[0];
-        let reader = new FileReader();
-        const files = this.state.eventFiles.slice();
-        reader.onload = () => {
-            files.push(file)
-            this.setState({ eventFiles: files });
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
-
-    toggleNewSponsors = () => this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
-
-    sponsorName = event => this.setState({ sponsorNames: event.target.value });
-    sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
-
-    onNewSponsorSubmit = e => {
-        e.preventDefault();
-        let { sponsorNames, sponsorWebsites, logo } = this.state;
-        if (logo && sponsorNames && sponsorWebsites) {
-            const oldSponsors = this.state.sponsors.slice();
-            const newSponsors = this.state.newSponsors.slice();
-            const sponsor = {
-                name: this.state.sponsorNames,
-                website: this.state.sponsorWebsites,
-                logo: this.state.logo,
-                imagePreviewUrl: this.state.logoPreview,
-            };
-            const duplicateOld = oldSponsors.findIndex(previous => previous.label === sponsor.name);
-            const duplicateNew = newSponsors.findIndex(previous => previous.name === sponsor.name);
-            if (duplicateOld === -1 && duplicateNew === -1) {
-                newSponsors.push(sponsor);
-                this.setState(() => ({ newSponsors}));
-            } else {
-                this.showSnack("Sponsor name already taken!");
-            }
-        }
+  onNewSponsorSubmit = e => {
+    e.preventDefault();
+    let { sponsorNames, sponsorWebsites, logo } = this.state;
+    if (logo && sponsorNames && sponsorWebsites) {
+      const oldSponsors = this.state.sponsors.slice();
+      const newSponsors = this.state.newSponsors.slice();
+      const sponsor = {
+        name: this.state.sponsorNames,
+        website: this.state.sponsorWebsites,
+        logo: this.state.logo,
+        imagePreviewUrl: this.state.logoPreview
+      };
+      const duplicateOld = oldSponsors.findIndex(
+        previous => previous.label === sponsor.name
+      );
+      const duplicateNew = newSponsors.findIndex(
+        previous => previous.name === sponsor.name
+      );
+      if (duplicateOld === -1 && duplicateNew === -1) {
+        newSponsors.push(sponsor);
+        this.setState(() => ({ newSponsors }));
+      } else {
+        this.showSnack("Sponsor name already taken!");
+      }
     }
 
     Submit = () => {
@@ -273,88 +260,152 @@ export default class AddEvent extends Component {
         })
     };
 
-    closeModal = () => this.setState({ modalMessage: '' });
+    closeModal = () => this.setState({ modalMessage: "" });
 
     renderLogoImage = () => {
-        if (this.state.logo !== "")
-            return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
-    }
-
-    renderLogoImageText = () => {
-        if (this.state.logoPreview === "" || this.state.logoPreview === undefined || this.state.logoPreview === null) {
-            return (
-                <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                    Select a Logo
-                    <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
-                </span>
-            )
-        }
-    }
-
-    renderEventImage = () => {
-        if (this.state.eventImg !== "") {
-            return (
-                <img alt="" src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
-            )
-        }
-    }
-
-    renderEventImageText = () => {
-        if (this.state.eventImgPreview === "" || this.state.eventImgPreview === undefined || this.state.eventImgPreview === null) {
-            return (
-                <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                    Add an Event Image
-          <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
-                </span>
-            )
-        }
-    }
-
-    changeRadio = e => {
-        const checkedRadio = parseInt(e.target.value, 10);
-        if (checkedRadio === this.singleDay) {
-            this.setState({
-                checkedRadio,
-                days: 1,
-                dates: [],
-            });
-        } else {
-            this.setState({
-                checkedRadio,
-                days: '',
-                dates: [],
-            });
-        }
-    }
-
-    handleLogo = (event) => {
-        event.preventDefault();
-        let reader = new FileReader();
-        let file = event.target.files[0];
-
-        reader.onloadend = () => {
-            this.setState({
-                logo: file,
-                logoPreview: reader.result
-            });
-        }
-
-        reader.readAsDataURL(file);
+      if (this.state.logo !== "")
+        return (
+          <img
+            alt=""
+            src={this.state.logoPreview}
+            className="spaceLogoImagePreview"
+          />
+        );
     };
 
-    handleEventImage = (event) => {
-        event.preventDefault();
-        let reader = new FileReader();
-        let file = event.target.files[0];
-
-        reader.onloadend = () => {
-            this.setState({
-                eventImg: file,
-                eventImgPreview: reader.result
-            });
+    fetch(`http://localhost:8000/api/event`, {
+      headers: { Authorization: `Bearer ${localStorage["token"]}` },
+      method: "post",
+      body: data
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        if (json.error) {
+          this.showSnack(json.error);
+        } else if (json.success) {
+          this.showSnack(json.success);
+          setTimeout(() => {
+            this.props.history.push(`/event/${json.eventID}`);
+          }, 2000);
         }
+      });
+  };
 
-        reader.readAsDataURL(file);
+  closeModal = () => this.setState({ modalMessage: "" });
+
+  renderLogoImage = () => {
+    if (this.state.logo !== "")
+      return (
+        <img
+          alt=""
+          src={this.state.logoPreview}
+          className="spaceLogoImagePreview"
+        />
+      );
+  };
+
+  renderLogoImageText = () => {
+    if (
+      this.state.logoPreview === "" ||
+      this.state.logoPreview === undefined ||
+      this.state.logoPreview === null
+    ) {
+      return (
+        <span
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center"
+          }}
+        >
+          Select a Logo
+          <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
+            For Best Size Use: 512 x 512
+          </span>
+        </span>
+      );
+    }
+  };
+
+  renderEventImage = () => {
+    if (this.state.eventImg !== "") {
+      return (
+        <img
+          alt=""
+          src={this.state.eventImgPreview}
+          className="spaceLogoImagePreview"
+        />
+      );
+    }
+  };
+
+  renderEventImageText = () => {
+    if (
+      this.state.eventImgPreview === "" ||
+      this.state.eventImgPreview === undefined ||
+      this.state.eventImgPreview === null
+    ) {
+      return (
+        <span
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center"
+          }}
+        >
+          Add an Event Image
+          <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
+            For Best Size Use: 512 x 512
+          </span>
+        </span>
+      );
+    }
+  };
+
+  changeRadio = e => {
+    const checkedRadio = parseInt(e.target.value, 10);
+    if (checkedRadio === this.singleDay) {
+      this.setState({
+        checkedRadio,
+        days: 1,
+        dates: []
+      });
+    } else {
+      this.setState({
+        checkedRadio,
+        days: "",
+        dates: []
+      });
+    }
+  };
+
+  handleLogo = event => {
+    event.preventDefault();
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        logo: file,
+        logoPreview: reader.result
+      });
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  handleEventImage = event => {
+    event.preventDefault();
+    let reader = new FileReader();
+    let file = event.target.files[0];
+
+    reader.onloadend = () => {
+      this.setState({
+        eventImg: file,
+        eventImgPreview: reader.result
+      });
     };
 
     // setDates = async dates => this.setState(() => ({ dates }));
@@ -675,21 +726,31 @@ export default class AddEvent extends Component {
                             }
 
 
-                            <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
-                                Submit Event
-                            </FlatButton>
-                        </div>
-                    </main>
-                    <footer className="homeFooterContainer">
-                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-                    </footer>
-                    <Snackbar
-                        open={this.state.snack}
-                        message={this.state.msg}
-                        autoHideDuration={5000}
-                        onClose={this.handleRequestClose}
-                    />
-                </div>
-        );
-    }
+            <FlatButton
+              style={{
+                backgroundColor: "#ff4d58",
+                padding: "10px",
+                marginTop: "15px",
+                color: "#FFFFFF",
+                fontWeight: "bold"
+              }}
+              onClick={this.Submit}
+            >
+              Submit Event
+            </FlatButton>
+          </div>
+        </main>
+        <footer className="homeFooterContainer">
+          Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
+          723-5782
+        </footer>
+        <Snackbar
+          open={this.state.snack}
+          message={this.state.msg}
+          autoHideDuration={5000}
+          onClose={this.handleRequestClose}
+        />
+      </div>
+    );
+  }
 }

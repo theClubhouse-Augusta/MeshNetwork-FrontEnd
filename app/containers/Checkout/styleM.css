@@ -1,1 +1,5 @@
 /* Checkout Mobile Styles */
+@media (max-width: 425px) {
+  .userSignUpContainer {
+  }
+}

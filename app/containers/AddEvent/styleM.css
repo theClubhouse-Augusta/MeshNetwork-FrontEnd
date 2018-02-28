@@ -1,1 +1,12 @@
 /* AddEvent Mobile Styles */
+
+@media (max-width: 425px) {
+  .addEventMain {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    min-height: calc(100vh - 90px);
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 426px) {}
