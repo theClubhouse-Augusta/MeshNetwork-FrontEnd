@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import asyncComponent from '../../components/AsyncComponent';
+import authenticate from '../../utils/Authenticate';
 
 const Home = asyncComponent(() => import('../Home'));
 const About = asyncComponent(() => import('../About'));
@@ -42,23 +43,36 @@ export default class App extends Component {
         this.state = {
             token: localStorage.getItem('token'),
             user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : '',
-            space: '',
+            spaceName: '',
         };
     }
 
-    componentDidMount() {
-        if (this.state.user && this.state.token)
-            this.getSpaceName(this.state.user.spaceID, this.state.token);
-    }
+    async componentDidMount() {
+        let authorized;
+        try {
+            authorized = await authenticate(localStorage['token']);
+        } finally {
+            if (authorized !== undefined) {
+                if (!authorized.error && authorized) {
+                    this.getSpaceName(this.state.user.spaceID, this.state.token);
+                }
+            } else {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                this.setState(() => ({ token: '' }))
+                this.setState(() => ({ user: '' }))
+            }
+        } 
+    };
 
     getSpaceName = (spaceID, token) => {
-        fetch(`https://innovationmesh.com/api/spacename/${spaceID}`, {
+        fetch(`http://localhost:8000/api/spacename/${spaceID}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(response => response.json())
-        .then(({ name, error }) => {
-            if (name) {
-                this.setState(() => ({ space: name }));
+        .then(({ spaceName, error }) => {
+            if (spaceName) {
+                this.setState(() => ({ spaceName }));
             } else if (error) {
                 // handle Error
             }
@@ -77,7 +91,7 @@ export default class App extends Component {
                     render={props => 
                         <Home 
                             {...props} 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -86,7 +100,7 @@ export default class App extends Component {
                     path="/About"
                     render={() => 
                         <About 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -97,7 +111,7 @@ export default class App extends Component {
                     render={(props) => 
                         <Booking 
                             {...props} 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -107,7 +121,7 @@ export default class App extends Component {
                     render={(props) => 
                         <SpaceSignUp 
                             {...props} 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -117,7 +131,7 @@ export default class App extends Component {
                     render={(props) => 
                         <UserSignUp 
                             {...props} 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -127,7 +141,7 @@ export default class App extends Component {
                     render={(props) =>
                         <UserSignIn
                             {...props}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     }
                 />
@@ -137,7 +151,7 @@ export default class App extends Component {
                     render={(props) => 
                         <EventDetail 
                             {...props} 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -145,7 +159,7 @@ export default class App extends Component {
                 <Route
                     path="/Spaces"
                     component={Spaces}
-                    spaceName={this.state.space}
+                    spaceName={this.state.spaceName}
                 />
 
                 <Route
@@ -153,7 +167,7 @@ export default class App extends Component {
                     render={(props) => 
                         <MemberAcct 
                             {...props} 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -163,7 +177,7 @@ export default class App extends Component {
                     render={(props) =>
                         <MemberSearch
                             {...props}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     }
                 />
@@ -173,7 +187,7 @@ export default class App extends Component {
                     render={(props) =>
                         <AddEvent
                             {...props}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     }
                 />
@@ -183,7 +197,7 @@ export default class App extends Component {
                     render={(props) => 
                         <SpaceProfile 
                             {...props} 
-                            spaceName={this.props.space} 
+                            spaceName={this.props.spaceName} 
                         />
                     }
                 />
@@ -193,12 +207,12 @@ export default class App extends Component {
                     render={(props) => (
                         <UserProfile
                             {...props}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     )}
                 />
                 <Route path="/kiosk/:id"
-                    render={(props) => <Kiosk {...props} spaceName={this.state.space} />}
+                    render={(props) => <Kiosk {...props} spaceName={this.state.spaceName} />}
                 />
 
                 <Route
@@ -206,7 +220,7 @@ export default class App extends Component {
                     render={(props) => 
                         <SpaceDash 
                             {...props} 
-                            spaceName={this.state.space} 
+                            spaceName={this.state.spaceName} 
                         />
                     }
                 />
@@ -218,7 +232,7 @@ export default class App extends Component {
                         <Discover 
                             {...props} 
                             app={this} 
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />
@@ -229,7 +243,7 @@ export default class App extends Component {
                         <Discover 
                             {...props} 
                             app={this} 
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />
@@ -238,7 +252,7 @@ export default class App extends Component {
                     render={(props) => 
                         <Detail 
                             {...props} 
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     }
                 />
@@ -248,7 +262,7 @@ export default class App extends Component {
                     render={() => 
                         <Ask 
                             app={this} 
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />
@@ -257,7 +271,7 @@ export default class App extends Component {
                     render={(props) => 
                         <Replies {...props} 
                             app={this} 
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />
@@ -266,7 +280,7 @@ export default class App extends Component {
                         render={() => 
                         <Teams 
                             app={this} 
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />
@@ -276,7 +290,7 @@ export default class App extends Component {
                         <Team 
                             {...props} 
                             app={this} 
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />
@@ -287,7 +301,7 @@ export default class App extends Component {
                         <LMS 
                             {...props} 
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />
@@ -297,7 +311,7 @@ export default class App extends Component {
                         <Courses 
                             {...props} 
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         /> 
                     } 
                 />
@@ -307,7 +321,7 @@ export default class App extends Component {
                         <Course 
                             {...props} 
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         /> 
                     } 
                 />
@@ -317,7 +331,7 @@ export default class App extends Component {
                         <CourseInfo 
                             {...props} 
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         /> 
                     } 
                 />
@@ -327,7 +341,7 @@ export default class App extends Component {
                         <NewCourse 
                             {...props} 
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         /> 
                     } 
                 />
@@ -337,7 +351,7 @@ export default class App extends Component {
                         <Lessons 
                             {...props} 
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         /> 
                     } 
                 />
@@ -347,18 +361,18 @@ export default class App extends Component {
                         <Lessons 
                             {...props}  
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     }
                 />
-                <Route path='/LMS/Update/:id' render={(props) => <NewCourse {...props}  app={this}  spaceName={this.state.space}/>}/>
+                <Route path='/LMS/Update/:id' render={(props) => <NewCourse {...props}  app={this}  spaceName={this.state.spaceName}/>}/>
                 <Route 
                     path='/LMS/Enroll/:id' 
                     render={(props) => 
                         <Enroll 
                             {...props}  
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     }
                 />
@@ -368,7 +382,7 @@ export default class App extends Component {
                         <LMSDash 
                             {...props}  
                             app={this}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     }
                 />
@@ -377,7 +391,7 @@ export default class App extends Component {
                     render={props => 
                         <NotFound 
                             {...props}
-                            spaceName={this.state.space}
+                            spaceName={this.state.spaceName}
                         />
                     } 
                 />

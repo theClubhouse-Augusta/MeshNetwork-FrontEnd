@@ -46,7 +46,7 @@ export default class LMS extends React.PureComponent {
 
   getCourses = () => {
 
-    fetch("https://innovationmesh.com/api/getCourses/0/6", {
+    fetch("http://localhost:8000/api/getCourses/0/6", {
       method:'GET',
     })
     .then(response => response.json())

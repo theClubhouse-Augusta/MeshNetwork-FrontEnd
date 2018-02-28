@@ -15,7 +15,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 ReactDOM.render((
     <BrowserRouter>
-        <App />
+        <App  />
     </BrowserRouter>
 ), document.getElementById('app'));
 

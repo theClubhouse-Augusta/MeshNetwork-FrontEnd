@@ -120,7 +120,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/selectCategories", {
+    fetch("http://localhost:8000/api/selectCategories", {
       method:'GET'
     })
     .then((response) => {
@@ -160,7 +160,7 @@ export default class Detail extends React.PureComponent {
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("https://innovationmesh.com/api/updateChallenge/"+this.state.challenge.id, {
+    fetch("http://localhost:8000/api/updateChallenge/"+this.state.challenge.id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -188,7 +188,7 @@ export default class Detail extends React.PureComponent {
             fileData.append('challengeID', json.challenge);
             fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
-            fetch("https://innovationmesh.com/api/uploadFile", {
+            fetch("http://localhost:8000/api/uploadFile", {
               method:'POST',
               body:fileData,
               headers:{'Authorization':'Bearer ' + this.state.token}
@@ -230,7 +230,7 @@ export default class Detail extends React.PureComponent {
   }*/
 
   getDetail = () => {
-    fetch("https://innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/showChallenge/"+this.props.match.params.id, {
       method:'GET'
     })
     .then(response => response.json())
@@ -256,7 +256,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getSpace = () => {
-    fetch("https://innovationmesh.com/api/workspace/" + this.state.challenge.spaceID, {
+    fetch("http://localhost:8000/api/workspace/" + this.state.challenge.spaceID, {
         method: "GET"
       }
     )
@@ -269,7 +269,7 @@ export default class Detail extends React.PureComponent {
   }
 
   joinChallenge = () => {
-    fetch("https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
+    fetch("http://localhost:8000/api/joinChallenge/" + this.state.challenge.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })

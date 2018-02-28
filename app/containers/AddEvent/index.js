@@ -73,7 +73,11 @@ export default class AddEvent extends Component {
         eventImgPreview: '',
         tag: [],
         selectedOrganizers: [],
-        dates: []
+        dates: [],
+        changeLocation: false,
+        address: '',
+        city: '',
+        state: '',
     };
 
     singleDay = 0;
@@ -91,10 +95,10 @@ export default class AddEvent extends Component {
         } else {
             this.props.history.push('/');
         }
-    }
+    };
 
     getSponsors = () => {
-        fetch(`https://innovationmesh.com/api/sponsors`, {
+        fetch(`http://localhost:8000/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -105,10 +109,10 @@ export default class AddEvent extends Component {
             .catch(error => {
                 alert(`GetSponsors()error in fetching data from server: ${error}`); // eslint-disable-line
             });
-    }
+    };
 
     getOrganizers = () => {
-        fetch(`https://innovationmesh.com/api/organizers/events`, {
+        fetch(`http://localhost:8000/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -120,10 +124,10 @@ export default class AddEvent extends Component {
             .catch(error => {
                 alert(`GetOrganizers()error in fetching data from server: ${error}`); // eslint-disable-line
             });
-    }
+    };
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -131,7 +135,7 @@ export default class AddEvent extends Component {
             .catch(error => {
                 alert(`loadSkills()error in fetching data from server: ${error}`);
             });
-    }
+    };
 
     removeNewSponsor = (sponsor) => {
         if (sponsor) {
@@ -142,7 +146,7 @@ export default class AddEvent extends Component {
                 this.setState({ newSponsors: sponsors });
             }
         }
-    }
+    };
 
     eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
@@ -217,6 +221,9 @@ export default class AddEvent extends Component {
             url,
             selectedOrganizers,
             selectedSponsors,
+            city,
+            state,
+            address
         } = this.state;
 
         let data = new FormData();
@@ -229,12 +236,23 @@ export default class AddEvent extends Component {
         data.append('organizers', selectedOrganizers);
         data.append('sponsors', selectedSponsors);
 
+        if (city || address || state) {
+            if (!city || !address || !state) {
+                this.showSnack("Please add city, state, and address.");
+                return;
+            } else if (city && state && address) {
+                data.append('city', city.trim());
+                data.append('address', address.trim());
+                data.append('state', state.trim());
+            }
+        }
+
         if (!!newSponsors.length) {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`https://innovationmesh.com/api/event`, {
+        fetch(`http://localhost:8000/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -354,7 +372,12 @@ export default class AddEvent extends Component {
         }
         return dates;
         // this.setDates(dates).then(dates => dates); 
-    }
+    };
+
+    changeLocation = () => {
+        this.setState(() => ({ changeLocation: !this.state.changeLocation }));
+    };
+
     render() {
         const {
             newSponsors, 
@@ -364,7 +387,8 @@ export default class AddEvent extends Component {
             loadedTags,
             days,
             dates,
-            checkedRadio
+            checkedRadio,
+            changeLocation,
         } = this.state;
 
         const options = [
@@ -400,7 +424,6 @@ export default class AddEvent extends Component {
 
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
-                            <TextField label="Location" value={this.state.location} margin="normal" onChange={this.eventLocation} />
                             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />     
 
                             {!!loadedTags.length &&
@@ -529,7 +552,7 @@ export default class AddEvent extends Component {
                                 </div>
                             }
 
-                            <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
+                            <div style={{ display: 'flex', marginTop: 32, marginBottom: 32 }}>
                                 <input
                                     id="newSponsors"
                                     type="checkbox"
@@ -543,6 +566,7 @@ export default class AddEvent extends Component {
                                 </label>
 
                             </div>
+
 
                             {checkNewSponsors && [
                                 <TextField
@@ -592,6 +616,7 @@ export default class AddEvent extends Component {
                                 />
                             ]}
 
+
                             {!!newSponsors.length &&
                                 <SelectedSponsors
                                     selectedSponsors={newSponsors}
@@ -599,20 +624,56 @@ export default class AddEvent extends Component {
                                     newSponsor={true}
                                 />}
 
+                            <div style={{ display: 'flex', marginBottom: changeLocation ? 16 : 72 }}>
+                                <input
+                                    id="newSponsors"
+                                    type="checkbox"
+                                    onKeyDown={(e) => e.keyCode === 13 ? this.changeLocation() : null}
+                                    onChange={this.changeLocation}
+                                    checked={changeLocation}
+                                />
 
-                            {/*<div className="spaceLogoMainImageRow">
-                                <label htmlFor="event-image" className="spaceLogoMainImageBlock">
-                                    {this.renderEventImageText()}
-                                    {this.renderEventImage()}
-                                    <input
-                                        type="file"
-                                        onChange={this.handleEventImage}
-                                        id="event-image"
-                                        style={{ display: 'none' }}
-                                        accept="image/png, image/jpg, image/jpeg"
-                                    />
+                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                                    &nbsp;&nbsp; change location?
                                 </label>
-                            </div>*/}
+
+                            </div>
+
+                            {changeLocation && 
+                                <React.Fragment>    
+                                    <TextField 
+                                        label="Address" 
+                                        value={this.state.address} 
+                                        margin="normal" 
+                                        onChange={e => {
+                                            const address = e.target.value;
+                                            this.setState(() => ({ address }))
+                                        }} 
+                                    />
+
+                                    <TextField 
+                                        label="City" 
+                                        value={this.state.city} 
+                                        margin="normal" 
+                                        onChange={e => {
+                                            const city = e.target.value;
+                                            this.setState(() => ({ city }))
+                                        }} 
+                                    />
+
+                                    <TextField 
+                                        label="State" 
+                                        value={this.state.state} 
+                                        margin="normal" 
+                                        onChange={e => {
+                                            const state = e.target.value;
+                                            this.setState(() => ({ state }))
+                                        }} 
+                                    />
+
+                                </React.Fragment>    
+                            }
+
 
                             <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
                                 Submit Event
