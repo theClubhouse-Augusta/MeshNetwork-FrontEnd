@@ -214,64 +214,57 @@ class CheckoutForm extends React.PureComponent {
         imagePreviewUrl: reader.result
       });
     };
-    reader.readAsDataURL(file);
-  };
 
-  handleSkillTags = event => {
-    this.setState({ selectedTags: event.target.value });
-  };
 
-  renderAvatarImage = () => {
-    if (this.state.avatar !== "") {
-      return (
-        <img
-          alt="avatarpreview"
-          src={this.state.imagePreviewUrl}
-          className="spaceLogoImagePreview"
-        />
-      );
+    getSpace = () => {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(json => {
+                this.setState({
+                    space: json
+                })
+            });
     }
-  };
 
-  renderAvatarImageText = () => {
-    if (
-      this.state.imagePreviewUrl === "" ||
-      this.state.imagePreviewUrl === undefined ||
-      this.state.imagePreviewUrl === null
-    ) {
-      return (
-        <span
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            textAlign: "center"
-          }}
-        >
-          Select a profile picture
-          <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
-            For Best Size Use: 512 x 512
-          </span>
-        </span>
-      );
+    loadSkills = () => {
+        fetch('https://innovationmesh.com/api/skills/all', {
+        })
+            .then(response => response.json())
+            .then(json => { this.setState({ loadedTags: json }) })
+            .catch(error => {});
     }
-  };
-  onFocus = () => this.setState({ focused: true });
-  onBlur = () => this.setState({ focused: false });
-  onFocusPlan = () => this.setState({ planFocused: true });
-  onBlurPlan = () => this.setState({ planFocused: false });
 
-  storeUser = e => {
-    this.setState({
-      isLoading: true
-    });
-    e.preventDefault();
-    let data = new FormData();
-    let { name, email, password, bio, selectedTags, avatar, plan } = this.state;
-    this.props.stripe.createToken({ name: name }).then(
-      ({ token }) => {
-        data.append("name", name.trim());
-        if (selectedTags.length) {
-          data.append("tags", selectedTags);
+    loadPlans = () => {
+        fetch(`https://innovationmesh.com/api/plans/${this.props.match.params.id}`, {
+        })
+            .then(response => response.json())
+            .then(json => this.setState({ loadedPlans: json.data ? json.data : json }))
+            .catch(error => {})
+    }
+
+    selectPlan = (e, selected) => {
+        e.preventDefault();
+        // console.log('s', selected);
+        this.setState({ plan: selected });
+    }
+
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
+
+    handleName = (event) => { this.setState({ name: event.target.value.replace(/\s\s+/g, ' ') }) };
+    handleEmail = (event) => { this.setState({ email: event.target.value }) };
+    handlePassword = (event) => {
+      this.setState({ password: event.target.value }, () => {
+        if(this.state.password.length < 6) {
+          this.setState({
+            passwordError:'Password Too Short'
+          })
+        } else {
+          this.setState({
+            passwordError:''
+          })
         }
         data.append("email", email.trim());
         data.append("password", password.trim());
@@ -317,20 +310,28 @@ class CheckoutForm extends React.PureComponent {
           data.append("plan", plan);
           data.append("username", name);
 
-          fetch("http://localhost:8000/api/signUp", {
-            method: "POST",
-            body: data
-          })
+            fetch("https://innovationmesh.com/api/signUp", {
+                method: 'POST',
+                body: data,
+            })
             .then(response => response.json())
             .then(user => {
               if (user.error) {
                 this.showSnack(user.error);
               } else if (user.token) {
-                localStorage.setItem("token", user.token);
-                fetch("http://localhost:8000/api/user/auth", {
-                  method: "GET",
-                  headers: { Authorization: "Bearer " + user.token }
+                localStorage.setItem('token', user.token);
+                fetch("https://innovationmesh.com/api/user/auth", {
+                    method: 'GET',
+                    headers: { "Authorization": "Bearer " + user.token }
                 })
+                .then(response => response.json())
+                .then(json => {
+                  let mainUser = json.user;
+                  localStorage.setItem('user', JSON.stringify(mainUser));
+                  fetch('https://innovationmesh.com/api/signIn', {
+                    method:'POST',
+                    body:data
+                  })
                   .then(response => response.json())
                   .then(json => {
                     let mainUser = json.user;
@@ -390,9 +391,9 @@ class CheckoutForm extends React.PureComponent {
         data.append("plan", plan);
         data.append("username", name);
 
-        fetch("http://localhost:8000/api/signUp", {
-          method: "POST",
-          body: data
+        fetch("https://innovationmesh.com/api/signUp", {
+            method: 'POST',
+            body: data,
         })
           .then(response => response.json())
           .then(json => {
@@ -561,7 +562,7 @@ class CheckoutForm extends React.PureComponent {
 
               {/*<TextField label="Bio"
             localStorage.setItem('token', mainToken);
-            fetch("http://localhost:8000/api/user/auth", {
+            fetch("https://innovationmesh.com/api/user/auth", {
               method: 'GET',
               headers: { "Authorization": "Bearer " + mainToken }
             })

@@ -115,7 +115,7 @@ export default class RightBar extends React.PureComponent {
   handleQuestionContent = (editorState) => {this.setState({questionContent: editorState, editorState: editorState})};
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/selectCategories", {
+    fetch("https://innovationmesh.com/api/selectCategories", {
       method:'GET'
     })
     .then(response => response.json())
@@ -153,7 +153,7 @@ export default class RightBar extends React.PureComponent {
     data.append('startDate', this.state.startDate);
     data.append('endDate', this.state.endDate);
 
-    fetch("http://localhost:8000/api/storeChallenge", {
+    fetch("https://innovationmesh.com/api/storeChallenge", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -178,7 +178,7 @@ export default class RightBar extends React.PureComponent {
             fileData.append('challengeID', json.challenge);
             fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
-            fetch("http://localhost:8000/api/uploadFile", {
+            fetch("https://innovationmesh.com/api/uploadFile", {
               method:'POST',
               body:fileData,
               headers:{'Authorization':'Bearer ' + this.state.token}
@@ -209,7 +209,7 @@ export default class RightBar extends React.PureComponent {
     data.append('questionTitle', this.state.questionTitle);
     data.append('questionContent', draftToHtml(convertToRaw(this.state.questionContent.getCurrentContent())));
 
-    fetch("http://localhost:8000/api/storeQuestion", {
+    fetch("https://innovationmesh.com/api/storeQuestion", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -284,6 +284,7 @@ export default class RightBar extends React.PureComponent {
     return (
       <div>
         {this.renderCreateButtons()}
+        <FlatButton href="http://southeaststartupchallenge.com/challenge-rules/" target="_blank" style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>Event Rules</FlatButton>
         <div style={{display:'flex', flexDirection:'column', borderTop:'1px solid #DDDDDD'}}></div>
         {/*<div className="challenges_newsLetterBlock">
           <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/newsletter.png"/>

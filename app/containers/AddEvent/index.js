@@ -40,82 +40,106 @@ const MenuProps = {
   }
 };
 export default class AddEvent extends Component {
-  state = {
-    loading: true,
-    dateError: "",
-    modalMessage: "",
-    msg: "",
-    snack: false,
-    // event
-    name: "",
-    url: "",
-    days: "",
-    description: "",
-    selectedTag: "",
-    selectedTags: [],
-    selectedSponsors: [],
-    newSponsors: [],
-    eventFiles: [],
-    organizers: [],
-    showOrganizers: false,
-    sponsors: [],
-    checkNewSponsors: "",
-    sponsorNames: "",
-    sponsorLogos: "",
-    sponsorWebsites: "",
-    loadedTags: [],
-    checkedRadio: null,
-    logo: "",
-    logoPreview: "",
-    eventImg: "",
-    eventImgPreview: "",
-    tag: [],
-    selectedOrganizers: [],
-    dates: []
-  };
+    state = {
+        loading: true,
+        dateError: '',
+        modalMessage: '',
+        msg: "",
+        snack: false,
+        // event
+        name: '',
+        url: '',
+        days: '',
+        description: '',
+        location:'',
+        selectedTag: '',
+        selectedTags: [],
+        selectedSponsors: [],
+        newSponsors: [],
+        eventFiles: [],
+        organizers: [],
+        showOrganizers: false,
+        sponsors: [],
+        checkNewSponsors: '',
+        sponsorNames: '',
+        sponsorLogos: '',
+        sponsorWebsites: '',
+        loadedTags: [],
+        checkedRadio: null,
+        logo: '',
+        logoPreview: '',
+        eventImg: '',
+        eventImgPreview: '',
+        tag: [],
+        selectedOrganizers: [],
+        dates: []
+    };
 
-  singleDay = 0;
-  multipleDays = 1;
-  handleRequestClose = () => {
-    this.setState({ snack: false, msg: "" });
-  };
-  showSnack = msg => {
-    this.setState({ snack: true, msg: msg });
-  };
+    singleDay = 0;
+    multipleDays = 1;
+    handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
+    showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
-  async componentDidMount() {
-    const authorized = await authenticate(localStorage["token"]);
-    if (!authorized.error && authorized) {
-      this.getOrganizers();
-      this.getSponsors();
-      this.loadSkills();
-      this.setState({ loading: false });
-    } else {
-      this.props.history.push("/");
+    async componentDidMount() {
+        const authorized = await authenticate(localStorage['token']);
+        if (!authorized.error && authorized) {
+            this.getOrganizers();
+            this.getSponsors();
+            this.loadSkills();
+            this.setState({ loading: false });
+        } else {
+            this.props.history.push('/');
+        }
     }
-  }
 
-  getSponsors = () => {
-    fetch(`http://localhost:8000/api/sponsors`, {
-      headers: { Authorization: `Bearer ${localStorage["token"]}` }
-    })
-      .then(response => response.json())
-      .then(Sponsors => {
-        if (!Sponsors.error) this.setState({ sponsors: Sponsors });
-      })
-      .catch(error => {
-        alert(`GetSponsors()error in fetching data from server: ${error}`); // eslint-disable-line
-      });
-  };
+    getSponsors = () => {
+        fetch(`https://innovationmesh.com/api/sponsors`, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(response => response.json())
+            .then(Sponsors => {
+                if (!Sponsors.error)
+                    this.setState({ sponsors: Sponsors });
+            })
+            .catch(error => {
+                alert(`GetSponsors()error in fetching data from server: ${error}`); // eslint-disable-line
+            });
+    }
 
-  getOrganizers = () => {
-    fetch(`http://localhost:8000/api/organizers/events`, {
-      headers: { Authorization: `Bearer ${localStorage["token"]}` }
-    })
-      .then(response => response.json())
-      .then(Organizers => {
-        if (!Organizers.error) {
-          this.setState({ organizers: Organizers });
+    getOrganizers = () => {
+        fetch(`https://innovationmesh.com/api/organizers/events`, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(response => response.json())
+            .then(Organizers => {
+                if (!Organizers.error) {
+                    this.setState({ organizers: Organizers });
+                }
+            })
+            .catch(error => {
+                alert(`GetOrganizers()error in fetching data from server: ${error}`); // eslint-disable-line
+            });
+    }
+
+    loadSkills = () => {
+        fetch('https://innovationmesh.com/api/skills/all', {
+            headers: { Authorization: `Bearer ${localStorage['token']}` },
+        })
+            .then(response => response.json())
+            .then(json => { this.setState({ loadedTags: json }) })
+            .catch(error => {
+                alert(`loadSkills()error in fetching data from server: ${error}`);
+            });
+    }
+
+    removeNewSponsor = (sponsor) => {
+        if (sponsor) {
+            const sponsors = this.state.newSponsors.slice();
+            const remove = sponsors.findIndex(previous => previous === sponsor);
+            if (remove !== -1) {
+                sponsors.splice(remove, 1);
+                this.setState({ newSponsors: sponsors });
+            }
         }
       })
       .catch(error => {
@@ -145,39 +169,18 @@ export default class AddEvent extends Component {
         this.setState({ newSponsors: sponsors });
       }
     }
-  };
 
-  eventName = event =>
-    this.setState({ name: event.target.value.replace(/\s\s+/g, " ").trim() });
-  eventUrl = event => this.setState({ url: event.target.value.trim() });
-  eventDays = event => this.setState({ days: event.target.value });
+    eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
+    eventUrl = event => this.setState({ url: event.target.value.trim() });
+    eventDays = event => this.setState({ days: event.target.value });
 
-  selectSponsor = selectedSponsor =>
-    this.setState({ selectedSponsors: selectedSponsor });
-  selectOrganizer = selectedOrganizer =>
-    this.setState({ selectedOrganizers: selectedOrganizer });
-  eventDescription = e => this.setState({ description: e.target.value });
+    selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
+    selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
+    eventDescription = e => this.setState({ description: e.target.value });
+    eventLocation = e => this.setState({ location: e.target.value });
 
-  handleOrganizerChange = event => {
-    this.setState({ selectedOrganizers: event.target.value });
-  };
-
-  handleSponsorChange = event => {
-    this.setState({ selectedSponsors: event.target.value });
-  };
-
-  handleSkillTags = event => {
-    this.setState({ selectedTags: event.target.value });
-  };
-
-  eventFiles = event => {
-    event.preventDefault();
-    let file = event.target.files[0];
-    let reader = new FileReader();
-    const files = this.state.eventFiles.slice();
-    reader.onload = () => {
-      files.push(file);
-      this.setState({ eventFiles: files });
+    handleOrganizerChange = event => {
+        this.setState({ selectedOrganizers: event.target.value });
     };
     reader.readAsDataURL(event.target.files[0]);
   };
@@ -213,28 +216,60 @@ export default class AddEvent extends Component {
         this.showSnack("Sponsor name already taken!");
       }
     }
-  };
 
-  Submit = () => {
-    let { newSponsors, selectedTags, description, dates } = this.state;
+    Submit = () => {
+        let {
+            newSponsors,
+            selectedTags,
+            description,
+            location,
+            dates,
+        } = this.state;
 
-    let data = new FormData();
-    data.append("description", description);
-    data.append("tags", selectedTags);
-    data.append("dates", JSON.stringify(dates));
-    data.append("name", this.state.name);
-    data.append("url", this.state.url);
-    data.append("organizers", this.state.selectedOrganizers);
-    data.append("sponsors", this.state.selectedSponsors);
+        let data = new FormData();
+        data.append('description', description);
+        data.append('location', location);
+        data.append('tags', selectedTags);
+        data.append('dates', JSON.stringify(dates));
+        data.append('name', this.state.name);
+        data.append('url', this.state.url);
+        data.append('organizers', this.state.selectedOrganizers);
+        data.append('sponsors', this.state.selectedSponsors);
 
-    if (!!newSponsors.length) {
-      data.append("newSponsors", JSON.stringify(newSponsors));
-      newSponsors.forEach((file, index) =>
-        data.append(`logos${index}`, file.logo)
-      );
-      console.log("new", data.get("logos0"));
-    } else {
-      console.log("d", data.get("description"));
+        if (!!newSponsors.length) {
+            data.append('newSponsors', JSON.stringify(newSponsors));
+            newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
+            console.log('new',data.get('logos0'));
+        } else {
+            console.log('d',data.get('description'));
+        }
+
+        fetch(`https://innovationmesh.com/api/event`, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` },
+            method: 'post',
+            body: data,
+        })
+        .then((response)=> {
+            return response.json();
+        })
+        .then(json => {
+            if(json.error) {
+                this.showSnack(json.error);
+            } 
+            else if(json.success) {
+                this.showSnack(json.success);
+                setTimeout(() => {
+                    this.props.history.push(`/event/${json.eventID}`)
+                }, 2000);
+            }
+        })
+    };
+
+    closeModal = () => this.setState({ modalMessage: '' });
+
+    renderLogoImage = () => {
+        if (this.state.logo !== "")
+            return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
     }
 
     fetch(`http://localhost:8000/api/event`, {
@@ -388,301 +423,253 @@ export default class AddEvent extends Component {
       });
       count++;
     }
-    return dates;
-    // this.setDates(dates).then(dates => dates);
-  };
-  render() {
-    const {
-      newSponsors,
-      organizers,
-      sponsors,
-      checkNewSponsors,
-      loadedTags,
-      days,
-      dates,
-      checkedRadio
-    } = this.state;
+    
+    render() {
+        const {
+            newSponsors, 
+            organizers,
+            sponsors,
+            checkNewSponsors,
+            loadedTags,
+            days,
+            dates,
+            checkedRadio
+        } = this.state;
 
-    const options = [
-      {
-        id: 0,
-        nm: "one day event"
-      },
-      {
-        id: 1,
-        nm: "multi-day event"
-      }
-    ];
-    return this.state.loading ? (
-      <Spinner loading={this.state.loading} />
-    ) : (
-      <div className="container">
-        <Helmet>
-          <title>Create Event Form</title>
-          <meta name="description" content="Description of Create event form" />
-        </Helmet>
-        <Header space={this.props.spaceName} />
+        const options = [
+            {
+                id: 0,
+                nm: "one day event"
+            },
+            {
+                id: 1, nm:
+                    "multi-day event"
+            }
+        ];
+        return (
+            this.state.loading
+                ?
+                <Spinner loading={this.state.loading} />
+                :
+                <div className="container">
+                    <Helmet>
+                        <title>Create Event Form</title>
+                        <meta name="description" content="Description of Create event form" />
+                    </Helmet>
+                    <Header space={this.props.spaceName} />
 
-        <div className="addEventBanner">
-          <div className="homeHeaderContentTitle">Add a New Event</div>
-          <div className="homeHeaderContentSubtitle">
-            Create an Event for your Space
-          </div>
-        </div>
-        <main className="spaceSignUpMain">
-          <div className="spaceSignUpTitle">Submit an Event</div>
-          <div className="spaceSignUpContainer">
-            <TextField
-              label="Event name"
-              onChange={this.eventName}
-              type="text"
-              name="eventName"
-              margin="normal"
-            />
-            <TextField
-              onChange={this.eventUrl}
-              type="url"
-              label="Event url"
-              margin="normal"
-            />
-            <TextField
-              label="Brief description"
-              value={this.state.description}
-              margin="normal"
-              multiline
-              onChange={this.eventDescription}
-            />
+                    <div className="addEventBanner">
+                        <div className="homeHeaderContentTitle">Add a New Event</div>
+                        <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
+                    </div>
+                    <main className="spaceSignUpMain">
 
-            {!!loadedTags.length && (
-              <FormControl style={{ marginTop: 24 }}>
-                <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
-                <Select
-                  multiple
-                  value={this.state.selectedTags}
-                  onChange={this.handleSkillTags}
-                  input={<Input id="tag-multiple" />}
-                  renderValue={selected => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {loadedTags.map((tag, key) => (
-                    <MenuItem key={`${key}tag`} value={tag}>
-                      <Checkbox
-                        checked={this.state.selectedTags.indexOf(tag) > -1}
-                      />
-                      <ListItemText primary={tag} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+                        <div className="spaceSignUpTitle">Submit an Event</div>
+                        <div className="spaceSignUpContainer">
 
-            {!!organizers.length && (
-              <FormControl style={{ marginTop: 24 }}>
-                <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
-                <Select
-                  multiple
-                  value={this.state.selectedOrganizers}
-                  onChange={this.handleOrganizerChange}
-                  input={<Input id="tag-multiple" />}
-                  renderValue={selected => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {organizers.map(organizer => (
-                    <MenuItem key={organizer} value={organizer}>
-                      <Checkbox
-                        checked={
-                          this.state.selectedOrganizers.indexOf(organizer) > -1
-                        }
-                      />
-                      <ListItemText primary={organizer} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+                            <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
+                            <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
+                            <TextField label="Location" value={this.state.location} margin="normal" onChange={this.eventLocation} />
+                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />     
 
-            {!!sponsors.length && (
-              <FormControl style={{ marginTop: 24 }}>
-                <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
-                <Select
-                  multiple
-                  value={this.state.selectedSponsors}
-                  onChange={this.handleSponsorChange}
-                  input={<Input id="tag-multiple" />}
-                  renderValue={selected => selected.join(",")}
-                  MenuProps={MenuProps}
-                >
-                  {sponsors.map(sponsor => (
-                    <MenuItem key={sponsor} value={sponsor}>
-                      <Checkbox
-                        checked={
-                          this.state.selectedSponsors.indexOf(sponsor) > -1
-                        }
-                      />
-                      <ListItemText primary={sponsor} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+                            {!!loadedTags.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={this.state.selectedTags}
+                                        onChange={this.handleSkillTags}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(',')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {loadedTags.map((tag, key) => (
+                                            <MenuItem key={`${key}tag`} value={tag}>
+                                                <Checkbox checked={(this.state.selectedTags.indexOf(tag) > -1)} />
+                                                <ListItemText primary={tag} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: 50,
-                color: "rgba(0,0,0,0.54)",
-                justifyContent: "space-between",
-                marginBottom: checkedRadio === this.multipleDays ? 32 : "",
-                marginTop: 32
-              }}
-            >
-              {options.map((item, i) => (
-                <label key={`l${item.id}`} className="radio-inline">
-                  <input
-                    type="radio"
-                    checked={checkedRadio === i}
-                    ref={el => (this["myRadioRef" + i] = el)}
-                    value={item.id}
-                    onChange={this.changeRadio}
-                    onKeyDown={event =>
-                      event.keyCode === 13 ? this.changeRadio(event) : null
-                    }
-                  />
-                  <span style={{ paddingLeft: 8 }}>{item.nm}</span>
-                </label>
-              ))}
-            </div>
+                            {!!organizers.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={this.state.selectedOrganizers}
+                                        onChange={this.handleOrganizerChange}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(',')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {organizers.map(organizer => (
+                                            <MenuItem key={organizer} value={organizer}>
+                                                <Checkbox checked={this.state.selectedOrganizers.indexOf(organizer) > -1} />
+                                                <ListItemText primary={organizer} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
 
-            {checkedRadio === this.multipleDays && (
-              <TextField
-                label="How many days?"
-                onChange={this.eventDays}
-                value={this.state.days}
-                type="text"
-              />
-            )}
+                            {!!sponsors.length &&
+                                <FormControl style={{ marginTop: 24 }}>
+                                    <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
+                                    <Select
+                                        multiple
+                                        value={this.state.selectedSponsors}
+                                        onChange={this.handleSponsorChange}
+                                        input={<Input id="tag-multiple" />}
+                                        renderValue={selected => selected.join(',')}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {sponsors.map(sponsor => (
+                                            <MenuItem key={sponsor} value={sponsor}>
+                                                <Checkbox checked={this.state.selectedSponsors.indexOf(sponsor) > -1} />
+                                                <ListItemText primary={sponsor} />
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            }
 
-            {checkedRadio === this.singleDay && (
-              <React.Fragment>
-                <label key="singleDay" className="addEventFormLabel">
-                  {" "}
-                  date & time{" "}
-                </label>
-                <DateRangePickerWithGaps
-                  dates={
-                    dates.length
-                      ? dates
-                      : [
-                          {
-                            day: moment(),
-                            start: "",
-                            end: ""
-                          }
-                        ]
-                  }
-                  handleDate={dates => {
-                    this.setState(() => ({ dates }));
-                  }}
-                />
-              </React.Fragment>
-            )}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: 50,
+                                    color: 'rgba(0,0,0,0.54)',
+                                    justifyContent: 'space-between',
+                                    marginBottom: checkedRadio === this.multipleDays ? 32 : '',
+                                    marginTop: 32
+                                }}
+                            >
+                                {options.map((item, i) =>
+                                    <label key={`l${item.id}`} className="radio-inline">
+                                        <input
+                                            type="radio"
+                                            checked={checkedRadio === i}
+                                            ref={(el) => this["myRadioRef" + i] = el}
+                                            value={item.id}
+                                            onChange={this.changeRadio}
+                                            onKeyDown={(event) => event.keyCode === 13 ? this.changeRadio(event) : null}
+                                        />
+                                        <span style={{ paddingLeft: 8 }}>{item.nm}</span>
+                                    </label>
+                                )}
+                            </div>
 
-            {checkedRadio === this.multipleDays &&
-              days > 1 && (
-                <div>
-                  {console.log("two")}
-                  <DateRangePickerWithGaps
-                    dates={dates.length ? dates : this.multiDay(days)}
-                    handleDate={dates => {
-                      this.setState(() => ({ dates }));
-                    }}
-                  />
-                </div>
-              )}
+                            {checkedRadio === this.multipleDays &&
+                                <TextField
+                                    label="How many days?"
+                                    onChange={this.eventDays}
+                                    value={this.state.days}
+                                    type="text"
+                                />
+                            }
 
-            <div
-              style={{
-                display: "flex",
-                marginTop: "32px",
-                marginBottom: "72px"
-              }}
-            >
-              <input
-                id="newSponsors"
-                type="checkbox"
-                onKeyDown={e =>
-                  e.keyCode === 13 ? this.toggleNewSponsors() : null
-                }
-                onChange={this.toggleNewSponsors}
-                checked={checkNewSponsors}
-              />
+                            {checkedRadio === this.singleDay && 
+                                <React.Fragment>
+                                    <label key="singleDay" className="addEventFormLabel"> date & time </label>
+                                    <DateRangePickerWithGaps 
+                                        dates={dates.length ? dates : [{
+                                            day: moment(),
+                                            start: '',
+                                            end: '',
+                                        }]}
+                                        handleDate={dates => {
+                                            this.setState(() => ({ dates })); 
+                                        }}
+                                    />
+                                </React.Fragment>
+                            }
 
-              <label
-                style={{ color: "rgba(0,0,0,0.54)" }}
-                htmlFor="newSponsors"
-              >
-                &nbsp;&nbsp;Add new sponsor
-              </label>
-            </div>
+                            {checkedRadio === this.multipleDays && days > 1 &&
+                                <div>
+                                    {console.log('two')}
+                                    <DateRangePickerWithGaps 
+                                        dates={dates.length ? dates : this.multiDay(days)}
+                                        handleDate={dates => {
+                                            this.setState(() => ({ dates })); 
+                                        }}
+                                    />
+                                </div>
+                            }
 
-            {checkNewSponsors && [
-              <TextField
-                key="newSponTF1"
-                label="name"
-                onChange={this.sponsorName}
-                value={this.state.sponsorNames}
-                type="text"
-                margin="normal"
-              />,
+                            <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
+                                <input
+                                    id="newSponsors"
+                                    type="checkbox"
+                                    onKeyDown={(e) => e.keyCode === 13 ? this.toggleNewSponsors() : null}
+                                    onChange={this.toggleNewSponsors}
+                                    checked={checkNewSponsors}
+                                />
 
-              <TextField
-                key="newSponTF2"
-                label="website"
-                onChange={this.sponsorUrl}
-                value={this.state.sponsorWebsites}
-                type="url"
-                margin="normal"
-              />,
+                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                                    &nbsp;&nbsp;Add new sponsor
+                                </label>
 
-              <div key="newSponTF3" className="spaceLogoMainImageRow">
-                <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
-                  {this.renderLogoImageText()}
-                  {this.renderLogoImage()}
-                  <input
-                    type="file"
-                    onChange={this.handleLogo}
-                    id="logo-image"
-                    style={{ display: "none" }}
-                    accept="image/png, image/jpg, image/jpeg"
-                  />
-                </label>
-              </div>,
+                            </div>
 
-              <RaisedButton
-                key="newSponTF4"
-                onSubmit={this.onNewSponsorSubmit}
-                sponsor
-                style={{
-                  backgroundColor: "#CCCCCC",
-                  marginBottom: 64,
-                  padding: "10px",
-                  marginTop: "15px",
-                  color: "#FFFFFF",
-                  fontWeight: "bold"
-                }}
-              />
-            ]}
+                            {checkNewSponsors && [
+                                <TextField
+                                    key="newSponTF1"
+                                    label="name"
+                                    onChange={this.sponsorName}
+                                    value={this.state.sponsorNames}
+                                    type="text"
+                                    margin="normal"
+                                />,
 
-            {!!newSponsors.length && (
-              <SelectedSponsors
-                selectedSponsors={newSponsors}
-                removeSponsor={this.removeNewSponsor}
-                newSponsor={true}
-              />
-            )}
+                                <TextField
+                                    key="newSponTF2"
+                                    label="website"
+                                    onChange={this.sponsorUrl}
+                                    value={this.state.sponsorWebsites}
+                                    type="url"
+                                    margin="normal"
+                                />,
 
-            {/*<div className="spaceLogoMainImageRow">
+                                <div key="newSponTF3" className="spaceLogoMainImageRow">
+                                    <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
+                                        {this.renderLogoImageText()}
+                                        {this.renderLogoImage()}
+                                        <input
+                                            type="file"
+                                            onChange={this.handleLogo}
+                                            id="logo-image"
+                                            style={{ display: 'none' }}
+                                            accept="image/png, image/jpg, image/jpeg"
+                                        />
+                                    </label>
+                                </div>,
+
+                                <RaisedButton
+                                    key="newSponTF4"
+                                    onSubmit={this.onNewSponsorSubmit}
+                                    sponsor
+                                    style={{
+                                        backgroundColor: '#CCCCCC',
+                                        marginBottom: 64,
+                                        padding: '10px',
+                                        marginTop: '15px',
+                                        color: '#FFFFFF',
+                                        fontWeight: 'bold'
+                                    }}
+                                />
+                            ]}
+
+                            {!!newSponsors.length &&
+                                <SelectedSponsors
+                                    selectedSponsors={newSponsors}
+                                    removeSponsor={this.removeNewSponsor}
+                                    newSponsor={true}
+                                />}
+
+
+                            {/*<div className="spaceLogoMainImageRow">
                                 <label htmlFor="event-image" className="spaceLogoMainImageBlock">
                                     {this.renderEventImageText()}
                                     {this.renderEventImage()}

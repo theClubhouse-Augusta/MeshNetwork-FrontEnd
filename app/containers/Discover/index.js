@@ -64,29 +64,30 @@ export default class Discover extends React.PureComponent {
     );
   };
 
-  showCategories = categoryID => {
-    fetch(
-      "http://localhost:8000/api/showCategory/" + categoryID + "/Challenges",
-      {
-        method: "GET"
-      }
-    )
-      .then(response => response.json())
-      .then(json => {
-        this.setState({
-          challenges: json.challenges
-        });
-      });
-  };
+  showCategories = (categoryID) => {
+    fetch("https://innovationmesh.com/api/showCategory/"+categoryID+"/Challenges" , {
+      method:'GET',
+    })
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        challenges:json.challenges
+      })
+    })
+  }
 
   getChallenges = () => {
     var nextPage = this.state.nextPage;
     var challenges = this.state.challenges;
 
-    if (this.state.currentPage !== this.state.lastPage) {
-      fetch(
-        "http://localhost:8000/api/getChallenges/30?page=" +
-          this.state.nextPage,
+    if(this.state.currentPage !== this.state.lastPage)
+    {
+      fetch("https://innovationmesh.com/api/getChallenges/30?page="+this.state.nextPage , {
+        method:'GET',
+      })
+      .then(response => response.json())
+      .then(json => {
+        if(json.challenges.current_page !== json.challenges.last_page)
         {
           method: "GET"
         }
@@ -111,9 +112,18 @@ export default class Discover extends React.PureComponent {
 
     data.append("searchContent", this.state.searchContent);
 
-    fetch("http://localhost:8000/api/searchChallenges", {
-      method: "POST",
-      body: data
+    fetch("https://innovationmesh.com/api/searchChallenges", {
+      method:'POST',
+      body:data
+    })
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        nextPage:1,
+        currentPage:0,
+        lastPage:1,
+        challenges: json.challenges,
+      })
     })
       .then(response => response.json())
       .then(json => {

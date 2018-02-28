@@ -47,7 +47,7 @@ export default class CourseInfo extends React.PureComponent {
 
   getCourse = (id) => {
 
-    fetch("http://localhost:8000/api/showCourse/"+id, {
+    fetch("https://innovationmesh.com/api/showCourse/"+id, {
       method:'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -291,7 +291,7 @@ export default class CourseInfo extends React.PureComponent {
         <div className="lmsDetailAuthor">
           <div className="lmsDetailAuthorContainer">
             <div className="lmsDetailAuthorAvatar">
-              <img alt="" className="lmsDetailAuthorAvatarImg" src={'http://houseofhackers.me/media/' + this.state.course.courseInstructorAvatar}/>
+              <img alt="" className="lmsDetailAuthorAvatarImg" src={this.state.course.courseInstructorAvatar}/>
             </div>
             <div className="lmsDetailAuthorInfo">
               <div className="lmsDetailAuthorName">{this.state.course.courseInstructorName}</div>
@@ -338,7 +338,7 @@ export default class CourseInfo extends React.PureComponent {
   renderImage = () => {
     if(this.state.course.courseImage) {
       return(
-        <img alt="" className="lmsSingleLessonImage" src={'http://houseofhackers.me/media/' + this.state.course.courseImage} />
+        <img alt="" className="lmsSingleLessonImage" src={this.state.course.courseImage} />
       )
     } else {
       return(

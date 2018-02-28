@@ -134,8 +134,11 @@ export default class Detail extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/selectCategories", {
-      method: "GET"
+    fetch("https://innovationmesh.com/api/selectCategories", {
+      method:'GET'
+    })
+    .then((response) => {
+      return response.json();
     })
       .then(response => {
         return response.json();
@@ -169,61 +172,55 @@ export default class Detail extends React.PureComponent {
 
     let data = new FormData();
 
-    data.append("challengeTitle", this.state.challengeTitle);
-    data.append(
-      "challengeContent",
-      draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent()))
-    );
-    data.append(
-      "challengeCategories",
-      JSON.stringify(this.state.challengeCategories)
-    );
-    data.append("challengeImage", this.state.challengeImage);
-    data.append("challengeFiles", this.state.challengeFiles);
-    data.append("startDate", this.state.startDate);
-    data.append("endDate", this.state.endDate);
+    data.append('challengeTitle', this.state.challengeTitle);
+    data.append('challengeContent', draftToHtml(convertToRaw(this.state.challengeContent.getCurrentContent())));
+    data.append('challengeCategories', JSON.stringify(this.state.challengeCategories));
+    data.append('challengeImage', this.state.challengeImage);
+    data.append('challengeFiles', this.state.challengeFiles);
+    data.append('startDate', this.state.startDate);
+    data.append('endDate', this.state.endDate);
 
-    fetch(
-      "http://localhost:8000/api/updateChallenge/" + this.state.challenge.id,
-      {
-        method: "POST",
-        body: data,
-        headers: { Authorization: "Bearer " + this.state.token }
+    fetch("https://innovationmesh.com/api/updateChallenge/"+this.state.challenge.id, {
+      method:'POST',
+      body:data,
+      headers:{'Authorization':'Bearer ' + this.state.token}
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      if(json.error) {
+        if(json.error === 'token_expired') {
+          this.showSnack("Your session has expired. Please sign back in to continue.");
+        } else {
+          this.showSnack(json.error);
+          this.setState({
+            confirmStatus:"Confirm"
+          })
+        }
       }
-    )
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        if (json.error) {
-          if (json.error === "token_expired") {
-            this.showSnack(
-              "Your session has expired. Please sign back in to continue."
-            );
-          } else {
-            this.showSnack(json.error);
-            this.setState({
-              confirmStatus: "Confirm"
-            });
-          }
-        } else if (json.challenge) {
-          // console.log(this.state.challengeFiles.length);
-          if (this.state.challengeFiles.length > 0) {
-            for (let i = 0; i < this.state.challengeFiles.length; i++) {
-              let fileData = new FormData();
-              fileData.append("challengeID", json.challenge);
-              fileData.append(
-                "challengeFile",
-                this.state.challengeFiles[i].fileData
-              );
+      else if(json.challenge) {
+        // console.log(this.state.challengeFiles.length);
+        if(this.state.challengeFiles.length > 0) {
+          for(let i = 0; i < this.state.challengeFiles.length; i++)
+          {
+            let fileData = new FormData();
+            fileData.append('challengeID', json.challenge);
+            fileData.append('challengeFile', this.state.challengeFiles[i].fileData);
 
-              fetch("http://localhost:8000/api/uploadFile", {
-                method: "POST",
-                body: fileData,
-                headers: { Authorization: "Bearer " + this.state.token }
-              })
-                .then(response => {
-                  return response.json();
+            fetch("https://innovationmesh.com/api/uploadFile", {
+              method:'POST',
+              body:fileData,
+              headers:{'Authorization':'Bearer ' + this.state.token}
+            })
+            .then((response) => {
+              return response.json();
+            })
+            .then((json) => {
+              if(json.error) {
+                this.showSnack(json.error);
+                this.setState({
+                  confirmStatus:"Confirm"
                 })
                 .then(json => {
                   if (json.error) {
@@ -254,41 +251,33 @@ export default class Detail extends React.PureComponent {
   }*/
 
   getDetail = () => {
-    fetch(
-      "http://localhost:8000/api/showChallenge/" + this.props.match.params.id,
-      {
-        method: "GET"
-      }
-    )
-      .then(response => response.json())
-      .then(json => {
-        this.setState(
-          {
-            challenge: json.challenge,
-            categories: json.challenge.categories,
-            uploads: json.uploads,
-            teams: json.teams,
-            participant: json.participant,
-            challengeTitle: json.challenge.challengeTitle,
-            challengeContent: EditorState.createWithContent(
-              ContentState.createFromBlockArray(
-                convertFromHTML(json.challenge.challengeContent)
-              )
-            ),
-            challengeCategories: json.categoriesArray,
-            challengeImagePreview: json.challenge.challengeImage
-          },
-          () => {
-            this.getSpace();
-          }
-        );
-      });
-  };
+    fetch("https://innovationmesh.com/api/showChallenge/"+this.props.match.params.id, {
+      method:'GET'
+    })
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        challenge:json.challenge,
+        categories:json.challenge.categories,
+        uploads:json.uploads,
+        teams:json.teams,
+        participant:json.participant,
+        challengeTitle:json.challenge.challengeTitle,
+        challengeContent: EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+              convertFromHTML(json.challenge.challengeContent)
+          )
+      ),
+        challengeCategories:json.categoriesArray,
+        challengeImagePreview:json.challenge.challengeImage
+      }, () => {
+        this.getSpace();
+      })
+    })
+  }
 
   getSpace = () => {
-    fetch(
-      "http://localhost:8000/api/workspace/" + this.state.challenge.spaceID,
-      {
+    fetch("https://innovationmesh.com/api/workspace/" + this.state.challenge.spaceID, {
         method: "GET"
       }
     )
@@ -301,11 +290,17 @@ export default class Detail extends React.PureComponent {
   };
 
   joinChallenge = () => {
-    fetch(
-      "http://localhost:8000/api/joinChallenge/" + this.state.challenge.id,
-      {
-        method: "GET",
-        headers: { Authorization: "Bearer " + this.state.token }
+    fetch("https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id, {
+      method:'GET',
+      headers: {'Authorization':'Bearer ' + this.state.token}
+    })
+    .then(response => response.json())
+    .then(json => {
+      if(json.error) {
+        this.showSnack(json.error);
+      }
+      else {
+        this.showSnack(json.success);
       }
     )
       .then(response => response.json())
