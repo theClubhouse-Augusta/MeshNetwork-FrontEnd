@@ -124,7 +124,7 @@ export default class EventDetail extends React.PureComponent {
                     </div>
                 </header>
 
-                <main className="spaceSignUpMain">
+                <main className="eventDetailMain">
                     <div className="spaceSignUpUser">
                         <div className="spaceSignUpTitle">Event Location</div>
                         {workSpace &&

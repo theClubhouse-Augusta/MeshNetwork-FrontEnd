@@ -1,1 +1,27 @@
 /* SideNav Mobile Styles */
+
+@media (max-width: 425px) {
+  .challenges_categoryTitle {
+    padding: 0 0 1em 1em;
+    font-size: 1.25em;
+  }
+  .challenges_categoryWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 5%;
+  }
+
+  .challenges_categoryBlock {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  .challenges_categoryIcon {
+    margin: 0 auto;
+  }
+
+  .challenges_categoryName {
+    margin: 0.25em 0;
+  }
+}
