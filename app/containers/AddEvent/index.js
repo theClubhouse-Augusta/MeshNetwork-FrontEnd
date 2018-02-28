@@ -52,6 +52,7 @@ export default class AddEvent extends Component {
         url: '',
         days: '',
         description: '',
+        location:'',
         selectedTag: '',
         selectedTags: [],
         selectedSponsors: [],
@@ -93,7 +94,7 @@ export default class AddEvent extends Component {
     }
 
     getSponsors = () => {
-        fetch(`http://localhost:8000/api/sponsors`, {
+        fetch(`https://innovationmesh.com/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -107,7 +108,7 @@ export default class AddEvent extends Component {
     }
 
     getOrganizers = () => {
-        fetch(`http://localhost:8000/api/organizers/events`, {
+        fetch(`https://innovationmesh.com/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -122,7 +123,7 @@ export default class AddEvent extends Component {
     }
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -150,6 +151,7 @@ export default class AddEvent extends Component {
     selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
     selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
     eventDescription = e => this.setState({ description: e.target.value });
+    eventLocation = e => this.setState({ location: e.target.value });
 
     handleOrganizerChange = event => {
         this.setState({ selectedOrganizers: event.target.value });
@@ -209,6 +211,7 @@ export default class AddEvent extends Component {
             newSponsors,
             selectedTags,
             description,
+            location,
             dates,
             name,
             url,
@@ -218,6 +221,7 @@ export default class AddEvent extends Component {
 
         let data = new FormData();
         data.append('description', description);
+        data.append('location', location);
         data.append('tags', selectedTags);
         data.append('dates', JSON.stringify(dates));
         data.append('name', name);
@@ -230,7 +234,7 @@ export default class AddEvent extends Component {
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`http://localhost:8000/api/event`, {
+        fetch(`https://innovationmesh.com/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -396,7 +400,8 @@ export default class AddEvent extends Component {
 
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
-                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
+                            <TextField label="Location" value={this.state.location} margin="normal" onChange={this.eventLocation} />
+                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />     
 
                             {!!loadedTags.length &&
                                 <FormControl style={{ marginTop: 24 }}>

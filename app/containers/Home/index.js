@@ -212,7 +212,7 @@ export default class Home extends React.PureComponent {
               </div>
             </div>
           </div>
-          <div className="homeMainSection" style={{ background: "#EEEEEE" }}>
+          {/*<div className="homeMainSection" style={{ background: "#EEEEEE" }}>
             <div className="homeMainSectionTitle">
               Best Things to Do at a Space
             </div>
@@ -221,8 +221,8 @@ export default class Home extends React.PureComponent {
             </div>
 
             <div className="homeMainSectionContent" />
-          </div>
-          <div className="homeMainSection">
+              </div>*/}
+          <div className="homeMainSection" style={{ background: "#EEEEEE" }}>
             <div className="homeMainSectionTitle">See How It Works</div>
             <div className="homeMainSectionSubtitle">
               Discover how the Mesh Network can help you find everything you
@@ -263,13 +263,13 @@ export default class Home extends React.PureComponent {
               </div>
             </div>
           </div>
-          <div className="homeMainSection" style={{ background: "#EEEEEE" }}>
+          {/*<div className="homeMainSection" style={{ background: "#EEEEEE" }}>
             <div className="homeMainSectionTitle">Tips & Articles</div>
             <div className="homeMainSectionSubtitle">
               Browse the latest helpful Articles and Tips
             </div>
             <div className="homeMainSectionContent" />
-          </div>
+            </div>*/}
         </main>
 
         <footer className="homeFooterContainer">
