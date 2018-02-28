@@ -210,23 +210,24 @@ export default class AddEvent extends Component {
             selectedTags,
             description,
             dates,
+            name,
+            url,
+            selectedOrganizers,
+            selectedSponsors,
         } = this.state;
 
         let data = new FormData();
         data.append('description', description);
         data.append('tags', selectedTags);
         data.append('dates', JSON.stringify(dates));
-        data.append('name', this.state.name);
-        data.append('url', this.state.url);
-        data.append('organizers', this.state.selectedOrganizers);
-        data.append('sponsors', this.state.selectedSponsors);
+        data.append('name', name);
+        data.append('url', url);
+        data.append('organizers', selectedOrganizers);
+        data.append('sponsors', selectedSponsors);
 
         if (!!newSponsors.length) {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
-            console.log('new',data.get('logos0'));
-        } else {
-            console.log('d',data.get('description'));
         }
 
         fetch(`http://localhost:8000/api/event`, {
@@ -237,14 +238,14 @@ export default class AddEvent extends Component {
         .then((response)=> {
             return response.json();
         })
-        .then(json => {
-            if(json.error) {
-                this.showSnack(json.error);
+        .then(({ success, error, eventID }) => {
+            if(error) {
+                this.showSnack(error);
             } 
-            else if(json.success) {
-                this.showSnack(json.success);
+            else if(success) {
+                this.showSnack(success);
                 setTimeout(() => {
-                    this.props.history.push(`/event/${json.eventID}`)
+                    this.props.history.push(`/event/${eventID}`)
                 }, 2000);
             }
         })

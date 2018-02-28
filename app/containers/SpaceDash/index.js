@@ -34,9 +34,9 @@ import authenticate from '../../utils/Authenticate';
 import './style.css';
 import './styleM.css';
 
-const getUsersAPI = 'https://innovationmesh.com/api/users/';
+const getUsersAPI = 'http://localhost:8000/api/users/';
 
-const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/';
+const spaceInfoAPI = 'http://localhost:8000/api/workspace/';
 
 export default class SpaceDash extends React.PureComponent {
     state = {
@@ -716,6 +716,7 @@ export default class SpaceDash extends React.PureComponent {
                 <div className="spaceDashContent">
                     <Header space={this.props.spaceName} />
                     <EventInformation 
+                        {...this.props}
                         id={this.state.editEventID} 
                     />
                 </div>

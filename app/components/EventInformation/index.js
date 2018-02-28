@@ -325,17 +325,20 @@ export default class EventInformation extends Component {
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`http://localhost:8000/api/event/update`, {
+        fetch(`http://localhost:8000/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
         })
-            .then(response => response.text())
-            .then(success => {
-                if (eventID.error) {
-                   this.toggleSnackBar(eventID.error); 
-                } else {
-                   this.toggleSnackBar(success); 
+            .then(response => response.json())
+            .then(({ success, error, eventID }) => {
+                if (error) {
+                   this.toggleSnackBar(error); 
+                } else if (success) {
+                    this.toggleSnackBar(success); 
+                    setTimeout(() => {
+                        this.props.history.push(`/event/${eventID}`)
+                    }, 2000);
                 }
             })
             .catch(error => {
