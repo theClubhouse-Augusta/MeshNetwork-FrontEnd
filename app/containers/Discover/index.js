@@ -179,10 +179,11 @@ export default class Discover extends React.PureComponent {
         <main className="challenges_mainContainer">
           <div
             style={{
-              width: "100%",
+              width: "90%",
               maxWidth: "1200px",
               margin: "0 auto",
-              fontFamily: "Noto Sans"
+              fontFamily: "Noto Sans",
+              textAlign: "justify"
             }}
           >
             <div
@@ -226,7 +227,7 @@ export default class Discover extends React.PureComponent {
                 onChange={this.handleSearch}
                 fullWidth
                 placeholder="Search For Challenges"
-                style={{ marginBottom: "15px" }}
+                style={{ margin: "30px 0" }}
               />
               <div className="challenges_feedContainer">
                 <div className="challenges_feedHeader">Challenges</div>

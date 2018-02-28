@@ -2,7 +2,9 @@
 
 @media (max-width: 425px) {
   .lmsHomeHeader {
-    height: 40vh;
+    height: 60vh;
+    padding-top: 30px;
+    text-align: center;
   }
 
   .lmsHomeHeaderHeading {
@@ -11,7 +13,9 @@
 
   .lmsHomeHeaderText {
     font-size: 1.25em;
-    margin-top: 30px;
+    margin: 30px 15px 0 15px;
+    width: 90%;
+    text-align: center;
   }
 
   .lmsHomeMainList {
@@ -31,5 +35,16 @@
   .lmsEnrollSummary,
   .lmsEnrollPayment {
     width: 90%;
+  }
+
+  .lmsHomeCallToAction {
+    height: auto;
+    padding: 7.5px;
+    text-align: center;
+    font-size: 2.5em;
+  }
+
+  .lmsHomeBuzz {
+    height: auto;
   }
 }

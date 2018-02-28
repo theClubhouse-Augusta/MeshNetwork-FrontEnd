@@ -7,7 +7,7 @@
   }
 
   .challenges_categoryContainer {
-    width: 90%;
+    width: 100%;
   }
 
   .challenges_challengeFeed {
@@ -24,6 +24,11 @@
     padding: 1em;
     width: 200px;
     height: 150px;
+  }
+
+  .challenges_sideBar {
+    width: 90%;
+    margin: 0 auto;
   }
 }
 

@@ -13,4 +13,12 @@
     margin: 0;
     padding: 0;
   }
+
+  .challenges_detailContent {
+    margin-bottom: 30px;
+  }
+
+  .challenges_detailColumnTwo {
+    width: 75%;
+  }
 }

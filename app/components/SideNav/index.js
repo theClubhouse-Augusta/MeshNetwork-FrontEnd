@@ -185,20 +185,22 @@ export default class SideNav extends React.PureComponent {
         <div className="challenges_categoryHeader">
           <div className="challenges_categoryTitle">Categories</div>
         </div>
-        {this.state.categories.map((c, i) => (
-          <a
-            href={"/Challenges/Category/" + c.categorySlug}
-            className="challenges_categoryBlock"
-            key={`category${i}`}
-          >
-            <img
-              alt=""
-              src={c.categoryImage}
-              className="challenges_categoryIcon"
-            />
-            <div className="challenges_categoryName">{c.categoryName}</div>
-          </a>
-        ))}
+        <div className="challenges_categoryWrapper">
+          {this.state.categories.map((c, i) => (
+            <a
+              href={"/Challenges/Category/" + c.categorySlug}
+              className="challenges_categoryBlock"
+              key={`category${i}`}
+            >
+              <img
+                alt=""
+                src={c.categoryImage}
+                className="challenges_categoryIcon"
+              />
+              <div className="challenges_categoryName">{c.categoryName}</div>
+            </a>
+          ))}
+        </div>
 
         <Dialog
           onRequestClose={this.categoryDialog}
