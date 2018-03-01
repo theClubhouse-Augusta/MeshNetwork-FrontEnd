@@ -252,6 +252,19 @@ export default class Kiosk extends React.PureComponent {
                             onChange={this.handleNameInputChange}
                             options={this.state.users}
                         />
+                        <Link to={"/join/" + this.state.workspace.slug} style={{ marginTop: "30px", width: "10%" }}>
+                            <FlatButton style={{
+                                width: "100%",
+                                background: "#ff4d58",
+                                paddingTop: "10px",
+                                paddingBottom: "10px",
+                                color: "#FFFFFF",
+                                fontWeight: "bold"
+                                }}
+                            >
+                                Don't See Your Name? Join Our Mesh Network!
+                            </FlatButton>
+                        </Link>
 
                         {this.renderReasons()}
                         {this.renderToday()}

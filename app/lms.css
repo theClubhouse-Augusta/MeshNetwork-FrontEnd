@@ -1237,7 +1237,7 @@
   font-family:'Lato';
 }
 
-.lmsNewLessonCloseIcon {
+/*.lmsNewLessonCloseIcon {
   opacity:0;
 }
 
@@ -1245,7 +1245,7 @@
   opacity:1;
   animation: fadein 500ms;
 }
-
+*/
 .lmsNewDeleteBlock {
   display:flex;
   flex-direction:row;

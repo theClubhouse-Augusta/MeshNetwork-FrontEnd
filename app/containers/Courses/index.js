@@ -254,7 +254,7 @@ export default class Courses extends React.PureComponent {
                         {course.courseName}
                       </Typography>
                       <Typography component="p">
-                        {course.courseSummary}
+                        {/*course.courseSummary*/}
                       </Typography>
                     </CardContent>
                   </Card>
