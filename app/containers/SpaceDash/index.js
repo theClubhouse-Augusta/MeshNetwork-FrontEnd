@@ -60,26 +60,40 @@ export default class SpaceDash extends React.PureComponent {
         userPage: 0,
         userRowsPerPage: 10,
         eventPage: 0,
-        eventRowsPerPage:10,
-        resourceDays:'',
-        resourceMonday:0,
-        resourceTuesday:0,
-        resourceWednesday:0,
-        resourceThursday:0,
-        resourceFriday:0,
-        resourceStartTime:'',
-        resourceEndTime:'',
-        resourceIncrement:0,
+        eventRowsPerPage: 10,
+        resourceDays: '',
+        resourceMonday: 0,
+        resourceTuesday: 0,
+        resourceWednesday: 0,
+        resourceThursday: 0,
+        resourceFriday: 0,
+        resourceStartTime: '',
+        resourceEndTime: '',
+        resourceIncrement: 0,
         pageContent: [],
         editEventID: '',
-    }
+    };
+
     async componentDidMount() {
-        const authorized = await authenticate(localStorage['token'], this.props.history);
-        if (!authorized.error && authorized) {
-            this.loadSpaceDescription();
-            this.setState({ loading: false });
-        } else {
-            this.props.history.push('/');
+        let authorized;
+        try {
+            authorized = await authenticate(localStorage['token']);
+        } finally {
+            if (authorized !== undefined) {
+                if (!authorized.error && authorized) {
+                    this.loadSpaceDescription();
+                    this.setState({ loading: false });
+                } else if (authorized.error) {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    this.props.history.push('/signin');
+                }
+            } else {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                this.props.history.push('/signin');
+            }
+
         }
     }
 
@@ -111,7 +125,7 @@ export default class SpaceDash extends React.PureComponent {
                 this.setState({
                     spaceDescription: json.description,
                     spaceID: json.id
-                },  () => {
+                }, () => {
                     this.loadSpaceUsers(json.id);
                     this.getSpaceStats(json.id);
                     this.getSpaceEvents(json.id);
@@ -166,6 +180,7 @@ export default class SpaceDash extends React.PureComponent {
                 return response.json();
             })
             .then((json) => {
+                console.log(JSON.stringify(json));
                 this.setState({
                     photoGallery: json.photos
                 })
@@ -184,7 +199,7 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     storePhoto = (file) => {
-        let photoGallery = this.state.photoGallery;
+        let photoGallery = this.state.photoGallery.slice();
         let data = new FormData();
 
         data.append('spaceID', this.state.spaceID);
@@ -204,43 +219,30 @@ export default class SpaceDash extends React.PureComponent {
                 else if (json.success) {
                     this.showSnack(json.success);
                     photoGallery.push(json.photo);
-                    this.setState({
-                        photoGallery: photoGallery
-                    })
+                    this.setState(() => ({ photoGallery }));
                 }
             })
     }
 
     deletePhoto = (id, i, spaceID) => {
-        let photoGallery = this.state.photoGallery;
-        // console.log(i);
+        let photoGallery = this.state.photoGallery.slice();
         let data = new FormData();
         data.append("_method", "DELETE");
-        // data.append("spaceID", spaceID);
         fetch(`http://localhost:8000/api/photos/${id}`, {
             headers: { 'Authorization': 'Bearer ' + this.state.token },
             method: "POST",
             body: data,
         })
             .then(response => response.json())
-            .then(json => {
-                if (json.success) {
+            .then(({ success, error }) => {
+                if (success) {
                     photoGallery.splice(i, 1);
-                    // const remove = photoGallery.findIndex(previous => previous.id === id);
-
-                    // if (remove !== -1 && photoGallery.length !== 1) {
-                    // this.showSnack(json.success);
-                    //this.setState({ photoGallery: photoGallery.splice(-i, 1) });
-                    this.setState({ photoGallery: photoGallery }, () => {
-                        this.forceUpdate();
-                    })
-                    // } else {
-                    // this.setState({ photoGallery: [] });
-                    // }
+                    this.setState(() => ({ photoGallery }));
                 }
-                else
-                    this.showSnack(json.error);
-            })
+                else {
+                    this.showSnack(error);
+                }
+            });
     }
 
     handleResourceName = (event) => {
@@ -319,21 +321,21 @@ export default class SpaceDash extends React.PureComponent {
         let resources = this.state.resources;
         let resourceDays = [];
 
-        if(this.state.resourceMonday === 1) {
+        if (this.state.resourceMonday === 1) {
             resourceDays.push(this.state.resourceMonday);
         }
-        if(this.state.resourceTuesday === 2) {
+        if (this.state.resourceTuesday === 2) {
             resourceDays.push(this.state.resourceTuesday);
         }
-        if(this.state.resourceWednesday === 3) {
+        if (this.state.resourceWednesday === 3) {
             resourceDays.push(this.state.resourceWednesday);
         }
-        if(this.state.resourceThursday === 4) {
+        if (this.state.resourceThursday === 4) {
             resourceDays.push(this.state.resourceThursday);
-        } 
-        if(this.state.resourceFriday === 5) {
+        }
+        if (this.state.resourceFriday === 5) {
             resourceDays.push(this.state.resourceFriday);
-        } 
+        }
 
         let data = new FormData();
         data.append('spaceID', this.state.spaceID);
@@ -394,28 +396,48 @@ export default class SpaceDash extends React.PureComponent {
     }
 
     handleUserChangePage = (event, page) => {
-      this.setState({ userPage:page });
+        this.setState({ userPage: page });
     };
 
-     handleUserChangeRowsPerPage = event => {
-      this.setState({ userRowsPerPage: event.target.value });
+    handleUserChangeRowsPerPage = event => {
+        this.setState({ userRowsPerPage: event.target.value });
     };
 
     handleEventChangePage = (event, page) => {
-      this.setState({ eventPage:page });
+        this.setState({ eventPage: page });
     };
 
-     handleEventChangeRowsPerPage = event => {
-      this.setState({ eventRowsPerPage: event.target.value });
+    handleEventChangeRowsPerPage = event => {
+        this.setState({ eventRowsPerPage: event.target.value });
     };
+
     editEventID = id => this.setState({ editEventID: id });
+
+    deleteEvent = (eventID, index) => {
+        fetch(`http://localhost:8000/api/event/delete/${eventID}`, {
+            headers: { Authorization: `Bearer ${localStorage['token']}` }
+        })
+            .then(response => response.json())
+            .then(({ success, error }) => {
+                if (success) {
+                    const spaceEvents = this.state.spaceEvents.slice();
+                    spaceEvents.splice(index, 1);
+                    this.setState(() => ({ spaceEvents }));
+                } else if (error) {
+                    console.log('error, event');
+                }
+            })
+            .catch(error => {
+                //
+            })
+    };
 
     renderDashContent = () => {
         if (this.state.activeMenu === 'main') {
 
             return (
                 <div className="spaceDashContent">
-                    <Header space={this.props.spaceName}/>
+                    <Header space={this.props.spaceName} />
                     <div className="spaceDashDataRow">
                         <div className="spaceDashDataBlock">
                             <div className="spaceDashDataTitle">Members</div>
@@ -454,7 +476,7 @@ export default class SpaceDash extends React.PureComponent {
 
                     <div className="spaceDashColumnsContainer">
                         <div className="spaceDashColumn">
-                        <div className="spaceDashDataTitleGraph">Members</div>
+                            <div className="spaceDashDataTitleGraph">Members</div>
                             <Table>
                                 <TableHead>
                                     <TableRow>
@@ -464,38 +486,38 @@ export default class SpaceDash extends React.PureComponent {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {this.state.spaceUsers.slice(this.state.userPage * this.state.userRowsPerPage, this.state.userPage * this.state.userRowsPerPage + this.state.userRowsPerPage).map((user, key) => {
-                                    return(
-                                      <TableRow key={`user${key}`}>
-                                          <TableCell>{user.name}</TableCell>
-                                          <TableCell>{user.email}</TableCell>
-                                          <TableCell>{user.title}</TableCell>
-                                      </TableRow>
-                                    )
-                                  })}
+                                    {this.state.spaceUsers.slice(this.state.userPage * this.state.userRowsPerPage, this.state.userPage * this.state.userRowsPerPage + this.state.userRowsPerPage).map((user, key) => {
+                                        return (
+                                            <TableRow key={`user${key}`}>
+                                                <TableCell>{user.name}</TableCell>
+                                                <TableCell>{user.email}</TableCell>
+                                                <TableCell>{user.title}</TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
                                 </TableBody>
                                 <TableFooter>
-                                  <TableRow>
-                                    <TablePagination
-                                      colSpan={6}
-                                      count={this.state.spaceUsers.length}
-                                      rowsPerPage={this.state.userRowsPerPage}
-                                      page={this.state.userPage}
-                                      backIconButtonProps={{
-                                        'aria-label': 'Previous Page',
-                                      }}
-                                      nextIconButtonProps={{
-                                        'aria-label': 'Next Page',
-                                      }}
-                                      onChangePage={this.handleUserChangePage}
-                                      onChangeRowsPerPage={this.handleUserChangeRowsPerPage}
-                                    />
-                                  </TableRow>
+                                    <TableRow>
+                                        <TablePagination
+                                            colSpan={6}
+                                            count={this.state.spaceUsers.length}
+                                            rowsPerPage={this.state.userRowsPerPage}
+                                            page={this.state.userPage}
+                                            backIconButtonProps={{
+                                                'aria-label': 'Previous Page',
+                                            }}
+                                            nextIconButtonProps={{
+                                                'aria-label': 'Next Page',
+                                            }}
+                                            onChangePage={this.handleUserChangePage}
+                                            onChangeRowsPerPage={this.handleUserChangeRowsPerPage}
+                                        />
+                                    </TableRow>
                                 </TableFooter>
                             </Table>
                         </div>
                         <div className="spaceDashColumn">
-                        <div className="spaceDashDataTitleGraph">Events</div>
+                            <div className="spaceDashDataTitleGraph">Events</div>
                             <Table>
                                 <TableHead>
                                     <TableRow>
@@ -503,48 +525,60 @@ export default class SpaceDash extends React.PureComponent {
                                         <TableCell>Location</TableCell>
                                         <TableCell>Start Date</TableCell>
                                         <TableCell>Edit</TableCell>
+                                        <TableCell>Delete</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {this.state.spaceEvents.slice(
-                                      this.state.eventPage * this.state.eventRowsPerPage, 
-                                      this.state.eventPage * this.state.eventRowsPerPage + this.state.eventRowsPerPage
+                                    {this.state.spaceEvents.slice(
+                                        this.state.eventPage * this.state.eventRowsPerPage,
+                                        this.state.eventPage * this.state.eventRowsPerPage + this.state.eventRowsPerPage
                                     ).map((e, key) => {
-                                    return(
-                                      <TableRow key={`event${key}`}>
-                                            <TableCell><a href={`/event/${e.id}`}>{e.title}</a></TableCell>
-                                            <TableCell>{e.space.city}, {e.space.state}</TableCell>
-                                            <TableCell>{e.date}</TableCell>
-                                            <TableCell 
-                                                className="editEventRow"
-                                                onClick={() => { 
-                                                    this.changeMenu('editEvent'); 
-                                                    this.editEventID(e.id); 
-                                                }}
-                                            >
-                                                update&nbsp;{e.title}
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                  })}
+                                        return (
+                                            <TableRow key={`event${key}`}>
+                                                <TableCell
+                                                    style={{ paddingLeft: 1, paddingRight: 1 }}
+                                                >
+                                                    <a href={`/event/${e.id}`}>{e.title}</a>
+                                                </TableCell>
+                                                <TableCell>{e.space.city}, {e.space.state}</TableCell>
+                                                <TableCell>{e.date}</TableCell>
+                                                <TableCell
+                                                    style={{ paddingLeft: 1, paddingRight: 1 }}
+                                                    className="editEventRow"
+                                                    onClick={() => {
+                                                        this.changeMenu('editEvent');
+                                                        this.editEventID(e.id);
+                                                    }}
+                                                >
+                                                    update&nbsp;{e.title}
+                                                </TableCell>
+                                                <TableCell
+                                                    className="editEventRow"
+                                                    onClick={() => this.deleteEvent(e.id, key)}
+                                                >
+                                                    delete&nbsp;{e.title}
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
                                 </TableBody>
                                 <TableFooter>
-                                  <TableRow>
-                                    <TablePagination
-                                      colSpan={6}
-                                      count={this.state.spaceEvents.length}
-                                      rowsPerPage={this.state.eventRowsPerPage}
-                                      page={this.state.eventPage}
-                                      backIconButtonProps={{
-                                        'aria-label': 'Previous Page',
-                                      }}
-                                      nextIconButtonProps={{
-                                        'aria-label': 'Next Page',
-                                      }}
-                                      onChangePage={this.handleEventChangePage}
-                                      onChangeRowsPerPage={this.handleEventChangeRowsPerPage}
-                                    />
-                                  </TableRow>
+                                    <TableRow>
+                                        <TablePagination
+                                            colSpan={6}
+                                            count={this.state.spaceEvents.length}
+                                            rowsPerPage={this.state.eventRowsPerPage}
+                                            page={this.state.eventPage}
+                                            backIconButtonProps={{
+                                                'aria-label': 'Previous Page',
+                                            }}
+                                            nextIconButtonProps={{
+                                                'aria-label': 'Next Page',
+                                            }}
+                                            onChangePage={this.handleEventChangePage}
+                                            onChangeRowsPerPage={this.handleEventChangeRowsPerPage}
+                                        />
+                                    </TableRow>
                                 </TableFooter>
 
                             </Table>
@@ -556,7 +590,7 @@ export default class SpaceDash extends React.PureComponent {
         else if (this.state.activeMenu === 'updateSpace') {
             return (
                 <div className="spaceDashContent">
-                    <Header  space={this.props.spaceName} />
+                    <Header space={this.props.spaceName} />
                     <SpaceInformation id={this.props.match.params.id} spaceID={this.state.spaceID} description={this.state.spaceDescription} />
                 </div>
             )
@@ -573,25 +607,25 @@ export default class SpaceDash extends React.PureComponent {
                     </div>
                     <div className="spaceDashPhotoGallery">
                         {this.state.photoGallery.map((photo, i) => (
-                                <div key={`photoGallery${i}`} className="spaceDashPhotoBlock">
-                                    <img alt="" src={photo.photoThumbnail} />
+                            <div key={`photoGallery${i}`} className="spaceDashPhotoBlock">
+                                <img alt="" src={photo.photoThumbnail} />
 
-                                    <FlatButton
-                                        style={{
-                                            width: '100%',
-                                            background: '#ff4d58',
-                                            paddingTop: '10px',
-                                            paddingBottom: '10px',
-                                            color: '#FFFFFF',
-                                            fontWeight: 'bold',
-                                            alignSelf: 'center'
-                                        }}
-                                        onClick={() => this.deletePhoto(photo.id, i, this.state.spaceID)}
-                                    >
-                                        Delete photo
+                                <FlatButton
+                                    style={{
+                                        width: '100%',
+                                        background: '#ff4d58',
+                                        paddingTop: '10px',
+                                        paddingBottom: '10px',
+                                        color: '#FFFFFF',
+                                        fontWeight: 'bold',
+                                        alignSelf: 'center'
+                                    }}
+                                    onClick={() => this.deletePhoto(photo.id, i, this.state.spaceID)}
+                                >
+                                    Delete photo
                                     </FlatButton>
 
-                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -602,18 +636,18 @@ export default class SpaceDash extends React.PureComponent {
                 <div className="spaceDashContent">
                     <Header space={this.props.spaceName} />
                     <div className="spaceDashOptions">
-                        <TextField  value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px', marginTop: 32  }} />
-                        <TextField  value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px', marginTop: 32 }} />
-                        <FormGroup style={{marginTop: 32}} row>
+                        <TextField value={this.state.resourceName} onChange={this.handleResourceName} label="Resource Name" style={{ marginRight: '10px', marginTop: 32 }} />
+                        <TextField value={this.state.resourceEmail} onChange={this.handleResourceEmail} label="Resource E-mail" style={{ marginRight: '10px', marginTop: 32 }} />
+                        <FormGroup style={{ marginTop: 32 }} row>
                             <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={this.state.resourceMonday}
-                                    onChange={this.handleResourceMonday}
-                                    value={1}
-                                />
-                            }
-                            label="Monday"
+                                control={
+                                    <Checkbox
+                                        checked={this.state.resourceMonday}
+                                        onChange={this.handleResourceMonday}
+                                        value={1}
+                                    />
+                                }
+                                label="Monday"
                             />
                             <FormControlLabel
                                 control={
@@ -623,75 +657,75 @@ export default class SpaceDash extends React.PureComponent {
                                         value={2}
                                     />
                                 }
-                            label="Tuesday"
+                                label="Tuesday"
                             />
                             <FormControlLabel
-                            control={
-                                <Checkbox
-                                checked={this.state.resourceWednesday}
-                                onChange={this.handleResourceWednesday}
-                                value={3}
-                                />
-                            }
-                            label="Wednesday"
+                                control={
+                                    <Checkbox
+                                        checked={this.state.resourceWednesday}
+                                        onChange={this.handleResourceWednesday}
+                                        value={3}
+                                    />
+                                }
+                                label="Wednesday"
                             />
                             <FormControlLabel
-                            control={
-                                <Checkbox
-                                checked={this.state.resourceThursday}
-                                onChange={this.handleResourceThursday}
-                                value={4}
-                                />
-                            }
-                            label="Thursday"
+                                control={
+                                    <Checkbox
+                                        checked={this.state.resourceThursday}
+                                        onChange={this.handleResourceThursday}
+                                        value={4}
+                                    />
+                                }
+                                label="Thursday"
                             />
                             <FormControlLabel
-                            control={
-                                <Checkbox
-                                checked={this.state.resourceFriday}
-                                onChange={this.handleResourceFriday}
-                                value={5}
-                                />
-                            }
-                            label="Friday"
+                                control={
+                                    <Checkbox
+                                        checked={this.state.resourceFriday}
+                                        onChange={this.handleResourceFriday}
+                                        value={5}
+                                    />
+                                }
+                                label="Friday"
                             />
                         </FormGroup>
-                        <label style={{marginTop: 32}} htmlFor="startTime">Start Time</label>
-                        <TextField 
+                        <label style={{ marginTop: 32 }} htmlFor="startTime">Start Time</label>
+                        <TextField
                             id="startTime"
-                            value={this.state.resourceStartTime} 
+                            value={this.state.resourceStartTime}
                             type="time"
-                            onChange={this.handleStartTime} 
+                            onChange={this.handleStartTime}
                             //label="Start Time" 
-                            placeholder="8:00am" 
-                            style={{ marginRight: '10px', marginBottom: 32 }} 
+                            placeholder="8:00am"
+                            style={{ marginRight: '10px', marginBottom: 32 }}
                         />
                         <label htmlFor="endTime">End Time </label>
-                        <TextField 
+                        <TextField
                             id="endTime"
-                            value={this.state.resourceEndTime} 
+                            value={this.state.resourceEndTime}
                             type="time"
-                            onChange={this.handleStartEnd} 
+                            onChange={this.handleStartEnd}
                             //label="End Time" 
-                            placeholder="8:00pm" 
-                            style={{ marginRight: '10px', marginBottom: 32 }} 
+                            placeholder="8:00pm"
+                            style={{ marginRight: '10px', marginBottom: 32 }}
                         />
                         <TextField value={this.state.resourceIncrement} onChange={this.handleIncrement} label="Max booking time in minutes" placeholder="Minutes" style={{ marginRight: '10px' }} />
                         <label style={{ width: '10%', margin: '10px' }}>
-                            <div 
-                                onClick={this.storeResource} 
-                                style={{ 
-                                    fontFamily: 'Noto Sans', 
-                                    textTransform: 'uppercase', 
-                                    fontSize: '0.9em', 
-                                    textAlign: 'center', 
-                                    width: '100%', 
-                                    background: '#ff4d58', 
-                                    paddingTop: '10px', 
-                                    paddingBottom: '10px', 
-                                    color: '#FFFFFF', 
-                                    fontWeight: 'bold', 
-                                    cursor: 'pointer', 
+                            <div
+                                onClick={this.storeResource}
+                                style={{
+                                    fontFamily: 'Noto Sans',
+                                    textTransform: 'uppercase',
+                                    fontSize: '0.9em',
+                                    textAlign: 'center',
+                                    width: '100%',
+                                    background: '#ff4d58',
+                                    paddingTop: '10px',
+                                    paddingBottom: '10px',
+                                    color: '#FFFFFF',
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer',
                                     marginTop: 32,
                                     marginLeft: '30vw'
                                 }} >Add Resource</div>
@@ -715,9 +749,9 @@ export default class SpaceDash extends React.PureComponent {
             return (
                 <div className="spaceDashContent">
                     <Header space={this.props.spaceName} />
-                    <EventInformation 
+                    <EventInformation
                         {...this.props}
-                        id={this.state.editEventID} 
+                        id={this.state.editEventID}
                     />
                 </div>
             )

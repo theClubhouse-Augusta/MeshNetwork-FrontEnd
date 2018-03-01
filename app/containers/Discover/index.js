@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 
 import Header from "components/Header";
 // import Banner from 'components/Banner';
-import SideNav from "components/SideNav";
-import RightBar from "components/RightBar";
+import SideNav from "../../components/SideNav";
+import RightBar from "../../components/RightBar";
 
 import TextField from "material-ui/TextField";
 
@@ -66,9 +66,9 @@ export default class Discover extends React.PureComponent {
 
   showCategories = categoryID => {
     fetch(
-      "https://innovationmesh.com/api/showCategory/" +
-        categoryID +
-        "/Challenges",
+      "http://localhost:8000/api/showCategory/" +
+      categoryID +
+      "/Challenges",
       {
         method: "GET"
       }
@@ -87,8 +87,8 @@ export default class Discover extends React.PureComponent {
 
     if (this.state.currentPage !== this.state.lastPage) {
       fetch(
-        "https://innovationmesh.com/api/getChallenges/30?page=" +
-          this.state.nextPage,
+        "http://localhost:8000/api/getChallenges/30?page=" +
+        this.state.nextPage,
         {
           method: "GET"
         }
@@ -116,7 +116,7 @@ export default class Discover extends React.PureComponent {
 
     data.append("searchContent", this.state.searchContent);
 
-    fetch("https://innovationmesh.com/api/searchChallenges", {
+    fetch("http://localhost:8000/api/searchChallenges", {
       method: "POST",
       body: data
     })

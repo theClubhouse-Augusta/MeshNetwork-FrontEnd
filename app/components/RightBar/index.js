@@ -144,7 +144,7 @@ export default class RightBar extends React.PureComponent {
 
   getCategories = () => {
     fetch("http://localhost:8000/api/selectCategories", {
-      method:'GET'
+      method: 'GET'
     })
       .then(response => response.json())
       .then(json => {
@@ -190,7 +190,7 @@ export default class RightBar extends React.PureComponent {
     data.append("startDate", this.state.startDate);
     data.append("endDate", this.state.endDate);
 
-    fetch("https://innovationmesh.com/api/storeChallenge", {
+    fetch("http://localhost:8000/api/storeChallenge", {
       method: "POST",
       body: data,
       headers: { Authorization: "Bearer " + this.state.token }
@@ -216,7 +216,7 @@ export default class RightBar extends React.PureComponent {
                 this.state.challengeFiles[i].fileData
               );
 
-              fetch("https://innovationmesh.com/api/uploadFile", {
+              fetch("http://localhost:8000/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }
@@ -251,9 +251,9 @@ export default class RightBar extends React.PureComponent {
     );
 
     fetch("http://localhost:8000/api/storeQuestion", {
-      method:'POST',
-      body:data,
-      headers:{'Authorization':'Bearer ' + this.state.token}
+      method: 'POST',
+      body: data,
+      headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
       .then(json => {

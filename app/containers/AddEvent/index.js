@@ -3,42 +3,43 @@
  * AddEvent
  *
  */
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import Snackbar from "material-ui/Snackbar";
-import TextField from "material-ui/TextField";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
 import RaisedButton from "./RaisedButton";
-import FlatButton from "material-ui/Button";
-import Checkbox from "material-ui/Checkbox";
-import { ListItemText } from "material-ui/List";
-import moment from "moment";
+import FlatButton from 'material-ui/Button';
+import Checkbox from 'material-ui/Checkbox';
+import { ListItemText } from 'material-ui/List';
+import moment from 'moment';
 
-import Header from "../../components/Header";
-import { SelectedSponsors } from "./SelectedSponsors";
-import Spinner from "../../components/Spinner";
+import Header from '../../components/Header';
+import { SelectedSponsors } from './SelectedSponsors';
+import Spinner from '../../components/Spinner';
 
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
-import Input, { InputLabel } from "material-ui/Input";
-import { FormControl } from "material-ui/Form";
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
 
-import DateRangePickerWithGaps from "../../components/DateRangePickerWithGaps";
-import authenticate from "../../utils/Authenticate";
+import DateRangePickerWithGaps from '../../components/DateRangePickerWithGaps';
+import authenticate from '../../utils/Authenticate';
 
 // styles
-import "./style.css";
-import "./styleM.css";
+import './style.css';
+import './styleM.css';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
 };
+
 export default class AddEvent extends Component {
     state = {
         loading: true,
@@ -51,7 +52,7 @@ export default class AddEvent extends Component {
         url: '',
         days: '',
         description: '',
-        location:'',
+        location: '',
         selectedTag: '',
         selectedTags: [],
         selectedSponsors: [],
@@ -85,14 +86,24 @@ export default class AddEvent extends Component {
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     async componentDidMount() {
-        const authorized = await authenticate(localStorage['token']);
-        if (!authorized.error && authorized) {
-            this.getOrganizers();
-            this.getSponsors();
-            this.loadSkills();
-            this.setState({ loading: false });
-        } else {
-            this.props.history.push('/');
+        let authorized;
+        try {
+            authorized = await authenticate(localStorage['token']);
+        } finally {
+            if (authorized !== undefined) {
+                if (!authorized.error && authorized) {
+                    this.getOrganizers();
+                    this.getSponsors();
+                    this.loadSkills();
+                    this.setState({ loading: false });
+                } else if (authorized.error) {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    this.props.history.push('/signin');
+                }
+            } else {
+                this.props.history.push('/');
+            }
         }
     };
 
@@ -147,54 +158,66 @@ export default class AddEvent extends Component {
         }
     };
 
-    eventName = event =>
-      this.setState({ name: event.target.value.replace(/\s\s+/g, " ").trim() });
+    eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
     eventDays = event => this.setState({ days: event.target.value });
 
-    selectSponsor = selectedSponsor =>
-      this.setState({ selectedSponsors: selectedSponsor });
-    selectOrganizer = selectedOrganizer =>
-      this.setState({ selectedOrganizers: selectedOrganizer });
+    selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
+    selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
     eventDescription = e => this.setState({ description: e.target.value });
     eventLocation = e => this.setState({ location: e.target.value });
 
     handleOrganizerChange = event => {
-      this.setState({ selectedOrganizers: event.target.value });
+        this.setState({ selectedOrganizers: event.target.value });
     };
-    reader.readAsDataURL(event.target.files[0]);
-  };
 
-  toggleNewSponsors = () =>
-    this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
+    handleSponsorChange = event => {
+        this.setState({ selectedSponsors: event.target.value });
+    };
 
-  sponsorName = event => this.setState({ sponsorNames: event.target.value });
-  sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
 
-  onNewSponsorSubmit = e => {
-    e.preventDefault();
-    let { sponsorNames, sponsorWebsites, logo } = this.state;
-    if (logo && sponsorNames && sponsorWebsites) {
-      const oldSponsors = this.state.sponsors.slice();
-      const newSponsors = this.state.newSponsors.slice();
-      const sponsor = {
-        name: this.state.sponsorNames,
-        website: this.state.sponsorWebsites,
-        logo: this.state.logo,
-        imagePreviewUrl: this.state.logoPreview
-      };
-      const duplicateOld = oldSponsors.findIndex(
-        previous => previous.label === sponsor.name
-      );
-      const duplicateNew = newSponsors.findIndex(
-        previous => previous.name === sponsor.name
-      );
-      if (duplicateOld === -1 && duplicateNew === -1) {
-        newSponsors.push(sponsor);
-        this.setState(() => ({ newSponsors }));
-      } else {
-        this.showSnack("Sponsor name already taken!");
-      }
+    handleSkillTags = event => {
+        this.setState({ selectedTags: event.target.value });
+    };
+
+    eventFiles = event => {
+        event.preventDefault();
+        let file = event.target.files[0];
+        let reader = new FileReader();
+        const files = this.state.eventFiles.slice();
+        reader.onload = () => {
+            files.push(file)
+            this.setState({ eventFiles: files });
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    toggleNewSponsors = () => this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
+
+    sponsorName = event => this.setState({ sponsorNames: event.target.value });
+    sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
+
+    onNewSponsorSubmit = e => {
+        e.preventDefault();
+        let { sponsorNames, sponsorWebsites, logo } = this.state;
+        if (logo && sponsorNames && sponsorWebsites) {
+            const oldSponsors = this.state.sponsors.slice();
+            const newSponsors = this.state.newSponsors.slice();
+            const sponsor = {
+                name: this.state.sponsorNames,
+                website: this.state.sponsorWebsites,
+                logo: this.state.logo,
+                imagePreviewUrl: this.state.logoPreview,
+            };
+            const duplicateOld = oldSponsors.findIndex(previous => previous.label === sponsor.name);
+            const duplicateNew = newSponsors.findIndex(previous => previous.name === sponsor.name);
+            if (duplicateOld === -1 && duplicateNew === -1) {
+                newSponsors.push(sponsor);
+                this.setState(() => ({ newSponsors }));
+            } else {
+                this.showSnack("Sponsor name already taken!");
+            }
+        }
     }
 
     Submit = () => {
@@ -244,169 +267,91 @@ export default class AddEvent extends Component {
             method: 'post',
             body: data,
         })
-        .then((response)=> {
-            return response.json();
-        })
-        .then(({ success, error, eventID }) => {
-            if(error) {
-                this.showSnack(error);
-            } 
-            else if(success) {
-                this.showSnack(success);
-                setTimeout(() => {
-                    this.props.history.push(`/event/${eventID}`)
-                }, 2000);
-            }
-        })
+            .then((response) => {
+                return response.json();
+            })
+            .then(({ success, error, eventID }) => {
+                if (error) {
+                    this.showSnack(error);
+                }
+                else if (success) {
+                    this.showSnack(success);
+                    setTimeout(() => {
+                        this.props.history.push(`/event/${eventID}`)
+                    }, 2000);
+                }
+            })
     };
 
-    closeModal = () => this.setState({ modalMessage: "" });
+    closeModal = () => this.setState({ modalMessage: '' });
 
     renderLogoImage = () => {
-      if (this.state.logo !== "")
-        return (
-          <img
-            alt=""
-            src={this.state.logoPreview}
-            className="spaceLogoImagePreview"
-          />
-        );
-    };
+        if (this.state.logo !== "")
+            return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
+    }
 
-    fetch(`http://localhost:8000/api/event`, {
-      headers: { Authorization: `Bearer ${localStorage["token"]}` },
-      method: "post",
-      body: data
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        if (json.error) {
-          this.showSnack(json.error);
-        } else if (json.success) {
-          this.showSnack(json.success);
-          setTimeout(() => {
-            this.props.history.push(`/event/${json.eventID}`);
-          }, 2000);
+    renderLogoImageText = () => {
+        if (this.state.logoPreview === "" || this.state.logoPreview === undefined || this.state.logoPreview === null) {
+            return (
+                <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+                    Select a Logo
+                    <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
+                </span>
+            )
         }
-      });
-  };
-
-  closeModal = () => this.setState({ modalMessage: "" });
-
-  renderLogoImage = () => {
-    if (this.state.logo !== "")
-      return (
-        <img
-          alt=""
-          src={this.state.logoPreview}
-          className="spaceLogoImagePreview"
-        />
-      );
-  };
-
-  renderLogoImageText = () => {
-    if (
-      this.state.logoPreview === "" ||
-      this.state.logoPreview === undefined ||
-      this.state.logoPreview === null
-    ) {
-      return (
-        <span
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            textAlign: "center"
-          }}
-        >
-          Select a Logo
-          <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
-            For Best Size Use: 512 x 512
-          </span>
-        </span>
-      );
     }
-  };
 
-  renderEventImage = () => {
-    if (this.state.eventImg !== "") {
-      return (
-        <img
-          alt=""
-          src={this.state.eventImgPreview}
-          className="spaceLogoImagePreview"
-        />
-      );
+    renderEventImage = () => {
+        if (this.state.eventImg !== "") {
+            return (
+                <img alt="" src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
+            )
+        }
     }
-  };
 
-  renderEventImageText = () => {
-    if (
-      this.state.eventImgPreview === "" ||
-      this.state.eventImgPreview === undefined ||
-      this.state.eventImgPreview === null
-    ) {
-      return (
-        <span
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            textAlign: "center"
-          }}
-        >
-          Add an Event Image
-          <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
-            For Best Size Use: 512 x 512
-          </span>
-        </span>
-      );
+    renderEventImageText = () => {
+        if (this.state.eventImgPreview === "" || this.state.eventImgPreview === undefined || this.state.eventImgPreview === null) {
+            return (
+                <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+                    Add an Event Image
+          <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
+                </span>
+            )
+        }
     }
-  };
 
-  changeRadio = e => {
-    const checkedRadio = parseInt(e.target.value, 10);
-    if (checkedRadio === this.singleDay) {
-      this.setState({
-        checkedRadio,
-        days: 1,
-        dates: []
-      });
-    } else {
-      this.setState({
-        checkedRadio,
-        days: "",
-        dates: []
-      });
+    changeRadio = e => {
+        const checkedRadio = parseInt(e.target.value, 10);
+        if (checkedRadio === this.singleDay) {
+            this.setState({
+                checkedRadio,
+                days: 1,
+                dates: [],
+            });
+        } else {
+            this.setState({
+                checkedRadio,
+                days: '',
+                dates: [],
+            });
+        }
     }
-  };
 
-  handleLogo = event => {
-    event.preventDefault();
-    let reader = new FileReader();
-    let file = event.target.files[0];
+    handleLogo = (event) => {
+        event.preventDefault();
+        let reader = new FileReader();
+        let file = event.target.files[0];
 
-    reader.onloadend = () => {
-      this.setState({
-        logo: file,
-        logoPreview: reader.result
-      });
+        reader.onloadend = () => {
+            this.setState({
+                logo: file,
+                logoPreview: reader.result
+            });
+        }
+
+        reader.readAsDataURL(file);
     };
 
-    reader.readAsDataURL(file);
-  };
-
-  handleEventImage = event => {
-    event.preventDefault();
-    let reader = new FileReader();
-    let file = event.target.files[0];
-
-    reader.onloadend = () => {
-      this.setState({
-        eventImg: file,
-        eventImgPreview: reader.result
-      });
-    };
 
     // setDates = async dates => this.setState(() => ({ dates }));
 
@@ -431,7 +376,7 @@ export default class AddEvent extends Component {
 
     render() {
         const {
-            newSponsors, 
+            newSponsors,
             organizers,
             sponsors,
             checkNewSponsors,
@@ -475,7 +420,7 @@ export default class AddEvent extends Component {
 
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
-                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />     
+                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
                             {!!loadedTags.length &&
                                 <FormControl style={{ marginTop: 24 }}>
@@ -575,17 +520,17 @@ export default class AddEvent extends Component {
                                 />
                             }
 
-                            {checkedRadio === this.singleDay && 
+                            {checkedRadio === this.singleDay &&
                                 <React.Fragment>
                                     <label key="singleDay" className="addEventFormLabel"> date & time </label>
-                                    <DateRangePickerWithGaps 
+                                    <DateRangePickerWithGaps
                                         dates={dates.length ? dates : [{
                                             day: moment(),
                                             start: '',
                                             end: '',
                                         }]}
                                         handleDate={dates => {
-                                            this.setState(() => ({ dates })); 
+                                            this.setState(() => ({ dates }));
                                         }}
                                     />
                                 </React.Fragment>
@@ -594,10 +539,10 @@ export default class AddEvent extends Component {
                             {checkedRadio === this.multipleDays && days > 1 &&
                                 <div>
                                     {console.log('two')}
-                                    <DateRangePickerWithGaps 
+                                    <DateRangePickerWithGaps
                                         dates={dates.length ? dates : this.multiDay(days)}
                                         handleDate={dates => {
-                                            this.setState(() => ({ dates })); 
+                                            this.setState(() => ({ dates }));
                                         }}
                                     />
                                 </div>
@@ -690,67 +635,67 @@ export default class AddEvent extends Component {
 
                             </div>
 
-                            {changeLocation && 
-                                <React.Fragment>    
-                                    <TextField 
-                                        label="Address" 
-                                        value={this.state.address} 
-                                        margin="normal" 
+                            {changeLocation &&
+                                <React.Fragment>
+                                    <TextField
+                                        label="Address"
+                                        value={this.state.address}
+                                        margin="normal"
                                         onChange={e => {
                                             const address = e.target.value;
                                             this.setState(() => ({ address }))
-                                        }} 
+                                        }}
                                     />
 
-                                    <TextField 
-                                        label="City" 
-                                        value={this.state.city} 
-                                        margin="normal" 
+                                    <TextField
+                                        label="City"
+                                        value={this.state.city}
+                                        margin="normal"
                                         onChange={e => {
                                             const city = e.target.value;
                                             this.setState(() => ({ city }))
-                                        }} 
+                                        }}
                                     />
 
-                                    <TextField 
-                                        label="State" 
-                                        value={this.state.state} 
-                                        margin="normal" 
+                                    <TextField
+                                        label="State"
+                                        value={this.state.state}
+                                        margin="normal"
                                         onChange={e => {
                                             const state = e.target.value;
                                             this.setState(() => ({ state }))
-                                        }} 
+                                        }}
                                     />
 
-                                </React.Fragment>    
+                                </React.Fragment>
                             }
 
 
-            <FlatButton
-              style={{
-                backgroundColor: "#ff4d58",
-                padding: "10px",
-                marginTop: "15px",
-                color: "#FFFFFF",
-                fontWeight: "bold"
-              }}
-              onClick={this.Submit}
-            >
-              Submit Event
+                            <FlatButton
+                                style={{
+                                    backgroundColor: "#ff4d58",
+                                    padding: "10px",
+                                    marginTop: "15px",
+                                    color: "#FFFFFF",
+                                    fontWeight: "bold"
+                                }}
+                                onClick={this.Submit}
+                            >
+                                Submit Event
             </FlatButton>
-          </div>
-        </main>
-        <footer className="homeFooterContainer">
-          Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
-          723-5782
+                        </div>
+                    </main>
+                    <footer className="homeFooterContainer">
+                        Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
+                        723-5782
         </footer>
-        <Snackbar
-          open={this.state.snack}
-          message={this.state.msg}
-          autoHideDuration={5000}
-          onClose={this.handleRequestClose}
-        />
-      </div>
-    );
-  }
+                    <Snackbar
+                        open={this.state.snack}
+                        message={this.state.msg}
+                        autoHideDuration={5000}
+                        onClose={this.handleRequestClose}
+                    />
+                </div>
+        );
+    }
 }

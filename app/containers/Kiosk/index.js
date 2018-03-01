@@ -50,33 +50,27 @@ export default class Kiosk extends React.PureComponent {
   handleRequestClose = () => {
     this.setState({ snack: false, msg: "" });
   };
+
   showSnack = msg => {
     this.setState({ snack: true, msg: msg });
   };
 
   getProfile = () => {
-    fetch(
-      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
-      {
-        method: "GET"
-      }
+    fetch("http://localhost:8000/api/workspace/" + this.props.match.params.id, {
+      method: "GET"
+    }
     )
       .then(response => response.json())
       .then(json => {
-        this.setState(
-          {
-            workspace: json
-          },
-          () => {
-            this.getUsers(json.id);
-            this.getToday(json.id);
-          }
-        );
+        this.setState({ workspace: json }, () => {
+          this.getUsers(json.id);
+          this.getToday(json.id);
+        });
       });
   };
 
   getUsers = id => {
-    fetch("https://innovationmesh.com/api/users/space/" + id)
+    fetch("http://localhost:8000/api/users/space/" + id)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -86,7 +80,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getReasons = () => {
-    fetch("https://innovationmesh.com/api/occasions")
+    fetch("http://localhost:8000/api/occasions")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -96,9 +90,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUpcomingEvents = () => {
-    fetch(
-      "https://innovationmesh.com/api/upcoming/" + this.props.match.params.id
-    )
+    fetch("http://localhost:8000/api/upcoming/" + this.props.match.params.id)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -108,7 +100,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getToday = id => {
-    fetch("https://innovationmesh.com/api/todayevent/" + id, {
+    fetch("http://localhost:8000/api/todayevent/" + id, {
       headers: { Authorization: `Bearer ${localStorage["token"]}` }
     })
       .then(response => response.json())
@@ -126,7 +118,7 @@ export default class Kiosk extends React.PureComponent {
     data.append("spaceID", this.state.workspace.id);
     data.append("occasion", this.state.selectedReason);
 
-    fetch("https://innovationmesh.com/api/appearance", {
+    fetch("http://localhost:8000/api/appearance", {
       method: "POST",
       body: data
     })
@@ -143,7 +135,6 @@ export default class Kiosk extends React.PureComponent {
   };
 
   selectReason = reason => {
-    // console.log(reason);
     this.setState({ selectedReason: reason }, () => {
       this.storeAppearance();
     });
@@ -263,82 +254,82 @@ export default class Kiosk extends React.PureComponent {
           </div>
         </div>
       );
-      renderToday = () => {
-        if (this.state.selectedReason === "Event") {
-          if (this.state.todayEvents.length > 0) {
-            return (
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                {this.state.todayEvents.map((event, i) => (
-                  <div
-                    to={"/event/" + event.id}
-                    className="spaceEventBlock"
-                    onClick={this.selectEvent(event.id)}
-                  >
-                    <div className="spaceEventBlockImage">
-                      <img alt="" src={event.image} />
-                    </div>
-                    <div className="spaceEventBlockTitle">{event.title}</div>
-                    <div className="spaceEventBlockContent">{event.start}</div>
-                  </div>
-                ))}
-              </div>
-            );
-          } else {
-            return (
-              <div
-                style={{
-                  color: "#FFFFFF",
-                  fontFamily: "Noto Sans",
-                  fontSize: "0.9em",
-                  fontStyle: "italic",
-                  textAlign: "center"
-                }}
-              >
-                There are no Events scheduled for Today.
-              </div>
-            );
-          }
-        }
-      };
     }
+  };
+  // renderToday = () => {
+  //   if (this.state.selectedReason === "Event") {
+  //     if (this.state.todayEvents.length > 0) {
+  //       return (
+  //         <div style={{ display: "flex", flexDirection: "row" }}>
+  //           {this.state.todayEvents.map((event, i) => (
+  //             <div
+  //               to={"/event/" + event.id}
+  //               className="spaceEventBlock"
+  //               onClick={this.selectEvent(event.id)}
+  //             >
+  //               <div className="spaceEventBlockImage">
+  //                 <img alt="" src={event.image} />
+  //               </div>
+  //               <div className="spaceEventBlockTitle">{event.title}</div>
+  //               <div className="spaceEventBlockContent">{event.start}</div>
+  //             </div>
+  //           ))}
+  //         </div>
+  //       );
+  //     } else {
+  //       return (
+  //         <div
+  //           style={{
+  //             color: "#FFFFFF",
+  //             fontFamily: "Noto Sans",
+  //             fontSize: "0.9em",
+  //             fontStyle: "italic",
+  //             textAlign: "center"
+  //           }}
+  //         >
+  //           There are no Events scheduled for Today.
+  //             </div>
+  //       );
+  //     }
+  //   }
+  // };
 
-    renderToday = () => {
-      if (this.state.selectedReason === "Event") {
-        if (this.state.todayEvents.length > 0) {
-          return (
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              {this.state.todayEvents.map((event, i) => (
-                <div
-                  to={"/event/" + event.id}
-                  className="spaceEventBlock"
-                  onClick={this.selectEvent(event.id)}
-                >
-                  <div className="spaceEventBlockImage">
-                    <img src={event.image} />
-                  </div>
-                  <div className="spaceEventBlockTitle">{event.title}</div>
-                  <div className="spaceEventBlockContent">{event.start}</div>
+  renderToday = () => {
+    if (this.state.selectedReason === "Event") {
+      if (this.state.todayEvents.length > 0) {
+        return (
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            {this.state.todayEvents.map((event, i) => (
+              <div
+                to={"/event/" + event.id}
+                className="spaceEventBlock"
+                onClick={this.selectEvent(event.id)}
+              >
+                <div className="spaceEventBlockImage">
+                  <img alt="" src={event.image} />
                 </div>
-              ))}
-            </div>
-          );
-        } else {
-          return (
-            <div
-              style={{
-                color: "#FFFFFF",
-                fontFamily: "Noto Sans",
-                fontSize: "0.9em",
-                fontStyle: "italic",
-                textAlign: "center"
-              }}
-            >
-              There are no Events scheduled for Today.
-            </div>
-          );
-        }
+                <div className="spaceEventBlockTitle">{event.title}</div>
+                <div className="spaceEventBlockContent">{event.start}</div>
+              </div>
+            ))}
+          </div>
+        );
+      } else {
+        return (
+          <div
+            style={{
+              color: "#FFFFFF",
+              fontFamily: "Noto Sans",
+              fontSize: "0.9em",
+              fontStyle: "italic",
+              textAlign: "center"
+            }}
+          >
+            There are no Events scheduled for Today.
+              </div>
+        );
       }
-    };
+    }
   };
 
   render() {
@@ -353,6 +344,7 @@ export default class Kiosk extends React.PureComponent {
         <header />
         <main className="kioskMain">
           <img
+            alt=""
             className="kioskLogo"
             src={this.state.workspace.logo}
             style={{

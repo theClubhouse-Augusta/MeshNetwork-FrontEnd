@@ -36,7 +36,7 @@ export default class SideNav extends React.PureComponent {
       {
         app: app.app
       },
-      function() {
+      function () {
         this.forceUpdate();
       }
     );
@@ -76,7 +76,7 @@ export default class SideNav extends React.PureComponent {
 
   getCategories = () => {
     fetch("http://localhost:8000/api/getCategories", {
-      method:'GET',
+      method: 'GET',
     })
       .then(response => response.json())
       .then(json => {
@@ -84,12 +84,6 @@ export default class SideNav extends React.PureComponent {
           categories: json.categories
         });
       })
-      .then(response => response.json())
-      .then(json => {
-        this.setState({
-          categories: json.categories
-        });
-      });
   };
 
   storeCategory = () => {
@@ -99,9 +93,9 @@ export default class SideNav extends React.PureComponent {
     data.append('categoryName', this.state.categoryName);
     data.append('categoryImage', this.state.categoryImage);
     fetch("http://localhost:8000/api/storeCategory", {
-      method:'POST',
-      body:data,
-      headers: {'Authorization':'Bearer ' + this.state.token}
+      method: 'POST',
+      body: data,
+      headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
       .then(json => {
