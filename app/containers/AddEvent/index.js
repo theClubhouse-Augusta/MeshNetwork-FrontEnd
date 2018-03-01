@@ -78,6 +78,7 @@ export default class AddEvent extends Component {
         address: '',
         city: '',
         state: '',
+        foo: [],
     };
 
     singleDay = 0;
@@ -105,6 +106,13 @@ export default class AddEvent extends Component {
                 this.props.history.push('/');
             }
         }
+    };
+
+    handleFoo = e => {
+        let bar = e.target.value;
+        let foo = this.state.foo;
+        foo.push(bar);
+        // this.setState({ foo: foo });
     };
 
     getSponsors = () => {
@@ -418,6 +426,8 @@ export default class AddEvent extends Component {
                         <div className="spaceSignUpTitle">Submit an Event</div>
                         <div className="spaceSignUpContainer">
 
+
+                            <TextField label="foo" onChange={this.handleFoo} type="text" name="eventName" margin="normal" />
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
                             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
@@ -538,7 +548,6 @@ export default class AddEvent extends Component {
 
                             {checkedRadio === this.multipleDays && days > 1 &&
                                 <div>
-                                    {console.log('two')}
                                     <DateRangePickerWithGaps
                                         dates={dates.length ? dates : this.multiDay(days)}
                                         handleDate={dates => {
