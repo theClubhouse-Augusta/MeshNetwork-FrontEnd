@@ -3,11 +3,10 @@
 .kioskContainer {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  font-family: 'Encode Sans', sans-serif;
-  background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+  height: 100vh;
+  font-family: "Encode Sans", sans-serif;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
-  padding-bottom: 50px;
   animation: Gradient 15s ease infinite;
 }
 
@@ -18,41 +17,40 @@
   max-width: 1000px;
   margin: 0 auto;
   align-items: center;
-  height: 100vh;
 }
 
 @keyframes Gradient {
   0% {
-    background-position: 0% 50%
+    background-position: 0% 50%;
   }
   50% {
-    background-position: 100% 50%
+    background-position: 100% 50%;
   }
   100% {
-    background-position: 0% 50%
+    background-position: 0% 50%;
   }
 }
 
 .kioskTitle {
-  font-size: 3em;
-  color: #FFFFFF;
+  font-size: 2.5em;
+  color: #ffffff;
   font-variant: small-caps;
   font-weight: bold;
 }
 
 .kioskSubtitle {
   font-size: 1.8em;
-  color: #EEEEEE;
+  color: #eeeeee;
   width: 80%;
   text-align: center;
-  border-bottom: 1px solid #FFFFFF;
+  border-bottom: 1px solid #ffffff;
   padding-bottom: 10px;
 }
 
 .kioskContent {
   width: 100%;
   max-width: 600px;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .kioskUserName {
@@ -70,9 +68,9 @@
 .kioskReasonBlock {
   display: flex;
   flex-direction: column;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 5px;
-  border: 3px solid #FFFFFF;
+  border: 3px solid #ffffff;
   padding: 15px;
   width: 24%;
   height: 100px;
@@ -84,7 +82,7 @@
 }
 
 .kioskReasonBlock:hover {
-  background: #FFFFFF;
+  background: #ffffff;
   color: #222222;
 }
 
@@ -99,10 +97,10 @@
   width: 100%;
   height: 100px;
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
-  background: #FFFFFF;
+  background: #ffffff;
   display: flex;
   flex-direction: row;
-  transition: all .26s ease-in-out;
+  transition: all 0.26s ease-in-out;
   cursor: pointer;
   margin-bottom: 20px;
   text-decoration: none;
@@ -112,7 +110,7 @@
 .eventBlockImage {
   width: 100px;
   height: 100px;
-  background: #EEEEEE;
+  background: #eeeeee;
 }
 
 .eventBlockInfo {
@@ -149,10 +147,11 @@ div.kioskContent div.Select-value {
   /* border: 1px solid rgba(0, 126, 255, .24); */
   /* color: #007eff; */
   display: inline-block;
-  font-size: .9em;
-  line-height: 1.4;
+  font-size: 0.9em;
+  line-height: 2.5;
   margin-left: 5px;
-  /* margin-top: 5px; */
+  margin-top: -.5px;
+  /* ^ to preserve hanging letters lol */
   /* margin-bottom: 8px; */
   vertical-align: top;
   box-sizing: border-box;

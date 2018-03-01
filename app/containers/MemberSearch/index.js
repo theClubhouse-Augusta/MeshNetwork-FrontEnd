@@ -47,15 +47,24 @@ export default class MemberSearch extends PureComponent {
   };
 
   async componentWillMount() {
-    const authorized = await authenticate(
-      localStorage["token"],
-      this.props.history
-    );
-    if (!authorized.error && authorized) {
-      this.loadSkills();
-      this.setState({ loading: false });
-    } else {
-      this.props.history.push("/signIn");
+    let authorized;
+    try {
+      authorized = await authenticate(localStorage['token'], this.props.history);
+    } finally {
+      if (authorized !== undefined) {
+        if (!authorized.error && authorized) {
+          this.loadSkills();
+          this.setState({ loading: false });
+        } else if (authorized.error) {
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+          this.props.history.push('/signin');
+        }
+      } else {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        this.props.history.push("/signIn");
+      }
     }
   }
 
@@ -106,12 +115,12 @@ export default class MemberSearch extends PureComponent {
     })
       .then(response => response.json())
       .then(json => {
-          if (json.error) {
-            this.showSnack(json.error);
-          } else {
-            this.setState({ results: json });
-          }
-        });
+        if (json.error) {
+          this.showSnack(json.error);
+        } else {
+          this.setState({ results: json });
+        }
+      });
   };
 
   renderTag = (skill, i) => {
@@ -142,93 +151,92 @@ export default class MemberSearch extends PureComponent {
     return this.state.loading ? (
       <Spinner />
     ) : (
-      <div className="memberSearchContainer">
-        <Helmet
-          title="MemberSearch"
-          meta={[
-            { name: "description", content: "Description of MemberSearch" }
-          ]}
-        />
+        <div className="memberSearchContainer">
+          <Helmet
+            title="MemberSearch"
+            meta={[
+              { name: "description", content: "Description of MemberSearch" }
+            ]}
+          />
 
-        <header style={{ background: "#FFFFFF", width: "100%" }}>
-          <Header space={this.props.spaceName} />
-          <div className="memberSearchBanner">
-            <div className="memberSearchHeaderTitle">Connect with People</div>
-            <div className="memberSearchHeaderSubtitle">
-              Discover new and innovative members
+          <header style={{ background: "#FFFFFF", width: "100%" }}>
+            <Header space={this.props.spaceName} />
+            <div className="memberSearchBanner">
+              <div className="memberSearchHeaderTitle">Connect with People</div>
+              <div className="memberSearchHeaderSubtitle">
+                Discover new and innovative members
             </div>
-          </div>
-        </header>
-
-        <main className="memberSearchMain">
-          <div className="memberSearchBar">
-            <TextField
-              style={{
-                width: "100%",
-                maxWidth: "700px",
-                textAlign: "center",
-                marginBottom: "10px",
-                color: "#FFFFFF"
-              }}
-              label="Member Search"
-              value={this.state.query}
-              onChange={this.searchQuery}
-              onKeyDown={e => {
-                this.checkKey(e);
-              }}
-            />
-          </div>
-
-          <div className="memberSearchByPopularTags">
-            <h3 className="memberSearchTagTitle">Popular Skills</h3>
-
-            <div className="memberSearchTagSelect">       
-              
-            {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
-            
-           
             </div>
-          </div> 
+          </header>
 
-          <div className="memberSearchResults">
-            {this.state.results.map((user, index) => (
-              <Link
-                key={`results${index}`}
-                to={"/user/" + user.id}
-                className="memberBlock"
-              >
-                <div className="memberBlockImage" style={{overflow:'hidden'}}>
-                  <img
-                    alt=""
-                    
-                    src={user.avatar}
-                    style={{ width: "100%", height: "auto" }}
-                  />
-                </div>
-                <div className="memberBlockInfo">
-                  <div className="searchBlockTitle">{user.name}</div>
-                  <div className="searchBlockDesc">{user.title}</div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </main>
-        <footer className="pageFooterContainer">
-          Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
-          723-5782
+          <main className="memberSearchMain">
+            <div className="memberSearchBar">
+              <TextField
+                style={{
+                  width: "100%",
+                  maxWidth: "700px",
+                  textAlign: "center",
+                  marginBottom: "10px",
+                  color: "#FFFFFF"
+                }}
+                label="Member Search"
+                value={this.state.query}
+                onChange={this.searchQuery}
+                onKeyDown={e => {
+                  this.checkKey(e);
+                }}
+              />
+            </div>
+
+            <div className="memberSearchByPopularTags">
+              <h3 className="memberSearchTagTitle">Popular Skills</h3>
+
+              <div className="memberSearchTagSelect">
+
+                {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
+
+
+              </div>
+            </div>
+
+            <div className="memberSearchResults">
+              {this.state.results.map((user, index) => (
+                <Link
+                  key={`results${index}`}
+                  to={"/user/" + user.id}
+                  className="memberBlock"
+                >
+                  <div className="memberBlockImage" style={{ overflow: 'hidden' }}>
+                    <img
+                      alt=""
+
+                      src={user.avatar}
+                      style={{ width: "100%", height: "auto" }}
+                    />
+                  </div>
+                  <div className="memberBlockInfo">
+                    <div className="searchBlockTitle">{user.name}</div>
+                    <div className="searchBlockDesc">{user.title}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </main>
+          <footer className="pageFooterContainer">
+            Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
+            723-5782
         </footer>
-        <Snackbar
-          open={this.state.snack}
-          message={this.state.msg}
-          autoHideDuration={3000}
-          onClose={this.handleRequestClose}
-        />
-      </div>
-    );
+          <Snackbar
+            open={this.state.snack}
+            message={this.state.msg}
+            autoHideDuration={3000}
+            onClose={this.handleRequestClose}
+          />
+        </div>
+      );
   }
 }
 
 MemberSearch.propTypes = {
-  getLoggedInUser: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
 };

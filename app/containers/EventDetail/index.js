@@ -90,13 +90,15 @@ export default class EventDetail extends React.PureComponent {
         });
 
     renderLocation = () => {
-        if(!this.state.event.location) {
+        const { event } = this.state;
+        if(!event.address) {
             return(
                 <div className="homeHeaderContentSubtitle">{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
             )
         } else {
+            console.log('reenL', event)
             return(
-                <div className="homeHeaderContentSubtitle">{this.state.event.location}</div>
+                <div className="homeHeaderContentSubtitle">{event.address}, {event.city}, {event.state}</div>
             )
         }
     }
@@ -104,7 +106,8 @@ export default class EventDetail extends React.PureComponent {
     render() {
         const {
             workSpace,
-            tags
+            tags,
+            event
         } = this.state;
         // organizers.forEach(organizer => attendees.push(organizer))
         // const start = event.start;
@@ -120,14 +123,13 @@ export default class EventDetail extends React.PureComponent {
                     <div className="eventDetailBanner"
                         style={{background: '#ff4d58'}}>
                         <div className="homeHeaderContentTitle">{this.state.event.title}</div>
-                        {this.renderLocation()}
                     </div>
                 </header>
 
-                <main className="spaceSignUpMain">
+                <main className="eventDetailMain">
                     <div className="spaceSignUpUser">
                         <div className="spaceSignUpTitle">Event Location</div>
-                        {workSpace &&
+                         {(workSpace && !event.lon) &&
                             <MapLocal
                                 isMarkerShown
                                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
@@ -136,11 +138,43 @@ export default class EventDetail extends React.PureComponent {
                                 mapElement={<div style={{ height: '23em' }} />}
                                 lat={workSpace.lat}
                                 lon={workSpace.lon}
-                                clickMapMarker={this.clickMapMarker}
+                                clickMapMarker={() => {
+                                    this.props.history.push(`/space/${workSpace.slug}`)
+                                }}
                                 workSpace={workSpace}
+                            />
+                        } 
+
+                         {(workSpace && event.lon && event.lat) && 
+                            <MapLocal
+                                isMarkerShown
+                                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
+                                loadingElement={<div style={{ height: '100%' }} />}
+                                containerElement={<div id="dude" style={{ minHeight: '23em', border: '1px solid black' }} />}
+                                mapElement={<div style={{ height: '23em' }} />}
+                                lat={event.lat}
+                                lon={event.lon}
+                                event={event} 
                             />
                         }
                     </div>
+
+                    <div>
+                        <h1 className="eventDetailSectionTitle">Location</h1>
+                        {!!event.address &&
+                            <React.Fragment>
+                                <p>{event.address}</p> 
+                                <p>{event.city}, {event.state}</p>
+                            </React.Fragment>
+                        }
+                        {!!!event.address &&
+                            <React.Fragment>
+                                <p>{workSpace.address}</p> 
+                                <p>{workSpace.city}, {workSpace.state}</p>
+                            </React.Fragment>
+                        }
+                    </div>
+                    
                     <div className="spaceSignUpContainer">
                         <div className="eventDetailSection">
                             <div className="eventDetailSectionTitle">Description</div>
@@ -150,7 +184,7 @@ export default class EventDetail extends React.PureComponent {
                                     <div className="eventTags">
                                         <a href={this.state.event.url} style={{ textDecoration: 'none', background: '#EEEEEE', padding: '5px', color: '#222222', marginRight: '10px', borderRadius: '5px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}><LinkIcon size={25} /></a>
                                         {tags.map((tag, key) =>
-                                            <Chip key={`chip${`EventDetailChip${key}`}`} label={tag} style={{ color: "#FFFFFF", marginRight: '5px', marginTop: '5px', borderRadius: '5px', background: '#ff4d58' }} />
+                                            <Chip key={`chip${key}`} label={tag} style={{ color: "#FFFFFF", marginRight: '5px', marginTop: '5px', borderRadius: '5px', background: '#ff4d58' }} />
                                         )}
                                     </div>}
                             </div>
@@ -160,7 +194,7 @@ export default class EventDetail extends React.PureComponent {
                             <div className="eventDetailSectionContent">
                                 <div className="eventDetailDates">
                                     {this.state.dates.map((date, i) => (
-                                        <div className="eventDetailsDateBlock">{date.startFormatted} -- {date.endFormatted}</div>
+                                        <div key={`eventDates${i}`} className="eventDetailsDateBlock">{date.startFormatted} -- {date.endFormatted}</div>
                                     ))}
                                 </div>
                                 <div className="eventDetailSignUpRow">
@@ -176,7 +210,7 @@ export default class EventDetail extends React.PureComponent {
                             <div className="eventDetailSectionContent">
                                 <div className="eventDetailUsersList">
                                     {this.state.organizers.map((organizer, i) => (
-                                        <div className="eventDetailUsersBlock">
+                                        <div key={`organizers${i}`} className="eventDetailUsersBlock">
                                             <img alt="" src={organizer.avatar} style={{ width: '100px', height: '100px' }} />
                                             <div style={{ marginTop: '10px', textAlign: 'center' }}>{organizer.name}</div>
                                         </div>
@@ -189,7 +223,7 @@ export default class EventDetail extends React.PureComponent {
                             <div className="eventDetailSectionContent">
                                 <div className="eventDetailUsersList">
                                     {this.state.sponsors.map((sponsor, i) => (
-                                        <div className="eventDetailUsersBlock">
+                                        <div key={`sponsors${i}`} className="eventDetailUsersBlock">
                                             <img alt="" src={sponsor.logo} style={{ width: '100px', height: '100px' }} />
                                         </div>
                                     ))}
@@ -201,7 +235,7 @@ export default class EventDetail extends React.PureComponent {
                             <div className="eventDetailSectionContent">
                                 <div className="eventDetailUsersList">
                                     {this.state.attendees.map((attendee, i) => (
-                                        <div className="eventDetailUsersBlock">
+                                        <div key={`attendeeevent${i}`} className="eventDetailUsersBlock">
                                             <img alt="" src={attendee.avatar} style={{ width: '100px', height: '100px' }} />
                                             <div style={{ marginTop: '10px', textAlign: 'center' }}>{attendee.name}</div>
                                         </div>

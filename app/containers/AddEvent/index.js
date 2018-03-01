@@ -52,7 +52,7 @@ export default class AddEvent extends Component {
         url: '',
         days: '',
         description: '',
-        location:'',
+        location: '',
         selectedTag: '',
         selectedTags: [],
         selectedSponsors: [],
@@ -73,7 +73,11 @@ export default class AddEvent extends Component {
         eventImgPreview: '',
         tag: [],
         selectedOrganizers: [],
-        dates: []
+        dates: [],
+        changeLocation: false,
+        address: '',
+        city: '',
+        state: '',
     };
 
     singleDay = 0;
@@ -82,16 +86,26 @@ export default class AddEvent extends Component {
     showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
     async componentDidMount() {
-        const authorized = await authenticate(localStorage['token']);
-        if (!authorized.error && authorized) {
-            this.getOrganizers();
-            this.getSponsors();
-            this.loadSkills();
-            this.setState({ loading: false });
-        } else {
-            this.props.history.push('/');
+        let authorized;
+        try {
+            authorized = await authenticate(localStorage['token']);
+        } finally {
+            if (authorized !== undefined) {
+                if (!authorized.error && authorized) {
+                    this.getOrganizers();
+                    this.getSponsors();
+                    this.loadSkills();
+                    this.setState({ loading: false });
+                } else if (authorized.error) {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    this.props.history.push('/signin');
+                }
+            } else {
+                this.props.history.push('/');
+            }
         }
-    }
+    };
 
     getSponsors = () => {
         fetch(`https://innovationmesh.com/api/sponsors`, {
@@ -105,7 +119,7 @@ export default class AddEvent extends Component {
             .catch(error => {
                 alert(`GetSponsors()error in fetching data from server: ${error}`); // eslint-disable-line
             });
-    }
+    };
 
     getOrganizers = () => {
         fetch(`https://innovationmesh.com/api/organizers/events`, {
@@ -120,7 +134,7 @@ export default class AddEvent extends Component {
             .catch(error => {
                 alert(`GetOrganizers()error in fetching data from server: ${error}`); // eslint-disable-line
             });
-    }
+    };
 
     loadSkills = () => {
         fetch('https://innovationmesh.com/api/skills/all', {
@@ -131,7 +145,7 @@ export default class AddEvent extends Component {
             .catch(error => {
                 alert(`loadSkills()error in fetching data from server: ${error}`);
             });
-    }
+    };
 
     removeNewSponsor = (sponsor) => {
         if (sponsor) {
@@ -142,7 +156,7 @@ export default class AddEvent extends Component {
                 this.setState({ newSponsors: sponsors });
             }
         }
-    }
+    };
 
     eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
     eventUrl = event => this.setState({ url: event.target.value.trim() });
@@ -199,7 +213,7 @@ export default class AddEvent extends Component {
             const duplicateNew = newSponsors.findIndex(previous => previous.name === sponsor.name);
             if (duplicateOld === -1 && duplicateNew === -1) {
                 newSponsors.push(sponsor);
-                this.setState(() => ({ newSponsors}));
+                this.setState(() => ({ newSponsors }));
             } else {
                 this.showSnack("Sponsor name already taken!");
             }
@@ -213,6 +227,13 @@ export default class AddEvent extends Component {
             description,
             location,
             dates,
+            name,
+            url,
+            selectedOrganizers,
+            selectedSponsors,
+            city,
+            state,
+            address
         } = this.state;
 
         let data = new FormData();
@@ -220,17 +241,25 @@ export default class AddEvent extends Component {
         data.append('location', location);
         data.append('tags', selectedTags);
         data.append('dates', JSON.stringify(dates));
-        data.append('name', this.state.name);
-        data.append('url', this.state.url);
-        data.append('organizers', this.state.selectedOrganizers);
-        data.append('sponsors', this.state.selectedSponsors);
+        data.append('name', name);
+        data.append('url', url);
+        data.append('organizers', selectedOrganizers);
+        data.append('sponsors', selectedSponsors);
+
+        if (city || address || state) {
+            if (!city || !address || !state) {
+                this.showSnack("Please add city, state, and address.");
+                return;
+            } else if (city && state && address) {
+                data.append('city', city.trim());
+                data.append('address', address.trim());
+                data.append('state', state.trim());
+            }
+        }
 
         if (!!newSponsors.length) {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
-            console.log('new',data.get('logos0'));
-        } else {
-            console.log('d',data.get('description'));
         }
 
         fetch(`https://innovationmesh.com/api/event`, {
@@ -238,20 +267,20 @@ export default class AddEvent extends Component {
             method: 'post',
             body: data,
         })
-        .then((response)=> {
-            return response.json();
-        })
-        .then(json => {
-            if(json.error) {
-                this.showSnack(json.error);
-            } 
-            else if(json.success) {
-                this.showSnack(json.success);
-                setTimeout(() => {
-                    this.props.history.push(`/event/${json.eventID}`)
-                }, 2000);
-            }
-        })
+            .then((response) => {
+                return response.json();
+            })
+            .then(({ success, error, eventID }) => {
+                if (error) {
+                    this.showSnack(error);
+                }
+                else if (success) {
+                    this.showSnack(success);
+                    setTimeout(() => {
+                        this.props.history.push(`/event/${eventID}`)
+                    }, 2000);
+                }
+            })
     };
 
     closeModal = () => this.setState({ modalMessage: '' });
@@ -323,20 +352,6 @@ export default class AddEvent extends Component {
         reader.readAsDataURL(file);
     };
 
-    handleEventImage = (event) => {
-        event.preventDefault();
-        let reader = new FileReader();
-        let file = event.target.files[0];
-
-        reader.onloadend = () => {
-            this.setState({
-                eventImg: file,
-                eventImgPreview: reader.result
-            });
-        }
-
-        reader.readAsDataURL(file);
-    };
 
     // setDates = async dates => this.setState(() => ({ dates }));
 
@@ -353,17 +368,23 @@ export default class AddEvent extends Component {
         }
         return dates;
         // this.setDates(dates).then(dates => dates); 
-    }
+    };
+
+    changeLocation = () => {
+        this.setState(() => ({ changeLocation: !this.state.changeLocation }));
+    };
+
     render() {
         const {
-            newSponsors, 
+            newSponsors,
             organizers,
             sponsors,
             checkNewSponsors,
             loadedTags,
             days,
             dates,
-            checkedRadio
+            checkedRadio,
+            changeLocation,
         } = this.state;
 
         const options = [
@@ -399,8 +420,7 @@ export default class AddEvent extends Component {
 
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
-                            <TextField label="Location" value={this.state.location} margin="normal" onChange={this.eventLocation} />
-                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />     
+                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
 
                             {!!loadedTags.length &&
                                 <FormControl style={{ marginTop: 24 }}>
@@ -500,17 +520,17 @@ export default class AddEvent extends Component {
                                 />
                             }
 
-                            {checkedRadio === this.singleDay && 
+                            {checkedRadio === this.singleDay &&
                                 <React.Fragment>
                                     <label key="singleDay" className="addEventFormLabel"> date & time </label>
-                                    <DateRangePickerWithGaps 
+                                    <DateRangePickerWithGaps
                                         dates={dates.length ? dates : [{
                                             day: moment(),
                                             start: '',
                                             end: '',
                                         }]}
                                         handleDate={dates => {
-                                            this.setState(() => ({ dates })); 
+                                            this.setState(() => ({ dates }));
                                         }}
                                     />
                                 </React.Fragment>
@@ -519,16 +539,16 @@ export default class AddEvent extends Component {
                             {checkedRadio === this.multipleDays && days > 1 &&
                                 <div>
                                     {console.log('two')}
-                                    <DateRangePickerWithGaps 
+                                    <DateRangePickerWithGaps
                                         dates={dates.length ? dates : this.multiDay(days)}
                                         handleDate={dates => {
-                                            this.setState(() => ({ dates })); 
+                                            this.setState(() => ({ dates }));
                                         }}
                                     />
                                 </div>
                             }
 
-                            <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
+                            <div style={{ display: 'flex', marginTop: 32, marginBottom: 32 }}>
                                 <input
                                     id="newSponsors"
                                     type="checkbox"
@@ -542,6 +562,7 @@ export default class AddEvent extends Component {
                                 </label>
 
                             </div>
+
 
                             {checkNewSponsors && [
                                 <TextField
@@ -591,6 +612,7 @@ export default class AddEvent extends Component {
                                 />
                             ]}
 
+
                             {!!newSponsors.length &&
                                 <SelectedSponsors
                                     selectedSponsors={newSponsors}
@@ -598,29 +620,75 @@ export default class AddEvent extends Component {
                                     newSponsor={true}
                                 />}
 
+                            <div style={{ display: 'flex', marginBottom: changeLocation ? 16 : 72 }}>
+                                <input
+                                    id="newSponsors"
+                                    type="checkbox"
+                                    onKeyDown={(e) => e.keyCode === 13 ? this.changeLocation() : null}
+                                    onChange={this.changeLocation}
+                                    checked={changeLocation}
+                                />
 
-                            {/*<div className="spaceLogoMainImageRow">
-                                <label htmlFor="event-image" className="spaceLogoMainImageBlock">
-                                    {this.renderEventImageText()}
-                                    {this.renderEventImage()}
-                                    <input
-                                        type="file"
-                                        onChange={this.handleEventImage}
-                                        id="event-image"
-                                        style={{ display: 'none' }}
-                                        accept="image/png, image/jpg, image/jpeg"
-                                    />
+                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                                    &nbsp;&nbsp; change location?
                                 </label>
-                            </div>*/}
 
-                            <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
+                            </div>
+
+                            {changeLocation &&
+                                <React.Fragment>
+                                    <TextField
+                                        label="Address"
+                                        value={this.state.address}
+                                        margin="normal"
+                                        onChange={e => {
+                                            const address = e.target.value;
+                                            this.setState(() => ({ address }))
+                                        }}
+                                    />
+
+                                    <TextField
+                                        label="City"
+                                        value={this.state.city}
+                                        margin="normal"
+                                        onChange={e => {
+                                            const city = e.target.value;
+                                            this.setState(() => ({ city }))
+                                        }}
+                                    />
+
+                                    <TextField
+                                        label="State"
+                                        value={this.state.state}
+                                        margin="normal"
+                                        onChange={e => {
+                                            const state = e.target.value;
+                                            this.setState(() => ({ state }))
+                                        }}
+                                    />
+
+                                </React.Fragment>
+                            }
+
+
+                            <FlatButton
+                                style={{
+                                    backgroundColor: "#ff4d58",
+                                    padding: "10px",
+                                    marginTop: "15px",
+                                    color: "#FFFFFF",
+                                    fontWeight: "bold"
+                                }}
+                                onClick={this.Submit}
+                            >
                                 Submit Event
-                            </FlatButton>
+            </FlatButton>
                         </div>
                     </main>
                     <footer className="homeFooterContainer">
-                        Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
-                    </footer>
+                        Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
+                        723-5782
+        </footer>
                     <Snackbar
                         open={this.state.snack}
                         message={this.state.msg}

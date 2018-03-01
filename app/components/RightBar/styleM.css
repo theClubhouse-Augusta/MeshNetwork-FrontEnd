@@ -1,1 +1,8 @@
 /* RightBar Mobile Styles */
+
+@media (max-width: 425px) {
+  .challenges_categoryWrapper {
+    display: flex;
+    flex-direction: row;
+  }
+}

@@ -43,7 +43,8 @@ export default class EventInformation extends Component {
         this.state = {
             eventID: props.id,
             modalMessage: '',
-            snackBar: false,
+            snackbar: false,
+            snackbarMessage: false,
             name: '',
             url: '',
             days: '',
@@ -70,6 +71,10 @@ export default class EventInformation extends Component {
             eventDates: [],
             focusedInput: false,
             dates: [],
+            changeLocation: false,
+            address: '',
+            city: '',
+            state: '',
         };
     }
 
@@ -77,14 +82,26 @@ export default class EventInformation extends Component {
     multipleDays = 1;
 
     async componentDidMount() {
-        const authorized = await authenticate(localStorage['token']);
-        if (!authorized.error && authorized) {
-            this.getOrganizers();
-            this.getSponsors();
-            this.loadSkills();
-            this.getEvent(this.props.id);
-        } else {
-            this.props.history.push('/');
+        let authorized;
+        try {
+            authorized = await authenticate(localStorage['token']);
+        } finally {
+            if (authorized !== undefined) {
+                if (!authorized.error && authorized) {
+                    this.getOrganizers();
+                    this.getSponsors();
+                    this.loadSkills();
+                    this.getEvent(this.props.id);
+                } else {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    this.props.history.push('/');
+                }
+            } else {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                this.props.history.push('/');
+            }
         }
     }
 
@@ -102,6 +119,16 @@ export default class EventInformation extends Component {
                     eventDates: json.dates,
                     selectedTags: json.tags
                 }, () => {
+                    const changeLocation = !!this.state.event.address; 
+                    if (changeLocation) {
+                        const { address, city, state } = this.state.event;
+                        this.setState({ 
+                            changeLocation,
+                            address,
+                            city,
+                            state,
+                         });
+                    }
                     this.previousSponsors();
                     this.previousOrganizers();
                     this.previousDates();
@@ -114,7 +141,7 @@ export default class EventInformation extends Component {
             this.state.eventSponsors.forEach(sponsor => {
                 const selectedSponsors = this.state.selectedSponsors.slice();
                 selectedSponsors.push(sponsor.name);
-                this.setState({ selectedSponsors: selectedSponsors });
+                this.setState(() => ({ selectedSponsors: selectedSponsors }));
             })
         }
     };
@@ -124,7 +151,7 @@ export default class EventInformation extends Component {
             this.state.eventOrganizers.forEach(organizer => {
                 const selectedOrganizers = this.state.selectedOrganizers.slice();
                 selectedOrganizers.push(organizer.email);
-                this.setState({ selectedOrganizers: selectedOrganizers });
+                this.setState(() => ({ selectedOrganizers: selectedOrganizers }));
             })
         }
     };
@@ -264,11 +291,11 @@ export default class EventInformation extends Component {
 
     toggleSnackBar = (message) =>
         this.setState({
-            snackBar: !this.state.snackBar,
-            snackBarMessage: message
+            snackbar: !this.state.snackbar,
+            snackbarMessage: message
         });
 
-    handleRequestClose = () => { this.setState({ snackBar: false, snackBarMessage: "" }); };
+    handleRequestClose = () => { this.setState({ snackbar: false, snackbarMessage: "" }); };
 
     sponsorName = event => this.setState({ sponsorNames: event.target.value });
     sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
@@ -306,7 +333,10 @@ export default class EventInformation extends Component {
             name,
             url,
             selectedOrganizers,
-            selectedSponsors
+            selectedSponsors,
+            city,
+            state,
+            address
         } = this.state;
 
         let data = new FormData();
@@ -320,22 +350,36 @@ export default class EventInformation extends Component {
         data.append('organizers', selectedOrganizers);
         data.append('sponsors', selectedSponsors);
 
+        if (city || address || state) {
+            if (!city || !address || !state) {
+                this.toggleSnackBar("Please add city, state, and address.");
+                return;
+            } else if (city && state && address) {
+                data.append('city', city.trim());
+                data.append('address', address.trim());
+                data.append('state', state.trim());
+            }
+        }
+
         if (!!newSponsors.length) {
             data.append('newSponsors', JSON.stringify(newSponsors));
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`https://innovationmesh.com/api/event/update`, {
+        fetch(`https://innovationmesh.com/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
         })
-            .then(response => response.text())
-            .then(success => {
-                if (eventID.error) {
-                   this.toggleSnackBar(eventID.error); 
-                } else {
-                   this.toggleSnackBar(success); 
+            .then(response => response.json())
+            .then(({ success, error, eventID }) => {
+                if (error) {
+                   this.toggleSnackBar(error); 
+                } else if (success) {
+                    this.toggleSnackBar(success); 
+                    setTimeout(() => {
+                        this.props.history.push(`/event/${eventID}`)
+                    }, 2000);
                 }
             })
             .catch(error => {
@@ -390,10 +434,19 @@ export default class EventInformation extends Component {
         reader.readAsDataURL(file);
     };
 
+    changeLocation = () => {
+        this.setState(() => ({ 
+            changeLocation: !this.state.changeLocation,
+            address: '',
+            city: '',
+            state: '', 
+        }));
+    };
+
     render() {
         const {
-            snackBarMessage,
-            snackBar,
+            snackbarMessage,
+            snackbar,
             newSponsors, 
             organizers,
             sponsors,
@@ -402,6 +455,7 @@ export default class EventInformation extends Component {
             checkedRadio,
             days,
             dates,
+            changeLocation,
         } = this.state;
 
 
@@ -643,6 +697,57 @@ export default class EventInformation extends Component {
                             />
                         }
 
+                            <div style={{ display: 'flex', marginBottom: changeLocation ? 16 : 72 }}>
+                                <input
+                                    id="newSponsors"
+                                    type="checkbox"
+                                    onKeyDown={(e) => e.keyCode === 13 ? this.changeLocation() : null}
+                                    onChange={this.changeLocation}
+                                    checked={changeLocation}
+                                />
+
+                                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                                    &nbsp;&nbsp; change location?
+                                </label>
+
+                            </div>
+
+                        {changeLocation && 
+                            <React.Fragment>    
+                                <TextField 
+                                    label="Address" 
+                                    value={this.state.address} 
+                                    margin="normal" 
+                                    onChange={e => {
+                                        const address = e.target.value;
+                                        this.setState(() => ({ address }))
+                                    }} 
+                                />
+
+                                <TextField 
+                                    label="City" 
+                                    value={this.state.city} 
+                                    margin="normal" 
+                                    onChange={e => {
+                                        const city = e.target.value;
+                                        this.setState(() => ({ city }))
+                                    }} 
+                                />
+
+                                <TextField 
+                                    label="State" 
+                                    value={this.state.state} 
+                                    margin="normal" 
+                                    onChange={e => {
+                                        const state = e.target.value;
+                                        this.setState(() => ({ state }))
+                                    }} 
+                                />
+
+                            </React.Fragment>    
+                        }
+
+
                         <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
                             Submit Event
                         </FlatButton>
@@ -652,8 +757,8 @@ export default class EventInformation extends Component {
                     Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
                 </footer>
                 <Snackbar
-                    open={snackBar}
-                    message={snackBarMessage}
+                    open={snackbar}
+                    message={snackbarMessage}
                     autoHideDuration={4000}
                     onClose={this.handleRequestClose}
                 />
