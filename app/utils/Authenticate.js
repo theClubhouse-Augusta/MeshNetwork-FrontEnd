@@ -1,17 +1,10 @@
-export default async (token, dashboard = false, spaceSlug = false) => {
+export default async token => {
     let authorized;
     try {
-        if (!dashboard && !spaceSlug) {
-            const response = await fetch(`https://innovationmesh.com/api/authorize`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            authorized = await response.json();
-        } else if (dashboard && spaceSlug) {
-            const response = await fetch(`https://innovationmesh.com/api/authorize/${spaceSlug}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            authorized = await response.json();
-        }
+        const response = await fetch(`https://innovationmesh.com/api/authorize`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        authorized = await response.json();
     } catch (err) {
         //
     } finally {

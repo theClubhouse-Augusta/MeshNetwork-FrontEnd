@@ -598,13 +598,13 @@ export default class SpaceDash extends React.PureComponent {
                                                         this.editEventID(e.id);
                                                     }}
                                                 >
-                                                    update&nbsp;{e.title}
+                                                    <span style={{fontWeight:'bold'}}>Update</span>
                                                 </TableCell>
                                                 <TableCell
                                                     className="editEventRow"
                                                     onClick={() => this.deleteEvent(e.id, key)}
                                                 >
-                                                    delete&nbsp;{e.title}
+                                                    <span style={{fontWeight:'bold'}}>Delete</span>
                                                 </TableCell>
                                             </TableRow>
                                         )

@@ -288,7 +288,7 @@ export default class AddEvent extends Component {
     renderLogoImage = () => {
         if (this.state.logo !== "")
             return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
-    }
+    };
 
     renderLogoImageText = () => {
         if (this.state.logoPreview === "" || this.state.logoPreview === undefined || this.state.logoPreview === null) {
