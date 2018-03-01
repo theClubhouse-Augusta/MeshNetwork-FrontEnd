@@ -47,20 +47,20 @@ export default class Challenges extends React.PureComponent {
   }
 
   getChallenges = () => {
-    fetch("https://innovationmesh.com/api/getChallenges/5", {
-      method: "GET"
+    fetch("http://localhost:8000/api/getChallenges/5", {
+      method:'GET',
     })
-      .then(response => response.json())
-      .then(json => {
-        this.setState({
-          challenges: json.challenges.data
-        });
-      });
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        challenges:json.challenges.data
+      })
+    })
   };
 
   getQuestions = () => {
-    fetch("https://innovationmesh.com/api/getQuestions/5", {
-      method: "GET"
+    fetch("http://localhost:8000/api/getQuestions/5", {
+      method:'GET',
     })
       .then(response => response.json())
       .then(json => {
@@ -71,8 +71,8 @@ export default class Challenges extends React.PureComponent {
   };
 
   getTeams = () => {
-    fetch("https://innovationmesh.com/api/getTeams/5", {
-      method: "GET"
+    fetch("http://localhost:8000/api/getTeams/5", {
+      method:'GET',
     })
       .then(response => response.json())
       .then(json => {

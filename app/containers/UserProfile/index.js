@@ -40,17 +40,29 @@ export default class UserProfile extends React.Component {
 
 
     async componentDidMount() {
-        const authorized = await authenticate(localStorage['token'], this.props.history)
-        if (!authorized.error && authorized) {
-            this.getUser();
-            this.setState({ loading: false })
-        } else {
-            this.props.history.push('/');
+        let authorized;
+        try {
+            authorized = await authenticate(localStorage['token'], this.props.history);
+        } finally {
+            if (authorized !== undefined) {
+                if (!authorized.error && authorized) {
+                    this.getUser();
+                    this.setState({ loading: false })
+                } else if (authorized.error) {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    this.props.history.push('/signin');
+                }
+            } else {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                this.props.history.push('/');
+            }
         }
     }
 
     getUser = () => {
-        fetch('https://innovationmesh.com/api/user/profile/' + this.props.match.params.id, {
+        fetch('http://localhost:8000/api/user/profile/' + this.props.match.params.id, {
             method: 'GET',
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })

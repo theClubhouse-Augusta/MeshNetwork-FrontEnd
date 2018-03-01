@@ -48,7 +48,7 @@ export default class SpaceInformation extends React.PureComponent {
         description: ""
     };
 
-    spaceUpdateAPI = `https://innovationmesh.com/api/workspaces/${this.props.spaceID}`;
+    spaceUpdateAPI = `http://localhost:8000/api/workspaces/${this.props.spaceID}`;
 
     handleRequestClose = () => {
         this.setState({ snack: false, msg: "" });
@@ -85,7 +85,7 @@ export default class SpaceInformation extends React.PureComponent {
     };
 
     getSpaceInfo = () => {
-        fetch("https://innovationmesh.com/api/workspace/" + this.props.id, {
+        fetch("http://localhost:8000/api/workspace/" + this.props.id, {
             method: "GET"
         })
             .then(response => response.json())
