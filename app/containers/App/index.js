@@ -49,11 +49,7 @@ export default class App extends Component {
     async componentDidMount() {
         let authorized;
         try {
-            authorized = await authenticate(
-                localStorage['token'],
-                true,
-                this.props.match.params.id
-            );
+            authorized = await authenticate(localStorage['token']);
         } finally {
             if (authorized !== undefined) {
                 if (!authorized.error && authorized) {
