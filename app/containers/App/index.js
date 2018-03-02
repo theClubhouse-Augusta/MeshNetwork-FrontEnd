@@ -35,6 +35,7 @@ const NewCourse = asyncComponent(() => import('containers/NewCourse'));
 const Lessons = asyncComponent(() => import('containers/Lessons'));
 const Enroll = asyncComponent(() => import('containers/Enroll'));
 const LMSDash = asyncComponent(() => import('../LMSDash'));
+const LMSReport = asyncComponent(() => import('containers/StudentReport'));
 
 export default class App extends Component {
     constructor() {
@@ -380,6 +381,17 @@ export default class App extends Component {
                     path='/LMS/MyLMS'
                     render={(props) =>
                         <LMSDash
+                            {...props}
+                            app={this}
+                            spaceName={this.state.spaceName}
+                        />
+                    }
+                />
+
+                <Route
+                    path='/LMS/Report/:cid/:uid'
+                    render={(props) =>
+                        <LMSReport
                             {...props}
                             app={this}
                             spaceName={this.state.spaceName}

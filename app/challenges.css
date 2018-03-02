@@ -460,13 +460,6 @@
 
 /* Home Styles */
 
-.challenges_mainContainer {
-  display: flex;
-  flex-direction: column;
-  background: #f9f9f9;
-  min-height: 100vh;
-}
-
 .challenges_contentContainer {
   display: flex;
   flex-direction: row;
@@ -692,12 +685,6 @@
 
 /* Detail Styles */
 
-.challenges_mainContainer {
-  display: flex;
-  flex-direction: column;
-  background: #f9f9f9;
-  min-height: 100vh;
-}
 
 .challenges_contentContainer {
   display: flex;
@@ -876,12 +863,6 @@
 
 /* Challenges Styles */
 
-.challenges_mainContainer {
-  display: flex;
-  flex-direction: column;
-  background: #f9f9f9;
-  min-height: 100vh;
-}
 
 .challenges_contentContainer {
   display: flex;
@@ -1426,13 +1407,6 @@
   font-weight: 300;
 }
 
-.challenges_mainContainer {
-  display: flex;
-  flex-direction: column;
-  background: #f9f9f9;
-  min-height: 100vh;
-}
-
 .challenges_contentContainer {
   display: flex;
   flex-direction: row;
@@ -1611,12 +1585,6 @@
 
 /* Home Styles */
 
-.challenges_mainContainer {
-  display: flex;
-  flex-direction: column;
-  background: #f9f9f9;
-  min-height: 100vh;
-}
 
 .challenges_contentContainer {
   display: flex;
@@ -1841,12 +1809,6 @@
   margin-left: 10px;
 }
 
-.challenges_mainContainer {
-  display: flex;
-  flex-direction: column;
-  background: #f9f9f9;
-  min-height: 100vh;
-}
 
 .challenges_newChallengeImagePreview {
   max-height: 200px;

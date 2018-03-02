@@ -344,7 +344,11 @@ export default class Detail extends React.PureComponent {
               background: "#DDDDDD",
               color: "#444444",
               fontSize: "0.9em",
-              fontFamily: "Noto Sans"
+              fontFamily: "Noto Sans",
+              padding:'5px',
+              marginBottom:'10px',
+              borderRadius:'5px',
+              color:'#555555'
             }}
           >
             You must join a workspace before starting a challenge.

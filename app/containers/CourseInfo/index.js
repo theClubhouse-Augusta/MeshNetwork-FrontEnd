@@ -198,18 +198,18 @@ export default class CourseInfo extends React.PureComponent {
   }
 
   renderCurrentStudent = (student, index) => {
-    if(student.status === 'Ongoing') {
+    if(student.status === 'Current') {
       return(
-        <div className="lmsDetailStudentBlock" key={`lmsStudent${index}`}>
+        <Link to={'/LMS/Report/' + this.state.course.id + '/' + student.profile.id} className="lmsDetailStudentBlock" key={`lmsStudent${index}`}>
           <div className="lmsDetailStudentBlockLeft">
-            <img  alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
+            <img  alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
           </div>
           <div className="lmsDetailStudentBlockRight">
             <div className="lmsDetailStudentProgressValue">{student.complete}</div>
             <LinearProgress color="accent" mode="determinate" value={student.percent} style={{width:'100%'}}/>
           </div>
-        </div>
+        </Link>
       )
     }
   }
@@ -217,16 +217,16 @@ export default class CourseInfo extends React.PureComponent {
   renderGraduateStudent = (student, index) => {
     if(student.status === 'Graduate') {
       return(
-        <div className="lmsDetailStudentBlock" key={`lmsGraduate${index}`}>
+        <Link to={'/LMS/Report/' + this.state.course.id + '/' +  student.profile.id} className="lmsDetailStudentBlock" key={`lmsGraduate${index}`}>
           <div className="lmsDetailStudentBlockLeft">
-            <img alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar_thumbnail}/>
+            <img alt="" className="lmsDetailStudentAvatar" src={student.profile.avatar}/>
             <div className="lmsDetailStudentName">{student.profile.name}</div>
           </div>
           <div className="lmsDetailStudentBlockRight">
             <div className="lmsDetailStudentProgressValue">{student.complete}</div>
             <LinearProgress color="accent" mode="determinate" value={student.percent}  style={{width:'100%'}}/>
           </div>
-        </div>
+        </Link>
       )
     }
   }

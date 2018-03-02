@@ -39,7 +39,7 @@ export default class DateRangePickerWithGapsController extends Component {
       clearStartTimes
     } = this.props;
     return (
-      <div className="singleDpCon">
+      <div className="singleDpCon" style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
         <SingleDatePicker
           placeholder={`Day ${position + 1}`}
           date={date} // momentPropTypes.momentObj or null

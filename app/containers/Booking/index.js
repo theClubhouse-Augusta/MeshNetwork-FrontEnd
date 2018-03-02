@@ -307,8 +307,8 @@ export default class Booking extends React.PureComponent {
     };
 
     testSlot = (start, end, event) => {
-        let startTime = start._d;
-        let endTime = end._d;
+        let startTime = start._i;
+        let endTime = end._i;
 
         let diff = Math.abs(new Date(endTime) - new Date(startTime));
         let minutes = Math.floor((diff/1000)/60);
@@ -333,11 +333,14 @@ export default class Booking extends React.PureComponent {
                     events[index - 1] = dateObject;
                 }
             }
+            
+            let newStart = moment(startTime).format();
+            let newEnd = moment(endTime).format();
     
             this.setState({
                 events: events,
-                start: startTime,
-                end: endTime
+                start: newStart,
+                end: newEnd
             })
         }
     }

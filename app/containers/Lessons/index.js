@@ -144,6 +144,7 @@ export default class Lessons extends React.PureComponent {
   }
 
   completeLecture = () => {
+    console.log(this.state.activeView);
     let lessons = this.state.lessons;
     let data = new FormData();
     data.append('courseID', this.props.match.params.id);
@@ -326,7 +327,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureFiles.map((file, index) => (
-            <a href={'https://127.0.0.1/media/' + file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
+            <a href={file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
           ))}
         </div>
       )

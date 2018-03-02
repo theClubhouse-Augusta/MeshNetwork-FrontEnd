@@ -626,7 +626,7 @@ export default class EventInformation extends Component {
                             </React.Fragment>
                         } 
 
-                        <div style={{ display: 'flex', marginTop: '32px', marginBottom: '72px' }}>
+                        <div style={{ display: 'flex',  flexDirection:'row', alignItems:'center', marginTop: '32px', marginBottom: '72px' }}>
                             <input
                                 id="newSponsors"
                                 type="checkbox"
@@ -697,7 +697,7 @@ export default class EventInformation extends Component {
                             />
                         }
 
-                            <div style={{ display: 'flex', marginBottom: changeLocation ? 16 : 72 }}>
+                            <div style={{ display: 'flex', flexDirection:'row', alignItems:'center', marginBottom: changeLocation ? 16 : 72 }}>
                                 <input
                                     id="newSponsors"
                                     type="checkbox"
@@ -707,7 +707,7 @@ export default class EventInformation extends Component {
                                 />
 
                                 <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
-                                    &nbsp;&nbsp; change location?
+                                    &nbsp;&nbsp; Remote Location?
                                 </label>
 
                             </div>
