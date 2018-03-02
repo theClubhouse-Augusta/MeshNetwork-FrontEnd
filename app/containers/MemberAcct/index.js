@@ -92,7 +92,7 @@ export default class MemberAcct extends React.PureComponent {
   // }
 
   loadSkills = () => {
-    fetch("http://localhost:8000/api/skills/all", {})
+    fetch("https://innovationmesh.com/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
@@ -167,7 +167,7 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   getUserInfo = () => {
-    fetch(`http://localhost:8000/api/user/auth`, {
+    fetch(`https://innovationmesh.com/api/user/auth`, {
       method: "GET",
       headers: { Authorization: "Bearer " + this.state.token }
     })
@@ -210,7 +210,7 @@ export default class MemberAcct extends React.PureComponent {
     data.append("password", this.state.password);
     data.append("passwordConfirm", this.state.passwordConfirm);
 
-    fetch(`http://localhost:8000/api/user/update`, {
+    fetch(`https://innovationmesh.com/api/user/update`, {
       headers: { Authorization: "Bearer " + this.state.token },
       method: "POST",
       body: data

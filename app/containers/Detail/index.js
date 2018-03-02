@@ -134,7 +134,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/selectCategories", {
+    fetch("https://innovationmesh.com/api/selectCategories", {
       method: "GET"
     })
       .then(response => {
@@ -184,7 +184,7 @@ export default class Detail extends React.PureComponent {
     data.append("endDate", this.state.endDate);
 
     fetch(
-      "http://localhost:8000/api/updateChallenge/" +
+      "https://innovationmesh.com/api/updateChallenge/" +
         this.state.challenge.id,
       {
         method: "POST",
@@ -218,7 +218,7 @@ export default class Detail extends React.PureComponent {
                 this.state.challengeFiles[i].fileData
               );
 
-              fetch("http://localhost:8000/api/uploadFile", {
+              fetch("https://innovationmesh.com/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }
@@ -256,7 +256,7 @@ export default class Detail extends React.PureComponent {
 
   getDetail = () => {
     fetch(
-      "http://localhost:8000/api/showChallenge/" +
+      "https://innovationmesh.com/api/showChallenge/" +
         this.props.match.params.id,
       {
         method: "GET"
@@ -289,7 +289,7 @@ export default class Detail extends React.PureComponent {
 
   getSpace = () => {
     fetch(
-      "http://localhost:8000/api/workspace/" +
+      "https://innovationmesh.com/api/workspace/" +
         this.state.challenge.spaceID,
       {
         method: "GET"
@@ -305,7 +305,7 @@ export default class Detail extends React.PureComponent {
 
   joinChallenge = () => {
     fetch(
-      "http://localhost:8000/api/joinChallenge/" + this.state.challenge.id,
+      "https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id,
       {
         method: "GET",
         headers: { Authorization: "Bearer " + this.state.token }
@@ -344,7 +344,11 @@ export default class Detail extends React.PureComponent {
               background: "#DDDDDD",
               color: "#444444",
               fontSize: "0.9em",
-              fontFamily: "Noto Sans"
+              fontFamily: "Noto Sans",
+              padding:'5px',
+              marginBottom:'10px',
+              borderRadius:'5px',
+              color:'#555555'
             }}
           >
             You must join a workspace before starting a challenge.

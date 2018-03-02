@@ -303,9 +303,14 @@ export default class Header extends React.PureComponent {
   renderSignOut = () => {
    if(this.state.user && this.state.token)
    {
+     let space = 'Workspace';
+     if(this.props.space) {
+      space = this.props.space
+     }
+
      return(
        <div style={{display:'flex', flexDirection:'row'}}>
-         <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>{this.props.space}</Link>
+         <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{color:this.state.textColor}}>{space}</Link>
          <Link to={'/user/' + this.state.user.id} className="navButton" style={{color:this.state.textColor}}>Profile</Link>
          <div onClick={this.signOut} className="navButton" style={{color:this.state.textColor}}>Sign Out</div>
        </div>

@@ -50,7 +50,7 @@ export default class Lessons extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("http://localhost:8000/api/showCourse/"+id, {
+    fetch("https://innovationmesh.com/api/showCourse/"+id, {
       method:'GET',
       headers:{'Authorization': 'Bearer ' + this.state.token}
     })
@@ -144,13 +144,14 @@ export default class Lessons extends React.PureComponent {
   }
 
   completeLecture = () => {
+    console.log(this.state.activeView);
     let lessons = this.state.lessons;
     let data = new FormData();
     data.append('courseID', this.props.match.params.id);
     data.append('lectureID', this.state.activeView.id);
     data.append('answers', this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers);
 
-    fetch("http://localhost:8000/api/completeLecture", {
+    fetch("https://innovationmesh.com/api/completeLecture", {
       method:'POST',
       body:data,
       headers:{'Authorization': 'Bearer '+this.state.token}
@@ -326,7 +327,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureFiles.map((file, index) => (
-            <a href={'https://127.0.0.1/media/' + file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
+            <a href={file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
           ))}
         </div>
       )

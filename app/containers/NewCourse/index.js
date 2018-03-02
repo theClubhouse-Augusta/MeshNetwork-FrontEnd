@@ -76,7 +76,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("http://localhost:8000/api/editCourse/"+id, {
+    fetch("https://innovationmesh.com/api/editCourse/"+id, {
       method:'GET',
       headers:{'Authorization': 'Bearer '+this.state.token}
     })
@@ -149,7 +149,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/getCategories", {
+    fetch("https://innovationmesh.com/api/getSubjects", {
       method:'GET'
     })
     .then(response => response.json())
@@ -163,7 +163,7 @@ export default class NewCourse extends React.PureComponent {
   handleCourseName = (event) => {this.setState({courseName:event.target.value})};
   handleCourseSummary = (event) => {this.setState({courseSummary:event.target.value})};
   handleCoursePrice = (event) => {this.setState({coursePrice:event.target.value})};
-  handleCourseCategory = (event, index, value) => { this.setState({ courseCategory:value })}
+  handleCourseCategory = (event) => { this.setState({ courseCategory:event.target.value })}
   handleCourseInformation = (editorState) => {this.setState({courseInformation: editorState, editorState: editorState})};
   handleCourseInstructorName = (event) => {this.setState({courseInstructorName:event.target.value})};
   handleCourseInstructorInfo = (event) => {this.setState({courseInstructorInfo:event.target.value})};
@@ -325,7 +325,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('questionContent', "");
       data.append('questionType', type);
 
-      fetch("http://localhost:8000/api/storeQuestion/", {
+      fetch("https://innovationmesh.com/api/storeQuestion/", {
         method:'POST',
         body:data,
         headers:{'Authorization':'Bearer ' + this.state.token}
@@ -353,14 +353,25 @@ export default class NewCourse extends React.PureComponent {
     }
   }
 
+  handleQuestion = (i, event) => {
+    let lessons = this.state.lessons;
+    lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionContent = event.target.value;
+    this.setState({
+      lessons:lessons
+    }, () => {
+      this.forceUpdate();
+    })
+  }
+
   updateQuestion = (i, event) => {
+    console.log(i);
     let data = new FormData();
     let lessons = this.state.lessons;
     let id = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].id
 
     data.append('questionContent', event.target.value);
 
-    fetch("http://localhost:8000/api/updateQuestion/"+id, {
+    fetch("https://innovationmesh.com/api/updateQuestion/"+id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -394,7 +405,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('answerContent', "");
       data.append('isCorrect', false);
 
-      fetch("http://localhost:8000/api/storeAnswer", {
+      fetch("https://innovationmesh.com/api/storeAnswer", {
         method:'POST',
         body:data,
         headers:{'Authorization':'Bearer ' + this.state.token}
@@ -421,6 +432,17 @@ export default class NewCourse extends React.PureComponent {
     }
   }
 
+  handleAnswer = (i, j, event) => {
+    let lessons = this.state.lessons;
+    lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].answerContent = event.target.value;
+    this.setState({
+      lessons:lessons
+    }, () => {
+      this.forceUpdate();
+    })
+  }
+
+
   updateAnswer = (i, j, event) => {
     let data = new FormData();
     let lessons = this.state.lessons;
@@ -428,10 +450,10 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('answerContent', event.target.value);
 
-    fetch("http://localhost:8000/api/updateAnswer/" + id, {
+    fetch("https://innovationmesh.com/api/updateAnswer/" + id, {
       method:'POST',
       body:data,
-      headers:{'Authorization':'JWT ' + this.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then((response) => {
       return response.json()
@@ -455,7 +477,7 @@ export default class NewCourse extends React.PureComponent {
 
   }
 
-  updateCorrect = (i, j) => {
+  updateCorrect = (i, j, id) => {
     let lessons = this.state.lessons;
 
     for(let x = 0; x < lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers.length; x++) {
@@ -464,7 +486,22 @@ export default class NewCourse extends React.PureComponent {
       }
     }
 
+    let questionID = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].id
+
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].isCorrect = true;
+
+    fetch('https://innovationmesh.com/api/updateCorrectAnswer/'+this.props.match.params.id+'/'+questionID+'/'+id, {
+      method:'POST',
+      headers: {
+        'Authorization' : 'Bearer ' + this.state.token
+      }
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      this.showSnack('Answer Set');
+    })
 
     this.setState({
       lessons:lessons
@@ -502,7 +539,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('coursePrice', coursePrice);
     data.append('courseStatus', courseStatus);
 
-    fetch("http://localhost:8000/api/updateCourse/"+this.props.match.params.id, {
+    fetch("https://innovationmesh.com/api/updateCourse/"+this.props.match.params.id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -531,10 +568,10 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseImage', this.state.courseImage);
 
-    fetch("http://localhost:8000/api/updateCourseImage/"+this.props.match.params.id, {
+    fetch("https://innovationmesh.com/api/updateCourseImage/"+this.props.match.params.id, {
       method:'POST',
       body:data,
-      headers:{'Authorization':'JWT ' + this.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then((response) => {
       return response.json();
@@ -560,7 +597,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
 
-    fetch("http://localhost:8000/api/updateCourseInstructorAvatar/"+this.props.match.params.id, {
+    fetch("https://innovationmesh.com/api/updateCourseInstructorAvatar/"+this.props.match.params.id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -587,7 +624,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('courseID', this.props.match.params.id);
     data.append('lessonName', "Lesson Title");
 
-    fetch("http://localhost:8000/api/storeLesson", {
+    fetch("https://innovationmesh.com/api/storeLesson", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -617,7 +654,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('lessonName', lessonName);
 
-    fetch("http://localhost:8000/api/updateLesson/"+id, {
+    fetch("https://innovationmesh.com/api/updateLesson/"+id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -645,7 +682,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('lectureType', lessons[i].lectures[j].lectureType);
       data.append('lectureVideo', lessons[i].lectures[j].lectureVideo);
 
-    fetch("http://localhost:8000/api/updateLecture/"+id, {
+    fetch("https://innovationmesh.com/api/updateLecture/"+id, {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -670,7 +707,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureType', "Text");
     data.append('lectureVideo', "");
 
-    fetch("http://localhost:8000/api/storeLecture", {
+    fetch("https://innovationmesh.com/api/storeLecture", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -702,7 +739,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('fileContent', file.fileData);
 
-    fetch("http://localhost:8000/api/storeFiles", {
+    fetch("https://innovationmesh.com/api/storeFiles", {
       method:'POST',
       body:data,
       headers:{'Authorization':'Bearer ' + this.state.token}
@@ -727,7 +764,7 @@ export default class NewCourse extends React.PureComponent {
   deleteLesson = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("http://localhost:8000/api/deleteLesson/" + id, {
+    fetch("https://innovationmesh.com/api/deleteLesson/" + id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
@@ -751,7 +788,7 @@ export default class NewCourse extends React.PureComponent {
   deleteLecture = (id, i, j) => {
     let lessons = this.state.lessons;
 
-    fetch("http://localhost:8000/api/deleteLecture/" + id, {
+    fetch("https://innovationmesh.com/api/deleteLecture/" + id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
@@ -776,9 +813,9 @@ export default class NewCourse extends React.PureComponent {
   deleteQuestion = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("http://localhost:8000/api/deleteQuestion/"+id, {
+    fetch("https://innovationmesh.com/api/deleteQuestion/"+id, {
       method:'POST',
-      headers:{'Authorization':'JWT ' + this.state.token}
+      headers:{'Authorization':'Bearer ' + this.state.token}
     })
     .then((response) => {
       return response.json();
@@ -801,7 +838,7 @@ export default class NewCourse extends React.PureComponent {
   deleteAnswer = (id, i, j) => {
     let lessons = this.state.lessons;
 
-    fetch("http://localhost:8000/api/deleteAnswer/"+id, {
+    fetch("https://innovationmesh.com/api/deleteAnswer/"+id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
@@ -826,7 +863,7 @@ export default class NewCourse extends React.PureComponent {
   deleteFile = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("http://localhost:8000/api/deleteFile/"+id, {
+    fetch("https://innovationmesh.com/api/deleteFile/"+id, {
       method:'POST',
       headers:{'Authorization':'Bearer ' + this.state.token}
     })
@@ -915,7 +952,7 @@ export default class NewCourse extends React.PureComponent {
         return(
           <div className="lmsNewBlockItemContainer" key={`lmsLectureRenderMenu${j}`}>
             <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)}>
-              <input className="lmsNewBlockItemInput" value={lecture.lecturName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)}/>
+              <input className="lmsNewBlockItemInput" value={lecture.lectureName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)}/>
               <div className="lmsNewLessonCloseIcon"><CloseIcon style={{width:'20px', height:'20px', color:'#888888', cursor:'pointer'}} onClick={() => this.confirmLectureDelete(i, j)}/></div>
             </div>
             {this.renderLectureDelete(lecture.id, i, j)}
@@ -1031,17 +1068,16 @@ export default class NewCourse extends React.PureComponent {
   }
 
   renderNewQuestion = (question, i) => {
-
     if(question.questionType === 'multiple') {
       return(
-        <div className="lmsNewLectureQuestionBlock" key={`lmsLectrue${i}`}>
+        <div className="lmsNewLectureQuestionBlock" key={`lmsLecture${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
-            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3}>{question.content}</TextField>
+            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.handleQuestion(i, event)} onBlur={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3} value={question.questionContent}/>
             <CloseIcon style={{width:'25px', height:'25px', color:'#888888', cursor:'pointer'}} onClick={() => this.deleteQuestion(question.id, i)}/>
           </div>
           <span style={{display:'flex', flexDirection:'row'}}>
-            <FlatButton label="Add Answer" style={{background:"#6fc13e", color:"#FFFFFF", marginLeft:'5px', width:'15%'}} onClick={() => this.storeAnswer(i)}>Add Answer</FlatButton>
+            <FlatButton label="Add Answer" style={{background:"#6fc13e", color:"#FFFFFF", marginLeft:'5px', width:'15%', height:'55px'}} onClick={() => this.storeAnswer(i)}>Add Answer</FlatButton>
             <div style={{marginLeft:'30px', width:'85%'}}>
               {question.questionAnswers.map((answer, j) => (
                 this.renderNewAnswer(answer, i, j)
@@ -1056,7 +1092,7 @@ export default class NewCourse extends React.PureComponent {
         <div className="lmsNewLectureQuestionBlock" key={`lmsLecture2${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
-            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3}>{question.content}</TextField>
+            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.handleQuestion(i, event)} onBlur={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3} value={question.questionContent}/>
             <CloseIcon style={{width:'25px', height:'25px', color:'#888888', cursor:'pointer'}} onClick={() => this.deleteQuestion(question.id, i)}/>
           </div>
         </div>
@@ -1077,8 +1113,8 @@ export default class NewCourse extends React.PureComponent {
     return(
       <div style={{marginBottom:'10px', width:'100%', display:'flex', flexDirection:'row', alignItems:'center'}} key={`renderNewAnswer${j}`}>
         <span className="lmsNewLectureQuestionNum">{letter}</span>
-        <input type="radio" onChange={() => this.updateCorrect(i, j)} name={'question-'+ i}/>
-        <TextField value={answer.answerContent} onChange={(event) => this.updateAnswer(i, j, event)} style={{border:'none', outline:'none', marginLeft:'10px', width:'90%'}} placeholder="Type an Answer..." name={"answerContent-"+j}/>
+        <input type="radio" checked={answer.isCorrect} onChange={() => this.updateCorrect(i, j, answer.id)} name={'question-'+ i}/>
+        <TextField value={answer.answerContent} onChange={(event) => this.handleAnswer(i, j, event)} onBlur={(event) => this.updateAnswer(i, j, event)} style={{border:'none', outline:'none', marginLeft:'10px', width:'90%'}} placeholder="Type an Answer..." name={"answerContent-"+j}/>
         <CloseIcon style={{width:'25px', height:'25px', color:'#888888', cursor:'pointer'}} onClick={() => this.deleteAnswer(answer.id, i, j)}/>
       </div>
     )
@@ -1139,7 +1175,7 @@ export default class NewCourse extends React.PureComponent {
         <div className="lmsLessonMainContent">
           <div className="lmsNewVideoBlock">
             <input className="lmsNewVideoBlockInput" placeholder="Paste Link to Video" value={this.state.activeView.lectureVideo} onChange={this.handleLectureVideo}/>
-            <span style={{fontSize:'0.9rem', marginTop:'5px'}}>Currently Supported: Youtube, Vimeo, and Embed</span>
+            <span style={{fontSize:'0.9rem', marginTop:'5px'}}>Currently Supported: Youtube</span>
           </div>
         </div>
       )
@@ -1176,7 +1212,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   renderCourseImage = () => {
-    if(this.state.courseImage === "")
+    if(this.state.courseImage !== "")
     {
       return(
         <img alt="" src={this.state.courseImagePreview} className="lmsNewCourseImagePreview"/>

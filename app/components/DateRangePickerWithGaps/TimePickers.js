@@ -47,7 +47,6 @@ export default class TimerPickers extends Component {
     return (
       <div>
         <div style={{display: 'flex'}}>
-          <div>
             <div style={{
               display: 'flex', 
               width: 200,
@@ -87,8 +86,7 @@ export default class TimerPickers extends Component {
             className="fudge"
           >
             x
-          </div>}
-        </div>
+        </div>}
       </div>
     );
   }

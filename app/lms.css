@@ -1240,15 +1240,15 @@
   font-family: "Lato";
 }
 
-.lmsNewLessonCloseIcon {
-  opacity: 0;
+/*.lmsNewLessonCloseIcon {
+  opacity:0;
 }
 
 .lmsNewLessonCloseIcon:hover {
   opacity: 1;
   animation: fadein 500ms;
 }
-
+*/
 .lmsNewDeleteBlock {
   display: flex;
   flex-direction: row;

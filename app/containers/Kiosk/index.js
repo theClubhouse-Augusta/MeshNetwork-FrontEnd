@@ -56,7 +56,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getProfile = () => {
-    fetch("http://localhost:8000/api/workspace/" + this.props.match.params.id, {
+    fetch("https://innovationmesh.com/api/workspace/" + this.props.match.params.id, {
       method: "GET"
     }
     )
@@ -70,7 +70,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUsers = id => {
-    fetch("http://localhost:8000/api/users/space/" + id)
+    fetch("https://innovationmesh.com/api/users/space/" + id)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -80,7 +80,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getReasons = () => {
-    fetch("http://localhost:8000/api/occasions")
+    fetch("https://innovationmesh.com/api/occasions")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -90,7 +90,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUpcomingEvents = () => {
-    fetch("http://localhost:8000/api/upcoming/" + this.props.match.params.id)
+    fetch("https://innovationmesh.com/api/upcoming/" + this.props.match.params.id)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -100,7 +100,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getToday = id => {
-    fetch("http://localhost:8000/api/todayevent/" + id, {
+    fetch("https://innovationmesh.com/api/todayevent/" + id, {
       headers: { Authorization: `Bearer ${localStorage["token"]}` }
     })
       .then(response => response.json())
@@ -118,7 +118,7 @@ export default class Kiosk extends React.PureComponent {
     data.append("spaceID", this.state.workspace.id);
     data.append("occasion", this.state.selectedReason);
 
-    fetch("http://localhost:8000/api/appearance", {
+    fetch("https://innovationmesh.com/api/appearance", {
       method: "POST",
       body: data
     })
@@ -357,21 +357,33 @@ export default class Kiosk extends React.PureComponent {
               marginBottom: "15px" */
             }}
           />
-          <div className="kioskTitle">
-            Welcome to {this.state.workspace.name}
-          </div>
+          <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
           <div className="kioskSubtitle">Check-In with Us!</div>
           <div className="kioskContent">
-            <Select
-              name="form-field-name"
-              value={this.state.loggedInUser.value}
-              placeholder="Select your Name"
-              arrowRenderer={null}
-              clearable={true}
-              openOnClick={false}
-              onChange={this.handleNameInputChange}
-              options={this.state.users}
-            />
+              <Select
+                  name="form-field-name"
+                  value={this.state.loggedInUser.value}
+                  placeholder="Select your Name"
+                  arrowRenderer={null}
+                  clearable={true}
+                  openOnClick={false}
+                  onChange={this.handleNameInputChange}
+                  options={this.state.users}
+              />
+              <Link to={"/join/" + this.state.workspace.slug} style={{ marginTop: "30px", width: "10%" }}>
+                  <FlatButton style={{
+                      width: "100%",
+                      background: "#ff4d58",
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                      }}
+                  >
+                      Don't See Your Name? Join Our Mesh Network!
+                  </FlatButton>
+              </Link>
+            </div>
 
             {this.renderReasons()}
             {this.renderToday()}
@@ -384,7 +396,6 @@ export default class Kiosk extends React.PureComponent {
               autoHideDuration={3000}
               onRequestClose={this.handleRequestClose}
             />
-          </div>
         </main>
       </div>
     );

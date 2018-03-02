@@ -116,7 +116,7 @@ export default class AddEvent extends Component {
     };
 
     getSponsors = () => {
-        fetch(`http://localhost:8000/api/sponsors`, {
+        fetch(`https://innovationmesh.com/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -130,7 +130,7 @@ export default class AddEvent extends Component {
     };
 
     getOrganizers = () => {
-        fetch(`http://localhost:8000/api/organizers/events`, {
+        fetch(`https://innovationmesh.com/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -145,7 +145,7 @@ export default class AddEvent extends Component {
     };
 
     loadSkills = () => {
-        fetch('http://localhost:8000/api/skills/all', {
+        fetch('https://innovationmesh.com/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -270,7 +270,7 @@ export default class AddEvent extends Component {
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`http://localhost:8000/api/event`, {
+        fetch(`https://innovationmesh.com/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -410,7 +410,7 @@ export default class AddEvent extends Component {
                 ?
                 <Spinner loading={this.state.loading} />
                 :
-                <div className="container">
+                <div className="container" style={{background:'#F6F6F6'}}>
                     <Helmet>
                         <title>Create Event Form</title>
                         <meta name="description" content="Description of Create event form" />
@@ -426,8 +426,6 @@ export default class AddEvent extends Component {
                         <div className="spaceSignUpTitle">Submit an Event</div>
                         <div className="spaceSignUpContainer">
 
-
-                            <TextField label="foo" onChange={this.handleFoo} type="text" name="eventName" margin="normal" />
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
                             <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
@@ -557,7 +555,7 @@ export default class AddEvent extends Component {
                                 </div>
                             }
 
-                            <div style={{ display: 'flex', marginTop: 32, marginBottom: 32 }}>
+                            <div style={{ display: 'flex',  flexDirection:'row', alignItems:'center', marginTop: 32, marginBottom: 32 }}>
                                 <input
                                     id="newSponsors"
                                     type="checkbox"
@@ -629,7 +627,7 @@ export default class AddEvent extends Component {
                                     newSponsor={true}
                                 />}
 
-                            <div style={{ display: 'flex', marginBottom: changeLocation ? 16 : 72 }}>
+                            <div style={{ display: 'flex', flexDirection:'row', alignItems:'center', marginBottom: changeLocation ? 16 : 72 }}>
                                 <input
                                     id="newSponsors"
                                     type="checkbox"
@@ -639,7 +637,7 @@ export default class AddEvent extends Component {
                                 />
 
                                 <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
-                                    &nbsp;&nbsp; change location?
+                                    &nbsp;&nbsp; Remote Location?
                                 </label>
 
                             </div>

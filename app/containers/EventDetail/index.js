@@ -45,7 +45,7 @@ export default class EventDetail extends React.PureComponent {
     }
 
     getEvent = (eventID) => {
-        fetch(`http://localhost:8000/api/event/${eventID}`)
+        fetch(`https://innovationmesh.com/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
                 this.setState({
@@ -63,7 +63,7 @@ export default class EventDetail extends React.PureComponent {
 
     registerForEvent = (e, eventID) => {
         e.preventDefault();
-        fetch(`http://localhost:8000/api/event/join/${eventID}`, {
+        fetch(`https://innovationmesh.com/api/event/join/${eventID}`, {
             headers: { Authorization: `Bearer ${this.token}` }
         },
         )
@@ -90,15 +90,13 @@ export default class EventDetail extends React.PureComponent {
         });
 
     renderLocation = () => {
-        const { event } = this.state;
-        if(!event.address) {
+        if(!this.state.event.address) {
             return(
-                <div className="homeHeaderContentSubtitle">{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
+                <div className="homeHeaderContentSubtitle" style={{color:'#FFFFFF'}}>{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
             )
         } else {
-            console.log('reenL', event)
             return(
-                <div className="homeHeaderContentSubtitle">{event.address}, {event.city}, {event.state}</div>
+                <div className="homeHeaderContentSubtitle"  style={{color:'#FFFFFF'}}>{this.state.event.address}, {this.state.event.city}, {this.state.event.state}</div>
             )
         }
     }
@@ -123,6 +121,7 @@ export default class EventDetail extends React.PureComponent {
                     <div className="eventDetailBanner"
                         style={{background: '#ff4d58'}}>
                         <div className="homeHeaderContentTitle">{this.state.event.title}</div>
+                        {this.renderLocation()}
                     </div>
                 </header>
 
@@ -159,7 +158,7 @@ export default class EventDetail extends React.PureComponent {
                         }
                     </div>
 
-                    <div>
+                    {/*<div>
                         <h1 className="eventDetailSectionTitle">Location</h1>
                         {!!event.address &&
                             <React.Fragment>
@@ -173,13 +172,17 @@ export default class EventDetail extends React.PureComponent {
                                 <p>{workSpace.city}, {workSpace.state}</p>
                             </React.Fragment>
                         }
-                    </div>
+                    </div>*/}
                     
                     <div className="spaceSignUpContainer">
                         <div className="eventDetailSection">
                             <div className="eventDetailSectionTitle">Description</div>
                             <div className="eventDetailSectionContent">
-                                <p>{this.state.event.description}</p>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                __html:this.state.event.description
+                                }}
+                            />
                                 {!!tags.length &&
                                     <div className="eventTags">
                                         <a href={this.state.event.url} style={{ textDecoration: 'none', background: '#EEEEEE', padding: '5px', color: '#222222', marginRight: '10px', borderRadius: '5px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}><LinkIcon size={25} /></a>
@@ -224,7 +227,7 @@ export default class EventDetail extends React.PureComponent {
                                 <div className="eventDetailUsersList">
                                     {this.state.sponsors.map((sponsor, i) => (
                                         <div key={`sponsors${i}`} className="eventDetailUsersBlock">
-                                            <img alt="" src={sponsor.logo} style={{ width: '100px', height: '100px' }} />
+                                            <img alt="" src={sponsor.logo} />
                                         </div>
                                     ))}
                                 </div>

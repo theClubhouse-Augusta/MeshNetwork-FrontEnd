@@ -88,7 +88,7 @@ export default class Booking extends React.PureComponent {
             increments:60,
             times: times
         }, () => {
-            fetch('http://localhost:8000/api/bookings/' + type, {
+            fetch('https://innovationmesh.com/api/bookings/' + type, {
                 method: 'GET'
             })
                 .then(response => response.json())
@@ -150,7 +150,7 @@ export default class Booking extends React.PureComponent {
     }
 
     getProfile = () => {
-        fetch('http://localhost:8000/api/workspace/' + this.props.match.params.id, {
+        fetch('https://innovationmesh.com/api/workspace/' + this.props.match.params.id, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -167,7 +167,7 @@ export default class Booking extends React.PureComponent {
     }
 
     getResources = (id) => {
-        fetch('http://localhost:8000/api/resources/' + id, {
+        fetch('https://innovationmesh.com/api/resources/' + id, {
             method: 'GET',
         })
             .then(response => response.json())
@@ -188,7 +188,7 @@ export default class Booking extends React.PureComponent {
         data.append('end', this.state.end);
         data.append('spaceID', this.state.spaceProfile.id);
 
-        fetch("http://localhost:8000/api/booking", {
+        fetch("https://innovationmesh.com/api/booking", {
             method: 'POST',
             body: data,
             headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -307,31 +307,42 @@ export default class Booking extends React.PureComponent {
     };
 
     testSlot = (start, end, event) => {
-        let startTime = start._d;
-        let endTime = end._d;
-        let dateObject = {
-            title: 'Your Booking',
-            start: startTime,
-            end: endTime
-        }
+        let startTime = start._i;
+        let endTime = end._i;
 
-        let events = this.state.events;
-        let index = events.length;
-        if (index === 0) {
-            events.push(dateObject);
+        let diff = Math.abs(new Date(endTime) - new Date(startTime));
+        let minutes = Math.floor((diff/1000)/60);
+
+        if(minutes > this.state.increment) {
+            this.showSnack("This can only be booked for "+ this.state.increment+" minutes.");
         } else {
-            if (this.state.start === "" && this.state.end === "") {
+            let dateObject = {
+                title: 'Book This Time',
+                start: startTime,
+                end: endTime
+            }
+    
+            let events = this.state.events;
+            let index = events.length;
+            if (index === 0) {
                 events.push(dateObject);
             } else {
-                events[index - 1] = dateObject;
+                if (this.state.start === "" && this.state.end === "") {
+                    events.push(dateObject);
+                } else {
+                    events[index - 1] = dateObject;
+                }
             }
+            
+            let newStart = moment(startTime).format();
+            let newEnd = moment(endTime).format();
+    
+            this.setState({
+                events: events,
+                start: newStart,
+                end: newEnd
+            })
         }
-
-        this.setState({
-            events: events,
-            start: startTime,
-            end: endTime
-        })
     }
 
 
@@ -381,12 +392,14 @@ export default class Booking extends React.PureComponent {
                         selectOverlap={false}
                         slotDuration={'00:'+this.state.increment+':00'}
                         allDaySlot={false}
-                        select={(event) => this.testSlot(event)}
+                        timezone="local"
+                        select={(start, end, event) => this.testSlot(start, end, event)}
                         businessHours={{
                             dow:this.state.activeDays,
                             start:this.state.activeResource.startTime,
                             end:this.state.activeResource.endTime
                         }}
+                        selectConstraint='businessHours'
                         eventConstraint="businessHours"
                         slotEventOverlap={false}
                         weekends={false}
