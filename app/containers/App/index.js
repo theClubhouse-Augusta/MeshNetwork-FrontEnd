@@ -327,7 +327,7 @@ export default class App extends Component {
                     }
                 />
                 <Route
-                    path='/LMS/CourseInfo/:id'
+                    path='/LMS/CourseInfo/:id/:uid'
                     render={(props) =>
                         <CourseInfo
                             {...props}
@@ -347,7 +347,7 @@ export default class App extends Component {
                     }
                 />
                 <Route
-                    exact path='/LMS/Lesson/:id'
+                    exact path='/LMS/Lesson/:id/:uid'
                     render={(props) =>
                         <Lessons
                             {...props}
@@ -356,8 +356,20 @@ export default class App extends Component {
                         />
                     }
                 />
+
                 <Route
-                    path='/LMS/Lesson/:id/:lid'
+                    path='/LMS/Report/:id/:uid'
+                    render={(props) =>
+                        <Lessons
+                            {...props}
+                            app={this}
+                            spaceName={this.state.spaceName}
+                        />
+                    }
+                />
+
+                <Route
+                    path='/LMS/Lesson/:id/:lid/:uid'
                     render={(props) =>
                         <Lessons
                             {...props}
@@ -381,17 +393,6 @@ export default class App extends Component {
                     path='/LMS/MyLMS'
                     render={(props) =>
                         <LMSDash
-                            {...props}
-                            app={this}
-                            spaceName={this.state.spaceName}
-                        />
-                    }
-                />
-
-                <Route
-                    path='/LMS/Report/:cid/:uid'
-                    render={(props) =>
-                        <LMSReport
                             {...props}
                             app={this}
                             spaceName={this.state.spaceName}

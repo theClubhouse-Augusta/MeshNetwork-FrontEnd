@@ -145,24 +145,26 @@ export default class UserProfile extends React.Component {
                     </header>
 
                     <main className="mainProfile">
-                        <div className="profileHeader">
-                            <img alt="" src={this.state.user.avatar} className="profileHeaderImg" />
-                            <div className="profileHeaderTitle">{this.state.user.name}</div>
-                            <div className="profileSubTitle">{!!this.state.user.title !== "null" ? this.state.user.title : false}</div>
-                        </div>
-                        <div className="profileContact">
-                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
-                                    {this.state.space.name}
-                                </Link>
-                                {this.renderEdit()}
+                        <div className="profileWrapper">
+                            <div className="profileHeader">
+                                <img alt="" src={this.state.user.avatar} className="profileHeaderImg" />
+                                <div className="profileHeaderTitle">{this.state.user.name}</div>
+                                <div className="profileSubTitle">{!!this.state.user.title !== "null" ? this.state.user.title : false}</div>
                             </div>
-                            {this.renderSocial()}
-                        </div>
-                        <div className="profileSkillsList">
-                            {this.state.skills.map((skill, i) => (
-                                this.renderTag(skill, i)
-                            ))}
+                            <div className="profileContact">
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <Link to={'/space/' + this.state.user.spaceID} className="profileSpaceBlock">
+                                        {this.state.space.name}
+                                    </Link>
+                                    {this.renderEdit()}
+                                </div>
+                                {this.renderSocial()}
+                            </div>
+                            <div className="profileSkillsList">
+                                {this.state.skills.map((skill, i) => (
+                                    this.renderTag(skill, i)
+                                ))}
+                            </div>
                         </div>
                     </main>
 

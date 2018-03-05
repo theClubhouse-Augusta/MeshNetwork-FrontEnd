@@ -615,7 +615,6 @@ export default class EventInformation extends Component {
 
                          {(checkedRadio === this.multipleDays && days && dates.length !== days) &&
                             <React.Fragment>
-                                <h1>foo</h1>
                             <DateRangePickerWithGaps 
                                 numberOfDates={days}
                                 handleDate={dates => {

@@ -25,6 +25,7 @@ export default class CourseInfo extends React.PureComponent {
     super(props);
     this.state = {
       token:localStorage.getItem('token'),
+      user:JSON.parse(localStorage.getItem('user')),
       activeView:"Curriculum",
       course:"",
       lessons:[],
@@ -47,7 +48,7 @@ export default class CourseInfo extends React.PureComponent {
 
   getCourse = (id) => {
 
-    fetch("https://innovationmesh.com/api/showCourse/"+id, {
+    fetch("https://innovationmesh.com/api/showCourse/"+id+"/"+this.props.match.params.uid, {
       method:'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -274,7 +275,7 @@ export default class CourseInfo extends React.PureComponent {
                         </div>
                       </div>
                       <div className="lmsDetailCoursesBlockButton">
-                        <Link to={'/LMS/Lesson/'+this.props.match.params.id+'/'+lecture.id}><FlatButton style={{background:"#6fc13e", color:"#FFFFFF"}}>Start</FlatButton></Link>
+                        <Link to={'/LMS/Lesson/'+this.props.match.params.id+'/'+lecture.id+'/'+this.state.user.id}><FlatButton style={{background:"#6fc13e", color:"#FFFFFF"}}>Start</FlatButton></Link>
                       </div>
                     </div>
                   ))}

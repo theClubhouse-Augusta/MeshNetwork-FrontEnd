@@ -555,6 +555,10 @@ export default class NewCourse extends React.PureComponent {
         this.setState({
           isSaving:false
         })
+        if(json.success && courseStatus === "Published")
+        {
+          this.showSnack('Course Published.');
+        }
       }
     })
   };
@@ -1050,6 +1054,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   renderFile = (file, index) => {
+    console.log(file);
     if(file.isLoading === true) {
       return(
         <div key={`lmsRenderFile${index}`}>
@@ -1059,11 +1064,21 @@ export default class NewCourse extends React.PureComponent {
       )
     }
     else {
-      return(
-        <div key={`lmsRenderFile2${index}`}>
-          <div className="lmsNewFileBlock"><span></span>{file.fileData.name} <CloseIcon size={35} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(file.id, index)}/></div>
-        </div>
-      )
+      if(file.fileName)
+      {
+        return(
+          <div key={`lmsRenderFile2${index}`}>
+            <div className="lmsNewFileBlock"><span></span>{file.fileName} <CloseIcon size={35} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(file.id, index)}/></div>
+          </div>
+        )
+      }
+      else {
+        return(
+          <div key={`lmsRenderFile2${index}`}>
+            <div className="lmsNewFileBlock"><span></span>{file.fileData.name} <CloseIcon size={35} style={{color:'#777777', padding:'5px', cursor:'pointer'}} onClick={() => this.deleteFile(file.id, index)}/></div>
+          </div>
+        )
+      }
     }
   }
 
@@ -1073,7 +1088,7 @@ export default class NewCourse extends React.PureComponent {
         <div className="lmsNewLectureQuestionBlock" key={`lmsLecture${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
-            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.handleQuestion(i, event)} onBlur={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3} value={question.questionContent}/>
+            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.handleQuestion(i, event)} onBlur={(event) => this.updateQuestion(i, event)} multiline rowsMax={3} value={question.questionContent}/>
             <CloseIcon style={{width:'25px', height:'25px', color:'#888888', cursor:'pointer'}} onClick={() => this.deleteQuestion(question.id, i)}/>
           </div>
           <span style={{display:'flex', flexDirection:'row'}}>
@@ -1092,7 +1107,7 @@ export default class NewCourse extends React.PureComponent {
         <div className="lmsNewLectureQuestionBlock" key={`lmsLecture2${i}`}>
           <div className="lmsNewLectureQuestionContent">
             <span className="lmsNewLectureQuestionNum">{i + 1}</span>
-            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.handleQuestion(i, event)} onBlur={(event) => this.updateQuestion(i, event)} multiLine={true} rowsMax={3} value={question.questionContent}/>
+            <TextField label="Question Content" fullWidth={true} onChange={(event) => this.handleQuestion(i, event)} onBlur={(event) => this.updateQuestion(i, event)} multiline rowsMax={3} value={question.questionContent}/>
             <CloseIcon style={{width:'25px', height:'25px', color:'#888888', cursor:'pointer'}} onClick={() => this.deleteQuestion(question.id, i)}/>
           </div>
         </div>
@@ -1174,7 +1189,7 @@ export default class NewCourse extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           <div className="lmsNewVideoBlock">
-            <input className="lmsNewVideoBlockInput" placeholder="Paste Link to Video" value={this.state.activeView.lectureVideo} onChange={this.handleLectureVideo}/>
+            <input className="lmsNewVideoBlockInput" placeholder="Paste ID of Video" value={this.state.activeView.lectureVideo} onChange={this.handleLectureVideo}/>
             <span style={{fontSize:'0.9rem', marginTop:'5px'}}>Currently Supported: Youtube</span>
           </div>
         </div>
@@ -1200,6 +1215,7 @@ export default class NewCourse extends React.PureComponent {
         <div className="lmsLessonMainContent">
           <div className="lmsNewQuestionButton">
             <FlatButton style={{color:"#FFFFFF", background:"#6fc13e", marginRight:'10px'}} onClick={() => this.storeQuestion('multiple')}>Add Multiple Choice</FlatButton>
+            <FlatButton style={{color:"#FFFFFF", background:"#6fc13e", marginRight:'10px'}} onClick={() => this.storeQuestion('open')}>Add Open-Ended</FlatButton>
           </div>
           <div className="lmsNewLectureQuestionList">
             {this.state.activeView.lectureQuestions.map((question, i) => (

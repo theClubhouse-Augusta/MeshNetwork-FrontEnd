@@ -72,7 +72,7 @@ export default class UserSignIn extends React.PureComponent {
                   localStorage.setItem('user', JSON.stringify(mainUser));
                   this.showSnack('Welcome back!');
                   setTimeout(() => {
-                      this.props.history.push(`/user/${mainUser.id}`)
+                      this.props.history.goBack();
                   }, 2000);
                 })
               }
