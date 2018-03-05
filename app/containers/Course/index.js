@@ -27,6 +27,7 @@ export default class Course extends React.PureComponent {
     super(props);
     this.state = {
       token:localStorage.getItem('token'),
+      user:JSON.parse(localStorage.getItem('user')),
       course:"",
       lessons:[],
       videoDialog:false,
@@ -92,7 +93,7 @@ export default class Course extends React.PureComponent {
     })
     .then((json) => {
       if(json.error) {
-        this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
+        this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}/${this.state.user.id}`)
       }
       else {
         this.showSnack(json.success);

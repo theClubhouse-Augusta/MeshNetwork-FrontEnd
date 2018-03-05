@@ -263,7 +263,7 @@ class CheckoutForm extends React.PureComponent {
                         "Welcome to " + this.state.space.name + "!"
                       );
                       setTimeout(() => {
-                        this.props.history.push(`/user/${mainUser.id}`);
+                        this.props.history.goBack();
                       }, 2000);
                     }
                   });
@@ -317,7 +317,7 @@ class CheckoutForm extends React.PureComponent {
               localStorage.setItem("user", JSON.stringify(mainUser));
               this.showSnack("Welcome to " + this.state.space.name + "!");
               setTimeout(() => {
-                this.props.history.push(`/user/${mainUser.id}`);
+                this.props.history.goBack();
               }, 2000);
             });
         }
