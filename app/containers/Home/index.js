@@ -28,19 +28,21 @@ export default class Home extends React.PureComponent {
   }
 
   getQuote = () => {
-    fetch("https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous&count=1", {
+    fetch(
+      "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous&count=1",
+      {
         method: "GET",
         headers: {
           "X-Mashape-Key": "3q4u3rgPbBmsh9W05tFAIGURztVzp1EQKTQjsn7MOO0DmFOcqn"
         }
       }
     )
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        quote: json
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          quote: json
+        });
       });
-    })
   };
 
   renderSignIn = () => {
@@ -55,7 +57,10 @@ export default class Home extends React.PureComponent {
           </div>
           <div className="homeHeaderContentSearchBar">
             <div className="homeSignButtons">
-              <Link to={"/spaces"} style={{ margin: "15px", width: "48%" }}>
+              <Link
+                to={"/spaces"}
+                style={{ margin: "15px", minWidth: "200px" }}
+              >
                 <FlatButton
                   style={{
                     width: "100%",
@@ -69,7 +74,10 @@ export default class Home extends React.PureComponent {
                   Sign Up
                 </FlatButton>
               </Link>
-              <Link to={"/signIn"} style={{ margin: "15px", width: "48%" }}>
+              <Link
+                to={"/signIn"}
+                style={{ margin: "15px", minWidth: "200px" }}
+              >
                 <FlatButton
                   style={{
                     width: "100%",
@@ -148,7 +156,11 @@ export default class Home extends React.PureComponent {
                   backgroundPosition: "center center"
                 }}
               >
-                <img alt="" src="http://h4z.it/Image/093903_cowork.PNG" />
+                <img
+                  alt=""
+                  src="http://h4z.it/Image/093903_cowork.PNG"
+                  sizes="(max-width: 425px) 200px, auto"
+                />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}

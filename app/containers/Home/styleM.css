@@ -8,18 +8,19 @@
 
   .homeHeaderContentTitle {
     text-align: center;
+    padding: 30px 0 0 0;
   }
 
   .homeHeaderContentSubtitle {
     font-size: 1.15em;
-    /* some font alignment hackyness */
-    margin-left: 3px;
+    text-align: center;
   }
 
   .homeSignButtons {
-    display: flex;
-    direction: row;
-    justify-content: center;
+    width: 100%;
+    text-align: center;
+    flex-direction: column;
+    align-content: center;
   }
 
   .homeMainSectionContent {
@@ -49,7 +50,8 @@
     margin: 15px auto;
   }
 
-  .homeMainSectionTitle {
+  .homeMainSectionTitle,
+  .homeMainSectionSubtitle {
     text-align: center;
   }
 
@@ -83,6 +85,6 @@
   }
 
   .homeMainSectionBlockTwo img {
-    max-width: 80%;
+    max-width: 50%;
   }
 }
