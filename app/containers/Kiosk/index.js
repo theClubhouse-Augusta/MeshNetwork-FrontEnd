@@ -394,7 +394,7 @@ export default class Kiosk extends React.PureComponent {
               open={this.state.snack}
               message={this.state.msg}
               autoHideDuration={3000}
-              onRequestClose={this.handleRequestClose}
+              onClose={this.handleRequestClose}
             />
         </main>
       </div>

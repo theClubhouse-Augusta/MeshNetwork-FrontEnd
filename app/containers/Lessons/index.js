@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import FlatButton from 'material-ui/Button';
 import { Link } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
+import Snackbar from 'material-ui/Snackbar';
 
 import BackIcon from 'react-icons/lib/fa/arrow-circle-left';
 import PreviousIcon from 'react-icons/lib/fa/arrow-left';
@@ -27,18 +28,32 @@ export default class Lessons extends React.PureComponent {
     super(props);
     this.state = {
       token:localStorage.getItem("token"),
+      user:JSON.parse(localStorage.getItem('user')),
+      student:"",
+      feedback:"",
       course:"",
       lessons:[],
       activeLesson:0,
       activeLecture:0,
       activeView:"",
       enrolled:0,
+      msg: "",
+      snack: false,
       app:this.props.app
     }
   }
 
+  handleRequestClose = () => {
+    this.setState({ snack: false, msg: "" });
+  };
+
+  showSnack = msg => {
+    this.setState({ snack: true, msg: msg });
+  };
+
   componentWillMount() {
     this.getCourse(this.props.match.params.id);
+    this.getCourseStudent();
   }
 
   componentWillReceiveProps(app) {
@@ -50,7 +65,7 @@ export default class Lessons extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://innovationmesh.com/api/showCourse/"+id, {
+    fetch("https://innovationmesh.com/api/showCourse/"+id+"/"+this.props.match.params.uid, {
       method:'GET',
       headers:{'Authorization': 'Bearer ' + this.state.token}
     })
@@ -135,6 +150,42 @@ export default class Lessons extends React.PureComponent {
     })
   }
 
+  getCourseStudent = () => {
+    fetch('https://innovationmesh.com/api/getCourseStudent/'+this.props.match.params.id+'/'+this.props.match.params.uid, {
+      method:'GET',
+      headers: {
+        'Authorization' : 'Bearer ' + this.state.token
+      }
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      this.setState({
+        student:json.student,
+        feedback:json.feedback
+      })
+    })
+  }
+
+  approveAnswer = (question, i) => {
+    fetch('https://innovationmesh.com/api/approveAnswer/'+question.id+'/'+this.props.match.params.uid+'/'+i, {
+      method:'GET',
+      headers:{'Authorization':'Bearer ' + this.state.token}
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      if(json.error) {
+        this.showSnack(json.error);
+      }
+      else if(json.success) {
+        this.showSnack(json.success);
+      }
+    })
+  }
+
   changeLecture = (i, j, lecture) => {
     this.setState({
       activeLesson:i,
@@ -144,12 +195,11 @@ export default class Lessons extends React.PureComponent {
   }
 
   completeLecture = () => {
-    console.log(this.state.activeView);
     let lessons = this.state.lessons;
     let data = new FormData();
     data.append('courseID', this.props.match.params.id);
     data.append('lectureID', this.state.activeView.id);
-    data.append('answers', this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers);
+    data.append('answers', JSON.stringify(this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers));
 
     fetch("https://innovationmesh.com/api/completeLecture", {
       method:'POST',
@@ -164,8 +214,9 @@ export default class Lessons extends React.PureComponent {
         this.showSnack('Your session has expired.');
       }
       else if(json.success) {
+        this.showSnack(json.success);
         lessons[this.state.activeLesson].lectures[this.state.activeLecture].complete = 1;
-        lessons[this.state.activeLesson].lectures[this.state.activeLecture].grade = json.grade;
+        lessons[this.state.activeLesson].lectures[this.state.activeLecture].grade = json.grade.toFixed(0);
         this.setState({
           lessons:lessons
         }, () => {
@@ -273,16 +324,88 @@ export default class Lessons extends React.PureComponent {
     }
   }
 
+  renderCorrect = (question, answer, i, j) => {
+
+    let correctStyle = {
+      background:'#FFFFFF',
+      paddingLeft:'5px',
+      paddingRight:'5px'
+    }
+    
+    if(answer.isCorrect === 1 && answer.solCorrect === 1) 
+    {
+      correctStyle.background = '#98FB98';
+    } else if(answer.solCorrect === 0)
+    {
+      correctStyle.background = 'rgba(220, 20, 60, 0.4)';
+    } else if(answer.isCorrect === 1) 
+    {
+      correctStyle.background = '#98FB98';
+    }
+
+    if(this.state.activeView.complete == 1)
+    {
+      return(
+        <div key={`lmsQuestionAnswer${j}`} style={correctStyle}>
+          <input type="radio" name={'question-'+ i} value={answer.id} onChange={(event) => this.handleAnswer(question.id, event)} checked={answer.solution} disabled={true}/>
+          <span style={{marginLeft:'10px', width:'90%'}}>{answer.answerContent}</span>
+        </div>
+      )
+    } else {
+      return(
+        <div key={`lmsQuestionAnswer${j}`}>
+          <input type="radio" name={'question-'+ i} value={answer.id} onChange={(event) => this.handleAnswer(question.id, event)} />
+          <span style={{marginLeft:'10px', width:'90%'}}>{answer.answerContent}</span>
+        </div>
+      )
+    }
+  }
+
+  renderOpen = (question, i) => {
+
+    let correctStyle = {
+      background:'#FFFFFF',
+      marginLeft:'55px', 
+      width:'85%'
+    }
+
+    let pendingReview = "";
+
+    if(question.solCorrect === 1) 
+    {
+      correctStyle.background = '#98FB98';
+    } else if(question.solCorrect === 0)
+    {
+      correctStyle.background = 'rgba(220, 20, 60, 0.4)';
+    } else if(question.solCorrect === 2) 
+    {
+      correctStyle.background = '#FFFACD';
+      pendingReview = <span style={{fontSize:'0.8em', color:'#444444'}}>Pending Review</span>;
+    }
+
+    if(this.state.activeView.complete == 1)
+    {
+      return(
+        <div style={correctStyle}>
+          <TextField placeholder="Your Answer" fullWidth={true} multiLine={true} rowsMax={3} name={'question-'+ i} value={question.solution} disabled={true}/>
+          {pendingReview}
+          {this.renderApprove(question)}
+        </div>
+      )
+    } else {
+      <div style={{marginLeft:'55px', width:'85%'}}>
+        <TextField placeholder="Your Answer" fullWidth={true} multiLine={true} rowsMax={3} name={'question-'+ i} value={question.solution}/>
+      </div>
+    }
+  }
+
   renderAnswers = (question, i) => {
     if(question.questionType === 'multiple')
     {
       return(
         <div style={{marginLeft:'70px', width:'85%'}}>
           {question.questionAnswers.map((answer, j) => (
-            <div key={`lmsQuestionAnswer${j}`}>
-              <input type="radio" name={'question-'+ i} value={answer.id} onChange={(event) => this.handleAnswer(question.id, event)}/>
-              <span style={{marginLeft:'10px', width:'90%'}}>{answer.answerContent}</span>
-            </div>
+            this.renderCorrect(question, answer, i, j)
           ))}
         </div>
       )
@@ -290,9 +413,7 @@ export default class Lessons extends React.PureComponent {
     else if(question.questionType === 'open')
     {
       return(
-        <div style={{marginLeft:'55px', width:'85%'}}>
-          <TextField placeholder="Your Answer" fullWidth={true} multiLine={true} rowsMax={3} name={'question-'+ i}/>
-        </div>
+        this.renderOpen(question, i)
       )
     }
   }
@@ -327,7 +448,7 @@ export default class Lessons extends React.PureComponent {
       return(
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureFiles.map((file, index) => (
-            <a href={file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileData} <span></span></div></a>
+            <a href={file.fileData} key={`fileData${index}`} style={{textDecoration:'none'}} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileName} <span></span></div></a>
           ))}
         </div>
       )
@@ -360,6 +481,49 @@ export default class Lessons extends React.PureComponent {
     else if(type === "File") { return(<FileIcon/>) }
   }
 
+  renderStudent = () => {
+    if(this.state.user.id === this.state.course.userID)
+    {
+      return(
+        <div>
+          <div className="lmsSingleLessonImageContainer">
+            <img alt="" className="lmsSingleLessonImage" src={this.state.student.avatar} />
+          </div>
+          <div className="lmsLessonColumnOneTitle">{this.state.student.name}</div>
+          <div className="lmsLessonBlock">
+            <div className="lmsLessonBlockItem">
+              <div className="lmsLessonBlockTitle">{this.state.student.email}</div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  renderGrade = () => {
+    if(this.state.user.id === this.state.course.userID)
+    {
+      return(
+        <div className="lmsLectureGrade">{this.state.activeView.grade} / 100</div>
+      )
+    }
+  }
+
+  renderApprove = (question) => {
+    if(this.state.user.id === this.state.course.userID)
+    {
+      if(question.solCorrect === 2)
+      {
+        return(
+          <div className="correctOptions">
+            <FlatButton onClick={() => this.approveAnswer(question, 1)} style={{background:'#6fc13e', color:'#FFFFFF'}}>Approve</FlatButton>
+            <FlatButton onClick={() => this.approveAnswer(question, 0)}>Deny</FlatButton>
+          </div>
+        )
+      }
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -375,6 +539,7 @@ export default class Lessons extends React.PureComponent {
               <BackIcon color="#FFFFFF" style={{padding:'5px'}} size={30} onClick={this.props.history.goBack}/>
             </div>
             <div className="lmsLessonColumnOneContent">
+              {this.renderStudent()}
               <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
               <div className="lmsLessonList">
                 {this.state.lessons.map((lesson, i) => (
@@ -398,6 +563,7 @@ export default class Lessons extends React.PureComponent {
               </div>
             </div>
             <div className="lmsLessonColumnTwoContent">
+              {this.renderGrade()}
               <div className="lmsLessonColumnTwoHeading">{this.state.activeView.lectureName}</div>
               {this.renderCourseMain()}
             </div>
@@ -408,6 +574,13 @@ export default class Lessons extends React.PureComponent {
         <footer>
 
         </footer>
+        
+        <Snackbar
+          open={this.state.snack}
+          message={this.state.msg}
+          autoHideDuration={3000}
+          onClose={this.handleRequestClose}
+        />
       </div>
     );
   }

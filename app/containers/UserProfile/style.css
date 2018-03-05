@@ -12,7 +12,22 @@
   justify-content: center;
   align-items:center;
   height:calc(100vh - 55px);
-  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+  background:#EEEEEE;
+  /*background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);*/
+}
+
+.profileWrapper {
+  width:100%;
+  background:rgba(0, 0, 0, 0.4);
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+  padding-top:30px;
+  padding-bottom:30px;
+  border-top:1px solid #FFFFFF;
+  border-bottom:1px solid #FFFFFF;
+  box-shadow:0 0 15px 0 rgba(0, 0, 0, 0.6);
 }
 
 .profileHeader {

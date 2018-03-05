@@ -25,6 +25,11 @@ import { FormControl } from 'material-ui/Form';
 import DateRangePickerWithGaps from '../../components/DateRangePickerWithGaps';
 import authenticate from '../../utils/Authenticate';
 
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 // styles
 import './style.css';
 import './styleM.css';
@@ -51,7 +56,7 @@ export default class AddEvent extends Component {
         name: '',
         url: '',
         days: '',
-        description: '',
+        description: EditorState.createEmpty(),
         location: '',
         selectedTag: '',
         selectedTags: [],
@@ -172,7 +177,10 @@ export default class AddEvent extends Component {
 
     selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
     selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
-    eventDescription = e => this.setState({ description: e.target.value });
+    //eventDescription = e => this.setState({ description: e.target.value });
+    eventDescription = editorState => {
+        this.setState({ description: editorState });
+    };
     eventLocation = e => this.setState({ location: e.target.value });
 
     handleOrganizerChange = event => {
@@ -428,8 +436,28 @@ export default class AddEvent extends Component {
 
                             <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
                             <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
-                            <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
-
+                            <Editor
+                                editorState={this.state.description}
+                                toolbarclassName="challenges_question-toolbar"
+                                wrapperclassName="challenges_question-wrapper"
+                                editorclassName="challenges_question-editor-main"
+                                onEditorStateChange={this.eventDescription}
+                                placeholder="Brief Description"
+                                toolbar={{
+                                inline: { inDropdown: true },
+                                fontSize: { className: "toolbarHidden" },
+                                fontFamily: { className: "toolbarHidden" },
+                                list: { inDropdown: true, options: ["unordered", "ordered"] },
+                                textAlign: {
+                                    inDropdown: true,
+                                    options: ["left", "center", "right"]
+                                },
+                                link: { inDropdown: true },
+                                remove: { className: "toolbarHidden" },
+                                emoji: { className: "toolbarHidden" },
+                                history: { className: "toolbarHidden" }
+                                }}
+                            />
                             {!!loadedTags.length &&
                                 <FormControl style={{ marginTop: 24 }}>
                                     <InputLabel htmlFor="tags-select">Relevant Tags</InputLabel>

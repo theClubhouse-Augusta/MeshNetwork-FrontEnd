@@ -268,7 +268,7 @@ export default class LMSDash extends React.PureComponent {
     } else {
       return(
         <CardActions>
-          <Link to={'/LMS/CourseInfo/'+course.id}><FlatButton>View Course</FlatButton></Link>
+          <Link to={'/LMS/CourseInfo/'+course.id+'/'+this.state.user.id}><FlatButton>View Course</FlatButton></Link>
         </CardActions>
       )
     }
@@ -308,7 +308,7 @@ export default class LMSDash extends React.PureComponent {
 
               {this.state.courses.map((course, index) => (
                 <div className="lmsHomeMainBlock" key={`LMSDASHnewcourse${index}`}>
-                  <Link style={{textDecoration:'none'}} to={'/LMS/CourseInfo/'+course.id}>
+                  <Link style={{textDecoration:'none'}} to={'/LMS/CourseInfo/'+course.id+'/'+this.state.user.id}>
                     <Card style={{height:'380px'}}>
                       {this.renderImage(course.courseImage)}
                       <CardContent>

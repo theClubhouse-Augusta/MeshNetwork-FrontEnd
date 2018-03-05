@@ -183,11 +183,11 @@ export default class EventDetail extends React.PureComponent {
                                 __html:this.state.event.description
                                 }}
                             />
+                            <a href={this.state.event.url} style={{ width:'30%', textDecoration: 'none', background: '#ff4d58', padding: '5px', color: "#FFFFFF", marginTop:'30px', marginRight: '10px', borderRadius: '5px', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'center' }} target="_blank"><LinkIcon size={25} style={{marginRight:'10px'}}/> Visit Website</a>
                                 {!!tags.length &&
                                     <div className="eventTags">
-                                        <a href={this.state.event.url} style={{ textDecoration: 'none', background: '#EEEEEE', padding: '5px', color: '#222222', marginRight: '10px', borderRadius: '5px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}><LinkIcon size={25} /></a>
                                         {tags.map((tag, key) =>
-                                            <Chip key={`chip${key}`} label={tag} style={{ color: "#FFFFFF", marginRight: '5px', marginTop: '5px', borderRadius: '5px', background: '#ff4d58' }} />
+                                            <Chip key={`chip${key}`} label={tag} style={{ color:'#33333', marginRight: '5px', marginTop: '5px', borderRadius: '5px', background: '#EEEEEE' }} />
                                         )}
                                     </div>}
                             </div>
