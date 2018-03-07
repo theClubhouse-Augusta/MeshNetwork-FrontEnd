@@ -58,4 +58,7 @@
   .lmsJoinCallToAction {
     padding: 15px;
   }
+  .lmsDetailHeaderHeading {
+    font-size: 2em;
+  }
 }

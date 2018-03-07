@@ -1,1 +1,12 @@
 /* EventDetail Mobile Styles */
+
+@media (max-width: 425px) {
+  .homeSignButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+  .eventDetailsDateBlock {
+    font-size: 0.9em;
+    text-align: center;
+  }
+}
