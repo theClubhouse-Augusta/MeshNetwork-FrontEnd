@@ -118,7 +118,7 @@ export default class Course extends React.PureComponent {
       )
     } else {
       return(
-        <Link to={'/signUp'}><FlatButton style={{background:"#6fc13e", color:"#FFFFFF", border:'2px solid #6fc13e', height:'50px', marginLeft:'10px', marginRight:'10px'}}>Enroll Now</FlatButton></Link>
+        <Link to={'/signIn'}><FlatButton style={{background:"#6fc13e", color:"#FFFFFF", border:'2px solid #6fc13e', height:'50px', marginLeft:'10px', marginRight:'10px'}}>Enroll Now</FlatButton></Link>
       )
     }
   }

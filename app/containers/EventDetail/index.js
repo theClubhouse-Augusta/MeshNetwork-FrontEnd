@@ -21,6 +21,7 @@ import './styleM.css';
 
 export default class EventDetail extends React.PureComponent {
     state = {
+        token:localStorage.getItem('token'),
         open: false,
         event: '',
         hostSpace: '',
@@ -30,6 +31,7 @@ export default class EventDetail extends React.PureComponent {
         sponsors: [],
         organizers: [],
         attendees: [],
+        challenges:[],
         dates: [],
         snackBarMessage: '',
         snackBar: false,
@@ -55,6 +57,7 @@ export default class EventDetail extends React.PureComponent {
                     sponsors: json.sponsors,
                     organizers: json.organizers,
                     attendees: json.attendees,
+                    challenges:json.challenges,
                     dates: json.dates,
                     tags: json.tags
                 })
@@ -101,6 +104,63 @@ export default class EventDetail extends React.PureComponent {
         }
     }
 
+    renderChallenges = () => {
+        if(this.state.challenges.length != 0)
+        {
+            return(
+                <div className="eventDetailSection">
+                    <div className="eventDetailSectionTitle">Challenges</div>
+                    <div className="eventDetailSectionContent">
+                        <div className="eventDetailUsersList">
+                            {this.state.challenges.map((challenge, i) => (
+                                <Link to={'/Challenges/challenge/'+challenge.challengeSlug }key={`challengeevent${i}`} className="eventDetailUsersBlock">
+                                    <img alt="" src={challenge.challengeImage} style={{ width: '100px', height: '100px' }} />
+                                    <div style={{ marginTop: '10px', textAlign: 'center' }}>{challenge.challengeTitle}</div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    attendEvent = () => {
+        fetch('https://innovationmesh.com/api/attend/'+this.state.event.id, {
+            method:'GET',
+            headers:{
+                'Authorization': 'Bearer ' + this.state.token
+            }
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            if(json.error) {
+                this.toggleSnackBar('Session Expired. Please Log in Again.');
+            }
+            else if(json.success) {
+                this.toggleSnackBar(json.success);
+            }
+            else if(json.duplicate) {
+                this.toggleSnackBar(json.duplicate);
+            }
+        })
+    }
+
+    renderJoin = () => {
+        if(!this.state.token) {
+            return(
+                <Link to={'/join/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Sign Up</FlatButton></Link>
+            );
+        } else {
+            return(
+                <FlatButton onClick={this.attendEvent} style={{ margin: '15px', width: '45%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Attend Event</FlatButton>
+            )
+        }
+
+    }
+
     render() {
         const {
             workSpace,
@@ -111,11 +171,10 @@ export default class EventDetail extends React.PureComponent {
         // const start = event.start;
         // const end = event.end;
 
-        let joinLink = <Link to={'/join/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Sign Up</FlatButton></Link>;
 
         return (
             <div className="eventDetailContainer">
-                <Helmet title="EventDetail" meta={[{ name: 'description', content: 'Description of EventDetail' }]} />
+                <Helmet title={this.state.event.title} meta={[{ name: 'description', content: 'Description of EventDetail' }]} />
                 <header style={{ background: '#FFFFFF' }}>
                     <Header space={this.props.spaceName} />
                     <div className="eventDetailBanner"
@@ -202,12 +261,13 @@ export default class EventDetail extends React.PureComponent {
                                 </div>
                                 <div className="eventDetailSignUpRow">
                                     <div className="homeSignButtons">
-                                        {joinLink}
+                                        {this.renderJoin()}
                                         <Link to={'/space/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#FFFFFF', paddingTop: '10px', paddingBottom: '10px', color: '#ff4d58', fontWeight: 'bold', border: '1px solid #DDDDDD' }}>About the Space</FlatButton></Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {this.renderChallenges()}
                         <div className="eventDetailSection">
                             <div className="eventDetailSectionTitle">Organizers</div>
                             <div className="eventDetailSectionContent">
@@ -253,7 +313,7 @@ export default class EventDetail extends React.PureComponent {
                     Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
         </footer>
 
-                <Snackbar open={this.state.snackBar} message={this.state.snackBarMessage} autoHideDuration={4000} onRequestClose={this.toggleSnackBar} />
+                <Snackbar open={this.state.snackBar} message={this.state.snackBarMessage} autoHideDuration={4000} onClose={this.toggleSnackBar} />
             </div>
         );
     }
