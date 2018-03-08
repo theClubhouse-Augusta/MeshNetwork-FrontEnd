@@ -63,14 +63,14 @@ export default class Kiosk extends React.PureComponent {
       .then(response => response.json())
       .then(json => {
         this.setState({ workspace: json }, () => {
-          this.getUsers(json.id);
+          this.getUsers();
           this.getToday(json.id);
         });
       });
   };
 
-  getUsers = id => {
-    fetch("https://innovationmesh.com/api/users/space/" + id)
+  getUsers = () => {
+    fetch("https://innovationmesh.com/api/getKioskUsers")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -124,6 +124,9 @@ export default class Kiosk extends React.PureComponent {
     })
       .then(response => response.json())
       .then(json => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
         this.setState({
           showComplete: true
         });
