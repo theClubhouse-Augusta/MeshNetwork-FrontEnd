@@ -144,7 +144,7 @@ export default class RightBar extends React.PureComponent {
 
   getCategories = () => {
     fetch("https://innovationmesh.com/api/selectCategories", {
-      method: 'GET'
+      method: "GET"
     })
       .then(response => response.json())
       .then(json => {
@@ -251,9 +251,9 @@ export default class RightBar extends React.PureComponent {
     );
 
     fetch("https://innovationmesh.com/api/storeQuestion", {
-      method: 'POST',
+      method: "POST",
       body: data,
-      headers: { 'Authorization': 'Bearer ' + this.state.token }
+      headers: { Authorization: "Bearer " + this.state.token }
     })
       .then(response => response.json())
       .then(json => {
@@ -395,12 +395,12 @@ export default class RightBar extends React.PureComponent {
             src="https://challenges.innovationmesh.com/assets/guide.png"
           />
           <div
-            className="challenges_categoryTitle"
+            className="challenges_specialCategoryTitle"
             style={{
               width: "100%",
               textAlign: "center",
-              marginTop: "5px",
-              marginBottom: "7px"
+              margin: ".5em 0",
+              fontSize: "1.25em"
             }}
           >
             Creating a Challenge
