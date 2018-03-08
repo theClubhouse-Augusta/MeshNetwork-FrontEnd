@@ -318,7 +318,7 @@ export default class RightBar extends React.PureComponent {
     if (this.state.token) {
       return (
         <div>
-          <FlatButton
+          {/*<FlatButton
             onClick={this.challengeDialog}
             style={{
               background: "#32b6b6",
@@ -328,7 +328,7 @@ export default class RightBar extends React.PureComponent {
             }}
           >
             New Challenge
-          </FlatButton>
+          </FlatButton>*/}
           {/*<FlatButton onClick={this.questionDialog} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>*/}
         </div>
       );

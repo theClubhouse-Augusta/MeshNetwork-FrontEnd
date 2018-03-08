@@ -51,8 +51,10 @@ export default class Detail extends React.PureComponent {
       challengeImagePreview: "",
       challengeFiles: [],
       confirmStatus: "Confirm",
+      workSpace:"",
       startDate: "",
       endDate: "",
+      eventDates:[],
       cats: [],
       categories: [],
       uploads: [],
@@ -278,7 +280,9 @@ export default class Detail extends React.PureComponent {
               )
             ),
             challengeCategories: json.categoriesArray,
-            challengeImagePreview: json.challenge.challengeImage
+            challengeImagePreview: json.challenge.challengeImage,
+            eventDates:json.eventDates,
+            workSpace:json.workspace
           },
           () => {
             this.getSpace();
@@ -458,8 +462,7 @@ export default class Detail extends React.PureComponent {
   renderUploads = () => {
     if (this.state.uploads.length > 0) {
       return (
-        <div className="challenges_detailSideBlock">
-          <div className="challenges_categoryTitle">Uploads</div>
+        <div style={{display:'flex', flexDirection:'column'}}>
           {this.state.uploads.map((u, i) => (
             <a
               href={u.fileData}
@@ -471,18 +474,133 @@ export default class Detail extends React.PureComponent {
           ))}
         </div>
       );
+    } else {
+      return(
+        <div style={{fontSize:'0.9em', textAlign:'center'}}>
+          There are no resources available.
+        </div>
+      )
     }
   };
 
+  renderLocation = () => {
+    if(!this.state.challenge.address) {
+        return(
+            <div className="homeHeaderContentSubtitle" style={{color:'#FFFFFF'}}>{this.state.workSpace.address} {this.state.workSpace.city}, {this.state.workSpace.state} {this.state.workSpace.zipcode}</div>
+        )
+    } else {
+        return(
+            <div className="homeHeaderContentSubtitle"  style={{color:'#FFFFFF'}}>{this.state.challenge.address}, {this.state.challenge.city}, {this.state.challenge.state}</div>
+        )
+    }
+}
+
+  attendEvent = () => {
+    fetch('https://innovationmesh.com/api/attend/'+this.state.challenge.eventID, {
+        method:'GET',
+        headers:{
+            'Authorization': 'Bearer ' + this.state.token
+        }
+    })
+    .then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+        if(json.error) {
+            this.showSnack('Session Expired. Please Log in Again.');
+        }
+        else if(json.success) {
+            this.showSnack(json.success);
+        }
+        else if(json.duplicate) {
+            this.showSnack(json.duplicate);
+        }
+    })
+  }
+
+  renderJoin = () => {
+    if(!this.state.token) {
+        return(
+            <Link to={'/join/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Sign Up</FlatButton></Link>
+        );
+    } else {
+        return(
+            <FlatButton onClick={this.attendEvent} style={{ margin: '15px', width: '45%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }}>Attend Event</FlatButton>
+        )
+    }
+
+}
+
+
+
   render() {
+
     return (
-      <div className="container">
+      <div className="eventDetailContainer">
+        <Helmet title={this.state.challenge.challengeTitle} meta={[{ name: 'description', content: 'Description of EventDetail' }]} />
+        <header style={{ background: '#FFFFFF' }}>
+            <Header space={this.props.spaceName} />
+            <div className="eventDetailBanner"
+                style={{background: '#ff4d58'}}>
+                <div className="homeHeaderContentTitle">{this.state.challenge.challengeTitle}</div>
+                <div className="homeHeaderContentSubtitle" style={{color:'#FFFFFF'}}>{this.renderLocation()}</div>
+            </div>
+        </header>
+
+        <main className="eventDetailMain">
+          <div className="spaceSignUpUser">
+            <img src={this.state.challenge.challengeImage} style={{width:'100%'}}/>
+          </div>
+          
+          <div className="spaceSignUpContainer">
+          <div className="eventDetailSection">
+                <div className="eventDetailSectionTitle">Time & Days</div>
+                <div className="eventDetailSectionContent">
+                    <div className="eventDetailDates">
+                        {this.state.eventDates.map((date, i) => (
+                            <div key={`eventDates${i}`} className="eventDetailsDateBlock">{date.startFormatted} -- {date.endFormatted}</div>
+                        ))}
+                    </div>
+                    <div className="eventDetailSignUpRow">
+                        <div className="homeSignButtons">
+                            {this.renderJoin()}
+                            <Link to={'/space/' + this.state.workSpace.slug} style={{ margin: '15px', width: '45%' }}><FlatButton style={{ width: '100%', background: '#FFFFFF', paddingTop: '10px', paddingBottom: '10px', color: '#ff4d58', fontWeight: 'bold', border: '1px solid #DDDDDD' }}>About the Space</FlatButton></Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="eventDetailSection">
+                <div className="eventDetailSectionTitle">Description</div>
+                <div className="eventDetailSectionContent">
+                <div
+                    dangerouslySetInnerHTML={{
+                    __html:this.state.challenge.challengeContent
+                    }}
+                />
+                </div>
+            </div>
+          </div>
+          <div className="eventDetailSection">
+                <div className="eventDetailSectionTitle">Resources</div>
+                <div className="eventDetailSectionContent">
+                  {this.renderUploads()}
+                </div>
+            </div>
+            <Snackbar
+              open={this.state.snack}
+              message={this.state.msg}
+              autoHideDuration={3000}
+              onClose={this.handleRequestClose}
+            />
+        </main>
+         {/*<div className="container">
         <Helmet
           title={this.state.challenge.challengeTitle}
           meta={[{ name: "description", content: "Description of Detail" }]}
         />
+    */}
 
-        <header>
+        {/*<header>
           <Header space={this.props.spaceName} />
         </header>
 
@@ -490,9 +608,6 @@ export default class Detail extends React.PureComponent {
           <div className="challenges_contentContainer">
             <div className="challenges_detailColumnOne">
               <div className="challenges_detailBlock">
-                {/*<div className="challenges_detailAvatarContainer">
-                  <img className="challenges_detailAvatar" src={this.state.challenge.avatar}/>
-    </div>*/}
                 <div className="challenges_detailInfo">
                   <div className="challenges_detailTitle">
                     {this.state.challenge.challengeTitle}
@@ -691,12 +806,9 @@ export default class Detail extends React.PureComponent {
           </div>
         </Dialog>
 
-        <Snackbar
-          open={this.state.snack}
-          message={this.state.msg}
-          autoHideDuration={3000}
-          onClose={this.handleRequestClose}
-        />
+        
+              </div>*/}
+
       </div>
     );
   }

@@ -30,6 +30,8 @@ import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
+import CloseIcon from "react-icons/lib/md/close";
+
 // styles
 import './style.css';
 import './styleM.css';
@@ -47,6 +49,7 @@ const MenuProps = {
 
 export default class AddEvent extends Component {
     state = {
+        token:localStorage.getItem('token'),
         loading: true,
         dateError: '',
         modalMessage: '',
@@ -84,6 +87,7 @@ export default class AddEvent extends Component {
         city: '',
         state: '',
         foo: [],
+        challenges:[],
     };
 
     singleDay = 0;
@@ -236,7 +240,106 @@ export default class AddEvent extends Component {
         }
     }
 
+    createChallenge = () => {
+        let challenges = this.state.challenges;
+
+        let newChallenge = {challengeTitle:'', challengeContent:EditorState.createEmpty(), challengeImage:'', challengeImagePreview:'', challengeFiles:[], show:false};
+
+        challenges.push(newChallenge);
+
+        this.setState({
+            challenges:challenges
+        })
+    };
+
+    handleChallengeTitle = (i, event) => {
+        let challenges = this.state.challenges;
+
+        challenges[i].challengeTitle = event.target.value;
+
+        this.setState({
+            challenges:challenges
+        })
+    }
+
+    handleChallengeContent = (i, editorState) => {
+        let challenges = this.state.challenges;
+
+        challenges[i].challengeContent = editorState;
+
+        this.setState({
+            challenges:challenges
+        })
+    }
+
+    handleChallengeImage = (i, event) => {
+        console.log(i);
+        let challenges = this.state.challenges;
+
+        event.preventDefault();
+        let reader = new FileReader();
+        let file = event.target.files[0];
+    
+        reader.onloadend = () => {
+            challenges[i].challengeImage = file;
+            challenges[i].challengeImagePreview = reader.result;
+
+          this.setState({
+            challenges:challenges
+          });
+        };
+        reader.readAsDataURL(file);
+    }
+
+
+    handleChallengeFile = (index, event) => {
+
+        let challenges = this.state.challenges;
+
+        event.preventDefault();
+        let reader = new FileReader();
+        let files = event.target.files;
+
+        for (let i = 0; i < files.length; i++) {
+        let fileData = { fileData: files[i], id: 0 };
+        challenges[index].challengeFiles.push(fileData);
+
+        reader.onloadend = () => {
+            this.setState(
+            {
+                challenges: challenges
+            },
+            () => {
+                this.forceUpdate();
+            }
+            );
+        };
+        reader.readAsDataURL(files[i]);
+        }
+    }
+
+
+    deleteFile = (i, j) => {
+        let challenges = this.state.challenges;
+    
+        challenges[i].challengeFiles.splice(j, 1);
+    
+        this.setState(
+          {
+            challenges: challenges
+          },
+          () => {
+            this.forceUpdate();
+          }
+        );
+    };
+
     Submit = () => {
+
+        this.setState({
+            confirmStatus: "Uploading..."
+        });
+
         let {
             newSponsors,
             selectedTags,
@@ -253,7 +356,7 @@ export default class AddEvent extends Component {
         } = this.state;
 
         let data = new FormData();
-        data.append('description', description);
+        data.append('description', draftToHtml(convertToRaw(description.getCurrentContent())));
         data.append('location', location);
         data.append('tags', selectedTags);
         data.append('dates', JSON.stringify(dates));
@@ -283,21 +386,92 @@ export default class AddEvent extends Component {
             method: 'post',
             body: data,
         })
-            .then((response) => {
-                return response.json();
-            })
-            .then(({ success, error, eventID }) => {
-                if (error) {
-                    this.showSnack(error);
+        .then((response) => {
+            return response.json();
+        })
+        .then(({ success, error, eventID }) => {
+            if (error) {
+                this.showSnack(error);
+            }
+            else if (success) {
+                for(let c = 0; c < this.state.challenges.length; c++)
+                {
+                    this.storeChallenge(eventID, this.state.challenges[c]);
                 }
-                else if (success) {
-                    this.showSnack(success);
-                    setTimeout(() => {
-                        this.props.history.push(`/event/${eventID}`)
-                    }, 2000);
-                }
-            })
+
+                let result = {success: success, eventID: eventID}
+                return(result);
+            }
+        })
+        .then((result) => {
+            this.showSnack(result.success);
+            setTimeout(() => {
+                this.props.history.push(`/event/${result.eventID}`)
+            }, 2000);
+        })
     };
+
+    storeChallenge = (eventID, challenge) => {   
+        let data = new FormData();
+    
+        data.append("challengeTitle", challenge.challengeTitle);
+        data.append(
+          "challengeContent",
+          draftToHtml(convertToRaw(challenge.challengeContent.getCurrentContent()))
+        );
+        data.append("challengeImage", challenge.challengeImage);
+        data.append("challengeFiles", challenge.challengeFiles);
+        data.append("eventID", eventID);
+    
+        fetch("https://innovationmesh.com/api/storeChallenge", {
+          method: "POST",
+          body: data,
+          headers: { Authorization: "Bearer " + this.state.token }
+        })
+          .then(response => response.json())
+          .then(json => {
+            if (json.error) {
+              if (json.error === "token_expired") {
+                this.showSnack("Your session has expired. Please log back in.");
+              } else {
+                this.showSnack(json.error);
+                this.setState({
+                  confirmStatus: "Confirm"
+                });
+              }
+            } else if (json.challenge) {
+              if (challenge.challengeFiles.length > 0) {
+                for (let i = 0; i < challenge.challengeFiles.length; i++) {
+                  let fileData = new FormData();
+                  fileData.append("challengeID", json.challenge);
+                  fileData.append(
+                    "challengeFile",
+                    challenge.challengeFiles[i].fileData
+                  );
+    
+                  fetch("https://innovationmesh.com/api/uploadFile", {
+                    method: "POST",
+                    body: fileData,
+                    headers: { Authorization: "Bearer " + this.state.token }
+                  })
+                    .then(response => response.json())
+                    .then(json => {
+                      if (json.error) {
+                        this.showSnack(json.error);
+                        this.setState({
+                          confirmStatus: "Confirm"
+                        });
+                      }
+                    });
+                }
+              }
+              /*this.showSnack("Challenge Saved");
+              setTimeout(() => {
+                this.props.history.push(`/Challenges/challenge/${json.challenge}`);
+              }, 2000);*/
+            }
+          });
+      };
 
     closeModal = () => this.setState({ modalMessage: '' });
 
@@ -389,6 +563,53 @@ export default class AddEvent extends Component {
     changeLocation = () => {
         this.setState(() => ({ changeLocation: !this.state.changeLocation }));
     };
+
+    renderChallengeImageText = (i) => {
+
+        let challenges = this.state.challenges;
+        if (
+          challenges[i].challengeImagePreview === "" ||
+          challenges[i].challengeImagePreview === undefined ||
+          challenges[i].challengeImagePreview === null
+        ) {
+          return (
+            <span
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "center"
+              }}
+            >
+              Upload Challenge Image
+              <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
+                For Best Size Use: 1280 x 720
+              </span>
+            </span>
+          );
+        }
+      };
+    
+      renderChallengeImage = (i) => {
+        let challenges = this.state.challenges;
+
+        if (challenges[i].challengeImage === "") {
+          return (
+            <img
+              alt=""
+              src={challenges[i].challengeImagePreview}
+              className="challenges_newChallengeImagePreview"
+            />
+          );
+        } else {
+          return (
+            <img
+              alt=""
+              src={challenges[i].challengeImagePreview}
+              className="challenges_newChallengeImagePreview"
+            />
+          );
+        }
+      };
 
     render() {
         const {
@@ -705,7 +926,81 @@ export default class AddEvent extends Component {
                                 </React.Fragment>
                             }
 
+                            {this.state.challenges.map((challenge, i) => (
+                                <div className="eventChallengeBlock" style={{marginTop:'15px'}} key={i}>
+                                    <TextField label="Challenge Title" onChange={(event) => this.handleChallengeTitle(i, event)} type="text" margin="normal" style={{width:'100%'}}/>
+                                    <Editor
+                                        editorState={this.state.challenges[i].challengeContent}
+                                        toolbarclassName="challenges_home-toolbar"
+                                        wrapperclassName="challenges_home-wrapper"
+                                        editorclassName="challenges_rdw-editor-main"
+                                        onEditorStateChange={(editorState) => this.handleChallengeContent(i, editorState)}
+                                        placeholder="Type the Challenge Information Here..."
+                                        toolbar={{
+                                        inline: { inDropdown: true },
+                                        fontSize: { className: "challenges_toolbarHidden" },
+                                        fontFamily: { className: "challenges_toolbarHidden" },
+                                        list: { inDropdown: true, options: ["unordered", "ordered"] },
+                                        textAlign: {
+                                            inDropdown: true,
+                                            options: ["left", "center", "right"]
+                                        },
+                                        link: { inDropdown: true },
+                                        remove: { className: "challenges_toolbarHidden" },
+                                        emoji: { className: "challenges_toolbarHidden" },
+                                        history: { className: "challenges_toolbarHidden" }
+                                        }}
+                                    />
+                                    <div>
+                                        <label
+                                        htmlFor={"challenge-image-"+i}
+                                        className="challenges_challengeImageBlock"
+                                        >
+                                        {this.renderChallengeImageText(i)}
+                                        {this.renderChallengeImage(i)}
+                                        </label>
+                                        <input
+                                        type="file"
+                                        onChange={(event) => this.handleChallengeImage(i, event)}
+                                        id={"challenge-image-"+i}
+                                        style={{ display: "none" }}
+                                        />
+                                    </div>
+                                    {challenge.challengeFiles.map((file, j) => (
+                                        <div key={`rightBarChallenge${j}`}>
+                                          <div className="challenges_newFileBlock">
+                                            <span />
+                                            {file.fileData.name}{" "}
+                                            <CloseIcon
+                                              size={25}
+                                              style={{
+                                                color: "#777777",
+                                                padding: "5px",
+                                                cursor: "pointer"
+                                              }}
+                                              onClick={() => this.deleteFile(i, j)}
+                                            />
+                                          </div>
+                                        </div>
+                                    ))}
+                                    <div>
+                                    <label
+                                        htmlFor={"challenge-file-"+i}
+                                        className="challenges_newFileAdd"
+                                    >
+                                        Upload New Resource (Excel, JSON, Word, PDF)
+                                    </label>
+                                    <input
+                                        type="file"
+                                        onChange={(event) => this.handleChallengeFile(i, event)}
+                                        id={"challenge-file-"+i}
+                                        style={{ display: "none" }}
+                                    />
+                                    </div>
+                                </div>
+                            ))}
 
+                            <FlatButton onClick={this.createChallenge} style={{background:'#DDDDDD', marginTop:'30px'}}>Add Challenges</FlatButton>
                             <FlatButton
                                 style={{
                                     backgroundColor: "#ff4d58",
