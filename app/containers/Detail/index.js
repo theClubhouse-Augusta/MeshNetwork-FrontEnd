@@ -136,7 +136,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/selectCategories", {
+    fetch("http://localhost:8000/api/selectCategories", {
       method: "GET"
     })
       .then(response => {
@@ -186,7 +186,7 @@ export default class Detail extends React.PureComponent {
     data.append("endDate", this.state.endDate);
 
     fetch(
-      "https://innovationmesh.com/api/updateChallenge/" +
+      "http://localhost:8000/api/updateChallenge/" +
         this.state.challenge.id,
       {
         method: "POST",
@@ -220,7 +220,7 @@ export default class Detail extends React.PureComponent {
                 this.state.challengeFiles[i].fileData
               );
 
-              fetch("https://innovationmesh.com/api/uploadFile", {
+              fetch("http://localhost:8000/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }
@@ -258,7 +258,7 @@ export default class Detail extends React.PureComponent {
 
   getDetail = () => {
     fetch(
-      "https://innovationmesh.com/api/showChallenge/" +
+      "http://localhost:8000/api/showChallenge/" +
         this.props.match.params.id,
       {
         method: "GET"
@@ -293,7 +293,7 @@ export default class Detail extends React.PureComponent {
 
   getSpace = () => {
     fetch(
-      "https://innovationmesh.com/api/workspace/" +
+      "http://localhost:8000/api/workspace/" +
         this.state.challenge.spaceID,
       {
         method: "GET"
@@ -309,7 +309,7 @@ export default class Detail extends React.PureComponent {
 
   joinChallenge = () => {
     fetch(
-      "https://innovationmesh.com/api/joinChallenge/" + this.state.challenge.id,
+      "http://localhost:8000/api/joinChallenge/" + this.state.challenge.id,
       {
         method: "GET",
         headers: { Authorization: "Bearer " + this.state.token }
@@ -496,7 +496,7 @@ export default class Detail extends React.PureComponent {
 }
 
   attendEvent = () => {
-    fetch('https://innovationmesh.com/api/attend/'+this.state.challenge.eventID, {
+    fetch('http://localhost:8000/api/attend/'+this.state.challenge.eventID, {
         method:'GET',
         headers:{
             'Authorization': 'Bearer ' + this.state.token

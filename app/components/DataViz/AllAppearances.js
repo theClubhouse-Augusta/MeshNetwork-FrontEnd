@@ -13,7 +13,7 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip
-} from 'Recharts';
+} from 'recharts';
 
 import './style.css';
 import './styleM.css';
@@ -28,7 +28,7 @@ export class AllAppearances extends React.PureComponent {
     }
 
     loadAppearances = () => {
-        fetch(`https://innovationmesh.com/api/appearances/${this.props.match.params.id}`, {
+        fetch(`http://localhost:8000/api/appearances/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ data: json }))

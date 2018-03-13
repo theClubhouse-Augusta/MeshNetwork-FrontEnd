@@ -125,7 +125,7 @@ export default class AddEvent extends Component {
     };
 
     getSponsors = () => {
-        fetch(`https://innovationmesh.com/api/sponsors`, {
+        fetch(`http://localhost:8000/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -139,7 +139,7 @@ export default class AddEvent extends Component {
     };
 
     getOrganizers = () => {
-        fetch(`https://innovationmesh.com/api/organizers/events`, {
+        fetch(`http://localhost:8000/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -154,7 +154,7 @@ export default class AddEvent extends Component {
     };
 
     loadSkills = () => {
-        fetch('https://innovationmesh.com/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -381,7 +381,7 @@ export default class AddEvent extends Component {
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`https://innovationmesh.com/api/event`, {
+        fetch(`http://localhost:8000/api/event`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -423,7 +423,7 @@ export default class AddEvent extends Component {
         data.append("challengeFiles", challenge.challengeFiles);
         data.append("eventID", eventID);
     
-        fetch("https://innovationmesh.com/api/storeChallenge", {
+        fetch("http://localhost:8000/api/storeChallenge", {
           method: "POST",
           body: data,
           headers: { Authorization: "Bearer " + this.state.token }
@@ -449,7 +449,7 @@ export default class AddEvent extends Component {
                     challenge.challengeFiles[i].fileData
                   );
     
-                  fetch("https://innovationmesh.com/api/uploadFile", {
+                  fetch("http://localhost:8000/api/uploadFile", {
                     method: "POST",
                     body: fileData,
                     headers: { Authorization: "Bearer " + this.state.token }
