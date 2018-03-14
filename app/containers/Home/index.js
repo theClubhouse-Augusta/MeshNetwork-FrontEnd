@@ -59,7 +59,7 @@ export default class Home extends React.PureComponent {
             <div className="homeSignButtons">
               <Link
                 to={"/spaces"}
-                style={{ margin: "15px", minWidth: "200px" }}
+                style={{ margin: "7.5px", minWidth: "200px" }}
               >
                 <FlatButton
                   style={{
@@ -76,7 +76,7 @@ export default class Home extends React.PureComponent {
               </Link>
               <Link
                 to={"/signIn"}
-                style={{ margin: "15px", minWidth: "200px" }}
+                style={{ margin: "7.5px", minWidth: "200px" }}
               >
                 <FlatButton
                   style={{

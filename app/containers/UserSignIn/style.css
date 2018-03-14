@@ -1,59 +1,60 @@
 /* UserSignIn Styles */
 
 .userSignIncontainer {
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  background:#EEEEEE;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #eeeeee;
   justify-content: space-between;
 }
 
 .userSignInMain {
-  width:100%;
-  max-width:600px;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:30px;
-  background:#FFFFFF;
-  border-radius:5px;
-  border:1px solid #DDDDDD;
-  margin-top:-50px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+  margin-top: -30px;
 }
 
 .userAuthContainer {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items:center;
-  padding:30px;
-  background:#FFFFFF;
-  border-radius:5px;
-  width:100%;
-  max-width:400px;
-  box-shadow:0 0 15px 0 rgba(0, 0, 0, 0.2);
+  align-items: center;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
 }
 
 .userAuthHeader {
-  color:#222222;
-  font-size:2em;
-  font-variant:small-caps;
-  line-height:35px;
-  padding:15px;
-  border-bottom:1px solid #CCCCCC;
-  margin-bottom:30px;
+  color: #222222;
+  font-size: 2em;
+  font-variant: small-caps;
+  line-height: 35px;
+  padding: 15px;
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 30px;
 }
 
 .userSignUpBanner {
-  width:100%;
-  height:350px;
-  background:linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url('http://h4z.it/Image/f6d78e_14765844_y.jpeg');
-  background-repeat:no-repeat;
-  background-size:cover;
-  background-position:center center;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+  width: 100%;
+  height: 350px;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("http://h4z.it/Image/f6d78e_14765844_y.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
