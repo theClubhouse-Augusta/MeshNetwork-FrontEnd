@@ -234,7 +234,7 @@
 .eventDetailUsersBlock img {
   width: 80%;
   height: auto;
-  border-radius:5px;
+  border-radius: 5px;
 }
 
 .eventDetailSignUpRow {
@@ -260,12 +260,13 @@
 
 .eventDetailMain {
   max-width: 720px;
+  width: 90%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   padding: 15px;
   min-height: calc(100vh - 90px);
-  background:#FFFFFF;
+  background: #ffffff;
 }
 
 .spaceSignUpUser {

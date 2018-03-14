@@ -22,6 +22,7 @@ export class UserAppearanceByMonthYearDay extends React.PureComponent {
 
   getUsers = () => {
     fetch(`http://localhost:8000/api/users/${month}/${year}/${day}`)
+      .then()
   }
 
   render() {

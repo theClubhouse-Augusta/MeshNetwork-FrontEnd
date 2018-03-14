@@ -365,12 +365,12 @@ class CheckoutForm extends React.PureComponent {
             space={this.props.spaceName}
           />
           <div className="checkoutHeaderBanner">
-            <div className="homeHeaderContentTitle">
+            <h2 className="homeHeaderContentTitle">
               Join {this.state.space.name}
-            </div>
-            <div className="homeHeaderContentSubtitle">
+            </h2>
+            <h3 className="homeHeaderContentSubtitle">
               Find out what all the buzz is about
-            </div>
+            </h3>
           </div>
         </header>
 

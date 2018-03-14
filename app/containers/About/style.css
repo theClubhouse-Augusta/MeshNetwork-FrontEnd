@@ -80,6 +80,7 @@
   color: #333333;
   font-size: 1.5em;
   padding: 30px;
+  font-weight: 500;
 }
 
 .aboutMainContainer {
@@ -97,7 +98,10 @@
   font-family: "HankenBook";
   color: #333333;
   font-size: 1.3em;
-  margin-bottom: 10px;
+}
+
+.aboutContent {
+  text-align: justify;
 }
 
 .aboutMainContent {
