@@ -1,12 +1,9 @@
 /* SpaceSignUp Mobile Styles */
 
 @media (max-width: 425px) {
-  .spaceSignUpMain {
-    width: auto;
-  }
-
   .homeHeaderContentTitle {
     text-align: center;
+    padding: 15px;
   }
 }
 

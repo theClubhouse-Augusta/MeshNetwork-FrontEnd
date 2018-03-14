@@ -1,15 +1,27 @@
 /* About Mobile Styles */
 
 @media (max-width: 425px) {
+  .aboutBanner {
+    height: auto;
+  }
+
   .aboutMainTitle {
     text-align: center;
     padding: 15px 0;
+  }
+
+  .homeHeaderContentTitle {
+    margin: 30px 7.5px 0 7.5px;
   }
 
   .aboutMainRow {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .aboutMainContentTitle {
+    text-align: center;
   }
 
   #aboutMainMiddleRow {

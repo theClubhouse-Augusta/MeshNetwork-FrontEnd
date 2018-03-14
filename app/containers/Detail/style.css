@@ -1,305 +1,305 @@
-.eventDetailSectionContent li {
-    margin-left:60px;
-}
-
 /* EventDetail Styles */
 
 .eventDetailContainer {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: #eeeeee;
-  }
-  
-  .eventBanner {
-    height: 400px;
-    width: 100%;
-    background: #555555;
-    background-size: cover;
-    background-position: center center;
-    font-family: "Anton", sans-serif;
-    font-size: 2em;
-    line-height: 120px;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .eventName {
-    margin-left: 60px;
-    margin-top: 100px;
-  }
-  
-  .eventDateTime {
-    font-size: 0.75em;
-    margin-left: 60px;
-  }
-  
-  .eventBody {
-    display: flex;
-    flex-direction: row;
-    max-width: 1200px;
-    margin: 0 auto;
-    justify-content: space-between;
-    padding: 15px;
-  }
-  
-  .eventDescription {
-    width: 50%;
-    background: #ffffff;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    padding: 30px;
-  }
-  
-  .eventQuickInfo {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 40px 20px;
-  }
-  
-  .eventNotices {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-  }
-  
-  .eventNotice {
-    color: #37b1e3;
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-between;
-  }
-  
-  .eventTags {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-    margin-top: 15px;
-  }
-  
-  .eventPeopleBlock {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-content: center;
-  }
-  
-  .eventAvatarsBlock {
-    margin: 75px auto;
-    max-width: 275px;
-    padding: 5px;
-  }
-  
-  .eventOrganizers {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-bottom: 20px;
-  }
-  
-  .eventAttendees {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-content: space-between;
-    flex-wrap: wrap;
-    height: 175px;
-    border-top: 1px solid black;
-    padding-top: 20px;
-  }
-  
-  .eventSponsorsBlock {
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-around;
-  }
-  
-  .eventSponsorCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.25em;
-  }
-  
-  .eventCardHeader {
-    font-size: 1.25em;
-    padding: 15px;
-  }
-  
-  .eventSponsorLogo {
-    height: 100px;
-    margin: 0 auto;
-    padding: 15px;
-  }
-  
-  .eventLocationInfo {
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    text-align: center;
-  }
-  
-  .eventMap {
-    margin-top: -250px;
-  }
-  
-  .eventSpace {
-    background: #37b1e3;
-    width: 100%;
-    margin: 0 auto;
-    margin-top: -10px;
-    padding: 10px 0;
-    font-size: 1.25em;
-  }
-  
-  .eventAddress {
-    margin: 20px auto;
-  }
-  
-  .eventRegistration {
-    text-align: center;
-  }
-  
-  .eventUpcomingEvents {
-    margin: 40px 0;
-    height: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-content: flex-end;
-  }
-  
-  .eventUpcomingTitle {
-    border-bottom: 1px solid black;
-    width: 400px;
-    margin: 0 auto;
-    font-size: 1.25em;
-  }
-  
-  .eventUpcomingList {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .eventDetailBanner {
-    width: 100%;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .eventDetailSection {
-    margin-top: 45px;
-  }
-  
-  .eventDetailSectionTitle {
-    font-family: "HankenBook";
-    color: #ff4d58;
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #dddddd;
-  }
-  
-  .eventDetailSectionContent {
-    font-family: "Noto Sans";
-  }
-  
-  .eventDetailUsersList {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  
-  .eventDetailUsersBlock {
-    width: 22%;
-    margin: 1%;
-    background: #f8f8f8;
-    border: 1px solid #eeeeee;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    font-family: "HankenBook";
-    font-size: 1.3em;
-    border-radius: 4px;
-  }
-  
-  .eventDetailUsersBlock img {
-    width: 80%;
-    height: auto;
-    border-radius:5px;
-  }
-  
-  .eventDetailSignUpRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  
-  .eventDetailDates {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .eventDetailsDateBlock {
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    background: #eeeeee;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-family: "Noto Sans";
-  }
-  
-  .eventDetailMain {
-    max-width: 720px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    min-height: calc(100vh - 90px);
-    background:#FFFFFF;
-  }
-  
-  .spaceSignUpUser {
-    display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    border: 1px solid #dddddd;
-    padding: 20px;
-    margin-top: -70px;
-    background: #ffffff;
-  }
-  
-  .spaceSignUpTitle {
-    font-size: 1em;
-    font-family: "Noto Sans";
-    font-weight: bold;
-    color: #555555;
-    border-bottom: 1px solid #dddddd;
-    padding-bottom: 10px;
-  }
-  
-  .spaceSignUpContainer {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .eventDetailUploadBlock {
-    width:100%;
-    background:#EEEEEE;
-    border-radius:5px;
-    padding:5px;
-    margin-bottom:10px;
-  }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #eeeeee;
+}
+
+.eventBanner {
+  height: 400px;
+  width: 100%;
+  background: #555555;
+  background-size: cover;
+  background-position: center center;
+  font-family: "Anton", sans-serif;
+  font-size: 2em;
+  line-height: 120px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.eventName {
+  margin-left: 60px;
+  margin-top: 100px;
+}
+
+.eventDateTime {
+  font-size: 0.75em;
+  margin-left: 60px;
+}
+
+.eventBody {
+  display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.eventDescription {
+  width: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.eventQuickInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 40px 20px;
+}
+
+.eventNotices {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.eventNotice {
+  color: #37b1e3;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+}
+
+.eventDetailSectionContent li {
+  margin-left: 60px;
+}
+
+.eventTags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  margin-top: 15px;
+}
+
+.eventPeopleBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
+}
+
+.eventAvatarsBlock {
+  margin: 75px auto;
+  max-width: 275px;
+  padding: 5px;
+}
+
+.eventOrganizers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+}
+
+.eventAttendees {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: space-between;
+  flex-wrap: wrap;
+  height: 175px;
+  border-top: 1px solid black;
+  padding-top: 20px;
+}
+
+.eventSponsorsBlock {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-around;
+}
+
+.eventSponsorCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.25em;
+}
+
+.eventCardHeader {
+  font-size: 1.25em;
+  padding: 15px;
+}
+
+.eventSponsorLogo {
+  height: 100px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.eventLocationInfo {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  text-align: center;
+}
+
+.eventMap {
+  margin-top: -250px;
+}
+
+.eventSpace {
+  background: #37b1e3;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: -10px;
+  padding: 10px 0;
+  font-size: 1.25em;
+}
+
+.eventAddress {
+  margin: 20px auto;
+}
+
+.eventRegistration {
+  text-align: center;
+}
+
+.eventUpcomingEvents {
+  margin: 40px 0;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-content: flex-end;
+}
+
+.eventUpcomingTitle {
+  border-bottom: 1px solid black;
+  width: 400px;
+  margin: 0 auto;
+  font-size: 1.25em;
+}
+
+.eventUpcomingList {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventDetailBanner {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.eventDetailSection {
+  margin-top: 45px;
+}
+
+.eventDetailSectionTitle {
+  font-family: "HankenBook";
+  color: #ff4d58;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.eventDetailSectionContent {
+  font-family: "Noto Sans";
+}
+
+.eventDetailUsersList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.eventDetailUsersBlock {
+  width: 22%;
+  margin: 1%;
+  background: #f8f8f8;
+  border: 1px solid #eeeeee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-family: "HankenBook";
+  font-size: 1.3em;
+  border-radius: 4px;
+}
+
+.eventDetailUsersBlock img {
+  width: 80%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.eventDetailSignUpRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.eventDetailDates {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventDetailsDateBlock {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  background: #eeeeee;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-family: "Noto Sans";
+}
+
+.eventDetailMain {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  min-height: calc(100vh - 90px);
+  background: #ffffff;
+}
+
+.spaceSignUpUser {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+  padding: 20px;
+  margin-top: -70px;
+  background: #ffffff;
+}
+
+.spaceSignUpTitle {
+  font-size: 1em;
+  font-family: "Noto Sans";
+  font-weight: bold;
+  color: #555555;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 10px;
+}
+
+.spaceSignUpContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventDetailUploadBlock {
+  width: 100%;
+  background: #eeeeee;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}

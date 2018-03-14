@@ -1,12 +1,10 @@
 /* UserSignIn Mobile Styles */
 
-
 @media (max-width: 425px) {
-    .userSignInMain {
-        width: 80%;
-    }
+  .userSignInMain {
+    max-width: 300px;
+  }
 }
 
 @media (max-width: 1024px) and (min-width: 426px) {
-    
 }

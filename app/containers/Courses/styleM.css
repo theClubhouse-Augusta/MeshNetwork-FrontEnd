@@ -1,1 +1,13 @@
 /* Browse Mobile Styles */
+
+@media (max-width: 425px) {
+  .lmsBrowseButtons {
+    display: flex;
+    flex-direction: row;
+  }
+  .lmsBrowseSearch {
+    justify-content: center;
+    margin: 30px 0 15px 0;
+    max-width: 300px;
+  }
+}
