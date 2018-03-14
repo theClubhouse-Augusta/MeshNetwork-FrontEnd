@@ -21,4 +21,21 @@
   .challenges_detailColumnTwo {
     width: 75%;
   }
+
+  .homeSignButtons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .eventDetailBanner {
+    max-width: 425px;
+    height: auto;
+    padding: 30px 0 0 0;
+  }
+
+  .homeHeaderContentTitle {
+    font-size: 2em;
+    max-width: 80%;
+  }
 }

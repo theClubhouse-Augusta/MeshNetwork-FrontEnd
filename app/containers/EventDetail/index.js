@@ -185,7 +185,6 @@ export default class EventDetail extends React.PureComponent {
           onClick={this.attendEvent}
           style={{
             margin: "15px",
-            width: "45%",
             background: "#ff4d58",
             paddingTop: "10px",
             paddingBottom: "10px",
@@ -216,9 +215,7 @@ export default class EventDetail extends React.PureComponent {
         <header style={{ background: "#FFFFFF" }}>
           <Header space={this.props.spaceName} />
           <div className="eventDetailBanner" style={{ background: "#ff4d58" }}>
-            <div className="homeHeaderContentTitle">
-              {this.state.event.title}
-            </div>
+            <h3 className="homeHeaderContentTitle">{this.state.event.title}</h3>
             {this.renderLocation()}
           </div>
         </header>
@@ -297,7 +294,6 @@ export default class EventDetail extends React.PureComponent {
                 <a
                   href={this.state.event.url}
                   style={{
-                    width: "30%",
                     textDecoration: "none",
                     background: "#ff4d58",
                     padding: "5px",
@@ -308,7 +304,9 @@ export default class EventDetail extends React.PureComponent {
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    maxWidth: "300px",
+                    margin: "30px auto"
                   }}
                   target="_blank"
                 >
@@ -352,7 +350,7 @@ export default class EventDetail extends React.PureComponent {
                     {this.renderJoin()}
                     <Link
                       to={"/space/" + this.state.workSpace.slug}
-                      style={{ margin: "15px", width: "45%" }}
+                      style={{ margin: "15px" }}
                     >
                       <FlatButton
                         style={{

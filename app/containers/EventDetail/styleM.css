@@ -3,10 +3,19 @@
 @media (max-width: 425px) {
   .homeSignButtons {
     flex-direction: column;
-    align-items: center;
+    width: 100%;
   }
+
+  .eventDetailBanner {
+    height: auto;
+  }
+
   .eventDetailsDateBlock {
     font-size: 0.9em;
     text-align: center;
+  }
+  .eventDetailSignUpRow {
+    display: flex;
+    flex-direction: column;
   }
 }

@@ -685,7 +685,6 @@
 
 /* Detail Styles */
 
-
 .challenges_contentContainer {
   display: flex;
   flex-direction: row;
@@ -862,7 +861,6 @@
 }
 
 /* Challenges Styles */
-
 
 .challenges_contentContainer {
   display: flex;
@@ -1585,7 +1583,6 @@
 
 /* Home Styles */
 
-
 .challenges_contentContainer {
   display: flex;
   flex-direction: row;
@@ -1808,7 +1805,6 @@
   border-radius: 50%;
   margin-left: 10px;
 }
-
 
 .challenges_newChallengeImagePreview {
   max-height: 200px;
