@@ -113,9 +113,11 @@ class CheckoutForm extends React.PureComponent {
       {}
     )
       .then(response => response.json())
-      .then(json =>
-        this.setState({ loadedPlans: json.data ? json.data : json })
-      )
+      .then(({ plans }) => {
+        if (plans) {
+          this.setState({ loadedPlans: plans.sort((a, b) => a.amount < b.amount) });
+        }
+      })
       .catch(error => {});
   };
 
