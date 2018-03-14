@@ -46,7 +46,9 @@ export class AppearanceByMonthYear extends React.PureComponent {
                 }))
                 .catch(error => {})
         } else {
-            this.setState({ error: true })
+            this.setState({ 
+                error: true 
+            })
         }
     }
 
