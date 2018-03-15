@@ -133,37 +133,12 @@ const styles = theme => ({
 const MyTable = withStyles(styles)(SimpleTable);
 function SimpleTable(props) {
   const { classes } = props;
-
-  const TODAY = moment().clone().startOf('day');
-  function checkIfDateIsToday(momentDate) {
-    return momentDate.isSame(TODAY, 'd');
-  }
-
   function generateID() { return uuid() };
 
-  const isDateSet = !!props.date;
-  const isToday = props.date ? !!checkIfDateIsToday(props.date) : false;
-  const noCheckIns = !!!props.users.length;
   return (
     <div className={classes.root}>
       <div className="spaceDashDataTitleGraph">
-
-        {!isDateSet &&
-          <p>Sign ups</p>
-        }
-        {(isDateSet && !noCheckIns && !isToday) &&
-          <p>Sign ups for {props.date.format("dddd, MMMM Do YYYY")}</p>
-        }
-        {(isDateSet && noCheckIns && !isToday) &&
-          <p>No sign ups for {props.date.format("dddd, MMMM Do YYYY")}</p>
-        }
-        {(isDateSet && isToday && !noCheckIns) &&
-          <p> Sign ups for Today</p>
-        }
-
-        {(isDateSet && isToday && noCheckIns) &&
-          <p> No sign ups today</p>
-        }
+        <p>Sign ups</p>
       </div>
       <DateRangePicker
         startDate={props.startDate} // momentPropTypes.momentObj or null,

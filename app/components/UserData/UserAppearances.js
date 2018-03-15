@@ -124,7 +124,6 @@ const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    //    overflowX: 'auto',
   },
   table: {
     minWidth: 700,
@@ -134,21 +133,7 @@ const styles = theme => ({
 const MyTable = withStyles(styles)(SimpleTable);
 function SimpleTable(props) {
   const { classes } = props;
-  // const TODAY = moment().clone().startOf('day');
-
-  // const checkIfDateIsToday = (momentDate) =>
-  //   momentDate.isSame(TODAY, 'd');
-
-
-  // const checkIfMonthIsSame = (startDate, endDate) =>
-  //   startDate.month() === endDate.month;
-
   function generateID() { return uuid() };
-  // const isDateSet = !!props.startDate && !!props.endDate;
-  // const startDayIsToday = props.startDate ? !!checkIfDateIsToday(props.startDate) : false;
-  // const endDayIsToday = props.endDate ? !!checkIfDateIsToday(props.endDate) : false;
-  // const startAndEndOnSameMonth = checkIfMonthIsSame(props.startDate, props.endDate);
-  // const noCheckIns = !!!props.users.length;
   return (
     <div className={classes.root}>
       <div className="spaceDashDataTitleGraph">
