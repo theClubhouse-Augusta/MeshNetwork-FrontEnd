@@ -11,27 +11,46 @@ import CheckoutForm from './CheckoutForm';
 import './style.css';
 import './styleM.css';
 export default class Checkout extends React.Component {
-    state = {
-        key: '',
-        loaded: '',
-        component: '',
-    };
-
-    componentDidMount() {
-        this.loadKey();
+    constructor() {
+        super();
+        this.state = {
+//            stripe: null,
+            key: '',
+            loaded: '',
+            component: '',
+        };
     }
 
-    loadKey = () => {
-        fetch(`https://innovationmesh.com/api/publickey/${this.props.match.params.id}`, {
-        })
-            .then(response => response.text())
-            .then(Key => {
-                if (Key) {
-                    this.setState({ key: Key, loaded: true }, () => this.renderCheckoutForm());
-                } else {
-                    this.setState({ loaded: true }, () => this.renderCheckoutForm());
-                }
-            })
+    async componentDidMount() {
+        if (window.Stripe) {
+            this.loadKey();
+        } else {
+            document.querySelector('#stripe-js').addEventListener('load', () => {
+                // Create Stripe instance once Stripe.js loads
+                this.loadKey();
+                // this.setState({stripe: window.Stripe(key)});
+            });
+        }
+    }
+
+
+    loadKey = async () => {
+        let key;
+        try {
+            const response = await fetch(`https://innovationmesh.com/api/publickey/${this.props.match.params.id}`);
+            key = await response.text();
+        } catch (error) {
+            //
+        } finally {
+            if (key) {
+                this.setState(() => ({ key }));
+                this.setState(() => ({ loaded: true }), () => {
+                    this.renderCheckoutForm();
+                });
+            } else {
+                this.setState(() => ({ loaded: true }), () => this.renderCheckoutForm());
+            }
+        }
     }
 
     renderCheckoutForm = () =>

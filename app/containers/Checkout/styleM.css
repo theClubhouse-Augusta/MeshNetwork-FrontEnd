@@ -1,5 +1,6 @@
 /* Checkout Mobile Styles */
 @media (max-width: 425px) {
-  .userSignUpContainer {
+  .userSignUpMain {
+    padding: 15px;
   }
 }

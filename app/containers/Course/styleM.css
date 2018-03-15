@@ -4,4 +4,9 @@
   .lmsDetailHeader {
     text-align: center;
   }
+  .lmsDetailContent,
+  .lmsDetailCourses,
+  .lmsDetailAuthorContainer {
+    width: auto;
+  }
 }

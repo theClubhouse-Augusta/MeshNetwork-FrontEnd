@@ -12,7 +12,7 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip
-} from 'Recharts';
+} from 'recharts';
 
 import './style.css';
 import './styleM.css';
