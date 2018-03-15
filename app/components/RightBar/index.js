@@ -358,7 +358,7 @@ export default class RightBar extends React.PureComponent {
   render() {
     return (
       <div>
-        {this.renderCreateButtons()}
+        {/*this.renderCreateButtons()*/}
         <FlatButton
           href="http://southeaststartupchallenge.com/challenge-rules/"
           target="_blank"

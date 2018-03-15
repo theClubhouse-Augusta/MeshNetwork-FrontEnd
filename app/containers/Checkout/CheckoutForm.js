@@ -284,6 +284,10 @@ class CheckoutForm extends React.PureComponent {
     let data = new FormData();
     let { name, email, password, bio, selectedTags, avatar, plan } = this.state;
 
+    if(plan === "already") {
+      plan = "free";
+    }
+
     data.append("name", name.trim());
     if (!!selectedTags.length) {
       data.append("tags", selectedTags);
@@ -343,6 +347,16 @@ class CheckoutForm extends React.PureComponent {
       );
     }
   };
+
+  checkPlan = () => {
+    if(this.state.plan === "free" || this.state.plan === "already") {
+      return this.storeFreeUser
+    }
+    else {
+      return this.storeUser
+    }
+  }
+
   render() {
     const { loadedTags, plan, loadedPlans } = this.state;
 
@@ -467,7 +481,7 @@ class CheckoutForm extends React.PureComponent {
                   <FlatButton
                     style={{
                       backgroundColor:
-                        "free" === this.state.plan ? "grey" : "#3399cc",
+                        "free" === this.state.plan ? "#ff4d58" : "grey",
                       padding: "10px",
                       marginTop: "15px",
                       color: "#FFFFFF",
@@ -476,6 +490,20 @@ class CheckoutForm extends React.PureComponent {
                     onClick={e => this.selectPlan(e, "free")}
                   >
                     Free tier
+                  </FlatButton>
+
+                  <FlatButton
+                    style={{
+                      backgroundColor:
+                        "already" === this.state.plan ? "#ff4d58" : "grey",
+                      padding: "10px",
+                      marginTop: "15px",
+                      color: "#FFFFFF",
+                      fontWeight: "bold"
+                    }}
+                    onClick={e => this.selectPlan(e, "already")}
+                  >
+                    Already a Member
                   </FlatButton>
                 </React.Fragment>
               )}
@@ -489,7 +517,7 @@ class CheckoutForm extends React.PureComponent {
                       key={`goo${key}`}
                       style={{
                         backgroundColor:
-                          id === this.state.plan ? "grey" : "#3399cc",
+                          id === this.state.plan ? "#ff4d58" : "grey",
                         padding: "10px",
                         marginTop: "15px",
                         color: "#FFFFFF",
@@ -502,7 +530,7 @@ class CheckoutForm extends React.PureComponent {
                   );
                 })}
 
-              {plan !== "free" && this.props.pubkey ? <CardSection /> : null}
+              {plan !== "free" && plan !== "already" && this.props.pubkey ? <CardSection /> : null}
 
               <div className="spaceLogoMainImageRow">
                 <label
@@ -527,7 +555,7 @@ class CheckoutForm extends React.PureComponent {
                   color: "#FFFFFF",
                   fontWeight: "bold"
                 }}
-                onClick={plan === "free" ? this.storeFreeUser : this.storeUser}
+                onClick={this.checkPlan()}
               >
                 Sign Up
               </FlatButton>
