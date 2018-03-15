@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import uuid from "uuid/v4";
-import { SingleDatePicker, DateRangePicker } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 import { withStyles } from 'material-ui/styles';
 import Table, {
   TableHead,
@@ -17,14 +17,10 @@ import './styleM.css';
 
 export class UserAppearances extends React.PureComponent {
   state = {
-    date: moment(),
     startDate: moment(),
     endDate: moment().add(1, 'd'),
-    focused: false,
-    focusedInput: false,
+    focusedInput: null,
     users: [],
-    msg: "",
-    snack: false,
     userPage: 0,
     userRowsPerPage: 10,
   };
@@ -91,10 +87,6 @@ export class UserAppearances extends React.PureComponent {
     }
   };
 
-  // onFocusChange = focused => {
-  //   this.setState(() => ({ focused }));
-  // };
-
   onFocusChange = focusedInput => {
     this.setState(() => ({ focusedInput }));
   };
@@ -117,16 +109,11 @@ export class UserAppearances extends React.PureComponent {
           userRowsPerPage={this.state.userRowsPerPage}
           handleUserChangePage={this.handleUserChangePage}
           handleUserChangeRowsPerPage={this.handleUserChangeRowsPerPage}
-          //          date={this.state.date}
           startDate={this.state.startDate}
           endDate={this.state.endDate}
-          // focused={this.state.focused}
-          //focusedInput={this.state.focusedInput}
-          //onDateChange={this.onDateChange}
           onDatesChange={this.onDatesChange}
           focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
           onFocusChange={this.onFocusChange}
-        //  onFocusChange={this.onFocusChange}
         />
       </div>
     );
@@ -143,43 +130,36 @@ const styles = theme => ({
     minWidth: 700,
   },
 });
+
 const MyTable = withStyles(styles)(SimpleTable);
 function SimpleTable(props) {
   const { classes } = props;
-  const TODAY = moment().clone().startOf('day');
+  // const TODAY = moment().clone().startOf('day');
 
-  function checkIfDateIsToday(momentDate) {
-    return momentDate.isSame(TODAY, 'd');
-  }
-  const isDateSet = !!props.date;
-  const isToday = props.date ? !!checkIfDateIsToday(props.date) : false;
-  const noCheckIns = !!!props.users.length;
+  // const checkIfDateIsToday = (momentDate) =>
+  //   momentDate.isSame(TODAY, 'd');
+
+
+  // const checkIfMonthIsSame = (startDate, endDate) =>
+  //   startDate.month() === endDate.month;
+
+  function generateID() { return uuid() };
+  // const isDateSet = !!props.startDate && !!props.endDate;
+  // const startDayIsToday = props.startDate ? !!checkIfDateIsToday(props.startDate) : false;
+  // const endDayIsToday = props.endDate ? !!checkIfDateIsToday(props.endDate) : false;
+  // const startAndEndOnSameMonth = checkIfMonthIsSame(props.startDate, props.endDate);
+  // const noCheckIns = !!!props.users.length;
   return (
     <div className={classes.root}>
       <div className="spaceDashDataTitleGraph">
-        {!isDateSet &&
-          <p>Check ins</p>
-        }
-        {(isDateSet && !noCheckIns && !isToday) &&
-          <p>Check ins for {props.date.format("dddd, MMMM Do YYYY")}</p>
-        }
-        {(isDateSet && noCheckIns && !isToday) &&
-          <p>No Check ins for {props.date.format("dddd, MMMM Do YYYY")}</p>
-        }
-        {(isDateSet && isToday && !noCheckIns) &&
-          <p> Check ins for Today</p>
-        }
-
-        {(isDateSet && isToday && noCheckIns) &&
-          <p> No Check ins today</p>
-        }
+        <p>Check ins</p>
       </div>
 
       <DateRangePicker
         startDate={props.startDate} // momentPropTypes.momentObj or null,
-        startDateId={() => uuid()} // PropTypes.string.isRequired,
+        startDateId={generateID()} // PropTypes.string.isRequired,
         endDate={props.endDate} // momentPropTypes.momentObj or null,
-        endDateId={() => uuid()} // PropTypes.string.isRequired,
+        endDateId={generateID()} // PropTypes.string.isRequired,
         onDatesChange={({ startDate, endDate }) => { props.onDatesChange(startDate, endDate) }} // PropTypes.func.isRequired,
         focusedInput={props.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
         onFocusChange={focusedInput => props.onFocusChange(focusedInput)} // PropTypes.func.isRequired,

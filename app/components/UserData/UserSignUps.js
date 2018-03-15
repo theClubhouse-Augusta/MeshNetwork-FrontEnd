@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { SingleDatePicker } from 'react-dates';
+import uuid from "uuid/v4";
+import { DateRangePicker } from 'react-dates';
 import { withStyles } from 'material-ui/styles';
 import Table, {
   TableHead,
@@ -16,17 +17,16 @@ import './styleM.css';
 
 export class UserSignUps extends React.PureComponent {
   state = {
-    date: moment(),
-    focused: false,
+    startDate: moment(),
+    endDate: moment().add(1, 'd'),
+    focusedInput: null,
     users: [],
-    msg: "",
-    snack: false,
     userPage: 0,
     userRowsPerPage: 10,
   };
 
   componentDidMount() {
-    this.loadInitalUsers();
+    // this.loadInitalUsers();
   }
 
   loadInitalUsers = () => {
@@ -48,7 +48,7 @@ export class UserSignUps extends React.PureComponent {
     this.setState(() => ({ date }));
 
     if (date) {
-      fetch(`http://localhost:8000/api/appearances/users/${this.props.match.params.id}/${date.get('month') + 1}/${date.get('year')}/${date.get('date')}`)
+      fetch(`http://localhost:8000/api/signups/${this.props.match.params.id}/${date.get('month') + 1}/${date.get('year')}/${date.get('date')}`)
         .then(response => response.json())
         .then(({ users, error }) => {
           if (users) {
@@ -66,8 +66,28 @@ export class UserSignUps extends React.PureComponent {
     }
   };
 
-  onFocusChange = focused => {
-    this.setState(() => ({ focused }));
+  onDatesChange = (startDate, endDate) => {
+    this.setState(() => ({ startDate, endDate }));
+    if (startDate && endDate) {
+      fetch(`http://localhost:8000/api/signups/${this.props.match.params.id}/${startDate.get('month') + 1}/${startDate.get('year')}/${startDate.get('date')}/${endDate.get('month') + 1}/${endDate.get('year')}/${endDate.get('date')}`)
+        .then(response => response.json())
+        .then(({ users, error }) => {
+          if (users) {
+            this.setState(() => ({ users }));
+            this.setState(() => ({ error: "" }));
+          } else if (error) {
+            this.setState(() => ({ users: [] }));
+          }
+        })
+        .catch(error => {
+          console.log(`error: ${error}`);
+        })
+    } else {
+      this.setState(() => ({ users: [] }));
+    }
+  };
+  onFocusChange = focusedInput => {
+    this.setState(() => ({ focusedInput }));
   };
 
   handleUserChangePage = (event, page) => {
@@ -79,6 +99,7 @@ export class UserSignUps extends React.PureComponent {
   };
 
 
+
   render() {
     return (
       <div>
@@ -88,9 +109,10 @@ export class UserSignUps extends React.PureComponent {
           userRowsPerPage={this.state.userRowsPerPage}
           handleUserChangePage={this.handleUserChangePage}
           handleUserChangeRowsPerPage={this.handleUserChangeRowsPerPage}
-          date={this.state.date}
-          focused={this.state.focused}
-          onDateChange={this.onDateChange}
+          startDate={this.state.startDate}
+          endDate={this.state.endDate}
+          onDatesChange={this.onDatesChange}
+          focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
           onFocusChange={this.onFocusChange}
         />
       </div>
@@ -117,6 +139,8 @@ function SimpleTable(props) {
     return momentDate.isSame(TODAY, 'd');
   }
 
+  function generateID() { return uuid() };
+
   const isDateSet = !!props.date;
   const isToday = props.date ? !!checkIfDateIsToday(props.date) : false;
   const noCheckIns = !!!props.users.length;
@@ -141,16 +165,17 @@ function SimpleTable(props) {
           <p> No sign ups today</p>
         }
       </div>
-      <SingleDatePicker
-        placeholder={`Pick a day`}
-        date={props.date ? props.date : null} // momentPropTypes.momentObj or null
-        onDateChange={date => { props.onDateChange(date) }} // PropTypes.func.isRequired
-        focused={props.focused} // PropTypes.bool
-        onFocusChange={({ focused }) => { props.onFocusChange(focused) }} // PropTypes.func.isRequired
-        showClearDate
-        //   numberOfMonths={numberOfMonths}
-        showDefaultInputIcon
+      <DateRangePicker
+        startDate={props.startDate} // momentPropTypes.momentObj or null,
+        startDateId={generateID()} // PropTypes.string.isRequired,
+        endDate={props.endDate} // momentPropTypes.momentObj or null,
+        endDateId={generateID()} // PropTypes.string.isRequired,
+        onDatesChange={({ startDate, endDate }) => { props.onDatesChange(startDate, endDate) }} // PropTypes.func.isRequired,
+        focusedInput={props.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+        onFocusChange={focusedInput => props.onFocusChange(focusedInput)} // PropTypes.func.isRequired,
         isOutsideRange={() => false}
+        showClearDates
+        showDefaultInputIcon
       />
       {!!props.users.length &&
         <Table className={classes.table}>
