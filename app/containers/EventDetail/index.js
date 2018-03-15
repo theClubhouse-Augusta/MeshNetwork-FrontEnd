@@ -138,7 +138,7 @@ export default class EventDetail extends React.PureComponent {
   };
 
   attendEvent = () => {
-    fetch("https://innovationmesh.com/api/attend/" + this.state.event.id, {
+    fetch("http://localhost:8000/api/attend/" + this.state.event.id, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + this.state.token

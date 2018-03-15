@@ -31,6 +31,8 @@ import { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 
 import Header from 'components/Header';
+import { UserAppearances } from '../../components/UserData/UserAppearances';
+import { UserSignUps } from '../../components/UserData/UserSignUps';
 import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
 
@@ -741,10 +743,22 @@ export default class SpaceDash extends React.PureComponent {
               </TableRow>
             </TableFooter>
           </Table>
-
         </div>
       )
 
+    }
+    else if (this.state.activeMenu === 'userParticipation') {
+      return (
+        <div className="spaceDashContent">
+          <Header space={this.props.spaceName} />
+          <UserAppearances
+            {...this.props}
+          />
+          <UserSignUps
+            {...this.props}
+          />
+        </div>
+      );
     }
     else if (this.state.activeMenu === 'editResources') {
       return (
@@ -871,6 +885,8 @@ export default class SpaceDash extends React.PureComponent {
         </div>
       )
     }
+    else if (this.state.activeMenu === 'userInfo') {
+    }
   }
 
   render() {
@@ -894,10 +910,10 @@ export default class SpaceDash extends React.PureComponent {
               <div className="spaceDashMenuItem" onClick={() => this.changeMenu('updatePhotos')}>Photo Gallery</div>
               <div className="spaceDashMenuItem" onClick={() => this.changeMenu('editResources')}>Resources</div>
               <div className="spaceDashMenuItem" onClick={() => this.changeMenu('userManager')}>Users</div>
+              <div className="spaceDashMenuItem" onClick={() => this.changeMenu('userParticipation')}>User Engagement</div>
               <Link to={'/addEvent'}><div className="spaceDashMenuItem">Add an Event</div></Link>
             </div>
             {this.renderDashContent()}
-
           </main>
           <Snackbar
             open={this.state.snack}

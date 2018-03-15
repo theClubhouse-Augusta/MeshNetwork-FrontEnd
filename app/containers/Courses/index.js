@@ -99,7 +99,7 @@ export default class Courses extends React.PureComponent {
       });
     }
 
-    fetch(`https://innovationmesh.com/api/getCourses/${category}/${this.state.count}?page=${this.state.page}`)
+    fetch(`http://localhost:8000/api/getCourses/${category}/${this.state.count}?page=${this.state.page}`)
       .then(response => {
         return response.json();
       })
