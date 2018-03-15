@@ -13,7 +13,7 @@ import {
     Legend,
     BarChart,
     Bar
-} from 'Recharts';
+} from 'recharts';
 
 import DateRangePicker from '../DateRangePicker';
 
@@ -46,7 +46,9 @@ export class AppearanceByMonthYear extends React.PureComponent {
                 }))
                 .catch(error => {})
         } else {
-            this.setState({ error: true })
+            this.setState({ 
+                error: true 
+            })
         }
     }
 

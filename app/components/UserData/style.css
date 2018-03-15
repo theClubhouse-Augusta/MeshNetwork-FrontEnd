@@ -1,0 +1,178 @@
+
+/* AdminDash Styles */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+.spaceDashBody {
+  height: 100%;
+  width: 100%;
+}
+
+.spaceDashMain {
+  display: flex;
+  flex-direction: row;
+}
+
+.spaceDashMenu {
+  height: 100vh;
+  width: 15%;
+  background: #2a3f54;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+}
+
+.spaceDashContent {
+  margin-left: 15%;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+.spaceDashDataRow {
+  display: flex;
+  flex-direction: row;
+  background: #EEEEEE;
+  width: 100%;
+  border-bottom: 1px solid #CCCCCC;
+}
+
+.spaceDashDataBlock {
+  width: 23%;
+  margin: 1%;
+  height: 150px;
+  background: #FFFFFF;
+  border-top: 3px solid #ff4d58;
+  border-bottom: 1px solid #DDDDDD;
+  border-right: 1px solid #DDDDDD;
+  border-left: 1px solid #DDDDDD;
+}
+
+.spaceDashMenuItem {
+  color: #FFFFFF;
+  font-family: 'Noto Sans';
+  font-size: 1.4em;
+  font-variant: small-caps;
+  border-bottom: 1px solid #546576;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.spaceDashMenuItem:hover {
+  background: #546576;
+}
+
+.spaceDashDataTitle {
+  font-family: 'HankenBook';
+  margin: 15px;
+  color: #ff4d58;
+  font-size: 1.5em;
+}
+
+.spaceDashDataTitleGraph {
+  font-family: 'HankenBook';
+  margin: 15px;
+  color: #ff4d58;
+  font-size: 1.5em;
+  margin-bottom: 32px;
+  margin-top: 32px;
+}
+
+.spaceDashDataContent {
+  width: 100%;
+  font-size: 3em;
+  font-family: 'Noto Sans';
+  text-align: center;
+  color: #444444;
+}
+
+.spaceDashColumnsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.spaceDashColumn {
+  width: 48%;
+  margin: 1%;
+}
+
+.spaceDashOptions {
+  width: 75vw;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  height: 100%;
+  border-bottom: 1px solid #CCCCCC;
+}
+
+.spaceDashPhotoGallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.spaceDashPhotoBlock {
+  display: flex;
+  flex-direction: column;
+  margin-left: 64px;
+}
+
+.spaceDashResources {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.spaceDashResourceBlock {
+  width: 30%;
+  margin: 1%;
+  height: 70px;
+  background: #EEEEEE;
+  border: 2px solid #DDDDDD;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.spaceDashResourceTitle {
+  font-size: 1.8em;
+  font-family: 'Noto Sans';
+  padding-left: 5px;
+  color: #222222;
+}
+
+.spaceDashResourceContact {
+  font-size: 0.9em;
+  font-family: 'Noto Sans';
+  padding-left: 5px;
+  color: #777777;
+  padding-left: 5px;
+}
+
+.spaceDashTotalGraphs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.spaceDashTotalGraphsSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.spaceDashDataRangeSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.editEventRow:hover {
+  cursor: pointer;
+}

@@ -144,7 +144,7 @@ export default class RightBar extends React.PureComponent {
 
   getCategories = () => {
     fetch("https://innovationmesh.com/api/selectCategories", {
-      method: "GET"
+      method: 'GET'
     })
       .then(response => response.json())
       .then(json => {
@@ -251,7 +251,7 @@ export default class RightBar extends React.PureComponent {
     );
 
     fetch("https://innovationmesh.com/api/storeQuestion", {
-      method: "POST",
+      method: 'POST',
       body: data,
       headers: { Authorization: "Bearer " + this.state.token }
     })

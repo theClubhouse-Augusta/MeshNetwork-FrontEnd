@@ -14,8 +14,9 @@ import Input, { InputLabel, InputAdornment } from "material-ui/Input";
 import { FormControl, FormHelperText } from "material-ui/Form";
 import Visibility from "material-ui-icons/Visibility";
 import VisibilityOff from "material-ui-icons/VisibilityOff";
-
 import { injectStripe } from "react-stripe-elements";
+import uuid from "uuid/v4";
+
 import CardSection from "./CardSection";
 import Header from "../../components/Header";
 
@@ -35,6 +36,8 @@ const MenuProps = {
 
 class CheckoutForm extends React.PureComponent {
   state = {
+    customer_idempotency_key: uuid(),
+    subscription_idempotency_key: uuid(),
     token: localStorage.getItem("token"),
     user: JSON.parse(localStorage.getItem("user")),
     space: "",
@@ -110,9 +113,11 @@ class CheckoutForm extends React.PureComponent {
       {}
     )
       .then(response => response.json())
-      .then(json =>
-        this.setState({ loadedPlans: json.data ? json.data : json })
-      )
+      .then(({ plans }) => {
+        if (plans) {
+          this.setState({ loadedPlans: plans.sort((a, b) => a.amount - b.amount) });
+        }
+      })
       .catch(error => {});
   };
 
@@ -214,8 +219,18 @@ class CheckoutForm extends React.PureComponent {
     });
     e.preventDefault();
     let data = new FormData();
-    let { name, email, password, bio, selectedTags, avatar, plan } = this.state;
-    this.props.stripe.createToken({ name: name }).then(({ token }) => {
+    let { 
+      name, 
+      email, 
+      password, 
+      bio, 
+      selectedTags, 
+      avatar, 
+      plan, 
+      customer_idempotency_key, 
+      subscription_idempotency_key 
+    } = this.state;
+    this.props.stripe.createToken({ name }).then(({ token }) => {
       data.append("name", name.trim());
       if (selectedTags.length) {
         data.append("tags", selectedTags);
@@ -230,6 +245,8 @@ class CheckoutForm extends React.PureComponent {
       }
       data.append("plan", plan);
       data.append("username", name);
+      data.append("customer_idempotency_key", customer_idempotency_key);
+      data.append("subscription_idempotency_key", subscription_idempotency_key);
 
       fetch("https://innovationmesh.com/api/signUp", {
         method: "POST",
@@ -246,27 +263,14 @@ class CheckoutForm extends React.PureComponent {
               headers: { Authorization: "Bearer " + user.token }
             })
               .then(response => response.json())
-              .then(json => {
-                let mainUser = json.user;
-                localStorage.setItem("user", JSON.stringify(mainUser));
-                fetch("https://innovationmesh.com/api/signIn", {
-                  method: "POST",
-                  body: data
-                })
-                  .then(response => response.json())
-                  .then(json => {
-                    if (json.error) {
-                      this.showSnack(json.error);
-                    } else if (json.token) {
-                      localStorage.setItem("token", json.token);
-                      this.showSnack(
-                        "Welcome to " + this.state.space.name + "!"
-                      );
-                      setTimeout(() => {
-                        this.props.history.goBack();
-                      }, 2000);
-                    }
-                  });
+              .then(({ user }) => {
+                localStorage.setItem("user", JSON.stringify(user));
+                this.showSnack(
+                  "Welcome to " + this.state.space.name + "!"
+                );
+                setTimeout(() => {
+                  this.props.history.push(`/user/${user.id}`);
+                }, 2000);
               });
           }
           this.setState({
@@ -286,7 +290,7 @@ class CheckoutForm extends React.PureComponent {
 
     data.append("name", name.trim());
     if (!!selectedTags.length) {
-      data.append("tags", selectedTags);
+      data.append("skills", selectedTags);
     }
     data.append("email", email.trim());
     data.append("password", password.trim());

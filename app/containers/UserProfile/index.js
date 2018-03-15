@@ -66,7 +66,7 @@ export default class UserProfile extends React.Component {
   getUser = () => {
     fetch(
       "https://innovationmesh.com/api/user/profile/" +
-        this.props.match.params.id,
+      this.props.match.params.id,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${localStorage["token"]}` }
@@ -176,58 +176,58 @@ export default class UserProfile extends React.Component {
     return this.state.loading ? (
       <Spinner loading={this.state.loading} />
     ) : (
-      <div className="container">
-        <Helmet
-          title={this.state.user.name}
-          meta={[
-            { name: "description", content: "Description of UserProfile" }
-          ]}
-        />
-        <header>
-          <Header space={this.props.spaceName} />
-        </header>
+        <div className="container">
+          <Helmet
+            title={this.state.user.name}
+            meta={[
+              { name: "description", content: "Description of UserProfile" }
+            ]}
+          />
+          <header>
+            <Header space={this.props.spaceName} />
+          </header>
 
-        <main className="mainProfile">
-          <div className="profileWrapper">
-            <div className="profileHeader">
-              <img
-                alt=""
-                src={this.state.user.avatar}
-                className="profileHeaderImg"
-              />
-              <div className="profileHeaderTitle">{this.state.user.name}</div>
-              <div className="profileSubTitle">
-                {!!this.state.user.title !== "null"
-                  ? this.state.user.title
-                  : false}
+          <main className="mainProfile">
+            <div className="profileWrapper">
+              <div className="profileHeader">
+                <img
+                  alt=""
+                  src={this.state.user.avatar}
+                  className="profileHeaderImg"
+                />
+                <div className="profileHeaderTitle">{this.state.user.name}</div>
+                <div className="profileSubTitle">
+                  {!!this.state.user.title !== "null"
+                    ? this.state.user.title
+                    : false}
+                </div>
               </div>
-            </div>
-            <div className="profileContact">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row"
-                }}
-              >
-                <Link
-                  to={"/space/" + this.state.user.spaceID}
-                  className="profileSpaceBlock"
+              <div className="profileContact">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row"
+                  }}
                 >
-                  {this.state.space.name}
-                </Link>
-                {this.renderEdit()}
+                  <Link
+                    to={"/space/" + this.state.user.spaceID}
+                    className="profileSpaceBlock"
+                  >
+                    {this.state.space.name}
+                  </Link>
+                  {this.renderEdit()}
+                </div>
+                {this.renderSocial()}
               </div>
-              {this.renderSocial()}
+              <div className="profileSkillsList">
+                {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
+              </div>
             </div>
-            <div className="profileSkillsList">
-              {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
-            </div>
-          </div>
-        </main>
+          </main>
 
-        <footer />
-      </div>
-    );
+          <footer />
+        </div>
+      );
   }
 }
 

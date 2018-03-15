@@ -95,7 +95,7 @@ textarea {
   display: flex;
   height: 100%;
   flex-direction: column;
-  +3justify-content: center;
+  justify-content: center;
   align-items: center;
 }
 
