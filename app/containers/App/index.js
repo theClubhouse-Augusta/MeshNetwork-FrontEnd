@@ -69,7 +69,7 @@ export default class App extends Component {
     };
 
     getSpaceName = (spaceID, token) => {
-        fetch(`http://localhost:8000/api/spacename/${spaceID}`, {
+        fetch(`https://innovationmesh.com/api/spacename/${spaceID}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => response.json())
