@@ -14,6 +14,7 @@ import MdAssessment from "react-icons/lib/md/assessment";
 import MdSchool from "react-icons/lib/md/school";
 import MdPerson from "react-icons/lib/md/person";
 import MdExitToApp from "react-icons/lib/md/exit-to-app";
+import DownArrow from "react-icons/lib/fa/caret-down";
 // import Divider from "material-ui/Divider";
 
 import Menu, { MenuItem } from "material-ui/Menu";

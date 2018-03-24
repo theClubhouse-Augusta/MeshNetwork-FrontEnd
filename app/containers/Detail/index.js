@@ -11,6 +11,7 @@ import Header from "components/Header";
 
 import FlatButton from "material-ui/Button";
 import Snackbar from "material-ui/Snackbar";
+import TextField from "material-ui/TextField";
 
 // import Dialog, { DialogTitle } from 'material-ui/Dialog';
 
@@ -57,7 +58,14 @@ export default class Detail extends React.PureComponent {
             participant: false,
             space: "",
             snack: false,
-            msg: ""
+            msg: "",
+            submissions:[],
+            submissionTitle:"",
+            submissionDescription:"",
+            submissionVideo:"",
+            submissionGithub:"",
+            submissionFile:"",
+            confirmSubmission:"Confirm Submission"
         };
         //      app:this.props.app
     }
@@ -125,6 +133,106 @@ export default class Detail extends React.PureComponent {
             reader.readAsDataURL(files[i]);
         }
     };
+
+    handleSubmissionTitle = (event) => {
+        this.setState({submissionTitle: event.target.value});
+    }
+
+    handleSubmissionDescription = (event) => {
+        this.setState({submissionDescription: event.target.value})
+    }
+
+    handleSubmissionVideo = (event) => {
+        this.setState({submissionVideo:event.target.value})
+    }
+
+    handleSubmissionGithub = (event) => {
+        this.setState({submissionGithub:event.target.value})
+    }
+
+    handleSubmissionFile = (event) => {
+        event.preventDefault();
+        let reader = new FileReader();
+        let file = event.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                submissionFile: file,
+            });
+        }
+
+        reader.readAsDataURL(file);
+    };
+
+    getSubmissions = (id) => {
+        fetch("https://innovationmesh.com/api/getSubmissions/"+id, {
+            method:'GET'
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            this.setState({
+                submissions:json.submissions
+            })
+        })
+    }
+
+    storeSubmission = () => {
+        this.setState({
+            confirmSubmission:"Uploading..."
+        })
+        let data = new FormData();
+
+        data.append('challengeID', this.state.challenge.id);
+        data.append('submissionTitle', this.state.submissionTitle);
+        data.append('submissionDescription', this.state.submissionDescription);
+        data.append('submissionVideo', this.state.submissionVideo);
+        data.append('submissionGithub', this.state.submissionGithub);
+        data.append('submissionFile', this.state.submissionFile);
+
+        fetch('https://innovationmesh.com/api/storeSubmission', {
+            method:'POST',
+            body:data,
+            headers:{'Authorization': 'Bearer ' + this.state.token}
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            if(json.error) {
+                this.showSnack(json.error);
+                this.setState({
+                    confirmSubmission:"Confirm Submission"
+                })
+            }
+            else if(json.success) {
+                this.showSnack(json.success);
+                this.setState({
+                    confirmSubmission:"Confirm Submission"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+    }
+
+    deleteSubmission = (id) => {
+        fetch('https://innovationmesh.com/api/deleteSubmission/' + id, {
+            method:'POST',
+            headers:{'Authorization': 'Bearer ' + this.state.token}
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((json) => {
+            this.showSnack(json.success);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        })
+    }
 
     componentWillMount() {
         this.getDetail();
@@ -239,8 +347,6 @@ export default class Detail extends React.PureComponent {
             });
     };
 
-    deleteFile = () => { };
-
     deleteChallenge = () => { };
 
     /*componentWillReceiveProps(app) {
@@ -281,6 +387,7 @@ export default class Detail extends React.PureComponent {
                     },
                     () => {
                         this.getSpace();
+                        this.getSubmissions(this.state.challenge.id);
                     }
                 );
             });
@@ -558,6 +665,103 @@ export default class Detail extends React.PureComponent {
         }
     };
 
+    renderSubmissionForm = () => {
+        if(this.state.token)
+        {
+            return(
+                <div className="eventDetailSectionContent">
+                    <div className="eventDetailSubmissionBlock">
+                        <div className="eventDetailSubtitle">New Submission</div>
+                        <TextField
+                            label="Submission Title"
+                            value={this.state.submissionTitle}
+                            onChange={this.handleSubmissionTitle}
+                            margin="normal"
+                            fullWidth={true}
+                            style={{ marginBottom: "10px" }}
+                        />
+                        <TextField
+                            label="Submission Description"
+                            value={this.state.submissionDescription}
+                            onChange={this.handleSubmissionDescription}
+                            margin="normal"
+                            fullWidth={true}
+                            style={{ marginBottom: "10px" }}
+                        />
+                        <TextField
+                            label="Video Link (Optional)"
+                            value={this.state.submissionVideo}
+                            onChange={this.handleSubmissionVideo}
+                            margin="normal"
+                            fullWidth={true}
+                            style={{ marginBottom: "10px" }}
+                        />
+                        <TextField
+                            label="Github Link (Optional)"
+                            value={this.state.submissionGithub}
+                            onChange={this.handleSubmissionGithub}
+                            margin="normal"
+                            fullWidth={true}
+                            style={{ marginBottom: "10px" }}
+                        />
+                        <div className="eventDetailSubtitle" style={{marginTop:'15px', marginBottom:'7px'}}>Upload a ZIP</div>
+                        <input type="file" onChange={this.handleSubmissionFile}/>
+                        <FlatButton onClick={this.storeSubmission} style={{ marginTop:'15px', background: "#ff4d58", color:'#FFFFFF', fontWeight:'bold' }}>{this.state.confirmSubmission}</FlatButton>
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    renderSubmission = (submission, i) => {
+
+        let submissionVideo = "";
+        let submissionGithub = "";
+        let remove = "";
+
+        if(submission.submissionVideo)
+        {
+            submissionVideo = <a href={submission.submissionVideo} className="eventSubmissionButton">Video</a>;
+        }
+
+        if(submission.submissionGithub)
+        {
+            submissionGithub =  <a href={submission.submissionGithub} className="eventSubmissionButton">Github</a>;
+        }
+
+        if(this.state.user)
+        {
+            if(this.state.user.id == submission.userID || this.state.user.roleID == 2)
+            {
+                remove =  <a onClick={() => this.deleteSubmission(submission.id)} className="eventSubmissionButton">Remove</a>;
+            }
+        }
+
+        return(
+            <div className="eventDetailSubmissionBlock">
+                <div className="eventSubmissionTitle">{submission.submissionTitle}</div>
+                <div className="eventSubmissionDescription">{submission.submissionDescription}</div>
+                <div className="eventSubmissionLinks">
+                    <a href={submission.submissionFile} className="eventSubmissionButton">Files</a>
+                    {submissionVideo}
+                    {submissionGithub}
+                    {remove}
+                </div>
+                <div className="eventSubmissionAuthor">Submitted by: {submission.name}</div>
+            </div>
+        )
+    }
+
+    renderNoSubs = () => {
+        if(this.state.submissions.length === 0)
+        {
+            return(
+                <div style={{ fontSize: "0.9em", textAlign: "center" }}>There are No Submissions.</div>
+            )
+        }
+    }
+
+
     render() {
         return (
             <div className="eventDetailContainer">
@@ -645,6 +849,16 @@ export default class Detail extends React.PureComponent {
                         <div className="eventDetailSectionTitle">Resources</div>
                         <div className="eventDetailSectionContent">
                             {this.renderUploads()}
+                        </div>
+                    </div>
+                    <div className="eventDetailSection">
+                        <div className="eventDetailSectionTitle">Submissions</div>
+                        {this.renderSubmissionForm()}
+                        <div className="eventDetailSectionContent">
+                            {this.state.submissions.map((submission, i) => (
+                                this.renderSubmission(submission, i)
+                            ))}
+                            {this.renderNoSubs()}
                         </div>
                     </div>
                     <Snackbar

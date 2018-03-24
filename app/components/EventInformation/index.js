@@ -22,7 +22,7 @@ import { SelectedSponsors } from '../../containers/AddEvent/SelectedSponsors';
 
 import authenticate from '../../utils/Authenticate';
 
-import { EditorState, convertToRaw } from "draft-js";
+import {EditorState, ContentState, convertFromHTML, convertToRaw} from 'draft-js';
 import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -48,10 +48,11 @@ export default class EventInformation extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            token:localStorage.getItem('token'),
             eventID: props.id,
             modalMessage: '',
-            snackbar: false,
-            snackbarMessage: false,
+            msg: "",
+            snack: false,
             name: '',
             url: '',
             days: '',
@@ -83,12 +84,21 @@ export default class EventInformation extends Component {
             city: '',
             state: '',
             challenges:[],
-            oldChallenges:[]
+            oldChallenges:[],
+            renderOld:false
         };
     }
 
     singleDay = 0;
     multipleDays = 1;
+
+    handleRequestClose = () => {
+        this.setState({ snack: false, msg: "" });
+      };
+    
+    showSnack = msg => {
+    this.setState({ snack: true, msg: msg });
+    };
 
     async componentDidMount() {
         let authorized;
@@ -118,11 +128,28 @@ export default class EventInformation extends Component {
         fetch(`https://innovationmesh.com/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
+                let sponsors = json.sponsors;
+                let organizers = json.organizers;
+
+                let newSponsors = [];
+                for(let i = 0; i < sponsors.length; i++)
+                {
+                    newSponsors.push(sponsors[i].name);
+                }
+
+                let newOrganizers = [];
+                for(let i = 0; i < organizers.length; i++)
+                {
+                    newOrganizers.push(organizers[i].email);
+                }
+
                 this.setState({
                     event: json.event,
-                    eventSponsors: json.sponsors,
-                    eventOrganizers: json.organizers,
-                    description: json.event.description,
+                    eventSponsors: newSponsors,
+                    selectedSponsors:newSponsors,
+                    eventOrganizers: newOrganizers,
+                    selectedOrganizers:newOrganizers,
+                    description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(json.event.description))),
                     url: json.event.url,
                     name: json.event.title,
                     eventDates: json.dates,
@@ -142,9 +169,25 @@ export default class EventInformation extends Component {
                     this.previousSponsors();
                     this.previousOrganizers();
                     this.previousDates();
+                    this.setChallengeContent();
                 });
             })
         };
+
+    setChallengeContent = () => {
+        let oldChallenges = this.state.oldChallenges;
+
+        for(let i = 0; i < oldChallenges.length; i++)
+        {
+            oldChallenges[i].challengeContent = EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(oldChallenges[i].challengeContent)));
+            oldChallenges[i].challengeImagePreview =  oldChallenges[i].challengeImage;
+        }
+
+        this.setState({
+            oldChallenges:oldChallenges,
+            renderOld:true
+        })
+    }
 
     previousSponsors = () => {
         if (this.state.eventSponsors.length) {
@@ -280,12 +323,16 @@ export default class EventInformation extends Component {
     eventDays = event => this.setState({ days: event.target.value });
 
     selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
-    selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
+    selectOrganizer = (selectedOrganizer) => {
+        this.setState({ selectedOrganizers: selectedOrganizer })
+        console.log(this.state.eventOrganizers);
+    };
     //eventDescription = e => this.setState({ description: e.target.value });
     eventDescription = editorState => {
         this.setState({ description: editorState });
     };
     handleOrganizerChange = event => {
+        console.log(this.state.eventOrganizers);
         this.setState({ selectedOrganizers: event.target.value });
     };
 
@@ -330,7 +377,7 @@ export default class EventInformation extends Component {
                 newSponsors.push(sponsor);
                 this.setState({ newSponsors: newSponsors });
             } else {
-                this.toggleSnackBar("Sponsor name already taken!");
+                this.showSnack("Sponsor name already taken!");
             }
         }
     }
@@ -364,7 +411,7 @@ export default class EventInformation extends Component {
 
         if (city || address || state) {
             if (!city || !address || !state) {
-                this.toggleSnackBar("Please add city, state, and address.");
+                this.showSnack("Please add city, state, and address.");
                 return;
             } else if (city && state && address) {
                 data.append('city', city.trim());
@@ -378,7 +425,7 @@ export default class EventInformation extends Component {
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`https://innovationmesh.com/api/event`, {
+        fetch(`https://innovationmesh.com/api/updateEvent`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -386,16 +433,157 @@ export default class EventInformation extends Component {
             .then(response => response.json())
             .then(({ success, error, eventID }) => {
                 if (error) {
-                   this.toggleSnackBar(error); 
+                   this.showSnack(error); 
                 } else if (success) {
-                    this.toggleSnackBar(success); 
-                    setTimeout(() => {
-                        this.props.history.push(`/event/${eventID}`)
-                    }, 2000);
+                    for(let c = 0; c < this.state.challenges.length; c++)
+                    {
+                        this.storeChallenge(eventID, this.state.challenges[c]);
+                    }
+
+                    for(let c = 0; c < this.state.oldChallenges.length; c++)
+                    {   
+                        this.updateChallenge(this.state.oldChallenges[c]);
+                    }
+                    
+                    let result = {success: success, eventID: eventID};
+                    this.showSnack(success);
+                    return eventID;
                 }
             })
-            .catch(error => {
+            .then((eventID) => {
+                setTimeout(() => {
+                    this.props.history.push(`/event/${eventID}`)
+                }, 2000);
             })
+    };
+    
+
+
+    storeChallenge = (eventID, challenge) => {   
+        let data = new FormData();
+    
+        data.append("challengeTitle", challenge.challengeTitle);
+        data.append(
+          "challengeContent",
+          draftToHtml(convertToRaw(challenge.challengeContent.getCurrentContent()))
+        );
+        data.append("challengeImage", challenge.challengeImage);
+        data.append("challengeFiles", challenge.challengeFiles);
+        data.append("eventID", eventID);
+    
+        fetch("https://innovationmesh.com/api/storeChallenge", {
+          method: "POST",
+          body: data,
+          headers: { Authorization: "Bearer " + this.state.token }
+        })
+          .then(response => response.json())
+          .then(json => {
+            if (json.error) {
+              if (json.error === "token_expired") {
+                this.showSnack("Your session has expired. Please log back in.");
+              } else {
+                this.showSnack(json.error);
+                this.setState({
+                  confirmStatus: "Confirm"
+                });
+              }
+            } else if (json.challenge) {
+              if (challenge.challengeFiles.length > 0) {
+                for (let i = 0; i < challenge.challengeFiles.length; i++) {
+                  let fileData = new FormData();
+                  fileData.append("challengeID", json.challenge);
+                  fileData.append(
+                    "challengeFile",
+                    challenge.challengeFiles[i].fileData
+                  );
+    
+                  fetch("https://innovationmesh.com/api/uploadFile", {
+                    method: "POST",
+                    body: fileData,
+                    headers: { Authorization: "Bearer " + this.state.token }
+                  })
+                    .then(response => response.json())
+                    .then(json => {
+                      if (json.error) {
+                        this.showSnack(json.error);
+                        this.setState({
+                          confirmStatus: "Confirm"
+                        });
+                      }
+                    });
+                }
+              }
+              /*this.showSnack("Challenge Saved");
+              setTimeout(() => {
+                this.props.history.push(`/Challenges/challenge/${json.challenge}`);
+              }, 2000);*/
+            }
+          });
+      };
+
+      updateChallenge = (challenge) => {
+        let data = new FormData();
+
+        data.append("challengeTitle", challenge.challengeTitle);
+        data.append(
+            "challengeContent",
+            draftToHtml(convertToRaw(challenge.challengeContent.getCurrentContent()))
+        );
+        data.append("challengeImage", challenge.challengeImage);
+        data.append("challengeFiles", challenge.challengeFiles);
+
+        fetch(
+            "https://innovationmesh.com/api/updateChallenge/" +
+            challenge.id,
+            {
+                method: "POST",
+                body: data,
+                headers: { Authorization: "Bearer " + this.state.token }
+            }
+        )
+        .then(response => {
+            return response.json();
+        })
+        .then(json => {
+            if (json.error) {
+                if (json.error === "token_expired") {
+                    this.showSnack(
+                        "Your session has expired. Please sign back in to continue."
+                    );
+                } else {
+                    this.showSnack(json.error);
+                    this.setState({
+                        confirmStatus: "Confirm"
+                    });
+                }
+            } else if (json.challenge) {
+                // console.log(this.state.challengeFiles.length);
+                if (challenge.challengeFiles.length > 0) {
+                    for (let i = 0; i < challenge.challengeFiles.length; i++) {
+                        let fileData = new FormData();
+                        fileData.append("challengeID", json.challenge);
+                        fileData.append(
+                            "challengeFile",
+                            challenge.challengeFiles[i].fileData
+                        );
+
+                        fetch("https://innovationmesh.com/api/uploadFile", {
+                            method: "POST",
+                            body: fileData,
+                            headers: { Authorization: "Bearer " + this.state.token }
+                        })
+                            .then(response => {
+                                return response.json();
+                            })
+                            .then(json => {
+                                if (json.error) {
+                                    this.showSnack(json.error);
+                                }
+                            });
+                    }
+                }
+            }
+        });
     };
 
     renderLogoImage = () => {
@@ -725,6 +913,116 @@ export default class EventInformation extends Component {
         }
     };
 
+    renderOldChallenges = () => {
+        if(this.state.renderOld === true)
+        {
+            return(
+                <div>
+                    {this.state.oldChallenges.map((challenge, i) => (
+                        <div className="eventChallengeBlock" style={{marginTop:'15px'}} key={i}>
+                            <TextField label="Challenge Title" onChange={(event) => this.handleOldChallengeTitle(i, event)} type="text" margin="normal" style={{width:'100%'}} value={challenge.challengeTitle}/>
+                            <Editor
+                                editorState={this.state.oldChallenges[i].challengeContent}
+                                toolbarclassName="challenges_home-toolbar"
+                                wrapperclassName="challenges_home-wrapper"
+                                editorclassName="challenges_rdw-editor-main"
+                                onEditorStateChange={(editorState) => this.handleOldChallengeContent(i, editorState)}
+                                placeholder="Type the Challenge Information Here..."
+                                toolbar={{
+                                inline: { inDropdown: true },
+                                fontSize: { className: "challenges_toolbarHidden" },
+                                fontFamily: { className: "challenges_toolbarHidden" },
+                                list: { inDropdown: true, options: ["unordered", "ordered"] },
+                                textAlign: {
+                                    inDropdown: true,
+                                    options: ["left", "center", "right"]
+                                },
+                                link: { inDropdown: true },
+                                remove: { className: "challenges_toolbarHidden" },
+                                emoji: { className: "challenges_toolbarHidden" },
+                                history: { className: "challenges_toolbarHidden" }
+                                }}
+                            />
+                            <div>
+                                <label
+                                htmlFor={"challenge-image-"+i}
+                                className="challenges_challengeImageBlock"
+                                >
+                                {this.renderOldChallengeImageText(i)}
+                                {this.renderOldChallengeImage(i)}
+                                </label>
+                                <input
+                                type="file"
+                                onChange={(event) => this.handleOldChallengeImage(i, event)}
+                                id={"challenge-image-"+i}
+                                style={{ display: "none" }}
+                                />
+                            </div>
+                            {challenge.challengeFiles.map((file, j) => (
+                                <div key={`rightBarChallenge${j}`}>
+                                <div className="challenges_newFileBlock">
+                                    <span />
+                                    {file.fileData.name}{" "}
+                                    <CloseIcon
+                                    size={25}
+                                    style={{
+                                        color: "#777777",
+                                        padding: "5px",
+                                        cursor: "pointer"
+                                    }}
+                                    onClick={() => this.deleteOldFile(i, j)}
+                                    />
+                                </div>
+                                </div>
+                            ))}
+                            <div>
+                            <label
+                                htmlFor={"challenge-file-"+i}
+                                className="challenges_newFileAdd"
+                            >
+                                Upload New Resource (Excel, JSON, Word, PDF)
+                            </label>
+                            <input
+                                type="file"
+                                onChange={(event) => this.handleOldChallengeFile(i, event)}
+                                id={"challenge-file-"+i}
+                                style={{ display: "none" }}
+                            />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )
+        }
+    }
+
+    renderSingleDate = () => {
+        if(this.state.dates > 0)
+        {
+            return(
+                <DateRangePickerWithGaps 
+                    dates={this.state.dates}
+                    handleDate={dates => {
+                        this.setState(() => ({ dates })); 
+                    }}
+                />
+            )
+        } else {
+            return(
+                <DateRangePickerWithGaps
+                    dates={this.state.dates.length ? this.state.dates : [{
+                        day: moment(),
+                        start: '',
+                        end: '',
+                    }]}
+                    handleDate={dates => {
+                        this.setState(() => ({ dates }));
+                    }}
+                />
+            )
+        }
+    }
+
     render() {
         const {
             snackbarMessage,
@@ -769,7 +1067,28 @@ export default class EventInformation extends Component {
 
                         <TextField label="Event name" onChange={this.eventName} value={this.state.name} type="text" name="eventName" margin="normal" />
                         <TextField onChange={this.eventUrl} type="url" value={this.state.url} label="Event url" margin="normal" />
-                        <TextField label="Brief description" value={this.state.description} margin="normal" multiline onChange={this.eventDescription} />
+                        <Editor
+                            editorState={this.state.description}
+                            toolbarclassName="challenges_home-toolbar"
+                            wrapperclassName="challenges_home-wrapper"
+                            editorclassName="challenges_rdw-editor-main"
+                            onEditorStateChange={(editorState) => this.eventDescription(editorState)}
+                            placeholder="Type the Event Information Here..."
+                            toolbar={{
+                            inline: { inDropdown: true },
+                            fontSize: { className: "challenges_toolbarHidden" },
+                            fontFamily: { className: "challenges_toolbarHidden" },
+                            list: { inDropdown: true, options: ["unordered", "ordered"] },
+                            textAlign: {
+                                inDropdown: true,
+                                options: ["left", "center", "right"]
+                            },
+                            link: { inDropdown: true },
+                            remove: { className: "challenges_toolbarHidden" },
+                            emoji: { className: "challenges_toolbarHidden" },
+                            history: { className: "challenges_toolbarHidden" }
+                            }}
+                        />
 
                         {!!loadedTags.length &&
                             <FormControl style={{ marginTop: 24 }}>
@@ -872,12 +1191,7 @@ export default class EventInformation extends Component {
                          {checkedRadio === this.singleDay && 
                             <React.Fragment>
                                 <label key="singleDay" className="addEventFormLabel"> date & time </label>
-                                <DateRangePickerWithGaps 
-                                    dates={dates}
-                                    handleDate={dates => {
-                                        this.setState(() => ({ dates })); 
-                                    }}
-                                />
+                                {this.renderSingleDate()}
                             </React.Fragment>
                         }
 
@@ -1027,79 +1341,7 @@ export default class EventInformation extends Component {
                             </React.Fragment>    
                         }
 
-                        {this.state.oldChallenges.map((challenge, i) => (
-                            <div className="eventChallengeBlock" style={{marginTop:'15px'}} key={i}>
-                                <TextField label="Challenge Title" onChange={(event) => this.handleOldChallengeTitle(i, event)} type="text" margin="normal" style={{width:'100%'}}/>
-                                <Editor
-                                    editorState={this.state.oldChallenges[i].challengeContent}
-                                    toolbarclassName="challenges_home-toolbar"
-                                    wrapperclassName="challenges_home-wrapper"
-                                    editorclassName="challenges_rdw-editor-main"
-                                    onEditorStateChange={(editorState) => this.handleOldChallengeContent(i, editorState)}
-                                    placeholder="Type the Challenge Information Here..."
-                                    toolbar={{
-                                    inline: { inDropdown: true },
-                                    fontSize: { className: "challenges_toolbarHidden" },
-                                    fontFamily: { className: "challenges_toolbarHidden" },
-                                    list: { inDropdown: true, options: ["unordered", "ordered"] },
-                                    textAlign: {
-                                        inDropdown: true,
-                                        options: ["left", "center", "right"]
-                                    },
-                                    link: { inDropdown: true },
-                                    remove: { className: "challenges_toolbarHidden" },
-                                    emoji: { className: "challenges_toolbarHidden" },
-                                    history: { className: "challenges_toolbarHidden" }
-                                    }}
-                                />
-                                <div>
-                                    <label
-                                    htmlFor={"challenge-image-"+i}
-                                    className="challenges_challengeImageBlock"
-                                    >
-                                    {this.renderOldChallengeImageText(i)}
-                                    {this.renderOldChallengeImage(i)}
-                                    </label>
-                                    <input
-                                    type="file"
-                                    onChange={(event) => this.handleOldChallengeImage(i, event)}
-                                    id={"challenge-image-"+i}
-                                    style={{ display: "none" }}
-                                    />
-                                </div>
-                                {challenge.challengeFiles.map((file, j) => (
-                                    <div key={`rightBarChallenge${j}`}>
-                                      <div className="challenges_newFileBlock">
-                                        <span />
-                                        {file.fileData.name}{" "}
-                                        <CloseIcon
-                                          size={25}
-                                          style={{
-                                            color: "#777777",
-                                            padding: "5px",
-                                            cursor: "pointer"
-                                          }}
-                                          onClick={() => this.deleteOldFile(i, j)}
-                                        />
-                                      </div>
-                                    </div>
-                                ))}
-                                <div>
-                                <label
-                                    htmlFor={"challenge-file-"+i}
-                                    className="challenges_newFileAdd"
-                                >
-                                    Upload New Resource (Excel, JSON, Word, PDF)
-                                </label>
-                                <input
-                                    type="file"
-                                    onChange={(event) => this.handleOldChallengeFile(i, event)}
-                                    id={"challenge-file-"+i}
-                                    style={{ display: "none" }}
-                                />
-                                </div>
-                            </div>
-                        ))}
+                        {this.renderOldChallenges()}
 
                         {this.state.challenges.map((challenge, i) => (
                             <div className="eventChallengeBlock" style={{marginTop:'15px'}} key={i}>
@@ -1179,7 +1421,7 @@ export default class EventInformation extends Component {
 
 
                         <FlatButton style={{ backgroundColor: '#ff4d58', padding: '10px', marginTop: '15px', color: '#FFFFFF', fontWeight: 'bold' }} onClick={this.Submit}>
-                            Submit Event
+                            Update Event
                         </FlatButton>
                     </div>
                 </main>
@@ -1187,9 +1429,9 @@ export default class EventInformation extends Component {
                     Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
                 </footer>
                 <Snackbar
-                    open={snackbar}
-                    message={snackbarMessage}
-                    autoHideDuration={4000}
+                    open={this.state.snack}
+                    message={this.state.msg}
+                    autoHideDuration={3000}
                     onClose={this.handleRequestClose}
                 />
             </div>
