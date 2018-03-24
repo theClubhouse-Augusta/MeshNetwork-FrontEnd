@@ -358,7 +358,7 @@ export default class RightBar extends React.PureComponent {
   render() {
     return (
       <div>
-        {this.renderCreateButtons()}
+        {/*this.renderCreateButtons()*/}
         <FlatButton
           href="http://southeaststartupchallenge.com/challenge-rules/"
           target="_blank"
@@ -370,6 +370,18 @@ export default class RightBar extends React.PureComponent {
           }}
         >
           Event Rules
+        </FlatButton>
+        <FlatButton
+          href="http://southeaststartupchallenge.com/submission-guidelines/"
+          target="_blank"
+          style={{
+            background: "#32b6b6",
+            color: "#FFFFFF",
+            width: "100%",
+            marginBottom: "10px"
+          }}
+        >
+          Submission Guide
         </FlatButton>
         <div
           style={{

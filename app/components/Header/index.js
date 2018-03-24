@@ -14,6 +14,7 @@ import MdAssessment from "react-icons/lib/md/assessment";
 import MdSchool from "react-icons/lib/md/school";
 import MdPerson from "react-icons/lib/md/person";
 import MdExitToApp from "react-icons/lib/md/exit-to-app";
+import DownArrow from "react-icons/lib/fa/caret-down";
 // import Divider from "material-ui/Divider";
 
 import Menu, { MenuItem } from "material-ui/Menu";
@@ -438,7 +439,7 @@ export default class Header extends React.PureComponent {
               </Menu>
             </span>*/}
 
-            {/*<span className="navButton">
+            <span className="navButton">
               <Link
                 to="/LMS"
                 style={{
@@ -466,7 +467,7 @@ export default class Header extends React.PureComponent {
                 <Link to={'/LMS/Courses'}><MenuItem style={{margin:'0'}} onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
                 {this.renderMyCourses()}
               </Menu>
-              </span>*/}
+            </span>
             {/*this.renderAccountMenu()*/}
             {this.renderSignOut()}
           </nav>

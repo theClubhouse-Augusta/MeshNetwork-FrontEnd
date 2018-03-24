@@ -67,6 +67,7 @@
   justify-content: space-between;
   width:100%;
   max-width:700px;
+  margin-top:20px;
 }
 
 .kioskReasonBlock {
@@ -164,3 +165,14 @@ div.kioskContent div.Select-value {
   border-collapse: separate;
   /* margin-bottom: 16px; */
 }
+
+.kioskSpaceEventBlock {
+  width:100%;
+  border:2px solid #FFFFFF;
+  padding:5px;
+  margin-top:10px;
+  border-radius:5px;
+  cursor:pointer;
+  color:#FFFFFF;
+  font-size:1.2em;
+} 

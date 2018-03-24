@@ -101,7 +101,7 @@ export default class Kiosk extends React.PureComponent {
 
   getToday = id => {
     fetch("https://innovationmesh.com/api/todayevent/" + id, {
-      headers: { Authorization: `Bearer ${localStorage["token"]}` }
+     method:'GET'
     })
       .then(response => response.json())
       .then(json => {
@@ -111,10 +111,10 @@ export default class Kiosk extends React.PureComponent {
       });
   };
 
-  storeAppearance = () => {
+  storeAppearance = (eventID = 0) => {
     let data = new FormData();
     data.append("userID", this.state.loggedInUser.value);
-    data.append("eventID", 0);
+    data.append("eventID", eventID);
     data.append("spaceID", this.state.workspace.id);
     data.append("occasion", this.state.selectedReason);
 
@@ -137,14 +137,16 @@ export default class Kiosk extends React.PureComponent {
     this.setState({ loggedInUser });
   };
 
+  showEvents = () => {
+    this.setState({
+      selectedReason:'Event'
+    })
+  }
+
   selectReason = reason => {
     this.setState({ selectedReason: reason }, () => {
       this.storeAppearance();
     });
-  };
-
-  selectEvent = id => {
-    this.setState({ selectedEvent: id });
   };
 
   selectReason = reason => {
@@ -204,21 +206,40 @@ export default class Kiosk extends React.PureComponent {
                 </div>
               </Link>
             ))}
-
-          <FlatButton
-            style={{
-              background: "#FFFFFF",
-              color: "#222222",
-              marginTop: "30px",
-              width: "80%",
-              fontWeight: "bold"
-            }}
-            onClick={this.restartPage}
-          >
-            Done
-          </FlatButton>
         </div>
       );
+    } else{
+      return(
+          <div className="kioskContent">
+            <Select
+                name="form-field-name"
+                value={this.state.loggedInUser.value}
+                placeholder="Select your Name"
+                arrowRenderer={null}
+                clearable={true}
+                openOnClick={false}
+                onChange={this.handleNameInputChange}
+                options={this.state.users}
+            />
+            <Link to={"/join/" + this.state.workspace.slug} style={{ marginTop: "30px", width: "10%" }}>
+                <FlatButton style={{
+                    width: "100%",
+                    background: "#ff4d58",
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                    }}
+                >
+                    Don't See Your Name? Join Our Mesh Network!
+                </FlatButton>
+            </Link>
+
+
+          {this.renderReasons()}
+          {this.renderToday()}
+          </div>
+      )
     }
   };
 
@@ -243,7 +264,7 @@ export default class Kiosk extends React.PureComponent {
           </div>
           <div
             className="kioskReasonBlock"
-            onClick={() => this.selectReason(reasons.event)}
+            onClick={() => this.showEvents()}
           >
             <EventIcon size={40} style={{ marginBottom: "10px" }} />
             {reasons.event}
@@ -259,58 +280,19 @@ export default class Kiosk extends React.PureComponent {
       );
     }
   };
-  // renderToday = () => {
-  //   if (this.state.selectedReason === "Event") {
-  //     if (this.state.todayEvents.length > 0) {
-  //       return (
-  //         <div style={{ display: "flex", flexDirection: "row" }}>
-  //           {this.state.todayEvents.map((event, i) => (
-  //             <div
-  //               to={"/event/" + event.id}
-  //               className="spaceEventBlock"
-  //               onClick={this.selectEvent(event.id)}
-  //             >
-  //               <div className="spaceEventBlockImage">
-  //                 <img alt="" src={event.image} />
-  //               </div>
-  //               <div className="spaceEventBlockTitle">{event.title}</div>
-  //               <div className="spaceEventBlockContent">{event.start}</div>
-  //             </div>
-  //           ))}
-  //         </div>
-  //       );
-  //     } else {
-  //       return (
-  //         <div
-  //           style={{
-  //             color: "#FFFFFF",
-  //             fontFamily: "Noto Sans",
-  //             fontSize: "0.9em",
-  //             fontStyle: "italic",
-  //             textAlign: "center"
-  //           }}
-  //         >
-  //           There are no Events scheduled for Today.
-  //             </div>
-  //       );
-  //     }
-  //   }
-  // };
 
   renderToday = () => {
-    if (this.state.selectedReason === "Event") {
+    if (this.state.selectedReason == "Event") {
       if (this.state.todayEvents.length > 0) {
         return (
           <div style={{ display: "flex", flexDirection: "row" }}>
             {this.state.todayEvents.map((event, i) => (
               <div
                 to={"/event/" + event.id}
-                className="spaceEventBlock"
-                onClick={this.selectEvent(event.id)}
+                className="kioskSpaceEventBlock"
+                onClick={() => this.storeAppearance(event.id)}
+                key={i}
               >
-                <div className="spaceEventBlockImage">
-                  <img alt="" src={event.image} />
-                </div>
                 <div className="spaceEventBlockTitle">{event.title}</div>
                 <div className="spaceEventBlockContent">{event.start}</div>
               </div>
@@ -362,35 +344,6 @@ export default class Kiosk extends React.PureComponent {
           />
           <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
           <div className="kioskSubtitle">Check-In with Us!</div>
-          <div className="kioskContent">
-              <Select
-                  name="form-field-name"
-                  value={this.state.loggedInUser.value}
-                  placeholder="Select your Name"
-                  arrowRenderer={null}
-                  clearable={true}
-                  openOnClick={false}
-                  onChange={this.handleNameInputChange}
-                  options={this.state.users}
-              />
-              <Link to={"/join/" + this.state.workspace.slug} style={{ marginTop: "30px", width: "10%" }}>
-                  <FlatButton style={{
-                      width: "100%",
-                      background: "#ff4d58",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                      color: "#FFFFFF",
-                      fontWeight: "bold"
-                      }}
-                  >
-                      Don't See Your Name? Join Our Mesh Network!
-                  </FlatButton>
-              </Link>
-            </div>
-
-            {this.renderReasons()}
-            {this.renderToday()}
-
             {this.renderComplete()}
 
             <Snackbar

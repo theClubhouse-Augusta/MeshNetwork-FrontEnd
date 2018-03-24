@@ -311,6 +311,10 @@ a.spaceProfileActions {
   align-content: center;
 }
 
+.spaceMainDescription li {
+  margin-left:50px;
+}
+
 .spaceMainLogo {
   max-width: 100%;
   max-height: 190px;

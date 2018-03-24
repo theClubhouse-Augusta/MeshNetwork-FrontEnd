@@ -16,6 +16,8 @@ import InstagramIcon from "react-icons/lib/fa/instagram";
 import MailIcon from "react-icons/lib/fa/envelope-o";
 import LinkIcon from "react-icons/lib/fa/chain";
 
+import { Timeline } from 'react-twitter-widgets';
+
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -205,6 +207,26 @@ export default class SpaceProfile extends React.PureComponent {
     this.props.history.push("/event/" + event.id);
   };
 
+  renderTwitterFeed = () => {
+    if(this.state.spaceProfile.twitterHandle)
+    {
+      return(
+        <div style={{marginTop:'15px', height:'400px', overflow:'hidden'}}>
+          <Timeline
+            dataSource={{
+              sourceType: 'profile',
+              screenName: this.state.spaceProfile.twitterHandle
+            }}
+            options={{
+              username:  this.state.spaceProfile.twitterHandle,
+              height: '400'
+            }}
+          />
+      </div>
+      )
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -353,6 +375,7 @@ export default class SpaceProfile extends React.PureComponent {
                   </Link>
                   {this.renderDashboard()}
                 </div>
+                {this.renderTwitterFeed()}
                 <div className="spaceLocation">
                   <div className="spaceLocationImage">
                     <img

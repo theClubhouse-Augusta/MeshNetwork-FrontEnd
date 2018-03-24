@@ -365,7 +365,6 @@ export default class SpaceInformation extends React.PureComponent {
                                         inline: { inDropdown: true },
                                         fontSize: { className: "toolbarHidden" },
                                         fontFamily: { className: "toolbarHidden" },
-                                        list: { className: "toolbarHidden" },
                                         textAlign: {
                                             inDropdown: true,
                                             options: ["left", "center", "right"]
