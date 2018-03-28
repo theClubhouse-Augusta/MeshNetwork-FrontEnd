@@ -1,0 +1,612 @@
+/*This boilerplate lacks css encapsulation & therefore all variables are global. This home container style sheet also serves as a global stylesheet. Please avoid tag selectors in other css files unless the tag itself is encapsulted ex. header & footer tag selectors in their corresponding styles.
+
+In the case of multiple components of the same type the first component ex HomeBodyOne will have the default styling associated with all other HomeBody's.
+*/
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /*  background:url('https://innovationmesh.com/assets/tiles.jpg');*/
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+body {
+  font-family: "Noto Sans";
+}
+
+a {
+  color: #ff4d58;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+button,
+input {
+  border: 0;
+  /* inherit font from body */
+  font: inherit;
+}
+
+label {
+  font-family: "Noto Sans";
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+}
+
+p {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+
+.homeBodyHeaderSlant {
+  font-family: "Spectral", serif;
+  font-size: 5em;
+  line-height: 100px;
+  text-align: center;
+  color: #ffffff;
+}
+
+textarea {
+  font-family: "Spectral", serif;
+  padding: 0.25em;
+  font-size: 18px;
+}
+
+.homeHeaderContent {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeHeaderContentTitle {
+  font-family: "HankenBook";
+  color: #ffffff;
+  font-size: 3em;
+  text-align: center;
+  font-weight: 500;
+}
+
+.homeHeaderContentSubtitle {
+  font-family: "Noto Sans";
+  color: #cccccc;
+  margin: 15px 0;
+  font-weight: 500;
+}
+
+.homeHeaderContentSearchBar {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.homeHeaderContentSearchInput {
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  width: 50%;
+  font-family: "Noto Sans";
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 15px;
+}
+
+.homeMainSection {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #dddddd;
+}
+
+.homeMainSectionTitle,
+.homeMainSectionTitleThree {
+  font-family: "HankenBook";
+  color: #222222;
+  font-size: 2em;
+}
+
+.homeMainSectionContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.homeMainSectionContentTwo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.homeMainSectionBlock {
+  width: 28%;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  padding: 15px;
+}
+
+.homeMainSectionBlockTwo {
+  width: 28%;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  padding: 15px;
+}
+
+.homeMainSectionBlock img {
+  width: 100%;
+  height: 200px;
+}
+
+.homeMainSectionBlockTwo img {
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.homeMainSectionBlockTitle {
+  font-family: "HankenBook";
+  color: #222222;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.homeMainSectionBlockContent {
+  font-family: "Noto Sans";
+  color: #555555;
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.homeFooterContainer {
+  background: #261e1e;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #bbbbbb;
+  font-family: "Noto Sans";
+  font-size: 0.8em;
+  padding: 0 15px;
+  text-align: center;
+}
+
+.homeMainSectionBlockOne {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 15px 0;
+}
+
+.homeMainSectionBlockOne img {
+  filter: invert(100%);
+  width: 70%;
+  max-width: 150px;
+  height: auto;
+  padding: 10px;
+  border: 5px solid #000000;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.homeMainSectionSubtitle {
+  color: #888888;
+  font-family: "Noto Sans";
+  font-size: 0.9em;
+  margin-top: 15px;
+  /* some font alignment hackyness */
+  margin-left: 3px;
+}
+
+.spinnerMeshNetwork {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 5em;
+}
+
+.MyInputLabel-animated-9 {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  position: relative;
+  top: 0;
+}
+
+.MyInputLabel-formControl-6 {
+  top: 0;
+  left: 0;
+  position: relative;
+  transform: translate(0, 23px) scale(1);
+}
+
+/* .MyInputLabel-root-5 {
+  transform-origin: top left;
+} */
+
+.MyInputLabel-hide {
+  display: none;
+  /* transform-origin: top left; */
+}
+
+.MyInputLabel-root-11 {
+  color: rgba(0, 0, 0, 0.54);
+  padding: 0;
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
+  line-height: 1;
+}
+
+.MyInputLabel-shrink-8 {
+  transform: translate(0, 1.5px) scale(0.75);
+  transform-origin: top left;
+  margin-top: 12px;
+}
+
+.MyInputLabel-formControl-62 {
+  top: 0;
+  left: 0;
+  position: relative;
+}
+
+.MyInputLabel-focused-12 {
+  color: #304ffe;
+}
+
+.MyInputLabel-focused-122 {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.MyInputLabel-root-112 {
+  padding: 0;
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
+  line-height: 1;
+}
+
+.MuiExpansionPanelSummary-content-94 {
+  justify-content: center;
+}
+
+.MuiCollapse-wrapperInner-111 {
+  background: #fff;
+}
+
+span#react-select-2--value.Select-multi-value-wrapper {
+  color: #333;
+  cursor: default;
+  border-spacing: 0;
+  border-collapse: separate;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+div.Select-value {
+  background-color: #ebf5ff;
+  background-color: rgba(0, 126, 255, 0.08);
+  border-radius: 2px;
+  border: 1px solid #c2e0ff;
+  border: 1px solid rgba(0, 126, 255, 0.24);
+  color: #007eff;
+  display: inline-block;
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 8px;
+  vertical-align: top;
+  box-sizing: border-box;
+  cursor: default;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+span.Select-value-icon {
+  cursor: pointer;
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+  border-right: 1px solid #c2e0ff;
+  border-right: 1px solid rgba(0, 126, 255, 0.24);
+  padding: 1px 5px 3px;
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  color: #007eff;
+  font-size: 0.9em;
+  line-height: 1.4;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+span#react-select-2--value-0.Select-value-label {
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
+  cursor: default;
+  padding: 2px 5px;
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  color: #007eff;
+  font-size: 0.9em;
+  line-height: 1.4;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+span#react-select-2--backspace-remove-message.Select-aria-only {
+  display: none;
+}
+
+/* span#react-select-2--value.Select-multi-value-wrapper {
+  background: red;
+} */
+
+.foobar {
+  margin-top: 32px;
+  margin-bottom: 22px;
+  background: #fff;
+  border-bottom: 1.4px solid rgb(100, 100, 100);
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+.foobar2 {
+  margin-bottom: 22px;
+  background: #fff;
+  border-bottom: 1.4px solid rgb(100, 100, 100);
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+.foobar3 {
+  margin-bottom: 22px;
+  background: #fff;
+  border-bottom: 1.4px solid #304ffe;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+.labelFoobar {
+  margin-top: 32px;
+}
+
+.foobar:hover {
+  border-bottom: 2px solid rgb(100, 100, 100);
+}
+
+.foobar2:hover {
+  border-bottom: 2px solid rgb(100, 100, 100);
+}
+
+.foobar3:hover {
+  border-bottom: 2px solid #304ffe;
+}
+
+.Select-arrow {
+  display: none;
+}
+
+.Select-clear {
+  display: none;
+}
+
+.Select-placeholder {
+  padding: 0;
+  /* font-weight: bold; */
+  color: rgba(0, 0, 0, 0.54);
+  font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
+}
+
+.eventBlock,
+.memberBlock {
+  width: 100%;
+  height: 100px;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3);
+  background: #ffffff;
+  display: flex;
+  flex-direction: row;
+  transition: all 0.26s ease-in-out;
+  cursor: pointer;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #222222;
+}
+
+.eventBlockImage,
+.memberBlockImage {
+  width: 100px;
+  height: 100px;
+  background: #eeeeee;
+}
+
+.eventBlockInfo,
+.memberBlockInfo {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.eventBlockTitle,
+.memberBlockTitle {
+  font-size: 2em;
+  font-variant: small-caps;
+}
+
+.eventBlockDesc,
+.memberBlockDesc {
+  font-size: 0.9em;
+  color: #999999;
+}
+
+.eventBlock:hover,
+.memberBlock:hover {
+  transform: scale(1.1);
+}
+
+span#react-select-5--backspace-remove-message.Select-aria-only {
+  display: none;
+}
+
+span#react-select-3--backspace-remove-message.Select-aria-only {
+  display: none;
+}
+
+div.spaceSignUpContainer div.Select-control {
+  background: #fff;
+}
+
+.spaceSignUpcontainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8f8f8;
+}
+
+.spaceSignUpMain {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 5px;
+  min-height: calc(100vh - 90px);
+  border: 1px solid #dddddd;
+}
+
+.spaceSignUpTitle {
+  font-size: 1em;
+  font-family: "Noto Sans";
+  font-weight: bold;
+  color: #555555;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 10px;
+}
+
+.spaceSignUpContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.spaceLogoMainImageRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.spaceLogoMainImageBlock {
+  width: 48%;
+  min-height: 200px;
+  border: 8px dashed #dddddd;
+  font-family: "Lato";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  color: #bbbbbb;
+}
+
+.spaceLogoImagePreview {
+  max-height: 200px;
+  max-width: 100%;
+}
+
+.home-toolbar {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #dddddd;
+  display: flex;
+  width: 100%;
+}
+
+.home-wrapper {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.rdw-editor-main {
+  min-height: 500px;
+  font-family: "Lato";
+  font-weight: 400;
+  font-size: 1.1em;
+  color: #333333;
+  line-height: 30px;
+  letter-spacing: 1px;
+}
+
+.toolbarHidden {
+  display: none;
+}
+
+.spaceSignUpBanner {
+  width: 100%;
+  height: 350px;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("http://h4z.it/Image/cf9fdc_-add-listing.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.spaceSignUpMain {
+  margin-top: -40px;
+}
+
+.spaceSignUpUser {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+  padding: 20px;
+  margin-top: -70px;
+  background: #ffffff;
+}
