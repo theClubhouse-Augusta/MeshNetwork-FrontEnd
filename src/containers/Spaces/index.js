@@ -29,7 +29,7 @@ export default class Spaces extends React.PureComponent {
   }
 
   getSpaces = () => {
-    fetch(`http://localhost:8000/api/workspaces`, {
+    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspaces`, {
       method: "GET"
     })
       .then((response) => {

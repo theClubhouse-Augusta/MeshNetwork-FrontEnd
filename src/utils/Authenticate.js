@@ -1,7 +1,7 @@
 export default async token => {
     let authorized;
     try {
-        const response = await fetch(`http://localhost:8000/api/authorize`, {
+        const response = await fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/authorize`, {
             headers: { Authorization: `Bearer ${token}` },
         });
         authorized = await response.json();

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "material-ui/styles";
 import Hidden from 'material-ui/Hidden';
 import cx from "classnames";
@@ -13,7 +12,8 @@ import List, {
 import { DashHeaderLinks } from "../";
 import sidebarStyle from "../../variables/styles/sidebarStyle.jsx";
 
-const Sidebar = ({
+
+export default withStyles(sidebarStyle)(({
   classes,
   color,
   logo,
@@ -46,9 +46,7 @@ const Sidebar = ({
         return (
           <div
             onClick={() => changeMenu(prop.path)}
-            //to={prop.path}
             className={classes.item}
-            //      activeClassName="active"
             key={`sidebar${key}`}
           >
             <ListItem button className={classes.itemLink + listItemClasses}>
@@ -130,10 +128,5 @@ const Sidebar = ({
       </Hidden>
     </div>
   );
-};
+});
 
-Sidebar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(sidebarStyle)(Sidebar);

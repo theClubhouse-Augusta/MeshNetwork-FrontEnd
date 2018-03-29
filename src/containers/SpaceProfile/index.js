@@ -45,7 +45,7 @@ export default class SpaceProfile extends React.PureComponent {
 
   getProfile = () => {
     fetch(
-      "http://localhost:8000/api/workspace/" + this.props.match.params.id,
+      "http://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" + this.props.match.params.id,
       {
         method: "GET"
       }
@@ -70,7 +70,7 @@ export default class SpaceProfile extends React.PureComponent {
   };
 
   getSpaceEvents = id => {
-    fetch("http://localhost:8000/api/spaceEvents/" + id, {
+    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/spaceEvents/" + id, {
       method: "GET"
     })
       .then((response) => {
@@ -86,7 +86,7 @@ export default class SpaceProfile extends React.PureComponent {
   };
 
   getUsers = id => {
-    fetch("http://localhost:8000/api/organizers/space/" + id, {
+    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/organizers/space/" + id, {
       method: "GET"
     })
       .then((response) => {
@@ -102,7 +102,7 @@ export default class SpaceProfile extends React.PureComponent {
   };
 
   getPhotoGallery = id => {
-    fetch("http://localhost:8000/api/photos/" + id, {
+    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/photos/" + id, {
       method: "GET"
     })
       .then((response) => {

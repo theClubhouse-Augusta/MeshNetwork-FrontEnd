@@ -164,7 +164,7 @@ export default class Detail extends React.PureComponent {
   };
 
   getSubmissions = (id) => {
-    fetch("http://localhost:8000/api/getSubmissions/" + id, {
+    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getSubmissions/" + id, {
       method: 'GET'
     })
       .then((response) => {
@@ -190,7 +190,7 @@ export default class Detail extends React.PureComponent {
     data.append('submissionGithub', this.state.submissionGithub);
     data.append('submissionFile', this.state.submissionFile);
 
-    fetch('http://localhost:8000/api/storeSubmission', {
+    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeSubmission', {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -218,7 +218,7 @@ export default class Detail extends React.PureComponent {
   }
 
   deleteSubmission = (id) => {
-    fetch('http://localhost:8000/api/deleteSubmission/' + id, {
+    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteSubmission/' + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -238,7 +238,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/selectCategories", {
+    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/selectCategories", {
       method: "GET"
     })
       .then(response => {
@@ -288,7 +288,7 @@ export default class Detail extends React.PureComponent {
     data.append("endDate", this.state.endDate);
 
     fetch(
-      "http://localhost:8000/api/updateChallenge/" +
+      "http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateChallenge/" +
       this.state.challenge.id,
       {
         method: "POST",
@@ -322,7 +322,7 @@ export default class Detail extends React.PureComponent {
                 this.state.challengeFiles[i].fileData
               );
 
-              fetch("http://localhost:8000/api/uploadFile", {
+              fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }
@@ -358,7 +358,7 @@ export default class Detail extends React.PureComponent {
 
   getDetail = () => {
     fetch(
-      "http://localhost:8000/api/showChallenge/" +
+      "http://testbean2-env.us-east-1.elasticbeanstalk.com/api/showChallenge/" +
       this.props.match.params.id,
       {
         method: "GET"
@@ -394,7 +394,7 @@ export default class Detail extends React.PureComponent {
 
   getSpace = () => {
     fetch(
-      "http://localhost:8000/api/workspace/" +
+      "http://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" +
       this.state.challenge.spaceID,
       {
         method: "GET"
@@ -410,7 +410,7 @@ export default class Detail extends React.PureComponent {
 
   joinChallenge = () => {
     fetch(
-      "http://localhost:8000/api/joinChallenge/" + this.state.challenge.id,
+      "http://testbean2-env.us-east-1.elasticbeanstalk.com/api/joinChallenge/" + this.state.challenge.id,
       {
         method: "GET",
         headers: { Authorization: "Bearer " + this.state.token }
@@ -603,7 +603,7 @@ export default class Detail extends React.PureComponent {
   };
 
   attendEvent = () => {
-    fetch('http://localhost:8000/api/attend/' + this.state.challenge.eventID, {
+    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/attend/' + this.state.challenge.eventID, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token

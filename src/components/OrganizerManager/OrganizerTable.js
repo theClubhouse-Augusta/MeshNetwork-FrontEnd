@@ -79,7 +79,7 @@ export default withStyles(tableStyle)(
                             <InputLabel htmlFor="user-role">Role</InputLabel>
                             <Select
                               value={users[key].roleID}
-                              onChange={(event) => this.handleRoleChange(event, key, user.id)}
+                              onChange={(event) => handleRoleChange(event, key, user.id)}
                               id='user-role'
                               inputProps={{
                                 name: 'role',

@@ -48,7 +48,7 @@ export default class CourseInfo extends React.PureComponent {
 
   getCourse = (id) => {
 
-    fetch("http://localhost:8000/api/showCourse/" + id + "/" + this.props.match.params.uid, {
+    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/showCourse/" + id + "/" + this.props.match.params.uid, {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })

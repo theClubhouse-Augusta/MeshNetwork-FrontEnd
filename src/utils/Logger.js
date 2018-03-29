@@ -3,5 +3,5 @@
  * @param {string} message 
  */
 export default message => {
-    fetch(`http://localhost:8000/api/log/${message}`)
+    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/log/${message}`)
 }

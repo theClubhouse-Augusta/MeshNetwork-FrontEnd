@@ -99,7 +99,7 @@ export default class Courses extends React.PureComponent {
       });
     }
 
-    fetch(`http://localhost:8000/api/getCourses/${category}/${this.state.count}?page=${this.state.page}`)
+    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCourses/${category}/${this.state.count}?page=${this.state.page}`)
       .then(response => {
         return response.json();
       })
@@ -156,7 +156,7 @@ export default class Courses extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/getCategories", {
+    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCategories", {
       method: 'GET'
     })
       .then(response => response.json())
@@ -186,7 +186,7 @@ export default class Courses extends React.PureComponent {
     let data = new FormData();
     data.append("searchContent", this.state.searchContent);
 
-    fetch('http://localhost:8000/api/searchCourse', {
+    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/searchCourse', {
       method: 'POST',
       body: data
     })
