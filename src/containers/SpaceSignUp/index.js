@@ -160,7 +160,7 @@ export default class SpaceSignUp extends React.PureComponent {
         data.append('password', userPassword.trim());
         data.append('avatar', avatar);
 
-        fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspaces", {
+        fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspaces", {
             method: 'POST',
             body: data,
         })

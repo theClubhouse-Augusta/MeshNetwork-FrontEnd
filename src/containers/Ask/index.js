@@ -58,7 +58,7 @@ export default class Ask extends React.PureComponent {
     var nextPage = this.state.nextPage;
     var questions = this.state.questions;
     if (this.state.currentPage !== this.state.lastPage) {
-      fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getQuestions/30?page=" + this.state.nextPage, {
+      fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getQuestions/30?page=" + this.state.nextPage, {
         method: 'GET',
       })
         .then(response => response.json())
@@ -84,7 +84,7 @@ export default class Ask extends React.PureComponent {
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/searchQuestions", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/searchQuestions", {
       method: 'POST',
       body: data
     })

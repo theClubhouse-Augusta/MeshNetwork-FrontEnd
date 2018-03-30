@@ -43,7 +43,7 @@ export default class About extends React.PureComponent {
               <img
                 alt=""
                 className="aboutMainContent"
-                src="http://h4z.it/Image/71722e_w-it-works-1.png"
+                src="https://s3.us-east-2.amazonaws.com/suggestify/71722e_w-it-works-1.png"
               />
               <div className="aboutMainContent">
                 <h4 className="aboutMainContentTitle">
@@ -72,14 +72,14 @@ export default class About extends React.PureComponent {
               <img
                 alt=""
                 className="aboutMainContent"
-                src="http://h4z.it/Image/3f32a2_w-it-works-2.png"
+                src="https://s3.us-east-2.amazonaws.com/suggestify/3f32a2_w-it-works-2.png"
               />
             </div>
             <div className="aboutMainRow">
               <img
                 alt=""
                 className="aboutMainContent"
-                src="http://h4z.it/Image/6e6b2e_w-it-works-3.png"
+                src="https://s3.us-east-2.amazonaws.com/suggestify/6e6b2e_w-it-works-3.png"
               />
               <div className="aboutMainContent">
                 <h4 className="aboutMainContentTitle">

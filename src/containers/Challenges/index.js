@@ -47,7 +47,7 @@ export default class Challenges extends React.PureComponent {
   }
 
   getChallenges = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getChallenges/5", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getChallenges/5", {
       method: 'GET',
     })
       .then(response => response.json())
@@ -59,7 +59,7 @@ export default class Challenges extends React.PureComponent {
   };
 
   getQuestions = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getQuestions/5", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getQuestions/5", {
       method: 'GET',
     })
       .then(response => response.json())
@@ -71,7 +71,7 @@ export default class Challenges extends React.PureComponent {
   };
 
   getTeams = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getTeams/5", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getTeams/5", {
       method: 'GET',
     })
       .then(response => response.json())

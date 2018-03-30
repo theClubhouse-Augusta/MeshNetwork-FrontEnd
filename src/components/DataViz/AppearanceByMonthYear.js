@@ -37,7 +37,7 @@ export class AppearanceByMonthYear extends React.PureComponent {
     loadAppearancesForMonthYear = () => {
         const { year, year2, month, month2 } = this.state;
         if (year && year2 && month && month2) {
-            fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearances/range/${this.props.match.params.id}/${month}/${year}/${month2}/${year2}`, {
+            fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearances/range/${this.props.match.params.id}/${month}/${year}/${month2}/${year2}`, {
             })
                 .then(response => response.json())
                 .then(json => this.setState({

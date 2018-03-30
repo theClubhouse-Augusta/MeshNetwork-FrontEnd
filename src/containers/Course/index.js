@@ -57,7 +57,7 @@ export default class Course extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/detailCourse/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/detailCourse/" + id, {
       method: 'GET'
     })
       .then(response => response.json())
@@ -82,7 +82,7 @@ export default class Course extends React.PureComponent {
 
   enrollCourse = () => {
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/enrollCourse/" + this.state.course.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/enrollCourse/" + this.state.course.id, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token

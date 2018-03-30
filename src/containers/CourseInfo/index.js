@@ -48,7 +48,7 @@ export default class CourseInfo extends React.PureComponent {
 
   getCourse = (id) => {
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/showCourse/" + id + "/" + this.props.match.params.uid, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/showCourse/" + id + "/" + this.props.match.params.uid, {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -334,7 +334,7 @@ export default class CourseInfo extends React.PureComponent {
       )
     } else {
       return (
-        <img alt="" className="lmsSingleLessonImage" src={'http://h4z.it/Image/5249e9_placeholder.gif'} />
+        <img alt="" className="lmsSingleLessonImage" src={'hhttps://s3.us-east-2.amazonaws.com/suggestify/5249e9_placeholder.gif'} />
       )
     }
   }

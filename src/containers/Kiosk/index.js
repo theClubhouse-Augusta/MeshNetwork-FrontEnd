@@ -56,7 +56,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getProfile = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" + this.props.match.params.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" + this.props.match.params.id, {
       method: "GET"
     }
     )
@@ -70,7 +70,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUsers = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getKioskUsers")
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getKioskUsers")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -80,7 +80,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getReasons = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/occasions")
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/occasions")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -90,7 +90,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUpcomingEvents = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/upcoming/" + this.props.match.params.id)
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/upcoming/" + this.props.match.params.id)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -100,7 +100,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getToday = id => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/todayevent/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/todayevent/" + id, {
      method:'GET'
     })
       .then(response => response.json())
@@ -118,7 +118,7 @@ export default class Kiosk extends React.PureComponent {
     data.append("spaceID", this.state.workspace.id);
     data.append("occasion", this.state.selectedReason);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearance", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearance", {
       method: "POST",
       body: data
     })

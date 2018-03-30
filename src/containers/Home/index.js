@@ -150,7 +150,7 @@ export default class Home extends React.PureComponent {
                 className="homeMainSectionBlockOne"
                 style={{
                   background:
-                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/7e9818_-11-15.05.27.jpg)",
+                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(https://s3.us-east-2.amazonaws.com/suggestify/7e9818_-11-15.05.27.jpg)",
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                   backgroundPosition: "center center"
@@ -158,7 +158,7 @@ export default class Home extends React.PureComponent {
               >
                 <img
                   alt=""
-                  src="http://h4z.it/Image/093903_cowork.PNG"
+                  src="https://s3.us-east-2.amazonaws.com/suggestify/093903_cowork.PNG"
                   sizes="(max-width: 425px) 200px, auto"
                 />
                 <div
@@ -172,13 +172,13 @@ export default class Home extends React.PureComponent {
                 className="homeMainSectionBlockOne"
                 style={{
                   background:
-                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/67b755_fablabpng.png)",
+                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(https://s3.us-east-2.amazonaws.com/suggestify/67b755_fablabpng.jpg)",
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                   backgroundPosition: "center center"
                 }}
               >
-                <img alt="" src="http://h4z.it/Image/2b608a_hack.PNG" />
+                <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/2b608a_hack.PNG" />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}
@@ -190,13 +190,13 @@ export default class Home extends React.PureComponent {
                 className="homeMainSectionBlockOne"
                 style={{
                   background:
-                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/4f56fa_ebridge2_660.jpg)",
+                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(https://s3.us-east-2.amazonaws.com/suggestify/4f56fa_ebridge2_660.jpg)",
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                   backgroundPosition: "center center"
                 }}
               >
-                <img alt="" src="http://h4z.it/Image/6d9807_3Dprinting.PNG" />
+                <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/6d9807_3Dprinting.PNG" />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}
@@ -208,13 +208,13 @@ export default class Home extends React.PureComponent {
                 className="homeMainSectionBlockOne"
                 style={{
                   background:
-                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(http://h4z.it/Image/7e9818_-11-15.05.27.jpg)",
+                    "linear-gradient(rgba(0, 0, 0, 0.65),rgba(0, 0, 0, 0.65)),url(https://s3.us-east-2.amazonaws.com/suggestify/7e9818_-11-15.05.27.jpg)",
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                   backgroundPosition: "center center"
                 }}
               >
-                <img alt="" src="http://h4z.it/Image/0cf50f_studio.PNG" />
+                <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/0cf50f_studio.PNG" />
                 <div
                   className="homeMainSectionBlockTitle"
                   style={{ color: "#FFFFFF" }}
@@ -242,7 +242,7 @@ export default class Home extends React.PureComponent {
             </div>
             <div className="homeMainSectionContentTwo">
               <div className="homeMainSectionBlockTwo">
-                <img alt="" src="http://h4z.it/Image/af1a08_how1.PNG" />
+                <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/af1a08_how1.PNG" />
                 <div className="homeMainSectionBlockTitle">
                   Choose What You Do
                 </div>
@@ -253,7 +253,7 @@ export default class Home extends React.PureComponent {
                 </div>
               </div>
               <div className="homeMainSectionBlockTwo">
-                <img alt="" src="http://h4z.it/Image/3889d9_how2.PNG" />
+                <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/3889d9_how2.PNG" />
                 <div className="homeMainSectionBlockTitle">
                   Find What You Want
                 </div>
@@ -263,7 +263,7 @@ export default class Home extends React.PureComponent {
                 </div>
               </div>
               <div className="homeMainSectionBlockTwo">
-                <img alt="" src="http://h4z.it/Image/79caa9_how3.PNG" />
+                <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/79caa9_how3.PNG" />
                 <div className="homeMainSectionBlockTitle">
                   Explore Awesome Places
                 </div>

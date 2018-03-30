@@ -134,7 +134,7 @@ export default class AddEvent extends Component {
   };
 
   getSponsors = () => {
-    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/sponsors`, {
+    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/sponsors`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -148,7 +148,7 @@ export default class AddEvent extends Component {
   };
 
   getOrganizers = () => {
-    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/organizers/events`, {
+    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/organizers/events`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -163,7 +163,7 @@ export default class AddEvent extends Component {
   };
 
   loadSkills = () => {
-    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/skills/all', {
+    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
       .then(response => response.json())
@@ -389,7 +389,7 @@ export default class AddEvent extends Component {
       newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
     }
 
-    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/event`, {
+    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/event`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,
@@ -430,7 +430,7 @@ export default class AddEvent extends Component {
     data.append("challengeFiles", challenge.challengeFiles);
     data.append("eventID", eventID);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeChallenge", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeChallenge", {
       method: "POST",
       body: data,
       headers: { Authorization: "Bearer " + this.state.token }
@@ -456,7 +456,7 @@ export default class AddEvent extends Component {
                 challenge.challengeFiles[i].fileData
               );
 
-              fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/uploadFile", {
+              fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }

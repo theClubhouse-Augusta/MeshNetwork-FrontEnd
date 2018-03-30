@@ -28,7 +28,7 @@ export default class UserManager extends React.Component {
     data.append('userID', user);
     data.append('roleID', event.target.value);
     this.setState(() => ({ users }), () => {
-      fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/changeRole', {
+      fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/changeRole', {
         method: 'POST',
         body: data,
         headers: {

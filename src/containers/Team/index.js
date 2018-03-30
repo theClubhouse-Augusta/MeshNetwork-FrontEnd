@@ -45,7 +45,7 @@ export default class Team extends React.PureComponent {
   }
 
   getDetail = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/showTeam/"+this.props.match.params.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/showTeam/"+this.props.match.params.id, {
       method:'GET'
     })
     .then((response) => {
@@ -60,7 +60,7 @@ export default class Team extends React.PureComponent {
   }
 
   joinTeam = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/joinTeam/" + this.state.team.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/joinTeam/" + this.state.team.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })

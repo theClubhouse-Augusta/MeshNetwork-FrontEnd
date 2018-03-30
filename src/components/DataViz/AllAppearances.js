@@ -28,7 +28,7 @@ export class AllAppearances extends React.PureComponent {
     }
 
     loadAppearances = () => {
-        fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearances/${this.props.match.params.id}`, {
+        fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearances/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ data: json }))

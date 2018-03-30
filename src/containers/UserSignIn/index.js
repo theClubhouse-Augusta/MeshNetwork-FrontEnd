@@ -58,7 +58,7 @@ export default class UserSignIn extends React.PureComponent {
     data.append("email", this.state.email);
     data.append("password", this.state.password);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/login", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/login", {
       method: "POST",
       body: data
     })
@@ -69,7 +69,7 @@ export default class UserSignIn extends React.PureComponent {
         } else if (json.token) {
           let mainToken = json.token;
           localStorage.setItem("token", mainToken);
-          fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/user/auth", {
+          fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/user/auth", {
             method: "GET",
             headers: { Authorization: "Bearer " + mainToken }
           })
@@ -100,7 +100,7 @@ export default class UserSignIn extends React.PureComponent {
   sendResetEmail = () => {
     let data = new FormData();
     data.append("email", this.state.email);
-    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/forgotpassword`, {
+    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/forgotpassword`, {
       method: "POST",
       body: data
     })

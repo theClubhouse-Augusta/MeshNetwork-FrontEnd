@@ -86,7 +86,7 @@ export default class LMSDash extends React.PureComponent {
 
   getCourses = (category = 0) => {
 
-    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
+    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -139,7 +139,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCategories", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCategories", {
       method: 'GET'
     })
       .then(response => response.json())
@@ -152,7 +152,7 @@ export default class LMSDash extends React.PureComponent {
 
   createCourse = () => {
 
-    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeCourse', {
+    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeCourse', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -171,7 +171,7 @@ export default class LMSDash extends React.PureComponent {
 
   deleteCourse = () => {
     let course = this.state.courses;
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteCourse/" + this.state.activeCourse, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteCourse/" + this.state.activeCourse, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -282,7 +282,7 @@ export default class LMSDash extends React.PureComponent {
       return (
         <CardMedia
           style={{ width: '100%', height: '240px', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
-          image={'http://h4z.it/Image/5249e9_placeholder.gif'}
+          image={'https://s3.us-east-2.amazonaws.com/suggestify/5249e9_placeholder.gif'}
         />
       )
     }

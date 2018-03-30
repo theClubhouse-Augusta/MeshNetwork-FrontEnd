@@ -76,7 +76,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/editCourse/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/editCourse/" + id, {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -147,7 +147,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/getSubjects", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getSubjects", {
       method: 'GET'
     })
       .then(response => response.json())
@@ -323,7 +323,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('questionContent', "");
       data.append('questionType', type);
 
-      fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeQuestion/", {
+      fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeQuestion/", {
         method: 'POST',
         body: data,
         headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -368,7 +368,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('questionContent', event.target.value);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateQuestion/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateQuestion/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -402,7 +402,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('answerContent', "");
       data.append('isCorrect', false);
 
-      fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeAnswer", {
+      fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeAnswer", {
         method: 'POST',
         body: data,
         headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -447,7 +447,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('answerContent', event.target.value);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateAnswer/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateAnswer/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -487,7 +487,7 @@ export default class NewCourse extends React.PureComponent {
 
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].isCorrect = true;
 
-    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCorrectAnswer/' + this.props.match.params.id + '/' + questionID + '/' + id, {
+    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCorrectAnswer/' + this.props.match.params.id + '/' + questionID + '/' + id, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -536,7 +536,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('coursePrice', coursePrice);
     data.append('courseStatus', courseStatus);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCourse/" + this.props.match.params.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCourse/" + this.props.match.params.id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -568,7 +568,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseImage', this.state.courseImage);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCourseImage/" + this.props.match.params.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCourseImage/" + this.props.match.params.id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -597,7 +597,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCourseInstructorAvatar/" + this.props.match.params.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateCourseInstructorAvatar/" + this.props.match.params.id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -624,7 +624,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('courseID', this.props.match.params.id);
     data.append('lessonName', "Lesson Title");
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeLesson", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeLesson", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -654,7 +654,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('lessonName', lessonName);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateLesson/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateLesson/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -682,7 +682,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureType', lessons[i].lectures[j].lectureType);
     data.append('lectureVideo', lessons[i].lectures[j].lectureVideo);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateLecture/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateLecture/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -707,7 +707,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureType', "Text");
     data.append('lectureVideo', "");
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeLecture", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeLecture", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -739,7 +739,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('fileContent', file.fileData);
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeFiles", {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeFiles", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -764,7 +764,7 @@ export default class NewCourse extends React.PureComponent {
   deleteLesson = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteLesson/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteLesson/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -788,7 +788,7 @@ export default class NewCourse extends React.PureComponent {
   deleteLecture = (id, i, j) => {
     let lessons = this.state.lessons;
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteLecture/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteLecture/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -813,7 +813,7 @@ export default class NewCourse extends React.PureComponent {
   deleteQuestion = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteQuestion/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteQuestion/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -838,7 +838,7 @@ export default class NewCourse extends React.PureComponent {
   deleteAnswer = (id, i, j) => {
     let lessons = this.state.lessons;
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteAnswer/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteAnswer/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -863,7 +863,7 @@ export default class NewCourse extends React.PureComponent {
   deleteFile = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteFile/" + id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteFile/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })

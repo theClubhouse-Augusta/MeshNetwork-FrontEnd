@@ -43,7 +43,7 @@ textarea {
   flex-direction: column;
   justify-content: center;
   background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-    url(http://h4z.it/Image/88b757_banner.jpg);
+    url(https://s3.us-east-2.amazonaws.com/suggestify/88b757_banner.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;

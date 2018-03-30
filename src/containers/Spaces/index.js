@@ -29,14 +29,9 @@ export default class Spaces extends React.PureComponent {
   }
 
   getSpaces = () => {
-    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspaces`, {
-      method: "GET"
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then(
-        (json) => {
+    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspaces`)
+      .then(response => response.json())
+      .then(json => {
           this.setState({
             spaces: json
           });
@@ -61,17 +56,21 @@ export default class Spaces extends React.PureComponent {
 
         <main className="spacesMain">
           <div className="spacesMainContainer">
-            {this.state.spaces.map((space, i) => (
-              <Link to={"space/" + space.slug} className="spacesBlock" key={`SpacesBlock${i}`}>
-                <div className="spacesBlockImage">
-                  <img alt="" src={space.logo} />
-                </div>
-                <div className="spacesBlockTitle">{space.name}</div>
-                <div className="spacesBlockContent">
-                  {space.address} {space.city}, {space.state} {space.zipcode}
-                </div>
-              </Link>
-            ))}
+            {!!this.state.spaces.length && this.state.spaces.map((space, i) => {
+              if (i > 0) {
+                return (
+                  <Link to={"space/" + space.slug} className="spacesBlock" key={`SpacesBlock${i}`}>
+                    <div className="spacesBlockImage">
+                      <img alt="" src={space.logo} />
+                    </div>
+                    <div className="spacesBlockTitle">{space.name}</div>
+                    <div className="spacesBlockContent">
+                      {space.address} {space.city}, {space.state} {space.zipcode}
+                    </div>
+                  </Link>
+                );
+              }
+            })}
           </div>
           <div className="spacesMapContainer">
             <MyMapComponent
@@ -85,7 +84,7 @@ export default class Spaces extends React.PureComponent {
               lat={33.5105746}
               lon={-82.08560469999999}
               clickMarker={this.clickMarker}
-              spaces={this.state.spaces}
+              spaces={this.state.spaces.slice(1)}
             />
           </div>
         </main>
@@ -94,6 +93,3 @@ export default class Spaces extends React.PureComponent {
   }
 }
 
-Spaces.contextTypes = {
-  router: PropTypes.object
-};

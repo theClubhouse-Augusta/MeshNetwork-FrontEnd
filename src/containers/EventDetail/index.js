@@ -46,7 +46,7 @@ export default class EventDetail extends React.PureComponent {
   };
 
   getEvent = eventID => {
-    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/event/${eventID}`)
+    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/event/${eventID}`)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -65,7 +65,7 @@ export default class EventDetail extends React.PureComponent {
 
   registerForEvent = (e, eventID) => {
     e.preventDefault();
-    fetch(`http://testbean2-env.us-east-1.elasticbeanstalk.com/api/event/join/${eventID}`, {
+    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/event/join/${eventID}`, {
       headers: { Authorization: `Bearer ${this.token}` }
     })
       .then(response => response.json())
@@ -138,7 +138,7 @@ export default class EventDetail extends React.PureComponent {
   };
 
   attendEvent = () => {
-    fetch("http://testbean2-env.us-east-1.elasticbeanstalk.com/api/attend/" + this.state.event.id, {
+    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/attend/" + this.state.event.id, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + this.state.token

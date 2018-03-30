@@ -33,7 +33,7 @@ class ResourceForm extends PureComponent {
     this.setState({ [prop]: event.target.value });
   };
   getResources = (id) => {
-    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/resources/' + id)
+    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/resources/' + id)
       .then(response => response.json())
       .then(resources => {
         this.setState(() => ({ resources }))
@@ -91,7 +91,7 @@ class ResourceForm extends PureComponent {
     data.append('resourceEndTime', this.state.endTime);
     data.append('resourceIncrement', this.state.increment);
     data.append('resourceDays', JSON.stringify(days));
-    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/resource', {
+    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/resource', {
       method: 'POST',
       body: data,
       headers: { Authorization: `Bearer ${localStorage['token']}` }
@@ -114,7 +114,7 @@ class ResourceForm extends PureComponent {
   };
   deleteResource = (id, i) => {
     let resource = this.state.resources;
-    fetch('http://testbean2-env.us-east-1.elasticbeanstalk.com/api/resource/' + id, {
+    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/resource/' + id, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
