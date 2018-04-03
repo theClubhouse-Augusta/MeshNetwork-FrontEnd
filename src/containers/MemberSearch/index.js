@@ -69,7 +69,7 @@ export default class MemberSearch extends PureComponent {
   }
 
   loadSkills = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/skills", {
+    fetch("https://suggestify.io/api/skills", {
       //headers: { Authorization: `Bearer ${this.token}` },
     })
       .then(response => response.json())
@@ -88,7 +88,7 @@ export default class MemberSearch extends PureComponent {
       let data = new FormData();
       data.append("query", this.state.query);
 
-      fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/search/", {
+      fetch("https://suggestify.io/api/search/", {
         method: "POST",
         body: data
         //headers: { Authorization: `Bearer ${this.token}` },
@@ -109,7 +109,7 @@ export default class MemberSearch extends PureComponent {
 
     data.append("tag", tag);
 
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/search", {
+    fetch("https://suggestify.io/api/search", {
       method: "POST",
       body: data
     })

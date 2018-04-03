@@ -44,7 +44,7 @@ import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
 import "../../assets/css/material-dashboard-react.css";
 import ResourceForm from '../../components/ResourceForm';
-const spaceInfoAPI = 'https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/auth/';
+const spaceInfoAPI = 'https://suggestify.io/api/workspace/auth/';
 class SpaceDash extends React.Component {
   state = {
     token: localStorage.getItem('token'),
@@ -131,7 +131,7 @@ class SpaceDash extends React.Component {
   };
   componentDidUpdate() { this.refs.mainPanel.scrollTop = 0; }
   loadJoins = () => {
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/joins/${this.props.match.params.id}`, {})
+    fetch(`https://suggestify.io/api/joins/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -153,7 +153,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadEventMetrics = () => {
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/events/metrics/${this.props.match.params.id}`, {})
+    fetch(`https://suggestify.io/api/events/metrics/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -175,7 +175,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadAppearances = () => {
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearances/${this.props.match.params.id}`, {})
+    fetch(`https://suggestify.io/api/appearances/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -250,7 +250,7 @@ class SpaceDash extends React.Component {
   getMonthlyBalance = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/balance/current/${lastMonth}/${now}`, {
+    fetch(`https://suggestify.io/api/balance/current/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -275,7 +275,7 @@ class SpaceDash extends React.Component {
   getMonthlyCustomerCount = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/customers/month/${lastMonth}/${now}`, {
+    fetch(`https://suggestify.io/api/customers/month/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -288,7 +288,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceStats = (id) => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/space/metrics/' + id)
+    fetch('https://suggestify.io/api/space/metrics/' + id)
       .then(response => response.json())
       .then(({
         memberCount,
@@ -305,7 +305,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceUsers = (id) => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getDashboardUsers/' + id, {
+    fetch('https://suggestify.io/api/getDashboardUsers/' + id, {
       headers: {
         'Authorization': 'Bearer ' + this.state.token
       }
@@ -322,7 +322,7 @@ class SpaceDash extends React.Component {
       })
   };
   getSpaceEvents = (id) => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/events/' + id)
+    fetch('https://suggestify.io/api/events/' + id)
       .then(response => response.json())
       .then(spaceEvents => {
         this.setState(() => ({ spaceEvents }));
@@ -336,7 +336,7 @@ class SpaceDash extends React.Component {
     }
   };
   getPhotoGallery = id => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/photos/' + id)
+    fetch('https://suggestify.io/api/photos/' + id)
       .then(response => response.json())
       .then((json) => {
         this.setState(() => ({ photoGallery: json.photos }))
@@ -356,7 +356,7 @@ class SpaceDash extends React.Component {
     let data = new FormData();
     data.append('spaceID', this.state.spaceID);
     data.append('photo', file);
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/photos', {
+    fetch('https://suggestify.io/api/photos', {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -377,7 +377,7 @@ class SpaceDash extends React.Component {
     let photoGallery = this.state.photoGallery.slice();
     let data = new FormData();
     data.append("_method", "DELETE");
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/photos/${id}`, {
+    fetch(`https://suggestify.io/api/photos/${id}`, {
       headers: { 'Authorization': 'Bearer ' + this.state.token },
       method: "POST",
       body: data,
@@ -444,7 +444,7 @@ class SpaceDash extends React.Component {
   };
   editEventID = id => this.setState({ editEventID: id });
   deleteEvent = (eventID, index) => {
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/event/delete/${eventID}`, {
+    fetch(`https://suggestify.io/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -467,7 +467,7 @@ class SpaceDash extends React.Component {
       data.append('userID', user);
       data.append('roleID', event.target.value);
 
-      fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/changeRole', {
+      fetch('https://suggestify.io/api/changeRole', {
         method: 'POST',
         body: data,
         headers: {
@@ -483,7 +483,7 @@ class SpaceDash extends React.Component {
     });
   };
   deleteEvent = (eventID, index) => {
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/event/delete/${eventID}`, {
+    fetch(`https://suggestify.io/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())

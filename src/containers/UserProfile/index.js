@@ -65,7 +65,7 @@ export default class UserProfile extends React.Component {
 
   getUser = () => {
     fetch(
-      "https://testbean2-env.us-east-1.elasticbeanstalk.com/api/user/profile/" +
+      "https://suggestify.io/api/user/profile/" +
       this.props.match.params.id,
       {
         method: "GET",

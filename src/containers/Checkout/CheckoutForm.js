@@ -85,7 +85,7 @@ class CheckoutForm extends React.PureComponent {
 
   getSpace = () => {
     fetch(
-      "https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" + this.props.match.params.id,
+      "https://suggestify.io/api/workspace/" + this.props.match.params.id,
       {
         method: "GET"
       }
@@ -99,7 +99,7 @@ class CheckoutForm extends React.PureComponent {
   };
 
   loadSkills = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/skills/all", {})
+    fetch("https://suggestify.io/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
@@ -109,7 +109,7 @@ class CheckoutForm extends React.PureComponent {
 
   loadPlans = () => {
     fetch(
-      `https://testbean2-env.us-east-1.elasticbeanstalk.com/api/plans/${this.props.match.params.id}`,
+      `https://suggestify.io/api/plans/${this.props.match.params.id}`,
       {}
     )
       .then(response => response.json())
@@ -247,7 +247,7 @@ class CheckoutForm extends React.PureComponent {
       data.append("customer_idempotency_key", customer_idempotency_key);
       data.append("subscription_idempotency_key", subscription_idempotency_key);
 
-      fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/signUp", {
+      fetch("https://suggestify.io/api/signUp", {
         method: "POST",
         body: data
       })
@@ -257,7 +257,7 @@ class CheckoutForm extends React.PureComponent {
             this.showSnack(user.error);
           } else if (user.token) {
             localStorage.setItem("token", user.token);
-            fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/user/auth", {
+            fetch("https://suggestify.io/api/user/auth", {
               method: "GET",
               headers: { Authorization: "Bearer " + user.token }
             })
@@ -303,7 +303,7 @@ class CheckoutForm extends React.PureComponent {
     data.append("plan", plan);
     data.append("username", name);
 
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/signUp", {
+    fetch("https://suggestify.io/api/signUp", {
       method: "POST",
       body: data
     })
@@ -314,7 +314,7 @@ class CheckoutForm extends React.PureComponent {
         } else if (json.token) {
           let mainToken = json.token;
           localStorage.setItem("token", mainToken);
-          fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/user/auth", {
+          fetch("https://suggestify.io/api/user/auth", {
             method: "GET",
             headers: { Authorization: "Bearer " + mainToken }
           })

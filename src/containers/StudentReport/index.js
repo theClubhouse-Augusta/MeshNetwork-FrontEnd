@@ -32,7 +32,7 @@ export default class StudentReport extends React.PureComponent {
     }
 
     getCourseStudent = () => {
-        fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCourseStudent/' + this.props.match.params.cid + '/' + this.props.match.params.uid, {
+        fetch('https://suggestify.io/api/getCourseStudent/' + this.props.match.params.cid + '/' + this.props.match.params.uid, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + this.state.token

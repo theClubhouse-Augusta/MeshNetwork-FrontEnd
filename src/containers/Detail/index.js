@@ -164,7 +164,7 @@ export default class Detail extends React.PureComponent {
   };
 
   getSubmissions = (id) => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getSubmissions/" + id, {
+    fetch("https://suggestify.io/api/getSubmissions/" + id, {
       method: 'GET'
     })
       .then((response) => {
@@ -190,7 +190,7 @@ export default class Detail extends React.PureComponent {
     data.append('submissionGithub', this.state.submissionGithub);
     data.append('submissionFile', this.state.submissionFile);
 
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeSubmission', {
+    fetch('https://suggestify.io/api/storeSubmission', {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -218,7 +218,7 @@ export default class Detail extends React.PureComponent {
   }
 
   deleteSubmission = (id) => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteSubmission/' + id, {
+    fetch('https://suggestify.io/api/deleteSubmission/' + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -238,7 +238,7 @@ export default class Detail extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/selectCategories", {
+    fetch("https://suggestify.io/api/selectCategories", {
       method: "GET"
     })
       .then(response => {
@@ -288,7 +288,7 @@ export default class Detail extends React.PureComponent {
     data.append("endDate", this.state.endDate);
 
     fetch(
-      "https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateChallenge/" +
+      "https://suggestify.io/api/updateChallenge/" +
       this.state.challenge.id,
       {
         method: "POST",
@@ -322,7 +322,7 @@ export default class Detail extends React.PureComponent {
                 this.state.challengeFiles[i].fileData
               );
 
-              fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/uploadFile", {
+              fetch("https://suggestify.io/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }
@@ -358,7 +358,7 @@ export default class Detail extends React.PureComponent {
 
   getDetail = () => {
     fetch(
-      "https://testbean2-env.us-east-1.elasticbeanstalk.com/api/showChallenge/" +
+      "https://suggestify.io/api/showChallenge/" +
       this.props.match.params.id,
       {
         method: "GET"
@@ -394,7 +394,7 @@ export default class Detail extends React.PureComponent {
 
   getSpace = () => {
     fetch(
-      "https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" +
+      "https://suggestify.io/api/workspace/" +
       this.state.challenge.spaceID,
       {
         method: "GET"
@@ -410,7 +410,7 @@ export default class Detail extends React.PureComponent {
 
   joinChallenge = () => {
     fetch(
-      "https://testbean2-env.us-east-1.elasticbeanstalk.com/api/joinChallenge/" + this.state.challenge.id,
+      "https://suggestify.io/api/joinChallenge/" + this.state.challenge.id,
       {
         method: "GET",
         headers: { Authorization: "Bearer " + this.state.token }
@@ -603,7 +603,7 @@ export default class Detail extends React.PureComponent {
   };
 
   attendEvent = () => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/attend/' + this.state.challenge.eventID, {
+    fetch('https://suggestify.io/api/attend/' + this.state.challenge.eventID, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token

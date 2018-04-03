@@ -69,7 +69,7 @@ export default class App extends Component {
     };
 
     getSpaceName = (spaceID, token) => {
-        fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/spacename/${spaceID}`, {
+        fetch(`https://suggestify.io/api/spacename/${spaceID}`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => response.json())

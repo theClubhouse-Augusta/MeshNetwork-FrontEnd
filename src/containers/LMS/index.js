@@ -42,7 +42,7 @@ export default class LMS extends React.PureComponent {
   */
 
   getCourses = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCourses/0/6", {
+    fetch("https://suggestify.io/api/getCourses/0/6", {
       method: "GET"
     })
       .then(response => response.json())

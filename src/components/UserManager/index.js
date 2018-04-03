@@ -14,7 +14,7 @@ export default class UserManager extends React.Component {
   }
 
   loadInitalUsers = () => {
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/customers`, {
+    fetch(`https://suggestify.io/api/customers`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())

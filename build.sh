@@ -1,10 +1,10 @@
 #!/bin/bash
 yarn build
-cd ~/Documents/mesh/MeshNetwork-BackEnd/public
+cd "${my_backend}/public"
 rm -rf static/
-cd ~/Documents/mesh4/MeshNetwork-FrontEnd/build
-cp -r  . ~/Documents/mesh/MeshNetwork-BackEnd/public
-cd ~/Documents/mesh/MeshNetwork-BackEnd/
+cd "${my_frontend}/build"
+cp -r . "${my_backend}/public"
+cd "${my_backend}/public"
 git add .
 git commit -m "build"
-git archive -v -o myapp10.zip --format=zip
+eb deploy

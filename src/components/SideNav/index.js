@@ -75,7 +75,7 @@ export default class SideNav extends React.PureComponent {
   };
 
   getCategories = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCategories", {
+    fetch("https://suggestify.io/api/getCategories", {
       method: 'GET',
     })
       .then(response => response.json())
@@ -92,7 +92,7 @@ export default class SideNav extends React.PureComponent {
 
     data.append('categoryName', this.state.categoryName);
     data.append('categoryImage', this.state.categoryImage);
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeCategory", {
+    fetch("https://suggestify.io/api/storeCategory", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }

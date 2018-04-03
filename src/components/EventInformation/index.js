@@ -125,7 +125,7 @@ export default class EventInformation extends Component {
     }
 
     getEvent = eventID => {
-        fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/event/${eventID}`)
+        fetch(`https://suggestify.io/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
                 let sponsors = json.sponsors;
@@ -268,7 +268,7 @@ export default class EventInformation extends Component {
     };
 
     getSponsors = () => {
-        fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/sponsors`, {
+        fetch(`https://suggestify.io/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -282,7 +282,7 @@ export default class EventInformation extends Component {
     }
 
     getOrganizers = () => {
-        fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/organizers/events`, {
+        fetch(`https://suggestify.io/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -297,7 +297,7 @@ export default class EventInformation extends Component {
     }
 
     loadSkills = () => {
-        fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/skills/all', {
+        fetch('https://suggestify.io/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -423,7 +423,7 @@ export default class EventInformation extends Component {
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateEvent`, {
+        fetch(`https://suggestify.io/api/updateEvent`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -469,7 +469,7 @@ export default class EventInformation extends Component {
         data.append("challengeFiles", challenge.challengeFiles);
         data.append("eventID", eventID);
     
-        fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeChallenge", {
+        fetch("https://suggestify.io/api/storeChallenge", {
           method: "POST",
           body: data,
           headers: { Authorization: "Bearer " + this.state.token }
@@ -495,7 +495,7 @@ export default class EventInformation extends Component {
                     challenge.challengeFiles[i].fileData
                   );
     
-                  fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/uploadFile", {
+                  fetch("https://suggestify.io/api/uploadFile", {
                     method: "POST",
                     body: fileData,
                     headers: { Authorization: "Bearer " + this.state.token }
@@ -531,7 +531,7 @@ export default class EventInformation extends Component {
         data.append("challengeFiles", challenge.challengeFiles);
 
         fetch(
-            "https://testbean2-env.us-east-1.elasticbeanstalk.com/api/updateChallenge/" +
+            "https://suggestify.io/api/updateChallenge/" +
             challenge.id,
             {
                 method: "POST",
@@ -564,7 +564,7 @@ export default class EventInformation extends Component {
                             challenge.challengeFiles[i].fileData
                         );
 
-                        fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/uploadFile", {
+                        fetch("https://suggestify.io/api/uploadFile", {
                             method: "POST",
                             body: fileData,
                             headers: { Authorization: "Bearer " + this.state.token }

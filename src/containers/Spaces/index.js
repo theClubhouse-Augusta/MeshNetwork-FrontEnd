@@ -29,7 +29,7 @@ export default class Spaces extends React.PureComponent {
   }
 
   getSpaces = () => {
-    fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspaces`)
+    fetch(`https://suggestify.io/api/workspaces`)
       .then(response => response.json())
       .then(json => {
           this.setState({
@@ -57,7 +57,6 @@ export default class Spaces extends React.PureComponent {
         <main className="spacesMain">
           <div className="spacesMainContainer">
             {!!this.state.spaces.length && this.state.spaces.map((space, i) => {
-              if (i > 0) {
                 return (
                   <Link to={"space/" + space.slug} className="spacesBlock" key={`SpacesBlock${i}`}>
                     <div className="spacesBlockImage">
@@ -69,24 +68,26 @@ export default class Spaces extends React.PureComponent {
                     </div>
                   </Link>
                 );
-              }
             })}
           </div>
-          <div className="spacesMapContainer">
-            <MyMapComponent
-              isMarkerShown
-              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
-              loadingElement={<div style={{ height: "100%" }} />}
-              containerElement={
-                <div id="myMapComponent" style={{ minHeight: "200px" }} />
-              }
-              mapElement={<div className="spacesMapElement" />}
-              lat={33.5105746}
-              lon={-82.08560469999999}
-              clickMarker={this.clickMarker}
-              spaces={this.state.spaces.slice(1)}
-            />
-          </div>
+
+          {!!this.state.spaces.length &&
+            <div className="spacesMapContainer">
+              <MyMapComponent
+                isMarkerShown
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHpoe-vzS5soyKj6Q4i8stTy6fZtYmqgs&v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={<div style={{ height: "100%" }} />}
+                containerElement={
+                  <div id="myMapComponent" style={{ minHeight: "200px" }} />
+                }
+                mapElement={<div className="spacesMapElement" />}
+                lat={33.5105746}
+                lon={-82.08560469999999}
+                clickMarker={this.clickMarker}
+                spaces={this.state.spaces.slice(1)}
+              />
+            </div>
+          }
         </main>
       </div>
     );

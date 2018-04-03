@@ -84,7 +84,7 @@ export default class Booking extends React.PureComponent {
       increments: 60,
       times: times
     }, () => {
-      fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/bookings/' + type, {
+      fetch('https://suggestify.io/api/bookings/' + type, {
         method: 'GET'
       })
         .then(response => response.json())
@@ -145,7 +145,7 @@ export default class Booking extends React.PureComponent {
   }
 
   getProfile = () => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/' + this.props.match.params.id, {
+    fetch('https://suggestify.io/api/workspace/' + this.props.match.params.id, {
       method: 'GET'
     })
       .then(response => response.json())
@@ -162,7 +162,7 @@ export default class Booking extends React.PureComponent {
   }
 
   getResources = (id) => {
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/resources/' + id, {
+    fetch('https://suggestify.io/api/resources/' + id, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -183,7 +183,7 @@ export default class Booking extends React.PureComponent {
     data.append('end', this.state.end);
     data.append('spaceID', this.state.spaceProfile.id);
 
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/booking", {
+    fetch("https://suggestify.io/api/booking", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }

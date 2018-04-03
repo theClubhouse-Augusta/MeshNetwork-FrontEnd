@@ -86,7 +86,7 @@ export default class LMSDash extends React.PureComponent {
 
   getCourses = (category = 0) => {
 
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
+    fetch('https://suggestify.io/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -139,7 +139,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getCategories", {
+    fetch("https://suggestify.io/api/getCategories", {
       method: 'GET'
     })
       .then(response => response.json())
@@ -152,7 +152,7 @@ export default class LMSDash extends React.PureComponent {
 
   createCourse = () => {
 
-    fetch('https://testbean2-env.us-east-1.elasticbeanstalk.com/api/storeCourse', {
+    fetch('https://suggestify.io/api/storeCourse', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -171,7 +171,7 @@ export default class LMSDash extends React.PureComponent {
 
   deleteCourse = () => {
     let course = this.state.courses;
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/deleteCourse/" + this.state.activeCourse, {
+    fetch("https://suggestify.io/api/deleteCourse/" + this.state.activeCourse, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })

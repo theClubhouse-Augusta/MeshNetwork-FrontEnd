@@ -56,7 +56,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getProfile = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" + this.props.match.params.id, {
+    fetch("https://suggestify.io/api/workspace/" + this.props.match.params.id, {
       method: "GET"
     }
     )
@@ -70,7 +70,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUsers = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/getKioskUsers")
+    fetch("https://suggestify.io/api/getKioskUsers")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -80,7 +80,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getReasons = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/occasions")
+    fetch("https://suggestify.io/api/occasions")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -90,7 +90,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUpcomingEvents = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/upcoming/" + this.props.match.params.id)
+    fetch("https://suggestify.io/api/upcoming/" + this.props.match.params.id)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -100,7 +100,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getToday = id => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/todayevent/" + id, {
+    fetch("https://suggestify.io/api/todayevent/" + id, {
      method:'GET'
     })
       .then(response => response.json())
@@ -118,7 +118,7 @@ export default class Kiosk extends React.PureComponent {
     data.append("spaceID", this.state.workspace.id);
     data.append("occasion", this.state.selectedReason);
 
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/appearance", {
+    fetch("https://suggestify.io/api/appearance", {
       method: "POST",
       body: data
     })

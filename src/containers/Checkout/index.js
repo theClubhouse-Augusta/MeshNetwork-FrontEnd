@@ -36,7 +36,7 @@ export default class Checkout extends React.Component {
   loadKey = async () => {
     let key;
     try {
-      const response = await fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/publickey/${this.props.match.params.id}`);
+      const response = await fetch(`https://suggestify.io/api/publickey/${this.props.match.params.id}`);
       key = await response.text();
     } catch (error) {
             //

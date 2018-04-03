@@ -47,7 +47,7 @@ class SpaceInformation extends React.PureComponent {
     description: ""
   };
 
-  spaceUpdateAPI = `https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspaces/${this.props.spaceID}`;
+  spaceUpdateAPI = `https://suggestify.io/api/workspaces/${this.props.spaceID}`;
 
   handleRequestClose = () => {
     this.setState({ snack: false, msg: "" });
@@ -84,7 +84,7 @@ class SpaceInformation extends React.PureComponent {
   };
 
   getSpaceInfo = () => {
-    fetch("https://testbean2-env.us-east-1.elasticbeanstalk.com/api/workspace/" + this.props.id, {
+    fetch("https://suggestify.io/api/workspace/" + this.props.id, {
       method: "GET"
     })
       .then(response => response.json())

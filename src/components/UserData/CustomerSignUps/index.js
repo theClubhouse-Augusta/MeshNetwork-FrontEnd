@@ -18,7 +18,7 @@ export class CustomerSignUps extends React.PureComponent {
     this.setState(() => ({ date }));
 
     if (date) {
-      fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/customers/signups/${this.props.match.params.id}/${date.get('month') + 1}/${date.get('year')}/${date.get('date')}`, {
+      fetch(`https://suggestify.io/api/customers/signups/${this.props.match.params.id}/${date.get('month') + 1}/${date.get('year')}/${date.get('date')}`, {
         headers: { Authorization: `Bearer ${localStorage['token']}` }
       })
         .then(response => response.json())
@@ -40,7 +40,7 @@ export class CustomerSignUps extends React.PureComponent {
   onDatesChange = (startDate, endDate) => {
     this.setState(() => ({ startDate, endDate }));
     if (startDate && endDate) {
-      fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/customers/signups/${this.props.match.params.id}/${startDate.get('month') + 1}/${startDate.get('year')}/${startDate.get('date')}/${endDate.get('month') + 1}/${endDate.get('year')}/${endDate.get('date')}`, {
+      fetch(`https://suggestify.io/api/customers/signups/${this.props.match.params.id}/${startDate.get('month') + 1}/${startDate.get('year')}/${startDate.get('date')}/${endDate.get('month') + 1}/${endDate.get('year')}/${endDate.get('date')}`, {
         headers: { Authorization: `Bearer ${localStorage['token']}` }
       })
         .then(response => response.json())

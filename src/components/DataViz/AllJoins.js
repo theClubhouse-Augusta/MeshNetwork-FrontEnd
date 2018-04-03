@@ -27,7 +27,7 @@ export class AllJoins extends React.PureComponent {
     }
 
     loadJoins = () => {
-        fetch(`https://testbean2-env.us-east-1.elasticbeanstalk.com/api/joins/${this.props.match.params.id}`, {
+        fetch(`https://suggestify.io/api/joins/${this.props.match.params.id}`, {
         })
             .then(response => response.json())
             .then(json => this.setState({ data: json }))
