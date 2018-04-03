@@ -238,7 +238,7 @@ export default class Home extends React.PureComponent {
             <div className="homeMainSectionTitle">See How It Works</div>
             <div className="homeMainSectionSubtitle">
               Discover how the Mesh Network can help you find everything you
-              want.
+              want!
             </div>
             <div className="homeMainSectionContentTwo">
               <div className="homeMainSectionBlockTwo">
