@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'react-dates/initialize';
 
 import App from './containers/App';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './app.css';
 import './lms.css';
 import './challenges.css';

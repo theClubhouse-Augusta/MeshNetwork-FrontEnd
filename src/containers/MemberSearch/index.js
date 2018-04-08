@@ -52,16 +52,15 @@ export default class MemberSearch extends PureComponent {
       authorized = await authenticate(localStorage['token'], this.props.history);
     } finally {
       if (authorized !== undefined) {
-        if (!authorized.error && authorized) {
+        const { error, user } = authorized;
+        if (user) {
           this.loadSkills();
           this.setState({ loading: false });
-        } else if (authorized.error) {
-          localStorage.removeItem('user');
+        } else if (error) {
           localStorage.removeItem('token');
           this.props.history.push('/signin');
         }
       } else {
-        localStorage.removeItem('user');
         localStorage.removeItem('token');
         this.props.history.push("/signIn");
       }
@@ -69,7 +68,7 @@ export default class MemberSearch extends PureComponent {
   }
 
   loadSkills = () => {
-    fetch("https://suggestify.io/api/skills", {
+    fetch("http://localhost:8000/api/skills", {
       //headers: { Authorization: `Bearer ${this.token}` },
     })
       .then(response => response.json())
@@ -88,7 +87,7 @@ export default class MemberSearch extends PureComponent {
       let data = new FormData();
       data.append("query", this.state.query);
 
-      fetch("https://suggestify.io/api/search/", {
+      fetch("http://localhost:8000/api/search/", {
         method: "POST",
         body: data
         //headers: { Authorization: `Bearer ${this.token}` },
@@ -109,7 +108,7 @@ export default class MemberSearch extends PureComponent {
 
     data.append("tag", tag);
 
-    fetch("https://suggestify.io/api/search", {
+    fetch("http://localhost:8000/api/search", {
       method: "POST",
       body: data
     })

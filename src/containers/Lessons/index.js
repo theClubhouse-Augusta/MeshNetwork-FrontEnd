@@ -65,7 +65,7 @@ export default class Lessons extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://suggestify.io/api/showCourse/" + id + "/" + this.props.match.params.uid, {
+    fetch("http://localhost:8000/api/showCourse/" + id + "/" + this.props.match.params.uid, {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -150,7 +150,7 @@ export default class Lessons extends React.PureComponent {
   }
 
   getCourseStudent = () => {
-    fetch('https://suggestify.io/api/getCourseStudent/' + this.props.match.params.id + '/' + this.props.match.params.uid, {
+    fetch('http://localhost:8000/api/getCourseStudent/' + this.props.match.params.id + '/' + this.props.match.params.uid, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -168,7 +168,7 @@ export default class Lessons extends React.PureComponent {
   }
 
   approveAnswer = (question, i) => {
-    fetch('https://suggestify.io/api/approveAnswer/' + question.id + '/' + this.props.match.params.uid + '/' + i, {
+    fetch('http://localhost:8000/api/approveAnswer/' + question.id + '/' + this.props.match.params.uid + '/' + i, {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -200,7 +200,7 @@ export default class Lessons extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('answers', JSON.stringify(this.state.lessons[this.state.activeLesson].lectures[this.state.activeLecture].userAnswers));
 
-    fetch("https://suggestify.io/api/completeLecture", {
+    fetch("http://localhost:8000/api/completeLecture", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }

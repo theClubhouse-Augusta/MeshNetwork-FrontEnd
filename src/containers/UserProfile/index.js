@@ -41,22 +41,18 @@ export default class UserProfile extends React.Component {
   async componentDidMount() {
     let authorized;
     try {
-      authorized = await authenticate(
-        localStorage["token"],
-        this.props.history
-      );
+      authorized = await authenticate(localStorage["token"]);
     } finally {
       if (authorized !== undefined) {
-        if (!authorized.error && authorized) {
+        const { error, user } = authorized;
+        if (user) {
           this.getUser();
           this.setState({ loading: false });
-        } else if (authorized.error) {
-          localStorage.removeItem("user");
+        } else if (error) {
           localStorage.removeItem("token");
           this.props.history.push("/signin");
         }
       } else {
-        localStorage.removeItem("user");
         localStorage.removeItem("token");
         this.props.history.push("/");
       }
@@ -65,7 +61,7 @@ export default class UserProfile extends React.Component {
 
   getUser = () => {
     fetch(
-      "https://suggestify.io/api/user/profile/" +
+      "http://localhost:8000/api/user/profile/" +
       this.props.match.params.id,
       {
         method: "GET",

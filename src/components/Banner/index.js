@@ -15,24 +15,23 @@ export default class Banner extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token:localStorage.getItem('challengeToken'),
-      app:this.props.app
+      token: localStorage.getItem('challengeToken'),
+      app: this.props.app
     }
   }
 
   componentWillReceiveProps(app) {
     this.setState({
-      app:app.app
+      app: app.app
     }, () => {
       this.forceUpdate();
     })
   }
 
   renderJoinButton = () => {
-    if(!this.state.token)
-    {
-      return(
-        <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', maxWidth:'200px'}}>Sign Up</FlatButton>
+    if (!this.state.token) {
+      return (
+        <FlatButton style={{ background: '#32b6b6', color: '#FFFFFF', width: '100%', maxWidth: '200px' }}>Sign Up</FlatButton>
       )
     }
   }
@@ -48,7 +47,11 @@ export default class Banner extends React.PureComponent {
             {this.renderJoinButton()}
           </div>
           <div className="challenges_bannerGraphic">
-            <img alt="" className="challenges_bannerImg" src="https://challenges.innovationmesh.com/assets/bunlogo.png"/>
+            {/* <img 
+              alt="" 
+              className="challenges_bannerImg" 
+              src=""
+            /> */}
           </div>
         </div>
       </div>

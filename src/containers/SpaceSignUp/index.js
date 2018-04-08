@@ -160,7 +160,7 @@ export default class SpaceSignUp extends React.PureComponent {
         data.append('password', userPassword.trim());
         data.append('avatar', avatar);
 
-        fetch("https://suggestify.io/api/workspaces", {
+        fetch("http://localhost:8000/api/workspaces", {
             method: 'POST',
             body: data,
         })

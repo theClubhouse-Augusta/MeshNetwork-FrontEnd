@@ -44,11 +44,11 @@ import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
 import "../../assets/css/material-dashboard-react.css";
 import ResourceForm from '../../components/ResourceForm';
-const spaceInfoAPI = 'https://suggestify.io/api/workspace/auth/';
+const spaceInfoAPI = 'http://localhost:8000/api/workspace/auth/';
 class SpaceDash extends React.Component {
   state = {
     token: localStorage.getItem('token'),
-    user: (localStorage['user'] !== null) ? JSON.parse(localStorage['user']) : false,
+    user: '',
     currentPage: 'main',
     spaceUsers: [],
     roles: [],
@@ -96,42 +96,37 @@ class SpaceDash extends React.Component {
     usingCRM: null,
   };
   async componentDidMount() {
-    const { user } = this.state;
-    if (user === false) {
-      this.props.history.push('/');
-    } else {
-      if (user.roleID !== 2 && user.roleID !== 5) {
-        this.props.history.push('/');
-      }
-      if (navigator.platform.indexOf('Win') > -1) {
-        // eslint-disable-next-line
-        const ps = new PerfectScrollbar(this.refs.mainPanel);
-      }
-      let authorized;
-      try {
-        authorized = await authenticate(localStorage['token']);
-      } finally {
-        if (authorized !== undefined) {
-          if (!authorized.error && authorized) {
-            this.loadSpaceDescription();
-            this.setState({ loading: false });
-          } else if (authorized.error) {
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
-            this.props.history.push('/signin');
+    if (navigator.platform.indexOf('Win') > -1) {
+      // eslint-disable-next-line
+      const ps = new PerfectScrollbar(this.refs.mainPanel);
+    }
+    let authorized;
+    try {
+      authorized = await authenticate(localStorage['token']);
+    } finally {
+      if (authorized !== undefined) {
+        const { error, user } = authorized;
+        if (user) {
+          if (user.roleID !== 2 && user.roleID !== 5) {
+            this.props.history.push('/');
+          } else {
+            this.setState(() => ({ user }));
           }
-        } else {
-          localStorage.removeItem('user');
+          this.loadSpaceDescription();
+          this.setState({ loading: false });
+        } else if (error) {
           localStorage.removeItem('token');
           this.props.history.push('/signin');
         }
-
+      } else {
+        localStorage.removeItem('token');
+        this.props.history.push('/signin');
       }
     }
   };
   componentDidUpdate() { this.refs.mainPanel.scrollTop = 0; }
   loadJoins = () => {
-    fetch(`https://suggestify.io/api/joins/${this.props.match.params.id}`, {})
+    fetch(`http://localhost:8000/api/joins/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -153,7 +148,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadEventMetrics = () => {
-    fetch(`https://suggestify.io/api/events/metrics/${this.props.match.params.id}`, {})
+    fetch(`http://localhost:8000/api/events/metrics/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -175,7 +170,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadAppearances = () => {
-    fetch(`https://suggestify.io/api/appearances/${this.props.match.params.id}`, {})
+    fetch(`http://localhost:8000/api/appearances/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -250,7 +245,7 @@ class SpaceDash extends React.Component {
   getMonthlyBalance = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`https://suggestify.io/api/balance/current/${lastMonth}/${now}`, {
+    fetch(`http://localhost:8000/api/balance/current/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -275,7 +270,7 @@ class SpaceDash extends React.Component {
   getMonthlyCustomerCount = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`https://suggestify.io/api/customers/month/${lastMonth}/${now}`, {
+    fetch(`http://localhost:8000/api/customers/month/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -288,7 +283,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceStats = (id) => {
-    fetch('https://suggestify.io/api/space/metrics/' + id)
+    fetch('http://localhost:8000/api/space/metrics/' + id)
       .then(response => response.json())
       .then(({
         memberCount,
@@ -305,7 +300,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceUsers = (id) => {
-    fetch('https://suggestify.io/api/getDashboardUsers/' + id, {
+    fetch('http://localhost:8000/api/getDashboardUsers/' + id, {
       headers: {
         'Authorization': 'Bearer ' + this.state.token
       }
@@ -322,7 +317,7 @@ class SpaceDash extends React.Component {
       })
   };
   getSpaceEvents = (id) => {
-    fetch('https://suggestify.io/api/events/' + id)
+    fetch('http://localhost:8000/api/events/' + id)
       .then(response => response.json())
       .then(spaceEvents => {
         this.setState(() => ({ spaceEvents }));
@@ -336,7 +331,7 @@ class SpaceDash extends React.Component {
     }
   };
   getPhotoGallery = id => {
-    fetch('https://suggestify.io/api/photos/' + id)
+    fetch('http://localhost:8000/api/photos/' + id)
       .then(response => response.json())
       .then((json) => {
         this.setState(() => ({ photoGallery: json.photos }))
@@ -356,7 +351,7 @@ class SpaceDash extends React.Component {
     let data = new FormData();
     data.append('spaceID', this.state.spaceID);
     data.append('photo', file);
-    fetch('https://suggestify.io/api/photos', {
+    fetch('http://localhost:8000/api/photos', {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -377,7 +372,7 @@ class SpaceDash extends React.Component {
     let photoGallery = this.state.photoGallery.slice();
     let data = new FormData();
     data.append("_method", "DELETE");
-    fetch(`https://suggestify.io/api/photos/${id}`, {
+    fetch(`http://localhost:8000/api/photos/${id}`, {
       headers: { 'Authorization': 'Bearer ' + this.state.token },
       method: "POST",
       body: data,
@@ -444,7 +439,7 @@ class SpaceDash extends React.Component {
   };
   editEventID = id => this.setState({ editEventID: id });
   deleteEvent = (eventID, index) => {
-    fetch(`https://suggestify.io/api/event/delete/${eventID}`, {
+    fetch(`http://localhost:8000/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -467,7 +462,7 @@ class SpaceDash extends React.Component {
       data.append('userID', user);
       data.append('roleID', event.target.value);
 
-      fetch('https://suggestify.io/api/changeRole', {
+      fetch('http://localhost:8000/api/changeRole', {
         method: 'POST',
         body: data,
         headers: {
@@ -483,7 +478,7 @@ class SpaceDash extends React.Component {
     });
   };
   deleteEvent = (eventID, index) => {
-    fetch(`https://suggestify.io/api/event/delete/${eventID}`, {
+    fetch(`http://localhost:8000/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())

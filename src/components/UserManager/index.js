@@ -14,7 +14,7 @@ export default class UserManager extends React.Component {
   }
 
   loadInitalUsers = () => {
-    fetch(`https://suggestify.io/api/customers`, {
+    fetch(`http://localhost:8000/api/customers`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())

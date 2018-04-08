@@ -45,7 +45,7 @@ export default class Team extends React.PureComponent {
   }
 
   getDetail = () => {
-    fetch("https://suggestify.io/api/showTeam/"+this.props.match.params.id, {
+    fetch("http://localhost:8000/api/showTeam/"+this.props.match.params.id, {
       method:'GET'
     })
     .then((response) => {
@@ -60,7 +60,7 @@ export default class Team extends React.PureComponent {
   }
 
   joinTeam = () => {
-    fetch("https://suggestify.io/api/joinTeam/" + this.state.team.id, {
+    fetch("http://localhost:8000/api/joinTeam/" + this.state.team.id, {
       method:'GET',
       headers: {'Authorization':'Bearer ' + this.state.token}
     })

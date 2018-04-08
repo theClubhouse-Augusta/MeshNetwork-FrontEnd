@@ -36,7 +36,7 @@ export default class Checkout extends React.Component {
   loadKey = async () => {
     let key;
     try {
-      const response = await fetch(`https://suggestify.io/api/publickey/${this.props.match.params.id}`);
+      const response = await fetch(`http://localhost:8000/api/publickey/${this.props.match.params.id}`);
       key = await response.text();
     } catch (error) {
             //

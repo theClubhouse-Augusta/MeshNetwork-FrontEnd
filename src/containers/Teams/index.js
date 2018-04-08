@@ -102,7 +102,7 @@ export default class Teams extends React.PureComponent {
     var nextPage = this.state.nextPage;
     var teams = this.state.teams;
     if (this.state.currentPage !== this.state.lastPage) {
-      fetch("https://suggestify.io/api/getTeams/30?page=" + this.state.nextPage, {
+      fetch("http://localhost:8000/api/getTeams/30?page=" + this.state.nextPage, {
         method: 'GET'
       })
         .then((response) => {
@@ -133,7 +133,7 @@ export default class Teams extends React.PureComponent {
     data.append('teamContent', draftToHtml(convertToRaw(this.state.teamContent.getCurrentContent())));
     data.append('teamImage', this.state.teamImage);
 
-    fetch("https://suggestify.io/api/storeTeam", {
+    fetch("http://localhost:8000/api/storeTeam", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -162,7 +162,7 @@ export default class Teams extends React.PureComponent {
 
     data.append('searchContent', this.state.searchContent);
 
-    fetch("https://suggestify.io/api/searchTeams", {
+    fetch("http://localhost:8000/api/searchTeams", {
       method: 'POST',
       body: data
     })

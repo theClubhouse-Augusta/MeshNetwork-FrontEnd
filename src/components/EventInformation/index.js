@@ -100,32 +100,31 @@ export default class EventInformation extends Component {
     this.setState({ snack: true, msg: msg });
     };
 
-    async componentDidMount() {
-        let authorized;
-        try {
-            authorized = await authenticate(localStorage['token']);
-        } finally {
-            if (authorized !== undefined) {
-                if (!authorized.error && authorized) {
-                    this.getOrganizers();
-                    this.getSponsors();
-                    this.loadSkills();
-                    this.getEvent(this.props.id);
-                } else {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('token');
-                    this.props.history.push('/');
-                }
-            } else {
-                localStorage.removeItem('user');
-                localStorage.removeItem('token');
-                this.props.history.push('/');
-            }
+  async componentDidMount() {
+    let authorized;
+    try {
+      authorized = await authenticate(localStorage['token']);
+    } finally {
+      if (authorized !== undefined) {
+        const { error, user } = authorized;
+        if (user) {
+          this.getOrganizers();
+          this.getSponsors();
+          this.loadSkills();
+          this.getEvent(this.props.id);
+        } else if (error) {
+          localStorage.removeItem('token');
+          this.props.history.push('/');
         }
+      } else {
+        localStorage.removeItem('token');
+        this.props.history.push('/');
+      }
     }
+  };
 
     getEvent = eventID => {
-        fetch(`https://suggestify.io/api/event/${eventID}`)
+        fetch(`http://localhost:8000/api/event/${eventID}`)
             .then(response => response.json())
             .then(json => {
                 let sponsors = json.sponsors;
@@ -268,7 +267,7 @@ export default class EventInformation extends Component {
     };
 
     getSponsors = () => {
-        fetch(`https://suggestify.io/api/sponsors`, {
+        fetch(`http://localhost:8000/api/sponsors`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -282,7 +281,7 @@ export default class EventInformation extends Component {
     }
 
     getOrganizers = () => {
-        fetch(`https://suggestify.io/api/organizers/events`, {
+        fetch(`http://localhost:8000/api/organizers/events`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` }
         })
             .then(response => response.json())
@@ -297,7 +296,7 @@ export default class EventInformation extends Component {
     }
 
     loadSkills = () => {
-        fetch('https://suggestify.io/api/skills/all', {
+        fetch('http://localhost:8000/api/skills/all', {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
         })
             .then(response => response.json())
@@ -423,7 +422,7 @@ export default class EventInformation extends Component {
             newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
         }
 
-        fetch(`https://suggestify.io/api/updateEvent`, {
+        fetch(`http://localhost:8000/api/updateEvent`, {
             headers: { Authorization: `Bearer ${localStorage['token']}` },
             method: 'post',
             body: data,
@@ -469,7 +468,7 @@ export default class EventInformation extends Component {
         data.append("challengeFiles", challenge.challengeFiles);
         data.append("eventID", eventID);
     
-        fetch("https://suggestify.io/api/storeChallenge", {
+        fetch("http://localhost:8000/api/storeChallenge", {
           method: "POST",
           body: data,
           headers: { Authorization: "Bearer " + this.state.token }
@@ -495,7 +494,7 @@ export default class EventInformation extends Component {
                     challenge.challengeFiles[i].fileData
                   );
     
-                  fetch("https://suggestify.io/api/uploadFile", {
+                  fetch("http://localhost:8000/api/uploadFile", {
                     method: "POST",
                     body: fileData,
                     headers: { Authorization: "Bearer " + this.state.token }
@@ -531,7 +530,7 @@ export default class EventInformation extends Component {
         data.append("challengeFiles", challenge.challengeFiles);
 
         fetch(
-            "https://suggestify.io/api/updateChallenge/" +
+            "http://localhost:8000/api/updateChallenge/" +
             challenge.id,
             {
                 method: "POST",
@@ -564,7 +563,7 @@ export default class EventInformation extends Component {
                             challenge.challengeFiles[i].fileData
                         );
 
-                        fetch("https://suggestify.io/api/uploadFile", {
+                        fetch("http://localhost:8000/api/uploadFile", {
                             method: "POST",
                             body: fileData,
                             headers: { Authorization: "Bearer " + this.state.token }

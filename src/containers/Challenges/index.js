@@ -47,7 +47,7 @@ export default class Challenges extends React.PureComponent {
   }
 
   getChallenges = () => {
-    fetch("https://suggestify.io/api/getChallenges/5", {
+    fetch("http://localhost:8000/api/getChallenges/5", {
       method: 'GET',
     })
       .then(response => response.json())
@@ -59,7 +59,7 @@ export default class Challenges extends React.PureComponent {
   };
 
   getQuestions = () => {
-    fetch("https://suggestify.io/api/getQuestions/5", {
+    fetch("http://localhost:8000/api/getQuestions/5", {
       method: 'GET',
     })
       .then(response => response.json())
@@ -71,7 +71,7 @@ export default class Challenges extends React.PureComponent {
   };
 
   getTeams = () => {
-    fetch("https://suggestify.io/api/getTeams/5", {
+    fetch("http://localhost:8000/api/getTeams/5", {
       method: 'GET',
     })
       .then(response => response.json())

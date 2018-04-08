@@ -57,7 +57,7 @@ export default class Course extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://suggestify.io/api/detailCourse/" + id, {
+    fetch("http://localhost:8000/api/detailCourse/" + id, {
       method: 'GET'
     })
       .then(response => response.json())
@@ -82,7 +82,7 @@ export default class Course extends React.PureComponent {
 
   enrollCourse = () => {
 
-    fetch("https://suggestify.io/api/enrollCourse/" + this.state.course.id, {
+    fetch("http://localhost:8000/api/enrollCourse/" + this.state.course.id, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token

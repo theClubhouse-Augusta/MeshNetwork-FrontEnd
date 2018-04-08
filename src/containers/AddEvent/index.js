@@ -12,25 +12,21 @@ import FlatButton from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItemText } from 'material-ui/List';
 import moment from 'moment';
-
-import Header from '../../components/Header';
-import { SelectedSponsors } from './SelectedSponsors';
-import Spinner from '../../components/Spinner';
-
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
-
-import DateRangePickerWithGaps from '../../components/DateRangePickerWithGaps';
-import authenticate from '../../utils/Authenticate';
-
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
 import CloseIcon from "react-icons/lib/md/close";
+
+import Header from '../../components/Header';
+import { SelectedSponsors } from './SelectedSponsors';
+import Spinner from '../../components/Spinner';
+import DateRangePickerWithGaps from '../../components/DateRangePickerWithGaps';
+import authenticate from '../../utils/Authenticate';
 
 // styles
 import './style.css';
@@ -50,7 +46,6 @@ const MenuProps = {
 export default class AddEvent extends Component {
   state = {
     token: localStorage.getItem('token'),
-    user: (localStorage['user'] !== null) ? JSON.parse(localStorage['user']) : false,
     loading: true,
     dateError: '',
     modalMessage: '',
@@ -87,7 +82,6 @@ export default class AddEvent extends Component {
     address: '',
     city: '',
     state: '',
-    foo: [],
     challenges: [],
   };
 
@@ -97,44 +91,32 @@ export default class AddEvent extends Component {
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
 
   async componentDidMount() {
-    const { user } = this.state;
-    if (user === false) {
-      this.props.history.push('/');
-    } else {
-      if (user.roleID !== 2 && user.roleID !== 5) {
-        this.props.history.push('/');
-      }
-      let authorized;
-      try {
-        authorized = await authenticate(localStorage['token']);
-      } finally {
-        if (authorized !== undefined) {
-          if (!authorized.error && authorized) {
-            this.getOrganizers();
-            this.getSponsors();
-            this.loadSkills();
-            this.setState({ loading: false });
-          } else if (authorized.error) {
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
-            this.props.history.push('/signin');
+    let authorized;
+    try {
+      authorized = await authenticate(localStorage['token']);
+    } finally {
+      if (authorized !== undefined) {
+        const { error, user } = authorized;
+        if (user) {
+          if (user.roleID !== 2 && user.roleID !== 5) {
+            this.props.history.push('/');
           }
-        } else {
-          this.props.history.push('/');
+          this.getOrganizers();
+          this.getSponsors();
+          this.loadSkills();
+          this.setState({ loading: false });
+        } else if (error) {
+          localStorage.removeItem('token');
+          this.props.history.push('/signin');
         }
+      } else {
+        this.props.history.push('/');
       }
     }
   };
 
-  handleFoo = e => {
-    let bar = e.target.value;
-    let foo = this.state.foo;
-    foo.push(bar);
-    // this.setState({ foo: foo });
-  };
-
   getSponsors = () => {
-    fetch(`https://suggestify.io/api/sponsors`, {
+    fetch(`http://localhost:8000/api/sponsors`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -148,7 +130,7 @@ export default class AddEvent extends Component {
   };
 
   getOrganizers = () => {
-    fetch(`https://suggestify.io/api/organizers/events`, {
+    fetch(`http://localhost:8000/api/organizers/events`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -163,7 +145,7 @@ export default class AddEvent extends Component {
   };
 
   loadSkills = () => {
-    fetch('https://suggestify.io/api/skills/all', {
+    fetch('http://localhost:8000/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
       .then(response => response.json())
@@ -247,42 +229,49 @@ export default class AddEvent extends Component {
         this.showSnack("Sponsor name already taken!");
       }
     }
-  }
+  };
 
   createChallenge = () => {
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
 
-    let newChallenge = { challengeTitle: '', challengeContent: EditorState.createEmpty(), challengeImage: '', challengeImagePreview: '', challengeFiles: [], show: false };
+    let newChallenge = {
+      challengeTitle: '',
+      challengeContent: EditorState.createEmpty(),
+      challengeImage: '',
+      challengeImagePreview: '',
+      challengeFiles: [],
+      show: false
+    };
 
     challenges.push(newChallenge);
 
-    this.setState({
-      challenges: challenges
-    })
+    this.setState(() => ({
+      challenges
+    }));
   };
 
   handleChallengeTitle = (i, event) => {
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
 
     challenges[i].challengeTitle = event.target.value;
 
-    this.setState({
-      challenges: challenges
-    })
+    this.setState(() => ({
+      challenges
+    }));
   }
 
   handleChallengeContent = (i, editorState) => {
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
 
     challenges[i].challengeContent = editorState;
 
-    this.setState({
-      challenges: challenges
-    })
+    this.setState(() => ({
+      challenges
+    }));
   }
 
   handleChallengeImage = (i, event) => {
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
 
     event.preventDefault();
     let reader = new FileReader();
@@ -292,9 +281,9 @@ export default class AddEvent extends Component {
       challenges[i].challengeImage = file;
       challenges[i].challengeImagePreview = reader.result;
 
-      this.setState({
-        challenges: challenges
-      });
+      this.setState(() => ({
+        challenges
+      }));
     };
     reader.readAsDataURL(file);
   }
@@ -302,7 +291,7 @@ export default class AddEvent extends Component {
 
   handleChallengeFile = (index, event) => {
 
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
 
     event.preventDefault();
     let reader = new FileReader();
@@ -313,33 +302,23 @@ export default class AddEvent extends Component {
       challenges[index].challengeFiles.push(fileData);
 
       reader.onloadend = () => {
-        this.setState(
-          {
-            challenges: challenges
-          },
-          () => {
-            this.forceUpdate();
-          }
-        );
+        this.setState(() => ({
+          challenges
+        }));
       };
       reader.readAsDataURL(files[i]);
     }
-  }
+  };
 
 
   deleteFile = (i, j) => {
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
 
     challenges[i].challengeFiles.splice(j, 1);
 
-    this.setState(
-      {
-        challenges: challenges
-      },
-      () => {
-        this.forceUpdate();
-      }
-    );
+    this.setState(() => ({
+      challenges
+    }));
   };
 
   Submit = () => {
@@ -389,7 +368,7 @@ export default class AddEvent extends Component {
       newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
     }
 
-    fetch(`https://suggestify.io/api/event`, {
+    fetch(`http://localhost:8000/api/event`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,
@@ -422,15 +401,12 @@ export default class AddEvent extends Component {
     let data = new FormData();
 
     data.append("challengeTitle", challenge.challengeTitle);
-    data.append(
-      "challengeContent",
-      draftToHtml(convertToRaw(challenge.challengeContent.getCurrentContent()))
-    );
+    data.append("challengeContent", draftToHtml(convertToRaw(challenge.challengeContent.getCurrentContent())));
     data.append("challengeImage", challenge.challengeImage);
     data.append("challengeFiles", challenge.challengeFiles);
     data.append("eventID", eventID);
 
-    fetch("https://suggestify.io/api/storeChallenge", {
+    fetch("http://localhost:8000/api/storeChallenge", {
       method: "POST",
       body: data,
       headers: { Authorization: "Bearer " + this.state.token }
@@ -456,7 +432,7 @@ export default class AddEvent extends Component {
                 challenge.challengeFiles[i].fileData
               );
 
-              fetch("https://suggestify.io/api/uploadFile", {
+              fetch("http://localhost:8000/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }
@@ -472,10 +448,10 @@ export default class AddEvent extends Component {
                 });
             }
           }
-          /*this.showSnack("Challenge Saved");
-          setTimeout(() => {
-            this.props.history.push(`/Challenges/challenge/${json.challenge}`);
-          }, 2000);*/
+          //   this.showSnack("Challenge Saved");
+          //   setTimeout(() => {
+          //     this.props.history.push(`/Challenges/challenge/${json.challenge}`);
+          //   }, 2000);
         }
       });
   };
@@ -573,7 +549,7 @@ export default class AddEvent extends Component {
 
   renderChallengeImageText = (i) => {
 
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
     if (
       challenges[i].challengeImagePreview === "" ||
       challenges[i].challengeImagePreview === undefined ||
@@ -597,7 +573,7 @@ export default class AddEvent extends Component {
   };
 
   renderChallengeImage = (i) => {
-    let challenges = this.state.challenges;
+    let challenges = [...this.state.challenges];
 
     if (challenges[i].challengeImage === "") {
       return (

@@ -66,7 +66,7 @@ export default class Discover extends React.PureComponent {
 
   showCategories = categoryID => {
     fetch(
-      "https://suggestify.io/api/showCategory/" +
+      "http://localhost:8000/api/showCategory/" +
       categoryID +
       "/Challenges",
       {
@@ -87,7 +87,7 @@ export default class Discover extends React.PureComponent {
 
     if (this.state.currentPage !== this.state.lastPage) {
       fetch(
-        "https://suggestify.io/api/getChallenges/30?page=" +
+        "http://localhost:8000/api/getChallenges/30?page=" +
         this.state.nextPage,
         {
           method: "GET"
@@ -116,7 +116,7 @@ export default class Discover extends React.PureComponent {
 
     data.append("searchContent", this.state.searchContent);
 
-    fetch("https://suggestify.io/api/searchChallenges", {
+    fetch("http://localhost:8000/api/searchChallenges", {
       method: "POST",
       body: data
     })

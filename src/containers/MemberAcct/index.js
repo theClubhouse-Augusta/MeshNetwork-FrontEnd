@@ -71,17 +71,16 @@ export default class MemberAcct extends React.PureComponent {
       authorized = await authenticate(localStorage["token"]);
     } finally {
       if (authorized !== undefined) {
-        if (!authorized.error && authorized) {
+        const { error, user } = authorized;
+        if (user) {
           this.getUserInfo();
           this.loadSkills();
           this.setState({ loading: false });
-        } else if (authorized.error) {
-          localStorage.removeItem('user');
+        } else if (error) {
           localStorage.removeItem('token');
           this.props.history.push('/signin');
         }
       } else {
-        localStorage.removeItem('user');
         localStorage.removeItem('token');
         this.props.history.push("/");
       }
@@ -92,7 +91,7 @@ export default class MemberAcct extends React.PureComponent {
   // }
 
   loadSkills = () => {
-    fetch("https://suggestify.io/api/skills/all", {})
+    fetch("http://localhost:8000/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
@@ -167,7 +166,7 @@ export default class MemberAcct extends React.PureComponent {
   };
 
   getUserInfo = () => {
-    fetch(`https://suggestify.io/api/user/auth`, {
+    fetch(`http://localhost:8000/api/user/auth`, {
       method: "GET",
       headers: { Authorization: "Bearer " + this.state.token }
     })
@@ -207,7 +206,7 @@ export default class MemberAcct extends React.PureComponent {
     data.append("password", this.state.password);
     data.append("passwordConfirm", this.state.passwordConfirm);
 
-    fetch(`https://suggestify.io/api/user/update`, {
+    fetch(`http://localhost:8000/api/user/update`, {
       headers: { Authorization: "Bearer " + this.state.token },
       method: "POST",
       body: data

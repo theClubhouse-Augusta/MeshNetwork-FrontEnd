@@ -56,7 +56,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getProfile = () => {
-    fetch("https://suggestify.io/api/workspace/" + this.props.match.params.id, {
+    fetch("http://localhost:8000/api/workspace/" + this.props.match.params.id, {
       method: "GET"
     }
     )
@@ -70,7 +70,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUsers = () => {
-    fetch("https://suggestify.io/api/getKioskUsers")
+    fetch("http://localhost:8000/api/getKioskUsers")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -80,7 +80,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getReasons = () => {
-    fetch("https://suggestify.io/api/occasions")
+    fetch("http://localhost:8000/api/occasions")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -90,7 +90,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getUpcomingEvents = () => {
-    fetch("https://suggestify.io/api/upcoming/" + this.props.match.params.id)
+    fetch("http://localhost:8000/api/upcoming/" + this.props.match.params.id)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -100,7 +100,7 @@ export default class Kiosk extends React.PureComponent {
   };
 
   getToday = id => {
-    fetch("https://suggestify.io/api/todayevent/" + id, {
+    fetch("http://localhost:8000/api/todayevent/" + id, {
      method:'GET'
     })
       .then(response => response.json())
@@ -118,7 +118,7 @@ export default class Kiosk extends React.PureComponent {
     data.append("spaceID", this.state.workspace.id);
     data.append("occasion", this.state.selectedReason);
 
-    fetch("https://suggestify.io/api/appearance", {
+    fetch("http://localhost:8000/api/appearance", {
       method: "POST",
       body: data
     })
