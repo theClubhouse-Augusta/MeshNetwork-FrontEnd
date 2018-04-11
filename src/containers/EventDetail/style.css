@@ -198,7 +198,7 @@
 }
 
 .eventDetailSectionTitle {
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #ff4d58;
   font-size: 1.5em;
   margin-bottom: 10px;
@@ -226,7 +226,7 @@
   justify-content: center;
   padding-top: 15px;
   padding-bottom: 15px;
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   font-size: 1.3em;
   border-radius: 4px;
 }

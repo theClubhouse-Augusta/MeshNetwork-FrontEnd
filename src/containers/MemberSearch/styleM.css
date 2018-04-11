@@ -6,7 +6,7 @@
 
   .memberSearchHeaderTitle {
     text-align: center;
-    font-family: "HankenBook";
+    font-family: HankenBook, sans-serif;
     color: #ffffff;
     font-size: 2em;
   }
@@ -40,7 +40,7 @@
 
   .memberSearchHeaderTitle {
     text-align: center;
-    font-family: "HankenBook";
+    font-family: HankenBook, sans-serif;
     color: #ffffff;
     font-size: 2em;
   }

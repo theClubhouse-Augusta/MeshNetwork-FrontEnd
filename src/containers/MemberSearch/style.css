@@ -25,7 +25,7 @@
 }
 
 .memberSearchHeaderTitle {
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #ffffff;
   font-size: 3em;
 }

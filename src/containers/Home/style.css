@@ -57,7 +57,7 @@ textarea {
 }
 
 .homeHeaderContentTitle {
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #ffffff;
   font-size: 3em;
 }
@@ -96,7 +96,7 @@ textarea {
 
 .homeMainSectionTitle,
 .homeMainSectionTitleThree {
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #222222;
   font-size: 2em;
   padding-top: 15px;
@@ -150,7 +150,7 @@ textarea {
 }
 
 .homeMainSectionBlockTitle {
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #222222;
   font-size: 1.5em;
   margin: 1em 0 0.5em 0;

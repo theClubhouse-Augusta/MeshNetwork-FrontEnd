@@ -82,11 +82,9 @@ export default class RightBar extends React.PureComponent {
   handleChallengeTitle = event => {
     this.setState({ challengeTitle: event.target.value });
   };
-
   handleChallengeContent = editorState => {
     this.setState({ challengeContent: editorState });
   };
-
   handleChallengeCategories = challengeCategories => {
     this.setState({ challengeCategories });
   };
@@ -115,21 +113,16 @@ export default class RightBar extends React.PureComponent {
     let reader = new FileReader();
     let files = event.target.files;
 
-    let challengeFiles = this.state.challengeFiles;
+    let challengeFiles = [...this.state.challengeFiles];
 
     for (let i = 0; i < files.length; i++) {
       let fileData = { fileData: files[i], id: 0 };
       challengeFiles.push(fileData);
 
       reader.onloadend = () => {
-        this.setState(
-          {
-            challengeFiles: challengeFiles
-          },
-          () => {
-            this.forceUpdate();
-          }
-        );
+        this.setState(() => ({
+          challengeFiles
+        }));
       };
       reader.readAsDataURL(files[i]);
     }
@@ -147,26 +140,21 @@ export default class RightBar extends React.PureComponent {
       method: 'GET'
     })
       .then(response => response.json())
-      .then(json => {
-        this.setState({
-          categories: json.categories
-        });
+      .then(({ categories }) => {
+        this.setState(() => ({
+          categories
+        }));
       });
   };
 
   deleteFile = i => {
-    let challengeFiles = this.state.challengeFiles;
+    let challengeFiles = [...this.state.challengeFiles];
 
     challengeFiles.splice(i, 1);
 
-    this.setState(
-      {
-        challengeFiles: challengeFiles
-      },
-      () => {
-        this.forceUpdate();
-      }
-    );
+    this.setState(() => ({
+      challengeFiles
+    }));
   };
 
   storeChallenge = () => {

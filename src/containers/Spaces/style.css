@@ -136,7 +136,7 @@ div#dude {
 
 .spacesBlockTitle {
   padding: 10px;
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #ff4d58;
   font-size: 1.25em;
   margin-top: 10px;

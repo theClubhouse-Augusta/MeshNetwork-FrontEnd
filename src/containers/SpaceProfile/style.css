@@ -266,7 +266,7 @@ a.spaceProfileActions {
 }
 
 .spaceMainTitle {
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #ff4d58;
   font-size: 3em;
   margin-top: 15px;
@@ -274,7 +274,7 @@ a.spaceProfileActions {
 }
 
 .spaceMainSlogan {
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #bbbbbb;
   font-size: 1.2em;
   margin-bottom: 15px;
@@ -399,7 +399,7 @@ a.spaceProfileActions {
 
 .spaceEventBlockTitle {
   padding: 10px;
-  font-family: "HankenBook";
+  font-family: HankenBook, sans-serif;
   color: #ff4d58;
   font-size: 1.5em;
   margin-top: 10px;
