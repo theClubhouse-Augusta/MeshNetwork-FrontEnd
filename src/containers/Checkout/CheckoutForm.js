@@ -1,6 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
-
+import Recaptcha from 'react-recaptcha';
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/Button";
 import Snackbar from "material-ui/Snackbar";
@@ -16,13 +16,10 @@ import Visibility from "material-ui-icons/Visibility";
 import VisibilityOff from "material-ui-icons/VisibilityOff";
 import { injectStripe } from "react-stripe-elements";
 import uuid from "uuid/v4";
-
 import CardSection from "./CardSection";
 import Header from "../../components/Header";
-
 import "./style.css";
 import "./styleM.css";
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -33,7 +30,6 @@ const MenuProps = {
     }
   }
 };
-
 class CheckoutForm extends React.PureComponent {
   state = {
     customer_idempotency_key: uuid(),
@@ -60,9 +56,9 @@ class CheckoutForm extends React.PureComponent {
     plan: "free",
     isLoading: false,
     showPassword: false,
-    passwordError: ""
+    passwordError: "",
+    recaptcha: "",
   };
-
   componentDidMount() {
     if (this.state.token && this.state.user) {
       this.props.history.push("/user/" + this.state.user.id);
@@ -73,19 +69,16 @@ class CheckoutForm extends React.PureComponent {
         this.loadPlans();
       }
     }
-  }
-
+  };
   handleMouseDownPassword = event => {
     event.preventDefault();
   };
-
   handleClickShowPasssword = () => {
     this.setState({ showPassword: !this.state.showPassword });
   };
-
   getSpace = () => {
     fetch(
-      "http://localhost:8000/api/workspace/" + this.props.match.params.id,
+      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
       {
         method: "GET"
       }
@@ -97,19 +90,17 @@ class CheckoutForm extends React.PureComponent {
         });
       });
   };
-
   loadSkills = () => {
-    fetch("http://localhost:8000/api/skills/all", {})
+    fetch("https://innovationmesh.com/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
       })
       .catch(error => { });
   };
-
   loadPlans = () => {
     fetch(
-      `http://localhost:8000/api/plans/${this.props.match.params.id}`,
+      `https://innovationmesh.com/api/plans/${this.props.match.params.id}`,
       {}
     )
       .then(response => response.json())
@@ -120,19 +111,16 @@ class CheckoutForm extends React.PureComponent {
       })
       .catch(error => { });
   };
-
   selectPlan = (e, selected) => {
     e.preventDefault();
     this.setState({ plan: selected });
   };
-
   handleRequestClose = () => {
     this.setState({ snack: false, msg: "" });
   };
   showSnack = msg => {
     this.setState({ snack: true, msg: msg });
   };
-
   handleName = event => {
     this.setState({ name: event.target.value.replace(/\s\s+/g, " ") });
   };
@@ -168,11 +156,9 @@ class CheckoutForm extends React.PureComponent {
     };
     reader.readAsDataURL(file);
   };
-
   handleSkillTags = event => {
     this.setState({ selectedTags: event.target.value });
   };
-
   renderAvatarImage = () => {
     if (this.state.avatar !== "") {
       return (
@@ -184,7 +170,6 @@ class CheckoutForm extends React.PureComponent {
       );
     }
   };
-
   renderAvatarImageText = () => {
     if (
       this.state.imagePreviewUrl === "" ||
@@ -211,11 +196,8 @@ class CheckoutForm extends React.PureComponent {
   onBlur = () => this.setState({ focused: false });
   onFocusPlan = () => this.setState({ planFocused: true });
   onBlurPlan = () => this.setState({ planFocused: false });
-
   storeUser = e => {
-    this.setState({
-      isLoading: true
-    });
+    this.setState({ isLoading: true });
     e.preventDefault();
     let data = new FormData();
     let {
@@ -227,7 +209,8 @@ class CheckoutForm extends React.PureComponent {
       avatar,
       plan,
       customer_idempotency_key,
-      subscription_idempotency_key
+      subscription_idempotency_key,
+      recaptcha,
     } = this.state;
     this.props.stripe.createToken({ name }).then(({ token }) => {
       data.append("name", name.trim());
@@ -246,8 +229,8 @@ class CheckoutForm extends React.PureComponent {
       data.append("username", name);
       data.append("customer_idempotency_key", customer_idempotency_key);
       data.append("subscription_idempotency_key", subscription_idempotency_key);
-
-      fetch("http://localhost:8000/api/signUp", {
+      data.append("recaptcha", recaptcha);
+      fetch("https://innovationmesh.com/api/signUp", {
         method: "POST",
         body: data
       })
@@ -257,7 +240,7 @@ class CheckoutForm extends React.PureComponent {
             this.showSnack(user.error);
           } else if (user.token) {
             localStorage.setItem("token", user.token);
-            fetch("http://localhost:8000/api/user/auth", {
+            fetch("https://innovationmesh.com/api/user/auth", {
               method: "GET",
               headers: { Authorization: "Bearer " + user.token }
             })
@@ -278,19 +261,16 @@ class CheckoutForm extends React.PureComponent {
         });
     });
   };
-
   storeFreeUser = e => {
     this.setState({
       isLoading: true
     });
     e.preventDefault();
     let data = new FormData();
-    let { name, email, password, bio, selectedTags, avatar, plan } = this.state;
-
+    let { name, email, password, bio, selectedTags, avatar, plan, recaptcha, } = this.state;
     if (plan === "already") {
       plan = "free";
     }
-
     data.append("name", name.trim());
     if (!!selectedTags.length) {
       data.append("skills", selectedTags);
@@ -302,38 +282,25 @@ class CheckoutForm extends React.PureComponent {
     data.append("avatar", avatar);
     data.append("plan", plan);
     data.append("username", name);
-
-    fetch("http://localhost:8000/api/signUp", {
+    data.append("recaptcha", recaptcha);
+    fetch("https://innovationmesh.com/api/signUp", {
       method: "POST",
       body: data
     })
       .then(response => response.json())
-      .then(json => {
-        if (json.error) {
-          this.showSnack(json.error);
-        } else if (json.token) {
-          let mainToken = json.token;
-          localStorage.setItem("token", mainToken);
-          fetch("http://localhost:8000/api/user/auth", {
-            method: "GET",
-            headers: { Authorization: "Bearer " + mainToken }
-          })
-            .then(response => response.json())
-            .then(json => {
-              let mainUser = json.user;
-              localStorage.setItem("user", JSON.stringify(mainUser));
-              this.showSnack("Welcome to " + this.state.space.name + "!");
-              setTimeout(() => {
-                this.props.history.goBack();
-              }, 2000);
-            });
+      .then(({ user, error }) => {
+        if (error) {
+          this.showSnack(error);
+        } else if (user) {
+          localStorage.setItem("token", user.token);
+          localStorage.setItem("user", JSON.stringify(user));
+          this.showSnack("Welcome to " + this.state.space.name + "!");
+          setTimeout(() => {
+            this.props.history.push(`/user/${user.id}`);
+          }, 2000);
         }
-        this.setState({
-          isLoading: false
-        });
       });
   };
-
   renderLoading = () => {
     if (this.state.isLoading) {
       return (
@@ -350,19 +317,18 @@ class CheckoutForm extends React.PureComponent {
       );
     }
   };
-
   checkPlan = () => {
     if (this.state.plan === "free" || this.state.plan === "already") {
       return this.storeFreeUser
-    }
-    else {
+    } else {
       return this.storeUser
     }
-  }
-
+  };
+  verifyUser = recaptcha => {
+    this.setState(() => ({ recaptcha }));
+  };
   render() {
     const { loadedTags, plan, loadedPlans } = this.state;
-
     return (
       <form className="container" onSubmit={this.handleSubmit}>
         <Helmet
@@ -386,7 +352,6 @@ class CheckoutForm extends React.PureComponent {
             </h3>
           </div>
         </header>
-
         <main className="userSignUpMain">
           <div className="spaceSignUpMain">
             <div
@@ -443,13 +408,6 @@ class CheckoutForm extends React.PureComponent {
                   {this.state.passwordError}
                 </FormHelperText>
               </FormControl>
-
-              {/*<TextField label="Bio"
-                            value={this.state.bio}
-                            onChange={this.handleBio}
-                            margin="normal"
-                        />*/}
-
               {!!loadedTags.length && (
                 <FormControl style={{ marginTop: 24 }}>
                   <InputLabel htmlFor="tags-multiple">
@@ -474,13 +432,11 @@ class CheckoutForm extends React.PureComponent {
                   </Select>
                 </FormControl>
               )}
-
               {this.props.pubkey && (
                 <React.Fragment>
                   <label style={{ marginBottom: 12, marginTop: "60px" }}>
                     Select a Plan
                   </label>
-
                   <FlatButton
                     style={{
                       backgroundColor:
@@ -491,10 +447,7 @@ class CheckoutForm extends React.PureComponent {
                       fontWeight: "bold"
                     }}
                     onClick={e => this.selectPlan(e, "free")}
-                  >
-                    Free tier
-                  </FlatButton>
-
+                  >Free tier</FlatButton>
                   <FlatButton
                     style={{
                       backgroundColor:
@@ -505,12 +458,9 @@ class CheckoutForm extends React.PureComponent {
                       fontWeight: "bold"
                     }}
                     onClick={e => this.selectPlan(e, "already")}
-                  >
-                    Already a Member
-                  </FlatButton>
+                  >Already a Member</FlatButton>
                 </React.Fragment>
               )}
-
               {!!loadedPlans.length &&
                 loadedPlans.map((plan, key) => {
                   let id = plan.id;
@@ -527,14 +477,11 @@ class CheckoutForm extends React.PureComponent {
                         fontWeight: "bold"
                       }}
                       onClick={e => this.selectPlan(e, id)}
-                    >
-                      {plan.name} - {amount}
-                    </FlatButton>
+                    >{plan.name} - {amount}</FlatButton>
                   );
-                })}
-
+                })
+              }
               {plan !== "free" && plan !== "already" && this.props.pubkey ? <CardSection /> : null}
-
               <div className="spaceLogoMainImageRow">
                 <label
                   htmlFor="avatar-image"
@@ -550,6 +497,14 @@ class CheckoutForm extends React.PureComponent {
                   style={{ display: "none" }}
                 />
               </div>
+              <div style={{ margin: '0 auto' }}>
+                <Recaptcha
+                  sitekey="6LeZkFIUAAAAAA9d-yORuzPry9zwa1NYXlvS30wI"
+                  render="explicit"
+                  onloadCallback={() => { console.log('gotcha') }}
+                  verifyCallback={response => { this.verifyUser(response) }}
+                />
+              </div>
               <FlatButton
                 style={{
                   backgroundColor: "#ff4d58",
@@ -559,18 +514,14 @@ class CheckoutForm extends React.PureComponent {
                   fontWeight: "bold"
                 }}
                 onClick={this.checkPlan()}
-              >
-                Sign Up
-              </FlatButton>
+              >Sign Up</FlatButton>
             </div>
           </div>
         </main>
-
         <footer className="homeFooterContainer">
           Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
           723-5782
         </footer>
-
         <Snackbar
           open={this.state.snack}
           message={this.state.msg}
@@ -581,5 +532,4 @@ class CheckoutForm extends React.PureComponent {
     );
   }
 }
-
 export default injectStripe(CheckoutForm);

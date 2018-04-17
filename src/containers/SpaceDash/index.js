@@ -44,7 +44,8 @@ import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
 import "../../assets/css/material-dashboard-react.css";
 import ResourceForm from '../../components/ResourceForm';
-const spaceInfoAPI = 'http://localhost:8000/api/workspace/auth/';
+const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/auth/';
+
 class SpaceDash extends React.Component {
   state = {
     token: localStorage.getItem('token'),
@@ -126,7 +127,7 @@ class SpaceDash extends React.Component {
   };
   componentDidUpdate() { this.refs.mainPanel.scrollTop = 0; }
   loadJoins = () => {
-    fetch(`http://localhost:8000/api/joins/${this.props.match.params.id}`, {})
+    fetch(`https://innovationmesh.com/api/joins/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -148,7 +149,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadEventMetrics = () => {
-    fetch(`http://localhost:8000/api/events/metrics/${this.props.match.params.id}`, {})
+    fetch(`https://innovationmesh.com/api/events/metrics/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -170,7 +171,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadAppearances = () => {
-    fetch(`http://localhost:8000/api/appearances/${this.props.match.params.id}`, {})
+    fetch(`https://innovationmesh.com/api/appearances/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -245,7 +246,7 @@ class SpaceDash extends React.Component {
   getMonthlyBalance = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`http://localhost:8000/api/balance/current/${lastMonth}/${now}`, {
+    fetch(`https://innovationmesh.com/api/balance/current/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -270,7 +271,7 @@ class SpaceDash extends React.Component {
   getMonthlyCustomerCount = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`http://localhost:8000/api/customers/month/${lastMonth}/${now}`, {
+    fetch(`https://innovationmesh.com/api/customers/month/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -283,7 +284,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceStats = (id) => {
-    fetch('http://localhost:8000/api/space/metrics/' + id)
+    fetch('https://innovationmesh.com/api/space/metrics/' + id)
       .then(response => response.json())
       .then(({
         memberCount,
@@ -300,7 +301,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceUsers = (id) => {
-    fetch('http://localhost:8000/api/getDashboardUsers/' + id, {
+    fetch('https://innovationmesh.com/api/getDashboardUsers/' + id, {
       headers: {
         'Authorization': 'Bearer ' + this.state.token
       }
@@ -317,7 +318,7 @@ class SpaceDash extends React.Component {
       })
   };
   getSpaceEvents = (id) => {
-    fetch('http://localhost:8000/api/events/' + id)
+    fetch('https://innovationmesh.com/api/events/' + id)
       .then(response => response.json())
       .then(spaceEvents => {
         this.setState(() => ({ spaceEvents }));
@@ -331,7 +332,7 @@ class SpaceDash extends React.Component {
     }
   };
   getPhotoGallery = id => {
-    fetch('http://localhost:8000/api/photos/' + id)
+    fetch('https://innovationmesh.com/api/photos/' + id)
       .then(response => response.json())
       .then((json) => {
         this.setState(() => ({ photoGallery: json.photos }))
@@ -351,7 +352,7 @@ class SpaceDash extends React.Component {
     let data = new FormData();
     data.append('spaceID', this.state.spaceID);
     data.append('photo', file);
-    fetch('http://localhost:8000/api/photos', {
+    fetch('https://innovationmesh.com/api/photos', {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -372,7 +373,7 @@ class SpaceDash extends React.Component {
     let photoGallery = this.state.photoGallery.slice();
     let data = new FormData();
     data.append("_method", "DELETE");
-    fetch(`http://localhost:8000/api/photos/${id}`, {
+    fetch(`https://innovationmesh.com/api/photos/${id}`, {
       headers: { 'Authorization': 'Bearer ' + this.state.token },
       method: "POST",
       body: data,
@@ -439,7 +440,7 @@ class SpaceDash extends React.Component {
   };
   editEventID = id => this.setState({ editEventID: id });
   deleteEvent = (eventID, index) => {
-    fetch(`http://localhost:8000/api/event/delete/${eventID}`, {
+    fetch(`https://innovationmesh.com/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -462,7 +463,7 @@ class SpaceDash extends React.Component {
       data.append('userID', user);
       data.append('roleID', event.target.value);
 
-      fetch('http://localhost:8000/api/changeRole', {
+      fetch('https://innovationmesh.com/api/changeRole', {
         method: 'POST',
         body: data,
         headers: {
@@ -478,7 +479,7 @@ class SpaceDash extends React.Component {
     });
   };
   deleteEvent = (eventID, index) => {
-    fetch(`http://localhost:8000/api/event/delete/${eventID}`, {
+    fetch(`https://innovationmesh.com/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -818,8 +819,7 @@ class SpaceDash extends React.Component {
           </Grid>
         </div>
       )
-    }
-    else if (this.state.currentPage === 'updateSpace') {
+    } else if (this.state.currentPage === 'updateSpace') {
       return (
         <div>
           <SpaceInformation
@@ -829,8 +829,7 @@ class SpaceDash extends React.Component {
           />
         </div>
       );
-    }
-    else if (this.state.currentPage === 'updatePhotos') {
+    } else if (this.state.currentPage === 'updatePhotos') {
       return (
         <div className="spaceDashContent">
           <div style={{ width: '20%', paddingLeft: '15px', paddingRight: '15px' }}>
@@ -851,8 +850,7 @@ class SpaceDash extends React.Component {
           </div>
         </div>
       )
-    }
-    else if (this.state.currentPage === 'organizerManager') {
+    } else if (this.state.currentPage === 'organizerManager') {
       return spaceUsers.length ?
         <OrganizerManager
           users={this.state.spaceUsers}
@@ -861,15 +859,13 @@ class SpaceDash extends React.Component {
         />
         :
         <Spinner loading={true} />;
-    }
-    else if (this.state.currentPage === 'userManager') {
+    } else if (this.state.currentPage === 'userManager') {
       return (
         <div className="spaceDashContent">
           <UserManager {...this.props} />
         </div>
       );
-    }
-    else if (this.state.currentPage === 'userParticipation') {
+    } else if (this.state.currentPage === 'userParticipation') {
       return (
         <div className="spaceDashContent">
           <div style={{ marginLeft: 32 }}>
@@ -879,8 +875,7 @@ class SpaceDash extends React.Component {
           </div>
         </div>
       );
-    }
-    else if (this.state.currentPage === 'editResources') {
+    } else if (this.state.currentPage === 'editResources') {
       return (
         this.state.spaceID ?
           <ResourceForm
@@ -899,7 +894,6 @@ class SpaceDash extends React.Component {
     } else if (this.state.currentPage === 'userInfo') {
     }
   }
-
   render() {
     const {
       classes,
@@ -948,5 +942,4 @@ class SpaceDash extends React.Component {
     );
   }
 }
-
 export default withStyles(appStyle)(SpaceDash);

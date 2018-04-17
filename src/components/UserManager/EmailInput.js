@@ -21,7 +21,7 @@ export default class EmailInput extends Component {
     let data = new FormData();
     data.append('email', this.state.email);
     data.append('customer_id', this.state.customer_id);
-    fetch(`http://localhost:8000/api/customer/email`, {
+    fetch(`https://innovationmesh.com/api/customer/email`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'POST',
       body: data,

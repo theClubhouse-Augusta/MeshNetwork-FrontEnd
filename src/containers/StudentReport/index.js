@@ -32,7 +32,7 @@ export default class StudentReport extends React.PureComponent {
     }
 
     getCourseStudent = () => {
-        fetch('http://localhost:8000/api/getCourseStudent/' + this.props.match.params.cid + '/' + this.props.match.params.uid, {
+        fetch('https://innovationmesh.com/api/getCourseStudent/' + this.props.match.params.cid + '/' + this.props.match.params.uid, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + this.state.token

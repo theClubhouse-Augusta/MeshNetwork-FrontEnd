@@ -86,7 +86,7 @@ export default class LMSDash extends React.PureComponent {
 
   getCourses = (category = 0) => {
 
-    fetch('http://localhost:8000/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
+    fetch('https://innovationmesh.com/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -139,7 +139,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("http://localhost:8000/api/getCategories", {
+    fetch("https://innovationmesh.com/api/getCategories", {
       method: 'GET'
     })
       .then(response => response.json())
@@ -152,7 +152,7 @@ export default class LMSDash extends React.PureComponent {
 
   createCourse = () => {
 
-    fetch('http://localhost:8000/api/storeCourse', {
+    fetch('https://innovationmesh.com/api/storeCourse', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -171,7 +171,7 @@ export default class LMSDash extends React.PureComponent {
 
   deleteCourse = () => {
     let course = this.state.courses;
-    fetch("http://localhost:8000/api/deleteCourse/" + this.state.activeCourse, {
+    fetch("https://innovationmesh.com/api/deleteCourse/" + this.state.activeCourse, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })

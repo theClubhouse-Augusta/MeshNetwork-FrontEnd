@@ -6325,6 +6325,10 @@ react-prop-types@^0.4.0:
   dependencies:
     warning "^3.0.0"
 
+react-recaptcha@^2.3.7:
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/react-recaptcha/-/react-recaptcha-2.3.7.tgz#5a10ea4a7a7f59e6b602d4d385caf73a9bd15043"
+
 react-resize-detector@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-1.1.0.tgz#4a9831fa3caad32230478dd0185cbd2aa91a5ebf"

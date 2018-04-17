@@ -11,149 +11,131 @@ import {
 
 const dashboardRoutes = ({ usingCRM, isOrganizer }) => {
   if (usingCRM && isOrganizer) {
-    return [
-      {
-        path: "main",
-        sidebarName: "Dashboard",
-        navbarName: "Mesh-Network Dashboard",
-        icon: Dashboard,
-      },
-      {
-        path: "updateSpace",
-        sidebarName: "Space Information",
-        navbarName: "Space Info",
-        icon: LocationOn,
-      },
-      {
-        path: "updatePhotos",
-        sidebarName: "Photo Gallery",
-        navbarName: "Photos",
-        icon: PhotoLibrary,
-        // icon: ContentPaste,
-      },
-      {
-        path: "editResources",
-        sidebarName: "Resources",
-        navbarName: "Resources",
-        icon: LibraryBooks,
-      },
-      {
-        path: "organizerManager",
-        sidebarName: "Organizers",
-        navbarName: "Organizers",
-        icon: BubbleChart,
-      },
-      {
-        path: "userManager",
-        sidebarName: "Customer Management",
-        navbarName: "Customer mgmt",
-        icon: Person,
-      },
-      {
-        path: "userParticipation",
-        sidebarName: "User Engagement",
-        navbarName: "User Engagement",
-        icon: Notifications,
-      },
-      {
-        path: "/addEvent",
-        sidebarName: "Create Event",
-        navbarName: "Create Event",
-        icon: Event,
-      },
+    return [{
+      path: "main",
+      sidebarName: "Dashboard",
+      navbarName: "Mesh-Network Dashboard",
+      icon: Dashboard,
+    }, {
+      path: "updateSpace",
+      sidebarName: "Space Information",
+      navbarName: "Space Info",
+      icon: LocationOn,
+    }, {
+      path: "updatePhotos",
+      sidebarName: "Photo Gallery",
+      navbarName: "Photos",
+      icon: PhotoLibrary,
+      // icon: ContentPaste,
+    }, {
+      path: "editResources",
+      sidebarName: "Resources",
+      navbarName: "Resources",
+      icon: LibraryBooks,
+    },
+    // {
+    //   path: "organizerManager",
+    //   sidebarName: "Organizers",
+    //   navbarName: "Organizers",
+    //   icon: BubbleChart,
+    // }, 
+    {
+      path: "userManager",
+      sidebarName: "Customer Management",
+      navbarName: "Customer mgmt",
+      icon: Person,
+    }, {
+      path: "userParticipation",
+      sidebarName: "User Engagement",
+      navbarName: "User Engagement",
+      icon: Notifications,
+    }, {
+      path: "/addEvent",
+      sidebarName: "Create Event",
+      navbarName: "Create Event",
+      icon: Event,
+    },
     ];
   } else if (usingCRM && !isOrganizer) {
-    return [
-      {
-        path: "main",
-        sidebarName: "Dashboard",
-        navbarName: "Mesh-Network Dashboard",
-        icon: Dashboard,
-      },
-      {
-        path: "updateSpace",
-        sidebarName: "Space Information",
-        navbarName: "Space Info",
-        icon: LocationOn,
-      },
-      {
-        path: "updatePhotos",
-        sidebarName: "Photo Gallery",
-        navbarName: "Photos",
-        icon: PhotoLibrary,
-        // icon: ContentPaste,
-      },
-      {
-        path: "editResources",
-        sidebarName: "Resources",
-        navbarName: "Resources",
-        icon: LibraryBooks,
-      },
-      {
-        path: "userManager",
-        sidebarName: "Customer Management",
-        navbarName: "Customer mgmt",
-        icon: Person,
-      },
-      {
-        path: "userParticipation",
-        sidebarName: "User Engagement",
-        navbarName: "User Engagement",
-        icon: Notifications,
-      },
-      {
-        path: "/addEvent",
-        sidebarName: "Create Event",
-        navbarName: "Create Event",
-        icon: Event,
-      },
+    return [{
+      path: "main",
+      sidebarName: "Dashboard",
+      navbarName: "Mesh-Network Dashboard",
+      icon: Dashboard,
+    }, {
+      path: "updateSpace",
+      sidebarName: "Space Information",
+      navbarName: "Space Info",
+      icon: LocationOn,
+    }, {
+      path: "updatePhotos",
+      sidebarName: "Photo Gallery",
+      navbarName: "Photos",
+      icon: PhotoLibrary,
+      // icon: ContentPaste,
+    }, {
+      path: "editResources",
+      sidebarName: "Resources",
+      navbarName: "Resources",
+      icon: LibraryBooks,
+    }, {
+      path: "userManager",
+      sidebarName: "Customer Management",
+      navbarName: "Customer mgmt",
+      icon: Person,
+    }, {
+      path: "userParticipation",
+      sidebarName: "User Engagement",
+      navbarName: "User Engagement",
+      icon: Notifications,
+    }, {
+      path: "/addEvent",
+      sidebarName: "Create Event",
+      navbarName: "Create Event",
+      icon: Event,
+    },
     ];
   } else if (!usingCRM) {
-    return [
-      {
-        path: "main",
-        sidebarName: "Dashboard",
-        navbarName: "Mesh-Network Dashboard",
-        icon: Dashboard,
-      },
-      {
-        path: "updateSpace",
-        sidebarName: "Space Information",
-        navbarName: "Space Info",
-        icon: LocationOn,
-      },
-      {
-        path: "updatePhotos",
-        sidebarName: "Photo Gallery",
-        navbarName: "Photos",
-        icon: PhotoLibrary,
-        // icon: ContentPaste,
-      },
-      {
-        path: "editResources",
-        sidebarName: "Resources",
-        navbarName: "Resources",
-        icon: LibraryBooks,
-      },
-      {
-        path: "organizerManager",
-        sidebarName: "Organizers",
-        navbarName: "Organizers",
-        icon: BubbleChart,
-      },
-      {
-        path: "userParticipation",
-        sidebarName: "User Engagement",
-        navbarName: "User Engagement",
-        icon: Notifications,
-      },
-      {
-        path: "/addEvent",
-        sidebarName: "Create Event",
-        navbarName: "Create Event",
-        icon: Event,
-      },
+    return [{
+      path: "main",
+      sidebarName: "Dashboard",
+      navbarName: "Mesh-Network Dashboard",
+      icon: Dashboard,
+    }, {
+      path: "updateSpace",
+      sidebarName: "Space Information",
+      navbarName: "Space Info",
+      icon: LocationOn,
+    }, {
+      path: "updatePhotos",
+      sidebarName: "Photo Gallery",
+      navbarName: "Photos",
+      icon: PhotoLibrary,
+      // icon: ContentPaste,
+    }, {
+      path: "editResources",
+      sidebarName: "Resources",
+      navbarName: "Resources",
+      icon: LibraryBooks,
+    },
+    // {
+    //   path: "organizerManager",
+    //   sidebarName: "Organizers",
+    //   navbarName: "Organizers",
+    //   icon: BubbleChart,
+    // }, 
+    {
+      path: "userParticipation",
+      sidebarName: "User Engagement",
+      navbarName: "User Engagement",
+      icon: Notifications,
+    }, {
+      path: "/addEvent",
+      sidebarName: "Create Event",
+      navbarName: "Create Event",
+      icon: Event,
+    },
     ];
   }
 }
-export default dashboardRoutes;
+export default dashboardRoutes; 

@@ -124,7 +124,7 @@ export default class EventInformation extends Component {
   };
 
   getEvent = eventID => {
-    fetch(`http://localhost:8000/api/event/${eventID}`)
+    fetch(`https://innovationmesh.com/api/event/${eventID}`)
       .then(response => response.json())
       .then(json => {
         let sponsors = json.sponsors;
@@ -268,7 +268,7 @@ export default class EventInformation extends Component {
   };
 
   getSponsors = () => {
-    fetch(`http://localhost:8000/api/sponsors`, {
+    fetch(`https://innovationmesh.com/api/sponsors`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -282,7 +282,7 @@ export default class EventInformation extends Component {
   }
 
   getOrganizers = () => {
-    fetch(`http://localhost:8000/api/organizers/events`, {
+    fetch(`https://innovationmesh.com/api/organizers/events`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -297,7 +297,7 @@ export default class EventInformation extends Component {
   }
 
   loadSkills = () => {
-    fetch('http://localhost:8000/api/skills/all', {
+    fetch('https://innovationmesh.com/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
       .then(response => response.json())
@@ -423,7 +423,7 @@ export default class EventInformation extends Component {
       newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
     }
 
-    fetch(`http://localhost:8000/api/updateEvent`, {
+    fetch(`https://innovationmesh.com/api/updateEvent`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,
@@ -467,7 +467,7 @@ export default class EventInformation extends Component {
     data.append("challengeFiles", challenge.challengeFiles);
     data.append("eventID", eventID);
 
-    fetch("http://localhost:8000/api/storeChallenge", {
+    fetch("https://innovationmesh.com/api/storeChallenge", {
       method: "POST",
       body: data,
       headers: { Authorization: "Bearer " + this.state.token }
@@ -493,7 +493,7 @@ export default class EventInformation extends Component {
                 challenge.challengeFiles[i].fileData
               );
 
-              fetch("http://localhost:8000/api/uploadFile", {
+              fetch("https://innovationmesh.com/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }
@@ -529,7 +529,7 @@ export default class EventInformation extends Component {
     data.append("challengeFiles", challenge.challengeFiles);
 
     fetch(
-      "http://localhost:8000/api/updateChallenge/" +
+      "https://innovationmesh.com/api/updateChallenge/" +
       challenge.id,
       {
         method: "POST",
@@ -562,7 +562,7 @@ export default class EventInformation extends Component {
                 challenge.challengeFiles[i].fileData
               );
 
-              fetch("http://localhost:8000/api/uploadFile", {
+              fetch("https://innovationmesh.com/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }

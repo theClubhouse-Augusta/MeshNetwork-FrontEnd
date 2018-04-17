@@ -3,7 +3,7 @@ import CustomerUserTable from './CustomerUserTable';
 
 export default class UserManager extends React.Component {
   state = {
-    users: [],
+    customers: [],
     userPage: 0,
     userRowsPerPage: 10,
     error: ''
@@ -14,12 +14,12 @@ export default class UserManager extends React.Component {
   }
 
   loadInitalUsers = () => {
-    fetch(`http://localhost:8000/api/customers`, {
+    fetch(`https://innovationmesh.com/api/customers`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
-      .then(users => {
-        this.setState(() => ({ users }));
+      .then(({ customers }) => {
+        this.setState(() => ({ customers }));
       });
   };
 
@@ -35,13 +35,15 @@ export default class UserManager extends React.Component {
   render() {
     return (
       <div>
-        <CustomerUserTable
-          users={this.state.users}
-          userPage={this.state.userPage}
-          userRowsPerPage={this.state.userRowsPerPage}
-          handleUserChangePage={this.handleUserChangePage}
-          handleUserChangeRowsPerPage={this.handleUserChangeRowsPerPage}
-        />
+        {!!this.state.customers.length &&
+          <CustomerUserTable
+            users={this.state.customers}
+            userPage={this.state.userPage}
+            userRowsPerPage={this.state.userRowsPerPage}
+            handleUserChangePage={this.handleUserChangePage}
+            handleUserChangeRowsPerPage={this.handleUserChangeRowsPerPage}
+          />
+        }
       </div>
     );
   }

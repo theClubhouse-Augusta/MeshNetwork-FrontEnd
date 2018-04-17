@@ -28,7 +28,7 @@ export default class UserManager extends React.Component {
     data.append('userID', user);
     data.append('roleID', event.target.value);
     this.setState(() => ({ users }), () => {
-      fetch('http://localhost:8000/api/changeRole', {
+      fetch('https://innovationmesh.com/api/changeRole', {
         method: 'POST',
         body: data,
         headers: {

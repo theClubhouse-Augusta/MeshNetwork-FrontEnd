@@ -53,7 +53,7 @@ export default class Enroll extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch(`http://localhost:8000/showCourse/${id}/`, {
+    fetch(`https://innovationmesh.com/showCourse/${id}/`, {
       method: 'GET'
     })
       .then(response => response.json())
@@ -65,7 +65,7 @@ export default class Enroll extends React.PureComponent {
   }
 
   storeEnroll = () => {
-    fetch(`http://localhost:8000/api/enrollCourse/${this.props.match.params.id}/`, {
+    fetch(`https://innovationmesh.com/api/enrollCourse/${this.props.match.params.id}/`, {
       method: 'POST',
       headers: { 'Authorization': 'JWT ' + this.state.token }
     })
