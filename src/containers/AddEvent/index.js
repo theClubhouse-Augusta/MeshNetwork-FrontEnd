@@ -1,36 +1,32 @@
-/*
- *
- * AddEvent
- *
- */
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
-import Snackbar from 'material-ui/Snackbar';
-import TextField from 'material-ui/TextField';
-import RaisedButton from "./RaisedButton";
-import FlatButton from 'material-ui/Button';
-import Checkbox from 'material-ui/Checkbox';
-import { ListItemText } from 'material-ui/List';
-import moment from 'moment';
-import Select from 'material-ui/Select';
-import { MenuItem } from 'material-ui/Menu';
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
+// Add Event
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import FlatButton from 'material-ui/Button';
+import Checkbox from 'material-ui/Checkbox';
+import { FormControl } from 'material-ui/Form';
+import Input, { InputLabel } from 'material-ui/Input';
+import { ListItemText } from 'material-ui/List';
+import { MenuItem } from 'material-ui/Menu';
+import Select from 'material-ui/Select';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
+import moment from 'moment';
+import React, { Component } from 'react';
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import Helmet from 'react-helmet';
 import CloseIcon from "react-icons/lib/md/close";
-
-import Header from '../../components/Header';
-import { SelectedSponsors } from './SelectedSponsors';
-import Spinner from '../../components/Spinner';
 import DateRangePickerWithGaps from '../../components/DateRangePickerWithGaps';
+import Header from '../../components/Header';
+import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
-
+import RaisedButton from "./RaisedButton";
+import { SelectedSponsors } from './SelectedSponsors';
 // styles
 import './style.css';
 import './styleM.css';
+
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -116,7 +112,7 @@ export default class AddEvent extends Component {
   };
 
   getSponsors = () => {
-    fetch(`https://innovationmesh.com/api/sponsors`, {
+    fetch(`http://localhost:8000/api/sponsors`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -130,7 +126,7 @@ export default class AddEvent extends Component {
   };
 
   getOrganizers = () => {
-    fetch(`https://innovationmesh.com/api/organizers/events`, {
+    fetch(`http://localhost:8000/api/organizers/events`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -145,7 +141,7 @@ export default class AddEvent extends Component {
   };
 
   loadSkills = () => {
-    fetch('https://innovationmesh.com/api/skills/all', {
+    fetch('http://localhost:8000/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
       .then(response => response.json())
@@ -165,11 +161,9 @@ export default class AddEvent extends Component {
       }
     }
   };
-
   eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
   eventUrl = event => this.setState({ url: event.target.value.trim() });
   eventDays = event => this.setState({ days: event.target.value });
-
   selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
   selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
   //eventDescription = e => this.setState({ description: e.target.value });
@@ -190,7 +184,6 @@ export default class AddEvent extends Component {
   handleSkillTags = event => {
     this.setState({ selectedTags: event.target.value });
   };
-
   eventFiles = event => {
     event.preventDefault();
     let file = event.target.files[0];
@@ -201,8 +194,7 @@ export default class AddEvent extends Component {
       this.setState({ eventFiles: files });
     };
     reader.readAsDataURL(event.target.files[0]);
-  }
-
+  };
   toggleNewSponsors = () => this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
 
   sponsorName = event => this.setState({ sponsorNames: event.target.value });
@@ -252,17 +244,13 @@ export default class AddEvent extends Component {
 
   handleChallengeTitle = (i, event) => {
     let challenges = [...this.state.challenges];
-
     challenges[i].challengeTitle = event.target.value;
-
     this.setState(() => ({
       challenges
     }));
-  }
-
+  };
   handleChallengeContent = (i, editorState) => {
     let challenges = [...this.state.challenges];
-
     challenges[i].challengeContent = editorState;
 
     this.setState(() => ({
@@ -368,7 +356,7 @@ export default class AddEvent extends Component {
       newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
     }
 
-    fetch(`https://innovationmesh.com/api/event`, {
+    fetch(`http://localhost:8000/api/event`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
       body: data,
@@ -406,7 +394,7 @@ export default class AddEvent extends Component {
     data.append("challengeFiles", challenge.challengeFiles);
     data.append("eventID", eventID);
 
-    fetch("https://innovationmesh.com/api/storeChallenge", {
+    fetch("http://localhost:8000/api/storeChallenge", {
       method: "POST",
       body: data,
       headers: { Authorization: "Bearer " + this.state.token }
@@ -432,7 +420,7 @@ export default class AddEvent extends Component {
                 challenge.challengeFiles[i].fileData
               );
 
-              fetch("https://innovationmesh.com/api/uploadFile", {
+              fetch("http://localhost:8000/api/uploadFile", {
                 method: "POST",
                 body: fileData,
                 headers: { Authorization: "Bearer " + this.state.token }

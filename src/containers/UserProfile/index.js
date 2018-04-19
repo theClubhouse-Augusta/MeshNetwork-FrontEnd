@@ -61,7 +61,7 @@ export default class UserProfile extends React.Component {
 
   getUser = () => {
     fetch(
-      "https://innovationmesh.com/api/user/profile/" +
+      "http://localhost:8000/api/user/profile/" +
       this.props.match.params.id,
       {
         method: "GET",

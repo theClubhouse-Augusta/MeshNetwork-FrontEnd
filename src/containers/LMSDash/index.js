@@ -36,7 +36,7 @@ export default class LMSDash extends React.PureComponent {
     super(props);
     this.state = {
       token: localStorage.getItem('token'),
-      user: JSON.parse(localStorage.getItem('user')),
+      user: '',
       category: 0,
       courses: [],
       categories: [],
@@ -50,23 +50,31 @@ export default class LMSDash extends React.PureComponent {
       app: this.props.app
     }
   }
-
   componentDidMount() {
+    this.getUser();
     this.getCourses(0);
     this.getCategories();
-  }
-
+  };
+  getUser = () => {
+    fetch("http://localhost:8000/api/user/auth", {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+    })
+      .then(response => response.json())
+      .then(({ user }) => {
+        if (user) {
+          this.setState(() => ({ user }));
+        }
+      })
+  };
   componentWillReceiveProps(app) {
     this.setState({
       app: app.app
     }, () => {
       this.forceUpdate();
     })
-  }
-
+  };
   handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
   showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
-
   handleCategory = (event, index, value) => {
     this.setState({
       page: 1,
@@ -86,7 +94,7 @@ export default class LMSDash extends React.PureComponent {
 
   getCourses = (category = 0) => {
 
-    fetch('https://innovationmesh.com/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
+    fetch('http://localhost:8000/api/myCourses/' + this.state.count + '?page=' + this.state.page, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -139,7 +147,7 @@ export default class LMSDash extends React.PureComponent {
 
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/getCategories", {
+    fetch("http://localhost:8000/api/getCategories", {
       method: 'GET'
     })
       .then(response => response.json())
@@ -151,8 +159,7 @@ export default class LMSDash extends React.PureComponent {
   }
 
   createCourse = () => {
-
-    fetch('https://innovationmesh.com/api/storeCourse', {
+    fetch('http://localhost:8000/api/storeCourse', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -167,11 +174,11 @@ export default class LMSDash extends React.PureComponent {
           this.props.history.push('/LMS/Update/' + json.course)
         }
       })
-  }
+  };
 
   deleteCourse = () => {
     let course = this.state.courses;
-    fetch("https://innovationmesh.com/api/deleteCourse/" + this.state.activeCourse, {
+    fetch("http://localhost:8000/api/deleteCourse/" + this.state.activeCourse, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -224,7 +231,10 @@ export default class LMSDash extends React.PureComponent {
       return (
         <div className="lmsHomeMainBlock" onClick={this.createCourse}>
           <Card style={{ height: '380px' }}>
-            <CardMedia style={{ width: '100%', height: '380px', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} image="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png" />
+            <CardMedia
+              style={{ width: '100%', height: '380px', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+              image="https://cdn3.iconfinder.com/data/icons/simple-toolbar/512/add_plus_new_user_green_page_file_up_text-512.png"
+            />
           </Card>
         </div>
       )
@@ -232,8 +242,7 @@ export default class LMSDash extends React.PureComponent {
     else {
       return (<div style={{ display: 'none' }}></div>)
     }
-  }
-
+  };
   renderProgress = (course) => {
     if (this.state.user) {
       if (this.state.user.roleID !== 4) {
@@ -333,7 +342,7 @@ export default class LMSDash extends React.PureComponent {
           <DialogContent>
             <DialogContentText>
               Are you sure you want to delete this Course?
-  
+
           </DialogContentText>
           </DialogContent>
           <DialogActions>

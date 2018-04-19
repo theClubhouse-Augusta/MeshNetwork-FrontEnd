@@ -142,7 +142,7 @@ export default class Booking extends React.PureComponent {
       increment: 60,
       times
     }), () => {
-      fetch(`https://innovationmesh.com/api/bookings/${activeType}`, {
+      fetch(`http://localhost:8000/api/bookings/${activeType}`, {
         method: 'GET'
       })
         .then(response => response.json())
@@ -200,7 +200,7 @@ export default class Booking extends React.PureComponent {
   };
 
   getProfile = () => {
-    fetch(`https://innovationmesh.com/api/workspace/${this.state.user.spaceID}`, {
+    fetch(`http://localhost:8000/api/workspace/${this.state.user.spaceID}`, {
       method: 'GET'
     })
       .then(response => response.json())
@@ -217,7 +217,7 @@ export default class Booking extends React.PureComponent {
   }
 
   getResources = (id) => {
-    fetch('https://innovationmesh.com/api/resources/' + id, {
+    fetch('http://localhost:8000/api/resources/' + id, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -238,7 +238,7 @@ export default class Booking extends React.PureComponent {
     data.append('end', this.state.end);
     data.append('spaceID', this.state.spaceProfile.id);
 
-    fetch("https://innovationmesh.com/api/booking", {
+    fetch("http://localhost:8000/api/booking", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }

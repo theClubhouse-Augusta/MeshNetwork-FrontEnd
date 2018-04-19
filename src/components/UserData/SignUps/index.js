@@ -18,7 +18,7 @@ export class SignUps extends React.PureComponent {
     this.setState(() => ({ date }));
 
     if (date) {
-      fetch(`https://innovationmesh.com/api/signups/${this.props.match.params.id}/${date.get('month') + 1}/${date.get('year')}/${date.get('date')}`)
+      fetch(`http://localhost:8000/api/signups/${this.props.match.params.id}/${date.get('month') + 1}/${date.get('year')}/${date.get('date')}`)
         .then(response => response.json())
         .then(({ users, error }) => {
           if (users) {
@@ -38,7 +38,7 @@ export class SignUps extends React.PureComponent {
   onDatesChange = (startDate, endDate) => {
     this.setState(() => ({ startDate, endDate }));
     if (startDate && endDate) {
-      fetch(`https://innovationmesh.com/api/signups/${this.props.match.params.id}/${startDate.get('month') + 1}/${startDate.get('year')}/${startDate.get('date')}/${endDate.get('month') + 1}/${endDate.get('year')}/${endDate.get('date')}`)
+      fetch(`http://localhost:8000/api/signups/${this.props.match.params.id}/${startDate.get('month') + 1}/${startDate.get('year')}/${startDate.get('date')}/${endDate.get('month') + 1}/${endDate.get('year')}/${endDate.get('date')}`)
         .then(response => response.json())
         .then(({ users, error }) => {
           if (users) {

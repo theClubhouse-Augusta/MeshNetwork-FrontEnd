@@ -1,50 +1,31 @@
-
-/*
- *
- * SpaceDash
- *
- */
-import React from 'react';
-import Helmet from 'react-helmet';
+import { Grid, withStyles } from "material-ui";
+import { AccessTime, Accessibility, ContentCopy, DateRange, InfoOutline, Store, Update } from "material-ui-icons";
+import FlatButton from 'material-ui/Button';
 import moment from 'moment';
 import PerfectScrollbar from "perfect-scrollbar";
-import EventsTable from './EventsTable';
-import MemberTable from './MemberTable';
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { withStyles, Grid } from "material-ui";
+import React from 'react';
 import ChartistGraph from "react-chartist";
-import {
-  ContentCopy,
-  Store,
-  InfoOutline,
-  DateRange,
-  Accessibility,
-  Update,
-  AccessTime,
-} from "material-ui-icons";
-import {
-  StatsCard,
-  ChartCard,
-  ItemGrid
-} from "../../components";
-import FlatButton from 'material-ui/Button';
-import appStyle from '../../variables/styles/appStyle.jsx';
-import { allJoins, allAppearances, allEvents } from "../../variables/charts";
-import dashboardRoutes from '../../routes';
+import Helmet from 'react-helmet';
+import "../../assets/css/material-dashboard-react.css";
 import image from "../../assets/img/sidebar-2.jpg";
-import { DashHeader, Footer, Sidebar } from "../../components";
-import SpaceInformation from '../../components/SpaceInformation';
+import { ChartCard, DashHeader, Footer, ItemGrid, Sidebar, StatsCard } from "../../components";
 import EventInformation from '../../components/EventInformation';
 import OrganizerManager from '../../components/OrganizerManager';
-import UserManager from '../../components/UserManager';
-import { Checkins } from '../../components/UserData/Checkins';
-import { SignUps } from '../../components/UserData/SignUps';
-import { CustomerSignUps } from '../../components/UserData/CustomerSignUps';
-import Spinner from '../../components/Spinner';
-import authenticate from '../../utils/Authenticate';
-import "../../assets/css/material-dashboard-react.css";
 import ResourceForm from '../../components/ResourceForm';
-const spaceInfoAPI = 'https://innovationmesh.com/api/workspace/auth/';
+import SpaceInformation from '../../components/SpaceInformation';
+import Spinner from '../../components/Spinner';
+import { Checkins } from '../../components/UserData/Checkins';
+import { CustomerSignUps } from '../../components/UserData/CustomerSignUps';
+import { SignUps } from '../../components/UserData/SignUps';
+import UserManager from '../../components/UserManager';
+import dashboardRoutes from '../../routes';
+import authenticate from '../../utils/Authenticate';
+import { allAppearances, allEvents, allJoins } from "../../variables/charts";
+import appStyle from '../../variables/styles/appStyle.jsx';
+import EventsTable from './EventsTable';
+import MemberTable from './MemberTable';
+const spaceInfoAPI = 'http://localhost:8000/api/workspace/auth/';
 
 class SpaceDash extends React.Component {
   state = {
@@ -127,7 +108,7 @@ class SpaceDash extends React.Component {
   };
   componentDidUpdate() { this.refs.mainPanel.scrollTop = 0; }
   loadJoins = () => {
-    fetch(`https://innovationmesh.com/api/joins/${this.props.match.params.id}`, {})
+    fetch(`http://localhost:8000/api/joins/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -149,7 +130,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadEventMetrics = () => {
-    fetch(`https://innovationmesh.com/api/events/metrics/${this.props.match.params.id}`, {})
+    fetch(`http://localhost:8000/api/events/metrics/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -171,7 +152,7 @@ class SpaceDash extends React.Component {
       })
   };
   loadAppearances = () => {
-    fetch(`https://innovationmesh.com/api/appearances/${this.props.match.params.id}`, {})
+    fetch(`http://localhost:8000/api/appearances/${this.props.match.params.id}`, {})
       .then(response => response.json())
       .then(({
         data,
@@ -204,7 +185,8 @@ class SpaceDash extends React.Component {
   };
   showSnack = msg => {
     this.setState(() => ({
-      snack: true, msg: msg
+      snack: true,
+      msg
     }));
   };
   loadSpaceDescription = async () => {
@@ -246,7 +228,7 @@ class SpaceDash extends React.Component {
   getMonthlyBalance = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`https://innovationmesh.com/api/balance/current/${lastMonth}/${now}`, {
+    fetch(`http://localhost:8000/api/balance/current/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -271,7 +253,7 @@ class SpaceDash extends React.Component {
   getMonthlyCustomerCount = () => {
     const now = moment().format('X');
     const lastMonth = moment().format('X') - (86400 * 30);
-    fetch(`https://innovationmesh.com/api/customers/month/${lastMonth}/${now}`, {
+    fetch(`http://localhost:8000/api/customers/month/${lastMonth}/${now}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -284,7 +266,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceStats = (id) => {
-    fetch('https://innovationmesh.com/api/space/metrics/' + id)
+    fetch('http://localhost:8000/api/space/metrics/' + id)
       .then(response => response.json())
       .then(({
         memberCount,
@@ -301,7 +283,7 @@ class SpaceDash extends React.Component {
       });
   };
   getSpaceUsers = (id) => {
-    fetch('https://innovationmesh.com/api/getDashboardUsers/' + id, {
+    fetch('http://localhost:8000/api/getDashboardUsers/' + id, {
       headers: {
         'Authorization': 'Bearer ' + this.state.token
       }
@@ -318,7 +300,7 @@ class SpaceDash extends React.Component {
       })
   };
   getSpaceEvents = (id) => {
-    fetch('https://innovationmesh.com/api/events/' + id)
+    fetch('http://localhost:8000/api/events/' + id)
       .then(response => response.json())
       .then(spaceEvents => {
         this.setState(() => ({ spaceEvents }));
@@ -332,7 +314,7 @@ class SpaceDash extends React.Component {
     }
   };
   getPhotoGallery = id => {
-    fetch('https://innovationmesh.com/api/photos/' + id)
+    fetch('http://localhost:8000/api/photos/' + id)
       .then(response => response.json())
       .then((json) => {
         this.setState(() => ({ photoGallery: json.photos }))
@@ -352,7 +334,7 @@ class SpaceDash extends React.Component {
     let data = new FormData();
     data.append('spaceID', this.state.spaceID);
     data.append('photo', file);
-    fetch('https://innovationmesh.com/api/photos', {
+    fetch('http://localhost:8000/api/photos', {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -373,7 +355,7 @@ class SpaceDash extends React.Component {
     let photoGallery = this.state.photoGallery.slice();
     let data = new FormData();
     data.append("_method", "DELETE");
-    fetch(`https://innovationmesh.com/api/photos/${id}`, {
+    fetch(`http://localhost:8000/api/photos/${id}`, {
       headers: { 'Authorization': 'Bearer ' + this.state.token },
       method: "POST",
       body: data,
@@ -440,7 +422,7 @@ class SpaceDash extends React.Component {
   };
   editEventID = id => this.setState({ editEventID: id });
   deleteEvent = (eventID, index) => {
-    fetch(`https://innovationmesh.com/api/event/delete/${eventID}`, {
+    fetch(`http://localhost:8000/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -463,7 +445,7 @@ class SpaceDash extends React.Component {
       data.append('userID', user);
       data.append('roleID', event.target.value);
 
-      fetch('https://innovationmesh.com/api/changeRole', {
+      fetch('http://localhost:8000/api/changeRole', {
         method: 'POST',
         body: data,
         headers: {
@@ -479,7 +461,7 @@ class SpaceDash extends React.Component {
     });
   };
   deleteEvent = (eventID, index) => {
-    fetch(`https://innovationmesh.com/api/event/delete/${eventID}`, {
+    fetch(`http://localhost:8000/api/event/delete/${eventID}`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -834,7 +816,9 @@ class SpaceDash extends React.Component {
         <div className="spaceDashContent">
           <div style={{ width: '20%', paddingLeft: '15px', paddingRight: '15px' }}>
             <label htmlFor="photo-file" style={{ width: '10%', margin: '10px' }}>
-              <div style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }} >Upload Photo</div>
+              <div style={{ fontFamily: 'Noto Sans', textTransform: 'uppercase', fontSize: '0.9em', textAlign: 'center', width: '100%', background: '#ff4d58', paddingTop: '10px', paddingBottom: '10px', color: '#FFFFFF', fontWeight: 'bold' }} >
+                Upload Photo
+              </div>
             </label>
             <input type="file" accept="image/*" onChange={this.handleGalleryPhoto} id="photo-file" style={{ display: 'none' }} />
           </div>

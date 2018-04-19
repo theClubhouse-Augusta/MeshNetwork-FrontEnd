@@ -1,23 +1,14 @@
-/*
- *
- * Detail
- *
- */
-
-import React from 'react';
-import Helmet from 'react-helmet';
-import { Link } from 'react-router-dom';
 import FlatButton from 'material-ui/Button';
 import Dialog from 'material-ui/Dialog';
 import Snackbar from 'material-ui/Snackbar';
-
-import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
+import React from 'react';
+import Helmet from 'react-helmet';
+import FileIcon from 'react-icons/lib/fa/file-archive-o';
 import TextIcon from 'react-icons/lib/fa/file-text-o';
 import ExamIcon from 'react-icons/lib/fa/question';
-import FileIcon from 'react-icons/lib/fa/file-archive-o';
-
+import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
+import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
-
 import './style.css';
 import './styleM.css';
 
@@ -57,7 +48,7 @@ export default class Course extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://innovationmesh.com/api/detailCourse/" + id, {
+    fetch("http://localhost:8000/api/detailCourse/" + id, {
       method: 'GET'
     })
       .then(response => response.json())
@@ -82,7 +73,7 @@ export default class Course extends React.PureComponent {
 
   enrollCourse = () => {
 
-    fetch("https://innovationmesh.com/api/enrollCourse/" + this.state.course.id, {
+    fetch("http://localhost:8000/api/enrollCourse/" + this.state.course.id, {
       method: 'GET',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -174,10 +165,14 @@ export default class Course extends React.PureComponent {
 
           <div className="lmsDetailCourses">
             <div className="lmsDetailCoursesContainer">
-              <div className="lmsDetailCoursesHeader">Class Curriculum</div>
+              <div className="lmsDetailCoursesHeader">
+                Class Curriculum
+              </div>
               {this.state.lessons.map((lesson, i) => (
                 <div className="lmsDetailCoursesBlock" key={`lessons${i}`}>
-                  <div className="lmsDetailCoursesBlockHeader">{lesson.lessonName}</div>
+                  <div className="lmsDetailCoursesBlockHeader">
+                    {lesson.lessonName}
+                  </div>
                   <div className="lmsDetailCoursesBlockList">
                     {lesson.lectures.map((lecture, j) => (
                       <div className="lmsDetailCoursesBlockItem" key={`lmscourses${j}`}>

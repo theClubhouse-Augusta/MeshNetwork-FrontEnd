@@ -1,13 +1,8 @@
-import React, { PureComponent } from "react";
 import { Grid } from "material-ui";
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
-import {
-  RegularCard,
-  Button,
-  CustomInput,
-  ItemGrid
-} from "../../components";
+import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import React, { PureComponent } from "react";
+import { Button, CustomInput, ItemGrid, RegularCard } from "../../components";
 
 class ResourceForm extends PureComponent {
   state = {
@@ -20,6 +15,8 @@ class ResourceForm extends PureComponent {
     wednesday: 0,
     thursday: 0,
     friday: 0,
+    saturday: 0,
+    sunday: 0,
     startTime: '',
     startDay: '',
     endDay: '',
@@ -33,39 +30,49 @@ class ResourceForm extends PureComponent {
     this.setState({ [prop]: event.target.value });
   };
   getResources = (id) => {
-    fetch('https://innovationmesh.com/api/resources/' + id)
+    fetch('http://localhost:8000/api/resources/' + id)
       .then(response => response.json())
       .then(resources => {
         this.setState(() => ({ resources }))
       })
   };
-  handleResourceMonday = (event) => {
+  handleResourceMonday = event => {
     this.setState({
       monday: event.target.checked
     });
   };
-  handleResourceTuesday = (event) => {
+  handleResourceTuesday = event => {
     this.setState({
       tuesday: event.target.checked
     });
   };
-  handleResourceWednesday = (event) => {
+  handleResourceWednesday = event => {
     this.setState({
       wednesday: event.target.checked
     });
   };
-  handleResourceThursday = (event) => {
+  handleResourceThursday = event => {
     this.setState({
       thursday: event.target.checked
     });
   };
-  handleResourceFriday = (event) => {
+  handleResourceFriday = event => {
     this.setState({
       friday: event.target.checked
     });
   };
+  handleResourceSaturday = event => {
+    this.setState({
+      saturday: event.target.checked
+    });
+  };
+  handleResourceSunday = event => {
+    this.setState({
+      sunday: event.target.checked
+    });
+  };
   storeResource = () => {
-    let resources = this.state.resources;
+    let resources = [...this.state.resources];
     let days = [];
     if (this.state.monday === 1) {
       days.push(this.state.monday);
@@ -91,7 +98,7 @@ class ResourceForm extends PureComponent {
     data.append('resourceEndTime', this.state.endTime);
     data.append('resourceIncrement', this.state.increment);
     data.append('resourceDays', JSON.stringify(days));
-    fetch('https://innovationmesh.com/api/resource', {
+    fetch('http://localhost:8000/api/resource', {
       method: 'POST',
       body: data,
       headers: { Authorization: `Bearer ${localStorage['token']}` }
@@ -114,7 +121,7 @@ class ResourceForm extends PureComponent {
   };
   deleteResource = (id, i) => {
     let resource = this.state.resources;
-    fetch('https://innovationmesh.com/api/resource/' + id, {
+    fetch('http://localhost:8000/api/resource/' + id, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
       .then(response => response.json())
@@ -128,12 +135,14 @@ class ResourceForm extends PureComponent {
         }
       })
   };
+  showSnack = msg => {
+    this.setState(() => ({
+      snack: true,
+      msg
+    }));
+  };
   render() {
-    const {
-      history,
-      spaceName,
-      spaceID,
-    } = this.props;
+    const { spaceName } = this.props;
     return (
       <div>
         <Grid container justify="center">
@@ -221,6 +230,26 @@ class ResourceForm extends PureComponent {
                           />
                         }
                         label="Friday"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={this.state.resourceSaturday}
+                            onChange={this.handleResourceSaturday}
+                            value={6}
+                          />
+                        }
+                        label="Saturday"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={this.state.resourceSunday}
+                            onChange={this.handleResourceSunday}
+                            value={7}
+                          />
+                        }
+                        label="Sunday"
                       />
                     </FormGroup>
                     <ItemGrid xs={12} sm={12} md={12}>

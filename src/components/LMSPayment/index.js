@@ -49,7 +49,7 @@ class LMSPayment extends React.Component {
     this.props.stripe.createToken({ name: this.state.user.name }).then(({ token }) => {
       let data = new FormData();
       data.append('stripeToken', token.id);
-      fetch(`https://innovationmesh.com/api/enrollCourse/${this.props.courseID}/`, {
+      fetch(`http://localhost:8000/api/enrollCourse/${this.props.courseID}/`, {
         method: 'POST',
         body: data,
         headers: { 'Authorization': 'JWT ' + this.state.token }

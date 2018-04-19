@@ -78,7 +78,7 @@ class CheckoutForm extends React.PureComponent {
   };
   getSpace = () => {
     fetch(
-      "https://innovationmesh.com/api/workspace/" + this.props.match.params.id,
+      "http://localhost:8000/api/workspace/" + this.props.match.params.id,
       {
         method: "GET"
       }
@@ -91,7 +91,7 @@ class CheckoutForm extends React.PureComponent {
       });
   };
   loadSkills = () => {
-    fetch("https://innovationmesh.com/api/skills/all", {})
+    fetch("http://localhost:8000/api/skills/all", {})
       .then(response => response.json())
       .then(json => {
         this.setState({ loadedTags: json });
@@ -100,7 +100,7 @@ class CheckoutForm extends React.PureComponent {
   };
   loadPlans = () => {
     fetch(
-      `https://innovationmesh.com/api/plans/${this.props.match.params.id}`,
+      `http://localhost:8000/api/plans/${this.props.match.params.id}`,
       {}
     )
       .then(response => response.json())
@@ -230,7 +230,7 @@ class CheckoutForm extends React.PureComponent {
       data.append("customer_idempotency_key", customer_idempotency_key);
       data.append("subscription_idempotency_key", subscription_idempotency_key);
       data.append("recaptcha", recaptcha);
-      fetch("https://innovationmesh.com/api/signUp", {
+      fetch("http://localhost:8000/api/signUp", {
         method: "POST",
         body: data
       })
@@ -240,7 +240,7 @@ class CheckoutForm extends React.PureComponent {
             this.showSnack(user.error);
           } else if (user.token) {
             localStorage.setItem("token", user.token);
-            fetch("https://innovationmesh.com/api/user/auth", {
+            fetch("http://localhost:8000/api/user/auth", {
               method: "GET",
               headers: { Authorization: "Bearer " + user.token }
             })
@@ -283,7 +283,7 @@ class CheckoutForm extends React.PureComponent {
     data.append("plan", plan);
     data.append("username", name);
     data.append("recaptcha", recaptcha);
-    fetch("https://innovationmesh.com/api/signUp", {
+    fetch("http://localhost:8000/api/signUp", {
       method: "POST",
       body: data
     })

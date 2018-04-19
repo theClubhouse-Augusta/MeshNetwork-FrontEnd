@@ -76,7 +76,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCourse = (id) => {
-    fetch("https://innovationmesh.com/api/editCourse/" + id, {
+    fetch("http://localhost:8000/api/editCourse/" + id, {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -147,7 +147,7 @@ export default class NewCourse extends React.PureComponent {
   }
 
   getCategories = () => {
-    fetch("https://innovationmesh.com/api/getSubjects", {
+    fetch("http://localhost:8000/api/getSubjects", {
       method: 'GET'
     })
       .then(response => response.json())
@@ -323,7 +323,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('questionContent', "");
       data.append('questionType', type);
 
-      fetch("https://innovationmesh.com/api/storeQuestion/", {
+      fetch("http://localhost:8000/api/storeQuestion/", {
         method: 'POST',
         body: data,
         headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -368,7 +368,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('questionContent', event.target.value);
 
-    fetch("https://innovationmesh.com/api/updateQuestion/" + id, {
+    fetch("http://localhost:8000/api/updateQuestion/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -402,7 +402,7 @@ export default class NewCourse extends React.PureComponent {
       data.append('answerContent', "");
       data.append('isCorrect', false);
 
-      fetch("https://innovationmesh.com/api/storeAnswer", {
+      fetch("http://localhost:8000/api/storeAnswer", {
         method: 'POST',
         body: data,
         headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -447,7 +447,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('answerContent', event.target.value);
 
-    fetch("https://innovationmesh.com/api/updateAnswer/" + id, {
+    fetch("http://localhost:8000/api/updateAnswer/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -487,7 +487,7 @@ export default class NewCourse extends React.PureComponent {
 
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].isCorrect = true;
 
-    fetch('https://innovationmesh.com/api/updateCorrectAnswer/' + this.props.match.params.id + '/' + questionID + '/' + id, {
+    fetch('http://localhost:8000/api/updateCorrectAnswer/' + this.props.match.params.id + '/' + questionID + '/' + id, {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + this.state.token
@@ -536,7 +536,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('coursePrice', coursePrice);
     data.append('courseStatus', courseStatus);
 
-    fetch("https://innovationmesh.com/api/updateCourse/" + this.props.match.params.id, {
+    fetch("http://localhost:8000/api/updateCourse/" + this.props.match.params.id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -568,7 +568,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseImage', this.state.courseImage);
 
-    fetch("https://innovationmesh.com/api/updateCourseImage/" + this.props.match.params.id, {
+    fetch("http://localhost:8000/api/updateCourseImage/" + this.props.match.params.id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -597,7 +597,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
 
-    fetch("https://innovationmesh.com/api/updateCourseInstructorAvatar/" + this.props.match.params.id, {
+    fetch("http://localhost:8000/api/updateCourseInstructorAvatar/" + this.props.match.params.id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -624,7 +624,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('courseID', this.props.match.params.id);
     data.append('lessonName', "Lesson Title");
 
-    fetch("https://innovationmesh.com/api/storeLesson", {
+    fetch("http://localhost:8000/api/storeLesson", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -654,7 +654,7 @@ export default class NewCourse extends React.PureComponent {
 
     data.append('lessonName', lessonName);
 
-    fetch("https://innovationmesh.com/api/updateLesson/" + id, {
+    fetch("http://localhost:8000/api/updateLesson/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -682,7 +682,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureType', lessons[i].lectures[j].lectureType);
     data.append('lectureVideo', lessons[i].lectures[j].lectureVideo);
 
-    fetch("https://innovationmesh.com/api/updateLecture/" + id, {
+    fetch("http://localhost:8000/api/updateLecture/" + id, {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -707,7 +707,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureType', "Text");
     data.append('lectureVideo', "");
 
-    fetch("https://innovationmesh.com/api/storeLecture", {
+    fetch("http://localhost:8000/api/storeLecture", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -739,7 +739,7 @@ export default class NewCourse extends React.PureComponent {
     data.append('lectureID', this.state.activeView.id);
     data.append('fileContent', file.fileData);
 
-    fetch("https://innovationmesh.com/api/storeFiles", {
+    fetch("http://localhost:8000/api/storeFiles", {
       method: 'POST',
       body: data,
       headers: { 'Authorization': 'Bearer ' + this.state.token }
@@ -764,7 +764,7 @@ export default class NewCourse extends React.PureComponent {
   deleteLesson = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("https://innovationmesh.com/api/deleteLesson/" + id, {
+    fetch("http://localhost:8000/api/deleteLesson/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -788,7 +788,7 @@ export default class NewCourse extends React.PureComponent {
   deleteLecture = (id, i, j) => {
     let lessons = this.state.lessons;
 
-    fetch("https://innovationmesh.com/api/deleteLecture/" + id, {
+    fetch("http://localhost:8000/api/deleteLecture/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -813,7 +813,7 @@ export default class NewCourse extends React.PureComponent {
   deleteQuestion = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("https://innovationmesh.com/api/deleteQuestion/" + id, {
+    fetch("http://localhost:8000/api/deleteQuestion/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -838,7 +838,7 @@ export default class NewCourse extends React.PureComponent {
   deleteAnswer = (id, i, j) => {
     let lessons = this.state.lessons;
 
-    fetch("https://innovationmesh.com/api/deleteAnswer/" + id, {
+    fetch("http://localhost:8000/api/deleteAnswer/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
@@ -863,7 +863,7 @@ export default class NewCourse extends React.PureComponent {
   deleteFile = (id, i) => {
     let lessons = this.state.lessons;
 
-    fetch("https://innovationmesh.com/api/deleteFile/" + id, {
+    fetch("http://localhost:8000/api/deleteFile/" + id, {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })

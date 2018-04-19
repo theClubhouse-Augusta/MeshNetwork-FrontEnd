@@ -18,14 +18,25 @@ export default class Home extends React.PureComponent {
     super(props);
     this.state = {
       token: localStorage.getItem("token"),
-      user: JSON.parse(localStorage.getItem("user")),
+      user: '',
       quote: ""
     };
   }
-
   componentDidMount() {
+    this.getUser();
     this.getQuote();
   }
+  getUser = () => {
+    fetch("http://localhost:8000/api/user/auth", {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+    })
+      .then(response => response.json())
+      .then(({ user }) => {
+        if (user) {
+          this.setState(() => ({ user }));
+        }
+      })
+  };
 
   getQuote = () => {
     fetch(

@@ -1,20 +1,11 @@
-/*
- *
- * Home
- *
- */
-
+import FlatButton from "material-ui/Button";
+import Card, { CardContent, CardMedia } from "material-ui/Card";
+import Typography from "material-ui/Typography";
 import React from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
-
-import Card, { CardContent, CardMedia } from "material-ui/Card";
-// CardActions,
-import FlatButton from "material-ui/Button";
-import Typography from "material-ui/Typography";
-
 import Header from "../../components/Header";
-
+import authenticate from '../../utils/Authenticate';
 import "./style.css";
 import "./styleM.css";
 
@@ -22,16 +13,22 @@ export default class LMS extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token: localStorage.getItem("lmsToken"),
+      loggedIn: true,
       courses: []
       //app:this.props.app
     };
-  }
-
-  componentDidMount() {
+  };
+  async componentDidMount() {
+    let authorized;
+    try {
+      authorized = await authenticate(localStorage['token']);
+    } finally {
+      if (authorized === undefined) {
+        this.setState(() => ({ loggedIn: false }));
+      }
+    }
     this.getCourses();
-  }
-
+  };
   /*componentWillReceiveProps(app) {
     this.setState({
       app:app.app
@@ -40,9 +37,8 @@ export default class LMS extends React.PureComponent {
     })
   }
   */
-
   getCourses = () => {
-    fetch("https://innovationmesh.com/api/getCourses/0/6", {
+    fetch("http://localhost:8000/api/getCourses/0/6", {
       method: "GET"
     })
       .then(response => response.json())
@@ -52,7 +48,6 @@ export default class LMS extends React.PureComponent {
         });
       });
   };
-
   renderJoinButton = () => {
     if (!this.state.token) {
       return (
@@ -79,7 +74,6 @@ export default class LMS extends React.PureComponent {
       );
     }
   };
-
   render() {
     return (
       <div className="container">
@@ -96,7 +90,7 @@ export default class LMS extends React.PureComponent {
             </p>
             <p>Powering courses across different skills and goals.</p>
           </div>
-          {this.renderJoinButton()}
+          {!this.state.loggedIn && this.renderJoinButton()}
         </header>
 
         <main className="lmsHomeMain">
