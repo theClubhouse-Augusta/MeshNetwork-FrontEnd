@@ -278,11 +278,19 @@ export default class Header extends React.PureComponent {
   renderMyCourses = () => {
     if (this.state.token) {
       return (
-        <Link to={'/LMS/MyLMS'}><MenuItem style={{ margin: '0' }} onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+        <Link to={'/LMS/MyLMS'}>
+          <MenuItem style={{ margin: '0' }} onClick={this.handleEducationMenuClose}>
+            My Courses
+          </MenuItem>
+        </Link>
       )
     } else {
       return (
-        <Link to={'/signIn'}><MenuItem style={{ margin: '0' }} onClick={this.handleEducationMenuClose}>My Courses</MenuItem></Link>
+        <Link to={'/signIn'}>
+          <MenuItem style={{ margin: '0' }} onClick={this.handleEducationMenuClose}>
+            My Courses
+          </MenuItem>
+        </Link>
       )
     }
   }
@@ -451,7 +459,12 @@ export default class Header extends React.PureComponent {
                 open={Boolean(this.state.educationMenu)}
                 onClose={this.handleEducationMenuClose}
               >
-                <Link to={'/LMS/Courses'}><MenuItem style={{ margin: '0' }} onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
+                <Link to={'/LMS/Courses'}>
+                  <MenuItem style={{ margin: '0' }}
+                    onClick={this.handleEducationMenuClose}>
+                    Courses
+                  </MenuItem>
+                </Link>
                 {this.renderMyCourses()}
               </Menu>
             </span>

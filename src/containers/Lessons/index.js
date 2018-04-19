@@ -10,6 +10,7 @@ import FileIcon from 'react-icons/lib/fa/file-archive-o';
 import TextIcon from 'react-icons/lib/fa/file-text-o';
 import ExamIcon from 'react-icons/lib/fa/question';
 import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
+import ReactPlayer from 'react-player';
 import { Link } from 'react-router-dom';
 import './style.css';
 import './styleM.css';
@@ -119,10 +120,10 @@ export default class Lessons extends React.PureComponent {
             lessons,
             enrolled
           }), () => {
-            if (this.props.match.params.uid !== undefined) {
+            if (this.props.match.params.lid !== undefined) {
               for (let i = 0; i < this.state.lessons.length; i++) {
                 for (let j = 0; j < this.state.lessons[i].lectures.length; j++) {
-                  if (this.state.lessons[i].lectures[j].id === this.props.match.params.uid) {
+                  if (this.state.lessons[i].lectures[j].id === this.props.match.params.lid) {
                     this.setState(() => ({
                       activeLesson: i,
                       activeLecture: j,
@@ -420,7 +421,17 @@ export default class Lessons extends React.PureComponent {
     else if (this.state.activeView.lectureType === "Video") {
       return (
         <div className="lmsLessonMainContent">
-          <iframe title="lesson" width="100%" height="800px" src={'https://www.youtube.com/embed/' + this.state.activeView.lectureVideo} frameborder="0" />
+          <ReactPlayer
+            url={this.state.activeView.lectureVideo}
+            playing
+          />
+          {/* <iframe
+            title="lesson"
+            width="100%"
+            height="800px"
+            src={'https://www.youtube.com/embed/' + this.state.activeView.lectureVideo}
+            frameborder="0"
+          /> */}
         </div>
       )
     }
@@ -428,7 +439,18 @@ export default class Lessons extends React.PureComponent {
       return (
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureFiles.map((file, index) => (
-            <a href={file.fileData} key={`fileData${index}`} style={{ textDecoration: 'none' }} target="_blank"><div className="lmsNewFileBlock" ><span></span> {file.fileName} <span></span></div></a>
+            <Link
+              href={file.fileData}
+              key={`fileData${index}`}
+              style={{ textDecoration: 'none' }}
+              target="_blank"
+            >
+              <div className="lmsNewFileBlock" >
+                <span></span>
+                {file.fileName}
+                <span></span>
+              </div>
+            </Link>
           ))}
         </div>
       )

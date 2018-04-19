@@ -1,22 +1,13 @@
-/*
- *
- * Single
- *
- */
-
+import FlatButton from 'material-ui/Button';
+import { LinearProgress } from 'material-ui/Progress';
 import React from 'react';
 import Helmet from 'react-helmet';
-import FlatButton from 'material-ui/Button';
-import { Link } from 'react-router-dom';
-import { LinearProgress } from 'material-ui/Progress';
-
 import BackIcon from 'react-icons/lib/fa/arrow-circle-left';
-
-import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
+import FileIcon from 'react-icons/lib/fa/file-archive-o';
 import TextIcon from 'react-icons/lib/fa/file-text-o';
 import ExamIcon from 'react-icons/lib/fa/question';
-import FileIcon from 'react-icons/lib/fa/file-archive-o';
-
+import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
+import { Link } from 'react-router-dom';
 import './style.css';
 import './styleM.css';
 

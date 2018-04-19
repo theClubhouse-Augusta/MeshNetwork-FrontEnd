@@ -377,7 +377,6 @@ export default class App extends Component {
           render={(props) =>
             <Lessons
               {...props}
-              app={this}
               spaceName={this.state.spaceName}
             />
           }

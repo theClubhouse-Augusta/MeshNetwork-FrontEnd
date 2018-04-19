@@ -18,7 +18,7 @@ export default class Checkout extends React.Component {
       loaded: '',
       component: '',
     };
-  }
+  };
 
   async componentDidMount() {
     if (window.Stripe) {
@@ -30,7 +30,7 @@ export default class Checkout extends React.Component {
         // this.setState({stripe: window.Stripe(key)});
       });
     }
-  }
+  };
 
 
   loadKey = async () => {
@@ -39,13 +39,13 @@ export default class Checkout extends React.Component {
       const response = await fetch(`http://localhost:8000/api/publickey/${this.props.match.params.id}`);
       key = await response.text();
     } catch (error) {
-            //
+      //
     } finally {
       if (key) {
         this.setState(() => ({ key }));
         this.setState(() => ({ loaded: true }), () => {
-        this.renderCheckoutForm();
-      });
+          this.renderCheckoutForm();
+        });
       } else {
         this.setState(() => ({ loaded: true }), () => this.renderCheckoutForm());
       }
@@ -63,14 +63,14 @@ export default class Checkout extends React.Component {
           </StripeProvider>
       })
       :
-        this.setState({
-          component:
-            <StripeProvider apiKey="pk_test_rJKqFRMRduGAyguxdWT2TfcI">
-              <Elements>
-                <CheckoutForm pubkey={false} {...this.props} />
-              </Elements>
-            </StripeProvider>
-        });
+      this.setState({
+        component:
+          <StripeProvider apiKey="pk_test_rJKqFRMRduGAyguxdWT2TfcI">
+            <Elements>
+              <CheckoutForm pubkey={false} {...this.props} />
+            </Elements>
+          </StripeProvider>
+      });
 
 
   render() {

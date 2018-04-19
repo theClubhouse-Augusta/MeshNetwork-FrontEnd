@@ -54,80 +54,80 @@ class LMSPayment extends React.Component {
         body: data,
         headers: { 'Authorization': 'JWT ' + this.state.token }
       })
-      .then(response => response.json())
-      .then(json => {
-        if (json.error) {
-          this.showSnack(json.error);
-        }
-        else if (json.detail) {
-          this.props.app.signOut();
-          this.props.app.handleAuth();
-        }
-        else if (json.success) {
-          this.showSnack(json.success);
-        }
-      })
-  });
+        .then(response => response.json())
+        .then(json => {
+          if (json.error) {
+            this.showSnack(json.error);
+          }
+          else if (json.detail) {
+            this.props.app.signOut();
+            this.props.app.handleAuth();
+          }
+          else if (json.success) {
+            this.showSnack(json.success);
+          }
+        })
+    });
 
-}
+  }
 
-render() {
+  render() {
 
-  const createOptions = (fontSize) => {
-    return {
-      style: {
-        base: {
-          fontSize,
-          color: '#424770',
-          letterSpacing: '0.025em',
-          fontFamily: 'Source Code Pro, Menlo, monospace',
-          '::placeholder': {
-            color: '#aab7c4',
+    const createOptions = (fontSize) => {
+      return {
+        style: {
+          base: {
+            fontSize,
+            color: '#424770',
+            letterSpacing: '0.025em',
+            fontFamily: 'Source Code Pro, Menlo, monospace',
+            '::placeholder': {
+              color: '#aab7c4',
+            },
+          },
+          invalid: {
+            color: '#9e2146',
           },
         },
-        invalid: {
-          color: '#9e2146',
-        },
-      },
+      };
     };
-  };
 
-  return (
-    <form onSubmit={this.handleEnroll}>
-      <label className="lmsEnrollPayLabel">
-        Card number
+    return (
+      <form onSubmit={this.handleEnroll}>
+        <label className="lmsEnrollPayLabel">
+          Card number
           <CardNumberElement
-          {...createOptions(this.props.fontSize)}
-        />
-      </label>
-      <label className="lmsEnrollPayLabel">
-        Expiration date
+            {...createOptions(this.props.fontSize)}
+          />
+        </label>
+        <label className="lmsEnrollPayLabel">
+          Expiration date
           <CardExpiryElement
-          {...createOptions(this.props.fontSize)}
-        />
-      </label>
-      <label className="lmsEnrollPayLabel">
-        CVC
+            {...createOptions(this.props.fontSize)}
+          />
+        </label>
+        <label className="lmsEnrollPayLabel">
+          CVC
           <CardCVCElement
-          {...createOptions(this.props.fontSize)}
-        />
-      </label>
-      <label className="lmsEnrollPayLabel">
-        Postal code
+            {...createOptions(this.props.fontSize)}
+          />
+        </label>
+        <label className="lmsEnrollPayLabel">
+          Postal code
           <PostalCodeElement
-          {...createOptions(this.props.fontSize)}
+            {...createOptions(this.props.fontSize)}
+          />
+        </label>
+        <button className="lmsEnrollPayButton">Pay</button>
+        <Snackbar
+          open={this.state.snack}
+          message={this.state.msg}
+          autoHideDuration={3000}
+          onClose={this.handleRequestClose}
         />
-      </label>
-      <button className="lmsEnrollPayButton">Pay</button>
-      <Snackbar
-        open={this.state.snack}
-        message={this.state.msg}
-        autoHideDuration={3000}
-        onClose={this.handleRequestClose}
-      />
-    </form>
-  );
-}
+      </form>
+    );
+  }
 }
 
 export default injectStripe(LMSPayment);
