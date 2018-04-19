@@ -439,7 +439,7 @@ export default class Lessons extends React.PureComponent {
       return (
         <div className="lmsLessonMainContent">
           {this.state.activeView.lectureFiles.map((file, index) => (
-            <Link
+            <a
               href={file.fileData}
               key={`fileData${index}`}
               style={{ textDecoration: 'none' }}
@@ -450,7 +450,7 @@ export default class Lessons extends React.PureComponent {
                 {file.fileName}
                 <span></span>
               </div>
-            </Link>
+            </a>
           ))}
         </div>
       )

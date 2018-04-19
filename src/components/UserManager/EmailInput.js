@@ -65,7 +65,7 @@ export default class EmailInput extends Component {
           <FlatButton
             style={{
               background: '#ff4d58',
-//              marginLeft: 15,
+              //              marginLeft: 15,
               color: '#FFFFFF',
               alignSelf: 'center',
             }}
@@ -81,7 +81,7 @@ export default class EmailInput extends Component {
           <FlatButton
             style={{
               background: '#ff4d58',
-//              marginLeft: 15,
+              //              marginLeft: 15,
               color: '#FFFFFF',
               alignSelf: 'center',
             }}

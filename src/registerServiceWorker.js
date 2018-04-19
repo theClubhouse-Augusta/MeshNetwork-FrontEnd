@@ -17,14 +17,20 @@ const isLocalhost = Boolean(
     /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
   )
 );
-const isSafari = /constructor/i.test(window.HTMLElement)
+const isSafari = (
+  /constructor/i.test(window.HTMLElement)
   ||
   (function (p) {
     return p.toString() === "[object SafariRemoteNotification]";
-  })(!window['safari'] || window.safari.pushNotification);
+  })(!window['safari'] || window.safari.pushNotification)
+);
+const isMobileSafari = () => {
+  const userAgent = window.navigator.userAgent;
+  return userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
+};
 
 export default function register() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator && !isSafari) {
+  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator && !isSafari && !isMobileSafari) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
