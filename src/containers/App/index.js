@@ -346,7 +346,6 @@ export default class App extends Component {
           render={(props) =>
             <NewCourse
               {...props}
-              app={this}
               spaceName={this.state.spaceName}
             />
           }
