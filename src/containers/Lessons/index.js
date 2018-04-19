@@ -1,34 +1,25 @@
-/*
- *
- * Lessons
- *
- */
-
+import FlatButton from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
 import React from 'react';
 import Helmet from 'react-helmet';
-import FlatButton from 'material-ui/Button';
-import { Link } from 'react-router-dom';
-import TextField from 'material-ui/TextField';
-import Snackbar from 'material-ui/Snackbar';
-
 import BackIcon from 'react-icons/lib/fa/arrow-circle-left';
 import PreviousIcon from 'react-icons/lib/fa/arrow-left';
 import NextIcon from 'react-icons/lib/fa/arrow-right';
-import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
+import FileIcon from 'react-icons/lib/fa/file-archive-o';
 import TextIcon from 'react-icons/lib/fa/file-text-o';
 import ExamIcon from 'react-icons/lib/fa/question';
-import FileIcon from 'react-icons/lib/fa/file-archive-o';
-
+import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
+import { Link } from 'react-router-dom';
 import './style.css';
 import './styleM.css';
 
 export default class Lessons extends React.PureComponent {
-
   constructor(props) {
     super(props);
     this.state = {
       token: localStorage.getItem("token"),
-      user: JSON.parse(localStorage.getItem('user')),
+      user: '',
       student: "",
       feedback: "",
       course: "",
@@ -39,7 +30,6 @@ export default class Lessons extends React.PureComponent {
       enrolled: 0,
       msg: "",
       snack: false,
-      app: this.props.app
     }
   }
 
@@ -54,16 +44,19 @@ export default class Lessons extends React.PureComponent {
   componentDidMount() {
     this.getCourse(this.props.match.params.id);
     this.getCourseStudent();
-  }
-
-  componentWillReceiveProps(app) {
-    this.setState({
-      app: app.app
-    }, () => {
-      this.forceUpdate();
+    this.getUser();
+  };
+  getUser = () => {
+    fetch("http://localhost:8000/api/user/auth", {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
-  }
-
+      .then(response => response.json())
+      .then(({ user }) => {
+        if (user) {
+          this.setState(() => ({ user }));
+        }
+      })
+  };
   getCourse = (id) => {
     fetch("http://localhost:8000/api/showCourse/" + id + "/" + this.props.match.params.uid, {
       method: 'GET',
@@ -72,17 +65,20 @@ export default class Lessons extends React.PureComponent {
       .then((response) => {
         return response.json();
       })
-      .then((json) => {
-        if (json.error) {
+      .then(({
+        error,
+        lessons,
+        lectures,
+        questions,
+        answers,
+        files,
+        course,
+        enrolled
+      }) => {
+        if (error) {
           this.showSnack('Your session has expired.');
         }
         else {
-          let lessons = json.lessons;
-          let lectures = json.lectures;
-          let questions = json.questions;
-          let answers = json.answers;
-          let files = json.files;
-
           for (let i = 0; i < lessons.length; i++) {
             lessons[i].lectures = [];
             lessons[i].pendingDelete = false;
@@ -118,31 +114,29 @@ export default class Lessons extends React.PureComponent {
               }
             }
           }
-          this.setState({
-            course: json.course,
-            lessons: lessons,
-            enrolled: json.enrolled
-          }, () => {
-            this.forceUpdate();
-            if (this.props.match.params.lid) {
+          this.setState(() => ({
+            course,
+            lessons,
+            enrolled
+          }), () => {
+            if (this.props.match.params.uid !== undefined) {
               for (let i = 0; i < this.state.lessons.length; i++) {
                 for (let j = 0; j < this.state.lessons[i].lectures.length; j++) {
-                  if (this.state.lessons[i].lectures[j].id === this.props.match.params.lid) {
-                    this.setState({
+                  if (this.state.lessons[i].lectures[j].id === this.props.match.params.uid) {
+                    this.setState(() => ({
                       activeLesson: i,
                       activeLecture: j,
                       activeView: this.state.lessons[i].lectures[j]
-                    })
+                    }));
                   }
                 }
               }
-            }
-            else {
-              this.setState({
+            } else {
+              this.setState(() => ({
                 activeLesson: 0,
                 activeLecture: 0,
                 activeView: this.state.lessons[0].lectures[0]
-              })
+              }));
             }
           });
         }
