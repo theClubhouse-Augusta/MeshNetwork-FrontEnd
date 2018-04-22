@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import asyncComponent from '../../components/AsyncComponent';
 import authenticate from '../../utils/Authenticate';
 
@@ -19,7 +19,6 @@ const SpaceDash = asyncComponent(() => import('../SpaceDash'));
 const SpaceSignUp = asyncComponent(() => import('../SpaceSignUp'));
 const UserSignUp = asyncComponent(() => import('../Checkout'));
 const UserSignIn = asyncComponent(() => import('../UserSignIn'));
-
 const Discover = asyncComponent(() => import('../Discover'));
 const Ask = asyncComponent(() => import('../Ask'));
 const Replies = asyncComponent(() => import('../Replies'));
@@ -35,7 +34,6 @@ const NewCourse = asyncComponent(() => import('../NewCourse'));
 const Lessons = asyncComponent(() => import('../Lessons'));
 const Enroll = asyncComponent(() => import('../Enroll'));
 const LMSDash = asyncComponent(() => import('../LMSDash'));
-// const LMSReport = asyncComponent(() => import('../StudentReport'));
 
 export default class App extends Component {
   constructor() {
@@ -44,8 +42,7 @@ export default class App extends Component {
       token: localStorage.getItem('token'),
       spaceName: '',
     };
-  }
-
+  };
   async componentDidMount() {
     let authorized;
     try {
@@ -64,7 +61,6 @@ export default class App extends Component {
       }
     }
   };
-
   getSpaceName = (spaceID, token) => {
     fetch(`http://localhost:8000/api/spacename/${spaceID}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -93,7 +89,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/About"
           render={() =>
@@ -102,7 +97,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/TestCal"
           render={() =>
@@ -111,8 +105,6 @@ export default class App extends Component {
             />
           }
         />
-
-
         <Route
           path="/booking/:id"
           render={(props) =>
@@ -122,7 +114,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/newSpace"
           render={(props) =>
@@ -132,7 +123,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/join/:id"
           render={(props) =>
@@ -142,7 +132,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/signIn"
           render={(props) =>
@@ -152,7 +141,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/event/:id"
           render={(props) =>
@@ -162,13 +150,11 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/Spaces"
           component={Spaces}
           spaceName={this.state.spaceName}
         />
-
         <Route
           path="/account"
           render={(props) =>
@@ -178,7 +164,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/members"
           render={(props) =>
@@ -188,7 +173,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/AddEvent"
           render={(props) =>
@@ -198,7 +182,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/space/:id"
           render={(props) =>
@@ -208,7 +191,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path="/user/:id"
           render={(props) => (
@@ -221,7 +203,6 @@ export default class App extends Component {
         <Route path="/kiosk/:id"
           render={(props) => <Kiosk {...props} spaceName={this.state.spaceName} />}
         />
-
         <Route
           path="/spacedash/:id"
           render={(props) =>
@@ -231,7 +212,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           exact path='/Challenges'
           render={(props) =>
@@ -242,7 +222,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path='/Challenges/Category/:id'
           render={(props) =>
@@ -262,7 +241,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           exact path='/Challenges/Ask'
           render={() =>
@@ -300,7 +278,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           exact path='/LMS'
           render={(props) =>
@@ -316,7 +293,6 @@ export default class App extends Component {
           render={(props) =>
             <Courses
               {...props}
-              app={this}
               spaceName={this.state.spaceName}
             />
           }
@@ -359,7 +335,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path='/LMS/Report/:id/:uid'
           render={(props) =>
@@ -370,7 +345,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           path='/LMS/Lesson/:id/:lid/:uid'
           render={(props) =>
@@ -401,7 +375,6 @@ export default class App extends Component {
             />
           }
         />
-
         <Route
           render={props =>
             <NotFound

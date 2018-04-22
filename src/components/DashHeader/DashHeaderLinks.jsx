@@ -1,25 +1,15 @@
-import React, { Component } from "react";
 import classNames from "classnames";
-import { 
-  Manager, 
-  Target, 
-  Popper 
-} from "react-popper";
-import { withStyles } from "material-ui/styles";
-import IconButton from 'material-ui/IconButton';
-import Hidden from 'material-ui/Hidden';
-import Grow from 'material-ui/transitions/Grow';
-import Paper from 'material-ui/Paper';
-import { 
-  MenuItem,
-  MenuList,
-} from 'material-ui/Menu';
-
-import { ClickAwayListener, } from "material-ui";
-import Person from "material-ui-icons/Person";
+import { ClickAwayListener } from "material-ui";
 import Notifications from "material-ui-icons/Notifications";
-import Dashboard from "material-ui-icons/Dashboard";
-
+import Person from "material-ui-icons/Person";
+import Hidden from 'material-ui/Hidden';
+import IconButton from 'material-ui/IconButton';
+import { MenuItem, MenuList } from 'material-ui/Menu';
+import Paper from 'material-ui/Paper';
+import { withStyles } from "material-ui/styles";
+import Grow from 'material-ui/transitions/Grow';
+import React, { Component } from "react";
+import { Manager, Popper, Target } from "react-popper";
 import headerLinksStyle from "../../variables/styles/headerLinksStyle";
 
 class DashHeaderLinks extends Component {
@@ -35,12 +25,12 @@ class DashHeaderLinks extends Component {
     this.setState({ open: false });
   };
   render() {
-    const { 
-      classes, 
+    const {
+      classes,
       history,
     } = this.props;
-    const { 
-      open, 
+    const {
+      open,
       user
     } = this.state;
     return (

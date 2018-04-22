@@ -1,35 +1,24 @@
-/**
- *
- * EventInformation
- *
- */
-import React, { Component } from 'react';
-import Helmet from 'react-helmet';
-import Snackbar from 'material-ui/Snackbar';
-import TextField from 'material-ui/TextField';
+import { ContentState, EditorState, convertFromHTML, convertToRaw } from 'draft-js';
+import draftToHtml from "draftjs-to-html";
 import FlatButton from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
-import { ListItemText } from 'material-ui/List';
-import Select from 'material-ui/Select';
-import { MenuItem } from 'material-ui/Menu';
-import Input, { InputLabel } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
+import Input, { InputLabel } from 'material-ui/Input';
+import { ListItemText } from 'material-ui/List';
+import { MenuItem } from 'material-ui/Menu';
+import Select from 'material-ui/Select';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
 import moment from 'moment';
-
-import DateRangePickerWithGaps from '../DateRangePickerWithGaps';
-import RaisedButton from '../../containers/AddEvent/RaisedButton';
-import { SelectedSponsors } from '../../containers/AddEvent/SelectedSponsors';
-
-import authenticate from '../../utils/Authenticate';
-
-import { EditorState, ContentState, convertFromHTML, convertToRaw } from 'draft-js';
-import draftToHtml from "draftjs-to-html";
+import React, { Component } from 'react';
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
+import Helmet from 'react-helmet';
 import CloseIcon from "react-icons/lib/md/close";
-
-// styles
+import RaisedButton from '../../containers/AddEvent/RaisedButton';
+import { SelectedSponsors } from '../../containers/AddEvent/SelectedSponsors';
+import authenticate from '../../utils/Authenticate';
+import DateRangePickerWithGaps from '../DateRangePickerWithGaps';
 import './style.css';
 import './styleM.css';
 

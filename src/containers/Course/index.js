@@ -26,113 +26,120 @@ export default class Course extends React.PureComponent {
       msg: "",
       app: this.props.app
     }
-  }
-
-  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
-
+  };
+  handleRequestClose = () => {
+    this.setState(() => ({
+      snack: false,
+      msg: ""
+    }));
+  };
+  showSnack = msg => {
+    this.setState(() => ({
+      snack: true,
+      msg: msg
+    }));
+  };
   componentDidMount() {
     this.getCourse(this.props.match.params.id);
-  }
-
+  };
   componentWillReceiveProps(app) {
     this.setState({
       app: app.app
     }, () => {
       this.forceUpdate();
     })
-  }
-
+  };
   handleVideo = () => {
-    this.setState({ videoDialog: !this.state.videoDialog })
-  }
-
+    this.setState(() => ({ videoDialog: !this.state.videoDialog }));
+  };
   getCourse = (id) => {
-    fetch("http://localhost:8000/api/detailCourse/" + id, {
-      method: 'GET'
-    })
+    fetch(`http://localhost:8000/api/detailCourse/${id}`)
       .then(response => response.json())
-      .then(json => {
-        let lessons = json.lessons;
-
+      .then(({
+        lessons,
+        lectures,
+        course
+      }) => {
         for (let i = 0; i < lessons.length; i++) {
           lessons[i].lectures = [];
-
-          for (let j = 0; j < json.lectures.length; j++) {
-            if (lessons[i].id === json.lectures[j].lessonID) {
-              lessons[i].lectures.push(json.lectures[j]);
+          for (let j = 0; j < lectures.length; j++) {
+            if (lessons[i].id === lectures[j].lessonID) {
+              lessons[i].lectures.push(lectures[j]);
             }
           }
         }
         this.setState({
-          course: json.course,
-          lessons: lessons
+          course,
+          lessons,
         })
-      })
-  }
-
+      });
+  };
   enrollCourse = () => {
-
     fetch("http://localhost:8000/api/enrollCourse/" + this.state.course.id, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + this.state.token
-      }
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        if (json.error) {
+      .then(response => response.json())
+      .then(({
+        error,
+        success,
+      }) => {
+        if (error) {
           this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}/${this.state.user.id}`)
-        }
-        else {
-          this.showSnack(json.success);
+        } else {
+          this.showSnack(success);
           setTimeout(() => {
             this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
           }, 2000);
         }
-      })
-  }
-
-  renderIcon = (type) => {
-    if (type === "Video") { return (<YoutubeIcon />) }
-    else if (type === "Exam") { return (<ExamIcon />) }
-    else if (type === "Text") { return (<TextIcon />) }
-    else if (type === "File") { return (<FileIcon />) }
-  }
-
+      });
+  };
+  renderIcon = type => {
+    switch (type) {
+      case 'Video':
+        return <YoutubeIcon />;
+      case 'Exam':
+        return <ExamIcon />;
+      case 'Text':
+        return <TextIcon />;
+      case 'File':
+        return <FileIcon />;
+      default:
+        break;
+    }
+  };
   renderEnroll = () => {
     if (this.state.token) {
       return (
-        <FlatButton onClick={this.enrollCourse} style={{ background: "#6fc13e", color: '#FFFFFF', border: '2px solid #6fc13e', height: '50px', marginLeft: '10px', marginRight: '10px', marginTop: '10px' }}>See the Course</FlatButton>
-      )
+        <FlatButton
+          onClick={this.enrollCourse}
+          style={{ background: "#6fc13e", color: '#FFFFFF', border: '2px solid #6fc13e', height: '50px', marginLeft: '10px', marginRight: '10px', marginTop: '10px' }}
+        >See the Course</FlatButton>
+      );
     } else {
       return (
         <Link to={'/signIn'}><FlatButton style={{ background: "#6fc13e", color: "#FFFFFF", border: '2px solid #6fc13e', height: '50px', marginLeft: '10px', marginRight: '10px' }}>Enroll Now</FlatButton></Link>
-      )
+      );
     }
-  }
-
+  };
   render() {
-
-    // let headerStyle = {
-
-    // }
-
-    let promoVideo = <FlatButton onClick={this.handleVideo} style={{ color: '#FFFFFF', border: '2px solid #FFFFFF', height: '50px', marginLeft: '10px', marginRight: '10px' }}>Promo Video</FlatButton>;
+    let promoVideo = (
+      <FlatButton
+        onClick={this.handleVideo}
+        style={{ color: '#FFFFFF', border: '2px solid #FFFFFF', height: '50px', marginLeft: '10px', marginRight: '10px' }}
+      >Promo Video</FlatButton>
+    );
     if (!this.state.course.courseVideo) {
       promoVideo = ""
     }
-
     return (
       <div className="container">
         <Helmet title="Detail" meta={[{ name: 'description', content: 'Description of Detail' }]} />
         <Header space={this.props.spaceName} />
-        <header className="lmsDetailHeader" style={{
-          background: 'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(' + this.state.course.courseImage + ')',
-
-        }}>
+        <header
+          className="lmsDetailHeader"
+          style={{
+            background: 'linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)),url(' + this.state.course.courseImage + ')',
+          }}>
           <div className="lmsDetailHeaderHeading">
             {this.state.course.courseName}
           </div>
@@ -144,7 +151,6 @@ export default class Course extends React.PureComponent {
             {this.renderEnroll()}
           </div>
         </header>
-
         <main>
           <div className="lmsDetailContent">
             <div dangerouslySetInnerHTML={{ __html: this.state.course.courseInformation }} />
@@ -162,7 +168,6 @@ export default class Course extends React.PureComponent {
               </div>
             </div>
           </div>
-
           <div className="lmsDetailCourses">
             <div className="lmsDetailCoursesContainer">
               <div className="lmsDetailCoursesHeader">
@@ -192,23 +197,36 @@ export default class Course extends React.PureComponent {
                   </div>
                 </div>
               ))}
-
             </div>
           </div>
           <div className="lmsDetailFaq">
             <div className="lmsDetailFaqContainer">
-              <div className="lmsDetailFaqHeader">Frequently Asked Questions</div>
-              <div className="lmsDetailFaqBlock">
-                <div className="lmsDetailFaqBlockHeader">When does the course start and finish?</div>
-                <div className="lmsDetailFaqBlockContent">The course starts now and never ends! It is a completely self-paced online course - you decide when you start and when you finish.</div>
+              <div className="lmsDetailFaqHeader">
+                Frequently Asked Questions
               </div>
               <div className="lmsDetailFaqBlock">
-                <div className="lmsDetailFaqBlockHeader">How long do I have access to the course?</div>
-                <div className="lmsDetailFaqBlockContent">How does lifetime access sound? After enrolling, you have unlimited access to this course for as long as you like - across any and all devices you own.</div>
+                <div className="lmsDetailFaqBlockHeader">
+                  When does the course start and finish?
+                </div>
+                <div className="lmsDetailFaqBlockContent">
+                  The course starts now and never ends! It is a completely self-paced online course - you decide when you start and when you finish.
+                </div>
               </div>
               <div className="lmsDetailFaqBlock">
-                <div className="lmsDetailFaqBlockHeader">What if I am unhappy with the course?</div>
-                <div className="lmsDetailFaqBlockContent">We're committed to providing the best online learning experience on the Web! If you experience an issue, contact us within 7 days and we'll be happy to help..</div>
+                <div className="lmsDetailFaqBlockHeader">
+                  How long do I have access to the course?
+                </div>
+                <div className="lmsDetailFaqBlockContent">
+                  How does lifetime access sound? After enrolling, you have unlimited access to this course for as long as you like - across any and all devices you own.
+                </div>
+              </div>
+              <div className="lmsDetailFaqBlock">
+                <div className="lmsDetailFaqBlockHeader">
+                  What if I am unhappy with the course?
+                </div>
+                <div className="lmsDetailFaqBlockContent">
+                  We're committed to providing the best online learning experience on the Web! If you experience an issue, contact us within 7 days and we'll be happy to help..
+                </div>
               </div>
             </div>
           </div>
@@ -223,9 +241,14 @@ export default class Course extends React.PureComponent {
           onRequestClose={this.handleVideo}
           bodyStyle={{ overflow: 'hidden', background: 'transparent' }}
         >
-          <iframe title="lecture" width="100%" height="500" src={'https://www.youtube.com/embed/' + this.state.course.courseVideo} frameborder="0" />
+          <iframe
+            title="lecture"
+            width="100%"
+            height="500"
+            src={'https://www.youtube.com/embed/' + this.state.course.courseVideo}
+            frameborder="0"
+          />
         </Dialog>
-
         <Snackbar
           open={this.state.snack}
           message={this.state.msg}

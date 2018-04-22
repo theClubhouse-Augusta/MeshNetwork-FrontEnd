@@ -1,12 +1,11 @@
-import React from "react";
-import { withStyles } from 'material-ui/styles';
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
-import Clear from "material-ui-icons/Clear";
-import Check from "material-ui-icons/Check";
-import PropTypes from "prop-types";
 import cx from "classnames";
-
+import Check from "material-ui-icons/Check";
+import Clear from "material-ui-icons/Clear";
+import { FormControl } from 'material-ui/Form';
+import Input, { InputLabel } from 'material-ui/Input';
+import { withStyles } from 'material-ui/styles';
+import PropTypes from "prop-types";
+import React from "react";
 import customInputStyle from "../../variables/styles/customInputStyle";
 
 function CustomInput({

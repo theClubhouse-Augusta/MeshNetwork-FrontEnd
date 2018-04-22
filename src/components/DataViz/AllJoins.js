@@ -1,19 +1,5 @@
-/*
- *
- * AllAppearances
- *
- */
 import React from 'react';
-
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip
-} from 'recharts';
-
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import './style.css';
 import './styleM.css';
 

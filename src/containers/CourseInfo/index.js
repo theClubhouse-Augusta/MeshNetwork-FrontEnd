@@ -15,7 +15,6 @@ export default class CourseInfo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token: localStorage.getItem('token'),
       user: JSON.parse(localStorage.getItem('user')),
       activeView: "Curriculum",
       course: "",
@@ -23,59 +22,55 @@ export default class CourseInfo extends React.PureComponent {
       students: [],
       app: this.props.app
     }
-  }
-
+  };
   componentDidMount() {
     this.getCourse(this.props.match.params.id)
-  }
-
+  };
   componentWillReceiveProps(app) {
     this.setState({
       app: app.app
     }, () => {
       this.forceUpdate();
     })
-  }
-
-  getCourse = (id) => {
-
-    fetch("http://localhost:8000/api/showCourse/" + id + "/" + this.props.match.params.uid, {
-      method: 'GET',
-      headers: { 'Authorization': 'Bearer ' + this.state.token }
+  };
+  getCourse = id => {
+    fetch(`http://localhost:8000/api/showCourse/${id}/${this.props.match.params.uid}`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
       .then(response => response.json())
-      .then(json => {
-        if (json.detail) {
+      .then(({
+        detail,
+        lessons,
+        lectures,
+        course,
+        students
+      }) => {
+        if (detail) {
           this.props.app.signOut();
           this.props.app.handleAuth();
-        }
-        else {
-          let lessons = json.lessons;
-
+        } else {
+          lessons = [...lessons];
           for (let i = 0; i < lessons.length; i++) {
             lessons[i].lectures = [];
-
-            for (let j = 0; j < json.lectures.length; j++) {
-              if (lessons[i].id === json.lectures[j].lessonID) {
-                lessons[i].lectures.push(json.lectures[j]);
+            for (let j = 0; j < lectures.length; j++) {
+              if (lessons[i].id === lectures[j].lessonID) {
+                lessons[i].lectures.push(lectures[j]);
               }
             }
           }
           this.setState({
-            course: json.course,
-            lessons: lessons,
-            students: json.students
-          })
+            course,
+            lessons,
+            students
+          });
         }
-      })
-  }
-
+      });
+  };
   changeView = (view) => {
     this.setState({
       activeView: view
     })
-  }
-
+  };
   renderMenu = () => {
     if (this.state.activeView === "Curriculum") {
       return (
@@ -97,8 +92,7 @@ export default class CourseInfo extends React.PureComponent {
           </div>*/}
         </div>
       )
-    }
-    else if (this.state.activeView === "Information") {
+    } else if (this.state.activeView === "Information") {
       return (
         <div className="lmsLessonBlock">
           <div className="lmsLessonBlockItem" onClick={() => this.changeView("Curriculum")}>
@@ -118,8 +112,7 @@ export default class CourseInfo extends React.PureComponent {
           </div>*/}
         </div>
       )
-    }
-    else if (this.state.activeView === "Instructor") {
+    } else if (this.state.activeView === "Instructor") {
       return (
         <div className="lmsLessonBlock">
           <div className="lmsLessonBlockItem" onClick={() => this.changeView("Curriculum")}>
@@ -139,8 +132,7 @@ export default class CourseInfo extends React.PureComponent {
           </div>*/}
         </div>
       )
-    }
-    else if (this.state.activeView === "Students") {
+    } else if (this.state.activeView === "Students") {
       return (
         <div className="lmsLessonBlock">
           <div className="lmsLessonBlockItem" onClick={() => this.changeView("Curriculum")}>
@@ -160,8 +152,7 @@ export default class CourseInfo extends React.PureComponent {
           </div>*/}
         </div>
       )
-    }
-    else if (this.state.activeView === "Discussion") {
+    } else if (this.state.activeView === "Discussion") {
       return (
         <div className="lmsLessonBlock">
           <div className="lmsLessonBlockItem" onClick={() => this.changeView("Curriculum")}>
@@ -182,8 +173,7 @@ export default class CourseInfo extends React.PureComponent {
         </div>
       )
     }
-  }
-
+  };
   renderCurrentStudent = (student, index) => {
     if (student.status === 'Current') {
       return (
@@ -197,10 +187,9 @@ export default class CourseInfo extends React.PureComponent {
             <LinearProgress color="secondary" variant="determinate" value={student.percent} style={{ width: '100%' }} />
           </div>
         </Link>
-      )
+      );
     }
-  }
-
+  };
   renderGraduateStudent = (student, index) => {
     if (student.status === 'Graduate') {
       return (
@@ -214,39 +203,47 @@ export default class CourseInfo extends React.PureComponent {
             <LinearProgress color="secondary" variant="determinate" value={student.percent} style={{ width: '100%' }} />
           </div>
         </Link>
-      )
+      );
     }
-  }
-
-  renderLectureStatus = (status) => {
+  };
+  renderLectureStatus = status => {
     if (status === 1) {
       return (
         <div className="lmsSingleBlockCircleComplete"></div>
       )
-    }
-    else {
+    } else {
       return (
         <div className="lmsSingleBlockCircle"></div>
-      )
+      );
     }
-  }
-
-  renderIcon = (type) => {
-    if (type === "Video") { return (<YoutubeIcon />) }
-    else if (type === "Exam") { return (<ExamIcon />) }
-    else if (type === "Text") { return (<TextIcon />) }
-    else if (type === "File") { return (<FileIcon />) }
-  }
-
+  };
+  renderIcon = type => {
+    switch (type) {
+      case 'Video':
+        return <YoutubeIcon />;
+      case 'Exam':
+        return <ExamIcon />;
+      case 'Text':
+        return <TextIcon />;
+      case 'File':
+        return <FileIcon />;
+      default:
+        break;
+    }
+  };
   renderView = () => {
     if (this.state.activeView === "Curriculum") {
       return (
         <div className="lmsSingleCourses">
           <div className="lmsDetailCoursesContainer">
-            <div className="lmsDetailCoursesHeader">Class Curriculum</div>
+            <div className="lmsDetailCoursesHeader">
+              Class Curriculum
+            </div>
             {this.state.lessons.map((lesson, i) => (
               <div className="lmsDetailCoursesBlock" key={`lmsDetailCourses${i}`}>
-                <div className="lmsDetailCoursesBlockHeader">{lesson.lessonName}</div>
+                <div className="lmsDetailCoursesBlockHeader">
+                  {lesson.lessonName}
+                </div>
                 <div className="lmsDetailCoursesBlockList">
                   {lesson.lectures.map((lecture, j) => (
                     <div className="lmsDetailCoursesBlockItem" key={`lmsDetailItem${j}`}>
@@ -260,7 +257,11 @@ export default class CourseInfo extends React.PureComponent {
                         </div>
                       </div>
                       <div className="lmsDetailCoursesBlockButton">
-                        <Link to={'/LMS/Lesson/' + this.props.match.params.id + '/' + lecture.id + '/' + this.state.user.id}><FlatButton style={{ background: "#6fc13e", color: "#FFFFFF" }}>Start</FlatButton></Link>
+                        <Link to={'/LMS/Lesson/' + this.props.match.params.id + '/' + lecture.id + '/' + this.state.user.id}>
+                          <FlatButton
+                            style={{ background: "#6fc13e", color: "#FFFFFF" }}
+                          >Start</FlatButton>
+                        </Link>
                       </div>
                     </div>
                   ))}
@@ -276,10 +277,16 @@ export default class CourseInfo extends React.PureComponent {
         <div className="lmsDetailAuthor">
           <div className="lmsDetailAuthorContainer">
             <div className="lmsDetailAuthorAvatar">
-              <img alt="" className="lmsDetailAuthorAvatarImg" src={this.state.course.courseInstructorAvatar} />
+              <img
+                alt=""
+                className="lmsDetailAuthorAvatarImg"
+                src={this.state.course.courseInstructorAvatar}
+              />
             </div>
             <div className="lmsDetailAuthorInfo">
-              <div className="lmsDetailAuthorName">{this.state.course.courseInstructorName}</div>
+              <div className="lmsDetailAuthorName">
+                {this.state.course.courseInstructorName}
+              </div>
               <div className="lmsDetailAuthorContent">
                 {this.state.course.courseInstructorInfo}
               </div>
@@ -287,87 +294,81 @@ export default class CourseInfo extends React.PureComponent {
           </div>
         </div>
       )
-    }
-    else if (this.state.activeView === "Information") {
+    } else if (this.state.activeView === "Information") {
       return (
         <div className="lmsDetailContent">
           <div dangerouslySetInnerHTML={{ __html: this.state.course.courseInformation }} />
         </div>
       )
-    }
-    else if (this.state.activeView === 'Students') {
+    } else if (this.state.activeView === 'Students') {
       return (
         <div className="lmsDetailStudents">
-          <div className="lmsDetailCoursesHeader">Students</div>
+          <div className="lmsDetailCoursesHeader">
+            Students
+          </div>
           <div className="lmsDetailStudentsContainer">
             <div className="lmsDetailStudentList">
-              <div className="lmsDetailStudentHeader">Current</div>
+              <div className="lmsDetailStudentHeader">
+                Current
+              </div>
               {this.state.students.map((student, index) => (
                 this.renderCurrentStudent(student, index)
               ))}
             </div>
             <div className="lmsDetailStudentList">
-              <div className="lmsDetailStudentHeader">Graduated</div>
+              <div className="lmsDetailStudentHeader">
+                Graduated
+              </div>
               {this.state.students.map((student, index) => (
                 this.renderGraduateStudent(student, index)
               ))}
             </div>
           </div>
         </div>
-      )
+      );
     }
-  }
-
+  };
   renderImage = () => {
     if (this.state.course.courseImage) {
       return (
         <img alt="" className="lmsSingleLessonImage" src={this.state.course.courseImage} />
-      )
+      );
     } else {
       return (
         <img alt="" className="lmsSingleLessonImage" src={'hhttps://s3.us-east-2.amazonaws.com/suggestify/5249e9_placeholder.gif'} />
-      )
+      );
     }
-  }
-
+  };
   render() {
     return (
       <div className="container">
         <Helmet title="Lesson" meta={[{ name: 'description', content: 'Description of Lessons' }]} />
-
-        <header>
-
-        </header>
-
         <main className="lmsLessonMain">
           <div className="lmsLessonColumnOne">
             <div className="lmsLessonColumnOneHeader">
-              <Link to="/LMS/MyLMS"><BackIcon color="#FFFFFF" style={{ padding: '5px' }} size={30} /></Link>
+              <Link to="/LMS/MyLMS">
+                <BackIcon color="#FFFFFF" style={{ padding: '5px' }} size={30} />
+              </Link>
             </div>
             <div className="lmsLessonColumnOneContent">
               <div className="lmsSingleLessonImageContainer">
                 {this.renderImage()}
               </div>
-              <div className="lmsLessonColumnOneTitle">{this.state.course.courseName}</div>
+              <div className="lmsLessonColumnOneTitle">
+                {this.state.course.courseName}
+              </div>
               <div className="lmsLessonList">
                 {this.renderMenu()}
               </div>
             </div>
           </div>
           <div className="lmsLessonColumnTwo">
-            <div className="lmsLessonColumnTwoHeader">
-
-            </div>
+            <div className="lmsLessonColumnTwoHeader"></div>
             <div className="lmsLessonColumnTwoContent">
               {this.renderView()}
             </div>
           </div>
-
         </main>
-
-        <footer>
-
-        </footer>
       </div>
     );
   }

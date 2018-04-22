@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { FormControl } from 'material-ui/Form';
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
-import TextField from 'material-ui/TextField';
-import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
+import TextField from 'material-ui/TextField';
+import { withStyles } from 'material-ui/styles';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 const styles = theme => ({
   container: {
@@ -25,7 +25,7 @@ const styles = theme => ({
 class DateRangePicker extends Component {
   render() {
     return (
-      <div style={{display: 'flex'}}>
+      <div style={{ display: 'flex' }}>
         <form onSubmit={e => e.preventDefault()} autoComplete="off">
           <FormControl className={this.props.classes.formControl}>
             <InputLabel htmlFor="month-helper">Month</InputLabel>
@@ -52,7 +52,7 @@ class DateRangePicker extends Component {
         </form>
 
         <TextField
-          style={{width: 120, marginTop: 24}}
+          style={{ width: 120, marginTop: 24 }}
           error={this.props.error}
           id="number"
           placeholder="Year"

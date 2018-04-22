@@ -1,27 +1,20 @@
-import React from "react";
-import { withStyles } from 'material-ui/styles';
+import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import Card, { 
-  CardActions, 
-  CardContent,
-  CardHeader,
-} from 'material-ui/Card';
-
+import { withStyles } from 'material-ui/styles';
 import PropTypes from "prop-types";
-
+import React from "react";
 import chartCardStyle from "../../variables/styles/chartCardStyle";
 
-function ChartCard(props) {
-  const {
-    classes,
-    chartColor,
-    statIconColor,
-    chart,
-    title,
-    text,
-    statLink,
-    statText
-  } = props;
+function ChartCard({
+  classes,
+  chartColor,
+  statIconColor,
+  chart,
+  title,
+  text,
+  statLink,
+  statText
+}) {
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -40,7 +33,7 @@ function ChartCard(props) {
       </CardContent>
       <CardActions className={classes.cardActions}>
         <div className={classes.cardStats}>
-          <props.statIcon
+          <statIcon
             className={
               classes.cardStatsIcon +
               " " +

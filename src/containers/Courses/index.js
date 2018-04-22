@@ -1,27 +1,13 @@
-/*
- *
- * Browse
- *
- */
-
-import React from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router-dom";
-// import SelectField from 'material-ui/Select';
-// import Menu, { MenuItem } from 'material-ui/Menu';
-import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/Button";
 import Card, { CardContent, CardMedia } from "material-ui/Card";
-// CardActions,
+import TextField from "material-ui/TextField";
 import Typography from "material-ui/Typography";
-// import { FormControl} from 'material-ui/Form';
-// import Input, { InputLabel } from 'material-ui/Input';
-
+import React from "react";
+import Helmet from "react-helmet";
 import PreviousIcon from "react-icons/lib/fa/arrow-left";
 import NextIcon from "react-icons/lib/fa/arrow-right";
-
+import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-
 import "./style.css";
 import "./styleM.css";
 
@@ -39,31 +25,16 @@ export default class Courses extends React.PureComponent {
       searchContent: "",
       order: "all",
       searched: "",
-      app: this.props.app
     };
-  }
-
+  };
   componentDidMount() {
     this.getCourses(0);
     this.getCategories();
-  }
-
-  componentWillReceiveProps(app) {
-    this.setState(
-      {
-        app: app.app
-      },
-      () => {
-        this.forceUpdate();
-      }
-    );
-  }
-
+  };
   handleSearch = event => {
-    this.setState(
-      {
-        searchContent: event.target.value
-      },
+    this.setState(() => ({
+      searchContent: event.target.value
+    }),
       () => {
         if (this.state.searchContent.length > 4) {
           this.searchCourses();
@@ -74,17 +45,15 @@ export default class Courses extends React.PureComponent {
     );
   };
   handleCategory = (event, index, value) => {
-    this.setState(
-      {
-        page: 1,
-        category: value
-      },
+    this.setState(() => ({
+      page: 1,
+      category: value
+    }),
       () => {
         this.getCourses(value);
       }
     );
   };
-
   getCourses = (category = 0) => {
     if (
       this.state.order === "search" &&
@@ -98,38 +67,35 @@ export default class Courses extends React.PureComponent {
         searched: this.state.searchContent
       });
     }
-
     fetch(`http://localhost:8000/api/getCourses/${category}/${this.state.count}?page=${this.state.page}`)
       .then(response => {
         return response.json();
       })
-      .then(json => {
+      .then(({
+        courses,
+      }) => {
         let nextPage = 0;
         let previousPage = 0;
-        if (json.courses.last_page !== json.courses.current_page) {
+        if (courses.last_page !== courses.current_page) {
           nextPage = this.state.page + 1;
-          if (json.courses.current_page !== 1) {
+          if (courses.current_page !== 1) {
             previousPage = this.state.page - 1;
           }
-        } else if (json.courses.last_page === json.courses.current_page) {
-          if (json.courses.current_page !== 1) {
+        } else if (courses.last_page === courses.current_page) {
+          if (courses.current_page !== 1) {
             previousPage = this.state.page - 1;
           }
         }
-        this.setState({
-          nextPage: nextPage,
-          previousPage: previousPage,
-          courses: json.courses.data,
+        this.setState(() => ({
+          nextPage,
+          previousPage,
+          courses: courses.data,
           isLoading: false
-        });
+        }));
       });
   };
-
   getNextCourses = category => {
-    this.setState(
-      {
-        page: this.state.nextPage
-      },
+    this.setState(() => ({ page: this.state.nextPage }),
       () => {
         if (this.state.order === "all") {
           this.getCourses(category);
@@ -139,12 +105,8 @@ export default class Courses extends React.PureComponent {
       }
     );
   };
-
   getPreviousCourses = category => {
-    this.setState(
-      {
-        page: this.state.previousPage
-      },
+    this.setState(() => ({ page: this.state.previousPage }),
       () => {
         if (this.state.order === "all") {
           this.getCourses(category);
@@ -154,38 +116,24 @@ export default class Courses extends React.PureComponent {
       }
     );
   };
-
   getCategories = () => {
-    fetch("http://localhost:8000/api/getCategories", {
-      method: 'GET'
-    })
+    fetch("http://localhost:8000/api/getCategories")
       .then(response => response.json())
-      .then(json => {
-        this.setState({
-          categories: json.categories
-        })
-      })
-      .then(response => response.json())
-      .then(json => {
-        this.setState({
-          categories: json.categories
-        });
+      .then(({ categories }) => {
+        this.setState(() => ({ categories }));
       });
   };
-
   searchCourses = () => {
     if (this.state.order === "all") {
-      this.setState({
+      this.setState(() => ({
         order: "search",
         page: 1,
         nextPage: 0,
         previousPage: 0
-      });
+      }));
     }
-
     let data = new FormData();
     data.append("searchContent", this.state.searchContent);
-
     fetch('http://localhost:8000/api/searchCourse', {
       method: 'POST',
       body: data
@@ -205,23 +153,19 @@ export default class Courses extends React.PureComponent {
         });
       });
   };
-
   renderPageButtons = () => {
     let previousDisabled = false;
     let nextDisabled = false;
     let previousColor = "#6fc13e";
     let nextColor = "#6fc13e";
-
     if (this.state.previousPage === 0) {
       previousDisabled = true;
       previousColor = "#DDDDDD";
     }
-
     if (this.state.nextPage === 0) {
       nextDisabled = true;
       nextColor = "#DDDDDD";
     }
-
     return (
       <div className="lmsBrowseButtons">
         <FlatButton
@@ -237,9 +181,7 @@ export default class Courses extends React.PureComponent {
           }}
           onClick={() => this.getPreviousCourses(this.state.category)}
           disabled={previousDisabled}
-        >
-          Previous
-        </FlatButton>
+        >Previous</FlatButton>
         <FlatButton
           icon={<NextIcon color="#FFFFFF" />}
           style={{
@@ -253,13 +195,10 @@ export default class Courses extends React.PureComponent {
           }}
           onClick={() => this.getNextCourses(this.state.category)}
           disabled={nextDisabled}
-        >
-          Next
-        </FlatButton>
+        >Next</FlatButton>
       </div>
     );
   };
-
   render() {
     return (
       <div className="container">

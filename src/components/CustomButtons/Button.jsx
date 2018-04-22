@@ -1,21 +1,19 @@
-import React from "react";
-import { withStyles } from "material-ui/styles";
-import Button from "material-ui/Button";
-import PropTypes from "prop-types";
 import cx from "classnames";
-
+import Button from "material-ui/Button";
+import { withStyles } from "material-ui/styles";
+import PropTypes from "prop-types";
+import React from "react";
 import buttonStyle from "../../variables/styles/buttonStyle";
 
-function RegularButton({ ...props }) {
-  const {
-    classes,
-    color,
-    round,
-    children,
-    fullWidth,
-    disabled,
-    ...rest
-  } = props;
+function RegularButton({
+  classes,
+  color,
+  round,
+  children,
+  fullWidth,
+  disabled,
+  ...rest
+}) {
   const btnClasses = cx({
     [classes[color]]: color,
     [classes.round]: round,

@@ -1,26 +1,13 @@
-/**
- *
- * SpaceInformation
- *
- */
-
-import React from "react";
-import { withStyles } from 'material-ui/styles';
-import Paper from "material-ui/Paper";
+import { ContentState, EditorState, convertFromHTML, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
 import { TextField } from "material-ui";
 import Button from "material-ui/Button";
+import Paper from "material-ui/Paper";
 import Snackbar from "material-ui/Snackbar";
-import {
-  EditorState,
-  ContentState,
-  convertToRaw,
-  // convertFromRaw,
-  convertFromHTML
-} from "draft-js";
-import draftToHtml from "draftjs-to-html";
+import { withStyles } from 'material-ui/styles';
+import React from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
 import styles from './style';
 
 class SpaceInformation extends React.PureComponent {

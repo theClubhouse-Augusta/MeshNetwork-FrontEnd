@@ -31,39 +31,31 @@ export default class Header extends React.PureComponent {
       snack: false,
       redirect: null
     };
-  }
-
+  };
   handleRequestClose = () => {
     this.setState({ snack: false, msg: "" });
   };
   showSnack = msg => {
     this.setState({ snack: true, msg: msg });
   };
-
   handleChallengeMenu = event => {
     this.setState({ challengeMenu: event.currentTarget });
   };
-
   handleChallengeMenuClose = () => {
     this.setState({ challengeMenu: null });
   };
-
   handleEducationMenu = event => {
     this.setState({ educationMenu: event.currentTarget });
   };
-
   handleEducationMenuClose = () => {
     this.setState({ educationMenu: null });
   };
-
   handleAccountMenu = event => {
     this.setState({ accountMenu: event.currentTarget });
   };
-
   handleAccountMenuClose = event => {
     this.setState({ accountMenu: null });
   };
-
   componentWillMount() {
     if (this.props.textColor) {
       this.setState({ textColor: this.props.textColor });
@@ -74,8 +66,7 @@ export default class Header extends React.PureComponent {
     if (this.props.headerTitle) {
       this.setState({ headerTitle: this.props.headerTitle });
     }
-  }
-
+  };
   handleMenu = () => {
     if (this.state.menuOpen === true) {
       this.setState({ menuOpen: false });
@@ -166,7 +157,6 @@ export default class Header extends React.PureComponent {
       );
     }
   };
-
   renderMenu() {
     if (this.state.menuOpen === true) {
       return (
@@ -245,7 +235,6 @@ export default class Header extends React.PureComponent {
       }
     );
   };
-
   renderMobileSignOut = () => {
     if (this.state.user && this.state.token) {
       return (
@@ -274,7 +263,6 @@ export default class Header extends React.PureComponent {
       );
     }
   };
-
   renderMyCourses = () => {
     if (this.state.token) {
       return (
@@ -293,15 +281,13 @@ export default class Header extends React.PureComponent {
         </Link>
       )
     }
-  }
-
+  };
   renderSignOut = () => {
     if (this.state.user && this.state.token) {
       let space = 'Workspace';
       if (this.props.space) {
         space = this.props.space
       }
-
       return (
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Link to={'/space/' + this.state.user.spaceID} className="navButton" style={{ color: this.state.textColor }}>{space}</Link>
@@ -314,8 +300,7 @@ export default class Header extends React.PureComponent {
         <Link to={'/signIn'} className="navButton" style={{ background: '#ff4d58', color: '#FFFFFF', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '10px', paddingRight: '10px', borderRadius: '3px' }}>Sign In</Link>
       )
     }
-  }
-
+  };
   render() {
     let headerTitle = (
       <Link
@@ -433,7 +418,6 @@ export default class Header extends React.PureComponent {
                 <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
               </Menu>
             </span>*/}
-
             <span className="navButton">
               <Link
                 to="/LMS"
@@ -471,12 +455,9 @@ export default class Header extends React.PureComponent {
             {/*this.renderAccountMenu()*/}
             {this.renderSignOut()}
           </nav>
-
           <Bars className="menuIcon" onClick={this.handleMenu} />
         </div>
-
         {this.renderMenu()}
-
         <Snackbar
           open={this.state.snack}
           message={this.state.msg}

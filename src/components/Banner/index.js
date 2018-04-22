@@ -1,15 +1,8 @@
-/**
-*
-* Banner
-*
-*/
-
+import FlatButton from 'material-ui/Button';
 import React from 'react';
-
 import './style.css';
 import './styleM.css';
 
-import FlatButton from 'material-ui/Button';
 
 export default class Banner extends React.PureComponent {
   constructor(props) {

@@ -1,16 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "material-ui/styles";
+import cx from "classnames";
 import Menu from "material-ui-icons/Menu";
 import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import Hidden from 'material-ui/Hidden';
 import Button from 'material-ui/Button';
-import cx from "classnames";
-
+import Hidden from 'material-ui/Hidden';
+import IconButton from 'material-ui/IconButton';
+import Toolbar from 'material-ui/Toolbar';
+import { withStyles } from "material-ui/styles";
+import PropTypes from "prop-types";
+import React from "react";
 import headerStyle from "../../variables/styles/headerStyle.jsx";
-
 import DashHeaderLinks from "./DashHeaderLinks";
 
 function DashHeader({
@@ -28,7 +26,7 @@ function DashHeader({
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
-          <Button 
+          <Button
             onClick={e => {
               e.preventDefault();
               history.push(`/space/${spaceName}`)
@@ -38,7 +36,7 @@ function DashHeader({
           </Button>
         </div>
         <Hidden smDown implementation="css">
-          <DashHeaderLinks history={history}/>
+          <DashHeaderLinks history={history} />
         </Hidden>
         <Hidden mdUp>
           <IconButton

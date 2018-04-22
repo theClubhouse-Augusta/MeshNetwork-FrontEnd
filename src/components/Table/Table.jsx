@@ -1,18 +1,15 @@
-import React from "react";
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import { withStyles } from "material-ui/styles";
-import Table, { 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableRow 
-} from 'material-ui/Table';
-
 import PropTypes from "prop-types";
-
+import React from "react";
 import tableStyle from "../../variables/styles/tableStyle";
 
-function CustomTable(props) {
-  const { classes, tableHead, tableData, tableHeaderColor } = props;
+function CustomTable({
+  classes,
+  tableHead,
+  tableData,
+  tableHeaderColor
+}) {
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>

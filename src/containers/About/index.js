@@ -1,15 +1,8 @@
-/*
- *
- * About
- *
- */
+import FlatButton from "material-ui/Button";
 import React from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-
-import FlatButton from "material-ui/Button";
-
 import "./style.css";
 import "./styleM.css";
 
@@ -21,7 +14,6 @@ export default class About extends React.PureComponent {
           <title>About</title>
           <meta name="description" content="Description of About" />
         </Helmet>
-
         <header>
           <Header space={this.props.spaceName} />
           <div className="aboutBanner">
@@ -31,7 +23,6 @@ export default class About extends React.PureComponent {
             </h3>
           </div>
         </header>
-
         <main className="aboutBlock">
           <h3 className="aboutMainTitle">
             The Mesh Network of Innovation connects organizers of collaborative
@@ -131,7 +122,6 @@ export default class About extends React.PureComponent {
             </FlatButton>
           </Link>
         </main>
-
         <footer className="homeFooterContainer">
           Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
           723-5782

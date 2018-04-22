@@ -1,34 +1,14 @@
-/*
- *
- * Detail
- *
- */
-
-import React from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router-dom";
-import Header from "../../components/Header";
-
+import { ContentState, EditorState, convertFromHTML, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
 import FlatButton from "material-ui/Button";
 import Snackbar from "material-ui/Snackbar";
 import TextField from "material-ui/TextField";
-
-// import Dialog, { DialogTitle } from 'material-ui/Dialog';
-
-import {
-  EditorState,
-  ContentState,
-  convertToRaw,
-  // convertFromRaw,
-  convertFromHTML
-} from "draft-js";
-import draftToHtml from "draftjs-to-html";
+import React from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
+import Helmet from "react-helmet";
+import { Link } from "react-router-dom";
 import "react-select/dist/react-select.css";
-// import Slide from 'material-ui/transitions/Slide';
-
-
+import Header from "../../components/Header";
 import "./style.css";
 import "./styleM.css";
 
@@ -36,7 +16,6 @@ export default class Detail extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      token: localStorage.getItem("token"),
       user: JSON.parse(localStorage.getItem("user")),
       challengeOpen: false,
       challenge: "",
@@ -67,16 +46,22 @@ export default class Detail extends React.PureComponent {
       submissionFile: "",
       confirmSubmission: "Confirm Submission"
     };
-    //      app:this.props.app
-  }
-
+  };
+  componentDidMount() {
+    this.getDetail();
+  };
   handleRequestClose = () => {
-    this.setState({ snack: false, msg: "" });
+    this.setState({
+      snack: false,
+      msg: ""
+    });
   };
   showSnack = msg => {
-    this.setState({ snack: true, msg: msg });
+    this.setState({
+      snack: true,
+      msg: msg
+    });
   };
-
   challengeDialog = () => {
     this.setState({ challengeOpen: !this.state.challengeOpen }, () => {
       this.getCategories();
@@ -85,20 +70,16 @@ export default class Detail extends React.PureComponent {
   handleChallengeTitle = event => {
     this.setState({ challengeTitle: event.target.value });
   };
-
   handleChallengeContent = editorState => {
     this.setState({ challengeContent: editorState });
   };
-
   handleChallengeCategories = challengeCategories => {
     this.setState({ challengeCategories });
   };
-
   handleChallengeImage = event => {
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
-
     reader.onloadend = () => {
       this.setState({
         challengeImage: file,
@@ -107,172 +88,114 @@ export default class Detail extends React.PureComponent {
     };
     reader.readAsDataURL(file);
   };
-
   handleChallengeFile = event => {
     event.preventDefault();
     let reader = new FileReader();
     let files = event.target.files;
-
-    let challengeFiles = this.state.challengeFiles;
-
+    let challengeFiles = [...this.state.challengeFiles];
     for (let i = 0; i < files.length; i++) {
       let fileData = { fileData: files[i], id: 0 };
       challengeFiles.push(fileData);
-
       reader.onloadend = () => {
-        this.setState(
-          {
-            challengeFiles: challengeFiles
-          },
-          () => {
-            this.forceUpdate();
-          }
-        );
+        this.setState(() => ({
+          challengeFiles,
+        }));
       };
       reader.readAsDataURL(files[i]);
     }
   };
-
-  handleSubmissionTitle = (event) => {
+  handleSubmissionTitle = event => {
     this.setState({ submissionTitle: event.target.value });
-  }
-
-  handleSubmissionDescription = (event) => {
+  };
+  handleSubmissionDescription = event => {
     this.setState({ submissionDescription: event.target.value })
-  }
-
-  handleSubmissionVideo = (event) => {
+  };
+  handleSubmissionVideo = event => {
     this.setState({ submissionVideo: event.target.value })
-  }
-
-  handleSubmissionGithub = (event) => {
+  };
+  handleSubmissionGithub = event => {
     this.setState({ submissionGithub: event.target.value })
-  }
-
-  handleSubmissionFile = (event) => {
+  };
+  handleSubmissionFile = event => {
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
-
     reader.onloadend = () => {
       this.setState({
         submissionFile: file,
       });
     }
-
     reader.readAsDataURL(file);
   };
-
   getSubmissions = (id) => {
-    fetch("http://localhost:8000/api/getSubmissions/" + id, {
-      method: 'GET'
-    })
-      .then((response) => {
-        return response.json();
+    fetch(`http://localhost:8000/api/getSubmissions/${id}`)
+      .then(response => response.json())
+      .then(({ submissions }) => {
+        this.setState(() => ({ submissions }));
       })
-      .then((json) => {
-        this.setState({
-          submissions: json.submissions
-        })
-      })
-  }
-
+  };
   storeSubmission = () => {
-    this.setState({
-      confirmSubmission: "Uploading..."
-    })
+    this.setState(() => ({ confirmSubmission: "Uploading..." }));
     let data = new FormData();
-
     data.append('challengeID', this.state.challenge.id);
     data.append('submissionTitle', this.state.submissionTitle);
     data.append('submissionDescription', this.state.submissionDescription);
     data.append('submissionVideo', this.state.submissionVideo);
     data.append('submissionGithub', this.state.submissionGithub);
     data.append('submissionFile', this.state.submissionFile);
-
     fetch('http://localhost:8000/api/storeSubmission', {
       method: 'POST',
       body: data,
-      headers: { 'Authorization': 'Bearer ' + this.state.token }
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        if (json.error) {
-          this.showSnack(json.error);
-          this.setState({
-            confirmSubmission: "Confirm Submission"
-          })
+      .then(response => response.json())
+      .then(({
+        error,
+        success
+      }) => {
+        if (error) {
+          this.showSnack(error);
+          this.setState(() => ({ confirmSubmission: "Confirm Submission" }));
         }
-        else if (json.success) {
-          this.showSnack(json.success);
-          this.setState({
+        else if (success) {
+          this.showSnack(success);
+          this.setState(() => ({
             confirmSubmission: "Confirm Submission"
-          })
+          }));
           setTimeout(() => {
             window.location.reload();
           }, 2000);
         }
-      })
-  }
-
-  deleteSubmission = (id) => {
-    fetch('http://localhost:8000/api/deleteSubmission/' + id, {
+      });
+  };
+  deleteSubmission = id => {
+    fetch(`http://localhost:8000/api/deleteSubmission/${id}`, {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + this.state.token }
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        this.showSnack(json.success);
+      .then(response => response.json())
+      .then(({ success }) => {
+        this.showSnack(success);
         setTimeout(() => {
           window.location.reload();
         }, 2000);
-      })
-  }
-
-  componentDidMount() {
-    this.getDetail();
-  }
-
-  getCategories = () => {
-    fetch("http://localhost:8000/api/selectCategories", {
-      method: "GET"
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        this.setState({
-          cats: json.categories
-        });
       });
   };
-
-  deleteFile = i => {
-    let challengeFiles = this.state.challengeFiles;
-
-    challengeFiles.splice(i, 1);
-
-    this.setState(
-      {
-        challengeFiles: challengeFiles
-      },
-      () => {
-        this.forceUpdate();
-      }
-    );
+  getCategories = () => {
+    fetch("http://localhost:8000/api/selectCategories")
+      .then(response => response.json())
+      .then(({ categories: cats }) => {
+        this.setState(() => ({ cats }));
+      });
   };
-
+  deleteFile = i => {
+    let challengeFiles = [...this.state.challengeFiles];
+    challengeFiles.splice(i, 1);
+    this.setState(() => ({ challengeFiles }));
+  };
   updateChallenge = () => {
-    this.setState({
-      confirmStatus: "Uploading..."
-    });
-
+    this.setState(() => ({ confirmStatus: "Uploading..." }));
     let data = new FormData();
-
     data.append("challengeTitle", this.state.challengeTitle);
     data.append(
       "challengeContent",
@@ -286,53 +209,44 @@ export default class Detail extends React.PureComponent {
     data.append("challengeFiles", this.state.challengeFiles);
     data.append("startDate", this.state.startDate);
     data.append("endDate", this.state.endDate);
-
-    fetch(
-      "http://localhost:8000/api/updateChallenge/" +
-      this.state.challenge.id,
-      {
-        method: "POST",
-        body: data,
-        headers: { Authorization: "Bearer " + this.state.token }
-      }
-    )
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        if (json.error) {
-          if (json.error === "token_expired") {
-            this.showSnack(
-              "Your session has expired. Please sign back in to continue."
-            );
+    fetch(`http://localhost:8000/api/updateChallenge/${this.state.challenge.id}`, {
+      method: "POST",
+      body: data,
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
+    })
+      .then(response => response.json())
+      .then(({
+        error,
+        challenge,
+      }) => {
+        if (error) {
+          if (error === "token_expired") {
+            this.showSnack("Your session has expired. Please sign back in to continue.");
           } else {
-            this.showSnack(json.error);
-            this.setState({
+            this.showSnack(error);
+            this.setState(() => ({
               confirmStatus: "Confirm"
-            });
+            }));
           }
-        } else if (json.challenge) {
+        } else if (challenge) {
           // (this.state.challengeFiles.length);
           if (this.state.challengeFiles.length > 0) {
             for (let i = 0; i < this.state.challengeFiles.length; i++) {
               let fileData = new FormData();
-              fileData.append("challengeID", json.challenge);
+              fileData.append("challengeID", challenge);
               fileData.append(
                 "challengeFile",
                 this.state.challengeFiles[i].fileData
               );
-
               fetch("http://localhost:8000/api/uploadFile", {
                 method: "POST",
                 body: fileData,
-                headers: { Authorization: "Bearer " + this.state.token }
+                headers: { Authorization: `Bearer ${localStorage['token']}` }
               })
-                .then(response => {
-                  return response.json();
-                })
-                .then(json => {
-                  if (json.error) {
-                    this.showSnack(json.error);
+                .then(response => response.json())
+                .then(({ error }) => {
+                  if (error) {
+                    this.showSnack(error);
                     this.setState({
                       confirmStatus: "Confirm"
                     });
@@ -345,45 +259,36 @@ export default class Detail extends React.PureComponent {
         }
       });
   };
-
-  deleteChallenge = () => { };
-
-  /*componentWillReceiveProps(app) {
-    this.setState({
-      app:app.app
-    }, () => {
-      this.forceUpdate();
-    })
-  }*/
-
+  // deleteChallenge = () => { };
   getDetail = () => {
-    fetch(
-      "http://localhost:8000/api/showChallenge/" +
-      this.props.match.params.id,
-      {
-        method: "GET"
-      }
-    )
+    fetch(`http://localhost:8000/api/showChallenge/${this.props.match.params.id}`)
       .then(response => response.json())
-      .then(json => {
-        this.setState(
-          {
-            challenge: json.challenge,
-            categories: json.challenge.categories,
-            uploads: json.uploads,
-            teams: json.teams,
-            participant: json.participant,
-            challengeTitle: json.challenge.challengeTitle,
-            challengeContent: EditorState.createWithContent(
-              ContentState.createFromBlockArray(
-                convertFromHTML(json.challenge.challengeContent)
-              )
-            ),
-            challengeCategories: json.categoriesArray,
-            challengeImagePreview: json.challenge.challengeImage,
-            eventDates: json.eventDates,
-            workSpace: json.workspace
-          },
+      .then(({
+        challenge,
+        uploads,
+        teams,
+        participant,
+        categoriesArray: challengeCategories,
+        eventDates,
+        workspace: workSpace,
+      }) => {
+        this.setState({
+          challenge,
+          categories: challenge.categories,
+          uploads: uploads,
+          teams,
+          participant,
+          challengeTitle: challenge.challengeTitle,
+          challengeContent: EditorState.createWithContent(
+            ContentState.createFromBlockArray(
+              convertFromHTML(challenge.challengeContent)
+            )
+          ),
+          challengeCategories,
+          challengeImagePreview: challenge.challengeImage,
+          eventDates,
+          workSpace
+        },
           () => {
             this.getSpace();
             this.getSubmissions(this.state.challenge.id);
@@ -391,15 +296,8 @@ export default class Detail extends React.PureComponent {
         );
       });
   };
-
   getSpace = () => {
-    fetch(
-      "http://localhost:8000/api/workspace/" +
-      this.state.challenge.spaceID,
-      {
-        method: "GET"
-      }
-    )
+    fetch(`http://localhost:8000/api/workspace/${this.state.challenge.spaceID}`)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -407,27 +305,24 @@ export default class Detail extends React.PureComponent {
         });
       });
   };
-
   joinChallenge = () => {
-    fetch(
-      "http://localhost:8000/api/joinChallenge/" + this.state.challenge.id,
-      {
-        method: "GET",
-        headers: { Authorization: "Bearer " + this.state.token }
-      }
-    )
+    fetch(`http://localhost:8000/api/joinChallenge/${this.state.challenge.id}`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
+    })
       .then(response => response.json())
-      .then(json => {
-        if (json.error) {
-          this.showSnack(json.error);
+      .then(({
+        error,
+        success,
+      }) => {
+        if (error) {
+          this.showSnack(error);
         } else {
-          this.showSnack(json.success);
+          this.showSnack(success);
         }
       });
   };
-
   renderJoinButton = () => {
-    if (this.state.token) {
+    if (localStorage['token']) {
       return (
         <FlatButton
           onClick={this.joinChallenge}
@@ -469,17 +364,14 @@ export default class Detail extends React.PureComponent {
                 marginBottom: "15px",
                 width: "100%"
               }}
-            >
-              Join Space & Challenge
-            </FlatButton>
+            >Join Space & Challenge</FlatButton>
           </Link>
         </div>
       );
     }
   };
-
   renderUpdateButtons = () => {
-    if (this.state.token) {
+    if (localStorage['token']) {
       if (this.state.user) {
         if (
           this.state.user.spaceID === this.state.challenge.spaceID &&
@@ -603,13 +495,9 @@ export default class Detail extends React.PureComponent {
   };
 
   attendEvent = () => {
-    fetch('http://localhost:8000/api/attend/' + this.state.challenge.eventID, {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + this.state.token
-      }
-    }
-    )
+    fetch(`http://localhost:8000/api/attend/${this.state.challenge.eventID}`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
+    })
       .then(response => {
         return response.json();
       })
@@ -625,7 +513,7 @@ export default class Detail extends React.PureComponent {
   };
 
   renderJoin = () => {
-    if (!this.state.token) {
+    if (!localStorage['token']) {
       return (
         <Link
           to={"/join/" + this.state.workSpace.slug}
@@ -665,7 +553,7 @@ export default class Detail extends React.PureComponent {
   };
 
   renderSubmissionForm = () => {
-    if (this.state.token) {
+    if (localStorage['token']) {
       return (
         <div className="eventDetailSectionContent">
           <div className="eventDetailSubmissionBlock">

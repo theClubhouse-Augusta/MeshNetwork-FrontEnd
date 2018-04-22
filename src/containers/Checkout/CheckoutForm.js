@@ -1,25 +1,26 @@
+import Visibility from "material-ui-icons/Visibility";
+import VisibilityOff from "material-ui-icons/VisibilityOff";
+import FlatButton from "material-ui/Button";
+import Checkbox from "material-ui/Checkbox";
+import { FormControl, FormHelperText } from "material-ui/Form";
+import IconButton from "material-ui/IconButton";
+import Input, { InputAdornment, InputLabel } from "material-ui/Input";
+import { ListItemText } from "material-ui/List";
+import { MenuItem } from "material-ui/Menu";
+import { LinearProgress } from "material-ui/Progress";
+import Select from "material-ui/Select";
+import Snackbar from "material-ui/Snackbar";
+import TextField from "material-ui/TextField";
 import React from "react";
 import Helmet from "react-helmet";
 import Recaptcha from 'react-recaptcha';
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/Button";
-import Snackbar from "material-ui/Snackbar";
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
-import Checkbox from "material-ui/Checkbox";
-import { ListItemText } from "material-ui/List";
-import { LinearProgress } from "material-ui/Progress";
-import IconButton from "material-ui/IconButton";
-import Input, { InputLabel, InputAdornment } from "material-ui/Input";
-import { FormControl, FormHelperText } from "material-ui/Form";
-import Visibility from "material-ui-icons/Visibility";
-import VisibilityOff from "material-ui-icons/VisibilityOff";
 import { injectStripe } from "react-stripe-elements";
 import uuid from "uuid/v4";
-import CardSection from "./CardSection";
 import Header from "../../components/Header";
+import CardSection from "./CardSection";
 import "./style.css";
 import "./styleM.css";
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -30,6 +31,7 @@ const MenuProps = {
     }
   }
 };
+
 class CheckoutForm extends React.PureComponent {
   state = {
     customer_idempotency_key: uuid(),
@@ -192,12 +194,20 @@ class CheckoutForm extends React.PureComponent {
       );
     }
   };
-  onFocus = () => this.setState({ focused: true });
-  onBlur = () => this.setState({ focused: false });
-  onFocusPlan = () => this.setState({ planFocused: true });
-  onBlurPlan = () => this.setState({ planFocused: false });
+  onFocus = () => {
+    this.setState(() => ({ focused: true }));
+  };
+  onBlur = () => {
+    this.setState(() => ({ focused: false }));
+  };
+  onFocusPlan = () => {
+    this.setState(() => ({ planFocused: true }));
+  };
+  onBlurPlan = () => {
+    this.setState(() => ({ planFocused: false }));
+  };
   storeUser = e => {
-    this.setState({ isLoading: true });
+    this.setState(() => ({ isLoading: true }));
     e.preventDefault();
     let data = new FormData();
     let {
@@ -255,19 +265,23 @@ class CheckoutForm extends React.PureComponent {
                 }, 2000);
               });
           }
-          this.setState({
-            isLoading: false
-          });
+          this.setState(() => ({ isLoading: false }));
         });
     });
   };
   storeFreeUser = e => {
-    this.setState({
-      isLoading: true
-    });
+    this.setState(() => ({ isLoading: true }));
     e.preventDefault();
     let data = new FormData();
-    let { name, email, password, bio, selectedTags, avatar, plan, recaptcha, } = this.state;
+    let {
+      name,
+      email,
+      password,
+      bio,
+      selectedTags,
+      avatar, plan,
+      recaptcha,
+    } = this.state;
     if (plan === "already") {
       plan = "free";
     }

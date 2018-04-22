@@ -975,8 +975,8 @@ export default class NewCourse extends React.PureComponent {
         />
         <TextField
           value={answer.answerContent}
-          onChange={(event) => this.handleAnswer(i, j, event)}
-          onBlur={(event) => this.updateAnswer(i, j, event)}
+          onChange={event => this.handleAnswer(i, j, event)}
+          onBlur={event => this.updateAnswer(i, j, event)}
           style={{ border: 'none', outline: 'none', marginLeft: '10px', width: '90%' }}
           placeholder="Type an Answer..."
           name={"answerContent-" + j}

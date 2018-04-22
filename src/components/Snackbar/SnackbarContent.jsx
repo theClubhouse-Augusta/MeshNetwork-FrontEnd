@@ -8,8 +8,13 @@ import cx from "classnames";
 
 import snackbarContentStyle from "../../variables/styles/snackbarContentStyle.jsx";
 
-function SnackbarContent({ ...props }) {
-  const { classes, message, color, close, icon } = props;
+function SnackbarContent({
+  classes,
+  message,
+  color,
+  close,
+  icon
+}) {
   var action = [];
   const messageClasses = cx({
     [classes.iconMessage]: icon !== undefined
@@ -30,7 +35,7 @@ function SnackbarContent({ ...props }) {
     <Snack
       message={
         <div>
-          {icon !== undefined ? <props.icon className={classes.icon} /> : null}
+          {icon !== undefined ? <icon className={classes.icon} /> : null}
           <span className={messageClasses}>{message}</span>
         </div>
       }

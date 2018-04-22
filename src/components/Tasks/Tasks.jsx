@@ -1,20 +1,13 @@
-import React from "react";
-import { withStyles } from "material-ui/styles";
-import IconButton from "material-ui/IconButton";
-import Tooltip from 'material-ui/Tooltip';
-import Checkbox from 'material-ui/Checkbox';
-import Table, { 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableRow 
-} from 'material-ui/Table';
-import Edit from "material-ui-icons/Edit";
-import Close from "material-ui-icons/Close";
 import Check from "material-ui-icons/Check";
-
+import Close from "material-ui-icons/Close";
+import Edit from "material-ui-icons/Edit";
+import Checkbox from 'material-ui/Checkbox';
+import IconButton from "material-ui/IconButton";
+import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table';
+import Tooltip from 'material-ui/Tooltip';
+import { withStyles } from "material-ui/styles";
 import PropTypes from "prop-types";
-
+import React from "react";
 import tasksStyle from "../../variables/styles/tasksStyle.jsx";
 
 class Tasks extends React.Component {

@@ -1,26 +1,20 @@
-import React from "react";
-import { withStyles } from 'material-ui/styles';
+import Card, { CardActions, CardContent, CardHeader } from "material-ui/Card";
 import Typography from 'material-ui/Typography';
-import Card, {
-  CardContent,
-  CardHeader,
-  CardActions,
-} from "material-ui/Card";
+import { withStyles } from 'material-ui/styles';
 import PropTypes from "prop-types";
-
+import React from "react";
 import statsCardStyle from "../../variables/styles/statsCardStyle";
 
-function StatsCard(props) {
-  const {
-    classes,
-    title,
-    description,
-    statLink,
-    small,
-    statText,
-    statIconColor,
-    iconColor
-  } = props;
+function StatsCard({
+  classes,
+  title,
+  description,
+  statLink,
+  small,
+  statText,
+  statIconColor,
+  iconColor
+}) {
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -28,7 +22,7 @@ function StatsCard(props) {
           root: classes.cardHeader + " " + classes[iconColor + "CardHeader"],
           avatar: classes.cardAvatar
         }}
-        avatar={<props.icon className={classes.cardIcon} />}
+        avatar={<icon className={classes.cardIcon} />}
       />
       <CardContent className={classes.cardContent}>
         <Typography component="p" className={classes.cardCategory}>
@@ -47,7 +41,7 @@ function StatsCard(props) {
       </CardContent>
       <CardActions className={classes.cardActions}>
         <div className={classes.cardStats}>
-          <props.statIcon
+          <statIcon
             className={
               classes.cardStatsIcon +
               " " +

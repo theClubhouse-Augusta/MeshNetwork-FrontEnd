@@ -1,25 +1,13 @@
-import React from 'react';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
 import { FormControl } from 'material-ui/Form';
+import Grid from 'material-ui/Grid';
 import { InputLabel } from 'material-ui/Input';
-import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
-import Table, {
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TablePagination,
-  TableFooter
-} from 'material-ui/Table';
-
+import Select from 'material-ui/Select';
+import Table, { TableBody, TableCell, TableFooter, TableHead, TablePagination, TableRow } from 'material-ui/Table';
+import { withStyles } from 'material-ui/styles';
+import React from 'react';
+import { ItemGrid, RegularCard } from "../../components";
 import tableStyle from "../../variables/styles/tableStyle";
-
-import {
-  RegularCard,
-  ItemGrid
-} from "../../components";
 
 export default withStyles(tableStyle)(
   ({

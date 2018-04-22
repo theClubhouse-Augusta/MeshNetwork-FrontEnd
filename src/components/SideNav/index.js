@@ -1,18 +1,9 @@
-/**
- *
- * SideNav
- *
- */
-
-import React from "react";
-// import { Link } from 'react-router-dom';
-
-import AddIcon from "react-icons/lib/md/add";
-import Snackbar from "material-ui/Snackbar";
-import Dialog, { DialogTitle } from "material-ui/Dialog";
 import FlatButton from "material-ui/Button";
+import Dialog, { DialogTitle } from "material-ui/Dialog";
+import Snackbar from "material-ui/Snackbar";
 import TextField from "material-ui/TextField";
-
+import React from "react";
+import AddIcon from "react-icons/lib/md/add";
 import "./style.css";
 import "./styleM.css";
 

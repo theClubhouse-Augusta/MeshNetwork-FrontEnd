@@ -1,4 +1,3 @@
-// Add Event
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import FlatButton from 'material-ui/Button';
@@ -22,11 +21,8 @@ import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
 import RaisedButton from "./RaisedButton";
 import { SelectedSponsors } from './SelectedSponsors';
-// styles
 import './style.css';
 import './styleM.css';
-
-
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -80,12 +76,20 @@ export default class AddEvent extends Component {
     state: '',
     challenges: [],
   };
-
   singleDay = 0;
   multipleDays = 1;
-  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
-
+  handleRequestClose = () => {
+    this.setState(() => ({
+      snack: false,
+      msg: ""
+    }));
+  };
+  showSnack = msg => {
+    this.setState(() => ({
+      snack: true,
+      msg: msg
+    }));
+  };
   async componentDidMount() {
     let authorized;
     try {
@@ -110,7 +114,6 @@ export default class AddEvent extends Component {
       }
     }
   };
-
   getSponsors = () => {
     fetch(`http://localhost:8000/api/sponsors`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
@@ -124,7 +127,6 @@ export default class AddEvent extends Component {
         alert(`GetSponsors()error in fetching data from server: ${error}`); // eslint-disable-line
       });
   };
-
   getOrganizers = () => {
     fetch(`http://localhost:8000/api/organizers/events`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
@@ -139,7 +141,6 @@ export default class AddEvent extends Component {
         alert(`GetOrganizers()error in fetching data from server: ${error}`); // eslint-disable-line
       });
   };
-
   loadSkills = () => {
     fetch('http://localhost:8000/api/skills/all', {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
@@ -150,7 +151,6 @@ export default class AddEvent extends Component {
         alert(`loadSkills()error in fetching data from server: ${error}`);
       });
   };
-
   removeNewSponsor = (sponsor) => {
     if (sponsor) {
       const sponsors = this.state.newSponsors.slice();
@@ -161,28 +161,41 @@ export default class AddEvent extends Component {
       }
     }
   };
-  eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
-  eventUrl = event => this.setState({ url: event.target.value.trim() });
-  eventDays = event => this.setState({ days: event.target.value });
-  selectSponsor = (selectedSponsor) => this.setState({ selectedSponsors: selectedSponsor });
-  selectOrganizer = (selectedOrganizer) => this.setState({ selectedOrganizers: selectedOrganizer });
-  //eventDescription = e => this.setState({ description: e.target.value });
-  eventDescription = editorState => {
-    this.setState({ description: editorState });
+  eventName = event => {
+    this.setState(() => ({
+      name: event.target.value.replace(/\s\s+/g, ' ').trim()
+    }));
   };
-  eventLocation = e => this.setState({ location: e.target.value });
-
+  eventUrl = event => {
+    this.setState(() => ({
+      url: event.target.value.trim()
+    }));
+  };
+  eventDays = event => {
+    this.setState(() => ({
+      days: event.target.value
+    }));
+  };
+  selectSponsor = selectedSponsor => {
+    this.setState(() => ({ selectedSponsors: selectedSponsor }));
+  };
+  selectOrganizer = selectedOrganizer => {
+    this.setState(() => ({ selectedOrganizers: selectedOrganizer }));
+  };
+  eventDescription = description => {
+    this.setState(() => ({ description }));
+  };
+  eventLocation = e => {
+    this.setState(() => ({ location: e.target.value }));
+  };
   handleOrganizerChange = event => {
-    this.setState({ selectedOrganizers: event.target.value });
+    this.setState(() => ({ selectedOrganizers: event.target.value }));
   };
-
   handleSponsorChange = event => {
-    this.setState({ selectedSponsors: event.target.value });
+    this.setState(() => ({ selectedSponsors: event.target.value }));
   };
-
-
   handleSkillTags = event => {
-    this.setState({ selectedTags: event.target.value });
+    this.setState(() => ({ selectedTags: event.target.value }));
   };
   eventFiles = event => {
     event.preventDefault();
@@ -195,11 +208,15 @@ export default class AddEvent extends Component {
     };
     reader.readAsDataURL(event.target.files[0]);
   };
-  toggleNewSponsors = () => this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
-
-  sponsorName = event => this.setState({ sponsorNames: event.target.value });
-  sponsorUrl = event => this.setState({ sponsorWebsites: event.target.value });
-
+  toggleNewSponsors = () => {
+    this.setState(() => ({ checkNewSponsors: !this.state.checkNewSponsors }));
+  };
+  sponsorName = event => {
+    this.setState(() => ({ sponsorNames: event.target.value }));
+  };
+  sponsorUrl = event => {
+    this.setState(() => ({ sponsorWebsites: event.target.value }));
+  };
   onNewSponsorSubmit = e => {
     e.preventDefault();
     let { sponsorNames, sponsorWebsites, logo } = this.state;
@@ -222,10 +239,8 @@ export default class AddEvent extends Component {
       }
     }
   };
-
   createChallenge = () => {
     let challenges = [...this.state.challenges];
-
     let newChallenge = {
       challengeTitle: '',
       challengeContent: EditorState.createEmpty(),
@@ -234,14 +249,9 @@ export default class AddEvent extends Component {
       challengeFiles: [],
       show: false
     };
-
     challenges.push(newChallenge);
-
-    this.setState(() => ({
-      challenges
-    }));
+    this.setState(() => ({ challenges }));
   };
-
   handleChallengeTitle = (i, event) => {
     let challenges = [...this.state.challenges];
     challenges[i].challengeTitle = event.target.value;
@@ -252,69 +262,41 @@ export default class AddEvent extends Component {
   handleChallengeContent = (i, editorState) => {
     let challenges = [...this.state.challenges];
     challenges[i].challengeContent = editorState;
-
-    this.setState(() => ({
-      challenges
-    }));
-  }
-
+    this.setState(() => ({ challenges }));
+  };
   handleChallengeImage = (i, event) => {
     let challenges = [...this.state.challenges];
-
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
-
     reader.onloadend = () => {
       challenges[i].challengeImage = file;
       challenges[i].challengeImagePreview = reader.result;
-
-      this.setState(() => ({
-        challenges
-      }));
+      this.setState(() => ({ challenges }));
     };
     reader.readAsDataURL(file);
-  }
-
-
+  };
   handleChallengeFile = (index, event) => {
-
     let challenges = [...this.state.challenges];
-
     event.preventDefault();
     let reader = new FileReader();
     let files = event.target.files;
-
     for (let i = 0; i < files.length; i++) {
       let fileData = { fileData: files[i], id: 0 };
       challenges[index].challengeFiles.push(fileData);
-
       reader.onloadend = () => {
-        this.setState(() => ({
-          challenges
-        }));
+        this.setState(() => ({ challenges }));
       };
       reader.readAsDataURL(files[i]);
     }
   };
-
-
   deleteFile = (i, j) => {
     let challenges = [...this.state.challenges];
-
     challenges[i].challengeFiles.splice(j, 1);
-
-    this.setState(() => ({
-      challenges
-    }));
+    this.setState(() => ({ challenges }));
   };
-
   Submit = () => {
-
-    this.setState({
-      confirmStatus: "Uploading..."
-    });
-
+    this.setState(() => ({ confirmStatus: "Uploading..." }));
     let {
       newSponsors,
       selectedTags,
@@ -329,7 +311,6 @@ export default class AddEvent extends Component {
       state,
       address
     } = this.state;
-
     let data = new FormData();
     data.append('description', draftToHtml(convertToRaw(description.getCurrentContent())));
     data.append('location', location);
@@ -339,7 +320,6 @@ export default class AddEvent extends Component {
     data.append('url', url);
     data.append('organizers', selectedOrganizers);
     data.append('sponsors', selectedSponsors);
-
     if (city || address || state) {
       if (!city || !address || !state) {
         this.showSnack("Please add city, state, and address.");
@@ -350,12 +330,10 @@ export default class AddEvent extends Component {
         data.append('state', state.trim());
       }
     }
-
     if (!!newSponsors.length) {
       data.append('newSponsors', JSON.stringify(newSponsors));
       newSponsors.forEach((file, index) => data.append(`logos${index}`, file.logo));
     }
-
     fetch(`http://localhost:8000/api/event`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
       method: 'post',
@@ -384,16 +362,13 @@ export default class AddEvent extends Component {
         }, 2000);
       })
   };
-
   storeChallenge = (eventID, challenge) => {
     let data = new FormData();
-
     data.append("challengeTitle", challenge.challengeTitle);
     data.append("challengeContent", draftToHtml(convertToRaw(challenge.challengeContent.getCurrentContent())));
     data.append("challengeImage", challenge.challengeImage);
     data.append("challengeFiles", challenge.challengeFiles);
     data.append("eventID", eventID);
-
     fetch("http://localhost:8000/api/storeChallenge", {
       method: "POST",
       body: data,
@@ -419,7 +394,6 @@ export default class AddEvent extends Component {
                 "challengeFile",
                 challenge.challengeFiles[i].fileData
               );
-
               fetch("http://localhost:8000/api/uploadFile", {
                 method: "POST",
                 body: fileData,
@@ -436,21 +410,17 @@ export default class AddEvent extends Component {
                 });
             }
           }
-          //   this.showSnack("Challenge Saved");
-          //   setTimeout(() => {
-          //     this.props.history.push(`/Challenges/challenge/${json.challenge}`);
-          //   }, 2000);
         }
       });
   };
-
-  closeModal = () => this.setState({ modalMessage: '' });
-
-  renderLogoImage = () => {
-    if (this.state.logo !== "")
-      return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
+  closeModal = () => {
+    this.setState(() => ({ modalMessage: '' }));
   };
-
+  renderLogoImage = () => {
+    if (this.state.logo !== "") {
+      return <img alt="" src={this.state.logoPreview} className="spaceLogoImagePreview" />
+    }
+  };
   renderLogoImageText = () => {
     if (this.state.logoPreview === "" || this.state.logoPreview === undefined || this.state.logoPreview === null) {
       return (
@@ -460,16 +430,14 @@ export default class AddEvent extends Component {
         </span>
       )
     }
-  }
-
+  };
   renderEventImage = () => {
     if (this.state.eventImg !== "") {
       return (
         <img alt="" src={this.state.eventImgPreview} className="spaceLogoImagePreview" />
       )
     }
-  }
-
+  };
   renderEventImageText = () => {
     if (this.state.eventImgPreview === "" || this.state.eventImgPreview === undefined || this.state.eventImgPreview === null) {
       return (
@@ -479,8 +447,7 @@ export default class AddEvent extends Component {
         </span>
       )
     }
-  }
-
+  };
   changeRadio = e => {
     const checkedRadio = parseInt(e.target.value, 10);
     if (checkedRadio === this.singleDay) {
@@ -496,9 +463,8 @@ export default class AddEvent extends Component {
         dates: [],
       });
     }
-  }
-
-  handleLogo = (event) => {
+  };
+  handleLogo = event => {
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
@@ -509,13 +475,8 @@ export default class AddEvent extends Component {
         logoPreview: reader.result
       });
     }
-
     reader.readAsDataURL(file);
   };
-
-
-  // setDates = async dates => this.setState(() => ({ dates }));
-
   multiDay = days => {
     const dates = this.state.dates.slice();
     let count = 0;
@@ -528,15 +489,11 @@ export default class AddEvent extends Component {
       count++;
     }
     return dates;
-    // this.setDates(dates).then(dates => dates); 
   };
-
   changeLocation = () => {
     this.setState(() => ({ changeLocation: !this.state.changeLocation }));
   };
-
   renderChallengeImageText = (i) => {
-
     let challenges = [...this.state.challenges];
     if (
       challenges[i].challengeImagePreview === "" ||
@@ -559,10 +516,8 @@ export default class AddEvent extends Component {
       );
     }
   };
-
   renderChallengeImage = (i) => {
     let challenges = [...this.state.challenges];
-
     if (challenges[i].challengeImage === "") {
       return (
         <img
@@ -581,7 +536,6 @@ export default class AddEvent extends Component {
       );
     }
   };
-
   render() {
     const {
       newSponsors,
@@ -594,7 +548,6 @@ export default class AddEvent extends Component {
       checkedRadio,
       changeLocation,
     } = this.state;
-
     const options = [
       {
         id: 0,
@@ -616,16 +569,13 @@ export default class AddEvent extends Component {
             <meta name="description" content="Description of Create event form" />
           </Helmet>
           <Header space={this.props.spaceName} />
-
           <div className="addEventBanner">
             <div className="homeHeaderContentTitle">Add a New Event</div>
             <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
           </div>
           <main className="spaceSignUpMain">
-
             <div className="spaceSignUpTitle">Submit an Event</div>
             <div className="spaceSignUpContainer">
-
               <TextField label="Event name" onChange={this.eventName} type="text" name="eventName" margin="normal" />
               <TextField onChange={this.eventUrl} type="url" label="Event url" margin="normal" />
               <Editor
@@ -670,7 +620,6 @@ export default class AddEvent extends Component {
                   </Select>
                 </FormControl>
               }
-
               {!!organizers.length &&
                 <FormControl style={{ marginTop: 24 }}>
                   <InputLabel htmlFor="organizers-select">Organizers</InputLabel>
@@ -691,7 +640,6 @@ export default class AddEvent extends Component {
                   </Select>
                 </FormControl>
               }
-
               {!!sponsors.length &&
                 <FormControl style={{ marginTop: 24 }}>
                   <InputLabel htmlFor="sponsors-select">Sponsors</InputLabel>
@@ -712,7 +660,6 @@ export default class AddEvent extends Component {
                   </Select>
                 </FormControl>
               }
-
               <div
                 style={{
                   display: 'flex',
@@ -738,7 +685,6 @@ export default class AddEvent extends Component {
                   </label>
                 )}
               </div>
-
               {checkedRadio === this.multipleDays &&
                 <TextField
                   label="How many days?"
@@ -763,7 +709,6 @@ export default class AddEvent extends Component {
                   />
                 </React.Fragment>
               }
-
               {checkedRadio === this.multipleDays && days > 1 &&
                 <div>
                   <DateRangePickerWithGaps
@@ -774,7 +719,6 @@ export default class AddEvent extends Component {
                   />
                 </div>
               }
-
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 32, marginBottom: 32 }}>
                 <input
                   id="newSponsors"
@@ -783,14 +727,10 @@ export default class AddEvent extends Component {
                   onChange={this.toggleNewSponsors}
                   checked={checkNewSponsors}
                 />
-
-                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
+                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors">
                   &nbsp;&nbsp;Add new sponsor
-                                </label>
-
+                </label>
               </div>
-
-
               {checkNewSponsors && [
                 <TextField
                   key="newSponTF1"
@@ -800,7 +740,6 @@ export default class AddEvent extends Component {
                   type="text"
                   margin="normal"
                 />,
-
                 <TextField
                   key="newSponTF2"
                   label="website"
@@ -809,7 +748,6 @@ export default class AddEvent extends Component {
                   type="url"
                   margin="normal"
                 />,
-
                 <div key="newSponTF3" className="spaceLogoMainImageRow">
                   <label htmlFor="logo-image" className="spaceLogoMainImageBlock">
                     {this.renderLogoImageText()}
@@ -823,7 +761,6 @@ export default class AddEvent extends Component {
                     />
                   </label>
                 </div>,
-
                 <RaisedButton
                   key="newSponTF4"
                   onSubmit={this.onNewSponsorSubmit}
@@ -838,15 +775,13 @@ export default class AddEvent extends Component {
                   }}
                 />
               ]}
-
-
               {!!newSponsors.length &&
                 <SelectedSponsors
                   selectedSponsors={newSponsors}
                   removeSponsor={this.removeNewSponsor}
                   newSponsor={true}
-                />}
-
+                />
+              }
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: changeLocation ? 16 : 72 }}>
                 <input
                   id="newSponsors"
@@ -855,13 +790,10 @@ export default class AddEvent extends Component {
                   onChange={this.changeLocation}
                   checked={changeLocation}
                 />
-
                 <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >/
                   &nbsp;&nbsp; Remote Location?
-                                </label>
-
+                </label>
               </div>
-
               {changeLocation &&
                 <React.Fragment>
                   <TextField
@@ -873,7 +805,6 @@ export default class AddEvent extends Component {
                       this.setState(() => ({ address }))
                     }}
                   />
-
                   <TextField
                     label="City"
                     value={this.state.city}
@@ -883,7 +814,6 @@ export default class AddEvent extends Component {
                       this.setState(() => ({ city }))
                     }}
                   />
-
                   <TextField
                     label="State"
                     value={this.state.state}
@@ -893,10 +823,8 @@ export default class AddEvent extends Component {
                       this.setState(() => ({ state }))
                     }}
                   />
-
                 </React.Fragment>
               }
-
               {this.state.challenges.map((challenge, i) => (
                 <div className="eventChallengeBlock" style={{ marginTop: '15px' }} key={i}>
                   <TextField label="Challenge Title" onChange={(event) => this.handleChallengeTitle(i, event)} type="text" margin="normal" style={{ width: '100%' }} />
@@ -955,12 +883,9 @@ export default class AddEvent extends Component {
                     </div>
                   ))}
                   <div>
-                    <label
-                      htmlFor={"challenge-file-" + i}
-                      className="challenges_newFileAdd"
-                    >
+                    <label htmlFor={"challenge-file-" + i} className="challenges_newFileAdd">
                       Upload New Resource (Excel, JSON, Word, PDF)
-                                    </label>
+                    </label>
                     <input
                       type="file"
                       onChange={(event) => this.handleChallengeFile(i, event)}
@@ -970,8 +895,10 @@ export default class AddEvent extends Component {
                   </div>
                 </div>
               ))}
-
-              <FlatButton onClick={this.createChallenge} style={{ background: '#DDDDDD', marginTop: '30px' }}>Add Challenges</FlatButton>
+              <FlatButton
+                onClick={this.createChallenge}
+                style={{ background: '#DDDDDD', marginTop: '30px' }}
+              >Add Challenges</FlatButton>
               <FlatButton
                 style={{
                   backgroundColor: "#ff4d58",
@@ -981,15 +908,13 @@ export default class AddEvent extends Component {
                   fontWeight: "bold"
                 }}
                 onClick={this.Submit}
-              >
-                Submit Event
-            </FlatButton>
+              >Submit Event</FlatButton>
             </div>
           </main>
           <footer className="homeFooterContainer">
             Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
             723-5782
-        </footer>
+          </footer>
           <Snackbar
             open={this.state.snack}
             message={this.state.msg}

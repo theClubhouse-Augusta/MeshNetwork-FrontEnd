@@ -1,8 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from 'material-ui/styles';
 import List, { ListItem } from 'material-ui/List';
-
+import { withStyles } from 'material-ui/styles';
+import PropTypes from "prop-types";
+import React from "react";
 import footerStyle from "../../variables/styles/footerStyle";
 
 function Footer({
@@ -22,13 +21,13 @@ function Footer({
             </ListItem>
 
             <ListItem className={classes.inlineBlock}>
-              <a 
+              <a
                 className={classes.block}
                 onClick={() => history.push(`/Challenges`)}
               >Challenges</a>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
-              <a 
+              <a
                 className={classes.block}
                 onClick={() => history.push(`/LMS`)}
               >LMS</a>

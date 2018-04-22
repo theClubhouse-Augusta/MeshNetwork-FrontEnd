@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { SingleDatePicker } from 'react-dates';
-
 import TimePickers from './TimePickers';
 import './style.css';
 
@@ -39,7 +38,7 @@ export default class DateRangePickerWithGapsController extends Component {
       clearStartTimes
     } = this.props;
     return (
-      <div className="singleDpCon" style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+      <div className="singleDpCon" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <SingleDatePicker
           placeholder={`Day ${position + 1}`}
           date={date} // momentPropTypes.momentObj or null
@@ -50,8 +49,8 @@ export default class DateRangePickerWithGapsController extends Component {
           numberOfMonths={numberOfMonths}
           showDefaultInputIcon
         />
-        <TimePickers 
-          position={position} 
+        <TimePickers
+          position={position}
           startTime={dates[position].start}
           endTime={dates[position].end}
           handleStartTimes={handleStartTimes}
@@ -59,8 +58,8 @@ export default class DateRangePickerWithGapsController extends Component {
           clearEndTimes={clearEndTimes}
           clearStartTimes={clearStartTimes}
           date={date}
-          //startTime
-          //endTime
+        //startTime
+        //endTime
         />
       </div>
     );

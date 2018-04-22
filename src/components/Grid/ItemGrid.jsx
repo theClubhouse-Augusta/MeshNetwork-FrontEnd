@@ -1,6 +1,6 @@
-import React from "react";
-import { withStyles } from "material-ui/styles";
 import Grid from 'material-ui/Grid';
+import { withStyles } from "material-ui/styles";
+import React from "react";
 
 const style = {
   grid: {
@@ -8,10 +8,10 @@ const style = {
   }
 };
 
-function ItemGrid({ 
-  classes, 
-  children, 
-  ...rest 
+function ItemGrid({
+  classes,
+  children,
+  ...rest
 }) {
   return (
     <Grid item {...rest} className={classes.grid}>

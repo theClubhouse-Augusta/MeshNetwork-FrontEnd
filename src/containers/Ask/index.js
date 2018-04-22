@@ -1,21 +1,11 @@
-/*
- *
- * Challenges
- *
- */
-
+import TextField from 'material-ui/TextField';
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
-
-import Header from '../../components/Header';
-import SideNav from '../../components/SideNav';
-import RightBar from '../../components/RightBar';
-
-import TextField from 'material-ui/TextField';
-
 import Waypoint from 'react-waypoint';
-
+import Header from '../../components/Header';
+import RightBar from '../../components/RightBar';
+import SideNav from '../../components/SideNav';
 import './style.css';
 import './styleM.css';
 
@@ -30,20 +20,17 @@ export default class Ask extends React.PureComponent {
       searchContent: "",
       app: this.props.app
     }
-  }
-
+  };
   componentDidMount() {
     //this.getQuestions();
-  }
-
+  };
   componentWillReceiveProps(app) {
     this.setState({
       app: app.app
     }, () => {
       this.forceUpdate();
     })
-  }
-
+  };
   handleSearch = (event) => {
     this.setState({
       searchContent: event.target.value
@@ -52,8 +39,7 @@ export default class Ask extends React.PureComponent {
         this.search();
       }
     })
-  }
-
+  };
   getQuestions = () => {
     var nextPage = this.state.nextPage;
     var questions = this.state.questions;
@@ -77,13 +63,10 @@ export default class Ask extends React.PureComponent {
           })
         })
     }
-  }
-
+  };
   search = () => {
     let data = new FormData();
-
     data.append('searchContent', this.state.searchContent);
-
     fetch("http://localhost:8000/api/searchQuestions", {
       method: 'POST',
       body: data
@@ -97,27 +80,22 @@ export default class Ask extends React.PureComponent {
           questions: json.questions,
         })
       })
-  }
-
+  };
   renderWaypoint = () => {
     if (this.state.searchContent < 3) {
       return (
         <Waypoint onEnter={this.getQuestions} />
       )
     }
-  }
-
+  };
   render() {
     return (
       <div className="container">
         <Helmet title="Discover" meta={[{ name: 'description', content: 'Description of Discover' }]} />
-
         <header>
           <Header app={this.state.app} space={this.props.spaceName} />
         </header>
-
         <main className="challenges_mainContainer">
-
           <div className="challenges_contentContainer">
             <div className="challenges_categoryContainer">
               <SideNav app={this.state.app} />
@@ -150,12 +128,7 @@ export default class Ask extends React.PureComponent {
               <RightBar app={this.state.app} />
             </div>
           </div>
-
         </main>
-
-        <footer>
-
-        </footer>
       </div>
     );
   }

@@ -1,20 +1,10 @@
-/*
- *
- * Challenge Home
- *
- */
-
 import React from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
-
-// import FlatButton from 'material-ui/Button';
-
-import Header from "./../components/Header";
 import Banner from "../../components/Banner";
-import SideNav from "../../components/SideNav";
 import RightBar from "../../components/RightBar";
-
+import SideNav from "../../components/SideNav";
+import Header from "./../components/Header";
 import "./style.css";
 import "./styleM.css";
 
@@ -27,14 +17,12 @@ export default class Challenges extends React.PureComponent {
       teams: [],
       app: this.props.app
     };
-  }
-
+  };
   componentDidMount() {
     this.getChallenges();
     //this.getQuestions();
     //this.getTeams();
-  }
-
+  };
   componentWillReceiveProps(app) {
     this.setState(
       {
@@ -44,12 +32,9 @@ export default class Challenges extends React.PureComponent {
         this.forceUpdate();
       }
     );
-  }
-
+  };
   getChallenges = () => {
-    fetch("http://localhost:8000/api/getChallenges/5", {
-      method: 'GET',
-    })
+    fetch("http://localhost:8000/api/getChallenges/5")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -57,11 +42,8 @@ export default class Challenges extends React.PureComponent {
         })
       })
   };
-
   getQuestions = () => {
-    fetch("http://localhost:8000/api/getQuestions/5", {
-      method: 'GET',
-    })
+    fetch("http://localhost:8000/api/getQuestions/5")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -69,11 +51,8 @@ export default class Challenges extends React.PureComponent {
         });
       });
   };
-
   getTeams = () => {
-    fetch("http://localhost:8000/api/getTeams/5", {
-      method: 'GET',
-    })
+    fetch("http://localhost:8000/api/getTeams/5")
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -87,7 +66,6 @@ export default class Challenges extends React.PureComponent {
         });
       });
   };
-
   render() {
     return (
       <div className="container">
@@ -95,14 +73,11 @@ export default class Challenges extends React.PureComponent {
           title="Home"
           meta={[{ name: "description", content: "Description of Home" }]}
         />
-
         <header>
           <Header app={this.state.app} space={this.props.spaceName} />
         </header>
-
         <main className="challenges_mainContainer">
           <Banner app={this.state.app} />
-
           <div className="challenges_contentsContainer">
             <div className="categoryContainer">
               <SideNav app={this.state.app} />
@@ -147,7 +122,6 @@ export default class Challenges extends React.PureComponent {
                   ))}
                 </div>
               </div>
-
               <div className="challenges_feedContainer">
                 <div className="challenges_feedHeader">Questions</div>
                 <div className="challenges_questionContainer">
@@ -192,7 +166,6 @@ export default class Challenges extends React.PureComponent {
                   ))}
                 </div>
               </div>
-
               <div className="challenges_feedContainer">
                 <div className="challenges_feedHeader">Teams</div>
                 {this.state.teams.map((t, i) => (
@@ -232,8 +205,6 @@ export default class Challenges extends React.PureComponent {
             </div>
           </div>
         </main>
-
-        <footer />
       </div>
     );
   }

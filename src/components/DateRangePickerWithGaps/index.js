@@ -1,7 +1,7 @@
+import Snackbar from 'material-ui/Snackbar';
+import moment from 'moment';
 import React, { Component } from 'react';
 import DateRangePickerWithGapsController from './DateRangePickerWithGapsController';
-import moment from 'moment';
-import Snackbar from 'material-ui/Snackbar';
 
 export default class DateRangePickerWithGaps extends Component {
   constructor(props) {

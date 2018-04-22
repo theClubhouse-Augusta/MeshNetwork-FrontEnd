@@ -1,29 +1,17 @@
-/**
- *
- * RightBar
- *
- */
-
-import React from "react";
-import { Link } from "react-router-dom";
-
-import Snackbar from "material-ui/Snackbar";
-import Dialog from "material-ui/Dialog";
-// import { DialogTitle } from 'material-ui/Dialog';
-import FlatButton from "material-ui/Button";
-import TextField from "material-ui/TextField";
-
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import FlatButton from "material-ui/Button";
+import Dialog from "material-ui/Dialog";
+import Snackbar from "material-ui/Snackbar";
+import TextField from "material-ui/TextField";
+import Slide from "material-ui/transitions/Slide";
+import React from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
+import CloseIcon from "react-icons/lib/md/close";
+import { Link } from "react-router-dom";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
-import Slide from "material-ui/transitions/Slide";
-
-import CloseIcon from "react-icons/lib/md/close";
-
 import "./style.css";
 import "./styleM.css";
 

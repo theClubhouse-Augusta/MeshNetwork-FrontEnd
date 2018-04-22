@@ -1,23 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import Card, { 
-  CardContent,
-  CardHeader,
-} from "material-ui/Card";
-import Tabs, { Tab } from 'material-ui/Tabs';
 import BugReport from "material-ui-icons/BugReport";
-import Code from "material-ui-icons/Code";
 import Cloud from "material-ui-icons/Cloud";
+import Code from "material-ui-icons/Code";
+import Card, { CardContent, CardHeader } from "material-ui/Card";
+import Tabs, { Tab } from 'material-ui/Tabs';
+import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
+import PropTypes from "prop-types";
+import React from "react";
 import { Tasks } from "../";
-
-import { 
-  bugs, 
-  website, 
-  server 
-} from "../../variables/general";
-
+import { bugs, server, website } from "../../variables/general";
 import tasksCardStyle from "../../variables/styles/tasksCardStyle";
 
 class TasksCard extends React.Component {

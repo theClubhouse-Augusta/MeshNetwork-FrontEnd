@@ -1,12 +1,11 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';
-import moment from 'moment';
 import FullCalendar from 'fullcalendar-reactwrapper';
 import 'fullcalendar-reactwrapper/dist/css/fullcalendar.min.css';
-
+import FlatButton from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
+import moment from 'moment';
+import React from 'react';
+import Helmet from 'react-helmet';
 import Header from '../../components/Header';
 import Spinner from '../../components/Spinner';
 import authenticate from '../../utils/Authenticate';
@@ -89,10 +88,18 @@ export default class Booking extends React.PureComponent {
       { time: "18:00", active: 0 }
     ],
   };
-
-  handleRequestClose = () => { this.setState({ snack: false, msg: "" }); };
-  showSnack = (msg) => { this.setState({ snack: true, msg: msg }); };
-
+  handleRequestClose = () => {
+    this.setState(() => ({
+      snack: false,
+      msg: ""
+    }));
+  };
+  showSnack = msg => {
+    this.setState(() => ({
+      snack: true,
+      msg,
+    }));
+  };
   async componentDidMount() {
     let authorized;
     try {
@@ -117,21 +124,22 @@ export default class Booking extends React.PureComponent {
       }
     }
   };
-
-  handleName = (event) => { this.setState({ name: event.target.value }) }
-  handleEmail = (event) => { this.setState({ email: event.target.value }) }
+  handleName = event => {
+    this.setState(() => ({ name: event.target.value }));
+  };
+  handleEmail = event => {
+    this.setState(() => ({ email: event.target.value }));
+  };
   handleType = activeType => {
     let activeTimes = [];
     let times = [...this.state.times];
     for (let i = 0; i < times.length; i++) {
       times[i].active = 0;
     }
-
     let events = [...this.state.events];
     if (this.state.start !== "" && this.state.end !== "") {
       events.splice(-1, 1);
     }
-
     this.setState(() => ({
       activeType,
       activeTimes,
@@ -159,46 +167,37 @@ export default class Booking extends React.PureComponent {
             increment: json.resource.resourceIncrement
           });
         });
-    })
-  }
-
+    });
+  };
   handleTime = (day, time, j) => {
     let activeTimes = [...this.state.activeTimes];
     let times = [...this.state.times];
     times[j].active = 1;
-
     let sched = { day: day, time: time };
-
     activeTimes.push(sched);
-
     this.setState(() => ({
       activeTimes,
       times
     }));
-  }
-
+  };
   removeTime = (day, time, j) => {
     let activeTimes = [...this.state.activeTimes];
     let sched = {
       day: day,
       time: time
     };
-
     let times = [...this.state.times];
     times[j].active = 0;
-
     for (let i = 0; i < activeTimes.length; i++) {
       if (activeTimes[i].day === sched.day && activeTimes[i].time === sched.time) {
         activeTimes.splice(i, 1);
       }
     }
-
     this.setState(() => ({
       activeTimes,
       times
     }))
   };
-
   getProfile = () => {
     fetch(`http://localhost:8000/api/workspace/${this.state.user.spaceID}`, {
       method: 'GET'
@@ -214,8 +213,7 @@ export default class Booking extends React.PureComponent {
           this.getResources(json.id);
         })
       });
-  }
-
+  };
   getResources = (id) => {
     fetch('http://localhost:8000/api/resources/' + id, {
       method: 'GET',
@@ -227,17 +225,14 @@ export default class Booking extends React.PureComponent {
         })
       })
   };
-
   storeBooking = () => {
     let data = new FormData();
-
     data.append('name', this.state.name);
     data.append('email', this.state.email);
     data.append('resourceID', this.state.activeType);
     data.append('start', this.state.start);
     data.append('end', this.state.end);
     data.append('spaceID', this.state.spaceProfile.id);
-
     fetch("http://localhost:8000/api/booking", {
       method: 'POST',
       body: data,
@@ -255,22 +250,18 @@ export default class Booking extends React.PureComponent {
           }, 5000);
         }
       });
-  }
-
+  };
   renderTypeButton = (res, i) => {
-
     if (this.state.activeType === res.id) {
       return (
         <div className="bookingActiveTypeButton" key={`activeButton${i}`} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
       )
-    }
-    else {
+    } else {
       return (
         <div className="bookingTypeButton" key={`bookingButton${i}`} onClick={() => this.handleType(res.id)}>{res.resourceName}</div>
       )
     }
-  }
-
+  };
   renderTimes = (day, item, j) => {
     // let activeTimes = this.state.activeTimes;
     // let times = { day: day, time: item.time };
@@ -296,17 +287,15 @@ export default class Booking extends React.PureComponent {
         </div>
       )
     }
-  }
-
-  handleNewDate = (slotInfo) => {
+  };
+  handleNewDate = slotInfo => {
     let start = slotInfo.start.toLocaleString();
     let end = slotInfo.end.toLocaleString();
     let dateObject = {
       title: 'Your Booking',
       start: slotInfo.start,
       end: slotInfo.end
-    }
-
+    };
     let events = [...this.state.events];
     let index = events.length;
     if (index === 0) {
@@ -318,15 +307,13 @@ export default class Booking extends React.PureComponent {
         events[index - 1] = dateObject;
       }
     }
-
     this.setState(() => ({
       events,
       start,
       end
     }))
   };
-
-  bookedSlot = (event) => {
+  bookedSlot = event => {
     this.showSnack('This Slot has already been booked.');
     let events = [...this.state.events];
     let index = events.length;
@@ -342,8 +329,7 @@ export default class Booking extends React.PureComponent {
         }));
       }
     }
-  }
-
+  };
   eventStyleGetter = (event, start, end, isSelected) => {
     var backgroundColor = '#ff4d58';
     var style = {
@@ -357,14 +343,11 @@ export default class Booking extends React.PureComponent {
       style: style
     };
   };
-
   testSlot = (start, end, event) => {
     let startTime = start._i;
     let endTime = end._i;
-
     let diff = Math.abs(new Date(endTime) - new Date(startTime));
     let minutes = Math.floor((diff / 1000) / 60);
-
     if (minutes > this.state.increment) {
       this.showSnack("This can only be booked for " + this.state.increment + " minutes.");
     } else {
@@ -373,7 +356,6 @@ export default class Booking extends React.PureComponent {
         start: startTime,
         end: endTime
       }
-
       let events = [...this.state.events];
       let index = events.length;
       if (index === 0) {
@@ -385,21 +367,16 @@ export default class Booking extends React.PureComponent {
           events[index - 1] = dateObject;
         }
       }
-
       let start = moment(startTime).format();
       let end = moment(endTime).format();
-
       this.setState(() => ({
         events,
         start,
         end
       }));
     }
-  }
-
-
+  };
   render() {
-
     return (
       this.state.loading
         ?
@@ -407,11 +384,9 @@ export default class Booking extends React.PureComponent {
         :
         <div className="bookingContainer">
           <Helmet title="Bookings" meta={[{ name: 'description', content: 'Book a Time Slot' }]} />
-
           <header style={{ background: '#FFFFFF' }}>
             <Header app={this.state.app} space={this.props.spaceName} />
           </header>
-
           <main className="bookingMainContainer">
             <div className="bookingInfoContainer">
               <div className="bookingColumnTitle">Your Info</div>
@@ -473,7 +448,6 @@ export default class Booking extends React.PureComponent {
               />
             </div>
           </main>
-
           <footer className="homeFooterContainer">
             Copyright © 2018 theClubhou.se  • 540 Telfair Street  •  Tel: (706) 723-5782
                     <Snackbar

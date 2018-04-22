@@ -1,17 +1,18 @@
-import React from "react";
-import { withStyles } from 'material-ui/styles';
+import Card, { CardActions, CardContent, CardHeader } from "material-ui/Card";
 import Typography from 'material-ui/Typography';
-import Card, {
-  CardHeader,
-  CardContent,
-  CardActions,
-} from "material-ui/Card";
+import { withStyles } from 'material-ui/styles';
 import PropTypes from "prop-types";
-
+import React from "react";
 import profileCardStyle from "../../variables/styles/profileCardStyle";
 
-function ProfileCard(props) {
-  const { classes, subtitle, title, description, footer, avatar } = props;
+function ProfileCard({
+  classes,
+  subtitle,
+  title,
+  description,
+  footer,
+  avatar
+}) {
   return (
     <Card className={classes.card}>
       <CardHeader

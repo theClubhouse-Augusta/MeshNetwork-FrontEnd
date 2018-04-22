@@ -25,7 +25,7 @@ class ResourceForm extends PureComponent {
   };
   componentDidMount() {
     this.getResources(this.props.spaceID);
-  }
+  };
   onChange = prop => event => {
     this.setState({ [prop]: event.target.value });
   };

@@ -1,22 +1,6 @@
-/**
-*
-* Payment
-*
-*/
-
-import React from 'react';
-import {
-  // StripeProvider, 
-  injectStripe,
-  CardNumberElement,
-  CardExpiryElement,
-  CardCVCElement,
-  PostalCodeElement,
-  // PaymentRequestButtonElement
-} from 'react-stripe-elements';
-
 import Snackbar from 'material-ui/Snackbar';
-
+import React from 'react';
+import { CardCVCElement, CardExpiryElement, CardNumberElement, PostalCodeElement, injectStripe } from 'react-stripe-elements';
 import './style.css';
 import './styleM.css';
 

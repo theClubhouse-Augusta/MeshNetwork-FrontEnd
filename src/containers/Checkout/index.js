@@ -1,15 +1,9 @@
-/**
-*
-* Checkout
-*
-*/
 import React from 'react';
-import { Elements } from 'react-stripe-elements';
-import { StripeProvider } from 'react-stripe-elements';
+import { Elements, StripeProvider } from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm';
-
 import './style.css';
 import './styleM.css';
+
 export default class Checkout extends React.Component {
   constructor() {
     super();
@@ -19,7 +13,6 @@ export default class Checkout extends React.Component {
       component: '',
     };
   };
-
   async componentDidMount() {
     if (window.Stripe) {
       this.loadKey();
@@ -31,8 +24,6 @@ export default class Checkout extends React.Component {
       });
     }
   };
-
-
   loadKey = async () => {
     let key;
     try {
@@ -50,29 +41,26 @@ export default class Checkout extends React.Component {
         this.setState(() => ({ loaded: true }), () => this.renderCheckoutForm());
       }
     }
-  }
-
+  };
   renderCheckoutForm = () =>
     this.state.key ?
-      this.setState({
+      this.setState(() => ({
         component:
           <StripeProvider apiKey={this.state.key}>
             <Elements>
               <CheckoutForm pubkey {...this.props} />
             </Elements>
           </StripeProvider>
-      })
+      }))
       :
-      this.setState({
+      this.setState(() => ({
         component:
           <StripeProvider apiKey="pk_test_rJKqFRMRduGAyguxdWT2TfcI">
             <Elements>
               <CheckoutForm pubkey={false} {...this.props} />
             </Elements>
           </StripeProvider>
-      });
-
-
+      }));
   render() {
     return (
       this.state.loaded && this.state.component

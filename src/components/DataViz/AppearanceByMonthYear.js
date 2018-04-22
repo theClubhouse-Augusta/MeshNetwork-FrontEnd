@@ -1,22 +1,7 @@
-/*
- *
- * AppearanceByMonthYear
- *
- */
-import React from 'react';
 import FlatButton from 'material-ui/Button';
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  BarChart,
-  Bar
-} from 'recharts';
-
+import React from 'react';
+import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 import DateRangePicker from '../DateRangePicker';
-
 import './style.css';
 import './styleM.css';
 

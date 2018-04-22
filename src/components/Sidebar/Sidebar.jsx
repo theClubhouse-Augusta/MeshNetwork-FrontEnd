@@ -1,17 +1,11 @@
-import React from "react";
-import { withStyles } from "material-ui/styles";
-import Hidden from 'material-ui/Hidden';
 import cx from "classnames";
 import Drawer from 'material-ui/Drawer';
-import List, {
-  ListItem,
-  ListItemText,
-  ListItemIcon
-} from 'material-ui/List';
-
+import Hidden from 'material-ui/Hidden';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import { withStyles } from "material-ui/styles";
+import React from "react";
 import { DashHeaderLinks } from "../";
 import sidebarStyle from "../../variables/styles/sidebarStyle.jsx";
-
 
 export default withStyles(sidebarStyle)(({
   classes,

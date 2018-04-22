@@ -1,27 +1,19 @@
-/**
- *
- * Header
- *
- */
-
+import Menu, { MenuItem } from "material-ui/Menu";
+import Snackbar from "material-ui/Snackbar";
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
 import Bars from "react-icons/lib/fa/bars";
+import MdAssessment from "react-icons/lib/md/assessment";
+import MdExitToApp from "react-icons/lib/md/exit-to-app";
 import MdExplore from "react-icons/lib/md/explore";
 import MdInfoOutline from "react-icons/lib/md/info-outline";
-import MdSearch from "react-icons/lib/md/search";
-import MdAssessment from "react-icons/lib/md/assessment";
-import MdSchool from "react-icons/lib/md/school";
 import MdPerson from "react-icons/lib/md/person";
-import MdExitToApp from "react-icons/lib/md/exit-to-app";
-// import Divider from "material-ui/Divider";
-
-import Menu, { MenuItem } from "material-ui/Menu";
-
-import Snackbar from "material-ui/Snackbar";
-
+import MdSchool from "react-icons/lib/md/school";
+import MdSearch from "react-icons/lib/md/search";
+import { Link, Redirect } from "react-router-dom";
 import "./style.css";
 import "./styleM.css";
+
+
 
 export default class DashHeader extends React.PureComponent {
   constructor() {

@@ -1,25 +1,19 @@
-import React from "react";
-import { withStyles } from "material-ui/styles";
-import Card, {
-  CardHeader,
-  CardContent,
-  CardActions,
-} from "material-ui/Card";
-import PropTypes from "prop-types";
 import cx from "classnames";
-
+import Card, { CardActions, CardContent, CardHeader } from "material-ui/Card";
+import { withStyles } from "material-ui/styles";
+import PropTypes from "prop-types";
+import React from "react";
 import regularCardStyle from "../../variables/styles/regularCardStyle";
 
-function RegularCard({ ...props }) {
-  const {
-    classes,
-    headerColor,
-    plainCard,
-    cardTitle,
-    cardSubtitle,
-    content,
-    footer
-  } = props;
+function RegularCard({
+  classes,
+  headerColor,
+  plainCard,
+  cardTitle,
+  cardSubtitle,
+  content,
+  footer
+}) {
   const plainCardClasses = cx({
     [" " + classes.cardPlain]: plainCard
   });

@@ -5,11 +5,18 @@ import IconButton from "material-ui/IconButton";
 import Close from "material-ui-icons/Close";
 import PropTypes from "prop-types";
 import cx from "classnames";
-
 import snackbarContentStyle from "../../variables/styles/snackbarContentStyle.jsx";
 
-function Snackbar({ ...props }) {
-  const { classes, message, color, close, icon, place, open } = props;
+function Snackbar({
+  classes,
+  message,
+  color,
+  close,
+  icon,
+  place,
+  open,
+  closeNotification,
+}) {
   var action = [];
   const messageClasses = cx({
     [classes.iconMessage]: icon !== undefined
@@ -21,7 +28,7 @@ function Snackbar({ ...props }) {
         key="close"
         aria-label="Close"
         color="inherit"
-        onClick={() => props.closeNotification()}
+        onClick={() => closeNotification()}
       >
         <Close className={classes.close} />
       </IconButton>
@@ -39,7 +46,7 @@ function Snackbar({ ...props }) {
       open={open}
       message={
         <div>
-          {icon !== undefined ? <props.icon className={classes.icon} /> : null}
+          {icon !== undefined ? <icon className={classes.icon} /> : null}
           <span className={messageClasses}>{message}</span>
         </div>
       }
