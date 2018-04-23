@@ -443,7 +443,7 @@ export default class Lessons extends React.PureComponent {
               href={file.fileData}
               key={`fileData${index}`}
               style={{ textDecoration: 'none' }}
-              target="_blank"
+              target="self"
               rel="noopener noreferrer"
             >
               <div className="lmsNewFileBlock" >
