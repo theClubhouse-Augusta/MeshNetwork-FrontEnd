@@ -461,6 +461,7 @@ export default class Detail extends React.PureComponent {
               href={u.fileData}
               target="_blank"
               className="challenges_uploadBlock"
+              rel="noopener noreferrer"
             >
               {u.fileName}
             </a>

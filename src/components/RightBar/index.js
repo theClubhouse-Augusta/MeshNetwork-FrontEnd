@@ -344,6 +344,7 @@ export default class RightBar extends React.PureComponent {
             width: "100%",
             marginBottom: "10px"
           }}
+          rel="noopener noreferrer"
         >
           Event Rules
         </FlatButton>
@@ -354,8 +355,9 @@ export default class RightBar extends React.PureComponent {
             background: "#32b6b6",
             color: "#FFFFFF",
             width: "100%",
-            marginBottom: "10px"
+            marginBottom: "10px",
           }}
+          rel="noopener noreferrer"
         >
           Submission Guide
         </FlatButton>

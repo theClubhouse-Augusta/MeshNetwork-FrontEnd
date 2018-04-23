@@ -444,6 +444,7 @@ export default class Lessons extends React.PureComponent {
               key={`fileData${index}`}
               style={{ textDecoration: 'none' }}
               target="_blank"
+              rel="noopener noreferrer"
             >
               <div className="lmsNewFileBlock" >
                 <span></span>

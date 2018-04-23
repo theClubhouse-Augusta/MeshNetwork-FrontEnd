@@ -309,9 +309,10 @@ export default class EventDetail extends React.PureComponent {
                     margin: "30px auto"
                   }}
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <LinkIcon size={25} style={{ marginRight: "10px" }} /> Visit
-                  Website
+                  <LinkIcon size={25} style={{ marginRight: "10px" }} />
+                  Visit Website
                 </a>
                 {!!tags.length && (
                   <div className="eventTags">

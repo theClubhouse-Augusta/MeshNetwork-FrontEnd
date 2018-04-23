@@ -101,7 +101,7 @@ export default class Kiosk extends React.PureComponent {
 
   getToday = id => {
     fetch("http://localhost:8000/api/todayevent/" + id, {
-     method:'GET'
+      method: 'GET'
     })
       .then(response => response.json())
       .then(json => {
@@ -139,7 +139,7 @@ export default class Kiosk extends React.PureComponent {
 
   showEvents = () => {
     this.setState({
-      selectedReason:'Event'
+      selectedReason: 'Event'
     })
   }
 
@@ -193,6 +193,7 @@ export default class Kiosk extends React.PureComponent {
                 to={`/event/${event.id}`}
                 key={`eventDiv2${key}`}
                 className="eventList"
+                rel="noopener noreferrer"
               >
                 <div className="eventBlock">
                   <div className="eventBlockImage" />
@@ -207,37 +208,37 @@ export default class Kiosk extends React.PureComponent {
             ))}
         </div>
       );
-    } else{
-      return(
-          <div className="kioskContent">
-            <Select
-                name="form-field-name"
-                value={this.state.loggedInUser.value}
-                placeholder="Select your Name"
-                arrowRenderer={null}
-                clearable={true}
-                openOnClick={false}
-                onChange={this.handleNameInputChange}
-                options={this.state.users}
-            />
-            <Link to={"/join/" + this.state.workspace.slug} style={{ marginTop: "30px", width: "10%" }}>
-                <FlatButton style={{
-                    width: "100%",
-                    background: "#ff4d58",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                    }}
-                >
-                    Don't See Your Name? Join Our Mesh Network!
+    } else {
+      return (
+        <div className="kioskContent">
+          <Select
+            name="form-field-name"
+            value={this.state.loggedInUser.value}
+            placeholder="Select your Name"
+            arrowRenderer={null}
+            clearable={true}
+            openOnClick={false}
+            onChange={this.handleNameInputChange}
+            options={this.state.users}
+          />
+          <Link to={"/join/" + this.state.workspace.slug} style={{ marginTop: "30px", width: "10%" }}>
+            <FlatButton style={{
+              width: "100%",
+              background: "#ff4d58",
+              paddingTop: "10px",
+              paddingBottom: "10px",
+              color: "#FFFFFF",
+              fontWeight: "bold"
+            }}
+            >
+              Don't See Your Name? Join Our Mesh Network!
                 </FlatButton>
-            </Link>
+          </Link>
 
 
           {this.renderReasons()}
           {this.renderToday()}
-          </div>
+        </div>
       )
     }
   };
@@ -343,14 +344,14 @@ export default class Kiosk extends React.PureComponent {
           />
           <div className="kioskTitle">Welcome to {this.state.workspace.name}</div>
           <div className="kioskSubtitle">Check-In with Us!</div>
-            {this.renderComplete()}
+          {this.renderComplete()}
 
-            <Snackbar
-              open={this.state.snack}
-              message={this.state.msg}
-              autoHideDuration={3000}
-              onClose={this.handleRequestClose}
-            />
+          <Snackbar
+            open={this.state.snack}
+            message={this.state.msg}
+            autoHideDuration={3000}
+            onClose={this.handleRequestClose}
+          />
         </main>
       </div>
     );
