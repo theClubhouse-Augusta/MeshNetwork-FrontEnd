@@ -205,7 +205,11 @@ export default class EventInformation extends Component {
           checkedRadio: 1,
           days: this.state.eventDates.length,
         });
-        this.state.eventDates.forEach(({ start: startDate, end: endDate, id }, i) => {
+        this.state.eventDates.forEach(({
+          start: startDate,
+          end: endDate,
+          id
+        }, i) => {
           let start = startDate.split(' ');
           const [startDateString, startTimeString] = start;
           const day = moment(startDateString);
@@ -231,7 +235,8 @@ export default class EventInformation extends Component {
       } else if (this.state.eventDates.length === 1 && !!!this.state.checkedRadio) {
         this.setState({ checkedRadio: this.singleDay, });
         let dates = this.state.eventDates.slice();
-        const { start: startDate, end: endDate, id } = dates;
+        console.log('dates', dates);
+        const { start: startDate, end: endDate, id } = dates[0];
 
         let start = startDate.split(' ');
         const [dateString, startTimeString] = start;
