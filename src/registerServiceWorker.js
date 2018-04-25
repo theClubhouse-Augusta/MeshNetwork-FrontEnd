@@ -29,8 +29,20 @@ const isMobileSafari = () => {
   return userAgent.match(/iPad/i) || userAgent.match(/iPhone/i);
 };
 
+const isChromeOnMac = () => {
+  const isChrome = !!window.chrome;
+  const isMac = navigator.appVersion.indexOf("Mac") !== -1;
+  return isMac && isChrome;
+};
+
 export default function register() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator && !isSafari && !isMobileSafari()) {
+  if (
+    (process.env.NODE_ENV === 'production')
+    && ('serviceWorker' in navigator)
+    && (!isSafari)
+    && (!isMobileSafari())
+    && (!isChromeOnMac())
+  ) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
