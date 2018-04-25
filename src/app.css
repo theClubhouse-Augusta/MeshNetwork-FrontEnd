@@ -49,6 +49,10 @@ label {
     font-family: "Noto Sans";
 }
 
+li {
+    list-style: none;
+}
+
 button {
     cursor: pointer;
     background-color: transparent;
