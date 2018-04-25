@@ -25,7 +25,6 @@ const Replies = asyncComponent(() => import('../Replies'));
 const Detail = asyncComponent(() => import('../Detail'));
 const Team = asyncComponent(() => import('..//Team'));
 const Teams = asyncComponent(() => import('../Teams'));
-const TestCal = asyncComponent(() => import('../TestCal'));
 const LMS = asyncComponent(() => import('../LMS'));
 const Courses = asyncComponent(() => import('../Courses'));
 const Course = asyncComponent(() => import('../Course'));
@@ -34,6 +33,7 @@ const NewCourse = asyncComponent(() => import('../NewCourse'));
 const Lessons = asyncComponent(() => import('../Lessons'));
 const Enroll = asyncComponent(() => import('../Enroll'));
 const LMSDash = asyncComponent(() => import('../LMSDash'));
+const MemberDash = asyncComponent(() => import('../MemberDash'));
 
 export default class App extends Component {
   constructor() {
@@ -98,9 +98,10 @@ export default class App extends Component {
           }
         />
         <Route
-          path="/TestCal"
-          render={() =>
-            <TestCal
+          path="/MemberDash"
+          render={props =>
+            <MemberDash
+              {...props}
               spaceName={this.state.spaceName}
             />
           }
