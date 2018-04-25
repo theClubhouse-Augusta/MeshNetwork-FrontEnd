@@ -60,23 +60,20 @@ export default class UserProfile extends React.Component {
   }
 
   getUser = () => {
-    fetch(
-      "http://localhost:8000/api/user/profile/" +
-      this.props.match.params.id,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${localStorage["token"]}` }
-      }
-    )
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        this.setState({
-          user: json.user,
-          space: json.space,
-          skills: json.skills ? json.skills : []
-        });
+    fetch(`http://localhost:8000/api/user/profile/${this.props.match.params.id}`, {
+      headers: { Authorization: `Bearer ${localStorage["token"]}` }
+    })
+      .then(response => response.json())
+      .then(({
+        user,
+        skills,
+        space,
+      }) => {
+        this.setState(() => ({
+          user,
+          space,
+          skills: skills ? skills : []
+        }));
       });
   };
 
@@ -221,7 +218,6 @@ export default class UserProfile extends React.Component {
             </div>
           </main>
 
-          <footer />
         </div>
       );
   }
