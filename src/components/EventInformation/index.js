@@ -1004,8 +1004,8 @@ export default class EventInformation extends Component {
         </Helmet>
 
         <div className="addEventBanner">
-          <div className="homeHeaderContentTitle">Add a New Event</div>
-          <div className="homeHeaderContentSubtitle">Create an Event for your Space</div>
+          <div className="homeHeaderContentTitle">{this.state.name}</div>
+          <div className="homeHeaderContentSubtitle">Update event @{this.props.spaceName}</div>
         </div>
         <main className="spaceSignUpMain">
 
