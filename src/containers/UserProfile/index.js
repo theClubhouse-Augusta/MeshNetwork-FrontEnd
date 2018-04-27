@@ -1,29 +1,20 @@
-/*
- *
- * UserProfile
- *
- */
-import React from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-
-import Header from "../../components/Header";
-
 import Chip from "material-ui/Chip";
-
-import FacebookIcon from "react-icons/lib/fa/facebook-square";
-import TwitterIcon from "react-icons/lib/fa/twitter-square";
-import LinkedInIcon from "react-icons/lib/fa/linkedin-square";
-import InstagramIcon from "react-icons/lib/fa/instagram";
-import GithubIcon from "react-icons/lib/fa/github-square";
+import PropTypes from "prop-types";
+import React from "react";
+import Helmet from "react-helmet";
 import BehanceIcon from "react-icons/lib/fa/behance-square";
-
+import FacebookIcon from "react-icons/lib/fa/facebook-square";
+import GithubIcon from "react-icons/lib/fa/github-square";
+import InstagramIcon from "react-icons/lib/fa/instagram";
+import LinkedInIcon from "react-icons/lib/fa/linkedin-square";
+import TwitterIcon from "react-icons/lib/fa/twitter-square";
+import { Link } from "react-router-dom";
+import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
 import authenticate from "../../utils/Authenticate";
-
 import "./style.css";
 import "./styleM.css";
+
 
 export default class UserProfile extends React.Component {
   constructor(props) {
@@ -82,13 +73,16 @@ export default class UserProfile extends React.Component {
       color: "#FFFFFF",
       margin: "5px"
     };
-
     let rand = Math.random() * (10 - 1) + 1;
-
     chipStyle.animation =
       "profileFlicker " + rand + "s ease alternate infinite";
-
-    return <Chip style={chipStyle} key={`userProfile${i}`} label={skill} />;
+    return (
+      <Chip
+        style={chipStyle}
+        key={`userProfile${i}`}
+        label={skill}
+      />
+    );
   };
 
   renderEdit = () => {
@@ -213,7 +207,9 @@ export default class UserProfile extends React.Component {
                 {this.renderSocial()}
               </div>
               <div className="profileSkillsList">
-                {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
+                {this.state.skills.map((skill, i) =>
+                  this.renderTag(skill, i)
+                )}
               </div>
             </div>
           </main>

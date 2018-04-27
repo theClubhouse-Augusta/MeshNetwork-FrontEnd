@@ -1,27 +1,13 @@
-/*
- *
- * MemberSearch
- *
- */
-import React, { PureComponent } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-/* Icons */
-
 import Chip from "material-ui/Chip";
-import TextField from "material-ui/TextField";
 import Snackbar from "material-ui/Snackbar";
-// import { MenuItem } from "material-ui/Menu";
-// import Input, { InputLabel } from "material-ui/Input";
-// import Select from "material-ui/Select";
-
-/* Components */
+import TextField from "material-ui/TextField";
+import PropTypes from "prop-types";
+import React, { PureComponent } from "react";
 import Helmet from "react-helmet";
+import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
-
 import authenticate from "../../utils/Authenticate";
-/* css */
 import "./style.css";
 import "./styleM.css";
 
@@ -160,12 +146,14 @@ export default class MemberSearch extends PureComponent {
 
           <header style={{ background: "#FFFFFF", width: "100%" }}>
             <Header space={this.props.spaceName} />
-            <div className="memberSearchBanner">
-              <div className="memberSearchHeaderTitle">Connect with People</div>
-              <div className="memberSearchHeaderSubtitle">
+            <section className="memberSearchBanner">
+              <h1 className="memberSearchHeaderTitle">
+                Connect with People
+              </h1>
+              <h2 className="memberSearchHeaderSubtitle">
                 Discover new and innovative members
-            </div>
-            </div>
+              </h2>
+            </section>
           </header>
 
           <main className="memberSearchMain">

@@ -25,7 +25,6 @@ import { allAppearances, allEvents, allJoins } from "../../variables/charts";
 import appStyle from '../../variables/styles/appStyle.jsx';
 import EventsTable from './EventsTable';
 import MemberTable from './MemberTable';
-const spaceInfoAPI = 'http://localhost:8000/api/workspace/auth/';
 
 class SpaceDash extends React.Component {
   state = {
@@ -192,7 +191,7 @@ class SpaceDash extends React.Component {
   loadSpaceDescription = async () => {
     const { user } = this.state;
     try {
-      const response = await fetch(spaceInfoAPI + this.props.match.params.id, {
+      const response = await fetch(`http://localhost:8000/api/workspace/auth/${this.props.match.params.id}`, {
         headers: { Authorization: `Bearer ${localStorage['token']}` }
       });
       const {

@@ -11,9 +11,8 @@
   <script id="stripe-js" src="https://js.stripe.com/v3/" async></script>
   <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
   <!-- hanken -->
-  <link rel="stylesheet" href="https://fontlibrary.org/face/hanken" media="screen" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Encode+Sans|Spectral|Noto+Sans|Lato:300,400|Lobster|Montserrat|Oswald:200,400"
-    rel="stylesheet">
+  <!-- <link rel="stylesheet" href="https://fontlibrary.org/face/hanken" media="screen" type="text/css"> -->
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Lato:300,400|Lobster|Oswald:200,400" rel="stylesheet">
   <style>
     @font-face {
       font-family: "Roboto";
@@ -61,6 +60,234 @@
       url("open-sans/Roboto-Regular.woff") format("woff"),
       url("open-sans/Roboto-Regular.eot") format("embeded-opentype"),
       url("open-sans/Roboto-Regular.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: 'HankenBook';
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+      src: local('HankenBook'),
+      local('Hanken-Book'),
+      /* url("open-sans/Hanken-Book.woff2") format("woff2"), */
+      url("open-sans/Hanken-Book.woff") format("woff"),
+      url("open-sans/Hanken-Book.eot") format("embeded-opentype"),
+      url("open-sans/Hanken-Book.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: 'HankenLight';
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+      src: local('HankenLight'),
+      local('Hanken-Light'),
+      /* url("open-sans/Hanken-Light.woff2") format("woff2"), */
+      url("open-sans/Hanken-Light.woff") format("woff"),
+      url("open-sans/Hanken-Light.eot") format("embeded-opentype"),
+      url("open-sans/Hanken-Light.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 100;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-Thin.woff") format("woff"),
+      url("open-sans/EncodeSans-Thin.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-Thin.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 200;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-ExtraLight.woff") format("woff"),
+      url("open-sans/EncodeSans-ExtraLight.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-ExtraLight.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 300;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-Light.woff") format("woff"),
+      url("open-sans/EncodeSans-Light.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-Light.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-Regular.woff") format("woff"),
+      url("open-sans/EncodeSans-Regular.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-Regular.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-Medium.woff") format("woff"),
+      url("open-sans/EncodeSans-Medium.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-Medium.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-SemiBold.woff") format("woff"),
+      url("open-sans/EncodeSans-SemiBold.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-SemiBold.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-Bold.woff") format("woff"),
+      url("open-sans/EncodeSans-Bold.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-Bold.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 800;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-ExtraBold.woff") format("woff"),
+      url("open-sans/EncodeSans-ExtraBold.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-ExtraBold.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Encode Sans";
+      font-weight: 900;
+      font-style: normal;
+      font-display: block;
+      src: local("Encode Sans"),
+      local("Encode-Sans"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/EncodeSans-Black.woff") format("woff"),
+      url("open-sans/EncodeSans-Black.eot") format("embeded-opentype"),
+      url("open-sans/EncodeSans-Black.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Spectral";
+      font-weight: 200;
+      font-style: normal;
+      font-display: block;
+      src: local("Spectral"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/Spectral-ExtraLight.woff") format("woff"),
+      url("open-sans/Spectral-ExtraLight.eot") format("embeded-opentype"),
+      url("open-sans/Spectral-ExtraLight.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Spectral";
+      font-weight: 300;
+      font-style: normal;
+      font-display: block;
+      src: local("Spectral"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/Spectral-Light.woff") format("woff"),
+      url("open-sans/Spectral-Light.eot") format("embeded-opentype"),
+      url("open-sans/Spectral-Light.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Spectral";
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+      src: local("Spectral"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/Spectral-Regular.woff") format("woff"),
+      url("open-sans/Spectral-Regular.eot") format("embeded-opentype"),
+      url("open-sans/Spectral-Regular.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Spectral";
+      font-weight: 500;
+      font-style: normal;
+      font-display: block;
+      src: local("Spectral"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/Spectral-Medium.woff") format("woff"),
+      url("open-sans/Spectral-Medium.eot") format("embeded-opentype"),
+      url("open-sans/Spectral-Medium.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Spectral";
+      font-weight: 600;
+      font-style: normal;
+      font-display: block;
+      src: local("Spectral"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/Spectral-SemiBold.woff") format("woff"),
+      url("open-sans/Spectral-SemiBold.eot") format("embeded-opentype"),
+      url("open-sans/Spectral-SemiBold.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: "Spectral";
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+      src: local("Spectral"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/Spectral-Bold.woff") format("woff"),
+      url("open-sans/Spectral-Bold.eot") format("embeded-opentype"),
+      url("open-sans/Spectral-Bold.ttf") format("truetype");
+    }
+
+
+    @font-face {
+      font-family: "Spectral";
+      font-weight: 800;
+      font-style: normal;
+      font-display: block;
+      src: local("Spectral"),
+      /* url("open-sans/EncodeSans-Thin.woff2") format("woff2"), */
+      url("open-sans/Spectral-ExtraBold.woff") format("woff"),
+      url("open-sans/Spectral-ExtraBold.eot") format("embeded-opentype"),
+      url("open-sans/Spectral-ExtraBold.ttf") format("truetype");
     }
 
     .ct-double-octave:after,
