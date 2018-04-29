@@ -98,7 +98,7 @@ export default class App extends Component {
           }
         />
         <Route
-          path="/MemberDash"
+          path="/MemberDash/:id"
           render={props =>
             <MemberDash
               {...props}

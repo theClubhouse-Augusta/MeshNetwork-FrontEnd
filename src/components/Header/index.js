@@ -15,15 +15,17 @@ import "./style.css";
 import "./styleM.css";
 
 export default class Header extends React.PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       token: localStorage.getItem("token"),
       user: JSON.parse(localStorage.getItem("user")),
       menuOpen: false,
-      textColor: "#000000",
-      backgroundColor: "transparent",
-      headerTitle: "Mesh Network",
+      textColor: !!props.textColor ? props.textColor : "#000000",
+      backgroundColor: !!props.backgroundColor ? props.backgroundColor : "transparent",
+      headerTitle: !!props.headerTitle ? props.headerTitle : "Mesh Network",
+      marginBottom: !!props.marginBottom ? props.marginBottom : "",
+      borderBottom: !!props.borderBottom ? props.borderBottom : "",
       challengeMenu: null,
       educationMenu: null,
       accountMenu: null,
@@ -55,17 +57,6 @@ export default class Header extends React.PureComponent {
   };
   handleAccountMenuClose = event => {
     this.setState({ accountMenu: null });
-  };
-  componentWillMount() {
-    if (this.props.textColor) {
-      this.setState({ textColor: this.props.textColor });
-    }
-    if (this.props.backgroundColor) {
-      this.setState({ backgroundColor: this.props.backgroundColor });
-    }
-    if (this.props.headerTitle) {
-      this.setState({ headerTitle: this.props.headerTitle });
-    }
   };
   handleMenu = () => {
     if (this.state.menuOpen === true) {
@@ -165,7 +156,7 @@ export default class Header extends React.PureComponent {
             to="/spaces"
             className="navMenuButton"
             style={{
-              color: this.state.textColor
+              color: this.state.textColor,
             }}
           >
             <MdExplore className="navIcon" />
@@ -312,7 +303,7 @@ export default class Header extends React.PureComponent {
         Mesh
         <span
           style={{
-            color: "#ff4d58"
+            color: this.props.overideHeaderTitle ? this.state.textColor : "#ff4d58"
           }}
         >
           Network
@@ -333,7 +324,8 @@ export default class Header extends React.PureComponent {
       <div
         className="headerComponent"
         style={{
-          background: this.state.backgroundColor
+          background: this.state.backgroundColor,
+          marginBottom: this.state.marginBottom,
         }}
       >
         {this.state.redirect}
@@ -464,6 +456,15 @@ export default class Header extends React.PureComponent {
           autoHideDuration={3000}
           onClose={this.handleRequestClose}
         />
+      {this.state.borderBottom &&
+        <div 
+          style={{
+            width: '98%', 
+            margin: '0 auto',
+            borderBottom: this.state.borderBottom
+          }}
+        />
+      }
       </div>
     );
   }

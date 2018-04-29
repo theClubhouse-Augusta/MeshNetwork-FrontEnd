@@ -44,7 +44,22 @@ const card = {
   boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
   borderRadius: "3px",
   color: "rgba(0, 0, 0, 0.87)",
-  background: "#fff"
+  background: "#fff",
+  // height: 400,
+  //  boxSizing: 'border-box'
+};
+
+const meshCard = {
+  display: "inline-block",
+  position: "relative",
+  width: "100%",
+  margin: "0 0 0 0",
+  boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
+  borderRadius: "3px",
+  color: "rgba(0, 0, 0, 0.87)",
+  background: "#fff",
+  // height: 400,
+  //  boxSizing: 'border-box'
 };
 
 const defaultFont = {
@@ -52,10 +67,13 @@ const defaultFont = {
   fontWeight: "300",
   lineHeight: "1.5em"
 };
-
+const customFont = {
+  fontFamily: '"HankenBook", "Helvetica", "Arial", sans-serif',
+  fontWeight: "300",
+  lineHeight: "1.5em"
+};
 const primaryColor = "#9c27b0";
 //ocnst primaryColor = "#ff4d58";
-
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
@@ -102,6 +120,11 @@ const redCardHeader = {
   background: "linear-gradient(60deg, #ef5350, #e53935)",
   ...dangerBoxShadow
 };
+const meshRedCardHeader = {
+  background: "linear-gradient(60deg, #ff4d58, #e53935)",
+  ...dangerBoxShadow
+};
+
 const blueCardHeader = {
   background: "linear-gradient(60deg, #26c6da, #00acc1)",
   ...infoBoxShadow
@@ -141,7 +164,9 @@ export {
   container,
   boxShadow,
   card,
+  meshCard,
   defaultFont,
+  customFont,
   primaryColor,
   warningColor,
   dangerColor,
@@ -159,6 +184,7 @@ export {
   whiteCardHeader,
   greenCardHeader,
   redCardHeader,
+  meshRedCardHeader,
   blueCardHeader,
   purpleCardHeader,
   cardActions,

@@ -14,9 +14,11 @@ function ItemGrid({
   ...rest
 }) {
   return (
-    <Grid item {...rest} className={classes.grid}>
-      {children}
-    </Grid>
+    <Grid
+      item
+      className={classes.grid}
+      {...rest}
+    >{children}</Grid>
   );
 }
 

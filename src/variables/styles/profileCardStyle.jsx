@@ -8,7 +8,8 @@ const profileCardStyle = {
   card: {
     marginTop: "30px",
     textAlign: "center",
-    ...card
+    ...card,
+    boxSizing: 'border-box',
   },
   cardHeader: {
     display: "inline-block",

@@ -1,28 +1,21 @@
-/*
- *
- * SpaceProfile
- *
- */
-import React from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router-dom";
-import Header from "../../components/Header";
 import FlatButton from "material-ui/Button";
-
-import DoubleArrow from "react-icons/lib/fa/angle-double-right";
-import FacebookIcon from "react-icons/lib/fa/facebook";
-import TwitterIcon from "react-icons/lib/fa/twitter";
-import InstagramIcon from "react-icons/lib/fa/instagram";
-import MailIcon from "react-icons/lib/fa/envelope-o";
-import LinkIcon from "react-icons/lib/fa/chain";
-
-import { Timeline } from 'react-twitter-widgets';
-
-import BigCalendar from "react-big-calendar";
 import moment from "moment";
+import React from "react";
+import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Helmet from "react-helmet";
+import DoubleArrow from "react-icons/lib/fa/angle-double-right";
+import LinkIcon from "react-icons/lib/fa/chain";
+import MailIcon from "react-icons/lib/fa/envelope-o";
+import FacebookIcon from "react-icons/lib/fa/facebook";
+import InstagramIcon from "react-icons/lib/fa/instagram";
+import TwitterIcon from "react-icons/lib/fa/twitter";
+import { Link } from "react-router-dom";
+import { Timeline } from 'react-twitter-widgets';
+import Header from "../../components/Header";
 import "./style.css";
 import "./styleM.css";
+
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -37,86 +30,45 @@ export default class SpaceProfile extends React.PureComponent {
       users: [],
       photoGallery: []
     };
-  }
-
+  };
   componentDidMount() {
     this.getProfile();
-  }
-
+  };
   getProfile = () => {
-    fetch(
-      "http://localhost:8000/api/workspace/" + this.props.match.params.id,
-      {
-        method: "GET"
+    fetch(`http://localhost:8000/api/workspace/${this.props.match.params.id}`)
+      .then(response => response.json())
+      .then(spaceProfile => {
+        this.setState(() => ({ spaceProfile }),
+          () => {
+            this.getSpaceEvents(this.state.spaceProfile.id);
+            this.getUsers(this.state.spaceProfile.id);
+            this.getPhotoGallery(this.state.spaceProfile.id);
+          }
+        );
       }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then(
-        (json) => {
-          this.setState(
-            {
-              spaceProfile: json
-            },
-            () => {
-              this.getSpaceEvents(this.state.spaceProfile.id);
-              this.getUsers(this.state.spaceProfile.id);
-              this.getPhotoGallery(this.state.spaceProfile.id);
-            }
-          );
-        }
       );
   };
-
   getSpaceEvents = id => {
-    fetch("http://localhost:8000/api/spaceEvents/" + id, {
-      method: "GET"
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then(
-        (json) => {
-          this.setState({
-            events: json
-          });
-        }
-      );
+    fetch(`http://localhost:8000/api/spaceEvents/${id}`)
+      .then(response => response.json())
+      .then(events => {
+        this.setState(() => ({ events }));
+      });
   };
-
   getUsers = id => {
-    fetch("http://localhost:8000/api/organizers/space/" + id, {
-      method: "GET"
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then(
-        (json) => {
-          this.setState({
-            users: json
-          });
-        }
-      );
+    fetch(`http://localhost:8000/api/organizers/space/${id}`)
+      .then(response => response.json())
+      .then(users => {
+        this.setState(() => ({ users }));
+      });
   };
-
   getPhotoGallery = id => {
-    fetch("http://localhost:8000/api/photos/" + id, {
-      method: "GET"
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then(
-        (json) => {
-          this.setState({
-            photoGallery: json.photos
-          });
-        }
-      );
+    fetch(`http://localhost:8000/api/photos/${id}`)
+      .then(response => response.json())
+      .then(({ photos: photoGallery }) => {
+        this.setState(() => ({ photoGallery }));
+      });
   };
-
   renderDashboard = () => {
     if (this.state.user) {
       if (

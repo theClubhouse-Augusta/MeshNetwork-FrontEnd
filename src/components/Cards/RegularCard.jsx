@@ -10,9 +10,13 @@ function RegularCard({
   headerColor,
   plainCard,
   cardTitle,
+  cardTitleStyle,
   cardSubtitle,
+  cardSubtitleStyle,
   content,
-  footer
+  footer,
+  nullRoot,
+  useMeshCard
 }) {
   const plainCardClasses = cx({
     [" " + classes.cardPlain]: plainCard
@@ -21,23 +25,21 @@ function RegularCard({
     [" " + classes.cardPlainHeader]: plainCard
   });
   return (
-    <Card className={classes.card + plainCardClasses}>
+    <Card className={!!!useMeshCard ? (classes.card + " " + plainCardClasses) : (classes.meshCard + " " + plainCardClasses)}>
       <CardHeader
         classes={{
-          root:
-            classes.cardHeader +
-            " " +
-            classes[headerColor + "CardHeader"] +
-            cardPlainHeaderClasses,
-          title: classes.cardTitle,
-          subheader: classes.cardSubtitle
+          root: nullRoot ? '' : `${classes.cardHeader} ${classes[`${headerColor}CardHeader`]} ${cardPlainHeaderClasses}`,
+          title: cardTitleStyle ? classes.cardTitleStyle : classes.cardTitle,
+          subheader: cardSubtitleStyle ? classes.cardSubtitleStyle : classes.cardSubtitle
         }}
         title={cardTitle}
         subheader={cardSubtitle}
       />
       <CardContent>{content}</CardContent>
       {footer !== undefined ? (
-        <CardActions className={classes.cardActions}>{footer}</CardActions>
+        <CardActions className={classes.cardActions}>
+          {footer}
+        </CardActions>
       ) : null}
     </Card>
   );
@@ -50,9 +52,19 @@ RegularCard.defaultProps = {
 RegularCard.propTypes = {
   plainCard: PropTypes.bool,
   classes: PropTypes.object.isRequired,
-  headerColor: PropTypes.oneOf(["orange", "green", "red", "blue", "purple"]),
+  headerColor: PropTypes.oneOf([
+    "orange",
+    "green",
+    "red",
+    "meshRed",
+    "blue",
+    "purple"
+  ]),
   cardTitle: PropTypes.node,
+  cardTitleStyle: PropTypes.bool,
+  nullRoot: PropTypes.bool,
   cardSubtitle: PropTypes.node,
+  cardSubtitleStyle: PropTypes.bool,
   content: PropTypes.node,
   footer: PropTypes.node
 };

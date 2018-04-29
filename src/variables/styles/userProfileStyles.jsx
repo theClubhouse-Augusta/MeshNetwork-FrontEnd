@@ -18,27 +18,75 @@ const userProfileStyles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
-    backgroundColor: 'black'
+    backgroundColor: '#eeeeee',
+    // background: '#4dffea',
+    justifyContent: 'space-between',
+    // maxWidth: '100vw',
   },
   mainProfile: {
     width: '100%',
     maxWidth: 1000,
     margin: '0 auto',
-    marginTop: 60,
-    backgroundColor: '#FFFFFF'
+    // marginTop: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    // alignItems: 'center',
+    //  margin-top: 20px;
+    // minHeight: 'calc(100vh - 255px)',
+    backgroundColor: '#eeeeee'
+    // background: '#4dffea',
   },
   profileHeader: {
-    top: '10em',
+    // top: '10em',
     minHeight: 200,
-    background: '#EEEEEE',
+    //    background: '#4dffea',
+    //  background: '#EEEEEE',
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'space-around',
+  },
+  headerSection: {
+    width: '100%',
+    color: 'hotpink',
+    // border: '10px solid black',
+  },
+  memberSearchBanner: {
+    width: '100%',
+    height: 200,
+    // background: "linear-gradient(to right, #a1d3b0, #f6f1d3)",
+    // background: '#293f50',
+    // background: "linear-gradient(60deg, #ff4d58, #e53935)",
+    background: '#2992CC',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#ffffff',
+  },
+  memberSearchHeaderTitle: {
+    font: "300 46px/52px 'Lato', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+    // background: #293f50,
+    // fontFamily: "Lato, sans-serif",
+    color: '#ffffff',
+    // fontSize: '2em'
+  },
+  memberSearchHeaderSubtitle: {
+    fontFamily: "Noto Sans",
+    color: '#cccccc',
+    margin: '15px 0',
   },
   avatar: {
-    height: 200,
-    width: 200
+    boxSizing: 'border-box',
+    height: 'auto',
+    width: '100%',
+    padding: 50,
+  },
+  grid: {
+    // padding: 15,
   },
   profileInfo: {
     padding: 10,
@@ -46,9 +94,18 @@ const userProfileStyles = theme => ({
     flexDirection: 'column'
   },
   profileName: {
-    fontSize: '3em',
-    minWidth: 400,
-    minHeight: 50
+    fontSize: 32,
+    // minWidth: 400,
+    // minHeight: 50
+  },
+  profileSkillsList: {
+    width: '30%',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: '15px',
+    justifyContent: 'space-between',
+    border: '1px solid black'
   },
   profileTitle: {
     minWidth: 500,
@@ -78,12 +135,12 @@ const userProfileStyles = theme => ({
     borderRight: '1px solid #DDDDDD'
   },
   profileTagCloud: {
-    width: '100%',
-    background: '#eeeeee',
+    // width: '100%',
+    color: '#111',
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    // justifyContent: 'space-between'
   },
   EventTag: {
     cursor: 'pointer',
@@ -98,7 +155,7 @@ const userProfileStyles = theme => ({
   profileTag: {
     height: 30,
     width: 70,
-    backgroundColor: '#111111',
+    backgroundColor: '#eee',
     margin: 10,
     borderRadius: 5,
     color: 'white',
@@ -123,9 +180,6 @@ const userProfileStyles = theme => ({
     width: '100%',
     minHeight: 500,
     background: '#777777'
-  },
-  tagHeader: {
-    textAlign: 'center',
   },
   bioHeader: {
     display: 'flex',

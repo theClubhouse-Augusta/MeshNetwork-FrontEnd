@@ -4,20 +4,27 @@
 
 import {
   card,
+  meshCard,
   cardHeader,
   defaultFont,
+  customFont,
   orangeCardHeader,
   greenCardHeader,
   redCardHeader,
+  meshRedCardHeader,
   blueCardHeader,
   purpleCardHeader
 } from "../../variables/styles";
 
 const regularCardStyle = {
   card,
+  meshCard,
   cardPlain: {
     background: "transparent",
     boxShadow: "none"
+  },
+  bbb: {
+    background: '#4dfff3',
   },
   cardHeader: {
     ...cardHeader,
@@ -30,6 +37,7 @@ const regularCardStyle = {
   orangeCardHeader,
   greenCardHeader,
   redCardHeader,
+  meshRedCardHeader,
   blueCardHeader,
   purpleCardHeader,
   cardTitle: {
@@ -39,11 +47,26 @@ const regularCardStyle = {
     ...defaultFont,
     fontSize: "1.125em"
   },
+  cardTitleStyle: {
+    color: "#FFFFFF",
+    marginTop: "0",
+    marginBottom: "5px",
+    ...customFont,
+    fontSize: "2.5em",
+    textAlign: "center",
+  },
   cardSubtitle: {
     ...defaultFont,
     marginBottom: "0",
     color: "rgba(255, 255, 255, 0.62)",
     margin: "0 0 10px"
+  },
+  cardSubtitleStyle: {
+    ...defaultFont,
+    marginBottom: "0",
+    color: "rgba(255, 255, 255, 0.75)",
+    margin: "0 0 10px",
+    textAlign: "center",
   },
   cardActions: {
     padding: "14px",
