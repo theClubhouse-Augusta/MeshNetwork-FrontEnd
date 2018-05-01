@@ -13,15 +13,18 @@ export default class DateRangePickerWithGaps extends Component {
       snackMsg: "",
       snack: false,
     };
-  };
+  }
   convertToMinutes = 60;
+
   componentDidMount() {
     const { dates } = this.state
     if (!dates.length) {
       this.setDatesIfNoneProvidedByProps(this.props.numberOfDates);
     }
-  };
+  }
+
   setDatesIfNoneProvidedByProps = numberOfDates => {
+
     let count = 0;
     const dates = [];
     while (count < numberOfDates) {
@@ -36,11 +39,16 @@ export default class DateRangePickerWithGaps extends Component {
       this.props.handleDate(dates)
     });
   };
+
+
   handleDates = (newDay, positionOfDayPicker, isOrdered, repeatsAllowed) => {
+
     let dates = this.state.dates.slice();
+
     let validDateAfter = true;
     let validDateBefore = true;
     let validDateSame = true;
+
     if (newDay === null) {
       dates[positionOfDayPicker].day = null;
       this.setState({ dates }, () => {
@@ -55,6 +63,7 @@ export default class DateRangePickerWithGaps extends Component {
       });
       return true;
     }
+
     if (dates.length === 1) {
       dates[0].day = newDay;
       this.setState({ dates }, () => {
@@ -62,6 +71,7 @@ export default class DateRangePickerWithGaps extends Component {
       });
       return true;
     }
+
     let previouslySetDay = null;
     dates.forEach((date, index) => {
       if (!!date.day && index < positionOfDayPicker) {
@@ -91,13 +101,14 @@ export default class DateRangePickerWithGaps extends Component {
     });
     return validDateBefore && validDateAfter && validDateSame;
   };
+
   handleStartTimes = (
     newStartTime,
     currentEndTime,
     date,
     position
   ) => {
-    let dates = [...this.state.dates];
+    let dates = this.state.dates.slice();
     let validStartTime = true;
     if (date && currentEndTime) {
       validStartTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newStartTime}`).isBefore(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentEndTime}`))
@@ -112,8 +123,10 @@ export default class DateRangePickerWithGaps extends Component {
     });
     return validStartTime
   };
+
   handleEndTimes = (newEndTime, currentStartTime, date, position) => {
-    let dates = [...this.state.dates];
+
+    let dates = this.state.dates.slice();
     let validEndTime = true;
     if (date && currentStartTime) {
       validEndTime = moment(`${dates[position].day.format('YYYY-MM-DD')} ${newEndTime}`).isAfter(moment(`${dates[position].day.format('YYYY-MM-DD')} ${currentStartTime}`))
@@ -128,13 +141,16 @@ export default class DateRangePickerWithGaps extends Component {
     });
     return validEndTime;
   };
+
   clearStartTimes = position => {
+
     let dates = this.state.date.slice();
     dates[position].start = "";
     this.setState({ dates }, () => {
       this.props.handleDate(dates);
     });
   };
+
   clearEndTimes = position => {
     let dates = this.state.dates.slice();
     dates[position].end = "";
@@ -142,18 +158,9 @@ export default class DateRangePickerWithGaps extends Component {
       this.props.handleDate(dates);
     })
   };
-  handleRequestClose = () => {
-    this.setState({
-      snack: false,
-      snackMsg: ""
-    });
-  };
-  showSnack = msg => {
-    this.setState({
-      snack: true,
-      snackMsg: msg
-    });
-  };
+
+  handleRequestClose = () => { this.setState({ snack: false, snackMsg: "" }); };
+  showSnack = (msg) => { this.setState({ snack: true, snackMsg: msg }); };
 
   render() {
     let { dates } = this.state;

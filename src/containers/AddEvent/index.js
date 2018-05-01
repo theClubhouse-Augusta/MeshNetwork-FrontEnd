@@ -790,7 +790,7 @@ export default class AddEvent extends Component {
                   onChange={this.changeLocation}
                   checked={changeLocation}
                 />
-                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >/
+                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
                   &nbsp;&nbsp; Remote Location?
                 </label>
               </div>
