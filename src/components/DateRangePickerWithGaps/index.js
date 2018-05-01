@@ -64,20 +64,20 @@ export default class DateRangePickerWithGaps extends Component {
     }
     let previouslySetDay = null;
     dates.forEach((date, index) => {
-      if (!!date.day && index < positionOfDayPicker) {
+      if (!!date.day && (index < positionOfDayPicker)) {
         if (date.day.isAfter(newDay) || date.day.isSame(newDay, 'day')) {
           validDateBefore = false;
           this.showSnack('1 Invalid date');
           if (previouslySetDay) dates[index - 1].day = previouslySetDay;
         }
-      } else if (!!date.day && index > positionOfDayPicker) {
+      } else if (!!date.day && (index > positionOfDayPicker)) {
         if (date.day.isBefore(newDay) || date.day.isSame(newDay, 'day')) {
           this.showSnack('2 Invalid date');
           validDateAfter = false;
           if (previouslySetDay) dates[index - 1].day = previouslySetDay;
         }
       }
-      if (index === positionOfDayPicker && validDateBefore && validDateSame && validDateAfter) {
+      if ((index === positionOfDayPicker) && validDateBefore && validDateSame && validDateAfter) {
         if (!previouslySetDay) {
           previouslySetDay = date.day;
         }

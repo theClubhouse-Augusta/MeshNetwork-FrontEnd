@@ -13,7 +13,7 @@ import Snackbar from "material-ui/Snackbar";
 import TextField from "material-ui/TextField";
 import React from "react";
 import Helmet from "react-helmet";
-import Recaptcha from 'react-recaptcha';
+// import Recaptcha from 'react-recaptcha';
 import { injectStripe } from "react-stripe-elements";
 import uuid from "uuid/v4";
 import Header from "../../components/Header";
@@ -55,11 +55,11 @@ class CheckoutForm extends React.PureComponent {
     snack: false,
     focused: false,
     planFocused: false,
-    plan: "free",
+    plan: "",
     isLoading: false,
     showPassword: false,
     passwordError: "",
-    recaptcha: "",
+    // recaptcha: "",
   };
   componentDidMount() {
     if (this.state.token && this.state.user) {
@@ -220,7 +220,7 @@ class CheckoutForm extends React.PureComponent {
       plan,
       customer_idempotency_key,
       subscription_idempotency_key,
-      recaptcha,
+      // recaptcha,
     } = this.state;
     this.props.stripe.createToken({ name }).then(({ token }) => {
       data.append("name", name.trim());
@@ -239,7 +239,7 @@ class CheckoutForm extends React.PureComponent {
       data.append("username", name);
       data.append("customer_idempotency_key", customer_idempotency_key);
       data.append("subscription_idempotency_key", subscription_idempotency_key);
-      data.append("recaptcha", recaptcha);
+      // data.append("recaptcha", recaptcha);
       fetch("http://localhost:8000/api/signUp", {
         method: "POST",
         body: data
@@ -280,7 +280,7 @@ class CheckoutForm extends React.PureComponent {
       bio,
       selectedTags,
       avatar, plan,
-      recaptcha,
+      // recaptcha,
     } = this.state;
     if (plan === "already") {
       plan = "free";
@@ -296,7 +296,7 @@ class CheckoutForm extends React.PureComponent {
     data.append("avatar", avatar);
     data.append("plan", plan);
     data.append("username", name);
-    data.append("recaptcha", recaptcha);
+    // data.append("recaptcha", recaptcha);
     fetch("http://localhost:8000/api/signUp", {
       method: "POST",
       body: data
@@ -338,9 +338,9 @@ class CheckoutForm extends React.PureComponent {
       return this.storeUser
     }
   };
-  verifyUser = recaptcha => {
-    this.setState(() => ({ recaptcha }));
-  };
+  // verifyUser = recaptcha => {
+  //   this.setState(() => ({ recaptcha }));
+  // };
   render() {
     const { loadedTags, plan, loadedPlans } = this.state;
     return (
@@ -453,8 +453,7 @@ class CheckoutForm extends React.PureComponent {
                   </label>
                   <FlatButton
                     style={{
-                      backgroundColor:
-                        "free" === this.state.plan ? "#ff4d58" : "grey",
+                      backgroundColor: "free" === this.state.plan ? "#ff4d58" : "grey",
                       padding: "10px",
                       marginTop: "15px",
                       color: "#FFFFFF",
@@ -496,7 +495,7 @@ class CheckoutForm extends React.PureComponent {
                 })
               }
               {plan !== "free" && plan !== "already" && this.props.pubkey ? <CardSection /> : null}
-              <div className="spaceLogoMainImageRow">
+              <div id="foo" className="spaceLogoMainImageRow">
                 <label
                   htmlFor="avatar-image"
                   className="spaceLogoMainImageBlock"
@@ -512,12 +511,12 @@ class CheckoutForm extends React.PureComponent {
                 />
               </div>
               <div style={{ margin: '0 auto' }}>
-                <Recaptcha
+                {/* <Recaptcha
                   sitekey="6LeZkFIUAAAAAA9d-yORuzPry9zwa1NYXlvS30wI"
                   render="explicit"
                   onloadCallback={() => { console.log('gotcha') }}
                   verifyCallback={response => { this.verifyUser(response) }}
-                />
+                /> */}
               </div>
               <FlatButton
                 style={{

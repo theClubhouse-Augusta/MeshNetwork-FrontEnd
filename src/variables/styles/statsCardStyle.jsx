@@ -22,6 +22,9 @@ import {
 } from "../../variables/styles";
 
 const statsCardStyle = {
+  root: {
+    overflow: 'visible',
+  },
   card,
   cardHeader: {
     ...cardHeader,

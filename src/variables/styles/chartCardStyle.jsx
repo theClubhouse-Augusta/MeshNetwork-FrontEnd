@@ -23,6 +23,9 @@ import {
 } from "../../variables/styles";
 
 const chartCardStyle = {
+  root: {
+    overflow: 'visible'
+  },
   card,
   cardHeader: {
     ...cardHeader,

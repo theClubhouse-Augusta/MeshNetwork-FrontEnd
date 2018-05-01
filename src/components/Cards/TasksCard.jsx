@@ -36,15 +36,15 @@ class TasksCard extends React.Component {
               }}
               value={this.state.value}
               onChange={this.handleChange}
-              indicatorClassName={classes.displayNone}
+              indicatorclassname={classes.displayNone}
               textColor="inherit"
             >
               <Tab
                 classes={{
                   wrapper: classes.tabWrapper,
-                  rootLabelIcon: classes.labelIcon,
+                  //    rootLabelIcon: classes.labelIcon,
                   label: classes.label,
-                  rootInheritSelected: classes.rootInheritSelected
+                  //  rootInheritSelected: classes.rootInheritSelected
                 }}
                 icon={<BugReport className={classes.tabIcon} />}
                 label={"Bugs"}
@@ -52,9 +52,9 @@ class TasksCard extends React.Component {
               <Tab
                 classes={{
                   wrapper: classes.tabWrapper,
-                  rootLabelIcon: classes.labelIcon,
+                  //  rootLabelIcon: classes.labelIcon,
                   label: classes.label,
-                  rootInheritSelected: classes.rootInheritSelected
+                  // rootInheritSelected: classes.rootInheritSelected
                 }}
                 icon={<Code className={classes.tabIcon} />}
                 label={"Website"}
@@ -62,9 +62,9 @@ class TasksCard extends React.Component {
               <Tab
                 classes={{
                   wrapper: classes.tabWrapper,
-                  rootLabelIcon: classes.labelIcon,
+                  //  rootLabelIcon: classes.labelIcon,
                   label: classes.label,
-                  rootInheritSelected: classes.rootInheritSelected
+                  //     rootInheritSelected: classes.rootInheritSelected
                 }}
                 icon={<Cloud className={classes.tabIcon} />}
                 label={"Server"}

@@ -4,11 +4,11 @@ import React from "react";
 
 const style = {
   grid: {
-    padding: "0 15px !important"
+    padding: "0 15px !important",
   }
 };
 
-function ItemGrid({
+function MemberDashGrid({
   classes,
   children,
   ...rest
@@ -17,10 +17,9 @@ function ItemGrid({
     <Grid
       item
       className={classes.grid}
-      // spacing={16}
       {...rest}
     >{children}</Grid>
   );
 }
 
-export default withStyles(style)(ItemGrid);
+export default withStyles(style)(MemberDashGrid);

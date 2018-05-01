@@ -1,20 +1,13 @@
-/*
- *
- * EventDetail
- *
- */
-import React from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
+import FlatButton from "material-ui/Button";
 import Chip from "material-ui/Chip";
 import Snackbar from "material-ui/Snackbar";
-import FlatButton from "material-ui/Button";
+import PropTypes from "prop-types";
+import React from "react";
+import Helmet from "react-helmet";
 import LinkIcon from "react-icons/lib/fa/chain";
-
+import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import { MapLocal } from "./MapLocal";
-
 import "./style.css";
 import "./styleM.css";
 
@@ -48,18 +41,28 @@ export default class EventDetail extends React.PureComponent {
   getEvent = eventID => {
     fetch(`http://localhost:8000/api/event/${eventID}`)
       .then(response => response.json())
-      .then(json => {
-        this.setState({
-          event: json.event,
-          workSpace: json.workspace,
-          upcomingEvents: json.upcomingEvents,
-          sponsors: json.sponsors,
-          organizers: json.organizers,
-          attendees: json.attendees,
-          challenges: json.challenges,
-          dates: json.dates,
-          tags: json.tags
-        });
+      .then(({
+        event,
+        workspace: workSpace,
+        upcomingEvents,
+        sponsors,
+        organizers,
+        attendees,
+        challenges,
+        dates,
+        tags
+      }) => {
+        this.setState(() => ({
+          event,
+          workSpace,
+          upcomingEvents,
+          sponsors,
+          organizers,
+          attendees,
+          challenges,
+          dates,
+          tags
+        }));
       });
   };
 
@@ -69,12 +72,16 @@ export default class EventDetail extends React.PureComponent {
       headers: { Authorization: `Bearer ${this.token}` }
     })
       .then(response => response.json())
-      .then(signedUp => {
-        if (signedUp.success) {
-          this.toggleSnackBar(signedUp.success);
-        } else if (signedUp.duplicate) {
-          this.toggleSnackBar(signedUp.duplicate);
-        } else if (signedUp.error) {
+      .then(({
+        success,
+        duplicate,
+        error,
+      }) => {
+        if (success) {
+          this.toggleSnackBar(success);
+        } else if (duplicate) {
+          this.toggleSnackBar(duplicate);
+        } else if (error) {
           this.props.history.push("/signIn");
         }
       })
@@ -363,9 +370,7 @@ export default class EventDetail extends React.PureComponent {
                           fontWeight: "bold",
                           border: "1px solid #DDDDDD"
                         }}
-                      >
-                        About the Space
-                      </FlatButton>
+                      >About the Space</FlatButton>
                     </Link>
                   </div>
                 </div>

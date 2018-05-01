@@ -20,8 +20,8 @@ export default class DateRangePickerWithGapsController extends Component {
   onDateChange = date => {
     let { position, isOrdered, repeatsAllowed, } = this.state;
     const validDate = this.props.handleDates(date, position, isOrdered, repeatsAllowed);
-    if (validDate) this.setState(() => ({ date }));
-  }
+    if (validDate) this.setState({ date });
+  };
 
   render() {
     const {
@@ -50,8 +50,8 @@ export default class DateRangePickerWithGapsController extends Component {
           numberOfMonths={numberOfMonths}
           showDefaultInputIcon
         />
-        <TimePickers 
-          position={position} 
+        <TimePickers
+          position={position}
           startTime={dates[position].start}
           endTime={dates[position].end}
           handleStartTimes={handleStartTimes}
@@ -59,8 +59,8 @@ export default class DateRangePickerWithGapsController extends Component {
           clearEndTimes={clearEndTimes}
           clearStartTimes={clearStartTimes}
           date={date}
-          //startTime
-          //endTime
+        //startTime
+        //endTime
         />
       </div>
     );

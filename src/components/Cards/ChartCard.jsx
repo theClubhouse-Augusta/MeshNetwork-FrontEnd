@@ -13,10 +13,15 @@ function ChartCard({
   title,
   text,
   statLink,
-  statText
+  statText,
+  statIcon: StatIcon
 }) {
   return (
-    <Card className={classes.card}>
+    <Card
+      className={classes.card}
+      classes={{
+        root: classes.root,
+      }}>
       <CardHeader
         className={
           classes.cardHeader + " " + classes[chartColor + "CardHeader"]
@@ -33,7 +38,7 @@ function ChartCard({
       </CardContent>
       <CardActions className={classes.cardActions}>
         <div className={classes.cardStats}>
-          <statIcon
+          <StatIcon
             className={
               classes.cardStatsIcon +
               " " +

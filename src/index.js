@@ -1,4 +1,5 @@
 import React from 'react';
+import CssBaseline from 'material-ui/CssBaseline';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -12,7 +13,10 @@ import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render((
   <BrowserRouter>
-    <App />
+    <React.Fragment>
+      <CssBaseline />
+      <App />
+    </React.Fragment>
   </BrowserRouter>
 ), document.getElementById('root'));
 registerServiceWorker();

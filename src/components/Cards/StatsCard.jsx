@@ -13,16 +13,22 @@ function StatsCard({
   small,
   statText,
   statIconColor,
-  iconColor
+  iconColor,
+  statIcon: StatIcon,
+  icon: Icon,
 }) {
   return (
-    <Card className={classes.card}>
+    <Card
+      className={classes.card}
+      classes={{
+        root: classes.root,
+      }}>
       <CardHeader
         classes={{
           root: classes.cardHeader + " " + classes[iconColor + "CardHeader"],
           avatar: classes.cardAvatar
         }}
-        avatar={<icon className={classes.cardIcon} />}
+        avatar={<Icon className={classes.cardIcon} />}
       />
       <CardContent className={classes.cardContent}>
         <Typography component="p" className={classes.cardCategory}>
@@ -41,7 +47,7 @@ function StatsCard({
       </CardContent>
       <CardActions className={classes.cardActions}>
         <div className={classes.cardStats}>
-          <statIcon
+          <StatIcon
             className={
               classes.cardStatsIcon +
               " " +

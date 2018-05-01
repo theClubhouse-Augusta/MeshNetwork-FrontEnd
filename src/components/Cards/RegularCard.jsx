@@ -25,7 +25,12 @@ function RegularCard({
     [" " + classes.cardPlainHeader]: plainCard
   });
   return (
-    <Card className={!!!useMeshCard ? (classes.card + " " + plainCardClasses) : (classes.meshCard + " " + plainCardClasses)}>
+    <Card
+      className={!!!useMeshCard ? (classes.card + " " + plainCardClasses) : (classes.meshCard + " " + plainCardClasses)}
+      classes={{
+        root: classes.root,
+      }}
+    >
       <CardHeader
         classes={{
           root: nullRoot ? '' : `${classes.cardHeader} ${classes[`${headerColor}CardHeader`]} ${cardPlainHeaderClasses}`,

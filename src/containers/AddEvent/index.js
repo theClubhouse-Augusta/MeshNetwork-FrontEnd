@@ -162,40 +162,40 @@ export default class AddEvent extends Component {
     }
   };
   eventName = event => {
-    this.setState(() => ({
+    this.setState({
       name: event.target.value.replace(/\s\s+/g, ' ').trim()
-    }));
+    });
   };
   eventUrl = event => {
-    this.setState(() => ({
+    this.setState({
       url: event.target.value.trim()
-    }));
+    });
   };
   eventDays = event => {
-    this.setState(() => ({
+    this.setState({
       days: event.target.value
-    }));
+    });
   };
   selectSponsor = selectedSponsor => {
-    this.setState(() => ({ selectedSponsors: selectedSponsor }));
+    this.setState({ selectedSponsors: selectedSponsor });
   };
   selectOrganizer = selectedOrganizer => {
-    this.setState(() => ({ selectedOrganizers: selectedOrganizer }));
+    this.setState({ selectedOrganizers: selectedOrganizer });
   };
   eventDescription = description => {
-    this.setState(() => ({ description }));
+    this.setState({ description });
   };
   eventLocation = e => {
-    this.setState(() => ({ location: e.target.value }));
+    this.setState({ location: e.target.value });
   };
   handleOrganizerChange = event => {
-    this.setState(() => ({ selectedOrganizers: event.target.value }));
+    this.setState({ selectedOrganizers: event.target.value });
   };
   handleSponsorChange = event => {
-    this.setState(() => ({ selectedSponsors: event.target.value }));
+    this.setState({ selectedSponsors: event.target.value });
   };
   handleSkillTags = event => {
-    this.setState(() => ({ selectedTags: event.target.value }));
+    this.setState({ selectedTags: event.target.value });
   };
   eventFiles = event => {
     event.preventDefault();
@@ -209,13 +209,13 @@ export default class AddEvent extends Component {
     reader.readAsDataURL(event.target.files[0]);
   };
   toggleNewSponsors = () => {
-    this.setState(() => ({ checkNewSponsors: !this.state.checkNewSponsors }));
+    this.setState({ checkNewSponsors: !this.state.checkNewSponsors });
   };
   sponsorName = event => {
-    this.setState(() => ({ sponsorNames: event.target.value }));
+    this.setState({ sponsorNames: event.target.value });
   };
   sponsorUrl = event => {
-    this.setState(() => ({ sponsorWebsites: event.target.value }));
+    this.setState({ sponsorWebsites: event.target.value });
   };
   onNewSponsorSubmit = e => {
     e.preventDefault();
@@ -233,7 +233,7 @@ export default class AddEvent extends Component {
       const duplicateNew = newSponsors.findIndex(previous => previous.name === sponsor.name);
       if (duplicateOld === -1 && duplicateNew === -1) {
         newSponsors.push(sponsor);
-        this.setState(() => ({ newSponsors }));
+        this.setState({ newSponsors });
       } else {
         this.showSnack("Sponsor name already taken!");
       }
@@ -250,19 +250,19 @@ export default class AddEvent extends Component {
       show: false
     };
     challenges.push(newChallenge);
-    this.setState(() => ({ challenges }));
+    this.setState({ challenges });
   };
   handleChallengeTitle = (i, event) => {
     let challenges = [...this.state.challenges];
     challenges[i].challengeTitle = event.target.value;
-    this.setState(() => ({
+    this.setState({
       challenges
-    }));
+    });
   };
   handleChallengeContent = (i, editorState) => {
     let challenges = [...this.state.challenges];
     challenges[i].challengeContent = editorState;
-    this.setState(() => ({ challenges }));
+    this.setState({ challenges });
   };
   handleChallengeImage = (i, event) => {
     let challenges = [...this.state.challenges];
@@ -272,7 +272,7 @@ export default class AddEvent extends Component {
     reader.onloadend = () => {
       challenges[i].challengeImage = file;
       challenges[i].challengeImagePreview = reader.result;
-      this.setState(() => ({ challenges }));
+      this.setState({ challenges });
     };
     reader.readAsDataURL(file);
   };
@@ -285,7 +285,7 @@ export default class AddEvent extends Component {
       let fileData = { fileData: files[i], id: 0 };
       challenges[index].challengeFiles.push(fileData);
       reader.onloadend = () => {
-        this.setState(() => ({ challenges }));
+        this.setState({ challenges });
       };
       reader.readAsDataURL(files[i]);
     }
@@ -293,10 +293,10 @@ export default class AddEvent extends Component {
   deleteFile = (i, j) => {
     let challenges = [...this.state.challenges];
     challenges[i].challengeFiles.splice(j, 1);
-    this.setState(() => ({ challenges }));
+    this.setState({ challenges });
   };
   Submit = () => {
-    this.setState(() => ({ confirmStatus: "Uploading..." }));
+    this.setState({ confirmStatus: "Uploading..." });
     let {
       newSponsors,
       selectedTags,
@@ -414,7 +414,7 @@ export default class AddEvent extends Component {
       });
   };
   closeModal = () => {
-    this.setState(() => ({ modalMessage: '' }));
+    this.setState({ modalMessage: '' });
   };
   renderLogoImage = () => {
     if (this.state.logo !== "") {
@@ -426,7 +426,7 @@ export default class AddEvent extends Component {
       return (
         <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
           Select a Logo
-                    <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
+          <span style={{ fontSize: '0.9rem', marginTop: '5px' }}>For Best Size Use: 512 x 512</span>
         </span>
       )
     }
@@ -491,7 +491,7 @@ export default class AddEvent extends Component {
     return dates;
   };
   changeLocation = () => {
-    this.setState(() => ({ changeLocation: !this.state.changeLocation }));
+    this.setState({ changeLocation: !this.state.changeLocation });
   };
   renderChallengeImageText = (i) => {
     let challenges = [...this.state.challenges];
@@ -509,9 +509,9 @@ export default class AddEvent extends Component {
           }}
         >
           Upload Challenge Image
-              <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
+          <span style={{ fontSize: "0.9rem", marginTop: "5px" }}>
             For Best Size Use: 1280 x 720
-              </span>
+          </span>
         </span>
       );
     }

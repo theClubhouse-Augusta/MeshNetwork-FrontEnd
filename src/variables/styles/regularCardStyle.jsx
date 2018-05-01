@@ -17,6 +17,9 @@ import {
 } from "../../variables/styles";
 
 const regularCardStyle = {
+  root: {
+    overflow: 'visible'
+  },
   card,
   meshCard,
   cardPlain: {

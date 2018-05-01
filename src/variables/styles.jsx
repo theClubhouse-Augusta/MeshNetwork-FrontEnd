@@ -49,6 +49,19 @@ const card = {
   //  boxSizing: 'border-box'
 };
 
+const calCard = {
+  display: "inline-block",
+  position: "relative",
+  width: "100%",
+  // margin: "25px 0",
+  boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
+  borderRadius: "3px",
+  color: "rgba(0, 0, 0, 0.87)",
+  background: "#fff",
+  // height: 400,
+  //  boxSizing: 'border-box'
+};
+
 const meshCard = {
   display: "inline-block",
   position: "relative",
@@ -58,7 +71,7 @@ const meshCard = {
   borderRadius: "3px",
   color: "rgba(0, 0, 0, 0.87)",
   background: "#fff",
-  // height: 400,
+  // height: 100,
   //  boxSizing: 'border-box'
 };
 
@@ -165,6 +178,7 @@ export {
   boxShadow,
   card,
   meshCard,
+  calCard,
   defaultFont,
   customFont,
   primaryColor,

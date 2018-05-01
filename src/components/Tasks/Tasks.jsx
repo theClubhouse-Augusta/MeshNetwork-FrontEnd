@@ -58,15 +58,8 @@ class Tasks extends React.Component {
                   placement="top"
                   classes={{ tooltip: classes.tooltip }}
                 >
-                  <IconButton
-                    aria-label="Edit"
-                    className={classes.tableActionButton}
-                  >
-                    <Edit
-                      className={
-                        classes.tableActionButtonIcon + " " + classes.edit
-                      }
-                    />
+                  <IconButton aria-label="Edit" className={classes.tableActionButton}>
+                    <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip

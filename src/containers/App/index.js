@@ -126,7 +126,7 @@ export default class App extends Component {
         />
         <Route
           path="/join/:id"
-          render={(props) =>
+          render={props =>
             <UserSignUp
               {...props}
               spaceName={this.state.spaceName}

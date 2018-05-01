@@ -115,11 +115,6 @@ export default class MemberSearch extends PureComponent {
       borderRadius: "5px",
       background: "#ff4d58"
     };
-
-    /*let rand = Math.random() * (10 - 1) + 1;
-
-        chipStyle.animation = 'flicker '+ rand + 's ease alternate infinite';*/
-
     return (
       <Chip
         style={chipStyle}
@@ -177,12 +172,8 @@ export default class MemberSearch extends PureComponent {
 
             <div className="memberSearchByPopularTags">
               <h3 className="memberSearchTagTitle">Popular Skills</h3>
-
               <div className="memberSearchTagSelect">
-
                 {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
-
-
               </div>
             </div>
 

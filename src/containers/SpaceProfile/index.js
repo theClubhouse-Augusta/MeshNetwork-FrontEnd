@@ -151,11 +151,9 @@ export default class SpaceProfile extends React.PureComponent {
       style: style
     };
   };
-
   eventRoute = event => {
     this.props.history.push("/event/" + event.id);
   };
-
   renderTwitterFeed = () => {
     if (this.state.spaceProfile.twitterHandle) {
       return (
@@ -173,8 +171,7 @@ export default class SpaceProfile extends React.PureComponent {
         </div>
       )
     }
-  }
-
+  };
   render() {
     return (
       <div className="container">

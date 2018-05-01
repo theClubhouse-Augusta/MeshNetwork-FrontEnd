@@ -562,7 +562,7 @@ class SpaceDash extends React.Component {
                 </ItemGrid>
                 : null
             }
-            {(customerCount && usingCRM && user.roleID === 2) ?
+            {(customerCount && usingCRM && user.roleID === 2) ? (
               <ItemGrid xs={12} sm={6} md={3}>
                 <StatsCard
                   icon={ContentCopy}
@@ -573,23 +573,18 @@ class SpaceDash extends React.Component {
                   statText="Last 30 Days"
                 />
               </ItemGrid>
-              : (customerCount && usingCRM && user.roleID === 5) ?
-                <ItemGrid xs={12} sm={6} md={4}>
+            ) : (
+                <ItemGrid xs={12} sm={6} md={3}>
                   <StatsCard
                     icon={ContentCopy}
                     iconColor="blue"
                     title="New Paying Members"
-                    description={customerCount}
+                    description={0}
                     statIcon={DateRange}
                     statText="Last 30 Days"
                   />
                 </ItemGrid>
-                : usingCRM ?
-                  <ItemGrid xs={12} sm={6} md={4}>
-                    <Spinner loading={true} size={50} />
-                  </ItemGrid>
-                  : null
-            }
+              )}
             {(memberCount && usingCRM && user.roleID === 2) ?
               <ItemGrid xs={12} sm={6} md={3}>
                 <StatsCard
