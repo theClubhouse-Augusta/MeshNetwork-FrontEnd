@@ -33,6 +33,9 @@ export default class SideNav extends React.PureComponent {
     );
   }
 
+  componentDidMount() {
+    this.getCategories();
+  }
   handleRequestClose = () => {
     this.setState({ snack: false, msg: "" });
   };
@@ -44,9 +47,6 @@ export default class SideNav extends React.PureComponent {
     this.setState({ categoryOpen: !this.state.categoryOpen });
   };
 
-  componentDidMount() {
-    this.getCategories();
-  }
 
   handleCategoryName = event => {
     this.setState({ categoryName: event.target.value });
