@@ -294,18 +294,6 @@ export default class RightBar extends React.PureComponent {
     if (this.state.token) {
       return (
         <div>
-          {/*<FlatButton
-            onClick={this.challengeDialog}
-            style={{
-              background: "#32b6b6",
-              color: "#FFFFFF",
-              width: "100%",
-              marginBottom: "10px"
-            }}
-          >
-            New Challenge
-          </FlatButton>*/}
-          {/*<FlatButton onClick={this.questionDialog} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>*/}
         </div>
       );
     } else {
@@ -321,7 +309,6 @@ export default class RightBar extends React.PureComponent {
           >
             New Challenge
           </FlatButton>
-          {/*<FlatButton onClick={this.props.app.handleAuth} style={{background:'#b63232', color:'#FFFFFF', width:'100%', marginBottom:'10px'}}>New Question</FlatButton>*/}
         </Link>
       );
     }
@@ -334,7 +321,6 @@ export default class RightBar extends React.PureComponent {
   render() {
     return (
       <div>
-        {/*this.renderCreateButtons()*/}
         <FlatButton
           href="http://southeaststartupchallenge.com/challenge-rules/"
           target="_blank"
@@ -368,12 +354,6 @@ export default class RightBar extends React.PureComponent {
             borderTop: "1px solid #DDDDDD"
           }}
         />
-        {/*<div className="challenges_newsLetterBlock">
-          <img className="challenges_newsLetterImage" src="https://challenges.innovationmesh.com/assets/newsletter.png"/>
-          <div className="challenges_categoryTitle" style={{width:'100%', textAlign:'center', marginTop:'5px', marginBottom:'7px'}}>Join our Monthly Newsletter</div>
-          <input type="text" placeholder="Your E-mail" className="challenges_newsLetterInput"/>
-          <FlatButton style={{background:'#32b6b6', color:'#FFFFFF', width:'100%', marginTop:'7px'}}>Subscribe</FlatButton>
-        </div>*/}
         <div className="challenges_newsLetterBlock">
           <img
             alt=""

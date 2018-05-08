@@ -17,7 +17,6 @@ function ItemGrid({
     <Grid
       item
       className={classes.grid}
-      // spacing={16}
       {...rest}
     >{children}</Grid>
   );

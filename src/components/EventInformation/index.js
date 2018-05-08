@@ -503,10 +503,6 @@ export default class EventInformation extends Component {
                 });
             }
           }
-          /*this.showSnack("Challenge Saved");
-          setTimeout(() => {
-            this.props.history.push(`/Challenges/challenge/${json.challenge}`);
-          }, 2000);*/
         }
       });
   };

@@ -40,11 +40,6 @@ export default class Banner extends React.PureComponent {
             {this.renderJoinButton()}
           </div>
           <div className="challenges_bannerGraphic">
-            {/* <img 
-              alt="" 
-              className="challenges_bannerImg" 
-              src=""
-            /> */}
           </div>
         </div>
       </div>

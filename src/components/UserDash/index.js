@@ -1,13 +1,7 @@
-/**
-*
-* UserDash
-*
-*/
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
-// import Moment from 'react-moment';
 import { EditingState } from '@devexpress/dx-react-grid';
 import {
     Grid, Table, TableHeaderRow,
@@ -18,14 +12,7 @@ import {
     TableCell,
     // Button,
     IconButton,
-    // Input,
     Dialog,
-    // DialogActions,
-    // DialogContent,
-    // DialogContentText,
-    // DialogTitle,
-    // MenuItem,
-    // Select,
 } from 'material-ui';
 import BlockIcon from 'material-ui-icons/Block';
 import ThumbDownIcon from 'material-ui-icons/ThumbDown';
@@ -43,7 +30,6 @@ TO DO
 
 import './style.css';
 import './styleM.css';
-// import { ThumbUp } from 'material-ui-icons';
 
 const Cell = (props) => {
     if (props.column.name === 'ban') {
@@ -62,25 +48,6 @@ const RoleStatusCell = ({ value }) => {
     } return (<div style={{ color: 'orange', padding: '16px 8px' }}> Member </div>)
 }
 
-// const RoleEditSelect = ({ value, onValueChange }) => (
-//     <TableCell>
-//         <Select
-//             value={value}
-//             onChange={event => onValueChange(event.target.value)}
-//             input={
-//                 <Input />
-//             }
-//         >
-//             {roleValues.map(item => (
-//                 <MenuItem key={item} value={item}>{item}</MenuItem>
-//             ))}
-//         </Select>
-//     </TableCell>
-// )
-
-/* const onValueChange - 
-label change = role id value change */
-
 const BanStatusCell = ({ value }) => {
     if (value === 0) {
         return (<TableCell style={{ padding: '0' }}>
@@ -96,11 +63,6 @@ const BanButton = ({ onBanExecute }) => (
         <ThumbDownIcon style={{ height: '.75em', width: '.75em' }} />
     </IconButton>
 )
-
-/* onBanExecute = () => {this.setState({ban: 1}); () => {console.log('banned')}} */
-
-
-// const userUpdateAPI = 'https://www.innovationmesh.com/api/user';
 
 
 export default class UserDash extends React.PureComponent {
@@ -141,9 +103,7 @@ export default class UserDash extends React.PureComponent {
     }
 
     commitChanges() {
-        // Commit logic
     }
-    //created_at => readable date format
 
     componentWillReceiveProps(users) {
         this.setState({ rows: this.props.users })
@@ -156,7 +116,6 @@ export default class UserDash extends React.PureComponent {
             editingRows,
             addedRows,
             changedRows,
-            // deletingRows 
         } = this.state;
 
         return (
@@ -188,7 +147,6 @@ export default class UserDash extends React.PureComponent {
                     </Grid>
 
                     <Dialog>
-                        {/* are you sure you want to ban this user */}
                     </Dialog>
 
                 </Paper>
@@ -196,8 +154,3 @@ export default class UserDash extends React.PureComponent {
         );
     }
 }
-
-
-UserDash.contextTypes = {
-    router: PropTypes.object
-};

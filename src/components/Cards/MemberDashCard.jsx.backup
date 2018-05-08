@@ -1,14 +1,10 @@
 import Card, { CardActions, CardContent, CardHeader } from "material-ui/Card";
-import Edit from "material-ui-icons/Edit";
 import TextField from "material-ui/TextField";
-import IconButton from "material-ui/IconButton";
-import Tooltip from 'material-ui/Tooltip';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import PropTypes from "prop-types";
 import React from "react";
 import memberDashCardStyle from "../../variables/styles/memberDashCardStyle";
-
 
 function MemberDashCard({
   classes,
@@ -20,24 +16,33 @@ function MemberDashCard({
   isCalendar,
   company,
   header,
-  renderTag,
-  tags,
+  // ...rest
 }) {
+  // const renderDescription = () => {
+  //   if (!!description && !!!isCalendar) {
+  //     return (
+  //       <Typography component="p" className={classes.cardDescription}>
+  //         {description}
+  //       </Typography>
+  //     );
+  //     // } 
+  //     // else if (!!!description && !!!isCalendar) {
+  //     //   return (
+  //     //     <textarea
+  //     //       cols={3}
+  //     //       placeholder="add a bio!"
+  //     //       type="text"
+  //     //       style={{ borderBottom: '1px solid black' }}
+  //     //     />
+  //     //   );
+  //   } else {
+  //     return null;
+  //   }
+  // };
   return (
     <Card className={classes.card}>
       <section className={classes.headerSection}>
-        <div className={classes.editButton}>
-          <Typography variant="display1" classes={{ display1: classes.display1 }}>
-            {header}
-          </Typography>
-          <Tooltip id="tooltip-top" title="Edit profile" placement="top"
-            classes={{ tooltip: classes.tooltip }}
-          >
-            <IconButton aria-label="Edit" onClick={() => { this.props.history.push(`/account`); }}>
-              <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
-            </IconButton>
-          </Tooltip>
-        </div>
+        {header}
       </section>
       <section className={classes.contentSection}>
         <div>
@@ -51,6 +56,7 @@ function MemberDashCard({
             ) : null}
           />
           <CardContent className={classes.textAlign}
+          //{...rest}
           >
             {!!subtitle ?
               <Typography component="h6" className={classes.cardSubtitle}>
@@ -67,10 +73,8 @@ function MemberDashCard({
           </CardContent>
         </div>
         <div>
-          <CardActions>
-            <div className={classes.memberSearchTagSelect}>
-              {tags.map((tag, i) => renderTag(tag, i))}
-            </div>
+          <CardActions className={classes.textAlign + " " + classes.cardActions}>
+            {footer}
           </CardActions>
         </div>
       </section>

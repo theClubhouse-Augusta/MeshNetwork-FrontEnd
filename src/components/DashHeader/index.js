@@ -333,13 +333,6 @@ export default class DashHeader extends React.PureComponent {
     if (this.state.headerTitle !== "Mesh Network") {
       headerTitle = this.state.headerTitle;
     }
-    /*let headerTitle = (
-      <Link to="/" className="logoNav" style={{ color: "#000000" }}>
-        <h1 style={{ fontSize: "1em" }}>
-          Mesh <span style={{ color: "#ff4d58" }}> Network</span>
-        </h1>
-      </Link>
-    );*/
     return (
       <div
         className="headerComponent"
@@ -397,69 +390,6 @@ export default class DashHeader extends React.PureComponent {
               <MdAssessment className="navIcon" />
               <span className="navLink">Challenges</span>
             </a>
-            {/*<Link to="/events" className="navButton">Events</Link>*/}
-
-            {/*<span className="navButton">
-              <Link
-                to="/Challenges"
-                style={{
-                  color: this.state.textColor,
-                  marginRight: "5px"
-                }}
-              >
-                <MdAssessment className="navIcon" />
-                <span className="navLink">Challenges</span>
-              </Link>
-              <DownArrow
-                aria-owns={this.state.challengeMenu ? "challenge-menu" : null}
-                aria-haspopup="true"
-                onClick={this.handleChallengeMenu}
-                style={{
-                  color: this.state.textColor
-                }}
-              />
-              <Menu
-                id="challenge-menu"
-                anchorEl={this.state.challengeMenu}
-                open={Boolean(this.state.challengeMenu)}
-                onClose={this.handleChallengeMenuClose}
-              >
-                <Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>
-                <Link to={'/Challenges'}><MenuItem onClick={this.handleChallengeMenuClose}>Browse</MenuItem></Link>
-                <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
-              </Menu>
-            </span>*/}
-
-            {/*<span className="navButton">
-              <Link
-                to="/LMS"
-                style={{
-                  color: this.state.textColor,
-                  marginRight: "5px"
-                }}
-              >
-                <MdSchool className="navIcon" />
-                <span className="navLink">Education</span>
-              </Link>
-              <DownArrow
-                aria-owns={this.state.educationMenu ? "education-menu" : null}
-                aria-haspopup="true"
-                onClick={this.handleEducationMenu}
-                style={{
-                  color: this.state.textColor
-                }}
-              />
-              <Menu
-                id="education-menu"
-                anchorEl={this.state.educationMenu}
-                open={Boolean(this.state.educationMenu)}
-                onClose={this.handleEducationMenuClose}
-              >
-                <Link to={'/LMS/Courses'}><MenuItem style={{margin:'0'}} onClick={this.handleEducationMenuClose}>Courses</MenuItem></Link>
-                {this.renderMyCourses()}
-              </Menu>
-              </span>*/}
-            {/*this.renderAccountMenu()*/}
             {this.renderSignOut()}
           </nav>
 

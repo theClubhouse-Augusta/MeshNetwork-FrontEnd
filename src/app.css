@@ -1,8 +1,3 @@
-/*This boilerplate lacks css encapsulation & therefore all variables are global. This home container style sheet also serves as a global stylesheet. Please avoid tag selectors in other css files unless the tag itself is encapsulted ex. header & footer tag selectors in their corresponding styles.
-
-In the case of multiple components of the same type the first component ex HomeBodyOne will have the default styling associated with all other HomeBody's.
-*/
-
 * {
     margin: 0;
     padding: 0;
@@ -45,7 +40,6 @@ a {
 button,
 input {
     border: 0;
-    /* inherit font from body */
     font: inherit;
 }
 
@@ -67,26 +61,10 @@ p {
     margin-bottom: 15px;
 }
 
-.homeBodyHeaderSlant {
-    font-family: "Spectral", serif;
-    font-size: 5em;
-    line-height: 100px;
-    text-align: center;
-    color: #ffffff;
-}
-
 textarea {
     font-family: "Spectral", serif;
     padding: 0.25em;
     font-size: 18px;
-}
-
-.homeHeaderContent {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .homeHeaderContentTitle {
@@ -104,51 +82,7 @@ textarea {
     font-weight: 500;
 }
 
-.homeHeaderContentSearchBar {
-    width: 50%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.homeHeaderContentSearchInput {
-    border-radius: 3px;
-    border: none;
-    outline: none;
-    width: 50%;
-    font-family: "Noto Sans";
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 15px;
-}
-
-.homeMainSection {
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-bottom: 1px solid #dddddd;
-}
-
-.homeMainSectionTitle,
-.homeMainSectionTitleThree {
-    font-family: HankenBook, sans-serif;
-    color: #222222;
-    font-size: 2em;
-}
-
 .homeMainSectionContent {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1000px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-.homeMainSectionContentTwo {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -238,15 +172,6 @@ textarea {
     margin-bottom: 15px;
 }
 
-.homeMainSectionSubtitle {
-    color: #888888;
-    font-family: "Noto Sans";
-    font-size: 0.9em;
-    margin-top: 15px;
-    /* some font alignment hackyness */
-    margin-left: 3px;
-}
-
 .spinnerMeshNetwork {
     width: 100%;
     display: flex;
@@ -267,13 +192,8 @@ textarea {
     transform: translate(0, 23px) scale(1);
 }
 
-/* .MyInputLabel-root-5 {
-  transform-origin: top left;
-} */
-
 .MyInputLabel-hide {
     display: none;
-    /* transform-origin: top left; */
 }
 
 .MyInputLabel-root-11 {
@@ -385,10 +305,6 @@ span#react-select-2--backspace-remove-message.Select-aria-only {
     display: none;
 }
 
-/* span#react-select-2--value.Select-multi-value-wrapper {
-  background: red;
-} */
-
 .foobar {
     margin-top: 32px;
     margin-bottom: 22px;
@@ -443,7 +359,6 @@ span#react-select-2--backspace-remove-message.Select-aria-only {
 
 .Select-placeholder {
     padding: 0;
-    /* font-weight: bold; */
     color: rgba(0, 0, 0, 0.54);
     font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
 }

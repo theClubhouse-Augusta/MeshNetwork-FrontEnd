@@ -20,6 +20,23 @@
 
 const drawerWidth = 260;
 
+const homeHeaderContent = {
+  display: 'flex',
+  height: '100%',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
+};
+
+const homeHeaderContentTitle = {
+  fontFamily: 'HankenBook, sans-serif',
+  color: '#ffffff',
+  fontSize: '3em',
+  textAlign: 'center',
+  fontWeight: '500'
+};
+
+
 const transition = {
   transition: "all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)"
 };
@@ -62,11 +79,25 @@ const calCard = {
   //  boxSizing: 'border-box'
 };
 
+// const meshCard = {
+//   display: "inline-block",
+//   position: "relative",
+//   width: "100%",
+//   margin: "0 0 0 0",
+//   boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
+//   borderRadius: "3px",
+//   color: "rgba(0, 0, 0, 0.87)",
+//   background: "#fff",
+//   // height: 100,
+//   //  boxSizing: 'border-box'
+// };
+
 const meshCard = {
-  display: "inline-block",
-  position: "relative",
-  width: "100%",
-  margin: "0 0 0 0",
+  display: "flex",
+  flexDirection: 'column',
+  // position: "relative",
+  // width: "100%",
+  // margin: "0 0 0 0",
   boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
   borderRadius: "3px",
   color: "rgba(0, 0, 0, 0.87)",
@@ -203,5 +234,7 @@ export {
   purpleCardHeader,
   cardActions,
   cardHeader,
-  defaultBoxShadow
+  defaultBoxShadow,
+  homeHeaderContent,
+  homeHeaderContentTitle,
 };

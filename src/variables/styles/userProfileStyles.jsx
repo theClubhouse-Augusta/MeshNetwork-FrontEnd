@@ -1,17 +1,3 @@
-// ##############################
-// // // UserProfile styles
-// #############################
-import {
-  warningColor,
-  primaryColor,
-  dangerColor,
-  successColor,
-  infoColor,
-  roseColor,
-  grayColor,
-  defaultFont
-} from "../../variables/styles";
-
 const isDesktop = !!(window.innerWidth >= 700);
 let mBottom, fSize;
 if (isDesktop) {
@@ -32,17 +18,60 @@ const userProfileStyles = theme => {
     },
     display2: {
       color: "rgba(19, 18, 18, 0.67)",
+
+      [theme.breakpoints.up('md')]: {
+        marginBottom: theme.spacing.unit,
+      },
       [theme.breakpoints.down('md')]: {
         fontSize: theme.typography.display1.fontSize,
+        marginBottom: theme.spacing.unit * 2,
       }
     },
     display1: {
-      marginTop: theme.spacing.unit,
+      marginTop: theme.spacing.unit * 3,
+      marginBottom: theme.spacing.unit * 2,
       marginLeft: theme.spacing.unit,
       [theme.breakpoints.down('md')]: {
         fontSize: theme.typography.headline.fontSize,
         color: '#444',
       }
+    },
+    profileSpaceBlock: {
+      borderRadius: 4,
+      border: '2px solid #ffffff',
+      padding: '10px 20px',
+      color: '#ffffff',
+      textTransform: 'uppercase',
+      cursor: 'pointer',
+      marginRight: 5,
+      "&,&:hover": {
+        background: 'rgba(255, 255, 255, 0.2)',
+      },
+    },
+    bookingType: {
+      marginTop: theme.spacing.unit * 3,
+      marginBottom: theme.spacing.unit * 3,
+      marginLeft: theme.spacing.unit,
+      [theme.breakpoints.down('md')]: {
+        fontSize: theme.typography.headline.fontSize,
+        color: '#444',
+      }
+    },
+
+    homeFooterContainer: {
+      background: '#261e1e',
+      height: '100px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#bbbbbb',
+      fontFamily: "Noto Sans",
+      fontsize: '0.8em',
+      [theme.breakpoints.down("md")]: {
+        padding: '15px',
+        textAlign: 'center'
+      },
     },
     headline: {
       color: theme.typography.display1.color,
@@ -53,43 +82,43 @@ const userProfileStyles = theme => {
         color: '#444',
       }
     },
-    tooltip: {
-      padding: "10px 15px",
-      minWidth: "130px",
-      color: "#555555",
-      lineHeight: "1.7em",
-      background: "#FFFFFF",
-      border: "none",
-      borderRadius: "3px",
-      boxShadow:
-        "0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2)",
-      maxWidth: "200px",
-      textAlign: "center",
-      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-      fontSize: "12px",
-      fontStyle: "normal",
-      fontWeight: "400",
-      textShadow: "none",
-      textTransform: "none",
-      letterSpacing: "normal",
-      wordBreak: "normal",
-      wordSpacing: "normal",
-      wordWrap: "normal",
-      whiteSpace: "normal",
-      lineBreak: "auto"
-    },
+    // tooltip: { // foobar
+    //   padding: "10px 15px",
+    //   minWidth: "130px",
+    //   color: "#555555",
+    //   lineHeight: "1.7em",
+    //   background: "#FFFFFF",
+    //   border: "none",
+    //   borderRadius: "3px",
+    //   boxShadow:
+    //     "0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2)",
+    //   maxWidth: "200px",
+    //   textAlign: "center",
+    //   fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+    //   fontSize: "12px",
+    //   fontStyle: "normal",
+    //   fontWeight: "400",
+    //   textShadow: "none",
+    //   textTransform: "none",
+    //   letterSpacing: "normal",
+    //   wordBreak: "normal",
+    //   wordSpacing: "normal",
+    //   wordWrap: "normal",
+    //   whiteSpace: "normal",
+    //   lineBreak: "auto"
+    // },
 
-    tableActionButtonIcon: {
-      width: "25px",
-      height: "25px"
-    },
-    edit: {
-      background: "rgb(218, 73, 83)",
-      borderRadius: '50%',
-      padding: 5,
-      color: 'white',
-      boxShadow: "none"
-    },
+    // tableActionButtonIcon: { // foobar
+    //   width: "25px",
+    //   height: "25px"
+    // },
+    // edit: { // foobar
+    //   background: "rgb(218, 73, 83)",
+    //   borderRadius: '50%',
+    //   padding: 5,
+    //   color: 'white',
+    //   boxShadow: "none"
+    // },
     homeHeaderContentTitle: {
       fontFamily: "Lato, sans-serif",
       color: "#656060",
@@ -114,15 +143,47 @@ const userProfileStyles = theme => {
       flexDirection: 'row',
       justifyContent: 'space-around',
     },
-    editButton: {
-      display: 'flex',
-      margin: '0 auto',
-      width: '95%',
-      justifyContent: 'space-between',
-    },
     headerSection: {
       width: '100%',
       color: 'hotpink',
+    },
+    chipStyle: {
+      [theme.breakpoints.up('md')]: {
+        color: "#fff",
+        margin: "5px",
+        borderRadius: "5px",
+        // width: 120,
+        // height: 70,
+        width: 50,
+        height: 40,
+        background: "rgb(218, 73, 83)",
+      },
+      [theme.breakpoints.down('sm')]: {
+        color: "#fff",
+        margin: "5px",
+        borderRadius: "5px",
+        width: 60,
+        height: 35,
+        background: "rgb(218, 73, 83)",
+      }
+    },
+    company: {
+      [theme.breakpoints.up('md')]: {
+        color: "#fff",
+        margin: "5px",
+        borderRadius: "5px",
+        width: 120,
+        height: 70,
+        background: "rgb(218, 73, 83)",
+      },
+      [theme.breakpoints.down('sm')]: {
+        color: "#fff",
+        margin: "5px",
+        borderRadius: "5px",
+        width: 60,
+        height: 35,
+        background: "rgb(218, 73, 83)",
+      }
     },
     memberSearchTagContainer: {
       width: '100%',
@@ -133,14 +194,6 @@ const userProfileStyles = theme => {
       width: '200%',
       display: 'inline-block',
       border: '1px solid black'
-    },
-    memberSearchTagSelect: {
-      width: '100%',
-      marginBottom: '15px',
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
     },
     memberSearchBanner: {
       width: '100%',
@@ -236,7 +289,6 @@ const userProfileStyles = theme => {
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
-      // justifyContent: 'space-between'
     },
     EventTag: {
       cursor: 'pointer',
@@ -297,8 +349,9 @@ const userProfileStyles = theme => {
       background: '#555555'
     },
     profileAttendingHeader: {
+      fontSize: theme.typography.headline.fontSize,
       minHeight: 40,
-      background: '#444444',
+      background: '#ddd',
       margin: 15,
       textAlign: 'center'
     },
@@ -316,7 +369,8 @@ const userProfileStyles = theme => {
       justifyContent: 'center',
       minHeight: 40,
       background: '#333333',
-      margin: 10
+      margin: 10,
+      color: 'white',
     },
     '@keyframes profileFlicker': {
       '0%': {
@@ -326,7 +380,6 @@ const userProfileStyles = theme => {
         background: 'rgba(218, 73, 83, 0.5)',
       }
     }
-    // },
   })
 };
 export default userProfileStyles;

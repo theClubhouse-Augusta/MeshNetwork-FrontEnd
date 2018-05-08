@@ -7,6 +7,7 @@ import CalendarCard from "./Cards/CalendarCard.jsx";
 import ProfileCard from "./Cards/ProfileCard.jsx";
 import MemberDashCard from "./Cards/MemberDashCard.jsx";
 import RegularCard from "./Cards/RegularCard.jsx";
+import BookingCard from "./Cards/BookingCard.jsx";
 import StatsCard from "./Cards/StatsCard.jsx";
 import TasksCard from "./Cards/TasksCard.jsx";
 
@@ -92,6 +93,7 @@ export {
   StatsCard,
   TasksCard,
   MemberDashCard,
+  BookingCard,
   // CustomButtons
   Button,
   IconButton,

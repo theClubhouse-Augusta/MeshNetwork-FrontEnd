@@ -1,33 +1,28 @@
-/*
- *
- * Home
- *
- */
-
 import React from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import FlatButton from "material-ui/Button";
-
+import homeStyle from '../../variables/styles/homeStyle';
+import { withStyles } from 'material-ui/styles';
 import "./style.css";
 import "./styleM.css";
 
-export default class Home extends React.PureComponent {
+class Home extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       token: localStorage.getItem("token"),
       user: '',
-      quote: ""
+      quote: '',
     };
-  }
+  };
   componentDidMount() {
     this.getUser();
     this.getQuote();
-  }
+  };
   getUser = () => {
-    fetch("http://localhost:8000/api/user/auth", {
+    fetch(`http://localhost:8000/api/user/auth`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` },
     })
       .then(response => response.json())
@@ -57,74 +52,45 @@ export default class Home extends React.PureComponent {
   };
 
   renderSignIn = () => {
+    const { classes } = this.props;
     if (!this.state.token && !this.state.user) {
       return (
-        <div className="homeHeaderContent">
-          <div className="homeHeaderContentTitle">
+        <div className={classes.homeHeaderContent}>
+          <div className={classes.homeHeaderContentTitle}>
             Discover Great Collaborative Spaces
           </div>
-          <div className="homeHeaderContentSubtitle">
+          <div className={classes.homeHeaderContentSubtitle}>
             Find amazing places to work, network, and innovate.
-          </div>
-          <div className="homeHeaderContentSearchBar">
-            <div className="homeSignButtons">
-              <Link
-                to={"/spaces"}
-                style={{ margin: "7.5px", minWidth: "200px" }}
-              >
-                <FlatButton
-                  style={{
-                    width: "100%",
-                    background: "#FFFFFF",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                    color: "#ff4d58",
-                    fontWeight: "bold"
-                  }}
-                >
+        </div>
+          <div className={classes.homeHeaderContentSearchBar}>
+            <div className={classes.homeSignButtons}      >
+              <Link to={"/spaces"} style={{ margin: "7.5px", minWidth: "200px" }}>
+                <FlatButton style={{ width: "100%", background: "#FFFFFF", paddingTop: "10px", paddingBottom: "10px", color: "#ff4d58", fontWeight: "bold" }}>
                   Sign Up
                 </FlatButton>
               </Link>
-              <Link
-                to={"/signIn"}
-                style={{ margin: "7.5px", minWidth: "200px" }}
-              >
-                <FlatButton
-                  style={{
-                    width: "100%",
-                    background: "#ff4d58",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                >
+              <Link to={"/signIn"} style={{ margin: "7.5px", minWidth: "200px" }} >
+                <FlatButton style={{ width: "100%", background: "#ff4d58", paddingTop: "10px", paddingBottom: "10px", color: "#FFFFFF", fontWeight: "bold" }}      >
                   Sign In
-                </FlatButton>
+              </FlatButton>
               </Link>
             </div>
           </div>
         </div>
       );
-    } else {
+    }
+    else {
       return (
-        <div className="homeHeaderContent">
-          <div className="homeHeaderContentTitle">
-            Hey There,{" "}
-            <span style={{ color: "#ff4d58" }}>{this.state.user.name}!</span>
+        <div className={classes.homeHeaderContent}>
+          <div className={classes.homeHeaderContentTitle}>
+            Hey There, {" "}
+            <span className={classes.spanStyle}>
+              {this.state.user.name}!
+          </span>
           </div>
-          <div
-            className="homeHeaderContentSubtitle"
-            style={{ margin: "1em 2em", textAlign: "center" }}
-          >
+          <div className={classes.homeHeaderContentSubtitle}>
             {this.state.quote.quote}
-            <span
-              style={{
-                marginLeft: "10px",
-                fontSize: "0.9em",
-                fontStyle: "italic"
-              }}
-            >
+            <span className={classes.spanStyleTwo}>
               - {this.state.quote.author}
             </span>
           </div>
@@ -133,14 +99,17 @@ export default class Home extends React.PureComponent {
     }
   };
   render() {
-    const { spaceName } = this.props;
+    const {
+      spaceName,
+      classes
+    } = this.props;
     return (
-      <div className="container">
+      <div className={classes.container}>
         <Helmet>
           <title>Mesh Network of Innovation</title>
           <meta name="description" content="Description of Home" />
         </Helmet>
-        <header className="homeHeaderContainer">
+        <header className={classes.homeHeaderContainer}>
           <div className="homeHeaderBar">
             <Header textColor="#FFFFFF" space={spaceName} />
           </div>
@@ -148,11 +117,11 @@ export default class Home extends React.PureComponent {
         </header>
 
         <main>
-          <div className="homeMainSection">
-            <div className="homeMainSectionTitle">
+          <div className={classes.homeMainSection}>
+            <div className={classes.homeMainSectionTitle}>
               What are you interested in?
             </div>
-            <div className="homeMainSectionSubtitle">
+            <div className={classes.homeMainSectionSubtitle}>
               Explore some of the best features of collaboration from our
               partners and friends.
             </div>
@@ -226,25 +195,12 @@ export default class Home extends React.PureComponent {
                 }}
               >
                 <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/0cf50f_studio.PNG" />
-                <div
-                  className="homeMainSectionBlockTitle"
-                  style={{ color: "#FFFFFF" }}
-                >
+                <div className="homeMainSectionBlockTitle" style={{ color: "#FFFFFF" }}>
                   Create
                 </div>
               </div>
             </div>
           </div>
-          {/*<div className="homeMainSection" style={{ background: "#EEEEEE" }}>
-            <div className="homeMainSectionTitle">
-              Best Things to Do at a Space
-            </div>
-            <div className="homeMainSectionSubtitle">
-              Find the best events among our participating spaces.
-            </div>
-
-            <div className="homeMainSectionContent" />
-              </div>*/}
           <div className="homeMainSection" style={{ background: "#EEEEEE" }}>
             <div className="homeMainSectionTitle">See How It Works</div>
             <div className="homeMainSectionSubtitle">
@@ -286,13 +242,6 @@ export default class Home extends React.PureComponent {
               </div>
             </div>
           </div>
-          {/*<div className="homeMainSection" style={{ background: "#EEEEEE" }}>
-            <div className="homeMainSectionTitle">Tips & Articles</div>
-            <div className="homeMainSectionSubtitle">
-              Browse the latest helpful Articles and Tips
-            </div>
-            <div className="homeMainSectionContent" />
-            </div>*/}
         </main>
 
         <footer className="homeFooterContainer">
@@ -303,3 +252,4 @@ export default class Home extends React.PureComponent {
     );
   }
 }
+export default withStyles(homeStyle)(Home); 

@@ -1,21 +1,19 @@
-import Edit from "material-ui-icons/Edit";
+import Button from 'material-ui/Button';
 import Chip from 'material-ui/Chip';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import IconButton from "material-ui/IconButton";
-import Tooltip from 'material-ui/Tooltip';
 import { withStyles } from 'material-ui/styles';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Helmet from 'react-helmet';
 import {
-  CalendarCard,
   MemberDashCard,
-  MemberDashGrid
+  BookingCard,
+  ItemGrid
 } from '../../components';
+import moment from 'moment';
 import Header from '../../components/Header';
 import Spinner from '../../components/Spinner';
 import userProfileStyles from '../../variables/styles/userProfileStyles';
@@ -91,10 +89,7 @@ class MemberDash extends React.Component {
   getCompany = companyID => {
     fetch(`http://localhost:8000/api/company/${companyID}`)
       .then(response => response.json())
-      .then(({
-        company,
-        error
-      }) => {
+      .then(({ company, error }) => {
         if (company) {
           const {
             logo,
@@ -111,35 +106,11 @@ class MemberDash extends React.Component {
         }
       });
   };
-  eventStyleGetter = (event, start, end, isSelected) => {
-    // var backgroundColor = "#ff4d58";
-    var style = {
-      background: "rgb(192, 104, 109)",
-      fontWeight: "bold",
-      borderRadius: "0px",
-      border: "none",
-      fontFamily: "Noto Sans",
-      display: "flex",
-      flexDirection: "column",
-      minHeight: "100%"
-    };
-    return {
-      style: style
-    };
-  };
-  eventRoute = event => {
-    this.props.history.push("/event/" + event.id);
-  };
-  renderTag = (skill, i) => {
-    const chipStyle = {
-      color: "#FFFFFF",
-      margin: "5px",
-      borderRadius: "5px",
-      background: "rgb(218, 73, 83)",
-    };
+  renderTag = (skill, i, background = null) => {
+    const { classes } = this.props;
     return (
       <Chip
-        style={chipStyle}
+        className={background ? classes.company : classes.chipStyle}
         key={`Chip${i}`}
         label={skill}
         onClick={() => {
@@ -148,32 +119,12 @@ class MemberDash extends React.Component {
       />
     );
   };
-  renderVerticals = (skill, i) => {
-    const chipStyle = {
-      color: "#FFFFFF",
-      margin: "5px",
-      borderRadius: "5px",
-      background: "rgb(193, 50, 59)",
-      // background: "#ff4d58",
-    }
-    return (
-      <Chip
-        style={chipStyle}
-        key={`Vertical${i}`}
-        label={skill}
-        onClick={() => {
-          this.tagClick(skill.id);
-        }}
-      />
-    );
-  };
+
   render() {
     const {
       user,
-      skills,
-      space,
       events,
-      upcoming,
+      skills
     } = this.state;
     const { classes } = this.props;
     return this.state.loading ? (
@@ -183,181 +134,71 @@ class MemberDash extends React.Component {
           <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
           <Header
             space={this.props.spaceName}
-            marginBottom={window.innerWidth >= 700 ? 25 : 50}
+            marginBottom={window.innerWidth >= 700 ? 50 : 30}
             borderBottom="1px solid black"
           />
           <div className={classes.mainProfile}>
-            <Typography
-              variant="display2"
-              classes={{
-                display2: classes.display2
-              }}
-              align="center"
-              //  ["inherit","primary","textSecondary","secondary","error","default"].
-              gutterBottom
-            >My Dashboard</Typography>
+            <Typography variant="display2" classes={{ display2: classes.display2 }} align="center" gutterBottom>
+              My Dashboard
+            </Typography>
             <Grid container direction="column">
-              <MemberDashGrid xs={12} sm={12} md={12} style={{ width: "100%", }}>
-                <Grid container justify="center">
-                  <MemberDashGrid xs={12} sm={12} md={6}>
+              <ItemGrid xs={12} sm={12} md={12}>
+                <Grid container>
+                  <ItemGrid xs={12} sm={12} md={6}>
                     <MemberDashCard
-                      header={
-                        <div className={classes.editButton}>
-                          <Typography
-                            variant="display1"
-                            classes={{
-                              display1: classes.display1,
-                            }}
-                          >My profile</Typography>
-                          <Tooltip
-                            id="tooltip-top"
-                            title="Edit profile"
-                            placement="top"
-                            classes={{ tooltip: classes.tooltip }}
-                          >
-                            <IconButton
-                              aria-label="Edit"
-                              className={classes.tableActionButton}
-                              onClick={() => {
-                                this.props.history.push(`/account`);
-                              }}
-                            >
-                              <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
-                            </IconButton>
-                          </Tooltip>
-                        </div>
-                      }
+                      header="My Profile"
                       avatar={this.state.user.avatar}
                       subtitle={this.state.user.title}
                       title={this.state.user.name}
-                      //description={this.state.user.bio}
-                      footer={
-                        <React.Fragment>
-                          <div className={classes.memberSearchTagSelect}>
-                            {this.state.skills.map((skill, i) => this.renderTag(skill, i))}
-                          </div>
-                        </React.Fragment>
-                      }
-                      style={{
-                        maxHeight: '20vh'
-                      }}
+                      tags={skills}
+                      renderTag={this.renderTag}
                     />
-                  </MemberDashGrid>
-                  <MemberDashGrid xs={12} sm={12} md={6}>
-                    <CalendarCard
-                      isCalendar
-                      subtitle="upcoming events"
-                      footer={this.state.calEvents &&
-                        <BigCalendar
-                          className="fullCalendar"
-                          style={{
-                            minHeight: "50vh",
-                            fontFamily: "Noto Sans",
-                            fontSize: (window.innerWidth < 800 ? 10 : 12),
-                            //  padding: "15px"
-                          }}
-                          defaultView="month"
-                          {...this.props}
-                          events={this.state.calEvents}
-                          onSelectEvent={event => this.eventRoute(event)}
-                          views={["month"]}
-                          step={30}
-                          defaultDate={new Date()}
-                          eventPropGetter={this.eventStyleGetter}
-                        />
-                      }
+                  </ItemGrid>
+                  <ItemGrid xs={12} sm={12} md={6}>
+                    <MemberDashCard
+                      header="My Company"
+                      avatar={this.state.logo}
+                      title={this.state.companyName}
+                      tags={skills}
+                      renderTag={this.renderTag}
                     />
-                  </MemberDashGrid>
+                  </ItemGrid>
                 </Grid>
-              </MemberDashGrid>
-              <MemberDashCard
-                header={
-                  <div className={classes.editButton}>
-                    <Typography
-                      variant="display1"
-                      classes={{
-                        display1: classes.display1
-                      }}
-                    >My company</Typography>
-                    <Tooltip
-                      id="tooltip-top"
-                      title="Edit profile"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton aria-label="Edit" className={classes.tableActionButton}>
-                        <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-                }
-                avatar={this.state.logo}
-                title={this.state.companyName}
-                footer={
-                  <React.Fragment>
-                    <div className={classes.memberSearchTagSelect}>
-                      {this.state.skills.map((skill, i) => this.renderVerticals(skill, i))}
-                    </div>
-                  </React.Fragment>
-                }
-                style={{
-                  maxHeight: '15vh'
-                }}
-              />
-              <MemberDashGrid xs={12} sm={12} md={12} style={{ width: '100%' }}>
-                <aside className={classes.profileAttending}>
-                  <h2 className={classes.profileAttendingHeader}>Attending</h2>
-                  {upcoming &&
-                    <ul className={classes.profileAttendingContent}>a
-                    {upcoming.map((attend, index) =>
-                        <li
-                          onClick={() => { this.props.history.push(`/EventDetail/${attend.id}`) }}
-                          key={`${attend.title}${index}`}
-                          className={classes.profileAttendingItem}
-                        >{attend.title}</li>
-                      )}
-                    </ul>
-                  }
-                </aside>
-              </MemberDashGrid>
-              <MemberDashGrid xs={12} sm={12} md={12} style={{ width: '100%' }}>
-                <div className={classes.profileColumns}>
-                  <aside className={classes.profileColumnLeft}>
-                    <div className={classes.profileMentorship}></div>
-                    <div className={classes.profileEvents}>
-                      upcoming events
-                    </div>
-                  </aside>
-                  <div className={classes.profileColumnRight}>
-                    <div className={classes.profileBio}>
-                      <h1 className={classes.bioHeader}>
-                        About name
-                    </h1>
-                      <div className={classes.profileBioContent}>
-                        <p dangerouslySetInnerHTML={{ __html: user.bio }} />
+              </ItemGrid>
+              <ItemGrid xs={12} sm={12} md={12}>
+                <Typography variant="display1" classes={{ display1: classes.bookingType, }}>
+                  Bookings
+                </Typography>
+                <BookingCard />
+              </ItemGrid>
+              <aside style={{ marginBottom: 30, }}>
+                <h2 className={classes.profileAttendingHeader}>
+                  Upcoming Events
+                </h2>
+                {events &&
+                  <section style={{ width: '100%', margin: '0 auto', }}>
+                    {events.map((event, index) =>
+                      <div key={`${event.event.title}2${index}`} style={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center', width: '100%', }}>
+                        <div>
+                          <Typography variant="header" gutterBottom onClick={() => { this.props.history.push(`/EventDetail/${event.event.id}`) }}>
+                            {event.event.title} on {moment(event.startDate).format("MMM DD")}
+                          </Typography>
+                        </div>
+                        <Button>
+                          {event.isAttending ? "Going" : "Add"}
+                        </Button>
                       </div>
-                    </div>
-                    <aside className={classes.profileAttending}>
-                      <h2 className={classes.profileAttendingHeader}>Attending</h2>
-                      {upcoming &&
-                        <ul className={classes.profileAttendingContent}>a
-                        {upcoming.map((attend, index) =>
-                            <li
-                              onClick={() => { this.props.history.push(`/EventDetail/${attend.id}`) }}
-                              key={`${attend.title}${index}`}
-                              className={classes.profileAttendingItem}
-                            >
-                              {attend.title}
-                            </li>
-                          )}
-                        </ul>
-                      }
-                    </aside>
-                  </div>
-                </div>
-              </MemberDashGrid>
+                    )}
+                  </section>
+                }
+              </aside>
+              {/* </ItemGrid> */}
             </Grid>
           </div>
+          <footer className={classes.homeFooterContainer}>
+            Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
+            723-5782
+        </footer>
         </div>
       );
   }

@@ -182,7 +182,6 @@ export default class Header extends React.PureComponent {
             <MdSearch className="navIcon" />
             <span className="navLink">Search</span>
           </Link>
-          {/*<Link to="/events" className="navButton">Events</Link>*/}
           <Link
             to={"/Challenges"}
             className="navMenuButton"
@@ -378,38 +377,6 @@ export default class Header extends React.PureComponent {
               <MdAssessment className="navIcon" />
               <span className="navLink">Challenges</span>
             </a>
-            {/*<Link to="/events" className="navButton">Events</Link>*/}
-
-            {/*<span className="navButton">
-              <Link
-                to="/Challenges"
-                style={{
-                  color: this.state.textColor,
-                  marginRight: "5px"
-                }}
-              >
-                <MdAssessment className="navIcon" />
-                <span className="navLink">Challenges</span>
-              </Link>
-              <DownArrow
-                aria-owns={this.state.challengeMenu ? "challenge-menu" : null}
-                aria-haspopup="true"
-                onClick={this.handleChallengeMenu}
-                style={{
-                  color: this.state.textColor
-                }}
-              />
-              <Menu
-                id="challenge-menu"
-                anchorEl={this.state.challengeMenu}
-                open={Boolean(this.state.challengeMenu)}
-                onClose={this.handleChallengeMenuClose}
-              >
-                <Link to={'/Challenges/Ask'}><MenuItem onClick={this.handleChallengeMenuClose}>Ask</MenuItem></Link>
-                <Link to={'/Challenges'}><MenuItem onClick={this.handleChallengeMenuClose}>Browse</MenuItem></Link>
-                <Link to={'/Challenges/Teams'}><MenuItem onClick={this.handleChallengeMenuClose}>Teams</MenuItem></Link>
-              </Menu>
-            </span>*/}
             <span className="navButton">
               <Link
                 to="/LMS"
@@ -456,15 +423,15 @@ export default class Header extends React.PureComponent {
           autoHideDuration={3000}
           onClose={this.handleRequestClose}
         />
-      {this.state.borderBottom &&
-        <div 
-          style={{
-            width: '98%', 
-            margin: '0 auto',
-            borderBottom: this.state.borderBottom
-          }}
-        />
-      }
+        {this.state.borderBottom &&
+          <div
+            style={{
+              width: '98%',
+              margin: '0 auto',
+              borderBottom: this.state.borderBottom
+            }}
+          />
+        }
       </div>
     );
   }
