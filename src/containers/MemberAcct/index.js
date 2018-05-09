@@ -1,31 +1,21 @@
-/*
- *
- * MemberAcct
- *
- */
-
+import FlatButton from "material-ui/Button";
+import Checkbox from "material-ui/Checkbox";
+import Divider from "material-ui/Divider";
+import { FormControl } from "material-ui/Form";
+import Input, { InputLabel } from "material-ui/Input";
+import { ListItemText } from "material-ui/List";
+import { MenuItem } from "material-ui/Menu";
+import Select from "material-ui/Select";
+import Snackbar from "material-ui/Snackbar";
+import TextField from "material-ui/TextField";
 import React from "react";
 import Helmet from "react-helmet";
-import Snackbar from "material-ui/Snackbar";
-import Divider from "material-ui/Divider";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/Button";
-//import Select from 'react-select';
-//import { Creatable } from 'react-select';
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
-import Input, { InputLabel } from "material-ui/Input";
-import { FormControl } from "material-ui/Form";
-import Checkbox from "material-ui/Checkbox";
-import { ListItemText } from "material-ui/List";
-
+import "react-select/dist/react-select.css";
 import Header from "../../components/Header";
 import Spinner from "../../components/Spinner";
-
 import authenticate from "../../utils/Authenticate";
 import "./style.css";
 import "./styleM.css";
-import "react-select/dist/react-select.css";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -46,13 +36,11 @@ export default class MemberAcct extends React.PureComponent {
     title: "",
     avatar: "",
     avatarPreview: "",
-    //email: '',
     password: "",
     passwordConfirm: "",
     phoneNumber: "",
     selectedTags: [],
     loadedTags: [],
-    //emailError: false,
     passwordError: false,
     facebook: "",
     twitter: "",
@@ -85,10 +73,7 @@ export default class MemberAcct extends React.PureComponent {
         this.props.history.push("/");
       }
     }
-  }
-
-  // componentDidMount() {
-  // }
+  };
 
   loadSkills = () => {
     fetch("http://localhost:8000/api/skills/all", {})
@@ -177,14 +162,13 @@ export default class MemberAcct extends React.PureComponent {
             name: json.user.name,
             title: json.user.title,
             avatar: json.user.avatar,
-            //email: json.user.email,
             facebook: json.user.facebook,
             twitter: json.user.twitter,
             instagram: json.user.instagram,
             linkedin: json.user.linkedin,
             github: json.user.github,
             behance: json.user.behance,
-            selectedTags: json.user.skills.split(",")
+            selectedTags: json.user.skills ? json.user.skills.split(",") : [],
           });
       });
   };
@@ -236,9 +220,6 @@ export default class MemberAcct extends React.PureComponent {
       loadedTags,
       name,
       title,
-      // avatar,
-      // avatarPreview,
-      // phoneNumber,
       facebook,
       twitter,
       instagram,
@@ -285,12 +266,6 @@ export default class MemberAcct extends React.PureComponent {
                       placeholder={title}
                       onChange={this.handleInputChange("title")}
                     />
-                    {/*<TextField
-                                        label={'E-mail'}
-                                        margin='normal'
-                                        value={`${this.state.email}`}
-                                        onChange={this.handleInputChange('email')}
-                                    />*/}
                   </div>
 
                   <div className="acctProfilePicture">

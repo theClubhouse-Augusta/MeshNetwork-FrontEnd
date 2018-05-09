@@ -72,9 +72,13 @@ const regularCardStyle = {
     textAlign: "center",
   },
   cardActions: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
     padding: "14px",
-    display: "block",
-    height: "auto"
+    //  display: "block",
+    margin: '0 auto',
+    height: "auto",
   }
 };
 

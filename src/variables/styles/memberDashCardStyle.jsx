@@ -26,10 +26,13 @@ const memberDashCardStyle = theme => {
       display: 'flex',
       justifyContent: 'space-between',
     },
-    display1: {
-      marginTop: theme.spacing.unit * 3,
-      marginBottom: theme.spacing.unit * 2,
+    display12: {
+      marginTop: theme.spacing.unit,
+      marginBottom: theme.spacing.unit,
       marginLeft: theme.spacing.unit,
+      [theme.breakpoints.up('md')]: {
+        fontSize: theme.typography.headline.fontSize,
+      },
       [theme.breakpoints.down('md')]: {
         fontSize: '1.80rem',
       }

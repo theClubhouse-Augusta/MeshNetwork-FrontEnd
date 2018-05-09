@@ -87,7 +87,7 @@ export default class UserProfile extends React.Component {
 
   renderEdit = () => {
     if (this.state.auth) {
-      if (this.state.auth.id == this.props.match.params.id) {
+      if (this.state.auth.id === this.props.match.params.id) {
         return (
           <Link to={"/account"} className="profileSpaceBlock">
             Edit Profile
@@ -97,69 +97,21 @@ export default class UserProfile extends React.Component {
     }
   };
 
-  renderSocial = () => {
-    let facebook = (
-      <a href={this.state.user.facebook}>
-        <FacebookIcon className="profileIconStyle" />
-      </a>
-    );
-    let twitter = (
-      <a href={this.state.user.twitter}>
-        <TwitterIcon className="profileIconStyle" />
-      </a>
-    );
-    let instagram = (
-      <a href={this.state.user.instagram}>
-        <InstagramIcon className="profileIconStyle" />
-      </a>
-    );
-    let linkedin = (
-      <a href={this.state.user.linkedin}>
-        <LinkedInIcon className="profileIconStyle" />
-      </a>
-    );
-    let github = (
-      <a href={this.state.user.github}>
-        <GithubIcon className="profileIconStyle" />
-      </a>
-    );
-    let behance = (
-      <a href={this.state.user.behance}>
-        <BehanceIcon className="profileIconStyle" />
-      </a>
-    );
+  isUser = () => (
+    this.state.auth && (this.state.auth.id === parseInt(this.props.match.params.id, 10))
+  );
 
-    if (!this.state.user.facebook || this.state.user.facebook == "null") {
-      facebook = "";
-    }
-    if (!this.state.user.twitter || this.state.user.twitter == "null") {
-      twitter = "";
-    }
-    if (!this.state.user.instagram || this.state.user.instagram == "null") {
-      instagram = "";
-    }
-    if (!this.state.user.linkedin || this.state.user.linkedin == "null") {
-      linkedin = "";
-    }
-    if (!this.state.user.github || this.state.user.github == "null") {
-      github = "";
-    }
-    if (!this.state.user.behance || this.state.user.behance == "null") {
-      behance = "";
-    }
 
-    return (
-      <div className="profileSocialList">
-        {facebook}
-        {twitter}
-        {instagram}
-        {linkedin}
-        {github}
-        {behance}
-      </div>
-    );
-  };
   render() {
+    const { auth } = this.state;
+    const {
+      facebook,
+      twitter,
+      instagram,
+      linkedin,
+      github,
+      behance,
+    } = this.state.user;
     return this.state.loading ? (
       <Spinner loading={this.state.loading} />
     ) : (
@@ -202,9 +154,50 @@ export default class UserProfile extends React.Component {
                   >
                     {this.state.space.name}
                   </Link>
-                  {this.renderEdit()}
+                  {this.isUser() &&
+                    <React.Fragment>
+                      <Link to={"/account"} className="profileSpaceBlock">
+                        Edit Profile
+                    </Link>
+                      <Link to={"/company"} className="profileSpaceBlock">
+                        Add Company Info
+                      </Link>
+                    </React.Fragment>
+                  }
                 </div>
-                {this.renderSocial()}
+                <div className="profileSocialList">
+                  {facebook &&
+                    <a href={this.state.user.facebook}>
+                      <FacebookIcon className="profileIconStyle" />
+                    </a>
+                  }
+
+                  {twitter &&
+                    <a href={this.state.user.twitter}>
+                     <TwitterIcon className="profileIconStyle" />
+                    </a>
+                  }
+                  {instagram &&
+                    <a href={this.state.user.instagram}>
+                      <InstagramIcon className="profileIconStyle" />
+                    </a>
+                  }
+                  {linkedin &&
+                    <a href={this.state.user.linkedin}>
+                      <LinkedInIcon className="profileIconStyle" />
+                    </a>
+                  }
+                  {github &&
+                    <a href={this.state.user.github}>
+                      <GithubIcon className="profileIconStyle" />
+                    </a>
+                  }
+                  {behance &&
+                    <a href={this.state.user.behance}>
+                      <BehanceIcon className="profileIconStyle" />
+                    </a>
+                  }
+                </div>
               </div>
               <div className="profileSkillsList">
                 {this.state.skills.map((skill, i) =>

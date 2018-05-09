@@ -13,7 +13,7 @@ const userProfileStyles = theme => {
     UPcontainer: {
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: '#eeeeee',
+      backgroundColor: '#E4E4E4',
       justifyContent: 'space-between',
     },
     display2: {
@@ -36,22 +36,13 @@ const userProfileStyles = theme => {
         color: '#444',
       }
     },
-    profileSpaceBlock: {
-      borderRadius: 4,
-      border: '2px solid #ffffff',
-      padding: '10px 20px',
-      color: '#ffffff',
-      textTransform: 'uppercase',
-      cursor: 'pointer',
-      marginRight: 5,
-      "&,&:hover": {
-        background: 'rgba(255, 255, 255, 0.2)',
-      },
-    },
     bookingType: {
       marginTop: theme.spacing.unit * 3,
       marginBottom: theme.spacing.unit * 3,
       marginLeft: theme.spacing.unit,
+      [theme.breakpoints.up('md')]: {
+        fontSize: theme.typography.headline.fontSize,
+      },
       [theme.breakpoints.down('md')]: {
         fontSize: theme.typography.headline.fontSize,
         color: '#444',
@@ -73,61 +64,7 @@ const userProfileStyles = theme => {
         textAlign: 'center'
       },
     },
-    headline: {
-      color: theme.typography.display1.color,
-      marginTop: theme.spacing.unit,
-      marginLeft: theme.spacing.unit,
-      [theme.breakpoints.down('md')]: {
-        fontSize: theme.typography.headline.fontSize,
-        color: '#444',
-      }
-    },
-    // tooltip: { // foobar
-    //   padding: "10px 15px",
-    //   minWidth: "130px",
-    //   color: "#555555",
-    //   lineHeight: "1.7em",
-    //   background: "#FFFFFF",
-    //   border: "none",
-    //   borderRadius: "3px",
-    //   boxShadow:
-    //     "0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2)",
-    //   maxWidth: "200px",
-    //   textAlign: "center",
-    //   fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
-    //   fontSize: "12px",
-    //   fontStyle: "normal",
-    //   fontWeight: "400",
-    //   textShadow: "none",
-    //   textTransform: "none",
-    //   letterSpacing: "normal",
-    //   wordBreak: "normal",
-    //   wordSpacing: "normal",
-    //   wordWrap: "normal",
-    //   whiteSpace: "normal",
-    //   lineBreak: "auto"
-    // },
 
-    // tableActionButtonIcon: { // foobar
-    //   width: "25px",
-    //   height: "25px"
-    // },
-    // edit: { // foobar
-    //   background: "rgb(218, 73, 83)",
-    //   borderRadius: '50%',
-    //   padding: 5,
-    //   color: 'white',
-    //   boxShadow: "none"
-    // },
-    homeHeaderContentTitle: {
-      fontFamily: "Lato, sans-serif",
-      color: "#656060",
-      fontSize: fSize,
-      textAlign: 'center',
-      fontWeight: '500',
-      paddingTop: 0,
-      marginBottom: mBottom,
-    },
     mainProfile: {
       width: '100%',
       maxWidth: 960,
@@ -135,17 +72,6 @@ const userProfileStyles = theme => {
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: '#eeeeee'
-    },
-    profileHeader: {
-      minHeight: 200,
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    headerSection: {
-      width: '100%',
-      color: 'hotpink',
     },
     chipStyle: {
       [theme.breakpoints.up('md')]: {
@@ -184,11 +110,6 @@ const userProfileStyles = theme => {
         height: 35,
         background: "rgb(218, 73, 83)",
       }
-    },
-    memberSearchTagContainer: {
-      width: '100%',
-      textAlign: 'center',
-      border: '1px solid hotpink'
     },
     memberSearchTagDiv: {
       width: '200%',
@@ -333,12 +254,6 @@ const userProfileStyles = theme => {
       display: 'flex',
       justifyContent: 'center',
       minHeight: 40,
-      background: '#666666',
-      margin: 15
-    },
-    profileBioContent: {
-      display: 'flex',
-      minHeight: 600,
       background: '#666666',
       margin: 15
     },

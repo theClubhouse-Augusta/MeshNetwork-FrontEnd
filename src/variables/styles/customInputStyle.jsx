@@ -9,7 +9,7 @@ import {
   defaultFont
 } from "../../variables/styles";
 
-const customInputStyle = {
+const customInputStyle = theme => ({
   disabled: {
     "&:before": {
       backgroundColor: "transparent !important"
@@ -17,37 +17,20 @@ const customInputStyle = {
   },
   underline: {
     "&:before": {
-      backgroundColor: "#D2D2D2",
+      // backgroundColor: "#D2D2D2",
+      backgroundColor: "#AAAAAA",
       height: "1px !important"
     }
   },
-  // underline: {
-  //   "&:after": {
-  //     backgroundColor: primaryColor
-  //   }
-  // },
-  // inkbarError: {
-  //   "&:after": {
-  //     backgroundColor: dangerColor
-  //   }
-  // },
-  // inkbarSuccess: {
-  //   "&:after": {
-  //     backgroundColor: successColor
-  //   }
-  // },
   labelRoot: {
     ...defaultFont,
-    color: "#AAAAAA",
+    //color: "#AAAAAA",
+    color: theme.typography.display1.color,
     fontWeight: "400",
     fontSize: "14px",
     lineHeight: "1.42857",
     boxSizing: "border-box",
     paddingLeft: "30",
-  },
-  timeRoot: {
-    display: 'none',
-    margin: 0,
   },
   labelRootError: {
     color: dangerColor
@@ -77,6 +60,6 @@ const customInputStyle = {
     paddingLeft: "30",
     paddingRight: "30",
   }
-};
+});
 
 export default customInputStyle;

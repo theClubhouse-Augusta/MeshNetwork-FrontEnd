@@ -134,7 +134,7 @@ class MemberDash extends React.Component {
           <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
           <Header
             space={this.props.spaceName}
-            marginBottom={window.innerWidth >= 700 ? 50 : 30}
+            marginBottom={window.innerWidth >= 700 ? 30 : 30}
             borderBottom="1px solid black"
           />
           <div className={classes.mainProfile}>
@@ -152,15 +152,18 @@ class MemberDash extends React.Component {
                       title={this.state.user.name}
                       tags={skills}
                       renderTag={this.renderTag}
+                      history={this.props.history}
                     />
                   </ItemGrid>
                   <ItemGrid xs={12} sm={12} md={6}>
                     <MemberDashCard
+                      company
                       header="My Company"
                       avatar={this.state.logo}
                       title={this.state.companyName}
                       tags={skills}
                       renderTag={this.renderTag}
+                      history={this.props.history}
                     />
                   </ItemGrid>
                 </Grid>
@@ -180,7 +183,7 @@ class MemberDash extends React.Component {
                     {events.map((event, index) =>
                       <div key={`${event.event.title}2${index}`} style={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center', width: '100%', }}>
                         <div>
-                          <Typography variant="header" gutterBottom onClick={() => { this.props.history.push(`/EventDetail/${event.event.id}`) }}>
+                          <Typography variant="headline" gutterBottom onClick={() => { this.props.history.push(`/EventDetail/${event.event.id}`) }}>
                             {event.event.title} on {moment(event.startDate).format("MMM DD")}
                           </Typography>
                         </div>

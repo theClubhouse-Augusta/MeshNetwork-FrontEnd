@@ -21,12 +21,6 @@ function CustomInput({
   value,
   type,
 }) {
-  const labelClasses = cx({
-    [" " + classes.labelRootError]: error,
-    [" " + classes.labelRootSuccess]: success && !error,
-    [" " + classes.timeRoot]: type,
-  });
-
   const marginTop = cx({
     [classes.marginTop]: labelText === undefined
   });
@@ -37,7 +31,7 @@ function CustomInput({
     >
       {labelText !== undefined ? (
         <InputLabel
-          className={classes.labelRoot + labelClasses}
+          className={classes.labelRoot}
           htmlFor={id}
           {...labelProps}
         >
@@ -54,7 +48,7 @@ function CustomInput({
         type={type ? type : "text"}
         id={id}
         value={value}
-        onChange={onChange}
+        onChange={e => { onChange(e, id) } }
         {...inputProps}
       />
       {error ? (

@@ -14,26 +14,25 @@ function MemberDashCard({
   classes,
   subtitle,
   title,
-  description,
-  footer,
   avatar,
-  isCalendar,
-  company,
   header,
   renderTag,
   tags,
+  company,
+  history,
 }) {
+  const updateUrl = company ? '/company' : '/account';
   return (
     <Card className={classes.card}>
       <section className={classes.headerSection}>
         <div className={classes.editButton}>
-          <Typography variant="display1" classes={{ display1: classes.display1 }}>
+          <Typography variant="display1" classes={{ display1: classes.display12 }}>
             {header}
           </Typography>
-          <Tooltip id="tooltip-top" title="Edit profile" placement="top"
+          <Tooltip id="tooltip-top" title={company ? "Edit Company" : "Edit profile"} placement="top"
             classes={{ tooltip: classes.tooltip }}
           >
-            <IconButton aria-label="Edit" onClick={() => { this.props.history.push(`/account`); }}>
+            <IconButton aria-label="Edit" onClick={() => { history.push(updateUrl); }}>
               <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
             </IconButton>
           </Tooltip>
@@ -44,14 +43,13 @@ function MemberDashCard({
           <CardHeader
             classes={{
               root: classes.cardHeader,
-              avatar: (!!!company ? classes.cardAvatar : classes.companyAvatar),
+              avatar: (classes.cardAvatar),
             }}
             avatar={avatar ? (
               <img src={avatar} alt="..." className={classes.img} />
             ) : null}
           />
-          <CardContent className={classes.textAlign}
-          >
+          <CardContent className={classes.textAlign}>
             {!!subtitle ?
               <Typography component="h6" className={classes.cardSubtitle}>
                 {subtitle}
@@ -60,7 +58,7 @@ function MemberDashCard({
             }
             {!!title ?
               <Typography component="h4" className={classes.cardTitle}>
-                {title}{company ? "bar" : ""}
+                {title}
               </Typography>
               : null
             }
@@ -69,7 +67,12 @@ function MemberDashCard({
         <div>
           <CardActions>
             <div className={classes.memberSearchTagSelect}>
-              {tags.map((tag, i) => renderTag(tag, i))}
+              {company ? (
+                tags.map((tag, i) => renderTag(tag, i))
+              ) : (
+                tags.map((tag, i) => renderTag(tag, (i+1)))
+              )
+              }
             </div>
           </CardActions>
         </div>
@@ -82,8 +85,6 @@ MemberDashCard.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.node,
   subtitle: PropTypes.node,
-  description: PropTypes.node,
-  footer: PropTypes.node,
   avatar: PropTypes.string
 };
 

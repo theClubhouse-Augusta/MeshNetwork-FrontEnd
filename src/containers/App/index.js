@@ -34,6 +34,7 @@ const Lessons = asyncComponent(() => import('../Lessons'));
 const Enroll = asyncComponent(() => import('../Enroll'));
 const LMSDash = asyncComponent(() => import('../LMSDash'));
 const MemberDash = asyncComponent(() => import('../MemberDash'));
+const EditCompany = asyncComponent(() => import('../EditCompany'));
 
 export default class App extends Component {
   constructor() {
@@ -101,6 +102,15 @@ export default class App extends Component {
           path="/MemberDash/:id"
           render={props =>
             <MemberDash
+              {...props}
+              spaceName={this.state.spaceName}
+            />
+          }
+        />
+        <Route
+          path="/company/"
+          render={props =>
+            <EditCompany
               {...props}
               spaceName={this.state.spaceName}
             />

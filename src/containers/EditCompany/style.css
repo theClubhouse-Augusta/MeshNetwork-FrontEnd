@@ -1,0 +1,133 @@
+/* MemberAcct Styles */
+
+.accountContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #eeeeee;
+}
+
+.acctBanner {
+  width: 100%;
+  margin: 0 auto;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  color:#FFFFFF;
+  background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://s3.us-east-2.amazonaws.com/suggestify/54cdb0_eum-1200x800.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.acctBody {
+  min-height: 100vh;
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  justify-content: center;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 5px;
+  min-height: calc(100vh - 90px);
+  border: 1px solid #dddddd;
+  margin-top: -50px;
+}
+
+.acctMainInfo {
+  padding: 30px;
+}
+
+.acctProfileInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.acctProfileMain {
+  display: flex;
+  flex-direction: column;
+  margin: 0 15px 15px 0;
+}
+
+.acctProfilePicture {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: space-between;
+}
+
+.acctProfilePicturePreview {
+  width: 250px;
+  height: 250px;
+  align-self: center;
+  margin: 0 auto;
+}
+
+.acctSocialMediaWrapper {
+  padding: 15px 0;
+  margin: 0 auto;
+}
+.acctSocialMedia {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: center;
+
+  max-width: 600px;
+}
+
+.acctTagSelection {
+  padding: 30px;
+  min-width: 200px;
+}
+
+.acctSkillSelect {
+  min-width: 100%;
+}
+
+.acctManagement {
+  padding: 30px;
+}
+
+.acctChangePassForm,
+.acctChangeEmailForm {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  padding: 15px 0;
+}
+
+.acctDeleteAcctForm {
+  margin: 15px 0;
+  padding: 15px;
+}
+
+.acctSubmitButton {
+  width: 100px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+
+.acctFormItem {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0;
+}
+
+.homeHeaderContentTitle {
+  text-align: center;
+}

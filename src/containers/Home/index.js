@@ -3,12 +3,11 @@ import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import FlatButton from "material-ui/Button";
-import homeStyle from '../../variables/styles/homeStyle';
-import { withStyles } from 'material-ui/styles';
+
 import "./style.css";
 import "./styleM.css";
 
-class Home extends React.PureComponent {
+export default class Home extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,45 +51,74 @@ class Home extends React.PureComponent {
   };
 
   renderSignIn = () => {
-    const { classes } = this.props;
     if (!this.state.token && !this.state.user) {
       return (
-        <div className={classes.homeHeaderContent}>
-          <div className={classes.homeHeaderContentTitle}>
+        <div className="homeHeaderContent">
+          <div className="homeHeaderContentTitle">
             Discover Great Collaborative Spaces
           </div>
-          <div className={classes.homeHeaderContentSubtitle}>
+          <div className="homeHeaderContentSubtitle">
             Find amazing places to work, network, and innovate.
         </div>
-          <div className={classes.homeHeaderContentSearchBar}>
-            <div className={classes.homeSignButtons}      >
-              <Link to={"/spaces"} style={{ margin: "7.5px", minWidth: "200px" }}>
-                <FlatButton style={{ width: "100%", background: "#FFFFFF", paddingTop: "10px", paddingBottom: "10px", color: "#ff4d58", fontWeight: "bold" }}>
+          <div className="homeHeaderContentSearchBar">
+            <div className="homeSignButtons">
+              <Link
+                to={"/spaces"}
+                style={{ margin: "7.5px", minWidth: "200px" }}
+              >
+                <FlatButton
+                  style={{
+                    width: "100%",
+                    background: "#FFFFFF",
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
+                    color: "#ff4d58",
+                    fontWeight: "bold"
+                  }}
+                >
                   Sign Up
                 </FlatButton>
               </Link>
-              <Link to={"/signIn"} style={{ margin: "7.5px", minWidth: "200px" }} >
-                <FlatButton style={{ width: "100%", background: "#ff4d58", paddingTop: "10px", paddingBottom: "10px", color: "#FFFFFF", fontWeight: "bold" }}      >
+              <Link
+                to={"/signIn"}
+                style={{ margin: "7.5px", minWidth: "200px" }}
+              >
+                <FlatButton
+                  style={{
+                    width: "100%",
+                    background: "#ff4d58",
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
+                    color: "#FFFFFF",
+                    fontWeight: "bold"
+                  }}
+                >
                   Sign In
-              </FlatButton>
+                </FlatButton>
               </Link>
             </div>
           </div>
         </div>
       );
-    }
-    else {
+    } else {
       return (
-        <div className={classes.homeHeaderContent}>
-          <div className={classes.homeHeaderContentTitle}>
-            Hey There, {" "}
-            <span className={classes.spanStyle}>
-              {this.state.user.name}!
-          </span>
+        <div className="homeHeaderContent">
+          <div className="homeHeaderContentTitle">
+            Hey There,{" "}
+            <span style={{ color: "#ff4d58" }}>{this.state.user.name}!</span>
           </div>
-          <div className={classes.homeHeaderContentSubtitle}>
+          <div
+            className="homeHeaderContentSubtitle"
+            style={{ margin: "1em 2em", textAlign: "center" }}
+          >
             {this.state.quote.quote}
-            <span className={classes.spanStyleTwo}>
+            <span
+              style={{
+                marginLeft: "10px",
+                fontSize: "0.9em",
+                fontStyle: "italic"
+              }}
+            >
               - {this.state.quote.author}
             </span>
           </div>
@@ -99,17 +127,14 @@ class Home extends React.PureComponent {
     }
   };
   render() {
-    const {
-      spaceName,
-      classes
-    } = this.props;
+    const { spaceName } = this.props;
     return (
-      <div className={classes.container}>
+      <div className="container">
         <Helmet>
           <title>Mesh Network of Innovation</title>
           <meta name="description" content="Description of Home" />
         </Helmet>
-        <header className={classes.homeHeaderContainer}>
+        <header className="homeHeaderContainer">
           <div className="homeHeaderBar">
             <Header textColor="#FFFFFF" space={spaceName} />
           </div>
@@ -117,11 +142,11 @@ class Home extends React.PureComponent {
         </header>
 
         <main>
-          <div className={classes.homeMainSection}>
-            <div className={classes.homeMainSectionTitle}>
+          <div className="homeMainSection">
+            <div className="homeMainSectionTitle">
               What are you interested in?
             </div>
-            <div className={classes.homeMainSectionSubtitle}>
+            <div className="homeMainSectionSubtitle">
               Explore some of the best features of collaboration from our
               partners and friends.
             </div>
@@ -195,7 +220,10 @@ class Home extends React.PureComponent {
                 }}
               >
                 <img alt="" src="https://s3.us-east-2.amazonaws.com/suggestify/0cf50f_studio.PNG" />
-                <div className="homeMainSectionBlockTitle" style={{ color: "#FFFFFF" }}>
+                <div
+                  className="homeMainSectionBlockTitle"
+                  style={{ color: "#FFFFFF" }}
+                >
                   Create
                 </div>
               </div>
@@ -252,4 +280,3 @@ class Home extends React.PureComponent {
     );
   }
 }
-export default withStyles(homeStyle)(Home); 

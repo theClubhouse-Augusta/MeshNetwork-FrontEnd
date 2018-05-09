@@ -1,0 +1,7 @@
+/* MemberAcct Mobile Styles */
+
+@media (max-width: 425px) {
+  .acctProfilePicture {
+    margin: 0 auto;
+  }
+}

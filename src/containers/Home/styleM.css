@@ -43,13 +43,26 @@
         width: 80%;
         margin: 15px auto;
     }
+    .homeMainSectionTitle,
+    .homeMainSectionSubtitle {
+        text-align: center;
+    }
     .homeFooterContainer {
         padding: 15px;
         text-align: center;
     }
 }
 
+@media (max-width: 1024px) and (min-width: 426px) {
+    .homeHeaderContentTitle {
+        text-align: center;
+    }
+}
+
 @media (max-width: 1024px) and (min-width: 426px) and (orientation: portrait) {
+    .homeHeaderContentTitle {
+        text-align: center;
+    }
     .homeMainSectionContentTwo {
         justify-content: center;
     }
