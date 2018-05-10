@@ -160,6 +160,9 @@ class EditCompany extends Component {
   };
 
   render() {
+    const Helper = new StyleHelpers();
+    const marginTop =  selectedTags ? Helper.getLabelStyle(focused, selectedTags)[0] : '';
+    const color = selectedTags ? Helper.getLabelStyle(focused, selectedTags)[1] : '';
     const { spaceName, classes } = this.props;
     const { 
       name, 
@@ -203,13 +206,14 @@ class EditCompany extends Component {
                         <Select.Creatable
                           placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
                           className={Helper.getSelectStyle(focused, selectedTags)}
-                          style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                          style={{border: 'none', boxShadow: 'none'}}
                           multi
                           options={loadedTags}
                           onChange={this.selectTag}
                           value={selectedTags}
                           onFocus={this.onFocus}
                           onBlur={this.onBlur}
+                          promptTextCreator={() => ""}
                         />
                       }
                       {!!!loadedTags.length &&
@@ -218,11 +222,12 @@ class EditCompany extends Component {
                           multi
                           className={Helper.getSelectStyle(focused, selectedTags)}
                           options={options}
-                          style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
+                          style={{ border: 'none', boxShadow: 'none'}}
                           onChange={this.handleOnChange}
                           value={multiValue}
                           onFocus={this.onFocus}
                           onBlur={this.onBlur}
+                          promptTextCreator={() => ""}
                         />
                       }
                     </ItemGrid>
