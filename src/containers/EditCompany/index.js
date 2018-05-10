@@ -1,6 +1,7 @@
 import React, { Component }  from "react";
 import { Grid, InputLabel } from "material-ui";
 import { withStyles } from 'material-ui/styles';
+import Select from 'react-select';
 import {
   ProfileCard,
   RegularCard,
@@ -22,10 +23,18 @@ class EditCompany extends Component {
     tags: [],    
     logo: '',
     logoPreview: '',
+    options: [],
+    multi: true,
+    multiValue: [],
+    selectedTags: [],
+    loadedTags: [],
+    focused: false,
   };
   componentDidMount() {
     this.loadCompany(); 
+    this.loadVerticals();
   };
+
   loadCompany = () => {
     fetch(`http://localhost:8000/api/company/user/update`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
@@ -60,6 +69,20 @@ class EditCompany extends Component {
       [field]: event.target.value 
     });
   };
+  loadVerticals = () => {
+    fetch('http://localhost:8000/api/verticals/all', {
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+    })
+    .then(response => response.json())
+    .then(loadedTags => { 
+      this.setState({ 
+        loadedTags
+      })
+    })
+    .catch(error => {
+      alert(`error in fetching data from server: ${error}`);
+    });
+  };
   handleLogo = event => {
     event.preventDefault();
     let reader = new FileReader();
@@ -72,7 +95,28 @@ class EditCompany extends Component {
     };
     reader.readAsDataURL(file);
   };
-
+  selectTag = selectedTag => {
+    this.setState({ selectedTags: selectedTag });
+  };
+  handleOnChange = (value) => {
+    let { options } = this.state;
+    const { multi } = this.state;
+    if (multi) {
+      this.setState({ multiValue: value });
+    } else {
+      this.setState({ value });
+    }
+  };
+  onFocus = () => {
+    this.setState({ 
+      focused: true 
+    });
+  };
+  onBlur = () => {
+    this.setState({ 
+      focused: false 
+    });
+  };
   onSubmit = e => {
     e.preventDefault();
     const {
@@ -91,7 +135,10 @@ class EditCompany extends Component {
     data.append('employeeCount', employeeCount);
     data.append('url', url);
     data.append('logo', logo);
-    data.append('companyId', companyId);
+    if (companyId) {
+      data.append('companyId', companyId);
+    }
+    data.append('tags', JSON.stringify(this.state.selectedTags));
     const create = `http://localhost:8000/company/create`;
     const update = `http://localhost:8000/company/update/${companyId}`;
     const postUrl = companyId ? update : create;
@@ -117,8 +164,12 @@ class EditCompany extends Component {
       description,
       employeeCount,
       logo,
-      tags,
-      url
+      url,
+      loadedTags,
+      selectedTags,
+      focused,
+      options,
+      multiValue
     } = this.state;
     return (
       <div className={classes.container}>
@@ -143,6 +194,31 @@ class EditCompany extends Component {
                         onChange={this.update}
                         value={name}
                       />
+                    </ItemGrid>
+
+                    <ItemGrid xs={12} sm={12} md={12}>
+                      {!!loadedTags.length &&
+                        <Select.Creatable
+                          placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
+                          multi
+                          options={loadedTags}
+                          onChange={this.selectTag}
+                          value={selectedTags}
+                          onFocus={this.onFocus}
+                          onBlur={this.onBlur}
+                        />
+                      }
+                      {!!!loadedTags.length &&
+                        <Select.Creatable
+                          placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
+                          multi
+                          options={options}
+                          onChange={this.handleOnChange}
+                          value={multiValue}
+                          onFocus={this.onFocus}
+                          onBlur={this.onBlur}
+                        />
+                      }
                     </ItemGrid>
                     <ItemGrid xs={12} sm={12} md={12}>
                       <CustomInput
