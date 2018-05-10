@@ -11,6 +11,8 @@ import {
 } from "../../components";
 import Header from '../../components/Header';
 import editCompanyStyles from '../../variables/styles/editCompanyStyles';
+import StyleHelpers from '../../utils/StyleHelpers';
+import './style.css';
 
 class EditCompany extends Component {
   state = {
@@ -200,6 +202,8 @@ class EditCompany extends Component {
                       {!!loadedTags.length &&
                         <Select.Creatable
                           placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
+                          className={Helper.getSelectStyle(focused, selectedTags)}
+                          style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
                           multi
                           options={loadedTags}
                           onChange={this.selectTag}
@@ -212,7 +216,9 @@ class EditCompany extends Component {
                         <Select.Creatable
                           placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
                           multi
+                          className={Helper.getSelectStyle(focused, selectedTags)}
                           options={options}
+                          style={{background: '#f8f8f8', border: 'none', boxShadow: 'none'}}
                           onChange={this.handleOnChange}
                           value={multiValue}
                           onFocus={this.onFocus}
