@@ -8,6 +8,7 @@ import React from 'react';
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Helmet from 'react-helmet';
+import Snackbar from 'material-ui/Snackbar';
 import {
   MemberDashCard,
   BookingCard,
@@ -25,6 +26,7 @@ class MemberDash extends React.Component {
   state = {
     user: '',
     skills: '',
+    verticals: [],
     space: '',
     events: '',
     calEvents: '',
@@ -87,9 +89,15 @@ class MemberDash extends React.Component {
       });
   };
   getCompany = companyID => {
-    fetch(`http://localhost:8000/api/company/${companyID}`)
+    fetch(`http://localhost:8000/api/company/${companyID}`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
+    })
       .then(response => response.json())
-      .then(({ company, error }) => {
+      .then(({
+        company,
+        verticals,
+        error,
+      }) => {
         if (company) {
           const {
             logo,
@@ -102,36 +110,79 @@ class MemberDash extends React.Component {
             employeeCount,
             companyID,
             companyName,
+            verticals,
           }));
         }
       });
   };
-  renderTag = (skill, i, background = null) => {
+  renderTag = (skill, i) => {
     const { classes } = this.props;
     return (
       <Chip
-        className={background ? classes.company : classes.chipStyle}
+        className={classes.chipStyle}
         key={`Chip${i}`}
         label={skill}
         onClick={() => {
-          this.tagClick(skill.id);
         }}
       />
     );
   };
-
+  renderVertical = (vertical, i) => {
+    const { classes } = this.props;
+    return (
+      <Chip
+        className={classes.chipStyle}
+        key={`verticals${i}`}
+        label={vertical.label}
+        onClick={() => {
+        }}
+      />
+    );
+  };
+  showSnack = msg => {
+    this.setState(() => ({
+      snack: true,
+      msg,
+    }));
+  };
+  handleRequestClose = () => {
+    this.setState(() => ({
+      snack: false,
+      msg: ""
+    }));
+  };
+  attendEvent = (eventId, index) => {
+    fetch(`http://localhost:8000/api/attend/${eventId}`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
+    })
+      .then(response => response.json())
+      .then(({ error, success, duplicate }) => {
+        if (error) {
+          this.showSnack("Session Expired. Please Log in Again.");
+        } else if (success) {
+          this.showSnack(success);
+          const events = [...this.state.events];
+          events[index].isAttending = true;
+          this.setState(() => ({
+            events
+          }))
+        } else if (duplicate) {
+          this.showSnack(duplicate);
+        }
+      });
+  };
   render() {
     const {
-      user,
       events,
-      skills
+      skills,
+      verticals,
     } = this.state;
     const { classes } = this.props;
     return this.state.loading ? (
       <Spinner loading={this.state.loading} />
     ) : (
         <div className={classes.UPcontainer}>
-          <Helmet title="UserProfile" meta={[{ name: 'description', content: 'Description of UserProfile' }]} />
+          <Helmet title="Member Dashboard" meta={[{ name: 'description', content: 'Description of Memberdashboard' }]} />
           <Header
             space={this.props.spaceName}
             marginBottom={window.innerWidth >= 700 ? 30 : 30}
@@ -156,15 +207,17 @@ class MemberDash extends React.Component {
                     />
                   </ItemGrid>
                   <ItemGrid xs={12} sm={12} md={6}>
-                    <MemberDashCard
-                      company
-                      header="My Company"
-                      avatar={this.state.logo}
-                      title={this.state.companyName}
-                      tags={skills}
-                      renderTag={this.renderTag}
-                      history={this.props.history}
-                    />
+                    {!!verticals.length &&
+                      <MemberDashCard
+                        company
+                        header="My Company"
+                        avatar={this.state.logo}
+                        title={this.state.companyName}
+                        tags={verticals}
+                        renderTag={this.renderVertical}
+                        history={this.props.history}
+                      />
+                    }
                   </ItemGrid>
                 </Grid>
               </ItemGrid>
@@ -172,7 +225,8 @@ class MemberDash extends React.Component {
                 <Typography variant="display1" classes={{ display1: classes.bookingType, }}>
                   Bookings
                 </Typography>
-                <BookingCard />
+                feature coming soon
+                {/* <BookingCard /> */}
               </ItemGrid>
               <aside style={{ marginBottom: 30, }}>
                 <h2 className={classes.profileAttendingHeader}>
@@ -183,11 +237,15 @@ class MemberDash extends React.Component {
                     {events.map((event, index) =>
                       <div key={`${event.event.title}2${index}`} style={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center', width: '100%', }}>
                         <div>
-                          <Typography variant="headline" gutterBottom onClick={() => { this.props.history.push(`/EventDetail/${event.event.id}`) }}>
+                          <Typography className={classes.onHover} variant="headline" gutterBottom onClick={() => { this.props.history.push(`/event/${event.event.id}`) }}>
                             {event.event.title} on {moment(event.startDate).format("MMM DD")}
                           </Typography>
                         </div>
-                        <Button>
+                        <Button onClick={() => {
+                          if (!event.event.isAttending) {
+                            this.attendEvent(event.event.id, index);
+                          }
+                        }}>
                           {event.isAttending ? "Going" : "Add"}
                         </Button>
                       </div>
@@ -195,8 +253,13 @@ class MemberDash extends React.Component {
                   </section>
                 }
               </aside>
-              {/* </ItemGrid> */}
             </Grid>
+            <Snackbar
+              open={this.state.snack}
+              message={this.state.msg}
+              autoHideDuration={5000}
+              onClose={this.handleRequestClose}
+            />
           </div>
           <footer className={classes.homeFooterContainer}>
             Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)

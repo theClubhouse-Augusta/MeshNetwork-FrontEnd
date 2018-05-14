@@ -20,10 +20,9 @@ function CustomInput({
   onChange,
   value,
   type,
+  marginBottom,
 }) {
-  const marginTop = cx({
-    [classes.marginTop]: labelText === undefined
-  });
+
   return (
     <FormControl
       {...formControlProps}
@@ -40,7 +39,7 @@ function CustomInput({
       ) : null}
       <Input
         classes={{
-          root: marginTop,
+          root: marginBottom ? classes.marginBottom : null,
           disabled: classes.disabled,
           underline: classes.underline,
           //: inkbarClasses

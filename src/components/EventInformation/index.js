@@ -1,4 +1,9 @@
-import { ContentState, EditorState, convertFromHTML, convertToRaw } from 'draft-js';
+import { 
+  ContentState, 
+  EditorState, 
+  convertFromHTML, 
+  convertToRaw 
+} from 'draft-js';
 import draftToHtml from "draftjs-to-html";
 import FlatButton from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
@@ -115,36 +120,35 @@ export default class EventInformation extends Component {
   getEvent = eventID => {
     fetch(`http://localhost:8000/api/event/${eventID}`)
       .then(response => response.json())
-      .then(json => {
-        let sponsors = json.sponsors;
-        let organizers = json.organizers;
-
+      .then(({ 
+        event,
+        sponsors,
+        organizers,
+        dates,
+        tags,
+        challenges
+      }) => {
         let newSponsors = [];
-        console.log('s', sponsors);
         for (let i = 0; i < sponsors.length; i++) {
           newSponsors.push(sponsors[i].name);
         }
-
         let newOrganizers = [];
         for (let i = 0; i < organizers.length; i++) {
           newOrganizers.push(organizers[i].email);
         }
 
-        if (json.event.address) {
-
-        }
         this.setState({
-          event: json.event,
+          event,
           eventSponsors: newSponsors,
           selectedSponsors: newSponsors,
           eventOrganizers: newOrganizers,
           selectedOrganizers: newOrganizers,
-          description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(json.event.description))),
-          url: json.event.url,
-          name: json.event.title,
-          eventDates: json.dates,
-          selectedTags: json.tags,
-          oldChallenges: json.challenges
+          description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(event.description))),
+          url: event.url,
+          name: event.title,
+          eventDates: dates,
+          selectedTags: tags,
+          oldChallenges:challenges
         }, () => {
           const changeLocation = !!this.state.event.address;
           if (changeLocation) {
@@ -310,7 +314,7 @@ export default class EventInformation extends Component {
         this.setState({ newSponsors: sponsors });
       }
     }
-  }
+  };
 
   eventName = event => this.setState({ name: event.target.value.replace(/\s\s+/g, ' ').trim() });
   eventUrl = event => this.setState({ url: event.target.value.trim() });

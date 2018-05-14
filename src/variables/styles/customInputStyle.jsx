@@ -49,8 +49,8 @@ const customInputStyle = theme => ({
     textAlign: "center",
     pointerEvents: "none"
   },
-  marginTop: {
-    marginTop: "16px"
+  marginBottom: {
+    marginBottom: "16px"
   },
   formControl: {
     paddingBottom: "10px",

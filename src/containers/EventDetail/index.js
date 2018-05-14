@@ -66,30 +66,6 @@ export default class EventDetail extends React.PureComponent {
       });
   };
 
-  registerForEvent = (e, eventID) => {
-    e.preventDefault();
-    fetch(`http://localhost:8000/api/event/join/${eventID}`, {
-      headers: { Authorization: `Bearer ${this.token}` }
-    })
-      .then(response => response.json())
-      .then(({
-        success,
-        duplicate,
-        error,
-      }) => {
-        if (success) {
-          this.toggleSnackBar(success);
-        } else if (duplicate) {
-          this.toggleSnackBar(duplicate);
-        } else if (error) {
-          this.props.history.push("/signIn");
-        }
-      })
-      .catch(error => {
-        alert(`handleTouchTap error: ${error}`);
-      });
-  };
-
   toggleSnackBar = message =>
     this.setState({
       snackBar: !this.state.snackBar,
@@ -145,22 +121,17 @@ export default class EventDetail extends React.PureComponent {
   };
 
   attendEvent = () => {
-    fetch("http://localhost:8000/api/attend/" + this.state.event.id, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + this.state.token
-      }
+    fetch(`http://localhost:8000/api/attend/${this.state.event.id}`, {
+      headers: { Authorization: "Bearer " + this.state.token }
     })
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        if (json.error) {
+      .then(response => response.json())
+      .then(({ error, success, duplicate }) => {
+        if (error) {
           this.toggleSnackBar("Session Expired. Please Log in Again.");
-        } else if (json.success) {
-          this.toggleSnackBar(json.success);
-        } else if (json.duplicate) {
-          this.toggleSnackBar(json.duplicate);
+        } else if (success) {
+          this.toggleSnackBar(success);
+        } else if (duplicate) {
+          this.toggleSnackBar(duplicate);
         }
       });
   };

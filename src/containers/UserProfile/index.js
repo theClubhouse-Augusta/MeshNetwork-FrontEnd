@@ -85,18 +85,6 @@ export default class UserProfile extends React.Component {
     );
   };
 
-  renderEdit = () => {
-    if (this.state.auth) {
-      if (this.state.auth.id === this.props.match.params.id) {
-        return (
-          <Link to={"/account"} className="profileSpaceBlock">
-            Edit Profile
-          </Link>
-        );
-      }
-    }
-  };
-
   isUser = () => (
     this.state.auth && (this.state.auth.id === parseInt(this.props.match.params.id, 10))
   );
@@ -157,11 +145,14 @@ export default class UserProfile extends React.Component {
                   {this.isUser() &&
                     <React.Fragment>
                       <Link to={"/account"} className="profileSpaceBlock">
-                        Edit Profile
-                    </Link>
+                        Edit&nbsp;Profile
+                     </Link>
                       <Link to={"/company"} className="profileSpaceBlock">
-                        Add Company Info
-                      </Link>
+                        Add&nbsp;Company&nbsp;Info
+                     </Link>
+                      <Link to={`/memberDash/${this.state.user.id}`} className="profileSpaceBlock">
+                        Dashboard
+                     </Link>
                     </React.Fragment>
                   }
                 </div>
@@ -174,7 +165,7 @@ export default class UserProfile extends React.Component {
 
                   {twitter &&
                     <a href={this.state.user.twitter}>
-                     <TwitterIcon className="profileIconStyle" />
+                      <TwitterIcon className="profileIconStyle" />
                     </a>
                   }
                   {instagram &&

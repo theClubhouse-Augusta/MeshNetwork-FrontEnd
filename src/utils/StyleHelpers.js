@@ -7,13 +7,13 @@ export default class StyleHelpers {
    */
   getLabelClassName = (focused, selected) => {
     if (!focused  && !!!selected.length) {
-      return "MyInputLabel-hide";
+      return 'MyInputLabel-hider';
     } else if (selected.length) {
-      return "MyInputLabel-animated-9 MyInputLabel-shrink-8 MyInputLabel-focused-122 MyInputLabel-formControl-62 MyInputLabel-root-112";
+      return 'MyInputLabel-animated-9 MyInputLabel-shrink-8 MyInputLabel-focused-122 MyInputLabel-formControl-62 MyInputLabel-root-112';
     } else {
-      return "MyInputLabel-animated-9 MyInputLabel-shrink-8 MyInputLabel-focused-12 MyInputLabel-formControl-62 MyInputLabel-root-112";
+      return 'MyInputLabel-animated-9 MyInputLabel-shrink-8 MyInputLabel-focused-12 MyInputLabel-formControl-62 MyInputLabel-root-112';
     }
-  }
+  };
 
 
   /**
@@ -32,7 +32,7 @@ export default class StyleHelpers {
     } else {
       return ['32px', '#304ffe'];
     }
-  }
+  };
 
 
   /**
@@ -40,15 +40,15 @@ export default class StyleHelpers {
    * @param {boolean} focused 
    * @param {array} selected 
    */
-  getSelectStyle = (focused, selected) => {
+  getSelectClassName = (focused, selected) => {
     if (!!selected.length) {
       if (!focused) {
-        return "foobar2";
+        return 'selectNotFocused';
       } else {
-        return "foobar3";
+        return 'selectFocused';
       }
     } else {
-      return "foobar";
+      return 'noTagSelected';
     }
-  }
+  };
 }

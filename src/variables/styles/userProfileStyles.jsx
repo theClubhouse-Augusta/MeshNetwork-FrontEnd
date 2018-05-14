@@ -48,7 +48,9 @@ const userProfileStyles = theme => {
         color: '#444',
       }
     },
-
+    onHover: {
+      cursor: 'pointer',
+    },
     homeFooterContainer: {
       background: '#261e1e',
       height: '100px',
