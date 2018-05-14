@@ -14,7 +14,8 @@ export default class TimerPickers extends Component {
       validStartTime: true,
       validEndTime: true,
     };
-  };
+  }
+
   handleStartTime = e => {
     let preStartTime = e.target.value;
     this.setState({ preStartTime: preStartTime }, () => {
@@ -24,6 +25,7 @@ export default class TimerPickers extends Component {
       if (validStartTime) this.setState(() => ({ startTime: this.state.preStartTime }));
     })
   };
+
   handleEndTime = e => {
     let preEndTime = e.target.value;
     this.setState({ preEndTime: preEndTime }, () => {
@@ -33,52 +35,52 @@ export default class TimerPickers extends Component {
       if (validEndTime) this.setState(() => ({ endTime: this.state.preEndTime }));
     })
   };
+
+
   render() {
     return (
       <div>
         <div style={{ display: 'flex' }}>
-          <div>
-            <div style={{
-              display: 'flex',
-              width: 200,
-              justifyContent: 'space-around',
-            }}>
-              <label className="singleDpConStartLabel">start&nbsp;time</label>
-              <input
-                type="time"
-                value={this.state.startTime}
-                onChange={this.handleStartTime}
-              />
-            </div>
-            <div style={{
-              display: 'flex',
-              width: 200,
-              justifyContent: 'space-around',
-            }}>
-              <label>end&nbsp;time</label>
-              <input
-                type="time"
-                value={this.state.endTime}
-                onChange={this.handleEndTime}
-              />
-            </div>
+          <div style={{
+            display: 'flex',
+            width: 200,
+            justifyContent: 'space-around',
+          }}>
+            <label className="singleDpConStartLabel">start&nbsp;time</label>
+            <input
+              type="time"
+              value={this.state.startTime}
+              onChange={this.handleStartTime}
+            />
           </div>
-          {(this.state.startTime || this.state.endTime) &&
-            <div
-              onClick={() => {
-                this.setState({
-                  endTime: '',
-                  startTime: '',
-                  preEndTime: '',
-                  preStartTime: '',
-                });
-              }}
-              style={{ alignSelf: 'center' }}
-              className="fudge"
-            >
-              x
-          </div>}
+          <div style={{
+            display: 'flex',
+            width: 200,
+            justifyContent: 'space-around',
+          }}>
+            <label>end&nbsp;time</label>
+            <input
+              type="time"
+              value={this.state.endTime}
+              onChange={this.handleEndTime}
+            />
+          </div>
         </div>
+        {(this.state.startTime || this.state.endTime) &&
+          <div
+            onClick={() => {
+              this.setState({
+                endTime: '',
+                startTime: '',
+                preEndTime: '',
+                preStartTime: '',
+              });
+            }}
+            style={{ alignSelf: 'center' }}
+            className="fudge"
+          >
+            x
+        </div>}
       </div>
     );
   }

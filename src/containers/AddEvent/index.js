@@ -79,16 +79,16 @@ export default class AddEvent extends Component {
   singleDay = 0;
   multipleDays = 1;
   handleRequestClose = () => {
-    this.setState(() => ({
+    this.setState({
       snack: false,
       msg: ""
-    }));
+    });
   };
   showSnack = msg => {
-    this.setState(() => ({
+    this.setState({
       snack: true,
       msg: msg
-    }));
+    });
   };
   async componentDidMount() {
     let authorized;
@@ -704,7 +704,7 @@ export default class AddEvent extends Component {
                       end: '',
                     }]}
                     handleDate={dates => {
-                      this.setState(() => ({ dates }));
+                      this.setState({ dates });
                     }}
                   />
                 </React.Fragment>
@@ -714,7 +714,7 @@ export default class AddEvent extends Component {
                   <DateRangePickerWithGaps
                     dates={dates.length ? dates : this.multiDay(days)}
                     handleDate={dates => {
-                      this.setState(() => ({ dates }));
+                      this.setState({ dates });
                     }}
                   />
                 </div>
@@ -790,7 +790,7 @@ export default class AddEvent extends Component {
                   onChange={this.changeLocation}
                   checked={changeLocation}
                 />
-                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >/
+                <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
                   &nbsp;&nbsp; Remote Location?
                 </label>
               </div>
@@ -802,7 +802,7 @@ export default class AddEvent extends Component {
                     margin="normal"
                     onChange={e => {
                       const address = e.target.value;
-                      this.setState(() => ({ address }))
+                      this.setState({ address })
                     }}
                   />
                   <TextField
@@ -811,7 +811,7 @@ export default class AddEvent extends Component {
                     margin="normal"
                     onChange={e => {
                       const city = e.target.value;
-                      this.setState(() => ({ city }))
+                      this.setState({ city })
                     }}
                   />
                   <TextField
@@ -820,7 +820,7 @@ export default class AddEvent extends Component {
                     margin="normal"
                     onChange={e => {
                       const state = e.target.value;
-                      this.setState(() => ({ state }))
+                      this.setState({ state })
                     }}
                   />
                 </React.Fragment>
