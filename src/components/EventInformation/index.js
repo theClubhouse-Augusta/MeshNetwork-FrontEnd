@@ -1,8 +1,8 @@
-import { 
-  ContentState, 
-  EditorState, 
-  convertFromHTML, 
-  convertToRaw 
+import {
+  ContentState,
+  EditorState,
+  convertFromHTML,
+  convertToRaw
 } from 'draft-js';
 import draftToHtml from "draftjs-to-html";
 import FlatButton from 'material-ui/Button';
@@ -120,7 +120,7 @@ export default class EventInformation extends Component {
   getEvent = eventID => {
     fetch(`http://localhost:8000/api/event/${eventID}`)
       .then(response => response.json())
-      .then(({ 
+      .then(({
         event,
         sponsors,
         organizers,
@@ -148,7 +148,7 @@ export default class EventInformation extends Component {
           name: event.title,
           eventDates: dates,
           selectedTags: tags,
-          oldChallenges:challenges
+          oldChallenges: challenges
         }, () => {
           const changeLocation = !!this.state.event.address;
           if (changeLocation) {
