@@ -16,6 +16,7 @@ import {
 } from '../../components';
 import moment from 'moment';
 import Header from '../../components/Header';
+import SimpleModal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import userProfileStyles from '../../variables/styles/userProfileStyles';
 import "./style.css";
@@ -36,6 +37,7 @@ class MemberDash extends React.Component {
     employeeCount: '',
     companyName: '',
     companyID: '',
+    openModal: false,
   };
   userID = this.props.match.params.id;
   token = localStorage['token'];
@@ -164,18 +166,52 @@ class MemberDash extends React.Component {
           const events = [...this.state.events];
           events[index].isAttending = true;
           this.setState(() => ({
-            events
-          }))
+            events,
+            open: true,
+            openModal: true,
+          }), () => {
+            this.renderModal(events[index]);
+          })
         } else if (duplicate) {
           this.showSnack(duplicate);
         }
       });
   };
+  handleOpen = () => {
+    this.setState({
+      open: true,
+      openModal: true,
+    });
+  };
+  handleClose = () => {
+    this.setState({
+      open: false,
+      openModal: false,
+      modal: null,
+    });
+  };
+  renderModal = ({ event, startDate, endDate }) => {
+    this.setState({
+      modal:
+        <SimpleModal
+          open={true}
+          title={event.title}
+          description={event.description}
+          start={startDate}
+          end={endDate}
+          handleOpen={this.handleOpen}
+          handleClose={this.handleClose}
+        />,
+    })
+  };
+
   render() {
     const {
       events,
       skills,
       verticals,
+      modal,
+      openModal,
     } = this.state;
     const { classes } = this.props;
     return this.state.loading ? (
@@ -226,7 +262,7 @@ class MemberDash extends React.Component {
                   Bookings
                 </Typography>
                 feature coming soon
-                {/* <BookingCard /> */}
+                 <BookingCard />
               </ItemGrid>
               <aside style={{ marginBottom: 30, }}>
                 <h2 className={classes.profileAttendingHeader}>
@@ -261,6 +297,7 @@ class MemberDash extends React.Component {
               onClose={this.handleRequestClose}
             />
           </div>
+          {openModal && modal}
           <footer className={classes.homeFooterContainer}>
             Copyright © 2018 theClubhou.se • 540 Telfair Street • Tel: (706)
             723-5782

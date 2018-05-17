@@ -12,7 +12,7 @@ import Header from "../../components/Header";
 // import Banner from 'components/Banner';
 import SideNav from "../../components/SideNav";
 import RightBar from "../../components/RightBar";
-
+import { Grid, Typography, withStyles } from "material-ui";
 import TextField from "material-ui/TextField";
 
 import Waypoint from "react-waypoint";
@@ -20,7 +20,18 @@ import Waypoint from "react-waypoint";
 import "./style.css";
 import "./styleM.css";
 
-export default class Discover extends React.PureComponent {
+const styles = theme => ({
+  display1: {
+    color: theme.typography.headline.color,
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+  },
+  body1: {
+    fontSize: theme.typography.subheading.fontSize,
+  },
+});
+
+class Discover extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -177,46 +188,42 @@ export default class Discover extends React.PureComponent {
         </header>
 
         <main className="challenges_mainContainer">
-          <div
-            style={{
-              width: "90%",
-              maxWidth: "1200px",
-              margin: "0 auto",
-              fontFamily: "Noto Sans",
-              textAlign: "justify"
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "Lato",
-                fontSize: "2em",
-                fontVariant: "small-caps",
-                borderBottom: "1px solid #BBBBBB",
-                padding: "20px",
-                textAlign: "center"
-              }}
-            >
-              WHAT IS THE SOUTHEAST STARTUP CHALLENGE?
-            </div>
-            <p>
-              The Southeast Startup Challenge is a 5 city hackathon for
-              entrepreneurs. We’ve done the hard work of finding critical
-              partners and first customers that have identified specific
-              problems they believe that technology startups can solve.
-            </p>
-            <p>
-              Midsize cities have distinct differences from large cities which
-              provide a unique opportunity for entrepreneurs to innovate from a
-              different perspective. 40% of the nation lives in mid and small
-              size communities, which provides a huge and mostly untapped market
-              for companies to grow.
-            </p>
-            <p>
-              Join the Southeast Startup Challenge and you could finish the
-              weekend with your first customer, and an invite to pitch in June
-              for over $25,000 in cash and services to help your business grow!
-            </p>
-          </div>
+          <Grid container direction="column" alignContent="center">
+            <Grid item xs={12} sm={12} md={8} >
+              <Typography
+                variant="display1"
+                align="center"
+                classes={{ display1: this.props.classes.display1 }}
+                gutterBottom
+              >
+                What is the Southeast Startup Challenge?
+              </Typography>
+              <Typography
+                variant="body1"
+                paragraph
+                gutterBottom
+                classes={{ body1: this.props.classes.body1 }}
+              >
+                Join us for the Southeast Startup Challenge Summit on Monday, June 18th in Macon, Georgia (exact location TBA). Two finalists from each of the five participating Georgia cities will compete for $25,000 in cash and services by pitching businesses formed from their solutions to a series of health challenges posed by their local communities--in other words, business and tech coming together to do a lot of good.
+              </Typography>
+              <Typography
+                variant="body1"
+                paragraph
+                gutterBottom
+                classes={{ body1: this.props.classes.body1 }}
+              >
+                This event is FREE and open to the public. To register, visit <a href="www.SoutheastStartupChallenge.com" target="_blank" rel="noopener noreferrer">Southeast Startup Challenge</a>
+              </Typography>
+              <Typography
+                variant="body1"
+                paragraph
+                gutterBottom
+                classes={{ body1: this.props.classes.body1 }}
+              >
+                This summit is part of an effort funded by Robert Wood Johnson Foundation that strives to improve the health of mid-size communities by using their local collaborative spaces as a hub for startups, makers, and learners to make positive impacts for their communities.
+              </Typography>
+            </Grid>
+          </Grid>
           <div className="challenges_contentContainer">
             <div className="challenges_categoryContainer">
               <SideNav app={this.state.app} />
@@ -283,3 +290,4 @@ export default class Discover extends React.PureComponent {
     );
   }
 }
+export default withStyles(styles)(Discover);

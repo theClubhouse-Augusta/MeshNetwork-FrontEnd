@@ -1,0 +1,241 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Typography, Modal, withStyles, Grid } from 'material-ui';
+import Spinner from '../../components/Spinner';
+import {
+  OutlookIcon,
+  YahooIcon,
+  GmailIcon,
+  AppleIcon,
+  CalendarIcon,
+} from '../../variables/icons';
+import modalStyles from '../../variables/styles/modalStyles';
+class SimpleModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: props.open ? props.open : false,
+      yahoo: '',
+      gmail: '',
+      apple: '',
+      outlook: '',
+      icsFile: '',
+      hasSupportForDownloadAttr: false,
+    }
+  };
+  componentDidMount() {
+    this.getCalendarInvites();
+  };
+  checkForDownloadAttribute = () => {
+
+  };
+  getCalendarInvites = () => {
+    const {
+      title,
+      description,
+      start,
+      end,
+    } = this.props;
+    let data = new FormData();
+    data.append('title', title);
+    data.append('description', description);
+    data.append('start', start);
+    data.append('end', end);
+    fetch(`http://localhost:8000/api/testcal`, {
+      method: 'POST',
+      body: data,
+      headers: { Authorization: `Bearer ${localStorage['token']}` },
+    })
+      .then(response => response.json())
+      .then(({
+        yahoo,
+        gmail,
+        apple,
+        outlook,
+        icsFile,
+      }) => {
+        this.setState({
+          yahoo,
+          gmail,
+          apple,
+          outlook,
+          icsFile,
+        })
+      })
+  };
+  setRef = element => {
+    if (typeof element.download !== "undefined") {
+      this.setState({ hasSupportForDownloadAttr: true });
+    }
+  };
+  renderLink = () => {
+    const { classes, title } = this.props;
+    const { hasSupportForDownloadAttr } = this.state;
+  };
+  render() {
+    const { classes, title } = this.props;
+    const {
+      yahoo,
+      gmail,
+      apple,
+      outlook,
+      icsFile,
+      hasSupportForDownloadAttr,
+    } = this.state;
+    return (
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={this.state.open}
+        onClose={this.handleClose}
+      >
+        <div className={`${classes.paper} ${classes.modal}`}>
+          <a style={{ display: 'none' }} href="" ref={this.setRef}>hide</a>
+          <span className={classes.closeModal} onClick={this.props.handleClose}>
+            &Chi;
+          </span>
+          <Typography variant="title" id="modal-title" gutterBottom>
+            Add event to your calendar
+          </Typography>
+          <Grid container justify="space-around">
+            {icsFile ? (
+              (hasSupportForDownloadAttr && title) ? (
+                <a
+                  href={icsFile}
+                  className={classes.link}
+                  download={title}
+                >
+                  <CalendarIcon
+                    width="50"
+                    height="50"
+                  />
+                  <Typography variant="body1" align="center" className={classes.caption}>
+                    ics file
+                  </Typography>
+                </a>
+              ) : (
+                  <a
+                    href={icsFile}
+                    className={classes.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <CalendarIcon
+                      width="50"
+                      height="50"
+                    />
+                    <Typography variant="body1" align="center" className={classes.caption}>
+                      ics file
+                </Typography>
+                  </a>
+                )
+            ) : (
+                <Spinner loading={true} size={50} />
+              )
+            }
+            {outlook ?
+              (hasSupportForDownloadAttr && title) ? (
+                <a
+                  href={outlook}
+                  className={classes.link}
+                  download={title}
+                >
+                  <OutlookIcon
+                    width="50"
+                    height="50"
+                  />
+                  <Typography variant="body1" align="center" className={classes.caption}>
+                    Outlook
+                </Typography>
+                </a>
+              ) : (
+                  <a
+                    href={decodeURI(outlook)}
+                    className={classes.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <OutlookIcon
+                      width="50"
+                      height="50"
+                    />
+                    <Typography variant="body1" align="center" className={classes.caption}>
+                      Outlook
+                </Typography>
+                  </a>
+                ) : (
+                <Spinner loading={true} size={50} />
+              )
+            }
+            {apple ?
+
+              (
+                <a
+                  href={apple}
+                  className={classes.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <AppleIcon
+                    width="50"
+                    height="50"
+                  />
+                  <Typography variant="body1" align="center" className={classes.caption}>
+                    iCal
+                </Typography>
+                </a>
+              ) : (
+                <Spinner loading={true} size={50} />
+              )
+            }
+            {gmail ? (
+              <a
+                href={gmail}
+                className={classes.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GmailIcon
+                  width="50"
+                  height="50"
+                />
+                <Typography variant="body1" align="center" className={classes.caption}>
+                  Gmail
+                </Typography>
+              </a>
+            ) : (
+                <Spinner loading={true} size={50} />
+              )
+            }
+            {yahoo ? (
+              <a
+                href={yahoo}
+                className={classes.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <YahooIcon
+                  width="50"
+                  height="50"
+                />
+                <Typography variant="body1" align="center" className={classes.caption}>
+                  YahooMail
+                  </Typography>
+              </a>
+            ) : (
+                <Spinner loading={true} size={50} />
+              )
+            }
+
+          </Grid>
+        </div>
+      </Modal>
+    );
+  }
+}
+
+SimpleModal.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(modalStyles)(SimpleModal);

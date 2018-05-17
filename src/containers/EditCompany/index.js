@@ -4,9 +4,14 @@ import {
   convertFromHTML,
   convertToRaw
 } from "draft-js";
-import Snackbar from 'material-ui/Snackbar';
+import { SingleDatePicker } from 'react-dates';
 import draftToHtml from "draftjs-to-html";
-import { Grid } from "material-ui";
+import {
+  Grid,
+  Select as MaterialSelect,
+  InputLabel
+} from "material-ui";
+import Snackbar from 'material-ui/Snackbar';
 import { withStyles } from 'material-ui/styles';
 import React, { Component } from "react";
 import { Editor } from "react-draft-wysiwyg";
@@ -36,19 +41,83 @@ class EditCompany extends Component {
     description: '',
     logo: '',
     url: '',
-    tags: [],
     logoPreview: '',
     options: [],
-    multi: true,
-    multiValue: [],
     selectedTags: [],
     loadedTags: [],
     focused: false,
+    dateFocused: false,
     userID: '',
     snack: false,
     msg: '',
     id: '',
+    facebook: '',
+    instagram: '',
+    pinterest: '',
+    twitter: '',
+    youtube: '',
+    linkedin: '',
+    snapchat: '',
+    discord: '',
+    foundingDate: '',
+    zipcode: '',
+    city: '',
+    state: '',
+    address: '',
+    companyEmail: '',
   };
+  states = [
+    'AL',
+    'AK',
+    'AZ',
+    'AR',
+    'CA',
+    'CO',
+    'CT',
+    'DE',
+    'FL',
+    'GA',
+    'HI',
+    'ID',
+    'IL',
+    'IN',
+    'IA',
+    'KS',
+    'KY',
+    'LA',
+    'ME',
+    'MD',
+    'MA',
+    'MI',
+    'MN',
+    'MS',
+    'MO',
+    'MT',
+    'NE',
+    'NV',
+    'NH',
+    'NJ',
+    'NM',
+    'NY',
+    'NC',
+    'ND',
+    'OH',
+    'OK',
+    'OR',
+    'PA',
+    'RI',
+    'SC',
+    'SD',
+    'TN',
+    'TX',
+    'UT',
+    'VT',
+    'VA',
+    'WA',
+    'WV',
+    'WI',
+    'WY',
+  ];
   async componentDidMount() {
     let authorized;
     try {
@@ -81,7 +150,6 @@ class EditCompany extends Component {
         if (company) {
           let {
             name,
-            tags,
             logo,
             description,
             employeeCount,
@@ -90,7 +158,6 @@ class EditCompany extends Component {
           } = company;
           this.setState({
             name,
-            tags,
             logoPreview: logo,
             logo,
             employeeCount,
@@ -129,14 +196,6 @@ class EditCompany extends Component {
   selectTag = selectedTags => {
     this.setState({ selectedTags });
   };
-  handleOnChange = value => {
-    const { multi } = this.state;
-    if (multi) {
-      this.setState({ multiValue: value });
-    } else {
-      this.setState({ value });
-    }
-  };
   eventDescription = description => {
     this.setState({ description });
   };
@@ -162,26 +221,54 @@ class EditCompany extends Component {
       msg: ""
     }));
   };
+  onDateChange = foundingDate => {
+    this.setState({ foundingDate });
+  };
   onSubmit = e => {
     e.preventDefault();
     const {
-      name,
-      tags,
-      logo,
-      employeeCount,
-      description,
-      url,
-      companyId,
-      userID,
-      multiValue,
+      // name,
+      //  logo,
+      //  employeeCount,
+      //  description,
+      //  url,
+      // companyId,
+      //   userID,
       selectedTags,
-      update
+      update,
+      facebook,
+      instagram,
+      pinterest,
+      twitter,
+      youtube,
+      linkedin,
+      snapchat,
+      discord,
+      foundingDate,
+      zipcode,
+      city,
+      state,
+      address,
+      companyEmail,
     } = this.state;
     let data = new FormData();
     data.append('description', draftToHtml(convertToRaw(description.getCurrentContent())));
     data.append('name', name);
     data.append('url', url);
-    data.append('tags', tags);
+    data.append('companyEmail', companyEmail);
+    data.append('zipcode', zipcode);
+    data.append('city', city);
+    data.append('state', state);
+    data.append('address', address);
+    data.append('facebook', facebook);
+    data.append('youtube', youtube);
+    data.append('linkedin', linkedin);
+    data.append('snapchat', snapchat);
+    data.append('discord', discord);
+    data.append('twitter', twitter);
+    data.append('instagram', instagram);
+    data.append('pinterest', pinterest);
+    data.append('foundingDate', foundingDate);
     data.append('employeeCount', employeeCount);
     data.append('update', update);
     if (userID) {
@@ -193,8 +280,6 @@ class EditCompany extends Component {
     }
     if (selectedTags.length) {
       data.append('tags', JSON.stringify(selectedTags));
-    } else if (multiValue.length) {
-      data.append('tags', JSON.stringify(multiValue));
     }
     const createURI = `http://localhost:8000/api/company/create`;
     const updateURI = `http://localhost:8000/api/company/update/${companyId}`;
@@ -225,9 +310,22 @@ class EditCompany extends Component {
       loadedTags,
       selectedTags,
       focused,
-      options,
-      multiValue,
+      dateFocused,
       companyId,
+      facebook,
+      instagram,
+      pinterest,
+      twitter,
+      youtube,
+      linkedin,
+      snapchat,
+      discord,
+      foundingDate,
+      zipcode,
+      city,
+      companyEmail,
+      state,
+      address,
     } = this.state;
     const Helper = new StyleHelpers();
     const marginTop = selectedTags ? Helper.getLabelStyle(focused, selectedTags)[0] : '';
@@ -261,12 +359,77 @@ class EditCompany extends Component {
                             marginBottom
                           />
                         </ItemGrid>
-
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Company email"
+                            id="companyEmail"
+                            formControlProps={{ fullWidth: true, }}
+                            onChange={this.updateInput}
+                            value={companyEmail}
+                            marginBottom
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Address"
+                            id="address"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={address}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="City"
+                            id="city"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={city}
+                          />
+                        </ItemGrid>
+                        <ItemGrid className={classes.selectInput} xs={12} sm={12} md={2}>
+                          <InputLabel htmlFor="state" className={classes.selectLabel}>
+                            State
+                          </InputLabel>
+                          <MaterialSelect
+                            native
+                            value={state}
+                            onChange={e => this.updateInput(e, 'state')}
+                            inputProps={{ id: 'state' }}
+                          >
+                            {this.states.map((state, key) =>
+                              <React.Fragment key={`statecode${key}`}>
+                                <option value={state}>{state}</option>
+                              </React.Fragment>
+                            )}
+                          </MaterialSelect>
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Zipcode"
+                            id="zipcode"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={zipcode}
+                          />
+                        </ItemGrid>
+                        <ItemGrid style={{ marginBottom: 30, }} xs={12} sm={12} md={12}>
+                          <SingleDatePicker
+                            isOutsideRange={() => false}
+                            placeholder="Founding Date"
+                            date={foundingDate} // momentPropTypes.momentObj or null
+                            onDateChange={this.onDateChange} // PropTypes.func.isRequired
+                            focused={dateFocused} // PropTypes.bool
+                            onFocusChange={({ focused }) => this.setState({ dateFocused: focused })} // PropTypes.func.isRequired
+                            showClearDate
+                            numberOfMonths={1}
+                            showDefaultInputIcon
+                          />
+                        </ItemGrid>
                         <ItemGrid xs={12} sm={12} md={12}>
                           <label style={{ marginTop: marginTop, color: color, }} className={Helper.getLabelClassName(focused, selectedTags)}>
                             Company Verticals
-                      </label>
-                          {console.log('l', loadedTags)}
+                          </label>
                           {!!loadedTags.length &&
                             <Select.Creatable
                               placeholder={!focused && !!!selectedTags.length ? 'Company Verticals' : ''}
@@ -278,23 +441,6 @@ class EditCompany extends Component {
                               value={selectedTags}
                               onFocus={this.onFocus}
                               onBlur={this.onBlur}
-                              promptTextCreator={() => "create new tag"}
-                            // noResultsText={""}
-                            />
-                          }
-                          {!!!loadedTags.length &&
-                            <Select.Creatable
-                              placeholder={!focused && !!!selectedTags.length ? 'Skills' : ''}
-                              multi
-                              className={Helper.getSelectClassName(focused, selectedTags)}
-                              options={loadedTags}
-                              style={{ border: 'none', boxShadow: 'none' }}
-                              onChange={this.handleOnChange}
-                              value={multiValue}
-                              onFocus={this.onFocus}
-                              onBlur={this.onBlur}
-                              promptTextCreator={() => "create new tag"}
-                            //                              noResultsText={""}
                             />
                           }
                         </ItemGrid>
@@ -343,13 +489,87 @@ class EditCompany extends Component {
                           />
                         </ItemGrid>
                         <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Facebook"
+                            id="facebook"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={facebook}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Youtube"
+                            id="youtube"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={youtube}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Snapchat"
+                            id="snapchat"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={snapchat}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Linkedin"
+                            id="linkedin"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={linkedin}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Discord"
+                            id="discord"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={discord}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Instagram"
+                            id="instagram"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={instagram}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Twitter"
+                            id="twitter"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={twitter}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
+                          <CustomInput
+                            labelText="Pinterest"
+                            id="pinterest"
+                            formControlProps={{ fullWidth: true }}
+                            onChange={this.updateInput}
+                            value={pinterest}
+                          />
+                        </ItemGrid>
+                        <ItemGrid xs={12} sm={12} md={12}>
                           <div className={classes.spaceLogoMainImageRow}>
                             <label htmlFor="logo-image" className={classes.spaceLogoMainImageBlock}>
                               {logo && <img src={this.state.logoPreview} className={classes.spaceLogoImagePreview} alt="" />}
                               {!logo &&
                                 <span className={classes.logoInput}>
                                   Company Logo
-                            <span className={classes.logoInputSubheader}>For Best Size Use: 512 x 512</span>
+                                  <span className={classes.logoInputSubheader}>
+                                    For Best Size Use: 512 x 512
+                                  </span>
                                 </span>
                               }
                             </label>
