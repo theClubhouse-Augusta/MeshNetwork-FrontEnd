@@ -21,12 +21,19 @@ function CustomInput({
   value,
   type,
   marginBottom,
+  middle,
 }) {
-
+  const root = () => {
+    if (marginBottom) {
+      return classes.marginBottom;
+    } else {
+      return null;
+    }
+  };
   return (
     <FormControl
       {...formControlProps}
-      className={formControlProps.className + " " + classes.formControl}
+      className={middle ? `${formControlProps.className} ${classes.formControl} ${classes.middle}` : `${formControlProps.className} ${classes.formControl}`}
     >
       {labelText !== undefined ? (
         <InputLabel
@@ -39,7 +46,7 @@ function CustomInput({
       ) : null}
       <Input
         classes={{
-          root: marginBottom ? classes.marginBottom : null,
+          root: root(),
           disabled: classes.disabled,
           underline: classes.underline,
           //: inkbarClasses
@@ -47,7 +54,7 @@ function CustomInput({
         type={type ? type : "text"}
         id={id}
         value={value}
-        onChange={e => { onChange(e, id) } }
+        onChange={e => { onChange(e, id) }}
         {...inputProps}
       />
       {error ? (
@@ -58,7 +65,6 @@ function CustomInput({
     </FormControl>
   );
 }
-
 CustomInput.propTypes = {
   classes: PropTypes.object.isRequired,
   labelText: PropTypes.node,

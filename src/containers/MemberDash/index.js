@@ -1,24 +1,20 @@
 import Button from 'material-ui/Button';
 import Chip from 'material-ui/Chip';
 import Grid from 'material-ui/Grid';
+import Snackbar from 'material-ui/Snackbar';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Helmet from 'react-helmet';
-import Snackbar from 'material-ui/Snackbar';
-import {
-  MemberDashCard,
-  BookingCard,
-  ItemGrid
-} from '../../components';
-import moment from 'moment';
+import { BookingCard, ItemGrid, MemberDashCard } from '../../components';
 import Header from '../../components/Header';
 import SimpleModal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
-import userProfileStyles from '../../variables/styles/userProfileStyles';
+import memberDashStyles from '../../variables/styles/memberDashStyles';
 import "./style.css";
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
@@ -254,6 +250,17 @@ class MemberDash extends React.Component {
                         history={this.props.history}
                       />
                     }
+                    {!!!verticals.length &&
+                      <MemberDashCard
+                        company
+                        header="My Company"
+                        avatar={this.state.logo}
+                        title={this.state.companyName}
+                        tags={verticals}
+                        renderTag={this.renderVertical}
+                        history={this.props.history}
+                      />
+                    }
                   </ItemGrid>
                 </Grid>
               </ItemGrid>
@@ -306,7 +313,7 @@ class MemberDash extends React.Component {
       );
   }
 }
-export default withStyles(userProfileStyles)(MemberDash);
+export default withStyles(memberDashStyles)(MemberDash);
 
 MemberDash.propTypes = {
   location: PropTypes.object.isRequired,

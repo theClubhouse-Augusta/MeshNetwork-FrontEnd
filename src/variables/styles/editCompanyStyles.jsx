@@ -6,17 +6,26 @@ const editCompanyStyles = theme => ({
   },
   spaceLogoMainImageRow: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 15,
     marginBottom: 15,
   },
+  datePicker: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: 30,
+    marginBottom: 30,
+    marginLeft: theme.spacing.unit * 2,
+  },
   selectLabel: {
+    fontSize: theme.typography.caption.fontSize,
+    color: theme.typography.caption.color,
     marginBottom: theme.spacing.unit,
   },
   selectInput: {
-    marginTop: 30,
-    marginLeft: theme.spacing.unit * 2,
+    marginTop: 20,
+    marginLeft: '12%',
+    marginRight: '12%',
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'white'

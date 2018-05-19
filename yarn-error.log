@@ -8357,7 +8357,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 3221225786
+  Exit code: 1073807364
   Command: C:\WINDOWS\system32\cmd.exe
   Arguments: /d /s /c react-scripts start
   Directory: C:\Users\austi\Documents\mesh4\MeshNetwork-FrontEnd

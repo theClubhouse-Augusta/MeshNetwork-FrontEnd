@@ -9,7 +9,7 @@ import {
   defaultFont
 } from "../../variables/styles";
 
-const customInputStyle = theme => ({
+export default theme => ({
   disabled: {
     "&:before": {
       backgroundColor: "transparent !important"
@@ -21,6 +21,10 @@ const customInputStyle = theme => ({
       backgroundColor: "#AAAAAA",
       height: "1px !important"
     }
+  },
+  middle: {
+    marginLeft: '12%',
+    marginRight: '12%',
   },
   labelRoot: {
     ...defaultFont,
@@ -62,4 +66,3 @@ const customInputStyle = theme => ({
   }
 });
 
-export default customInputStyle;

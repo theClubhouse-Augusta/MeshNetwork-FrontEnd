@@ -18,6 +18,7 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import moment from 'moment';
 import {
   Button,
   CustomInput,
@@ -64,60 +65,9 @@ class EditCompany extends Component {
     city: '',
     state: '',
     address: '',
-    companyEmail: '',
+    email: '',
   };
-  states = [
-    'AL',
-    'AK',
-    'AZ',
-    'AR',
-    'CA',
-    'CO',
-    'CT',
-    'DE',
-    'FL',
-    'GA',
-    'HI',
-    'ID',
-    'IL',
-    'IN',
-    'IA',
-    'KS',
-    'KY',
-    'LA',
-    'ME',
-    'MD',
-    'MA',
-    'MI',
-    'MN',
-    'MS',
-    'MO',
-    'MT',
-    'NE',
-    'NV',
-    'NH',
-    'NJ',
-    'NM',
-    'NY',
-    'NC',
-    'ND',
-    'OH',
-    'OK',
-    'OR',
-    'PA',
-    'RI',
-    'SC',
-    'SD',
-    'TN',
-    'TX',
-    'UT',
-    'VT',
-    'VA',
-    'WA',
-    'WV',
-    'WI',
-    'WY',
-  ];
+  states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
   async componentDidMount() {
     let authorized;
     try {
@@ -126,11 +76,16 @@ class EditCompany extends Component {
       if (authorized !== undefined) {
         const { error, user } = authorized;
         if (user) {
-          this.loadCompany();
-          this.setState({
-            loading: false,
-            id: user.id,
-          });
+          const verticals = await this.loadVerticals();
+          if (verticals) {
+            const company = await this.loadCompany();
+            if (company) {
+              this.setState({
+                loading: false,
+                id: user.id,
+              });
+            }
+          }
         } else if (error) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
@@ -141,40 +96,77 @@ class EditCompany extends Component {
       }
     }
   };
-  loadCompany = () => {
-    fetch(`http://localhost:8000/api/company/user/get`, {
+  loadCompany = async () => {
+    const response = await fetch(`http://localhost:8000/api/company/user/get`, {
       headers: { Authorization: `Bearer ${localStorage['token']}` }
-    })
-      .then(response => response.json())
-      .then(({ company, verticals: loadedTags, userID, }) => {
-        if (company) {
-          let {
-            name,
-            logo,
-            description,
-            employeeCount,
-            url,
-            id: companyId
-          } = company;
-          this.setState({
-            name,
-            logoPreview: logo,
-            logo,
-            employeeCount,
-            companyId,
-            url,
-            description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(description))),
-            update: true,
-            loadedTags,
-            selectedTags: loadedTags
-          });
-        } else if (userID) {
-          this.setState({
-            userID,
-            description: EditorState.createEmpty(),
-          });
-        }
+    });
+    const json = await response.json();
+    const { company, verticals: loadedTags, userID, } = json;
+    if (company) {
+      let {
+        name,
+        logo,
+        description,
+        employeeCount,
+        url,
+        id: companyId,
+        facebook,
+        instagram,
+        pinterest,
+        twitter,
+        youtube,
+        linkedin,
+        snapchat,
+        discord,
+        foundingDate,
+        zipcode,
+        city,
+        state,
+        address,
+        email,
+      } = company;
+      this.setState({
+        name,
+        logoPreview: logo,
+        logo,
+        employeeCount,
+        companyId,
+        url,
+        description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(description))),
+        update: true,
+        loadedTags,
+        selectedTags: loadedTags,
+        facebook,
+        instagram,
+        pinterest,
+        twitter,
+        youtube,
+        linkedin,
+        snapchat,
+        discord,
+        foundingDate: moment(foundingDate),
+        zipcode,
+        city,
+        state,
+        address,
+        email,
       });
+    } else if (userID) {
+      this.setState({
+        userID,
+        description: EditorState.createEmpty(),
+      });
+    }
+    return true;
+  };
+  loadVerticals = async () => {
+    const response = await fetch(`http://localhost:8000/api/verticals`, {
+      headers: { Authorization: `Bearer ${localStorage['token']}` }
+    });
+    const json = await response.json();
+    const { options } = json;
+    this.setState({ options });
+    return true;
   };
   updateInput = (event, field) => {
     this.setState({
@@ -227,13 +219,13 @@ class EditCompany extends Component {
   onSubmit = e => {
     e.preventDefault();
     const {
-      // name,
-      //  logo,
-      //  employeeCount,
-      //  description,
-      //  url,
-      // companyId,
-      //   userID,
+      name,
+      logo,
+      employeeCount,
+      description,
+      url,
+      companyId,
+      userID,
       selectedTags,
       update,
       facebook,
@@ -249,38 +241,34 @@ class EditCompany extends Component {
       city,
       state,
       address,
-      companyEmail,
+      email,
+      id,
     } = this.state;
     let data = new FormData();
-    data.append('description', draftToHtml(convertToRaw(description.getCurrentContent())));
-    data.append('name', name);
-    data.append('url', url);
-    data.append('companyEmail', companyEmail);
-    data.append('zipcode', zipcode);
-    data.append('city', city);
-    data.append('state', state);
-    data.append('address', address);
-    data.append('facebook', facebook);
-    data.append('youtube', youtube);
-    data.append('linkedin', linkedin);
-    data.append('snapchat', snapchat);
-    data.append('discord', discord);
-    data.append('twitter', twitter);
-    data.append('instagram', instagram);
-    data.append('pinterest', pinterest);
-    data.append('foundingDate', foundingDate);
-    data.append('employeeCount', employeeCount);
+    if (description) data.append('description', draftToHtml(convertToRaw(description.getCurrentContent())));
+    if (name) data.append('name', name);
+    if (url) data.append('url', url);
+    if (id) data.append('userID', id);
+    if (email) data.append('email', email);
+    if (zipcode) data.append('zipcode', zipcode);
+    if (city) data.append('city', city);
+    if (state) data.append('state', state);
+    if (address) data.append('address', address);
+    if (facebook) data.append('facebook', facebook);
+    if (youtube) data.append('youtube', youtube);
+    if (linkedin) data.append('linkedin', linkedin);
+    if (snapchat) data.append('snapchat', snapchat);
+    if (discord) data.append('discord', discord);
+    if (twitter) data.append('twitter', twitter);
+    if (instagram) data.append('instagram', instagram);
+    if (pinterest) data.append('pinterest', pinterest);
+    if (foundingDate) data.append('foundingDate', moment(foundingDate).format("YYYY-MM-DD HH:mm:ss"));
+    if (employeeCount) data.append('employeeCount', employeeCount);
     data.append('update', update);
-    if (userID) {
-      data.append('userID', userID);
-    }
-    data.append('logo', logo);
-    if (companyId) {
-      data.append('companyId', companyId);
-    }
-    if (selectedTags.length) {
-      data.append('tags', JSON.stringify(selectedTags));
-    }
+    if (userID) data.append('userID', userID);
+    if (logo) data.append('logo', logo);
+    if (companyId) data.append('companyId', companyId);
+    if (selectedTags.length) data.append('tags', JSON.stringify(selectedTags));
     const createURI = `http://localhost:8000/api/company/create`;
     const updateURI = `http://localhost:8000/api/company/update/${companyId}`;
     const postUrl = companyId ? updateURI : createURI;
@@ -323,9 +311,10 @@ class EditCompany extends Component {
       foundingDate,
       zipcode,
       city,
-      companyEmail,
+      email,
       state,
       address,
+      options,
     } = this.state;
     const Helper = new StyleHelpers();
     const marginTop = selectedTags ? Helper.getLabelStyle(focused, selectedTags)[0] : '';
@@ -362,10 +351,10 @@ class EditCompany extends Component {
                         <ItemGrid xs={12} sm={12} md={12}>
                           <CustomInput
                             labelText="Company email"
-                            id="companyEmail"
+                            id="email"
                             formControlProps={{ fullWidth: true, }}
                             onChange={this.updateInput}
-                            value={companyEmail}
+                            value={email}
                             marginBottom
                           />
                         </ItemGrid>
@@ -378,43 +367,53 @@ class EditCompany extends Component {
                             value={address}
                           />
                         </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="City"
-                            id="city"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={city}
-                          />
-                        </ItemGrid>
-                        <ItemGrid className={classes.selectInput} xs={12} sm={12} md={2}>
-                          <InputLabel htmlFor="state" className={classes.selectLabel}>
-                            State
+                        <Grid container justify="center">
+                          <ItemGrid xs={12} sm={12} md={3}>
+                            <CustomInput
+                              labelText="City"
+                              id="city"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={city}
+                            />
+                          </ItemGrid>
+                          <ItemGrid
+                            className={classes.selectInput}
+                            xs={12} sm={12} md={3}>
+                            <InputLabel htmlFor="state" className={classes.selectLabel}>
+                              State
                           </InputLabel>
-                          <MaterialSelect
-                            native
-                            value={state}
-                            onChange={e => this.updateInput(e, 'state')}
-                            inputProps={{ id: 'state' }}
-                          >
-                            {this.states.map((state, key) =>
-                              <React.Fragment key={`statecode${key}`}>
-                                <option value={state}>{state}</option>
-                              </React.Fragment>
-                            )}
-                          </MaterialSelect>
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Zipcode"
-                            id="zipcode"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={zipcode}
-                          />
-                        </ItemGrid>
-                        <ItemGrid style={{ marginBottom: 30, }} xs={12} sm={12} md={12}>
+                            <MaterialSelect
+                              native
+                              value={state}
+                              onChange={e => this.updateInput(e, 'state')}
+                              inputProps={{ id: 'state' }}
+                            >
+                              {this.states.map((state, key) =>
+                                <React.Fragment key={`statecode${key}`}>
+                                  <option value={state}>{state}</option>
+                                </React.Fragment>
+                              )}
+                            </MaterialSelect>
+                          </ItemGrid>
+                          <ItemGrid xs={12} sm={12} md={3}>
+                            <CustomInput
+                              labelText="Zipcode"
+                              id="zipcode"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={zipcode}
+                            />
+                          </ItemGrid>
+                        </Grid>
+                        <div className={classes.datePicker} xs={12} sm={12} md={2}>
+                          {foundingDate &&
+                            <InputLabel htmlFor="datepicker" className={classes.selectLabel}>
+                              Founding Date
+                            </InputLabel>
+                          }
                           <SingleDatePicker
+                            id="datepicker"
                             isOutsideRange={() => false}
                             placeholder="Founding Date"
                             date={foundingDate} // momentPropTypes.momentObj or null
@@ -425,18 +424,35 @@ class EditCompany extends Component {
                             numberOfMonths={1}
                             showDefaultInputIcon
                           />
-                        </ItemGrid>
+                        </div>
                         <ItemGrid xs={12} sm={12} md={12}>
-                          <label style={{ marginTop: marginTop, color: color, }} className={Helper.getLabelClassName(focused, selectedTags)}>
-                            Company Verticals
-                          </label>
+                          {(focused || !!selectedTags.length) &&
+                            <label style={{ marginTop: marginTop, color: color, }} className={Helper.getLabelClassName(focused, selectedTags)}>
+                              Company Verticals
+                            </label>
+                          }
                           {!!loadedTags.length &&
                             <Select.Creatable
                               placeholder={!focused && !!!selectedTags.length ? 'Company Verticals' : ''}
                               className={Helper.getSelectClassName(focused, selectedTags)}
                               style={{ border: 'none', boxShadow: 'none' }}
                               multi
-                              options={loadedTags}
+                              options={options}
+                              onChange={this.selectTag}
+                              value={selectedTags}
+                              onFocus={this.onFocus}
+                              focused={focused}
+                              onBlur={this.onBlur}
+                            />
+                          }
+                          {!!!loadedTags.length &&
+                            <Select.Creatable
+                              placeholder={!focused && !!!selectedTags.length ? 'Company Verticals' : ''}
+                              multi
+                              className={Helper.getSelectClassName(focused, selectedTags)}
+                              options={options}
+                              style={{ border: 'none', boxShadow: 'none' }}
+                              focused={focused}
                               onChange={this.selectTag}
                               value={selectedTags}
                               onFocus={this.onFocus}
@@ -488,78 +504,93 @@ class EditCompany extends Component {
                             value={employeeCount}
                           />
                         </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Facebook"
-                            id="facebook"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={facebook}
-                          />
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Youtube"
-                            id="youtube"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={youtube}
-                          />
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Snapchat"
-                            id="snapchat"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={snapchat}
-                          />
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Linkedin"
-                            id="linkedin"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={linkedin}
-                          />
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Discord"
-                            id="discord"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={discord}
-                          />
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Instagram"
-                            id="instagram"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={instagram}
-                          />
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Twitter"
-                            id="twitter"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={twitter}
-                          />
-                        </ItemGrid>
-                        <ItemGrid xs={12} sm={12} md={12}>
-                          <CustomInput
-                            labelText="Pinterest"
-                            id="pinterest"
-                            formControlProps={{ fullWidth: true }}
-                            onChange={this.updateInput}
-                            value={pinterest}
-                          />
-                        </ItemGrid>
+                        <Grid container justify="center">
+                          <ItemGrid xs={12} sm={12} md={4}>
+                            <CustomInput
+                              labelText="Facebook"
+                              id="facebook"
+                              type="url"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={facebook}
+                            />
+                          </ItemGrid>
+                          <ItemGrid xs={12} sm={12} md={4}>
+                            <CustomInput
+                              labelText="Youtube"
+                              id="youtube"
+                              type="url"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={youtube}
+                            //   middle
+                            />
+                          </ItemGrid>
+                          <ItemGrid xs={12} sm={12} md={4}>
+                            <CustomInput
+                              labelText="Snapchat"
+                              id="snapchat"
+                              type="url"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={snapchat}
+                            />
+                          </ItemGrid>
+                        </Grid>
+                        <Grid container justify="center">
+                          <ItemGrid xs={12} sm={12} md={4}>
+                            <CustomInput
+                              labelText="Linkedin"
+                              id="linkedin"
+                              type="url"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={linkedin}
+                            />
+                          </ItemGrid>
+                          <ItemGrid xs={12} sm={12} md={4}>
+                            <CustomInput
+                              labelText="Discord"
+                              id="discord"
+                              type="url"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={discord}
+                            />
+                          </ItemGrid>
+                          <ItemGrid xs={12} sm={12} md={4}>
+                            <CustomInput
+                              labelText="Instagram"
+                              id="instagram"
+                              type="url"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={instagram}
+                            />
+                          </ItemGrid>
+                        </Grid>
+                        <Grid container justify="center">
+                          <ItemGrid xs={12} sm={12} md={6}>
+                            <CustomInput
+                              labelText="Twitter"
+                              id="twitter"
+                              type="url"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={twitter}
+                            />
+                          </ItemGrid>
+                          <ItemGrid xs={12} sm={12} md={6}>
+                            <CustomInput
+                              labelText="Pinterest"
+                              type="url"
+                              id="pinterest"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.updateInput}
+                              value={pinterest}
+                            />
+                          </ItemGrid>
+                        </Grid>
                         <ItemGrid xs={12} sm={12} md={12}>
                           <div className={classes.spaceLogoMainImageRow}>
                             <label htmlFor="logo-image" className={classes.spaceLogoMainImageBlock}>

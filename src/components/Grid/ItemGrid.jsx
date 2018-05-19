@@ -11,12 +11,13 @@ const style = {
 function ItemGrid({
   classes,
   children,
+  removePadding,
   ...rest
 }) {
   return (
     <Grid
       item
-      className={classes.grid}
+      className={removePadding ? "" : classes.grid}
       {...rest}
     >{children}</Grid>
   );
