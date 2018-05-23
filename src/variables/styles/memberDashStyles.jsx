@@ -67,20 +67,14 @@ export default theme => ({
   chipStyle: {
     [theme.breakpoints.up('md')]: {
       color: "#fff",
-      margin: "5px",
-      borderRadius: "5px",
-      // width: 120,
-      // height: 70,
-      width: 50,
-      height: 40,
+      margin: 5,
+      borderRadius: 5,
       background: "rgb(218, 73, 83)",
     },
     [theme.breakpoints.down('sm')]: {
       color: "#fff",
-      margin: "5px",
-      borderRadius: "5px",
-      width: 60,
-      height: 35,
+      margin: 5,
+      borderRadius: 5,
       background: "rgb(218, 73, 83)",
     }
   },
@@ -287,7 +281,3 @@ export default theme => ({
     }
   }
 });
-
-
-
-

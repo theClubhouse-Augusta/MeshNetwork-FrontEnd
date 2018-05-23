@@ -101,7 +101,7 @@ class UserProfile extends Component {
     const { classes } = this.props;
     return (
       <Chip
-        className={classes.chipStyle}
+        className={classes.chipStyleThree}
         key={`Chip${i}`}
         label={skill}
         onClick={() => {
@@ -113,7 +113,7 @@ class UserProfile extends Component {
     const { classes } = this.props;
     return (
       <Chip
-        className={classes.chipStyleTwo}
+        className={classes.verticalChip}
         key={`verticals${i}`}
         label={vertical.label}
         onClick={() => {
@@ -126,7 +126,7 @@ class UserProfile extends Component {
   );
   render() {
     const { classes } = this.props;
-    const { auth } = this.state;
+    const { companyName } = this.state;
     const {
       facebook,
       twitter,
@@ -143,21 +143,21 @@ class UserProfile extends Component {
           <Header space={this.props.spaceName} />
           <Grid container direction="column" justify="center">
             <main className={classes.mainProfile}>
-              <ItemGrid style={{ width: '100%' }} removePadding item xs={12} sm={12} md={12}>
+              <ItemGrid className={classes.fullWidth} removePadding item xs={12} sm={12} md={12}>
                 <Card className={classes.profileWrapper}>
                   <CardContent>
-                    <Grid container justify="center" style={{ width: '100%' }}>
+                    <Grid container justify="center" className={classes.fullWidth}>
                       <ItemGrid removePadding item xs={12} md={6} sm={12}>
-                        <Grid container justify="center" style={{ width: '100%' }}>
+                        <Grid container justify="center" className={classes.fullWidth}>
                           <ItemGrid item xs={12} md={5} sm={12}>
-                            <section style={{ display: 'flex', flexDirection: 'column' }}>
+                            <section className={classes.flexColumn}>
                               <img alt="" src={this.state.user.avatar} className={classes.profileHeaderImg} />
-                              <Typography>
+                              <Typography className={classes.hideMobile}>
                                 {this.isUser() ? "my workspace:" : `${this.state.user.name}'s workspace`}
                               </Typography>
                               {this.state.space.logo &&
-                                <Link to={"/space/" + this.state.user.spaceID} className={classes.profileSpaceBlock}>
-                                  <img style={{ height: 100, width: 100 }} src={this.state.space.logo} alt="" />
+                                <Link to={"/space/" + this.state.user.spaceID} className={classes.profileSpaceBlockOne}>
+                                  <img className={classes.companyLogo} src={this.state.space.logo} alt="" />
                                 </Link>
                               }
                             </section>
@@ -217,17 +217,21 @@ class UserProfile extends Component {
                                     }
                                   </div>
                                 </div>
-                                <section style={{ display: 'flex', justifyContent: 'space-between', width: '100%', }}>
-                                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <section className={classes.flexRow}>
+                                  <div className={classes.flexColumn}>
                                     <Typography className={classes.profileHeaderTitle}>
-                                      {this.isUser() ? `my` : `${this.state.user.name}'s`}&nbsp;company:
+                                      {(companyName && this.isUser()) &&
+                                        <span>my &nbsp; company:</span>
+                                      }
+                                      {(companyName && !!!this.isUser()) &&
+                                        <span>{this.state.user.name}'s &nbsp; company:</span>
+                                      }
                                     </Typography>
                                     {this.state.logo &&
                                       <Link to="/company" className={classes.profileSpaceBlock}>
-                                        <img style={{ height: 100, width: 100 }} src={this.state.logo} alt="" />
+                                        <img className={classes.companyLogo} src={this.state.logo} alt="" />
                                       </Link>
                                     }
-
                                   </div>
                                   <div className={classes.profileSkillsListTwo}>
                                     {this.state.verticals.map((vertical, i) =>
@@ -237,12 +241,20 @@ class UserProfile extends Component {
                                   {(this.isUser() && !this.state.companyName) &&
                                     <FlatButton href={`/memberDash/${this.state.user.id}`}
                                       className={classes.dashButtonTwo}
-                                    >
-                                      Add&nbsp;company
-                                    </FlatButton>
+                                    >Add company</FlatButton>
                                   }
                                 </section>
                               </div>
+                            </section>
+                            <section className={classes.flexColumnTwo}>
+                              <Typography className={classes.hideDesktop}>
+                                {this.isUser() ? "my workspace:" : `${this.state.user.name}'s workspace`}
+                              </Typography>
+                              {this.state.space.logo &&
+                                <Link to={"/space/" + this.state.user.spaceID} className={classes.profileSpaceBlockThree}>
+                                  <img className={classes.companyLogo} src={this.state.space.logo} alt="" />
+                                </Link>
+                              }
                             </section>
                           </ItemGrid>
                         </Grid>

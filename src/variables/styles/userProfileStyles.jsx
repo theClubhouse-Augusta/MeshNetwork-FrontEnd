@@ -44,11 +44,99 @@ export default theme => ({
     width: '200%',
     maxHeight: 36,
   },
-  profileSpaceBlock: {
+  fullWidth: {
+    width: '100%',
+  },
+  companyLogo: {
+    height: 100,
+    width: 100
+  },
+  profileSpaceBlockOne: {
+    marginTop: theme.spacing.unit,
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
+    },
+  },
+  profileSpaceBlockThree: {
+    marginTop: theme.spacing.unit,
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
+    },
+  },
+  hideMobile: {
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
+    },
+  },
+  hideDesktop: {
+    marginTop: theme.spacing.unit,
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
+    },
+  },
+  profileSpaceBloc: {
     marginTop: theme.spacing.unit,
   },
+  flexColumn: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  flexColumnTwo: {
+    marginTop: theme.spacing.unit,
+    borderTop: '1px solid black',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  flexRow: {
+    display: 'flex',
+    // justifyContent: 'space-between',
+    width: '100%',
+  },
   profileSocialList: {
-    width: '50%',
+    [theme.breakpoints.up('md')]: {
+      width: '50%',
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+  chipStyleThree: {
+    // [theme.breakpoints.up('md')]: {
+    background: '#a49d9d',
+    color: '#fff',
+    marginLeft: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    borderRadius: 5,
+    "&:nth-child(1)": {
+      marginLeft: 0,
+    },
+    "&:nth-child(4)": {
+      marginRight: theme.spacing.unit * 2,
+    }
+    // },
+  },
+  verticalChip: {
+    // [theme.breakpoints.up('md')]: {
+    marginLeft: theme.spacing.unit,
+    background: '#a49d9d',
+    fontStyle: theme.typography.button.fontStyle,
+    fontWeight: theme.typography.button.fontWeight,
+    // fontWeight: theme.typography.button.fontWeight,
+    color: '#fff',
+    borderRadius: 5,
+    marginTop: theme.spacing.unit,
+    "&:nth-child(1)": {
+      width: '125%',
+      // marginLeft: -20
+    },
+    "&:nth-child(2)": {
+      // marginLeft: 20
+    },
+    "&:nth-child(3)": {
+      width: '125%',
+    },
+    "&:nth-child(4)": {
+    },
   },
   chipStyle: {
     [theme.breakpoints.up('md')]: {
@@ -119,12 +207,17 @@ export default theme => ({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 15,
+    // marginLeft: 12,
   },
   profileSkillsListTwo: {
-    width: '100%',
     display: 'flex',
-    flexDirection: 'column',
-    marginLeft: theme.spacing.unit * 5
+    marginLeft: '10%',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'column',
+    },
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'row',
+    },
   },
   '@keyframes profileFlicker': {
     '0%': {
@@ -135,5 +228,3 @@ export default theme => ({
     }
   },
 });
-
-

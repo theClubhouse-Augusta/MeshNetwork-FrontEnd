@@ -1,8 +1,19 @@
-import React, { Component } from 'react';
+import {
+  Grid,
+  Modal,
+  Typography,
+  withStyles
+} from 'material-ui';
 import PropTypes from 'prop-types';
-import { Typography, Modal, withStyles, Grid } from 'material-ui';
+import React, { Component } from 'react';
 import Spinner from '../../components/Spinner';
-import { OutlookIcon, YahooIcon, GmailIcon, AppleIcon, CalendarIcon, } from '../../variables/icons';
+import {
+  AppleIcon,
+  CalendarIcon,
+  GmailIcon,
+  OutlookIcon,
+  YahooIcon
+} from '../../variables/icons';
 import modalStyles from '../../variables/styles/modalStyles';
 class SimpleModal extends Component {
   constructor(props) {
@@ -32,7 +43,7 @@ class SimpleModal extends Component {
     data.append('description', description);
     data.append('start', start);
     data.append('end', end);
-    fetch(`http://localhost:8000/api/testcal`, {
+    fetch(`http://localhost:8000/api/calendarInvite`, {
       method: 'POST',
       body: data,
       headers: { Authorization: `Bearer ${localStorage['token']}` },

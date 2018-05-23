@@ -189,7 +189,7 @@ class Discover extends React.PureComponent {
 
         <main className="challenges_mainContainer">
           <Grid container direction="column" alignContent="center">
-            <Grid item xs={12} sm={12} md={8} >
+            <Grid item xs={12} sm={12} md={8} style={{ margin: '0 auto' }}>
               <Typography
                 variant="display1"
                 align="center"
