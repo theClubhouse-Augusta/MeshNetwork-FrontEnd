@@ -1,4 +1,4 @@
-const editCompanyStyles = theme => ({
+export default theme => ({
   container: {
     width: '%100',
     margin: '0 auto',
@@ -59,7 +59,6 @@ const editCompanyStyles = theme => ({
     marginTop: '5px'
   },
 });
-export default editCompanyStyles;
 
 
 

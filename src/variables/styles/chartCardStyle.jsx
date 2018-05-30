@@ -22,7 +22,7 @@ import {
   roseColor
 } from "../../variables/styles";
 
-const chartCardStyle = {
+export default theme => ({
   root: {
     overflow: 'visible'
   },
@@ -97,6 +97,5 @@ const chartCardStyle = {
     textDecoration: "none",
     ...defaultFont
   }
-};
+});
 
-export default chartCardStyle;

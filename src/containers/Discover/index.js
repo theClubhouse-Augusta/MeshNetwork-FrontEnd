@@ -212,7 +212,7 @@ class Discover extends React.PureComponent {
                 gutterBottom
                 classes={{ body1: this.props.classes.body1 }}
               >
-                This event is FREE and open to the public. To register, visit <a href="www.SoutheastStartupChallenge.com" target="_blank" rel="noopener noreferrer">Southeast Startup Challenge</a>
+                This event is FREE and open to the public. To register, visit <a href="http://www.SoutheastStartupChallenge.com" target="_blank" rel="noopener noreferrer">Southeast Startup Challenge</a>
               </Typography>
               <Typography
                 variant="body1"

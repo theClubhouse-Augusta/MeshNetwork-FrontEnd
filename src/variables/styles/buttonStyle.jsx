@@ -12,7 +12,7 @@ import {
   dangerColor
 } from "../../variables/styles";
 
-const buttonStyle = {
+export default theme => ({
   button: {
     backgroundColor: grayColor,
     color: "#FFFFFF",
@@ -133,6 +133,5 @@ const buttonStyle = {
     opacity: "0.65",
     pointerEvents: "none"
   }
-};
+});
 
-export default buttonStyle;

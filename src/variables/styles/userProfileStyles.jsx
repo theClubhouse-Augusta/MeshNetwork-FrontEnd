@@ -64,6 +64,7 @@ export default theme => ({
     },
   },
   hideMobile: {
+    display: 'block',
     [theme.breakpoints.down('md')]: {
       display: 'none'
     },

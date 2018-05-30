@@ -8,7 +8,7 @@ import {
   container
 } from "../../variables/styles.jsx";
 
-const appStyle = theme => ({
+export default theme => ({
   wrapper: {
     position: "relative",
     top: "0",
@@ -37,4 +37,3 @@ const appStyle = theme => ({
   }
 });
 
-export default appStyle;

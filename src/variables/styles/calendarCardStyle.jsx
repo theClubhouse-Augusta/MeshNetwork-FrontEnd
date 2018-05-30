@@ -4,7 +4,7 @@
 
 import { calCard, boxShadow, grayColor, defaultFont } from "../../variables/styles";
 
-const calendarCardStyle = theme => ({
+export default theme => ({
   card: {
     marginTop: "30px",
     textAlign: "center",
@@ -67,4 +67,3 @@ const calendarCardStyle = theme => ({
   }
 });
 
-export default calendarCardStyle;

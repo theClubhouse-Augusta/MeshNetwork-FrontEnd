@@ -12,7 +12,7 @@ import {
   dangerColor
 } from "../../variables/styles";
 
-const iconButtonStyle = {
+export default theme => ({
   button: {
     height: "40px",
     minWidth: "40px",
@@ -119,6 +119,4 @@ const iconButtonStyle = {
     background: "transparent",
     boxShadow: "none"
   }
-};
-
-export default iconButtonStyle;
+});

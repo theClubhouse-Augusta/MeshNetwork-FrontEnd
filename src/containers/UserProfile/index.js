@@ -1,4 +1,8 @@
-import { Grid, Typography, withStyles } from "material-ui";
+import {
+  Grid,
+  Typography,
+  withStyles
+} from "material-ui";
 import FlatButton from "material-ui/Button";
 import Card, { CardContent } from "material-ui/Card";
 import Chip from "material-ui/Chip";
@@ -265,7 +269,7 @@ class UserProfile extends Component {
               </ItemGrid>
             </main>
           </Grid>
-        </div >
+        </div>
       );
   }
 }

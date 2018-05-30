@@ -15,7 +15,7 @@ import {
   dangerColor
 } from "../../variables/styles";
 
-const sidebarStyle = theme => ({
+export default theme => ({
   drawerPaper: {
     border: "none",
     position: "fixed",
@@ -218,4 +218,3 @@ const sidebarStyle = theme => ({
   }
 });
 
-export default sidebarStyle;

@@ -26,8 +26,8 @@ class ResourceForm extends PureComponent {
   componentDidMount() {
     this.getResources(this.props.spaceID);
   };
-  onChange = prop => event => {
-    this.setState({ [prop]: event.target.value });
+  onChange = key => event => {
+    this.setState({ [key]: event.target.value });
   };
   getResources = (id) => {
     fetch('http://localhost:8000/api/resources/' + id)

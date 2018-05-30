@@ -12,7 +12,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Helmet from 'react-helmet';
 import { BookingCard, ItemGrid, MemberDashCard } from '../../components';
 import Header from '../../components/Header';
-import SimpleModal from '../../components/Modal';
+import { CalendarModal } from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import memberDashStyles from '../../variables/styles/memberDashStyles';
 import "./style.css";
@@ -34,6 +34,8 @@ class MemberDash extends React.Component {
     companyName: '',
     companyID: '',
     openModal: false,
+    open: false,
+    modal: null,
   };
   userID = this.props.match.params.id;
   token = localStorage['token'];
@@ -173,12 +175,6 @@ class MemberDash extends React.Component {
         }
       });
   };
-  handleOpen = () => {
-    this.setState({
-      open: true,
-      openModal: true,
-    });
-  };
   handleClose = () => {
     this.setState({
       open: false,
@@ -189,13 +185,12 @@ class MemberDash extends React.Component {
   renderModal = ({ event, startDate, endDate }) => {
     this.setState({
       modal:
-        <SimpleModal
+        <CalendarModal
           open={true}
           title={event.title}
           description={event.description}
           start={startDate}
           end={endDate}
-          handleOpen={this.handleOpen}
           handleClose={this.handleClose}
         />,
     })

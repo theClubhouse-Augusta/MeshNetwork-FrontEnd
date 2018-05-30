@@ -35,6 +35,7 @@ const Enroll = asyncComponent(() => import('../Enroll'));
 const LMSDash = asyncComponent(() => import('../LMSDash'));
 const MemberDash = asyncComponent(() => import('../MemberDash'));
 const EditCompany = asyncComponent(() => import('../EditCompany'));
+const BigCal = asyncComponent(() => import('../BigCal'));
 
 export default class App extends Component {
   constructor() {
@@ -93,9 +94,13 @@ export default class App extends Component {
         <Route
           path="/About"
           render={() =>
-            <About
-              spaceName={this.state.spaceName}
-            />
+            <About spaceName={this.state.spaceName} />
+          }
+        />
+        <Route
+          path="/BigCal"
+          render={() =>
+            <BigCal spaceName={this.state.spaceName} />
           }
         />
         <Route
@@ -118,7 +123,7 @@ export default class App extends Component {
         />
         <Route
           path="/booking/:id"
-          render={(props) =>
+          render={props =>
             <Booking
               {...props}
               spaceName={this.state.spaceName}
@@ -127,7 +132,7 @@ export default class App extends Component {
         />
         <Route
           path="/newSpace"
-          render={(props) =>
+          render={props =>
             <SpaceSignUp
               {...props}
               spaceName={this.state.spaceName}
@@ -145,7 +150,7 @@ export default class App extends Component {
         />
         <Route
           path="/signIn"
-          render={(props) =>
+          render={props =>
             <UserSignIn
               {...props}
               spaceName={this.state.spaceName}
@@ -154,7 +159,7 @@ export default class App extends Component {
         />
         <Route
           path="/event/:id"
-          render={(props) =>
+          render={props =>
             <EventDetail
               {...props}
               spaceName={this.state.spaceName}
@@ -168,7 +173,7 @@ export default class App extends Component {
         />
         <Route
           path="/account"
-          render={(props) =>
+          render={props =>
             <MemberAcct
               {...props}
               spaceName={this.state.spaceName}
@@ -177,7 +182,7 @@ export default class App extends Component {
         />
         <Route
           path="/members"
-          render={(props) =>
+          render={props =>
             <MemberSearch
               {...props}
               spaceName={this.state.spaceName}
@@ -186,7 +191,7 @@ export default class App extends Component {
         />
         <Route
           path="/AddEvent"
-          render={(props) =>
+          render={props =>
             <AddEvent
               {...props}
               spaceName={this.state.spaceName}
@@ -195,7 +200,7 @@ export default class App extends Component {
         />
         <Route
           path="/space/:id"
-          render={(props) =>
+          render={props =>
             <SpaceProfile
               {...props}
               spaceName={this.props.spaceName}
@@ -204,7 +209,7 @@ export default class App extends Component {
         />
         <Route
           path="/user/:id"
-          render={(props) => (
+          render={props => (
             <UserProfile
               {...props}
               spaceName={this.state.spaceName}
@@ -212,11 +217,17 @@ export default class App extends Component {
           )}
         />
         <Route path="/kiosk/:id"
-          render={(props) => <Kiosk {...props} spaceName={this.state.spaceName} />}
+          render={props =>
+            <Kiosk
+              {...props}
+              spaceName={this.state.spaceName
+              }
+            />
+          }
         />
         <Route
           path="/spacedash/:id"
-          render={(props) =>
+          render={props =>
             <SpaceDash
               {...props}
               spaceName={this.state.spaceName}
@@ -225,7 +236,7 @@ export default class App extends Component {
         />
         <Route
           exact path='/Challenges'
-          render={(props) =>
+          render={props =>
             <Discover
               {...props}
               app={this}
@@ -235,7 +246,7 @@ export default class App extends Component {
         />
         <Route
           path='/Challenges/Category/:id'
-          render={(props) =>
+          render={props =>
             <Discover
               {...props}
               app={this}
@@ -245,7 +256,7 @@ export default class App extends Component {
         />
         <Route
           path='/Challenges/Challenge/:id'
-          render={(props) =>
+          render={props =>
             <Detail
               {...props}
               spaceName={this.state.spaceName}
@@ -263,7 +274,7 @@ export default class App extends Component {
         />
         <Route
           path='/Challenges/Ask/:id'
-          render={(props) =>
+          render={props =>
             <Replies {...props}
               app={this}
               spaceName={this.state.spaceName}
@@ -281,7 +292,7 @@ export default class App extends Component {
         />
         <Route
           path='/Challenges/Team/:id'
-          render={(props) =>
+          render={props =>
             <Team
               {...props}
               app={this}
@@ -291,7 +302,7 @@ export default class App extends Component {
         />
         <Route
           exact path='/LMS'
-          render={(props) =>
+          render={props =>
             <LMS
               {...props}
               app={this}
@@ -301,7 +312,7 @@ export default class App extends Component {
         />
         <Route
           path='/LMS/Courses'
-          render={(props) =>
+          render={props =>
             <Courses
               {...props}
               spaceName={this.state.spaceName}
@@ -310,7 +321,7 @@ export default class App extends Component {
         />
         <Route
           path='/LMS/Course/:id'
-          render={(props) =>
+          render={props =>
             <Course
               {...props}
               app={this}
@@ -320,7 +331,7 @@ export default class App extends Component {
         />
         <Route
           path='/LMS/CourseInfo/:id/:uid'
-          render={(props) =>
+          render={props =>
             <CourseInfo
               {...props}
               app={this}
@@ -330,7 +341,7 @@ export default class App extends Component {
         />
         <Route
           path='/LMS/NewCourse'
-          render={(props) =>
+          render={props =>
             <NewCourse
               {...props}
               spaceName={this.state.spaceName}
@@ -339,7 +350,7 @@ export default class App extends Component {
         />
         <Route
           exact path='/LMS/Lesson/:id/:uid'
-          render={(props) =>
+          render={props =>
             <Lessons
               {...props}
               spaceName={this.state.spaceName}
@@ -348,7 +359,7 @@ export default class App extends Component {
         />
         <Route
           path='/LMS/Report/:id/:uid'
-          render={(props) =>
+          render={props =>
             <Lessons
               {...props}
               app={this}
@@ -358,17 +369,25 @@ export default class App extends Component {
         />
         <Route
           path='/LMS/Lesson/:id/:lid/:uid'
-          render={(props) =>
+          render={props =>
             <Lessons
               {...props}
               spaceName={this.state.spaceName}
             />
           }
         />
-        <Route path='/LMS/Update/:id' render={(props) => <NewCourse {...props} app={this} spaceName={this.state.spaceName} />} />
+        <Route path='/LMS/Update/:id'
+          render={props =>
+            <NewCourse
+              {...props}
+              app={this}
+              spaceName={this.state.spaceName}
+            />
+          }
+        />
         <Route
           path='/LMS/Enroll/:id'
-          render={(props) =>
+          render={props =>
             <Enroll
               {...props}
               app={this}
@@ -378,7 +397,7 @@ export default class App extends Component {
         />
         <Route
           path='/LMS/MyLMS'
-          render={(props) =>
+          render={props =>
             <LMSDash
               {...props}
               app={this}

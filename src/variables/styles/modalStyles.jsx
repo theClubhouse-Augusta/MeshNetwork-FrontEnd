@@ -1,4 +1,4 @@
-const modalStyles = theme => ({
+export default theme => ({
   paper: {
     position: 'absolute',
     width: theme.spacing.unit * 60,
@@ -26,4 +26,3 @@ const modalStyles = theme => ({
     }
   },
 });
-export default modalStyles;
