@@ -35,7 +35,7 @@ const Enroll = asyncComponent(() => import('../Enroll'));
 const LMSDash = asyncComponent(() => import('../LMSDash'));
 const MemberDash = asyncComponent(() => import('../MemberDash'));
 const EditCompany = asyncComponent(() => import('../EditCompany'));
-const BigCal = asyncComponent(() => import('../BigCal'));
+// const BigCal = asyncComponent(() => import('../BigCal'));
 
 export default class App extends Component {
   constructor() {
@@ -97,12 +97,12 @@ export default class App extends Component {
             <About spaceName={this.state.spaceName} />
           }
         />
-        <Route
+        {/* <Route
           path="/BigCal"
           render={() =>
             <BigCal spaceName={this.state.spaceName} />
           }
-        />
+        /> */}
         <Route
           path="/MemberDash/:id"
           render={props =>

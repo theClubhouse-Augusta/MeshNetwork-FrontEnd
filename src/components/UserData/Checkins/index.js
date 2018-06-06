@@ -1,12 +1,10 @@
 import React from 'react';
-import CheckinTable from './CheckinTable';
 import '../style.css';
 import '../styleM.css';
+import CheckinTable from './CheckinTable';
 
 export class Checkins extends React.PureComponent {
   state = {
-    // startDate: moment(),
-    // endDate: moment().add(1, 'd'),
     startDate: null,
     endDate: null,
     focusedInput: null,
@@ -14,26 +12,6 @@ export class Checkins extends React.PureComponent {
     userPage: 0,
     userRowsPerPage: 10,
   };
-
-  componentDidMount() {
-    // this.loadInitalUsers();
-  }
-
-  // loadInitalUsers = () => {
-  //   const { date } = this.state;
-  //   fetch(`http://localhost:8000/api/appearances/users/${this.props.match.params.id}/${date.get('month') + 1}/${date.get('year')}/${date.get('date')}`)
-  //     .then(response => response.json())
-  //     .then(({ users, error }) => {
-  //       if (users) {
-  //         this.setState(() => ({ users }))
-  //         this.setState(() => ({ error: "" }))
-  //       }
-  //     })
-  //     .catch(error => {
-  //     })
-  // };
-
-
   onDateChange = date => {
     this.setState(() => ({ date }));
     if (date) {

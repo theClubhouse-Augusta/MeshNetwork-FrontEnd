@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
 import moment from 'moment';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import Header from '../../components/Header';
 import Spinner from '../../components/Spinner';
@@ -53,7 +53,7 @@ const calevents = [
   }
 ];
 
-export default class Booking extends React.PureComponent {
+export default class Booking extends PureComponent {
   state = {
     token: localStorage.getItem('token'),
     user: '',
@@ -87,6 +87,9 @@ export default class Booking extends React.PureComponent {
       { time: "17:00", active: 0 },
       { time: "18:00", active: 0 }
     ],
+    minTime: '',
+    maxTime: '',
+    dow: [],
   };
   handleRequestClose = () => {
     this.setState(() => ({
@@ -377,8 +380,18 @@ export default class Booking extends React.PureComponent {
     }
   };
   render() {
+    const {
+      minTime,
+      maxTime,
+      loading,
+      dow,
+      resources,
+      startTime,
+      endTime,
+    } = this.state;
+    const showCalendar = () => (minTime && maxTime && dow.length && startTime && endTime);
     return (
-      this.state.loading
+      loading
         ?
         <Spinner loading={this.state.loading} />
         :
@@ -401,51 +414,32 @@ export default class Booking extends React.PureComponent {
               >Confirm Booking</FlatButton>
             </div>
             <div style={{ width: '100%', background: '#FFFFFF', padding: '10px' }}>
-              {/* <FullCalendar
-                id="bookingCal"
-                header={{
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: 'agendaWeek'
-                }}
-                defaultDate={new Date()}
-                editable={true}
-                selectable={true}
-                selectOverlap={false}
-                slotDuration={'00:' + this.state.increment + ':00'}
-                allDaySlot={false}
-                timezone="local"
-                select={(start, end, event) => this.testSlot(start, end, event)}
-                businessHours={{
-                  dow: this.state.activeDays,
-                  start: this.state.activeResource.startTime,
-                  end: this.state.activeResource.endTime
-                }}
-                selectConstraint='businessHours'
-                eventConstraint="businessHours"
-                slotEventOverlap={false}
-                weekends={false}
-                defaultView='agendaWeek'
-                navLinks={true} // can click day/week names to navigate views
-                eventLimit={true} // allow "more" link when too many events
-                events={this.state.events}
-              /> */}
-              <FullCalendar
-                id="your-custom-ID"
-                header={{
-                  left: 'prev,next today myCustomButton',
-                  center: 'title',
-                  right: 'month,basicWeek,basicDay'
-                }}
-                defaultDate={'2017-05-12'}
-                navLinks={true} // can click day/week names to navigate views
-                editable={true}
-                eventLimit={true} // allow "more" link when too many events
-                events={calevents}
-                eventDragStart={(e, jsEvent, ui, view) => {
-                  console.log(`title: ${e.title} start: ${e.start} end:${e.end}`);
-                }}
-              />
+              {showCalendar() &&
+                <FullCalendar
+                  id="your-custom-ID"
+                  defaultView="agendaWeek"
+                  minTime={minTime}
+                  maxTime={maxTime}
+                  header={{
+                    left: 'prev,next today myCustomButton',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                  }}
+                  businessHours={{
+                    dow: dow,
+                    start: startTime,
+                    end: endTime,
+                  }}
+                  defaultDate={'2017-05-12'}
+                  navLinks={true} // can click day/week names to navigate views
+                  editable={true}
+                  eventLimit={true} // allow "more" link when too many events
+                  events={calevents}
+                  eventDragStart={(e, jsEvent, ui, view) => {
+                    console.log(`title: ${e.title} start: ${e.start} end:${e.end}`);
+                  }}
+                />
+              }
             </div>
           </main>
           <footer className="homeFooterContainer">
@@ -461,3 +455,32 @@ export default class Booking extends React.PureComponent {
     );
   }
 }
+/* <FullCalendar
+  id="bookingCal"
+  header={{
+    left: 'prev,next today',
+    center: 'title',
+    right: 'agendaWeek'
+  }}
+  defaultDate={new Date()}
+  editable={true}
+  selectable={true}
+  selectOverlap={false}
+  slotDuration={'00:' + this.state.increment + ':00'}
+  allDaySlot={false}
+  timezone="local"
+  select={(start, end, event) => this.testSlot(start, end, event)}
+  businessHours={{
+    dow: this.state.activeDays,
+    start: this.state.activeResource.startTime,
+    end: this.state.activeResource.endTime
+  }}
+  selectConstraint='businessHours'
+  eventConstraint="businessHours"
+  slotEventOverlap={false}
+  weekends={false}
+  defaultView='agendaWeek'
+  navLinks={true} // can click day/week names to navigate views
+  eventLimit={true} // allow "more" link when too many events
+  events={this.state.events}
+/> */

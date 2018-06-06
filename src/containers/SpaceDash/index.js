@@ -19,6 +19,7 @@ import { Checkins } from '../../components/UserData/Checkins';
 import { CustomerSignUps } from '../../components/UserData/CustomerSignUps';
 import { SignUps } from '../../components/UserData/SignUps';
 import UserManager from '../../components/UserManager';
+import Reports from '../../components/Reports';
 import dashboardRoutes from '../../routes';
 import authenticate from '../../utils/Authenticate';
 import { allAppearances, allEvents, allJoins } from "../../variables/charts";
@@ -40,9 +41,6 @@ class SpaceDash extends React.Component {
     checkinCount: 0,
     spaceEvents: [],
     photoGallery: [],
-    resources: [],
-    resourceName: "",
-    resourceEmail: "",
     msg: "",
     snack: false,
     loading: true,
@@ -51,15 +49,6 @@ class SpaceDash extends React.Component {
     userRowsPerPage: 10,
     eventPage: 0,
     eventRowsPerPage: 10,
-    resourceDays: '',
-    resourceMonday: 0,
-    resourceTuesday: 0,
-    resourceWednesday: 0,
-    resourceThursday: 0,
-    resourceFriday: 0,
-    resourceStartTime: '',
-    resourceEndTime: '',
-    resourceIncrement: 0,
     pageContent: [],
     editEventID: '',
     monthlyBalance: null,
@@ -216,7 +205,6 @@ class SpaceDash extends React.Component {
         this.getSpaceStats(spaceID);
         this.getSpaceEvents(spaceID);
         this.getPhotoGallery(spaceID);
-        // this.getResources(spaceID);
         this.loadJoins();
         this.loadAppearances();
         this.loadEventMetrics();
@@ -370,42 +358,6 @@ class SpaceDash extends React.Component {
         }
       });
 
-  };
-  handleResourceName = (event) => {
-    this.setState({
-      resourceName: event.target.value
-    })
-  };
-  handleResourceEmail = (event) => {
-    this.setState({
-      resourceEmail: event.target.value
-    })
-  };
-  handleStartDay = (event) => {
-    this.setState({
-      resourceStartDay: event.target.value
-    })
-  };
-
-  handleEndDay = (event) => {
-    this.setState({
-      resourceEndDay: event.target.value
-    })
-  };
-  handleStartTime = (event) => {
-    this.setState({
-      resourceStartTime: event.target.value
-    })
-  };
-  handleStartEnd = (event) => {
-    this.setState({
-      resourceEndTime: event.target.value
-    })
-  };
-  handleIncrement = (event) => {
-    this.setState({
-      resourceIncrement: event.target.value
-    })
   };
   handleUserChangePage = (event, page) => {
     this.setState({ userPage: page });
@@ -869,7 +821,10 @@ class SpaceDash extends React.Component {
           <EventInformation {...this.props} id={this.state.editEventID} />
         </div>
       )
-    } else if (this.state.currentPage === 'userInfo') {
+    } else if (this.state.currentPage === 'reports') {
+      return (
+        <Reports />
+      );
     }
   }
   render() {

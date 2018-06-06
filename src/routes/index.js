@@ -2,7 +2,6 @@ import {
   Dashboard,
   Person,
   LibraryBooks,
-  BubbleChart,
   LocationOn,
   Notifications,
   PhotoLibrary,
@@ -26,19 +25,12 @@ const dashboardRoutes = ({ usingCRM, isOrganizer }) => {
       sidebarName: "Photo Gallery",
       navbarName: "Photos",
       icon: PhotoLibrary,
-      // icon: ContentPaste,
     }, {
       path: "editResources",
       sidebarName: "Resources",
       navbarName: "Resources",
       icon: LibraryBooks,
     },
-    // {
-    //   path: "organizerManager",
-    //   sidebarName: "Organizers",
-    //   navbarName: "Organizers",
-    //   icon: BubbleChart,
-    // }, 
     {
       path: "userManager",
       sidebarName: "Customer Management",
@@ -54,6 +46,11 @@ const dashboardRoutes = ({ usingCRM, isOrganizer }) => {
       sidebarName: "Create Event",
       navbarName: "Create Event",
       icon: Event,
+    }, {
+      path: "reports",
+      sidebarName: "Reports",
+      navbarName: "Reports",
+      icon: LibraryBooks,
     },
     ];
   } else if (usingCRM && !isOrganizer) {
@@ -93,6 +90,11 @@ const dashboardRoutes = ({ usingCRM, isOrganizer }) => {
       sidebarName: "Create Event",
       navbarName: "Create Event",
       icon: Event,
+    }, {
+      path: "/reports",
+      sidebarName: "Reports",
+      navbarName: "Reports",
+      icon: LibraryBooks,
     },
     ];
   } else if (!usingCRM) {
@@ -111,19 +113,12 @@ const dashboardRoutes = ({ usingCRM, isOrganizer }) => {
       sidebarName: "Photo Gallery",
       navbarName: "Photos",
       icon: PhotoLibrary,
-      // icon: ContentPaste,
     }, {
       path: "editResources",
       sidebarName: "Resources",
       navbarName: "Resources",
       icon: LibraryBooks,
     },
-    // {
-    //   path: "organizerManager",
-    //   sidebarName: "Organizers",
-    //   navbarName: "Organizers",
-    //   icon: BubbleChart,
-    // }, 
     {
       path: "userParticipation",
       sidebarName: "User Engagement",
@@ -134,6 +129,11 @@ const dashboardRoutes = ({ usingCRM, isOrganizer }) => {
       sidebarName: "Create Event",
       navbarName: "Create Event",
       icon: Event,
+    }, {
+      path: "/reports",
+      sidebarName: "Reports",
+      navbarName: "Reports",
+      icon: LibraryBooks,
     },
     ];
   }

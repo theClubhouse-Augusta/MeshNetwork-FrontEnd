@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
+import { withStyles } from "material-ui";
 import FullCalendar from 'fullcalendar-reactwrapper';
 import { EditEventModal } from '../../components/Modal';
 import moment from 'moment';
 import 'fullcalendar-reactwrapper/dist/css/fullcalendar.min.css';
+import bigCalStyles from '../../variables/styles/bigCalStyles';
+import './style.css';
 
-export default class BigCal extends Component {
+class BigCal extends Component {
   state = {
     openModal: false,
     modal: null,
     events: [
       {
-        title: 'All Day Event',
-        start: '2017-05-01',
-        end: '2017-05-01'
+        title: 'Business Lunch',
+        start: '2017-05-01T13:00:00',
+        constraint: 'businessHours'
       },
       {
         title: 'Long Event',
@@ -126,41 +129,33 @@ export default class BigCal extends Component {
   };
   render() {
     const { modal } = this.state;
+    const { classes } = this.props;
     return (
       <div>
         <FullCalendar
-          id="your-custom-ID"
+          id="foobar"
           defaultView="agendaWeek"
+          minTime="09:00:00"
+          maxTime="18:00:00"
           header={{
             left: 'prev,next today myCustomButton',
             center: 'addEventButton',
-            right: 'month,listDay,listWeek'
-            //  right: 'month,basicWeek,basicDay,listDay'
+            right: 'agendaWeek,month'
           }}
           businessHours={{
-            dow: [1, 2, 3],
-            start: '10:00',
-            end: '18:00',
+            dow: [1, 2, 3, 4, 5],
+            start: '09:00',
+            end: '17:00',
           }}
           defaultDate={'2017-05-01'}
           navLinks={true} // can click day/week names to navigate views
           editable={true}
           eventLimit={true} // allow "more" link when too many events
           events={this.state.events}
-          eventClick={(event, element) => {
-            this.renderModal(event);
-          }}
-          addEventSource={() => ({
-            title: 'Click for Google',
-            url: 'http://google.com/',
-            start: '2017-05-29'
-          })}
-          customButtons={{
-            addEventButton: this.eventClick(),
-          }}
         />
         {modal}
       </div>
     );
   }
 }
+export default withStyles(bigCalStyles)(BigCal);

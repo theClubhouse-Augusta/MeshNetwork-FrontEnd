@@ -51,7 +51,13 @@ export default withStyles(tableStyle)(props => {
                 <TableRow key={`ocuser${key}`}>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{moment(user.time.date).format('YYYY, h:mm a')}</TableCell>
+                  <TableCell>
+                    {
+                      moment(user.time.date)
+                        .utcOffset(-8)
+                        .format('MM-DD-YYYY, h:mm a')
+                    }
+                  </TableCell>
                 </TableRow>
               )
             })}
