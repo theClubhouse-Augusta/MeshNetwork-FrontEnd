@@ -9,7 +9,7 @@ class ResourceForm extends PureComponent {
     resources: [],
     name: '',
     email: '',
-    days: '',
+    days: [],
     monday: 0,
     tuesday: 0,
     wednesday: 0,
@@ -74,20 +74,26 @@ class ResourceForm extends PureComponent {
   storeResource = () => {
     let resources = [...this.state.resources];
     let days = [];
-    if (this.state.monday === 1) {
-      days.push(this.state.monday);
+    if (this.state.monday) {
+      days.push(1);
     }
-    if (this.state.tuesday === 2) {
-      days.push(this.state.tuesday);
+    if (this.state.tuesday) {
+      days.push(2);
     }
-    if (this.state.wednesday === 3) {
-      days.push(this.state.wednesday);
+    if (this.state.wednesday) {
+      days.push(3);
     }
-    if (this.state.thursday === 4) {
-      days.push(this.state.thursday);
+    if (this.state.thursday) {
+      days.push(4);
     }
-    if (this.state.friday === 5) {
-      days.push(this.state.friday);
+    if (this.state.friday) {
+      days.push(5);
+    }
+    if (this.state.saturday) {
+      days.push(6);
+    }
+    if (this.state.sunday) {
+      days.push(7);
     }
     let data = new FormData();
     data.append('spaceID', this.props.spaceID);

@@ -58,8 +58,6 @@ export default class DateRangePickerWithGapsController extends Component {
           clearEndTimes={clearEndTimes}
           clearStartTimes={clearStartTimes}
           date={date}
-        //startTime
-        //endTime
         />
       </div>
     );
