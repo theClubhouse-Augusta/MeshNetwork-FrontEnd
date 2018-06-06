@@ -946,32 +946,6 @@ export default class EventInformation extends Component {
     }
   }
 
-  renderSingleDate = () => {
-    if (this.state.dates > 0) {
-      return (
-        <DateRangePickerWithGaps
-          dates={this.state.dates}
-          handleDate={dates => {
-            this.setState(() => ({ dates }));
-          }}
-        />
-      )
-    } else {
-      return (
-        <DateRangePickerWithGaps
-          dates={this.state.dates.length ? this.state.dates : [{
-            day: moment(),
-            start: '',
-            end: '',
-          }]}
-          handleDate={dates => {
-            this.setState(() => ({ dates }));
-          }}
-        />
-      )
-    }
-  }
-
   render() {
     const {
       newSponsors,
@@ -1135,36 +1109,53 @@ export default class EventInformation extends Component {
               />
             }
 
-            {checkedRadio === this.singleDay &&
+            {/* edit single-day event */}
+            {(checkedRadio === this.singleDay) && !!dates.length &&
               <React.Fragment>
-                <label key="singleDay" className="addEventFormLabel"> date & time </label>
-                {this.renderSingleDate()}
-              </React.Fragment>
-            }
-
-            {(checkedRadio === this.multipleDays && days && dates.length === days) &&
-
-              <React.Fragment>
+                <label key="singleDay" className="addEventFormLabel">
+                  date & time
+                </label>
                 <DateRangePickerWithGaps
                   dates={dates}
                   handleDate={dates => {
                     this.setState(() => ({ dates }));
                   }}
                 />
-
               </React.Fragment>
             }
 
-            {(checkedRadio === this.multipleDays && days && dates.length !== days) &&
+            {/* create single-day event */}
+            {(checkedRadio === this.singleDay) && !!!dates.length &&
               <React.Fragment>
+                <label key="singleDay" className="addEventFormLabel">
+                  date & time
+                </label>
                 <DateRangePickerWithGaps
-                  numberOfDates={days}
                   handleDate={dates => {
                     this.setState(() => ({ dates }));
                   }}
                 />
-
               </React.Fragment>
+            }
+
+            {/* edit multi-day event */}
+            {(checkedRadio === this.multipleDays && days && dates.length === days) &&
+              <DateRangePickerWithGaps
+                dates={dates}
+                handleDate={dates => {
+                  this.setState(() => ({ dates }));
+                }}
+              />
+            }
+
+            {/* new multi-day event */}
+            {(checkedRadio === this.multipleDays && days && dates.length !== days) &&
+              <DateRangePickerWithGaps
+                numberOfDates={days}
+                handleDate={dates => {
+                  this.setState(() => ({ dates }));
+                }}
+              />
             }
 
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '32px', marginBottom: '72px' }}>

@@ -13,7 +13,7 @@ import {
   defaultFont
 } from "../../variables/styles";
 
-const tableStyle = theme => ({
+export default theme => ({
   warningTableHeader: {
     color: warningColor
   },
@@ -58,7 +58,10 @@ const tableStyle = theme => ({
     width: "100%",
     marginTop: theme.spacing.unit * 3,
     overflowX: "auto"
+  },
+  button: {
+    "&,&:hover": {
+      cursor: 'pointer'
+    }
   }
 });
-
-export default tableStyle;

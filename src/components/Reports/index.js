@@ -26,32 +26,32 @@ class Reports extends Component {
     description: '',
     url: '',
   };
-  token = localStorage['token'];
-  componentDidMount() {
-    this.loadUser(this.token);
-  };
-  getCompany = async companyID => {
-    const response = await fetch(`http://localhost:8000/api/company/${companyID}`, {
-      headers: { Authorization: `Bearer ${localStorage['token']}` }
-    });
-    const json = await response.json()
-    const {
-      company,
-      verticals,
-      error,
-    } = json;
-    if (company) {
-      const {
-        logo,
-        employeeCount,
-        id: companyID,
-        name: companyName,
-      } = company;
-    }
-  };
+  // token = localStorage['token'];
+  // componentDidMount() {
+  //   this.loadUser(this.token);
+  // };
+  // getCompany = async companyID => {
+  //   const response = await fetch(`http://localhost:8000/api/company/${companyID}`, {
+  //     headers: { Authorization: `Bearer ${localStorage['token']}` }
+  //   });
+  //   const json = await response.json()
+  //   const {
+  //     company,
+  //     verticals,
+  //     error,
+  //   } = json;
+  //   if (company) {
+  //     const {
+  //       logo,
+  //       employeeCount,
+  //       id: companyID,
+  //       name: companyName,
+  //     } = company;
+  //   }
+  // };
   render() {
     return (
-      <div>foo</div>
+      <div>reports</div>
     );
   }
 }

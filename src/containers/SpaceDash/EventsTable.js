@@ -51,10 +51,10 @@ export default withStyles(tableStyle)(
                   <TableCell className={classes.tableCell + " " + classes.tableHeadCell}>
                     Start Date
                   </TableCell>
-                  <TableCell className={classes.tableCell + " " + classes.tableHeadCell}>
+                  <TableCell className={`${classes.tableCell} ${classes.tableHeadCell}`}>
                     Edit
                   </TableCell>
-                  <TableCell className={classes.tableCell + " " + classes.tableHeadCell}>
+                  <TableCell className={`${classes.tableCell} ${classes.tableHeadCell}`}>
                     Delete
                   </TableCell>
                 </TableRow>
@@ -72,7 +72,7 @@ export default withStyles(tableStyle)(
                       {e.date}
                     </TableCell>
                     <TableCell
-                      className={classes.tableCell}
+                      className={`${classes.tableCell} ${classes.button}`}
                       onClick={() => {
                         changeMenu('editEvent');
                         editEventID(e.id);
@@ -81,7 +81,7 @@ export default withStyles(tableStyle)(
                       <span style={{ fontWeight: 'bold' }}>Update</span>
                     </TableCell>
                     <TableCell
-                      className={classes.tableCell}
+                      className={`${classes.tableCell} ${classes.button}`}
                       onClick={() => deleteEvent(e.id, key)}
                     >
                       <span style={{ fontWeight: 'bold' }}>Delete</span>
