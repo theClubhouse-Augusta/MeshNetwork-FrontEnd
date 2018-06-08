@@ -1,9 +1,3 @@
-/*
- *
- * Dashboard
- *
- */
-
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -13,20 +7,14 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-
 import FlatButton from 'material-ui/Button';
 import Card, { CardActions, CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-// import { FormControl} from 'material-ui/Form';
-// import Input, { InputLabel } from 'material-ui/Input';
 import { LinearProgress } from 'material-ui/Progress';
 import Snackbar from 'material-ui/Snackbar';
-
 import PreviousIcon from 'react-icons/lib/fa/arrow-left';
 import NextIcon from 'react-icons/lib/fa/arrow-right';
-
 import Header from '../../components/Header';
-
 import './style.css';
 import './styleM.css';
 
@@ -36,7 +24,7 @@ export default class LMSDash extends React.PureComponent {
     super(props);
     this.state = {
       token: localStorage.getItem('token'),
-      user: '',
+      user: JSON.parse(localStorage.getItem('user')),
       category: 0,
       courses: [],
       categories: [],
@@ -51,7 +39,7 @@ export default class LMSDash extends React.PureComponent {
     }
   }
   componentDidMount() {
-    this.getUser();
+    //this.getUser();
     this.getCourses(0);
     this.getCategories();
   };
@@ -227,7 +215,7 @@ export default class LMSDash extends React.PureComponent {
   }
 
   renderNewCourse = () => {
-    if (this.state.user.roleID === 1 || this.state.user.roleID === 4) {
+    if (this.state.user.roleID === 1 || this.state.user.roleID === 3) {
       return (
         <div className="lmsHomeMainBlock" onClick={this.createCourse}>
           <Card style={{ height: '380px' }}>
@@ -245,7 +233,7 @@ export default class LMSDash extends React.PureComponent {
   };
   renderProgress = (course) => {
     if (this.state.user) {
-      if (this.state.user.roleID !== 4) {
+      if (this.state.user.roleID !== 3) {
         return (
           <div style={{ marginTop: '10px' }}>
             <span className="lmsProgressHeader" style={{ fontFamily: 'Noto Sans' }}>Completed: {course.complete}</span>

@@ -1166,11 +1166,9 @@ export default class EventInformation extends Component {
                 onChange={this.toggleNewSponsors}
                 checked={checkNewSponsors}
               />
-
               <label style={{ color: 'rgba(0,0,0,0.54)' }} htmlFor="newSponsors" >
                 &nbsp;&nbsp;Add new sponsor
-                            </label>
-
+              </label>
             </div>
 
             {checkNewSponsors && [
