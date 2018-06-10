@@ -30,7 +30,7 @@ export default class NewCourse extends React.PureComponent {
       lessons: [],
       activeLesson: -1,
       activeLecture: 0,
-      activeView: "",
+      activeView: {},
       activeLectureType: "Text",
       courseName: "",
       courseSummary: "",
@@ -51,17 +51,17 @@ export default class NewCourse extends React.PureComponent {
     this.getCategories();
     this.getCourse(this.props.match.params.id);
   };
-  handleRequestClose = () => { 
-    this.setState({ 
-      snack: false, 
-      msg: "" 
-    }); 
+  handleRequestClose = () => {
+    this.setState({
+      snack: false,
+      msg: ""
+    });
   };
-  showSnack = msg => { 
-    this.setState({ 
-      snack: true, 
-      msg: msg 
-    }); 
+  showSnack = msg => {
+    this.setState({
+      snack: true,
+      msg: msg
+    });
   };
   getCourse = id => {
     fetch("http://localhost:8000/api/editCourse/" + id, {
@@ -135,36 +135,45 @@ export default class NewCourse extends React.PureComponent {
       })
   };
   handleCourseName = event => {
+    console.log('handleCourseName');
     this.setState({ courseName: event.target.value });
   };
   handleCourseSummary = event => {
+    console.log('handleCourseSummary');
     this.setState({ courseSummary: event.target.value })
   };
   handleCoursePrice = event => {
+    console.log('handleCoursePrice');
     this.setState({ coursePrice: event.target.value });
   };
   handleCourseCategory = event => {
+    console.log('handleCourseCategory');
     this.setState({ courseCategory: event.target.value });
   }
   handleCourseInformation = editorState => {
+    console.log('handleCourseInformation');
     this.setState({
       courseInformation: editorState,
       editorState
     });
   };
   handleCourseInstructorName = event => {
+    console.log('handleCourseInstructorName');
     this.setState({ courseInstructorName: event.target.value });
   };
   handleCourseInstructorInfo = event => {
+    console.log('handleCourseInstructorInfo');
     this.setState({ courseInstructorInfo: event.target.value });
   };
   handleLectureName = (i, j, event) => {
+    console.log('handleLectureName');
     let lessons = [...this.state.lessons];
     lessons[i].lectures[j].lectureName = event.target.value;
     this.setState(() => ({ lessons }));
   };
   handleLectureContent = editorState => {
-    let activeView = this.state.activeView;
+    console.log('handleLectureContent');
+    let activeView = { ...this.state.activeView };
     let lessons = this.state.lessons;
     activeView.lectureContent = editorState;
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureContent = editorState;
@@ -175,7 +184,8 @@ export default class NewCourse extends React.PureComponent {
     })
   };
   handleLectureType = (event, index, value) => {
-    let activeView = this.state.activeView;
+    console.log('handleLectureType');
+    let activeView = { ...this.state.activeView };
     let lessons = [...this.state.lessons];
     activeView.lectureType = event.target.value;
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureType = event.target.value;
@@ -188,7 +198,8 @@ export default class NewCourse extends React.PureComponent {
     });
   };
   handleLectureVideo = (event, index, value) => {
-    let activeView = this.state.activeView;
+    console.log('handleLectureVideo');
+    let activeView = { ...this.state.activeView };
     let lessons = [...this.state.lessons];
     activeView.lectureVideo = event.target.value;
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureVideo = event.target.value;
@@ -200,6 +211,7 @@ export default class NewCourse extends React.PureComponent {
     });
   };
   handleCourseImage = (event) => {
+    console.log('handleCourseImage');
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
@@ -214,6 +226,7 @@ export default class NewCourse extends React.PureComponent {
     reader.readAsDataURL(file);
   };
   handleCourseInstructorAvatar = (event) => {
+    console.log('handleCourseInstructorAvatar');
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
@@ -228,11 +241,13 @@ export default class NewCourse extends React.PureComponent {
     reader.readAsDataURL(file);
   };
   handleLessonName = (index, event) => {
+    console.log('handleLessonName');
     let lessons = [...this.state.lessons];
     lessons[index].lessonName = event.target.value
     this.setState({ lessons });
   };
   handleLectureFile = (event) => {
+    console.log('handleLectureFile');
     event.preventDefault();
     let reader = new FileReader();
     let files = event.target.files;
@@ -258,12 +273,14 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   createLecture = (index) => {
+    console.log('createLecture');
     let lessons = [...this.state.lessons];
     let lecture = { "id": 0, "lectureName": "Lecture Title", "lectureContent": "", "lectureType": "Text", "lectureFiles": [], "lectureQuestions": [], "pendingDelete": false };
     lessons[index].lectures.push(lecture);
     this.setState({ lessons });
   };
   storeQuestion = (type) => {
+    console.log('storeQuestion');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     if (lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions.length < 50) {
@@ -294,6 +311,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   handleQuestion = (i, event) => {
+    console.log('handleQuestion');
     let lessons = [...this.state.lessons];
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionContent = event.target.value;
     this.setState({ lessons });
@@ -322,6 +340,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   storeAnswer = (i) => {
+    console.log('storeAnswer');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     let questionID = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].id;
@@ -352,11 +371,13 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   handleAnswer = (i, j, event) => {
+    console.log('handleAnswer');
     let lessons = [...this.state.lessons];
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].answerContent = event.target.value;
     this.setState({ lessons });
   };
   updateAnswer = (i, j, event) => {
+    console.log('updateAnswer');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     let id = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].id;
@@ -381,6 +402,7 @@ export default class NewCourse extends React.PureComponent {
   };
   // setCorrect = (i, j, event) => { // }
   updateCorrect = (i, j, id) => {
+    console.log('updateCorrect');
     let lessons = [...this.state.lessons];
     for (let x = 0; x < lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers.length; x++) {
       if (lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[x].isCorrect === true) {
@@ -403,6 +425,7 @@ export default class NewCourse extends React.PureComponent {
     this.setState({ lessons });
   };
   updateCourse = courseStatus => {
+    console.log('updateCourse');
     if (courseStatus === 'Published') {
       this.setState({ isSaving: true });
     }
@@ -444,6 +467,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   updateCourseImage = () => {
+    console.log('updateCourseImage');
     this.setState({ isSaving: true })
     let data = new FormData();
     data.append('courseImage', this.state.courseImage);
@@ -464,6 +488,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   updateCourseInstructorAvatar = () => {
+    console.log('updateCourseInstructorAvatar');
     this.setState({ isSaving: true });
     let data = new FormData();
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
@@ -484,6 +509,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   storeLesson = () => {
+    console.log('storeLesson');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     data.append('courseID', this.props.match.params.id);
@@ -514,6 +540,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   updateLesson = (id, lessonName) => {
+    console.log('updateLesson');
     let data = new FormData();
     data.append('lessonName', lessonName);
     fetch(`http://localhost:8000/api/updateLesson/${id}`, {
@@ -533,11 +560,14 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   updateLecture = (i, j) => {
+    console.log('updateLecture');
     let lessons = [...this.state.lessons];
     let id = lessons[i].lectures[j].id;
     let data = new FormData();
     data.append('lectureName', lessons[i].lectures[j].lectureName);
+    //foobar if (lessons[i].lectures[j].lectureContent.getCurrentContent) {
     data.append('lectureContent', draftToHtml(convertToRaw(lessons[i].lectures[j].lectureContent.getCurrentContent())));
+    // foobar }
     data.append('lectureType', lessons[i].lectures[j].lectureType);
     data.append('lectureVideo', lessons[i].lectures[j].lectureVideo);
     fetch(`http://localhost:8000/api/updateLecture/${id}`, {
@@ -553,6 +583,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   storeLecture = i => {
+    console.log('storeLecture');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     data.append('lessonID', lessons[i].id);
@@ -590,6 +621,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   storeFile = (file, index) => {
+    console.log('storeFile');
     let lessons = [...this.state.lessons];
     let data = new FormData();
     data.append('lectureID', this.state.activeView.id);
@@ -615,6 +647,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   deleteLesson = (id, i) => {
+    console.log('deleteLesson');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteLesson/${id}`, {
       method: 'POST',
@@ -633,6 +666,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   deleteLecture = (id, i, j) => {
+    console.log('deleteLecture');
     let lessons = this.state.lessons;
     fetch(`http://localhost:8000/api/deleteLecture/${id}`, {
       method: 'POST',
@@ -649,6 +683,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   deleteQuestion = (id, i) => {
+    console.log('deleteQuestion');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteQuestion/${id}`, {
       method: 'POST',
@@ -665,6 +700,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   deleteAnswer = (id, i, j) => {
+    console.log('deleteAnswer');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteAnswer/${id}`, {
       method: 'POST',
@@ -681,6 +717,7 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   deleteFile = (id, i) => {
+    console.log('deleteFile');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteFile/${id}`, {
       method: 'POST',
@@ -697,19 +734,24 @@ export default class NewCourse extends React.PureComponent {
       });
   };
   confirmLessonDelete = i => {
+    console.log('confirmLessonDelete');
     let lessons = [...this.state.lessons];
     lessons[i].pendingDelete = !lessons[i].pendingDelete;
     this.setState({ lessons });
   };
   confirmLectureDelete = (i, j) => {
+    console.log('confirmLectureDelete');
     let lessons = [...this.state.lessons];
     lessons[i].lectures[j].pendingDelete = !lessons[i].lectures[j].pendingDelete;
     this.setState({ lessons });
   };
   changeMenu = (i, j = -1) => {
+    console.log('changeMenu');
     let lessons = [...this.state.lessons];
+    // foobar    if (j !== -1 && lessons[i].lectures[j].lectureContent) {
     if (j !== -1) {
       if (typeof lessons[i].lectures[j].lectureContent === 'object') {
+        // foobar      if (lessons[i].lectures[j].lectureContent.getCurrentContent) {
         lessons[i].lectures[j].lectureContent = draftToHtml(convertToRaw(lessons[i].lectures[j].lectureContent.getCurrentContent()));
       }
     }
@@ -719,6 +761,9 @@ export default class NewCourse extends React.PureComponent {
       lessons,
     }, () => {
       if (j !== -1) {
+        // foobar     const foo = lessons[i].lectures[j].lectureContent;
+        // foobar     let contentBlock = convertFromHTML(foo);
+        // foobar     if (contentBlock.contentBlocks !== null) {
         lessons[i].lectures[j].lectureContent = EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(lessons[i].lectures[j].lectureContent)));
         let activeView = lessons[i].lectures[j];
         this.setState({
@@ -726,12 +771,14 @@ export default class NewCourse extends React.PureComponent {
           activeView,
           activeLectureType: activeView.lectureType
         })
+        // foobar       }
       } else {
         this.updateCourse(this.state.courseStatus);
       }
     });
   };
   renderMenu = (i, j, lecture) => {
+    console.log('renderMenu');
     if (i === this.state.activeLesson) {
       if (j === this.state.activeLecture) {
         return (
@@ -781,6 +828,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderDiscussionMenu = () => {
+    console.log('renderDiscussionMenu');
     if (this.state.activeLesson === -1) {
       return (
         <div className="lmsLessonBlock">
@@ -828,6 +876,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderPromoImageText = () => {
+    console.log('renderPromoImageText');
     if (this.state.courseImagePreview === "" || this.state.courseImagePreview === undefined || this.state.courseImagePreview === null) {
       return (
         <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
@@ -840,6 +889,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderAvatarImageText = () => {
+    console.log('renderAvatarImageText');
     if (this.state.courseInstructorAvatarPreview === "" || this.state.courseInstructorAvatarPreview === undefined || this.state.courseInstructorAvatarPreview === null) {
       return (
         <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
@@ -852,6 +902,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderFileUpload = () => {
+    console.log('renderFileUpload');
     if (this.state.activeView.lectureFiles.length < 5) {
       return (
         <div>
@@ -864,6 +915,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderFile = (file, index) => {
+    console.log('renderFile');
     if (file.isLoading === true) {
       return (
         <div key={`lmsRenderFile${index}`}>
@@ -904,6 +956,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderNewQuestion = (question, i) => {
+    console.log('renderNewQuestion');
     if (question.questionType === 'multiple') {
       return (
         <div className="lmsNewLectureQuestionBlock" key={`lmsLecture${i}`}>
@@ -962,6 +1015,7 @@ export default class NewCourse extends React.PureComponent {
   };
 
   renderNewAnswer = (answer, i, j) => {
+    console.log('renderNewAnswer');
     let letter = "A";
     if (j === 0) { letter = "A" }
     else if (j === 1) { letter = "B" }
@@ -996,6 +1050,7 @@ export default class NewCourse extends React.PureComponent {
     );
   };
   renderLessonDelete = (id, i) => {
+    console.log('renderLessonDelete');
     let lessons = [...this.state.lessons];
     if (lessons[i].pendingDelete === true) {
       return (
@@ -1013,6 +1068,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderLectureDelete = (id, i, j) => {
+    console.log('renderLectureDelete');
     let lessons = [...this.state.lessons];
     if (lessons[i].lectures[j].pendingDelete === true) {
       return (
@@ -1030,6 +1086,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderSaving = () => {
+    console.log('renderSaving');
     if (this.state.isSaving === true) {
       return (
         <LinearProgress variant='indeterminate' style={{ position: 'fixed', top: '0' }} />
@@ -1037,6 +1094,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderLectureContent = () => {
+    console.log('renderLectureContent');
     if (this.state.activeView.lectureType === "Text") {
       return (
         <div className="lmsLessonMainContent">
@@ -1105,6 +1163,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderCourseImage = () => {
+    console.log('renderCourseImage');
     if (this.state.courseImage !== "") {
       return (
         <img alt="" src={this.state.courseImagePreview} className="lmsNewCourseImagePreview" />
@@ -1116,6 +1175,7 @@ export default class NewCourse extends React.PureComponent {
     }
   };
   renderCourseContent = () => {
+    console.log('renderCourseContent');
     if (this.state.activeLesson === -1) {
       return (
         <div className="lmsLessonColumnTwoContent">
