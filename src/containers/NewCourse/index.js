@@ -559,17 +559,20 @@ export default class NewCourse extends React.PureComponent {
         }
       });
   };
-  updateLecture = (i, j) => {
+  updateLecture = (currentLesson, currentLecture) => {
     console.log('updateLecture');
     let lessons = [...this.state.lessons];
-    let id = lessons[i].lectures[j].id;
+    let id = lessons[currentLesson].lectures[currentLecture].id;
+    console.log('id', id);
     let data = new FormData();
-    data.append('lectureName', lessons[i].lectures[j].lectureName);
-    //foobar if (lessons[i].lectures[j].lectureContent.getCurrentContent) {
-    data.append('lectureContent', draftToHtml(convertToRaw(lessons[i].lectures[j].lectureContent.getCurrentContent())));
-    // foobar }
-    data.append('lectureType', lessons[i].lectures[j].lectureType);
-    data.append('lectureVideo', lessons[i].lectures[j].lectureVideo);
+    data.append('lectureName', lessons[currentLesson].lectures[currentLecture].lectureName);
+    if (lessons[currentLesson].lectures[currentLecture].lectureContent) {
+      if (lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent) {
+        data.append('lectureContent', draftToHtml(convertToRaw(lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent())));
+      }
+    }
+    data.append('lectureType', lessons[currentLesson].lectures[currentLecture].lectureType);
+    data.append('lectureVideo', lessons[currentLesson].lectures[currentLecture].lectureVideo);
     fetch(`http://localhost:8000/api/updateLecture/${id}`, {
       method: 'POST',
       body: data,
@@ -739,90 +742,125 @@ export default class NewCourse extends React.PureComponent {
     lessons[i].pendingDelete = !lessons[i].pendingDelete;
     this.setState({ lessons });
   };
-  confirmLectureDelete = (i, j) => {
+  confirmLectureDelete = (currentLesson, currentLecture) => {
     console.log('confirmLectureDelete');
     let lessons = [...this.state.lessons];
-    lessons[i].lectures[j].pendingDelete = !lessons[i].lectures[j].pendingDelete;
+    lessons[currentLesson].lectures[currentLecture].pendingDelete = !lessons[currentLesson].lectures[currentLecture].pendingDelete;
     this.setState({ lessons });
   };
-  changeMenu = (i, j = -1) => {
-    console.log('changeMenu');
-    let lessons = [...this.state.lessons];
-    // foobar    if (j !== -1 && lessons[i].lectures[j].lectureContent) {
-    if (j !== -1) {
-      if (typeof lessons[i].lectures[j].lectureContent === 'object') {
-        // foobar      if (lessons[i].lectures[j].lectureContent.getCurrentContent) {
-        lessons[i].lectures[j].lectureContent = draftToHtml(convertToRaw(lessons[i].lectures[j].lectureContent.getCurrentContent()));
+  changeMenu = (currentLesson, currentLecture = -1) => {
+    const { activeLesson, activeLecture } = this.state;
+    const duplicate = ((activeLesson === currentLesson) && (activeLecture === currentLecture));
+    if (!duplicate) {
+      let lessons = [...this.state.lessons];
+      console.log('less', lessons);
+      if (currentLecture !== -1 && lessons[currentLesson].lectures[currentLecture].lectureContent) {
+        if (lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent) {
+          lessons[currentLesson].lectures[currentLecture].lectureContent = draftToHtml(convertToRaw(lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent()));
+        }
       }
+      this.setState({
+        activeLesson: currentLesson,
+        activeLecture: currentLecture,
+        lessons,
+      }, () => {
+        if (currentLecture !== -1) {
+          const content = lessons[currentLesson].lectures[currentLecture].lectureContent;
+          if (content !== null) {
+            let contentBlock = convertFromHTML(content);
+            if (contentBlock.contentBlocks !== null) {
+              lessons[currentLesson].lectures[currentLecture].lectureContent = EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(lessons[currentLesson].lectures[currentLecture].lectureContent)));
+              let activeView = lessons[currentLesson].lectures[currentLecture];
+              this.setState({
+                lessons,
+                activeView,
+                activeLectureType: activeView.lectureType
+              });
+            }
+          }
+        } else {
+          this.updateCourse(this.state.courseStatus);
+        }
+      });
     }
-    this.setState({
-      activeLesson: i,
-      activeLecture: j,
-      lessons,
-    }, () => {
-      if (j !== -1) {
-        // foobar     const foo = lessons[i].lectures[j].lectureContent;
-        // foobar     let contentBlock = convertFromHTML(foo);
-        // foobar     if (contentBlock.contentBlocks !== null) {
-        lessons[i].lectures[j].lectureContent = EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(lessons[i].lectures[j].lectureContent)));
-        let activeView = lessons[i].lectures[j];
-        this.setState({
-          lessons,
-          activeView,
-          activeLectureType: activeView.lectureType
-        })
-        // foobar       }
-      } else {
-        this.updateCourse(this.state.courseStatus);
-      }
-    });
   };
-  renderMenu = (i, j, lecture) => {
+  renderMenu = (currentLesson, currentLecture, lecture) => {
     console.log('renderMenu');
-    if (i === this.state.activeLesson) {
-      if (j === this.state.activeLecture) {
+    if (currentLesson === this.state.activeLesson) {
+      console.log('one');
+      if (currentLecture === this.state.activeLecture) {
+        console.log('two');
         return (
-          <div className="lmsNewBlockItemContainer" key={`lmsLecturecontain${j}`}>
+          <div className="lmsNewBlockItemContainer" key={`lmsLecturecontain${currentLecture}`}>
             <div
               className="lmsNewBlockItem"
-              onClick={() => this.changeMenu(i, j)}
+              onClick={() => this.changeMenu(currentLesson, currentLecture)}
               style={{ borderLeft: '5px solid  #6fc13e' }}
             >
               <input
                 className="lmsNewBlockItemInput"
                 value={lecture.lectureName}
-                onChange={(event) => this.handleLectureName(i, j, event)}
-                onBlur={() => this.updateLecture(i, j)}
+                onChange={(event) => this.handleLectureName(currentLesson, currentLecture, event)}
+                onBlur={() => this.updateLecture(currentLesson, currentLecture)}
               />
               <div className="lmsNewLessonCloseIcon">
                 <CloseIcon
                   style={{ width: '20px', height: '20px', color: '#888888', cursor: 'pointer' }}
-                  onClick={() => this.confirmLectureDelete(i, j)}
+                  onClick={() => this.confirmLectureDelete(currentLesson, currentLecture)}
                 />
               </div>
             </div>
-            {this.renderLectureDelete(lecture.id, i, j)}
+            {this.renderLectureDelete(lecture.id, currentLesson, currentLecture)}
           </div>
         );
       } else {
+
+        console.log('three');
         return (
-          <div className="lmsNewBlockItemContainer" key={`lmsLectureRenderMenu${j}`}>
-            <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)}>
-              <input className="lmsNewBlockItemInput" value={lecture.lectureName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)} />
-              <div className="lmsNewLessonCloseIcon"><CloseIcon style={{ width: '20px', height: '20px', color: '#888888', cursor: 'pointer' }} onClick={() => this.confirmLectureDelete(i, j)} /></div>
+          <div className="lmsNewBlockItemContainer" key={`lmsLectureRenderMenu${currentLecture}`}>
+            <div
+              className="lmsNewBlockItem"
+              onClick={() => this.changeMenu(currentLesson, currentLecture)}
+            >
+              <input
+                className="lmsNewBlockItemInput"
+                value={lecture.lectureName}
+                onChange={(event) => this.handleLectureName(currentLesson, currentLecture, event)}
+                onBlur={() => this.updateLecture(currentLesson, currentLecture)}
+              />
+              <div className="lmsNewLessonCloseIcon">
+                <CloseIcon
+                  style={{ width: '20px', height: '20px', color: '#888888', cursor: 'pointer' }}
+                  onClick={() => this.confirmLectureDelete(currentLesson, currentLecture)}
+                />
+              </div>
             </div>
-            {this.renderLectureDelete(lecture.id, i, j)}
+            {this.renderLectureDelete(lecture.id, currentLesson, currentLecture)}
           </div>
         );
       }
     } else {
+      console.log('four');
       return (
-        <div className="lmsNewBlockItemContainer" key={`lmsRenderCon${j}`}>
-          <div className="lmsNewBlockItem" onClick={() => this.changeMenu(i, j)}>
-            <input className="lmsNewBlockItemInput" value={lecture.lectureName} onChange={(event) => this.handleLectureName(i, j, event)} onBlur={() => this.updateLecture(i, j)} />
-            <div className="lmsNewLessonCloseIcon"><CloseIcon style={{ width: '20px', height: '20px', color: '#888888', cursor: 'pointer' }} onClick={() => this.confirmLectureDelete(i, j)} /></div>
+        <div className="lmsNewBlockItemContainer" key={`lmsRenderCon${currentLecture}`}>
+          <div
+            className="lmsNewBlockItem"
+            onClick={() => this.changeMenu(currentLesson, currentLecture)}
+          >
+            <input
+              className="lmsNewBlockItemInput"
+              value={lecture.lectureName}
+              onChange={(event) => this.handleLectureName(currentLesson, currentLecture, event)}
+              onBlur={() => this.updateLecture(currentLesson, currentLecture)}
+            />
+            <div className="lmsNewLessonCloseIcon">
+              <CloseIcon
+                style={{ width: '20px', height: '20px', color: '#888888', cursor: 'pointer' }}
+                onClick={() => this.confirmLectureDelete(currentLesson, currentLecture)}
+              />
+            </div>
           </div>
-          {this.renderLectureDelete(lecture.id, i, j)}
+          {this.renderLectureDelete(lecture.id, currentLesson, currentLecture)}
         </div>
       );
     }
@@ -1096,6 +1134,7 @@ export default class NewCourse extends React.PureComponent {
   renderLectureContent = () => {
     console.log('renderLectureContent');
     if (this.state.activeView.lectureType === "Text") {
+      console.log('avlc', this.state.activeView.lectureContent);
       return (
         <div className="lmsLessonMainContent">
           <Editor
@@ -1334,27 +1373,27 @@ export default class NewCourse extends React.PureComponent {
                   <AddIcon color="#555555" size={25} />
                   <div className="lmsNewLessonAddButtonTitle">Add Lesson</div>
                 </div>
-                {this.state.lessons.map((lesson, i) => (
-                  <div className="lmsLessonBlock" key={`lmslessonBlock1${i}`}>
+                {!!this.state.lessons.length && this.state.lessons.map((lesson, currentLesson) => (
+                  <div className="lmsLessonBlock" key={`lmslessonBlock1${currentLesson}`}>
                     <div className="lmsNewLessonBlockHeader">
                       <input
                         className="lmsNewLessonBlockHeaderInput"
                         value={lesson.lessonName}
-                        onChange={(event) => this.handleLessonName(i, event)}
+                        onChange={(event) => this.handleLessonName(currentLesson, event)}
                         onBlur={(event) => this.updateLesson(lesson.id, event.target.value)}
                       />
                       <div className="lmsNewLessonCloseIcon">
                         <CloseIcon
                           style={{ width: '20px', height: '20px', color: '#888888', cursor: 'pointer' }}
-                          onClick={() => this.confirmLessonDelete(i)}
+                          onClick={() => this.confirmLessonDelete(currentLesson)}
                         />
                       </div>
                     </div>
-                    {this.renderLessonDelete(lesson.id, i)}
-                    {lesson.lectures.map((lecture, j) => (
-                      this.renderMenu(i, j, lecture)
+                    {this.renderLessonDelete(lesson.id, currentLesson)}
+                    {!!lesson.lectures.length && lesson.lectures.map((lecture, currentLecture) => (
+                      this.renderMenu(currentLesson, currentLecture, lecture)
                     ))}
-                    <div className="lmsNewLessonAddButton" onClick={() => this.storeLecture(i)}>
+                    <div className="lmsNewLessonAddButton" onClick={() => this.storeLecture(currentLesson)}>
                       <AddIcon color="#555555" size={25} />
                       <div className="lmsNewLessonAddButtonTitle">Add Lecture</div>
                     </div>
