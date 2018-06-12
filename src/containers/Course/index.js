@@ -88,7 +88,7 @@ export default class Course extends React.PureComponent {
         } else {
           this.showSnack(success);
           setTimeout(() => {
-            this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}`)
+            this.props.history.push(`/LMS/CourseInfo/${this.state.course.id}/${this.state.user.id}`)
           }, 2000);
         }
       });
@@ -180,7 +180,7 @@ export default class Course extends React.PureComponent {
                   </div>
                   <div className="lmsDetailCoursesBlockList">
                     {lesson.lectures.map((lecture, j) => (
-                      <div className="lmsDetailCoursesBlockItem" key={`lmscourses${j}`}>
+                      <div className="lmsDetailCoursesBlockItemTwo" key={`lmscourses${j}`}>
                         <div className="lmsDetailCoursesBlockInfo">
                           <div className="lmsDetailCoursesBlockIcon">
                             {this.renderIcon(lecture.lectureType)}

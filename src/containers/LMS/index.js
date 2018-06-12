@@ -15,7 +15,6 @@ export default class LMS extends React.PureComponent {
     this.state = {
       loggedIn: true,
       courses: []
-      //app:this.props.app
     };
   };
   async componentDidMount() {
@@ -29,50 +28,12 @@ export default class LMS extends React.PureComponent {
     }
     this.getCourses();
   };
-  /*componentWillReceiveProps(app) {
-    this.setState({
-      app:app.app
-    }, () => {
-      this.forceUpdate();
-    })
-  }
-  */
   getCourses = () => {
-    fetch("http://localhost:8000/api/getCourses/0/6", {
-      method: "GET"
-    })
+    fetch(`http://localhost:8000/api/getCourses/0/6`)
       .then(response => response.json())
-      .then(json => {
-        this.setState({
-          courses: json.courses.data
-        });
+      .then(({ courses }) => {
+        this.setState({ courses: courses.data });
       });
-  };
-  renderJoinButton = () => {
-    if (!this.state.token) {
-      return (
-        <Link
-          to={"/spaces"}
-          style={{
-            marginTop: "15px",
-            width: "20%",
-            maxWidth: "200px",
-            minWidth: "150px"
-          }}
-        >
-          <FlatButton
-            style={{
-              background: "#6fc13e",
-              color: "#FFFFFF",
-              fontWeight: "Bold",
-              width: "100%"
-            }}
-          >
-            Join Now
-          </FlatButton>
-        </Link>
-      );
-    }
   };
   render() {
     return (
@@ -90,7 +51,13 @@ export default class LMS extends React.PureComponent {
             </p>
             <p>Powering courses across different skills and goals.</p>
           </div>
-          {!this.state.loggedIn && this.renderJoinButton()}
+          {!this.state.loggedIn &&
+            <Link to={"/spaces"} style={{ marginTop: "15px", width: "20%", maxWidth: "200px", minWidth: "150px" }}>
+              <FlatButton style={{ background: "#6fc13e", color: "#FFFFFF", fontWeight: "Bold", width: "100%" }}>
+                Join Now
+              </FlatButton>
+            </Link>
+          }
         </header>
 
         <main className="lmsHomeMain">

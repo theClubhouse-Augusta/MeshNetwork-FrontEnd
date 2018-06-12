@@ -269,20 +269,18 @@
     margin-bottom: 3px;
 }
 
-.lmsDetailCoursesBlockItem:hover {
+.lmsDetailCoursesBlockItemTwo {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 171, 108, 0.2);
+    background: #eeeeee;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 2px;
     margin-bottom: 3px;
-    cursor: pointer;
-    color: rgb(0, 171, 108);
 }
 
 .lmsDetailCoursesBlockHeader {

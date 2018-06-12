@@ -750,6 +750,7 @@ export default class NewCourse extends React.PureComponent {
   };
   changeMenu = (currentLesson, currentLecture = -1) => {
     const { activeLesson, activeLecture } = this.state;
+    console.log('confirmLectureDelete');
     const duplicate = ((activeLesson === currentLesson) && (activeLecture === currentLecture));
     if (!duplicate) {
       let lessons = [...this.state.lessons];
