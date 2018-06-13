@@ -8,7 +8,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import SelectField from 'material-ui/Select';
 import Snackbar from 'material-ui/Snackbar';
 import TextField from 'material-ui/TextField';
-import React from 'react';
+import React, { Component } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Helmet from 'react-helmet';
@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import './style.css';
 import './styleM.css';
 
-export default class NewCourse extends React.PureComponent {
+export default class NewCourse extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,8 +64,8 @@ export default class NewCourse extends React.PureComponent {
     });
   };
   getCourse = id => {
-    fetch("http://localhost:8000/api/editCourse/" + id, {
-      headers: { 'Authorization': 'Bearer ' + this.state.token }
+    fetch(`http://localhost:8000/api/editCourse/${id}`, {
+      headers: { Authorization: `Bearer ${this.state.token}` }
     })
       .then(response => response.json())
       .then(({
@@ -126,9 +126,7 @@ export default class NewCourse extends React.PureComponent {
       })
   };
   getCategories = () => {
-    fetch("http://localhost:8000/api/getSubjects", {
-      method: 'GET'
-    })
+    fetch(`http://localhost:8000/api/getSubjects`)
       .then(response => response.json())
       .then(({ categories }) => {
         this.setState({ categories });
@@ -210,7 +208,7 @@ export default class NewCourse extends React.PureComponent {
       this.updateLecture(this.state.activeLesson, this.state.activeLecture);
     });
   };
-  handleCourseImage = (event) => {
+  handleCourseImage = event => {
     console.log('handleCourseImage');
     event.preventDefault();
     let reader = new FileReader();
@@ -246,7 +244,7 @@ export default class NewCourse extends React.PureComponent {
     lessons[index].lessonName = event.target.value
     this.setState({ lessons });
   };
-  handleLectureFile = (event) => {
+  handleLectureFile = event => {
     console.log('handleLectureFile');
     event.preventDefault();
     let reader = new FileReader();
@@ -272,14 +270,14 @@ export default class NewCourse extends React.PureComponent {
       }
     }
   };
-  createLecture = (index) => {
+  createLecture = index => {
     console.log('createLecture');
     let lessons = [...this.state.lessons];
     let lecture = { "id": 0, "lectureName": "Lecture Title", "lectureContent": "", "lectureType": "Text", "lectureFiles": [], "lectureQuestions": [], "pendingDelete": false };
     lessons[index].lectures.push(lecture);
     this.setState({ lessons });
   };
-  storeQuestion = (type) => {
+  storeQuestion = type => {
     console.log('storeQuestion');
     let data = new FormData();
     let lessons = [...this.state.lessons];
@@ -293,10 +291,7 @@ export default class NewCourse extends React.PureComponent {
         headers: { 'Authorization': 'Bearer ' + this.state.token }
       })
         .then(response => response.json())
-        .then(({
-          error,
-          success,
-        }) => {
+        .then(({ error, success, }) => {
           if (error) {
             this.showSnack('Your session has expired.');
           } else if (success) {
@@ -327,10 +322,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-        question,
-      }) => {
+      .then(({ error, question, }) => {
         if (error) {
           this.showSnack('Your session has expired.');
         } else if (question) {
@@ -354,10 +346,7 @@ export default class NewCourse extends React.PureComponent {
         headers: { 'Authorization': 'Bearer ' + this.state.token }
       })
         .then(response => response.json())
-        .then(({
-          error,
-          success
-        }) => {
+        .then(({ error, success }) => {
           if (error) {
             this.showSnack('Your session has expired.');
           } else if (success) {
@@ -388,10 +377,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-        answer
-      }) => {
+      .then(({ error, answer }) => {
         if (error) {
           this.showSnack('Your session has expired.');
         } else if (answer) {
@@ -452,14 +438,14 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-        success,
-      }) => {
+      .then(({ error, success, }) => {
         if (error) {
           this.showSnack('Your session has expired.');
         } else {
-          this.setState({ isSaving: false })
+          this.setState({
+            isSaving: false,
+            courseStatus,
+          })
           if (success && courseStatus === "Published") {
             this.showSnack('Course Published.');
           }
@@ -477,9 +463,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-      }) => {
+      .then(({ error }) => {
         if (error) {
           this.showSnack('Your session has expired.');
         } else {
@@ -498,9 +482,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-      }) => {
+      .then(({ error, }) => {
         if (error) {
           this.showSnack('Your session has expired');
         } else {
@@ -520,10 +502,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-        success,
-      }) => {
+      .then(({ error, success, }) => {
         if (error) {
           this.showSnack('Your session has expired.');
         } else if (success) {
@@ -549,9 +528,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-      }) => {
+      .then(({ error, }) => {
         if (error) {
           this.showSnack('Your session has expired.');
         } else {
@@ -600,10 +577,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-        success
-      }) => {
+      .then(({ error, success }) => {
         if (error) {
           this.showSnack('Your session has expired.');
         } else if (success) {
@@ -635,10 +609,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-        success,
-      }) => {
+      .then(({ error, success, }) => {
         if (error) {
           this.showSnack(error);
         }
@@ -657,9 +628,7 @@ export default class NewCourse extends React.PureComponent {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({
-        error,
-      }) => {
+      .then(({ error, }) => {
         if (error) {
           this.showSnack('Your session has expired');
         } else {
@@ -749,9 +718,21 @@ export default class NewCourse extends React.PureComponent {
     this.setState({ lessons });
   };
   changeMenu = (currentLesson, currentLecture = -1) => {
-    const { activeLesson, activeLecture } = this.state;
-    console.log('confirmLectureDelete');
+    const {
+      activeLesson,
+      activeLecture,
+      lessons,
+    } = this.state;
+    const lectureContent = lessons[currentLesson].lectures[currentLecture].lectureContent;
+    if (lectureContent === null || lectureContent === '<p></p>' || typeof lectureContent === 'object' || lectureContent === "<p></p>\n") {
+      this.setState(() => ({ activeView: {} }));
+    }
+    console.log(`lectureContent ${typeof lectureContent}`);
+    console.log('changeMenu');
+    console.log(`activeLesson ${activeLesson} activeLecture ${activeLecture}`);
+    console.log(`currentLesson ${currentLesson} currentLecture ${currentLecture}`);
     const duplicate = ((activeLesson === currentLesson) && (activeLecture === currentLecture));
+    console.log(`duplicate ${duplicate}`);
     if (!duplicate) {
       let lessons = [...this.state.lessons];
       console.log('less', lessons);
@@ -815,7 +796,6 @@ export default class NewCourse extends React.PureComponent {
           </div>
         );
       } else {
-
         console.log('three');
         return (
           <div className="lmsNewBlockItemContainer" key={`lmsLectureRenderMenu${currentLecture}`}>
@@ -1405,15 +1385,15 @@ export default class NewCourse extends React.PureComponent {
           </div>
           <div className="lmsLessonColumnTwo">
             <div className="lmsNewColumnTwoHeader">
-              <FlatButton
-                label="Save"
-                style={{ color: "#FFFFFF", marginRight: '10px' }}
+              <FlatButton label="Save" style={{ color: "#FFFFFF", marginRight: '10px' }}
                 onClick={() => this.updateCourse('Draft')}
-              >Save</FlatButton>
-              <FlatButton
-                label="Publish" style={{ color: "#FFFFFF", marginRight: '10px', background: "#6fc13e" }}
-                onClick={() => this.updateCourse('Published')}
-              >Publish</FlatButton>
+              >Save Draft</FlatButton>
+              {(this.state.courseStatus === "" || this.state.courseStatus === "Draft") &&
+                <FlatButton
+                  label="Publish" style={{ color: "#FFFFFF", marginRight: '10px', background: "#6fc13e" }}
+                  onClick={() => this.updateCourse('Published')}
+                >Publish</FlatButton>
+              }
             </div>
             {this.renderCourseContent()}
           </div>
