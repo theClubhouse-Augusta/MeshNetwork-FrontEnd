@@ -275,15 +275,23 @@ class MemberDash extends React.Component {
                     {events.map((event, index) =>
                       <div key={`${event.event.title}2${index}`} style={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center', width: '100%', }}>
                         <div>
-                          <Typography className={classes.onHover} variant="headline" gutterBottom onClick={() => { this.props.history.push(`/event/${event.event.id}`) }}>
+                          <Typography 
+                            className={classes.onHover} 
+                            variant="headline" 
+                            gutterBottom 
+                            onClick={() => { this.props.history.push(`/event/${event.event.id}`) }}
+                          >
                             {event.event.title} on {moment(event.startDate).format("MMM DD")}
                           </Typography>
                         </div>
-                        <Button onClick={() => {
-                          if (!event.event.isAttending) {
-                            this.attendEvent(event.event.id, index);
-                          }
-                        }}>
+                        <Button 
+                          onClick={() => {
+                            if (!event.event.isAttending) {
+                              this.attendEvent(event.event.id, index);
+                            }
+                          }}
+                          className={classes.calButton}
+                        >
                           {event.isAttending ? "Going" : "Add"}
                         </Button>
                       </div>

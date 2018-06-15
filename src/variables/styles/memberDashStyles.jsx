@@ -38,6 +38,8 @@ export default theme => ({
     }
   },
   onHover: {
+    fontSize: '.9em',
+    marginLeft: 60,
     cursor: 'pointer',
   },
   homeFooterContainer: {
@@ -279,5 +281,9 @@ export default theme => ({
     '100%': {
       background: 'rgba(218, 73, 83, 0.5)',
     }
+  },
+  calButton: {
+    marginLeft: 'auto',
+    marginRight: 60,
   }
 });
