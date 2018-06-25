@@ -8,10 +8,17 @@ import TextIcon from 'react-icons/lib/fa/file-text-o';
 import ExamIcon from 'react-icons/lib/fa/question';
 import YoutubeIcon from 'react-icons/lib/fa/youtube-play';
 import { Link } from 'react-router-dom';
+import { withStyles } from "material-ui";
 import './style.css';
 import './styleM.css';
 
-export default class CourseInfo extends React.PureComponent {
+const styles = theme => ({
+  root: {
+    margin: '0 0 0 45%',
+  }
+});
+
+class CourseInfo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -245,26 +252,44 @@ export default class CourseInfo extends React.PureComponent {
                   {lesson.lessonName}
                 </div>
                 <div className="lmsDetailCoursesBlockList">
-                  {lesson.lectures.map((lecture, j) => (
-                    <div className="lmsDetailCoursesBlockItem" key={`lmsDetailItem${j}`}>
-                      <div className="lmsDetailCoursesBlockInfo">
-                        {this.renderLectureStatus(lecture.status)}
-                        <div className="lmsDetailCoursesBlockIcon">
-                          {this.renderIcon(lecture.lectureType)}
-                        </div>
-                        <div className="lmsDetailCoursesBlockTitle">
-                          {lecture.lectureName}
+                  {lesson.lectures.map((lecture, j) => (j === 0 && i === 0) ? (
+                    <React.Fragment>
+                      <Link to={'/LMS/Lesson/' + this.props.match.params.id + '/' + lecture.id + '/' + this.state.user.id}>
+                        <FlatButton
+                          className={this.props.classes.root}
+                          style={{
+                            background: "#6fc13e",
+                            color: "#FFFFFF",
+                          }}
+                        >
+                          Start Course
+                        </FlatButton>
+                      </Link>
+                      <div className="lmsDetailCoursesBlockItem" key={`lmsDetailItem${j}`}>
+                        <div className="lmsDetailCoursesBlockInfo">
+                          {this.renderLectureStatus(lecture.status)}
+                          <div className="lmsDetailCoursesBlockIcon">
+                            {this.renderIcon(lecture.lectureType)}
+                          </div>
+                          <div className="lmsDetailCoursesBlockTitle">
+                            {lecture.lectureName}
+                          </div>
                         </div>
                       </div>
-                      <div className="lmsDetailCoursesBlockButton">
-                        <Link to={'/LMS/Lesson/' + this.props.match.params.id + '/' + lecture.id + '/' + this.state.user.id}>
-                          <FlatButton
-                            style={{ background: "#6fc13e", color: "#FFFFFF" }}
-                          >Start</FlatButton>
-                        </Link>
+                    </React.Fragment>
+                  ) : (
+                      <div className="lmsDetailCoursesBlockItem" key={`lmsDetailItem${j}`}>
+                        <div className="lmsDetailCoursesBlockInfo">
+                          {this.renderLectureStatus(lecture.status)}
+                          <div className="lmsDetailCoursesBlockIcon">
+                            {this.renderIcon(lecture.lectureType)}
+                          </div>
+                          <div className="lmsDetailCoursesBlockTitle">
+                            {lecture.lectureName}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             ))}
@@ -373,3 +398,4 @@ export default class CourseInfo extends React.PureComponent {
     );
   }
 }
+export default withStyles(styles)(CourseInfo);

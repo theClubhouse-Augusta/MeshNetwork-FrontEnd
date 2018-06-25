@@ -90,8 +90,8 @@ export default class EventDetail extends React.PureComponent {
     }
   };
 
-  renderChallenges = () => {
-    if (this.state.challenges.length != 0) {
+  renderChallenges = () => {    
+      if (this.state.challenges.length != 0) {
       return (
         <div className="eventDetailSection">
           <div className="eventDetailSectionTitle">Challenges</div>

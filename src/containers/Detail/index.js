@@ -342,7 +342,6 @@ export default class Detail extends React.PureComponent {
           <div
             style={{
               background: "#DDDDDD",
-              color: "#444444",
               fontSize: "0.9em",
               fontFamily: "Noto Sans",
               padding: "5px",

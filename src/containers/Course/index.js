@@ -113,7 +113,7 @@ export default class Course extends React.PureComponent {
         <FlatButton
           onClick={this.enrollCourse}
           style={{ background: "#6fc13e", color: '#FFFFFF', border: '2px solid #6fc13e', height: '50px', marginLeft: '10px', marginRight: '10px', marginTop: '10px' }}
-        >See the Course</FlatButton>
+        >Join this Course</FlatButton>
       );
     } else {
       return (

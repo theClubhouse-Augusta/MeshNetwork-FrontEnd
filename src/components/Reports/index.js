@@ -79,9 +79,9 @@ class Reports extends Component {
         url,
       } = company;
       if (!lastItem) {
-        return `${companyName},${email},${address},${city},${state},${zipcode},${url},${employeeCount},${foundingDate}\r\n`;
+        return `${companyName.replace(',', ' ')},${email},${address},${city},${state},${zipcode},${url},${employeeCount},${foundingDate}\r\n`;
       } else if (lastItem) {
-        return `${companyName},${email},${address},${city},${state},${zipcode},${url},${employeeCount},${foundingDate}`;
+        return `${companyName.replace(',', ' ')},${email},${address},${city},${state},${zipcode},${url},${employeeCount},${foundingDate}\r\n`;
       }
     } else if (error) {
       return false;

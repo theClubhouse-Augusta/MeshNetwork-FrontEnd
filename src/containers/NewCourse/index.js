@@ -133,44 +133,44 @@ export default class NewCourse extends Component {
       })
   };
   handleCourseName = event => {
-    console.log('handleCourseName');
+    // console.log('handleCourseName');
     this.setState({ courseName: event.target.value });
   };
   handleCourseSummary = event => {
-    console.log('handleCourseSummary');
+    // console.log('handleCourseSummary');
     this.setState({ courseSummary: event.target.value })
   };
   handleCoursePrice = event => {
-    console.log('handleCoursePrice');
+    // console.log('handleCoursePrice');
     this.setState({ coursePrice: event.target.value });
   };
   handleCourseCategory = event => {
-    console.log('handleCourseCategory');
+    // console.log('handleCourseCategory');
     this.setState({ courseCategory: event.target.value });
   }
   handleCourseInformation = editorState => {
-    console.log('handleCourseInformation');
+    // console.log('handleCourseInformation');
     this.setState({
       courseInformation: editorState,
       editorState
     });
   };
   handleCourseInstructorName = event => {
-    console.log('handleCourseInstructorName');
+    // console.log('handleCourseInstructorName');
     this.setState({ courseInstructorName: event.target.value });
   };
   handleCourseInstructorInfo = event => {
-    console.log('handleCourseInstructorInfo');
+    // console.log('handleCourseInstructorInfo');
     this.setState({ courseInstructorInfo: event.target.value });
   };
   handleLectureName = (i, j, event) => {
-    console.log('handleLectureName');
+    // console.log('handleLectureName');
     let lessons = [...this.state.lessons];
     lessons[i].lectures[j].lectureName = event.target.value;
     this.setState(() => ({ lessons }));
   };
   handleLectureContent = editorState => {
-    console.log('handleLectureContent');
+    // console.log('handleLectureContent');
     let activeView = { ...this.state.activeView };
     let lessons = this.state.lessons;
     activeView.lectureContent = editorState;
@@ -182,7 +182,7 @@ export default class NewCourse extends Component {
     })
   };
   handleLectureType = (event, index, value) => {
-    console.log('handleLectureType');
+    // console.log('handleLectureType');
     let activeView = { ...this.state.activeView };
     let lessons = [...this.state.lessons];
     activeView.lectureType = event.target.value;
@@ -196,7 +196,7 @@ export default class NewCourse extends Component {
     });
   };
   handleLectureVideo = (event, index, value) => {
-    console.log('handleLectureVideo');
+    // console.log('handleLectureVideo');
     let activeView = { ...this.state.activeView };
     let lessons = [...this.state.lessons];
     activeView.lectureVideo = event.target.value;
@@ -209,7 +209,7 @@ export default class NewCourse extends Component {
     });
   };
   handleCourseImage = event => {
-    console.log('handleCourseImage');
+    // console.log('handleCourseImage');
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
@@ -224,7 +224,7 @@ export default class NewCourse extends Component {
     reader.readAsDataURL(file);
   };
   handleCourseInstructorAvatar = (event) => {
-    console.log('handleCourseInstructorAvatar');
+    // console.log('handleCourseInstructorAvatar');
     event.preventDefault();
     let reader = new FileReader();
     let file = event.target.files[0];
@@ -239,7 +239,7 @@ export default class NewCourse extends Component {
     reader.readAsDataURL(file);
   };
   handleLessonName = (index, event) => {
-    console.log('handleLessonName');
+    // console.log('handleLessonName');
     let lessons = [...this.state.lessons];
     lessons[index].lessonName = event.target.value
     this.setState({ lessons });
@@ -254,10 +254,12 @@ export default class NewCourse extends Component {
       this.showSnack('Please Select 5 or Less Files');
     } else {
       for (let i = 0; i < files.length; i++) {
-        if (lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles.length >= 5) {
+        // if (lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles.length >= 5) {
+        if (false) {
           this.showSnack('Please Select 5 or Less Files');
         } else {
           let fileData = { "isLoading": true, "fileData": files[i], "id": 0 };
+          console.log(lessons);
           lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureFiles.push(fileData);
           reader.onloadend = () => {
             this.setState({ lessons },
@@ -271,14 +273,14 @@ export default class NewCourse extends Component {
     }
   };
   createLecture = index => {
-    console.log('createLecture');
+    // console.log('createLecture');
     let lessons = [...this.state.lessons];
     let lecture = { "id": 0, "lectureName": "Lecture Title", "lectureContent": "", "lectureType": "Text", "lectureFiles": [], "lectureQuestions": [], "pendingDelete": false };
     lessons[index].lectures.push(lecture);
     this.setState({ lessons });
   };
   storeQuestion = type => {
-    console.log('storeQuestion');
+    // console.log('storeQuestion');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     if (lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions.length < 50) {
@@ -306,7 +308,7 @@ export default class NewCourse extends Component {
     }
   };
   handleQuestion = (i, event) => {
-    console.log('handleQuestion');
+    // console.log('handleQuestion');
     let lessons = [...this.state.lessons];
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionContent = event.target.value;
     this.setState({ lessons });
@@ -332,7 +334,7 @@ export default class NewCourse extends Component {
       });
   };
   storeAnswer = (i) => {
-    console.log('storeAnswer');
+    // console.log('storeAnswer');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     let questionID = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].id;
@@ -360,13 +362,13 @@ export default class NewCourse extends Component {
     }
   };
   handleAnswer = (i, j, event) => {
-    console.log('handleAnswer');
+    // console.log('handleAnswer');
     let lessons = [...this.state.lessons];
     lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].answerContent = event.target.value;
     this.setState({ lessons });
   };
   updateAnswer = (i, j, event) => {
-    console.log('updateAnswer');
+    // console.log('updateAnswer');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     let id = lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[j].id;
@@ -388,7 +390,7 @@ export default class NewCourse extends Component {
   };
   // setCorrect = (i, j, event) => { // }
   updateCorrect = (i, j, id) => {
-    console.log('updateCorrect');
+    // console.log('updateCorrect');
     let lessons = [...this.state.lessons];
     for (let x = 0; x < lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers.length; x++) {
       if (lessons[this.state.activeLesson].lectures[this.state.activeLecture].lectureQuestions[i].questionAnswers[x].isCorrect === true) {
@@ -411,7 +413,7 @@ export default class NewCourse extends Component {
     this.setState({ lessons });
   };
   updateCourse = courseStatus => {
-    console.log('updateCourse');
+    // console.log('updateCourse');
     if (courseStatus === 'Published') {
       this.setState({ isSaving: true });
     }
@@ -453,7 +455,7 @@ export default class NewCourse extends Component {
       });
   };
   updateCourseImage = () => {
-    console.log('updateCourseImage');
+    // console.log('updateCourseImage');
     this.setState({ isSaving: true })
     let data = new FormData();
     data.append('courseImage', this.state.courseImage);
@@ -472,7 +474,7 @@ export default class NewCourse extends Component {
       });
   };
   updateCourseInstructorAvatar = () => {
-    console.log('updateCourseInstructorAvatar');
+    // console.log('updateCourseInstructorAvatar');
     this.setState({ isSaving: true });
     let data = new FormData();
     data.append('courseInstructorAvatar', this.state.courseInstructorAvatar);
@@ -491,7 +493,7 @@ export default class NewCourse extends Component {
       });
   };
   storeLesson = () => {
-    console.log('storeLesson');
+    // console.log('storeLesson');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     data.append('courseID', this.props.match.params.id);
@@ -519,7 +521,7 @@ export default class NewCourse extends Component {
       });
   };
   updateLesson = (id, lessonName) => {
-    console.log('updateLesson');
+    // console.log('updateLesson');
     let data = new FormData();
     data.append('lessonName', lessonName);
     fetch(`http://localhost:8000/api/updateLesson/${id}`, {
@@ -537,10 +539,10 @@ export default class NewCourse extends Component {
       });
   };
   updateLecture = (currentLesson, currentLecture) => {
-    console.log('updateLecture');
+    // console.log('updateLecture');
     let lessons = [...this.state.lessons];
     let id = lessons[currentLesson].lectures[currentLecture].id;
-    console.log('id', id);
+    // console.log('id', id);
     let data = new FormData();
     data.append('lectureName', lessons[currentLesson].lectures[currentLecture].lectureName);
     if (lessons[currentLesson].lectures[currentLecture].lectureContent) {
@@ -563,7 +565,7 @@ export default class NewCourse extends Component {
       });
   };
   storeLecture = i => {
-    console.log('storeLecture');
+    // console.log('storeLecture');
     let data = new FormData();
     let lessons = [...this.state.lessons];
     data.append('lessonID', lessons[i].id);
@@ -598,7 +600,7 @@ export default class NewCourse extends Component {
       });
   };
   storeFile = (file, index) => {
-    console.log('storeFile');
+    // console.log('storeFile');
     let lessons = [...this.state.lessons];
     let data = new FormData();
     data.append('lectureID', this.state.activeView.id);
@@ -621,7 +623,7 @@ export default class NewCourse extends Component {
       });
   };
   deleteLesson = (id, i) => {
-    console.log('deleteLesson');
+    // console.log('deleteLesson');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteLesson/${id}`, {
       method: 'POST',
@@ -638,7 +640,7 @@ export default class NewCourse extends Component {
       });
   };
   deleteLecture = (id, i, j) => {
-    console.log('deleteLecture');
+    // console.log('deleteLecture');
     let lessons = this.state.lessons;
     fetch(`http://localhost:8000/api/deleteLecture/${id}`, {
       method: 'POST',
@@ -655,7 +657,7 @@ export default class NewCourse extends Component {
       });
   };
   deleteQuestion = (id, i) => {
-    console.log('deleteQuestion');
+    // console.log('deleteQuestion');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteQuestion/${id}`, {
       method: 'POST',
@@ -672,7 +674,7 @@ export default class NewCourse extends Component {
       });
   };
   deleteAnswer = (id, i, j) => {
-    console.log('deleteAnswer');
+    // console.log('deleteAnswer');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteAnswer/${id}`, {
       method: 'POST',
@@ -689,7 +691,7 @@ export default class NewCourse extends Component {
       });
   };
   deleteFile = (id, i) => {
-    console.log('deleteFile');
+    // console.log('deleteFile');
     let lessons = [...this.state.lessons];
     fetch(`http://localhost:8000/api/deleteFile/${id}`, {
       method: 'POST',
@@ -706,13 +708,13 @@ export default class NewCourse extends Component {
       });
   };
   confirmLessonDelete = i => {
-    console.log('confirmLessonDelete');
+    // console.log('confirmLessonDelete');
     let lessons = [...this.state.lessons];
     lessons[i].pendingDelete = !lessons[i].pendingDelete;
     this.setState({ lessons });
   };
   confirmLectureDelete = (currentLesson, currentLecture) => {
-    console.log('confirmLectureDelete');
+    // console.log('confirmLectureDelete');
     let lessons = [...this.state.lessons];
     lessons[currentLesson].lectures[currentLecture].pendingDelete = !lessons[currentLesson].lectures[currentLecture].pendingDelete;
     this.setState({ lessons });
@@ -723,19 +725,22 @@ export default class NewCourse extends Component {
       activeLecture,
       lessons,
     } = this.state;
+    if (currentLesson === 'instructor') {
+      this.setState({ activeLesson: -2 });
+      return;
+    }
+    if (currentLesson === 'courseDescription') {
+      this.setState({ activeLesson: -1 });
+      return;
+    }
+
     const lectureContent = lessons[currentLesson].lectures[currentLecture].lectureContent;
     if (lectureContent === null || lectureContent === '<p></p>' || typeof lectureContent === 'object' || lectureContent === "<p></p>\n") {
       this.setState(() => ({ activeView: {} }));
     }
-    console.log(`lectureContent ${typeof lectureContent}`);
-    console.log('changeMenu');
-    console.log(`activeLesson ${activeLesson} activeLecture ${activeLecture}`);
-    console.log(`currentLesson ${currentLesson} currentLecture ${currentLecture}`);
     const duplicate = ((activeLesson === currentLesson) && (activeLecture === currentLecture));
-    console.log(`duplicate ${duplicate}`);
     if (!duplicate) {
       let lessons = [...this.state.lessons];
-      console.log('less', lessons);
       if (currentLecture !== -1 && lessons[currentLesson].lectures[currentLecture].lectureContent) {
         if (lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent) {
           lessons[currentLesson].lectures[currentLecture].lectureContent = draftToHtml(convertToRaw(lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent()));
@@ -765,13 +770,14 @@ export default class NewCourse extends Component {
         }
       });
     }
+
   };
   renderMenu = (currentLesson, currentLecture, lecture) => {
-    console.log('renderMenu');
+    // console.log('renderMenu');
     if (currentLesson === this.state.activeLesson) {
-      console.log('one');
+      // console.log('one');
       if (currentLecture === this.state.activeLecture) {
-        console.log('two');
+        // console.log('two');
         return (
           <div className="lmsNewBlockItemContainer" key={`lmsLecturecontain${currentLecture}`}>
             <div
@@ -796,7 +802,7 @@ export default class NewCourse extends Component {
           </div>
         );
       } else {
-        console.log('three');
+        // console.log('three');
         return (
           <div className="lmsNewBlockItemContainer" key={`lmsLectureRenderMenu${currentLecture}`}>
             <div
@@ -821,7 +827,7 @@ export default class NewCourse extends Component {
         );
       }
     } else {
-      console.log('four');
+      // console.log('four');
       return (
         <div className="lmsNewBlockItemContainer" key={`lmsRenderCon${currentLecture}`}>
           <div
@@ -847,20 +853,20 @@ export default class NewCourse extends Component {
     }
   };
   renderDiscussionMenu = () => {
-    console.log('renderDiscussionMenu');
+    // console.log('renderDiscussionMenu');
     if (this.state.activeLesson === -1) {
       return (
         <div className="lmsLessonBlock">
           <div
             className="lmsLessonBlockItem"
             style={{ borderLeft: '5px solid #6fc13e' }}
-            onClick={() => this.changeMenu(-1, -1)}
+            onClick={() => this.changeMenu('courseDecription')}
           >
             <div className="lmsLessonBlockTitle">Course Description</div>
           </div>
           <div
             className="lmsLessonBlockItem"
-            onClick={() => this.changeMenu(-2, -1)}
+            onClick={() => this.changeMenu('instructor')}
           >
             <div className="lmsLessonBlockTitle">Instructor</div>
           </div>
@@ -869,13 +875,13 @@ export default class NewCourse extends Component {
     } else if (this.state.activeLesson === -2) {
       return (
         <div className="lmsLessonBlock">
-          <div className="lmsLessonBlockItem" onClick={() => this.changeMenu(-1, -1)}>
+          <div className="lmsLessonBlockItem" onClick={() => this.changeMenu('courseDescription')}>
             <div className="lmsLessonBlockTitle">Course Description</div>
           </div>
           <div
             className="lmsLessonBlockItem"
             style={{ borderLeft: '5px solid #6fc13e' }}
-            onClick={() => this.changeMenu(-2, -1)}
+            onClick={() => this.changeMenu('instructor')}
           >
             <div className="lmsLessonBlockTitle">Instructor</div>
           </div>
@@ -895,7 +901,7 @@ export default class NewCourse extends Component {
     }
   };
   renderPromoImageText = () => {
-    console.log('renderPromoImageText');
+    // console.log('renderPromoImageText');
     if (this.state.courseImagePreview === "" || this.state.courseImagePreview === undefined || this.state.courseImagePreview === null) {
       return (
         <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
@@ -908,7 +914,7 @@ export default class NewCourse extends Component {
     }
   };
   renderAvatarImageText = () => {
-    console.log('renderAvatarImageText');
+    // console.log('renderAvatarImageText');
     if (this.state.courseInstructorAvatarPreview === "" || this.state.courseInstructorAvatarPreview === undefined || this.state.courseInstructorAvatarPreview === null) {
       return (
         <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
@@ -921,20 +927,19 @@ export default class NewCourse extends Component {
     }
   };
   renderFileUpload = () => {
-    console.log('renderFileUpload');
-    if (this.state.activeView.lectureFiles.length < 5) {
-      return (
-        <div>
-          <label htmlFor="course-file" className="lmsNewFileAdd">
-            Upload New File
+    // console.log('renderFileUpload');
+    // if (this.state.activeView.lectureFiles.length < 5) {
+    return (
+      <div>
+        <label htmlFor="course-file" className="lmsNewFileAdd">
+          Upload New File
           </label>
-          <input type="file" onChange={this.handleLectureFile} id="course-file" style={{ display: 'none' }} />
-        </div>
-      );
-    }
+        <input type="file" onChange={this.handleLectureFile} id="course-file" style={{ display: 'none' }} />
+      </div>
+    );
   };
   renderFile = (file, index) => {
-    console.log('renderFile');
+    // console.log('renderFile');
     if (file.isLoading === true) {
       return (
         <div key={`lmsRenderFile${index}`}>
@@ -975,7 +980,7 @@ export default class NewCourse extends Component {
     }
   };
   renderNewQuestion = (question, i) => {
-    console.log('renderNewQuestion');
+    // console.log('renderNewQuestion');
     if (question.questionType === 'multiple') {
       return (
         <div className="lmsNewLectureQuestionBlock" key={`lmsLecture${i}`}>
@@ -1034,7 +1039,7 @@ export default class NewCourse extends Component {
   };
 
   renderNewAnswer = (answer, i, j) => {
-    console.log('renderNewAnswer');
+    // console.log('renderNewAnswer');
     let letter = "A";
     if (j === 0) { letter = "A" }
     else if (j === 1) { letter = "B" }
@@ -1069,7 +1074,7 @@ export default class NewCourse extends Component {
     );
   };
   renderLessonDelete = (id, i) => {
-    console.log('renderLessonDelete');
+    // console.log('renderLessonDelete');
     let lessons = [...this.state.lessons];
     if (lessons[i].pendingDelete === true) {
       return (
@@ -1087,7 +1092,7 @@ export default class NewCourse extends Component {
     }
   };
   renderLectureDelete = (id, i, j) => {
-    console.log('renderLectureDelete');
+    // console.log('renderLectureDelete');
     let lessons = [...this.state.lessons];
     if (lessons[i].lectures[j].pendingDelete === true) {
       return (
@@ -1105,7 +1110,7 @@ export default class NewCourse extends Component {
     }
   };
   renderSaving = () => {
-    console.log('renderSaving');
+    // console.log('renderSaving');
     if (this.state.isSaving === true) {
       return (
         <LinearProgress variant='indeterminate' style={{ position: 'fixed', top: '0' }} />
@@ -1113,9 +1118,9 @@ export default class NewCourse extends Component {
     }
   };
   renderLectureContent = () => {
-    console.log('renderLectureContent');
+    // console.log('renderLectureContent');
     if (this.state.activeView.lectureType === "Text") {
-      console.log('avlc', this.state.activeView.lectureContent);
+      // console.log('avlc', this.state.activeView.lectureContent);
       return (
         <div className="lmsLessonMainContent">
           <Editor
@@ -1152,12 +1157,14 @@ export default class NewCourse extends Component {
           <span style={{ fontSize: '0.9rem', marginTop: '5px', color: '#AAAAAA', fontFamily: 'Lato' }}>
             Maximum 5 Files per Lecture
           </span>
-          <div className="lmsNewFileList">
-            {this.state.activeView.lectureFiles.map((file, index) => (
-              this.renderFile(file, index)
-            ))}
-            {this.renderFileUpload()}
-          </div>
+          {!!this.state.activeView.lectureFiles &&
+            <div className="lmsNewFileList">
+              {this.state.activeView.lectureFiles.map((file, index) => (
+                this.renderFile(file, index)
+              ))}
+            </div>
+          }
+          {this.renderFileUpload()}
         </div>
       );
     } else if (this.state.activeView.lectureType === "Exam") {
@@ -1183,7 +1190,7 @@ export default class NewCourse extends Component {
     }
   };
   renderCourseImage = () => {
-    console.log('renderCourseImage');
+    // console.log('renderCourseImage');
     if (this.state.courseImage !== "") {
       return (
         <img alt="" src={this.state.courseImagePreview} className="lmsNewCourseImagePreview" />
@@ -1195,7 +1202,7 @@ export default class NewCourse extends Component {
     }
   };
   renderCourseContent = () => {
-    console.log('renderCourseContent');
+    // console.log('renderCourseContent');
     if (this.state.activeLesson === -1) {
       return (
         <div className="lmsLessonColumnTwoContent">
