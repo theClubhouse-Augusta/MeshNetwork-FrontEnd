@@ -245,7 +245,6 @@ export default class NewCourse extends Component {
     this.setState({ lessons });
   };
   handleLectureFile = event => {
-    console.log('handleLectureFile');
     event.preventDefault();
     let reader = new FileReader();
     let files = event.target.files;
@@ -539,10 +538,8 @@ export default class NewCourse extends Component {
       });
   };
   updateLecture = (currentLesson, currentLecture) => {
-    // console.log('updateLecture');
     let lessons = [...this.state.lessons];
     let id = lessons[currentLesson].lectures[currentLecture].id;
-    // console.log('id', id);
     let data = new FormData();
     data.append('lectureName', lessons[currentLesson].lectures[currentLecture].lectureName);
     if (lessons[currentLesson].lectures[currentLecture].lectureContent) {
@@ -579,16 +576,16 @@ export default class NewCourse extends Component {
       headers: { 'Authorization': 'Bearer ' + this.state.token }
     })
       .then(response => response.json())
-      .then(({ error, success }) => {
+      .then(({ error, lecture: newLecture }) => {
         if (error) {
           this.showSnack('Your session has expired.');
-        } else if (success) {
+        } else if (newLecture.id) {
           let lecture = {
-            id: success,
-            lectureName: "Lecture Title",
-            lectureContent: EditorState.createEmpty(),
-            lectureType: "Text",
-            lectureVideo: "",
+            id: newLecture.id,
+            lectureName: newLecture.lectureName,
+            lectureContent: newLecture.lectureContent,
+            lectureType: newLecture.lectureType,
+            lectureVideo: newLecture.lectureVideo,
             lectureFiles: [],
             lectureQuestions: [],
             pendingDelete: false
@@ -596,7 +593,7 @@ export default class NewCourse extends Component {
           lessons[i].lectures.push(lecture);
           this.setState({ lessons });
           this.showSnack("Lecture Added.")
-        }
+        } 
       });
   };
   storeFile = (file, index) => {
@@ -723,8 +720,8 @@ export default class NewCourse extends Component {
     const {
       activeLesson,
       activeLecture,
-      lessons,
     } = this.state;
+    let lessons = [...this.state.lessons];
     if (currentLesson === 'instructor') {
       this.setState({ activeLesson: -2 });
       return;
@@ -733,14 +730,12 @@ export default class NewCourse extends Component {
       this.setState({ activeLesson: -1 });
       return;
     }
-
-    const lectureContent = lessons[currentLesson].lectures[currentLecture].lectureContent;
-    if (lectureContent === null || lectureContent === '<p></p>' || typeof lectureContent === 'object' || lectureContent === "<p></p>\n") {
-      this.setState(() => ({ activeView: {} }));
-    }
     const duplicate = ((activeLesson === currentLesson) && (activeLecture === currentLecture));
     if (!duplicate) {
-      let lessons = [...this.state.lessons];
+      const lectureContent = lessons[currentLesson].lectures[currentLecture].lectureContent;
+      if (lectureContent === null || lectureContent === '<p></p>' || typeof lectureContent === 'object' || lectureContent === "<p></p>\n") {
+        this.setState(() => ({ activeView: {} }));
+      }
       if (currentLecture !== -1 && lessons[currentLesson].lectures[currentLecture].lectureContent) {
         if (lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent) {
           lessons[currentLesson].lectures[currentLecture].lectureContent = draftToHtml(convertToRaw(lessons[currentLesson].lectures[currentLecture].lectureContent.getCurrentContent()));
@@ -757,20 +752,19 @@ export default class NewCourse extends Component {
             let contentBlock = convertFromHTML(content);
             if (contentBlock.contentBlocks !== null) {
               lessons[currentLesson].lectures[currentLecture].lectureContent = EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(lessons[currentLesson].lectures[currentLecture].lectureContent)));
-              let activeView = lessons[currentLesson].lectures[currentLecture];
-              this.setState({
-                lessons,
-                activeView,
-                activeLectureType: activeView.lectureType
-              });
             }
           }
+          let activeView = lessons[currentLesson].lectures[currentLecture];
+          this.setState({
+            lessons,
+            activeView,
+            activeLectureType: activeView.lectureType
+          });
         } else {
           this.updateCourse(this.state.courseStatus);
         }
       });
     }
-
   };
   renderMenu = (currentLesson, currentLecture, lecture) => {
     // console.log('renderMenu');
@@ -890,10 +884,10 @@ export default class NewCourse extends Component {
     } else {
       return (
         <div className="lmsLessonBlock">
-          <div className="lmsLessonBlockItem" onClick={() => this.changeMenu(-1, -1)}>
+          <div className="lmsLessonBlockItem" onClick={() => this.changeMenu("courseDescription")}>
             <div className="lmsLessonBlockTitle">Course Description</div>
           </div>
-          <div className="lmsLessonBlockItem" onClick={() => this.changeMenu(-2, -1)}>
+          <div className="lmsLessonBlockItem" onClick={() => this.changeMenu("instructor")}>
             <div className="lmsLessonBlockTitle">Instructor</div>
           </div>
         </div>
@@ -1119,12 +1113,14 @@ export default class NewCourse extends Component {
   };
   renderLectureContent = () => {
     // console.log('renderLectureContent');
+    let content = this.state.activeView.lectureContent;
     if (this.state.activeView.lectureType === "Text") {
-      // console.log('avlc', this.state.activeView.lectureContent);
+      if (this.state.activeView.lectureContent === "<p></p>")
+        content = EditorState.createEmpty();
       return (
         <div className="lmsLessonMainContent">
           <Editor
-            editorState={this.state.activeView.lectureContent}
+            editorState={content}
             toolbarClassName="home-toolbar"
             wrapperClassName="home-wrapper"
             editorClassName="rdw-editor-main"
@@ -1310,7 +1306,11 @@ export default class NewCourse extends Component {
       return (
         <div className="lmsLessonColumnTwoContent">
           <div className="lmsNewLectureHeading">
-            <div className="lmsLessonColumnTwoHeading">{this.state.activeView.lectureName}</div>
+            {!!this.state.activeView.lectureName &&
+              <div className="lmsLessonColumnTwoHeading">
+                {this.state.activeView.lectureName}
+              </div>
+            }
             <FormControl style={{ width: '20%' }}>
               <InputLabel htmlFor="lecture-select">Lecture Type</InputLabel>
               <SelectField
