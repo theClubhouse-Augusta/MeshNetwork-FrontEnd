@@ -420,6 +420,7 @@ export default class App extends Component {
             />
           }
         />
+        <div>foobar</div>
       </Switch>
     );
   }
