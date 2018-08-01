@@ -68,6 +68,7 @@ class EditCompany extends Component {
     email: '',
   };
   states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+
   async componentDidMount() {
     let authorized;
     try {
@@ -125,32 +126,61 @@ class EditCompany extends Component {
         address,
         email,
       } = company;
-      this.setState({
-        name,
-        logoPreview: logo,
-        logo,
-        employeeCount,
-        companyId,
-        url,
-        description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(description))),
-        update: true,
-        loadedTags,
-        selectedTags: loadedTags,
-        facebook,
-        instagram,
-        pinterest,
-        twitter,
-        youtube,
-        linkedin,
-        snapchat,
-        discord,
-        foundingDate: moment(foundingDate),
-        zipcode,
-        city,
-        state,
-        address,
-        email,
-      });
+      if (description !== "<p></p>") {
+        this.setState({
+          name,
+          logoPreview: logo,
+          logo,
+          employeeCount,
+          companyId,
+          url,
+          description: EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(description))),
+          update: true,
+          loadedTags,
+          selectedTags: loadedTags,
+          facebook,
+          instagram,
+          pinterest,
+          twitter,
+          youtube,
+          linkedin,
+          snapchat,
+          discord,
+          foundingDate: moment(foundingDate),
+          zipcode,
+          city,
+          state,
+          address,
+          email,
+        });
+      } else {
+        console.log('bar')
+        this.setState({
+          name,
+          logoPreview: logo,
+          logo,
+          employeeCount,
+          companyId,
+          url,
+          update: true,
+          loadedTags,
+          selectedTags: loadedTags,
+          facebook,
+          instagram,
+          pinterest,
+          twitter,
+          youtube,
+          linkedin,
+          snapchat,
+          discord,
+          foundingDate: moment(foundingDate),
+          zipcode,
+          city,
+          state,
+          address,
+          email,
+        });
+      }
     } else if (userID) {
       this.setState({
         userID,
@@ -340,7 +370,7 @@ class EditCompany extends Component {
                       <Grid container>
                         <ItemGrid xs={12} sm={12} md={12}>
                           <CustomInput
-                            labelText="Company name"
+                            labelText="Company name (required)"
                             id="name"
                             formControlProps={{ fullWidth: true, }}
                             onChange={this.updateInput}
@@ -350,7 +380,7 @@ class EditCompany extends Component {
                         </ItemGrid>
                         <ItemGrid xs={12} sm={12} md={12}>
                           <CustomInput
-                            labelText="Company email"
+                            labelText="Company email (required)"
                             id="email"
                             formControlProps={{ fullWidth: true, }}
                             onChange={this.updateInput}
@@ -360,7 +390,7 @@ class EditCompany extends Component {
                         </ItemGrid>
                         <ItemGrid xs={12} sm={12} md={12}>
                           <CustomInput
-                            labelText="Address"
+                            labelText="Address (required)"
                             id="address"
                             formControlProps={{ fullWidth: true }}
                             onChange={this.updateInput}
@@ -370,7 +400,7 @@ class EditCompany extends Component {
                         <Grid container justify="center">
                           <ItemGrid xs={12} sm={12} md={3}>
                             <CustomInput
-                              labelText="City"
+                              labelText="City (required)"
                               id="city"
                               formControlProps={{ fullWidth: true }}
                               onChange={this.updateInput}
@@ -381,7 +411,7 @@ class EditCompany extends Component {
                             className={classes.selectInput}
                             xs={12} sm={12} md={3}>
                             <InputLabel htmlFor="state" className={classes.selectLabel}>
-                              State
+                              State (required)
                           </InputLabel>
                             <MaterialSelect
                               native
@@ -398,7 +428,7 @@ class EditCompany extends Component {
                           </ItemGrid>
                           <ItemGrid xs={12} sm={12} md={3}>
                             <CustomInput
-                              labelText="Zipcode"
+                              labelText="Zipcode (required)"
                               id="zipcode"
                               formControlProps={{ fullWidth: true }}
                               onChange={this.updateInput}
@@ -409,7 +439,7 @@ class EditCompany extends Component {
                         <div className={classes.datePicker} xs={12} sm={12} md={2}>
                           {foundingDate &&
                             <InputLabel htmlFor="datepicker" className={classes.selectLabel}>
-                              Founding Date
+                              Founding Date (required)
                             </InputLabel>
                           }
                           <SingleDatePicker
@@ -462,7 +492,7 @@ class EditCompany extends Component {
                         </ItemGrid>
                         <ItemGrid xs={12} sm={12} md={12}>
                           <CustomInput
-                            labelText="Company website"
+                            labelText="Company website (required)"
                             id="url"
                             formControlProps={{ fullWidth: true, }}
                             onChange={this.updateInput}
@@ -476,7 +506,7 @@ class EditCompany extends Component {
                             wrapperclassName="challenges_question-wrapper"
                             editorclassName="challenges_question-editor-main"
                             onEditorStateChange={this.eventDescription}
-                            placeholder="Brief Description"
+                            placeholder="Brief Description (required)"
                             toolbar={{
                               inline: { inDropdown: true },
                               fontSize: { className: "toolbarHidden" },
@@ -497,7 +527,7 @@ class EditCompany extends Component {
                       <Grid container>
                         <ItemGrid xs={12} sm={12} md={12}>
                           <CustomInput
-                            labelText="Number of employees"
+                            labelText="Number of employees (required)"
                             id="employeeCount"
                             formControlProps={{ fullWidth: true }}
                             onChange={this.updateInput}

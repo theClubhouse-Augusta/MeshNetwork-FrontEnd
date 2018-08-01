@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js start
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js build
 
 PATH: 
-  C:\ProgramData\Oracle\Java\javapath;C:\Program Files\Microsoft MPI\Bin\;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\HashiCorp\Vagrant\bin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Amazon\AWSCLI\;C:\Users\austi\AppData\Local\Programs\Python\Python36\Scripts\;C:\Users\austi\AppData\Local\Programs\Python\Python36\;C:\WINDOWS\System32\OpenSSH\;C:\Users\austi\Documents\maven\apache-maven-3.5.3\bin;%MAVEN_HOME%\bin;C:\Program Files\Java\jdk1.8.0_162\bin;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Users\austi\Downloads\libwebp-1.0.0-windows-x64\libwebp-1.0.0-windows-x64\bin;C:\Users\austi\AppData\Local\Programs\Python\Python36\Scripts\;C:\Users\austi\AppData\Local\Programs\Python\Python36\;C:\Users\austi\AppData\Local\Microsoft\WindowsApps;C:\Users\austi\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin;C:\Users\austi\AppData\Roaming\Composer\vendor\bin;C:\Grade\gradle-4.6-all\gradle-4.6\bin;C:\Maven\apache-maven-3.5.3-bin\apache-maven-3.5.3\bin;C:\xampp\mysql\bin;C:\Users\austi\AppData\Local\Yarn\bin;C:\Users\austi\AppData\Roaming\Python\Python36\Scripts\;
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\austi\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files\Microsoft MPI\Bin;C:\Program Files (x86)\Intel\iCLS Client;C:\Program Files\Intel\iCLS Client;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\HashiCorp\Vagrant\bin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Program Files (x86)\Yarn\bin;C:\Program Files\Amazon\AWSCLI;C:\Users\austi\AppData\Local\Programs\Python\Python36\Scripts;C:\Users\austi\AppData\Local\Programs\Python\Python36;C:\WINDOWS\System32\OpenSSH;C:\Users\austi\Documents\maven\apache-maven-3.5.3\bin;%MAVEN_HOME%\bin;C:\Program Files\Java\jdk1.8.0_162\bin;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Users\austi\Downloads\libwebp-1.0.0-windows-x64\libwebp-1.0.0-windows-x64\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\austi\AppData\Local\Programs\Python\Python36\Scripts;C:\Users\austi\AppData\Local\Programs\Python\Python36;C:\Users\austi\AppData\Local\Microsoft\WindowsApps;C:\Users\austi\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin;C:\Users\austi\AppData\Roaming\Composer\vendor\bin;C:\Grade\gradle-4.6-all\gradle-4.6\bin;C:\Maven\apache-maven-3.5.3-bin\apache-maven-3.5.3\bin;C:\xampp\mysql\bin;C:\Users\austi\AppData\Local\Yarn\bin;C:\Users\austi\AppData\Roaming\Python\Python36\Scripts
 
 Yarn version: 
   1.5.1
@@ -8359,8 +8359,8 @@ Trace:
   Error: Command failed.
   Exit code: 3221225786
   Command: C:\WINDOWS\system32\cmd.exe
-  Arguments: /d /s /c react-scripts start
-  Directory: C:\Users\austi\Documents\mesh4\MeshNetwork-FrontEnd
+  Arguments: /d /s /c react-scripts build
+  Directory: c:\Users\austi\Documents\mesh4\MeshNetwork-FrontEnd
   Output:
   
       at ProcessTermError.MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)

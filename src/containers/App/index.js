@@ -421,6 +421,7 @@ export default class App extends Component {
           }
         />
         <div>foobar</div>
+        <div>foobaz</div>
       </Switch>
     );
   }
